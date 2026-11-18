@@ -2403,7 +2403,6 @@ buildColourMap("eyes");
 buildColourMap("clothes");
 buildColourMap("lipstick");
 buildColourMap("mascara");
-buildColourMap("blusher");
 buildColourMap("eyeshadow");
 buildColourMap("blusher");
 buildColourMap("condom");
