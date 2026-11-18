@@ -241,7 +241,7 @@ Weather.Renderer.ParticleEmitter = class ParticleEmitter {
 			// A burst added during a group update must contain particles before its first tick.
 			if (autoDestroy && spawnRate == null && spawnInterval == null && !(initialSettings.shape === "image" && typeof initialSettings.src === "string")) {
 				this.#preWarm();
-			} else imagePromise.then(() => this.#preWarm()).catch(err => console.warn("Image decode failed:", err));
+			} else imagePromise.then(() => this.#preWarm()).catch(err => console.warn("이미지 디코딩 실패:", err));
 		}
 	}
 

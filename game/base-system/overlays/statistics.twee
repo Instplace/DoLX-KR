@@ -38,7 +38,7 @@
 		<<virginityToolTip $player.virginityDetails.kiss $player.virginity.kiss "pc" "kiss">>
 		<br>
 		<<if $temple_rank isnot undefined and $temple_rank isnot "prospective">>
-			Temple vow: <<print (($player.virginity.temple is true or $player.virginity.temple is 1) ? "Unbroken" : "Broken by " + ($player.virginity.temple is false ? "unknown" : $player.virginity.temple))>>
+			신전의 맹세: <<print (($player.virginity.temple is true or $player.virginity.temple is 1) ? "깨지지 않음" : ($player.virginity.temple is false ? "알 수 없는 이에게 깨짐" : window.KR.getDescriptionKr($player.virginity.temple) + "에게 깨짐"))>>
 			<br>
 		<</if>>
 		<br>
@@ -122,7 +122,7 @@
 		<br>
 		<<if $plots>>
 			<<foldout false "_cropProgressFoldout">>
-				<span class="gold">Crop progress</span>
+				<span class="gold">작물 진행도</span>
 				<<tendingCropProgressStats>>
 			<</foldout>>
 			<br>
@@ -163,19 +163,19 @@
 			<br>
 		<</if>>
 		<<if $beingPenetratedOrgasmStat>>
-			Number of orgasms you've experienced while being penetrated: $beingPenetratedOrgasmStat
+			삽입당하는 동안 절정에 이른 횟수: $beingPenetratedOrgasmStat
 			<br>
 		<</if>>
 		<<if $penetratingOrgasmStat>>
-			Number of orgasms you've experienced while penetrating: $penetratingOrgasmStat
+			삽입하는 동안 절정에 이른 횟수: $penetratingOrgasmStat
 			<br>
 		<</if>>
 		<<if $oralFixationStat>>
-			Number of swallows and orgasms you've had with your mouth full: $oralFixationStat
+			삼킨 횟수와 입이 가득 찬 채 절정에 이른 횟수: $oralFixationStat
 			<br>
 		<</if>>
 		<<if !$statFreeze and $xchange.pill.active and $xchange.pill.resistanceEffect and $xchange.pill.effectsKnown>>
-			Number of orgasms you've experienced under this Resistance pill: <<= $xchange.pill.resistanceOrgasmsStat>>
+			이 레지스턴스 알약 아래에서 절정에 이른 횟수: <<= $xchange.pill.resistanceOrgasmsStat>>
 			<br>
 		<</if>>
 		<<if $settings.asphyxiaLevel gte 2>>
@@ -336,13 +336,13 @@
 			<br>
 			추행: $moleststat
 			<br>
-			Molestation Frequency: $recentmolest
+			추행 빈도: $recentmolest
 			<br>
 			마지막 추행: <<statisticsTimeCompare $molestTimeStat>>
 			<br>
 			강간: $rapestat
 			<br>
-			Rape Frequency: $recentrape
+			강간 빈도: $recentrape
 			<br>
 			마지막 강간: <<statisticsTimeCompare $rapeTimeStat>>
 			<br>
@@ -475,30 +475,30 @@
 		<br>
 		/* Dragon clutches enter the birth totals as hawk eggs; hatched children have human bodies. */
 		<<set _hatchedDragonChildren to getBornChildren().filter(child => child.development?.dragonNest and child.species is "human" and child.bornDate isnot null).length>>
-		Total number of human children: <<print $pregnancyStats.humanChildren + _hatchedDragonChildren>>
+		인간 아이 총합: <<print $pregnancyStats.humanChildren + _hatchedDragonChildren>>
 		<br>
 		늑대 아이 총합: <<print $pregnancyStats.wolfChildren>>
 		<br>
-		Total number of hawk children: <<print $pregnancyStats.hawkChildren - _hatchedDragonChildren>>
+		매 아이 총합: <<print $pregnancyStats.hawkChildren - _hatchedDragonChildren>>
 		<br>
 		<<if $waterDragonNest and ($waterDragonNest.eggsLaid gt 0 or $waterDragonNest.hatched gt 0 or $waterDragonNest.labStays gt 0)>>
-		<<foldout false "_waterDragonFoldout">><span class="gold">Water Dragon</span>
-			Water dragon eggs laid: <<print $waterDragonNest.eggsLaid>>
+		<<foldout false "_waterDragonFoldout">><span class="gold">수룡</span>
+			낳은 수룡 알 수: <<print $waterDragonNest.eggsLaid>>
 			<br>
 			<<if $waterDragonNest.pastelEggsLaid gt 0>>
-				Rare water dragon eggs laid: <<print $waterDragonNest.pastelEggsLaid>>
+				낳은 희귀 수룡 알 수: <<print $waterDragonNest.pastelEggsLaid>>
 				<br>
 			<</if>>
 			<<if $waterDragonNest.labEggsLaid gt 0>>
-				Eggs harvested in Harper's lab: <<print $waterDragonNest.labEggsLaid>>
+				하퍼 의사의 연구실에서 채취된 알 수: <<print $waterDragonNest.labEggsLaid>>
 				<br>
 			<</if>>
 			<<if $waterDragonNest.labStays gt 0>>
-				Times held in Harper's lab: <<print $waterDragonNest.labStays>>
+				하퍼 의사의 연구실에 붙들려 있던 횟수: <<print $waterDragonNest.labStays>>
 				<br>
 			<</if>>
 			<<if $waterDragonNest.hatched gt 0>>
-				Dragon hatchlings raised at the hidden nest: <<print $waterDragonNest.hatched>>
+				숨겨진 둥지에서 키워 낸 용 새끼 수: <<print $waterDragonNest.hatched>>
 				<br>
 			<</if>>
 		<</foldout>>
@@ -648,15 +648,15 @@
 		부러진 우산: $umbrellaStat
 		<br>
 		<<if $earSlimeDaysStat>>
-			Days with <<if earSlimeThoughts()>>a voice in your head<<else>>an ear slime<</if>>: $earSlimeDaysStat
+			<<if earSlimeThoughts()>>머릿속 목소리와<<else>>귀 슬라임과<</if>> 함께한 일수: $earSlimeDaysStat
 			<br>
 		<</if>>
 		<<if $earSlime.days>>
-			Days with the current <<if earSlimeThoughts()>>voice<<else>>ear slime<</if>>: $earSlime.days
+			현재 <<if earSlimeThoughts()>>목소리와<<else>>귀 슬라임과<</if>> 함께한 일수: $earSlime.days
 			<br>
 		<</if>>
 		<<if $earSlimePassiveDaysStat>>
-			Most days with a passive <<if earSlimeThoughts()>>voice<<else>>ear slime<</if>>: $earSlimePassiveDaysStat
+			수동적인 <<if earSlimeThoughts()>>목소리와<<else>>귀 슬라임과<</if>> 함께한 최장 일수: $earSlimePassiveDaysStat
 			<br>
 		<</if>>
 		<<if $whitney_smoke gte 1>>
@@ -668,7 +668,7 @@
 			<br>
 		<</if>>
 		<<if $nectar_addiction>>
-			Nectar addiction: $nectar_addiction / 200
+			넥타르 중독: $nectar_addiction / 200
 			<br>
 		<</if>>
 		<<if $gwylan?.requestCount>>
@@ -684,7 +684,7 @@
 		<br>
 		<<set _baileyDateTotal to ($moneyStats.baileyDate?.spent or 0) + ($moneyStats.catEars?.spent or 0) + ($moneyStats.baileySpank?.spent or 0)>>
 		<<if _baileyDateTotal gt 0>>
-			Total paid to Bailey for dates: <<printmoney _baileyDateTotal>>
+			데이트 비용으로 베일리에게 지불한 총액: <<printmoney _baileyDateTotal>>
 			<br>
 		<</if>>
 		<<if $baileyRefusedToPayTotal>>
@@ -818,7 +818,7 @@
 			<br>
 			흥분: <<print Math.trunc($arousal)>>
 			<br>
-			Willpower: <<print Math.trunc($xchange.willpowerPoints)>>
+			의지력: <<print Math.trunc($xchange.willpowerPoints)>>
 			<br>
 			피로도: <<print Math.trunc($tiredness)>>
 			<br>
@@ -846,7 +846,7 @@
 			<br>
 			체격: <<print Math.trunc($physique)>>
 			<br>
-			Willpower Max: <<print Math.trunc($willpower)>>
+			의지력 최대치: <<print Math.trunc($willpower)>>
 			<br>
 			성지식: <<print Math.trunc($awareness)>>
 			<br>
@@ -889,10 +889,10 @@
 			민감도:
 			<mouse class="tooltip linkBlue">(?)<span>신체의 해당 부위가 자극받을 때 적용되는 흥분 배율입니다.</span></mouse>
 			<ul style="margin-top:0px;margin-left:-5px;">
-				<li>Mouth: <<print getSensitivity("mouth").toFixed(2)>></li>
-				<li>Breast: <<print getSensitivity("breast").toFixed(2)>></li>
-				<li>Genital: <<print getSensitivity("genital").toFixed(2)>></li>
-				<li>Bottom: <<print getSensitivity("bottom").toFixed(2)>></li>
+				<li>입: <<print getSensitivity("mouth").toFixed(2)>></li>
+				<li>가슴: <<print getSensitivity("breast").toFixed(2)>></li>
+				<li>성기: <<print getSensitivity("genital").toFixed(2)>></li>
+				<li>엉덩이: <<print getSensitivity("bottom").toFixed(2)>></li>
 			</ul>
 			가슴 성장도: <<print Math.trunc(100 - ($breastgrowthtimer / 10))>>%
 			<mouse class="tooltip linkBlue">(?)<span>100% 이상에 도달하면 커지고, 0% 이하로 떨어지면 작아집니다.</span></mouse>
@@ -994,7 +994,7 @@
 
 		<<if $xchange and $xchange.genderIdentityEnabled>>
 		<<foldout false "_genderIdentityFoldout">>
-			<span class="gold">Gender Identity</span>
+			<span class="gold">성 정체성</span>
 			<<gi-compute-target>>
 
 			<<set _giRange to ($xchange.giRange is undefined ? 1500 : $xchange.giRange)>>
@@ -1007,7 +1007,7 @@
 			<<set _giTarget to (Number.isFinite(Number($xchange.giTarget)) ? Number($xchange.giTarget) : _giMid)>>
 			<<set _giStep to Math.max(1, Number($xchange.giStepPerDay) || 30)>>
 
-			Meter: <<print Math.round(_giCurrent)>> / _giRange
+			게이지: <<print Math.round(_giCurrent)>> / _giRange
 			<br>
 
 			/* Target and drift */
@@ -1015,49 +1015,49 @@
 			<<set _giDelta to _giTarget - _giCurrent>>
 
 			<<if $xchange.giAutoEnabled isnot true>>
-				Daily drift: <span class="red">Off</span> <span class="small-description">(enable in Attitudes)</span>
+				일일 변동: <span class="red">꺼짐</span> <span class="small-description">(태도에서 켤 수 있습니다)</span>
 			<<else>>
-				Daily drift: <<print _giStep>> / day
+				일일 변동: <<print _giStep>> / 일
 			<</if>>
 			<br>
-			Identity target: _giTargetDir
+			정체성 목표: _giTargetDir
 			<br>
 
 			<<if $xchange.giAutoEnabled isnot true>>
-				Drift status: <span class="blue">Held</span> <span class="small-description">(routine changes are disabled; specific story events can still change it)</span>
+				변동 상태: <span class="blue">보류</span> <span class="small-description">(일상적인 변화는 꺼져 있습니다. 특정 이야기 사건은 여전히 바꿀 수 있습니다)</span>
 			<<elseif Math.abs(_giDelta) lte 1>>
-				Drift status: <span class="green">Stable (already at target)</span>
+				변동 상태: <span class="green">안정 (이미 목표에 도달)</span>
 			<<else>>
 				<<set _giDaysLeft to Math.ceil(Math.abs(_giDelta) / _giStep)>>
 				<<set _giDriftDir to (_giDelta gt 0) ? "feminine" : "masculine">>
-				Drifting: toward _giDriftDir (~_giDaysLeft days remaining)
+				변동 중: _giDriftDir 쪽으로 (약 <<print _giDaysLeft>>일 남음)
 			<</if>>
 			<br>
 
 			<br>
-			<span class="gold">Body Transformation</span>
+			<span class="gold">신체 변화</span>
 			<br>
 			<<set _giPregnancyPaused to playerIsPregnant() and _giCurrent lt _giNeutralHigh>>
 			<<set _giEarSlimePaused to !!(!earSlimeThoughts() && $earSlime && $earSlime.growth gt 50)>>
 			<<if $xchange.giAutoEnabled isnot true>>
-				Body changes: <span class="red">Off</span> <span class="small-description">(needs daily drift, above)</span>
+				몸 변화: <span class="red">꺼짐</span> <span class="small-description">(위의 일일 변동이 필요합니다)</span>
 			<<elseif $xchange.giTransformEnabled isnot true>>
-				Body changes: <span class="red">Off</span> <span class="small-description">(enable in Attitudes)</span>
+				몸 변화: <span class="red">꺼짐</span> <span class="small-description">(태도에서 켤 수 있습니다)</span>
 			<<elseif $xchange.pill and $xchange.pill.active is true>>
-				Body changes: <span class="blue">Paused</span> <span class="small-description">(X-Change pill active)</span>
+				몸 변화: <span class="blue">일시 정지</span> <span class="small-description">(X-체인지 알약 작용 중)</span>
 			<<elseif _giPregnancyPaused>>
-				Body changes: <span class="blue">Paused</span> <span class="small-description">(pregnancy in progress)</span>
+				몸 변화: <span class="blue">일시 정지</span> <span class="small-description">(임신 진행 중)</span>
 			<<elseif _giEarSlimePaused>>
-				Body changes: <span class="blue">Paused</span> <span class="small-description">(ear slime occupies your genitals)</span>
+				몸 변화: <span class="blue">일시 정지</span> <span class="small-description">(귀 슬라임이 생식기를 차지하고 있음)</span>
 			<<elseif _giCurrent gte _giNeutralLow and _giCurrent lt _giNeutralHigh>>
-				Body changes: <span class="blue">Paused</span> <span class="small-description">(current identity is non-binary; existing traits are retained)</span>
+				몸 변화: <span class="blue">일시 정지</span> <span class="small-description">(현재 정체성이 논바이너리이므로 기존 특성은 유지됩니다)</span>
 			<<else>>
-				Body changes: <span class="green">Active</span>
+				몸 변화: <span class="green">활성</span>
 			<</if>>
 			<br>
 			<<if $xchange.giGenitalsEnabled>>
-				Genital outcome: <<if _giCurrent lte _giCompleteBand or (_giCurrent lte Math.round(_giRange * 2 / 15) and ($xchange.giGroupAxis?.genitals ?? 0) lte -0.999)>><span class="lblue">fully male</span><<elseif _giCurrent gte (_giRange - _giCompleteBand) or (_giCurrent gte Math.round(_giRange * 13 / 15) and ($xchange.giGroupAxis?.genitals ?? 0) gte 0.999)>><span class="pink">fully female</span><<elseif _giCurrent gte _giNeutralLow and _giCurrent lt _giNeutralHigh>><span class="green">retained / non-binary</span><<else>><span class="gold">incomplete; existing genitals are retained</span><</if>>
-				<span class="small-description">(gained genitals use normal pregnancy and impregnation mechanics)</span>
+				생식기 결과: <<if _giCurrent lte _giCompleteBand or (_giCurrent lte Math.round(_giRange * 2 / 15) and ($xchange.giGroupAxis?.genitals ?? 0) lte -0.999)>><span class="lblue">완전한 남성</span><<elseif _giCurrent gte (_giRange - _giCompleteBand) or (_giCurrent gte Math.round(_giRange * 13 / 15) and ($xchange.giGroupAxis?.genitals ?? 0) gte 0.999)>><span class="pink">완전한 여성</span><<elseif _giCurrent gte _giNeutralLow and _giCurrent lt _giNeutralHigh>><span class="green">유지됨 / 논바이너리</span><<else>><span class="gold">불완전함. 기존 생식기는 유지됨</span><</if>>
+				<span class="small-description">(획득한 생식기는 일반적인 임신 및 임신시키기 규칙을 따릅니다)</span>
 				<br>
 			<</if>>
 
@@ -1067,19 +1067,19 @@
 				<<set _giMode to $xchange.giShiftMode || "none">>
 				<<set _giStage to (Number($xchange.giShiftStage) || 0)>>
 
-				Transform direction: <<if _giMode is "f">><span class="pink">Feminising</span><<elseif _giMode is "m">><span class="lblue">Masculinising</span><<else>><span class="grey">None</span><</if>>
+				변화 방향: <<if _giMode is "f">><span class="pink">여성화</span><<elseif _giMode is "m">><span class="lblue">남성화</span><<else>><span class="grey">없음</span><</if>>
 				<br>
-				Transform stage: <span class="gold">_giStage</span> <span class="small-description">(stage 0: setup, stage 1: preferred genitals, stage 2: other preferred body traits)</span>
+				변화 단계: <span class="gold">_giStage</span> <span class="small-description">(0단계: 준비, 1단계: 선호하는 생식기, 2단계: 그 밖의 선호하는 신체 특성)</span>
 				<br>
-				Drift accumulation: <span class="gold"><<print Math.round(_giDrift)>> / _giTh</span>
+				변동 누적: <span class="gold"><<print Math.round(_giDrift)>> / _giTh</span>
 				<br>
 				<<set _giDriftPct to Math.round((_giDrift / _giTh) * 100)>>
-				Next body change: <<if _giDriftPct gte 100>><span class="green">Ready</span> <span class="small-description">(waiting for an enabled preference that can change your body)</span><<else>><span class="gold">_giDriftPct%</span><</if>>
+				다음 몸 변화: <<if _giDriftPct gte 100>><span class="green">준비됨</span> <span class="small-description">(몸을 바꿀 수 있는, 켜져 있는 선호가 나타나기를 기다리는 중입니다)</span><<else>><span class="gold">_giDriftPct%</span><</if>>
 				<br>
 			<</if>>
 
 			<br>
-			<span class="gold">Active Body Topics</span>
+			<span class="gold">활성화된 몸 주제</span>
 			<br>
 			<<set _giTopics to []>>
 			<<if $xchange.giGenitalsEnabled>><<run _giTopics.push("Genitals")>><</if>>
@@ -1091,81 +1091,81 @@
 			<<if _giTopics.length gt 0>>
 				<<print _giTopics.join(", ")>>
 			<<else>>
-				<span class="grey">None (only presentation topics active)</span>
+				<span class="grey">없음 (표현 주제만 활성화됨)</span>
 			<</if>>
 			<br>
 
 			<<if $xchange.permaReflection and $xchange.permaReflection.answer and (typeof pillIsPermanent === "function") and pillIsPermanent()>>
-				<br><span class="gold">Permapill Reflection</span><br>
+				<br><span class="gold">영구 알약 성찰</span><br>
 				<<if $xchange.permaReflection.answer is "yes">>
-					<span class="green">Genital identity preferences are being held in acceptance because of your choice.</span>
+					<span class="green">당신의 선택 때문에 생식기 정체성 선호가 수용 상태로 유지되고 있습니다.</span>
 					<br>
-					You decided this body is yours. Genital dysphoria is suppressed and you receive a small daily relief from the settled feeling.
+					당신은 이 몸이 자신의 것이라고 결정했습니다. 생식기 성별 불쾌감이 억제되고, 안정된 느낌 덕분에 매일 조금씩 안도감을 얻습니다.
 				<<elseif $xchange.permaReflection.answer is "no">>
-					<span class="red">Genital identity preferences are being held in rejection because of your choice.</span>
+					<span class="red">당신의 선택 때문에 생식기 정체성 선호가 거부 상태로 유지되고 있습니다.</span>
 					<br>
-					You decided this body is wrong for you. Genital dysphoria is pinned at maximum and the daily distress generates ongoing stress and trauma.
+					당신은 이 몸이 자신에게 맞지 않는다고 결정했습니다. 생식기 성별 불쾌감이 최대치로 고정되고, 매일의 괴로움이 지속적인 스트레스와 트라우마를 만들어 냅니다.
 				<</if>>
 				<<if not $xchange.giGenitalsEnabled>>
 					<br>
-					<span class="small-description">This effect applies even though the Genitals body topic is disabled. Your standing choice overrides the topic toggle for as long as the pill remains permanent.</span>
+					<span class="small-description">생식기 몸 주제가 꺼져 있어도 이 효과는 적용됩니다. 알약이 영구인 동안에는 당신이 내린 선택이 주제 설정보다 우선합니다.</span>
 				<</if>>
 				<br>
 			<</if>>
 
 			/* Current body state */
 			<br>
-			<span class="gold">Current Body</span>
+			<span class="gold">현재 몸</span>
 			<br>
 			<<if $player.penisExist>>
-				Penis: Size $player.penissize
+				자지: 크기 $player.penissize
 				<br>
 			<</if>>
 			<<if $player.vaginaExist>>
-				Vagina: Present
+				질: 있음
 				<br>
 			<</if>>
-			Breasts: Size $player.breastsize
+			가슴: 크기 $player.breastsize
 			<br>
-			Bottom: Size $player.bottomsize
+			엉덩이: 크기 $player.bottomsize
 			<br>
-			Hair length: $hairlength
+			머리카락 길이: $hairlength
 			<br><br>
 
 			/* Choice Breakdown explains active pushes, neutral dilution, and characteristics with no meter contribution. */
 			<<foldout false "_giBreakdownFoldout">>
-				<span class="gold">Choice Breakdown</span>
+				<span class="gold">선택 내역</span>
 
 				/* --- Legend: how each stance translates to meter force --- */
-				<span class="small-description">How stances affect the meter:</span>
+				<span class="small-description">입장이 수치에 미치는 영향:</span>
 				<br>
-				&nbsp;&nbsp;• <span class="green">Preferred</span>: strong push in the characteristic's direction.
+				&nbsp;&nbsp;• <span class="green">선호</span>: 해당 특성의 방향으로 강하게 밀어붙입니다.
 				<br>
-				&nbsp;&nbsp;• <span class="lblue">Accepted</span>: mild push in the characteristic's direction.
+				&nbsp;&nbsp;• <span class="lblue">수용</span>: 해당 특성의 방향으로 약하게 밀어붙입니다.
 				<br>
-				&nbsp;&nbsp;• <span class="lilac">Not accepted</span>: no stance taken.
+				&nbsp;&nbsp;• <span class="lilac">비수용</span>: 입장을 정하지 않음.
 				<br>
-				&nbsp;&nbsp;• <span class="red">Rejected</span>: strong push in the opposite direction.
+				&nbsp;&nbsp;• <span class="red">거부</span>: 반대 방향으로 강하게 밀어붙입니다.
 				<br>
-				&nbsp;&nbsp;• <span class="red">Dysphoria</span>: weakening or inverting the pushes.
+				&nbsp;&nbsp;• <span class="red">성별 불쾌감</span>: 밀어붙이는 힘을 약화시키거나 뒤집습니다.
 				<br>
-				&nbsp;&nbsp;• <span class="grey">Neutral-axis traits</span>: accepted or preferred traits can pull the group's axis toward centre. Rejecting a neutral trait does not.
+				&nbsp;&nbsp;• <span class="grey">중립축 특성</span>: 수용하거나 선호한 특성은 그룹의 축을 중심 쪽으로 끌어당길 수 있습니다. 중립 특성을 거부해도 그렇지 않습니다.
 				<br>
 
 				<<set _giBreakdown to $xchange.giBreakdown || {}>>
 				<<set _giGroupOrder to ["pronouns","appearance","clothing","makeup","chest","ass","genitals","hair","bodysize","pregnancy","lactation"]>>
 				<<set _giGroupLabels to {
-					pronouns:   "Pronouns",
-					appearance: "Appearance",
-					clothing:   "Clothing",
-					makeup:     "Makeup",
-					chest:      "Chest / Breasts",
-					ass:        "Ass",
-					genitals:   "Genitals",
-					hair:       "Hair",
-					bodysize:   "Body Size",
-					pregnancy:  "Pregnancy",
-					lactation:  "Lactation"
+					pronouns:   "대명사",
+					appearance: "외모",
+					clothing:   "의복",
+					makeup:     "화장",
+					chest:      "가슴",
+					ass:        "엉덩이",
+					genitals:   "생식기",
+					hair:       "머리카락",
+					bodysize:   "몸 크기",
+					pregnancy:  "임신",
+					lactation:  "수유"
 				}>>
 
 				<<set _giAnyGroup to false>>
@@ -1185,7 +1185,7 @@
 						<</if>>
 
 						<br>
-						<span class="gold">_giGroupLabel</span> leans _giGroupLean
+						<span class="gold">_giGroupLabel</span> 경향: _giGroupLean
 						<br>
 
 						/* ----- Active entries: push the meter ----- */
@@ -1194,18 +1194,18 @@
 							<<set _giDys to Number(_giC.dysphoria) || 0>>
 
 							<<if _giC.rejected and _giC.accepted>>
-								<<set _giStanceHTML to '<span class="red">Begrudged</span>'>>
+								<<set _giStanceHTML to '<span class="red">마지못함</span>'>>
 							<<elseif _giC.rejected>>
-								<<set _giStanceHTML to '<span class="red">Rejected</span>'>>
+								<<set _giStanceHTML to '<span class="red">거부</span>'>>
 							<<elseif _giC.preferred>>
-								<<set _giStanceHTML to '<span class="green">Preferred</span>'>>
+								<<set _giStanceHTML to '<span class="green">선호</span>'>>
 							<<elseif _giC.accepted>>
-								<<set _giStanceHTML to '<span class="lblue">Accepted</span>'>>
+								<<set _giStanceHTML to '<span class="lblue">수용</span>'>>
 							<<else>>
-								<<set _giStanceHTML to '<span class="lilac">Not accepted</span>'>>
+								<<set _giStanceHTML to '<span class="lilac">비수용</span>'>>
 							<</if>>
 							<<if _giDys gt 0>>
-								<<set _giStanceHTML += ' <span class="red">+ dysphoria ' + Math.round(_giDys) + '</span>'>>
+								<<set _giStanceHTML += ' <span class="red">+ 성별 불쾌감 ' + Math.round(_giDys) + '</span>'>>
 							<</if>>
 
 							<<if _giEffect gt 0>>
@@ -1221,27 +1221,27 @@
 						/* ----- Diluting entries: neutral-axis traits with a stance ----- */
 						<<for _giC range _giData.diluting>>
 							<<if _giC.rejected and _giC.accepted>>
-								<<set _giStanceHTML to '<span class="red">Begrudged</span>'>>
+								<<set _giStanceHTML to '<span class="red">마지못함</span>'>>
 							<<elseif _giC.rejected>>
-								<<set _giStanceHTML to '<span class="red">Rejected</span>'>>
+								<<set _giStanceHTML to '<span class="red">거부</span>'>>
 							<<elseif _giC.preferred>>
-								<<set _giStanceHTML to '<span class="green">Preferred</span>'>>
+								<<set _giStanceHTML to '<span class="green">선호</span>'>>
 							<<elseif _giC.accepted>>
-								<<set _giStanceHTML to '<span class="lblue">Accepted</span>'>>
+								<<set _giStanceHTML to '<span class="lblue">수용</span>'>>
 							<<else>>
-								<<set _giStanceHTML to '<span class="lilac">Not accepted</span>'>>
+								<<set _giStanceHTML to '<span class="lilac">비수용</span>'>>
 							<</if>>
 							<<if (Number(_giC.dysphoria) || 0) gt 0>>
-								<<set _giStanceHTML += ' <span class="red">+ dysphoria ' + Math.round(_giC.dysphoria) + '</span>'>>
+								<<set _giStanceHTML += ' <span class="red">+ 성별 불쾌감 ' + Math.round(_giC.dysphoria) + '</span>'>>
 							<</if>>
 
-							&nbsp;&nbsp;• _giC.characteristic: <<print _giStanceHTML>> <span class="grey">neutral trait → dilutes toward centre</span>
+							&nbsp;&nbsp;• _giC.characteristic: <<print _giStanceHTML>> <span class="grey">중립 특성 → 중심 쪽으로 희석</span>
 							<br>
 						<</for>>
 
 						/* ----- Dormant entries: no meter contribution ----- */
 						<<for _giC range _giData.dormant>>
-							&nbsp;&nbsp;• _giC.characteristic: <<if _giC.rejected and _giC.accepted>><span class="red">Begrudged</span><<elseif _giC.rejected>><span class="red">Rejected</span><<elseif _giC.preferred>><span class="green">Preferred</span><<elseif _giC.accepted>><span class="lblue">Accepted</span><<else>><span class="lilac">Not accepted</span><</if>> <span class="grey">no push</span>
+							&nbsp;&nbsp;• _giC.characteristic: <<if _giC.rejected and _giC.accepted>><span class="red">마지못함</span><<elseif _giC.rejected>><span class="red">거부</span><<elseif _giC.preferred>><span class="green">선호</span><<elseif _giC.accepted>><span class="lblue">수용</span><<else>><span class="lilac">비수용</span><</if>> <span class="grey">영향 없음</span>
 							<br>
 						<</for>>
 					<</if>>
@@ -1249,7 +1249,7 @@
 
 				<<if not _giAnyGroup>>
 					<br>
-					<span class="grey">No identity topics are enabled. Enable Pronouns / Appearance / Clothing / Body topics in the X-Change Attitudes menu to see per-choice effects here.</span>
+					<span class="grey">활성화된 정체성 주제가 없습니다. X-체인지 태도 메뉴에서 대명사 / 외모 / 의복 / 몸 주제를 켜면 선택별 효과를 여기서 볼 수 있습니다.</span>
 					<br>
 				<</if>>
 
@@ -1263,7 +1263,7 @@
 				<<else>>
 					<<set _giFinalLean to "balanced">>
 				<</if>>
-				<span class="gold">Overall axis:</span> _giFinalLean
+				<span class="gold">전체 축:</span> _giFinalLean
 				<br>
 			<</foldout>>
 		<</foldout>>
@@ -1297,7 +1297,7 @@
 			<</if>>
 			<<if $worn.genitals.name isnot "naked">>
 				/* Prefer the worn item's own name: an X-Change reshaped chastity device keeps its catalogue identity, so only the worn copy knows it is now a belt rather than a cage. */
-				<<print $worn.genitals.name_cap ? $worn.genitals.name_cap : setup.clothes.genitals[clothesIndex('genitals',$worn.genitals)].name_cap>> integrity: <<print Math.trunc($worn.genitals.integrity)>>
+				<<print $worn.genitals.name_cap ? $worn.genitals.name_cap : setup.clothes.genitals[clothesIndex('genitals',$worn.genitals)].name_cap>> 내구도: <<print Math.trunc($worn.genitals.integrity)>>
 				<br>
 			<</if>>
 			<br>
@@ -1324,7 +1324,7 @@
 			<<if $pound?.progress gte 1>>
 				유기견 만족도: <<print Math.trunc($stray_happiness)>>
 				<br>
-				Pound respect: <<print Math.trunc($pound.status)>>
+				보호소 평판: <<print Math.trunc($pound.status)>>
 				<br>
 			<</if>>
 			섹스 명성: <<print Math.trunc($fame.sex)>>
@@ -1355,15 +1355,15 @@
 			<br>
 			모델 명성: <<print Math.trunc($fame.model)>>
 			<br>
-			X-Change fame: <<print Math.trunc($xchange_fame)>>
+			X-체인지 명성: <<print Math.trunc($xchange_fame)>>
 			<br>
-			X-Change pills taken: <<print $xchange.timesTaken?.player ?? 0>> (spiked: <<print $xchange.timesSpiked ?? 0>>)
+			먹은 X-체인지 알약: <<print $xchange.timesTaken?.player ?? 0>> (몰래 먹은 횟수: <<print $xchange.timesSpiked ?? 0>>)
 			<br>
 			섬 주민 언어: <<if $islander_language is undefined>>0<<else>><<print Math.trunc($islander_language)>><</if>>
 			<br>
-			Gwylan Progress: <<if $gwylan?.progress is undefined>>0<<else>><<print $gwylan.progress>><</if>>
+			그윌란의 진척: <<if $gwylan?.progress is undefined>>0<<else>><<print $gwylan.progress>><</if>>
 			<br>
-			Bully timer: <<print Math.trunc($bullytimer)>>
+			불량배 타이머: <<print Math.trunc($bullytimer)>>
 			<br>
 			광산 희망: <<if $mine?.hope is undefined>>0<<else>><<print $mine.hope>><</if>>
 			<br><br>
@@ -1510,19 +1510,19 @@
 			<<set _totalDaysPregnancyKnown to Number(_pregStats.totalDaysPregnancyKnown)>>
 
 			/* Previously commented out for being a major spoil, but caused players to think a bug had occurred */
-			Total days being pregnant in this lifetime:
+			일생 동안 임신한 총 일수:
 			<<if Number.isFinite(_totalDaysPregnant)>>
 				<<print Math.floor(_totalDaysPregnant)>>
 			<<else>>
-				<span class="red">Invalid (NaN)</span>
+				<span class="red">잘못됨 (NaN)</span>
 			<</if>>
 			<br>
 
-			Total days knowingly being pregnant in this lifetime:
+			일생 동안 임신을 알고 지낸 총 일수:
 			<<if Number.isFinite(_totalDaysPregnancyKnown)>>
 				<<print Math.floor(_totalDaysPregnancyKnown)>>
 			<<else>>
-				<span class="red">Invalid (NaN)</span>
+				<span class="red">잘못됨 (NaN)</span>
 			<</if>>
 			<br>
 			/* Parasites have their own foldout, so don't show them here just to say they block an anal pregnancy that couldn't happen anyway. */
@@ -1564,10 +1564,10 @@
 			<</foldout>>
 		<</if>>
 		<<foldout false "_portalPantiesFoldout">>
-			<span class="gold">Portal Effect</span>
-			Time spent under effect (minutes): <<print Math.trunc($portalPanties.totalPassed)>>
+			<span class="gold">포털 효과</span>
+			효과 아래에서 보낸 시간 (분): <<print Math.trunc($portalPanties.totalPassed)>>
 			<br>
-			Cooldown (minutes): <<print Math.trunc($portalPanties.cooldown)>>
+			쿨다운 (분): <<print Math.trunc($portalPanties.cooldown)>>
 			<br><br>
 		<</foldout>>
 	</div>
@@ -1585,7 +1585,7 @@
 				<<set _pGender to $_pregnancy.fetus[_i].stats?.gender ?? "unknown">>
 				<<set _pCreature to $_pregnancy.fetus[_i].creature ?? "unknown">>
 				<<if $_pregnancy.fetus[_i].fertilised>>
-					_label slot <<=_i+1>> is pregnant with a <<=_pGender>> <<=_pCreature>>.
+					_label 슬롯 <<=_i+1>>【은는】 <<print window.KR.getGenderKR(_pGender)>> <<print window.KR.getCreatureTypeKr(_pCreature)>>【을를】 임신 중입니다.
 					<<if _pGender is "Hermaphrodite">>
 						<<if $pregnancyStats.parasiteDoctorEvents gte 4 and $_pregnancy.fetus[_i].daysLeft is 0>>
 							하퍼 의사가 언제든 출산을 도와줄 수 있을 것입니다.
@@ -1603,7 +1603,7 @@
 					<</if>>
 					<br>
 				<<else>>
-					_label slot <<=_i+1>> has a <<=_pGender>> <<=_pCreature>> egg ready to be fertilised.<br>
+					_label 슬롯 <<=_i+1>>에 수정될 준비가 된 <<print window.KR.getGenderKR(_pGender)>> <<print window.KR.getCreatureTypeKr(_pCreature)>> 알이 있습니다.<br>
 				<</if>>
 			<<else>>
 				_label 슬롯 <<=_i+1>>【은는】 비어 있습니다.<br>
@@ -1611,7 +1611,7 @@
 		<</for>>
 	<<else>>
 		<<if playerAwareTheyArePregnant() and pregnancyBlocksParasites(_orifice)>>
-			Unable to host parasites due to other type of <<= _orifice is "anus" ? "anal" : "vaginal">> pregnancy.<br>
+			다른 종류의 <<= _orifice is "anus" ? "항문" : "질">> 임신 때문에 기생체를 품을 수 없습니다.<br>
 		<<else>>
 			<<for _i to 0; _i lt maxParasites(_orifice); _i++>>
 				_label 슬롯 <<=_i+1>>【은는】 비어 있습니다.<br>
@@ -1635,7 +1635,7 @@
 		<<for _record range _records>>
 			<<set _litterCount to getChildrenOf(_record.pregnancyId).length>>
 			/* Naming them only matters once two readouts sit side by side. */
-			<<if _records.length gt 1>><span class="teal"><<= wombLabel(_record)>></span> <</if>>currently pregnant with: <<print _litterCount>>
+			<<if _records.length gt 1>><span class="teal"><<= wombLabel(_record)>></span> <</if>>현재 임신 중인 수: <<print _litterCount>>
 			<<extraStatisticsPregnancyType childBaseSpecies(_record.donorSpecies) _litterCount>>
 			<br>
 			<<set _days to pregnancyDaysEta(_record)>>
@@ -1647,7 +1647,7 @@
 			<br>
 		<</for>>
 		<<if _betaWombs and _records.length lt 2>>
-			Your second womb is still empty, and can conceive on its own.
+			당신의 두 번째 자궁은 아직 비어 있으며, 따로 임신할 수 있습니다.
 			<br>
 		<</if>>
 	<<elseif orificeHasParasites(_orifice)>>
@@ -1656,10 +1656,10 @@
 		현재 임신할 수 없습니다.
 	/* One pregnancy at a time: the free orifice must say it is shut, not that nothing is happening. */
 	<<elseif getActivePregnancy("pc", _orifice is "vagina" ? "anus" : "vagina") and !availablePlayerPregnancySlot(_orifice)>>
-		Your body carries one pregnancy at a time, and <<= _orifice is "vagina" ? "your anus is" : "your womb is">> already carrying it.
+		당신의 몸은 한 번에 하나의 임신만 품을 수 있으며, <<= _orifice is "vagina" ? "항문이" : "자궁이">> 이미 그 임신을 품고 있습니다.
 		<br>
 		<<if _betaWombs>>
-			Neither womb can conceive until it is delivered.
+			출산하기 전에는 어느 쪽 자궁도 임신할 수 없습니다.
 			<br>
 		<</if>>
 	<<elseif !_menstruation.running>>
@@ -1670,7 +1670,7 @@
 		현재 임신하지 않았습니다.
 		<br>
 		<<if _betaWombs>>
-			You have two wombs, each able to conceive and deliver on its own.
+			당신에게는 자궁이 둘 있으며, 각각 따로 임신하고 출산할 수 있습니다.
 			<br>
 		<</if>>
 		<<if effectiveTransformationLevel("bird") gte 4>>
@@ -2216,11 +2216,11 @@
 				<<if $baileyHandholdWeapon is "chainsaw">>
 					<<set $_special to "Held while a chainsaw idled between you">>
 				<<elseif $baileyHandholdWeapon is "hammer">>
-					<<set $_special to "Hammer time.">>
+					<<set $_special to "망치질 시간.">>
 				<<elseif $baileyHandholdWeapon is "screwdriver">>
 					<<set $_special to "Screwdriver? But I hardly even know 'er.">>
 				<<else>>
-					<<set $_special to "Taken by Bailey">>
+					<<set $_special to "베일리에게 빼앗김">>
 				<</if>>
 			<<case "Forest Shop Caught Distract">>
 				<<set $_special to "그윌란이 입 가득한 상황에서 빠져나오도록 도움">>
@@ -2241,7 +2241,7 @@
 		<</switch>>
 		<<if $_special>><<set $_text_output += `<div class="lewd">특수: ${$_special}</div>`>><</if>>
 		<<if _args[0].heatControlled and _args[2] is "pc">>
-			<<set $_text_output += `<div class="pink">Taken while your heat had control of you</div>`>>
+			<<set $_text_output += `<div class="pink">발정이 당신을 지배하던 동안 빼앗김</div>`>>
 		<</if>>
 		<<if isPossibleLoveInterestVirginity(_args[1]) and $_linkColour isnot "red">>
 			<<set $_linkColour to "lewd">>
@@ -2676,15 +2676,15 @@
 
 	<<if _badTotal or _badKnown>>
 		<div id="xchange-pregnancy-counter-repair-ui">
-			<span class="red">Invalid pregnancy counters detected.</span>
+			<span class="red">잘못된 임신 카운터가 발견되었습니다.</span>
 			<br>
-			This save has broken pregnancy counters.
+			이 저장 데이터에는 손상된 임신 카운터가 있습니다.
 			<br>
-			This repair only resets the invalid counters.
+			이 복구는 잘못된 카운터만 초기화합니다.
 			<br>
-			It does <b>not</b> remove fetus data, fathers, or current pregnancy objects.
+			태아 데이터, 아버지, 현재 임신 객체는 <b>삭제하지 않습니다</b>.
 			<br>
-			<<link "Repair invalid pregnancy counters">>
+			<<link "잘못된 임신 카운터를 복구한다">>
 				<<if !$pregnancyStats or typeof $pregnancyStats isnot "object" or Array.isArray($pregnancyStats)>>
 					<<set $pregnancyStats to {}>>
 				<</if>>
@@ -2703,9 +2703,9 @@
 				})>>
 
 				<<replace "#xchange-pregnancy-counter-repair-ui">>
-					<span class="green">Pregnancy counter repair applied.</span>
+					<span class="green">임신 카운터 복구가 적용되었습니다.</span>
 					<br>
-					Please save, reload, and retest the birth event.
+					저장하고 다시 불러온 뒤 출산 이벤트를 다시 시험해 보십시오.
 				<</replace>>
 			<</link>>
 		</div>

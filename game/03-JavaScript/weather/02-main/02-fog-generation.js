@@ -212,7 +212,7 @@ Weather.FogGeneration = (() => {
 						` \ncurrentFogTimestamp: ${currentKeyPoint.timestamp}` +
 						` \n마지막 날씨 타임스탬프: ${lastWeatherKeypointTimestamp}` +
 						` \n마지막 안개 타임스탬프: ${lastFogKeypointTimestamp}` +
-						` \nFog Keypoints Length=${fogKeypoints.length}` +
+						` \n안개 키포인트 수=${fogKeypoints.length}` +
 						` \n날씨 키포인트 수=${V.weatherObj.keypointsArr?.length ?? 0}`
 				);
 			}

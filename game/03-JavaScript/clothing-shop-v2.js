@@ -192,7 +192,7 @@ function getCustomColourStyle(type, valueOnly = false) {
 window.getCustomColourStyle = getCustomColourStyle;
 
 function saveCustomColourPreset(slot = "primary") {
-	const presetName = prompt("Enter new colour preset name", "New preset");
+	const presetName = prompt("새로운 색상 프리셋 이름을 입력하세요", "새 프리셋");
 	if (presetName != null) {
 		const setName = presetName.trim();
 		if (!setName) return;

@@ -112,7 +112,7 @@ setup.sextoys = [
 		namecap: "불릿 바이브",
 		name_underscore: "bullet_vibe",
 		description:
-			"A wearable bullet vibe you can keep snug in your underwear, ready to grind against your clit and anus to buzz you into a fast, powerful orgasm. Good for people new to sex toys.",
+			"속옷 안에 꼭 맞게 넣어 두고 클리토리스와 항문에 문질러 빠르고 강렬한 오르가슴으로 떨게 만드는 착용형 불릿 바이브. 성인용품에 처음 입문하는 사람에게 좋다.",
 		cost: 12000,
 		wearable: 1,
 		vibrating: 0,
@@ -235,7 +235,7 @@ setup.sextoys = [
 		name: "lube",
 		namecap: "윤활제",
 		name_underscore: "lube",
-		description: "Lubricant suitable for sexual purposes. 5 uses per bottle.",
+		description: "성적 용도에 적합한 윤활제. 한 병당 5회 사용할 수 있다.",
 		cost: 2000,
 		wearable: 0,
 		size: 3,
@@ -750,7 +750,7 @@ function sexShopOnItemClick(index) {
 					? `<a id="ssmBuyButton" onclick="window.sexShopOnBuyClick(${item.index})" class="ssm_buy_button">구매</a> (<span class="gold">£${(
 							displayCost / 100
 					  ).toFixed(2)}</span>)`
-					: `<span class="ssm_not_enough_money">Not enough money</span> (<span class="gold">£${(displayCost / 100).toFixed(2)}</span>)`
+					: `<span class="ssm_not_enough_money">돈이 부족합니다</span> (<span class="gold">£${(displayCost / 100).toFixed(2)}</span>)`
 			}
 			${item.type.includes("strap-on") ? determineRecipient(item.index) : ""}
 		</div>
@@ -845,7 +845,7 @@ function sexShopOnGiftClick(index) {
 
 	/* fade in/out bought green text indicator */
 	if (document.getElementById("ssmGiftButton")) {
-		document.getElementById("ssmGiftButton").outerHTML = `<span class="ssm_gift_button ssm_fade_in" id="ssmGiftButton" style="color:#97de97">Bought!</span>`;
+		document.getElementById("ssmGiftButton").outerHTML = `<span class="ssm_gift_button ssm_fade_in" id="ssmGiftButton" style="color:#97de97">구매 완료!</span>`;
 	}
 
 	document.getElementById("recipientList").remove();

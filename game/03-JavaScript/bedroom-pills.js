@@ -40,7 +40,7 @@ setup.pills = [
 		description:
 			"각 알약에는 엉덩이에 있는 중성지방에 결합해 시간이 지나며 녹이도록 특별히 제작된 유도 분자 프라베르홀 500mg이 들어 있다.",
 		onTakeMessage: "엉덩이 크기를 줄이기 위한 알약을 삼킨다. 광고만큼 효과가 있기를 바란다.",
-		warning_label: "Warning: Severe side effects upon exceeding the maximum dose prescribed per day. Not to be associated with any other hormonal treatment.",
+		warning_label: "경고: 하루 처방 최대 용량을 초과하면 심각한 부작용이 발생할 수 있습니다. 다른 호르몬 치료와 병용하지 마십시오.",
 		autoTake() {
 			return V.sexStats.pills["pills"][this.name].autoTake;
 		},
@@ -366,7 +366,7 @@ setup.pills = [
 		},
 		hpi_doseTaken() {
 			if (V.sexStats.pills["pills"][this.name].doseTaken) {
-				return "Effective for " + V.sexStats.pills["pills"][this.name].doseTaken + " day" + (V.sexStats.pills["pills"][this.name].doseTaken > 1 ? "s" : "");
+				return "효과 지속: " + V.sexStats.pills["pills"][this.name].doseTaken + "일";
 			} else {
 				return "사용하지 않음";
 			}
@@ -407,7 +407,7 @@ setup.pills = [
 		},
 		hpi_doseTaken() {
 			if (V.sexStats.pills["pills"][this.name].doseTaken) {
-				return "Effective for " + V.sexStats.pills["pills"][this.name].doseTaken + " day" + (V.sexStats.pills["pills"][this.name].doseTaken > 1 ? "s" : "");
+				return "효과 지속: " + V.sexStats.pills["pills"][this.name].doseTaken + "일";
 			} else {
 				return "사용하지 않음";
 			}
@@ -451,7 +451,7 @@ setup.pills = [
 		},
 		hpi_doseTaken() {
 			if (V.sexStats.pills["pills"][this.name].doseTaken) {
-				return "Effective for " + V.sexStats.pills["pills"][this.name].doseTaken + " day" + (V.sexStats.pills["pills"][this.name].doseTaken > 1 ? "s" : "");
+				return "효과 지속: " + V.sexStats.pills["pills"][this.name].doseTaken + "일";
 			} else {
 				return "사용하지 않음";
 			}
@@ -682,20 +682,20 @@ setup.pills = [
 		/* Harper may add an antidepressant to the PC's regular medication. */
 		get description() {
 			return V.prescriptions?.antidepressant
-				? "Antipsychotic medication with an added antidepressant. The antidepressant reduces daily stress gain, but makes you become tired faster."
-				: "Antipsychotic medication.";
+				? "항정신병 약물에 항우울제가 추가되어 있다. 항우울제는 하루 스트레스 증가량을 줄이지만 더 빨리 피곤해지게 한다."
+				: "항정신병 약물이다.";
 		},
 		get onTakeMessage() {
 			return V.prescriptions?.antidepressant
-				? "You take the pills Doctor Harper prescribed. You feel dizzy, but calmer."
-				: "You take the pills Doctor Harper prescribed. You feel dizzy.";
+				? "하퍼 의사가 처방한 알약을 삼킨다. 어지럽지만 한결 차분해진다."
+				: "하퍼 의사가 처방한 알약을 삼킨다. 어지럽다.";
 		},
 		warning_label:
-			"Warning: Intended for one dose per day. Daily use reduces awareness and may gradually distort your perception. The effects of the maximum dosage have not been fully studied. Take with caution. <span class='hpi_blur'></span>",
+			"경고: 하루 한 번 복용하는 약입니다. 매일 복용하면 인지력이 떨어지고 지각이 서서히 왜곡될 수 있습니다. 최대 용량의 효과는 충분히 연구되지 않았습니다. 주의해서 복용하십시오. <span class='hpi_blur'></span>",
 		get indicators() {
-			const base = ["<span class='hpi_indic_green'>+ Control</span>", "<span class='hpi_indic_blue'>- Awareness</span>"];
+			const base = ["<span class='hpi_indic_green'>+ 통제력</span>", "<span class='hpi_indic_blue'>- 성지식</span>"];
 			if (V.prescriptions?.antidepressant) {
-				base.push("<span class='hpi_indic_green'>- Stress gain</span>", "<span class='hpi_indic_blue'>+ Tiredness gain</span>");
+				base.push("<span class='hpi_indic_green'>- 스트레스 증가량</span>", "<span class='hpi_indic_blue'>+ 피로도 증가량</span>");
 			}
 			return base;
 		},
@@ -826,7 +826,7 @@ setup.pills = [
 		},
 		hpi_doseTaken() {
 			if (V.sexStats.pills["pills"][this.name].doseTaken) {
-				return "Effective for " + V.sexStats.pills["pills"][this.name].doseTaken + " day" + (V.sexStats.pills["pills"][this.name].doseTaken > 1 ? "s" : "");
+				return "효과 지속: " + V.sexStats.pills["pills"][this.name].doseTaken + "일";
 			} else {
 				return "사용하지 않음";
 			}

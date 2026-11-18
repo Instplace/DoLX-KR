@@ -1393,8 +1393,8 @@ setup.colours.eyes = [
 	},
 	{
 		variable: "colorWheelTemporary1",
-		name: "dark",
-		name_cap: "Dark",
+		name: "어두운 색",
+		name_cap: "어두운 색",
 		csstext: "dark",
 		natural: false,
 		lens: true,
@@ -2119,7 +2119,7 @@ setup.colours.mascara = [
 	{
 		variable: "light brown waterproof",
 		name: "연갈색 (워터프루프)",
-		name_cap: "Light brown (waterproof)",
+		name_cap: "연갈색 (워터프루프)",
 		csstext: "light brown",
 		canvasfilter: {
 			blend: "#907b6a",

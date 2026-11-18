@@ -190,7 +190,7 @@ Weather.WeatherGeneration = (() => {
 
 			// Only add exception keypoints on their starting day.
 			const exceptions = setup.WeatherExceptions.map(exception => {
-				if (typeof exception.date !== "function") throw new Error("Could not read date from setup.WeatherExceptions");
+				if (typeof exception.date !== "function") throw new Error("setup.WeatherExceptions에서 날짜를 읽을 수 없습니다");
 				const start = exception.date(date);
 				return { exception, start, end: new DateTime(start).addHours(exception.duration) };
 			}).filter(window => window.start.dayDifference(date) === 0);

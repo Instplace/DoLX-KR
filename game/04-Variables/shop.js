@@ -63,13 +63,13 @@ setup.shopDetails = {
 		name: "잠옷",
 		desc: "포근하고 안락해서 푹 잘 수 있습니다.",
 		details:
-			"Reduces additional fatigue while sleeping. Sleeping in clothes other than sleepwear, underwear, and eerie items will negate this effect. Won't rub against sensitive nipples or genitals.",
+			"잠잘 때 쌓이는 피로도를 줄여줍니다. 잠옷, 속옷, 혹은 괴이한 아이템 외의 옷을 입고 자면 이 효과는 사라집니다. 민감한 젖꼭지나 성기에 쓸리지 않습니다.",
 	},
 	mask: {
 		name: "가면",
 		desc: "정체를 숨겨줍니다. 다만 경찰이나 아는 사람은 속이기 어렵습니다.",
 		details:
-			"Blocks fame gain and loss in a category below 500 fame, only halves it from 500-999, and stops concealing you at all at 1000+, since you're too recognisable by then regardless of your face.",
+			"범주별 명성 획득과 손실을 명성 500 미만에서는 막고, 500~999에서는 절반으로만 줄이며, 1000 이상에서는 이미 얼굴과 상관없이 너무 잘 알려져 있으므로 더는 신분을 가려 주지 못합니다.",
 	},
 	holy: {
 		name: "신성",

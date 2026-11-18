@@ -4,9 +4,9 @@
 		<<set _pills to $sexStats.pills.pills>>
 	<</if>>
 	<<set _amcTraitName to (name, stat) => `<mouse class='tooltip green'>${name}<span>
-		Modifiers:
+		보정치:
 		<ul>
-			<li class='green'>+100% maximum ${stat} points cap.</li>
+			<li class='green'>${stat} 포인트 상한 +100%.</li>
 		</ul>
 	</span></mouse>`>>
 	<<set _traitLists to [
@@ -14,38 +14,38 @@
 			title: "일반 특성",
 			traits: [
 				{
-					name: "Fumbling in the dark",
+					name: "어둠 속에서 더듬거림",
 					colour: "red",
 					has: blindSkillFailureChance() > 0,
-					text: () => "Your covered eyes give skill checks a " + blindSkillFailureChance() + "% chance to fail as you fumble without sight. Building Adaptability gradually removes this chance." + (pcHasBlindCane() ? " Your cane reduces the remaining chance by 20%, but reliance on it slows adaptation training to a quarter of its normal rate. Losing or breaking it removes this help." : ""),
+					text: () => "눈이 가려져 있어 앞이 보이지 않는 채로 더듬거리느라 스킬 판정이 " + blindSkillFailureChance() + "% 확률로 실패합니다. 적응력을 쌓으면 이 확률이 차츰 사라집니다." + (pcHasBlindCane() ? " 지팡이가 남은 확률을 20% 줄여 주지만, 지팡이에 의지하면 적응 훈련 속도가 평소의 4분의 1로 느려집니다. 지팡이를 잃거나 부러뜨리면 이 도움이 사라집니다." : ""),
 				},
 				{
-					name: "Adaptability",
+					name: "적응력",
 					colour: "green",
 					has: blindAdaptationStrength() > 0,
 					text: () => {
-						const text = ["Practice without sight: " + Math.floor(blindAdaptationStrength() * 100) + "%. Full adaptation removes blindness penalties."];
-						if (blindAdaptationStrength() < 1) text.push(pcHasBlindCane() ? "Training takes twenty-eight days with covered eyes while relying on your cane, before bonuses from animal senses." : "Training takes seven days with covered eyes, before bonuses from animal senses.");
+						const text = ["시각 없이 연습한 정도: " + Math.floor(blindAdaptationStrength() * 100) + "%. 완전히 적응하면 실명 페널티가 사라집니다."];
+						if (blindAdaptationStrength() < 1) text.push(pcHasBlindCane() ? "지팡이에 의지한 채 눈을 가리고 훈련하면 28일이 걸립니다. 동물 감각 보너스는 제외한 기간입니다." : "눈을 가리고 훈련하면 7일이 걸립니다. 동물 감각 보너스는 제외한 기간입니다.");
 						if (V.blindAdaptation?.locked) {
-							text.push("Your Adaptability is locked in and will not fade.");
+							text.push("당신의 적응력은 고정되어 더 이상 사라지지 않습니다.");
 						} else if (V.hypnosis_traits.adaptability) {
-							text.push("Hypnotic Adaptability stops this progress from fading.");
+							text.push("최면에 의한 적응력 덕분에 이 진행도가 사라지지 않습니다.");
 						} else {
-							text.push("Progress fades while your eyes are uncovered.");
+							text.push("눈을 가리지 않으면 진행도가 사라집니다.");
 							const senses = [
-								["wolf", "wolf scent"], ["bear", "bear scent"], ["cat", "cat reflexes"],
-								["fox", "fox hearing"], ["bunny", "bunny hearing"], ["waterdragon", "water dragon echoes"],
-								["bird", "harpy calm"], ["cow", "cow calm"]
+								["wolf", "늑대의 후각"], ["bear", "곰의 후각"], ["cat", "고양이의 반사 신경"],
+								["fox", "여우의 청각"], ["bunny", "토끼의 청각"], ["waterdragon", "수룡의 반향 감각"],
+								["bird", "하피의 평정"], ["cow", "젖소의 평정"]
 							].filter(([animal]) => Transformations.effectiveLevel(animal) >= 2).map(([, sense]) => sense);
-							if (senses.length) text.push("Bonuses from " + senses.join(", ") + ": faster training and slower decay (+25% each).");
+							if (senses.length) text.push("" + senses.join(", ") + " 보너스: 훈련 속도 증가, 감소 속도 둔화 (각각 +25%).");
 						}
-						if (Transformations.effectiveLevel("bird") >= 2 || Transformations.effectiveLevel("cow") >= 2) text.push("Covered eyes also ease stress.");
-						if (V.backgroundTraits.includes("insanity") && !V.insanityPermanent) text.push("Covered eyes slowly ease trauma from acquired Insanity.");
+						if (Transformations.effectiveLevel("bird") >= 2 || Transformations.effectiveLevel("cow") >= 2) text.push("눈을 가리면 스트레스도 완화됩니다.");
+						if (V.backgroundTraits.includes("insanity") && !V.insanityPermanent) text.push("눈을 가리면 얻게 된 광기로 인한 트라우마가 서서히 완화됩니다.");
 						return text.join(" ");
 					},
 				},
 				{
-					name: () => "Perfume: " + Util.escapeMarkup(setup.perfumery.scent().name),
+					name: () => "향수: " + Util.escapeMarkup(setup.perfumery.scent().name),
 					colour: "purple",
 					has: !!setup.perfumery.scent(),
 					text: () => setup.perfumery.effects().join(" "),
@@ -124,29 +124,29 @@
 				},
 				{
 					name: () => [
-						"<mouse class='tooltip'><span style='background: linear-gradient(to right, rgb(139, 0, 0) 0%, rgb(255, 60, 60) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold;'>iNSaNiTY</span><span>",
-						"The weight of the air is torture. You don't know who you are anymore.",
+						"<mouse class='tooltip'><span style='background: linear-gradient(to right, rgb(139, 0, 0) 0%, rgb(255, 60, 60) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: bold;'>광기</span><span>",
+						"공기의 무게가 고문과도 같습니다. 당신은 더 이상 자신이 누구인지 알 수 없습니다.",
 						"<br><br>",
-						"Modifiers:",
+						"보정치:",
 						"<ul>",
-						"<li class='red'>-75% gains to physique.</li>",
-						"<li class='red'>-75% gains to swimming.</li>",
-						"<li class='red'>-75% gains to willpower.</li>",
-						"<li class='red'>-50% gains to brawling.</li>",
-						"<li class='red'>-25% gains to footwork.</li>",
-						"<li class='red'>-25% gains to striking.</li>",
-						"<li class='red'>-25% gains to kicking.</li>",
-						"<li class='red'>-25% gains to athletics.</li>",
-						"<li class='red'>-25% gains to dancing.</li>",
-						"<li class='red'>-50% gains to academics.</li>",
-						"<li class='red'>+50% gains to crime.</li>",
-						"<li class='red'>+25% gains to delinquency.</li>",
-						V.background?.insanity === true ? "<li class='orange'>Forces all character talents active, and doubles all skill caps.</li>" : "",
-						"<li class='orange'>Sensitivity increases are severely dampened.</li>",
+						"<li class='red'>체격 상승량 -75%.</li>",
+						"<li class='red'>수영 상승량 -75%.</li>",
+						"<li class='red'>의지력 상승량 -75%.</li>",
+						"<li class='red'>난투 상승량 -50%.</li>",
+						"<li class='red'>풋워크 상승량 -25%.</li>",
+						"<li class='red'>타격 상승량 -25%.</li>",
+						"<li class='red'>발차기 상승량 -25%.</li>",
+						"<li class='red'>체육 상승량 -25%.</li>",
+						"<li class='red'>춤 상승량 -25%.</li>",
+						"<li class='red'>학업 상승량 -50%.</li>",
+						"<li class='red'>범죄도 상승량 +50%.</li>",
+						"<li class='red'>불량도 상승량 +25%.</li>",
+						V.background?.insanity === true ? "<li class='orange'>모든 캐릭터 재능을 강제로 활성화하고 모든 스킬 상한을 두 배로 늘립니다.</li>" : "",
+						"<li class='orange'>민감도 증가가 크게 억제됩니다.</li>",
 						"</ul>",
-						"Decay:",
+						"감소:",
 						"<ul>",
-						"<li class='red'>+25% decay to physique.</li>",
+						"<li class='red'>체격 감소량 +25%.</li>",
 						"</ul>",
 						"</span></mouse>",
 					].join(""),
@@ -154,189 +154,189 @@
 					has: $backgroundTraits.includes("insanity"),
 					text: () => {
 						const base = V.insanityPermanent
-							? "Psychopathy has taken deep root. The darkness is absolute, and this fractured illusion is now your permanent reality."
-							: "The shadows are creeping in. Prolonged trauma has shattered your perception, blurring the lines of who you used to be.";
+							? "정신병질이 깊이 뿌리내렸습니다. 어둠은 절대적이며, 이 부서진 환상이 이제 당신의 영원한 현실입니다."
+							: "그림자가 스며들고 있습니다. 오래 이어진 트라우마가 당신의 인식을 산산조각 내, 예전의 당신이 누구였는지 흐릿해지고 있습니다.";
 						return V.innocencestate === 1
-							? base + " <i>Innocence eases the strain on your mind.</i>"
+							? base + " <i>순수함이 당신 정신의 부담을 덜어 줍니다.</i>"
 							: base;
 					},
 				},
 				{
-					name: "<mouse class='tooltip lblue'>Crossdresser<span>
-						Modifiers:
+					name: "<mouse class='tooltip lblue'>여장 취향<span>
+						보정치:
 						<ul>
-							<li class='green'>+25% gains to gender opposite to original sex.</li>
-							<li class='red'>-50% gains to gender matching original sex.</li>
-							<li class='orange'>These multipliers bypass the Gender Identity attitude setting and always apply regardless of configuration.</li>
+							<li class='green'>원래 성별과 반대되는 성별 상승량 +25%.</li>
+							<li class='red'>원래 성별과 일치하는 성별 상승량 -50%.</li>
+							<li class='orange'>이 배율은 성 정체성 태도 설정을 무시하며, 설정과 상관없이 항상 적용됩니다.</li>
 						</ul>
 					</span></mouse>",
 					colour: "pink",
 					has: $backgroundTraits.includes("crossdresser") and !$background.transgender and playerOriginalSex() is "m",
-					text: "Stress decays faster while dressed as a girl, but slower when dressed as a boy. Additionally, it's much easier to see yourself as a girl as well.",
+					text: "소녀처럼 입고 있으면 스트레스가 더 빨리 줄고, 소년처럼 입고 있으면 더 느리게 줄어듭니다. 또한 자신을 소녀로 보는 것도 훨씬 쉬워집니다.",
 				},
 				{
-					name: "<mouse class='tooltip lblue'>Crossdresser<span>
-						Modifiers:
+					name: "<mouse class='tooltip lblue'>여장 취향<span>
+						보정치:
 						<ul>
-							<li class='green'>+25% gains to gender opposite to original sex.</li>
-							<li class='red'>-50% gains to gender matching original sex.</li>
-							<li class='orange'>These multipliers bypass the Gender Identity attitude setting and always apply regardless of configuration.</li>
+							<li class='green'>원래 성별과 반대되는 성별 상승량 +25%.</li>
+							<li class='red'>원래 성별과 일치하는 성별 상승량 -50%.</li>
+							<li class='orange'>이 배율은 성 정체성 태도 설정을 무시하며, 설정과 상관없이 항상 적용됩니다.</li>
 						</ul>
 					</span></mouse>",
 					colour: "lblue",
 					has: $backgroundTraits.includes("crossdresser") and !$background.transgender and playerOriginalSex() is "f",
-					text: "Stress decays faster while dressed as a boy, but slower when dressed as a girl. Additionally, it's much easier to see yourself as a boy as well.",
+					text: "소년처럼 입고 있으면 스트레스가 더 빨리 줄고, 소녀처럼 입고 있으면 더 느리게 줄어듭니다. 또한 자신을 소년으로 보는 것도 훨씬 쉬워집니다.",
 				},
 				{
-					name: "<mouse class='tooltip lblue'>Transgender<span class='green'>You've always known yourself to be a different gender than the one you were born into, and no amount of dressing differently will change that (your identity is yours to define, not the world's to assign).</span></mouse>",
+					name: "<mouse class='tooltip lblue'>트랜스젠더<span class='green'>당신은 태어난 성별과 다른 성별이라는 것을 늘 알고 있었으며, 아무리 다르게 입어도 그것은 바뀌지 않습니다. (정체성은 세상이 정해 주는 것이 아니라 당신이 스스로 정하는 것입니다.)</span></mouse>",
 					colour: "lblue",
 					has: $background.transgender,
-					text: "You know yourself to be a different gender than the one you were born into.",
+					text: "당신은 자신이 태어난 성별과 다른 성별이라는 것을 알고 있습니다.",
 				},
 				{
-					name: "<mouse class='tooltip lblue'>Gender-Anxious<span>
-						Modifiers:
+					name: "<mouse class='tooltip lblue'>성별 불안<span>
+						보정치:
 						<ul>
-							<li class='green'>+25% gains to gender matching original sex.</li>
-							<li class='red'>-50% gains to gender opposite to original sex.</li>
-							<li class='orange'>These multipliers bypass the Gender Identity attitude setting and always apply regardless of configuration.</li>
+							<li class='green'>원래 성별과 일치하는 성별 상승량 +25%.</li>
+							<li class='red'>원래 성별과 반대되는 성별 상승량 -50%.</li>
+							<li class='orange'>이 배율은 성 정체성 태도 설정을 무시하며, 설정과 상관없이 항상 적용됩니다.</li>
 						</ul>
 					</span></mouse>",
 					colour: "lblue",
 					has: $backgroundTraits.includes("genderAnxious") and playerOriginalSex() is "m",
-					text: "You find it harder to accept your feminine side. Stress decays faster while dressed as a boy, but slower when dressed as a girl.",
+					text: "당신은 자신의 여성적인 면을 받아들이기가 더 어렵습니다. 소년처럼 입고 있으면 스트레스가 더 빨리 줄고, 소녀처럼 입고 있으면 더 느리게 줄어듭니다.",
 				},
 				{
-					name: "<mouse class='tooltip lblue'>Gender-Anxious<span>
-						Modifiers:
+					name: "<mouse class='tooltip lblue'>성별 불안<span>
+						보정치:
 						<ul>
-							<li class='green'>+25% gains to gender matching original sex.</li>
-							<li class='red'>-50% gains to gender opposite to original sex.</li>
-							<li class='orange'>These multipliers bypass the Gender Identity attitude setting and always apply regardless of configuration.</li>
+							<li class='green'>원래 성별과 일치하는 성별 상승량 +25%.</li>
+							<li class='red'>원래 성별과 반대되는 성별 상승량 -50%.</li>
+							<li class='orange'>이 배율은 성 정체성 태도 설정을 무시하며, 설정과 상관없이 항상 적용됩니다.</li>
 						</ul>
 					</span></mouse>",
 					colour: "pink",
 					has: $backgroundTraits.includes("genderAnxious") and playerOriginalSex() is "f",
-					text: "You find it harder to accept your masculine side. Stress decays faster while dressed as a girl, but slower when dressed as a boy.",
+					text: "당신은 자신의 남성적인 면을 받아들이기가 더 어렵습니다. 소녀처럼 입고 있으면 스트레스가 더 빨리 줄고, 소년처럼 입고 있으면 더 느리게 줄어듭니다.",
 				},
 				{
-					name: "<mouse class='tooltip lblue'>Nerd<span>
+					name: "<mouse class='tooltip lblue'>너드<span>
 						Modifiers:
 						<ul>
-							<li class='green'>+100% gains to academics.</li>
-							<li class='green'>+100% gains to willpower.</li>
-							<li class='green'>+100% gains to good fames.</li>
-							<li class='green'>-75% gains to delinquency.</li>
-							<li class='green'>-50% gains to crime.</li>
-							<li class='red'>-75% gains to physique.</li>
-							<li class='red'>-75% gains to swimming.</li>
-							<li class='red'>-50% gains to brawling.</li>
-							<li class='red'>-25% gains to footwork.</li>
-							<li class='red'>-25% gains to striking.</li>
-							<li class='red'>-25% gains to kicking.</li>
-							<li class='red'>-25% gains to athletics.</li>
-							<li class='red'>-25% gains to dancing.</li>
+							<li class='green'>학업 상승량 +100%.</li>
+							<li class='green'>의지력 상승량 +100%.</li>
+							<li class='green'>좋은 명성 상승량 +100%.</li>
+							<li class='green'>불량도 상승량 -75%.</li>
+							<li class='green'>범죄도 상승량 -50%.</li>
+							<li class='red'>체격 상승량 -75%.</li>
+							<li class='red'>수영 상승량 -75%.</li>
+							<li class='red'>난투 상승량 -50%.</li>
+							<li class='red'>풋워크 상승량 -25%.</li>
+							<li class='red'>타격 상승량 -25%.</li>
+							<li class='red'>발차기 상승량 -25%.</li>
+							<li class='red'>체육 상승량 -25%.</li>
+							<li class='red'>춤 상승량 -25%.</li>
 						</ul>
 						Decay:
 						<ul>
-							<li class='red'>+25% decay to physique.</li>
+							<li class='red'>체격 감소량 +25%.</li>
 						</ul>
 					</span></mouse>",
 					colour: "lblue",
 					has: $backgroundTraits.includes("nerd"),
-					text: "You learn much faster at school. But you'll struggle at anything remotely athletic. And, it will also be harder to raise your school status.",
+					text: "학교에서 훨씬 빨리 배웁니다. 하지만 운동과 조금이라도 관련된 일에는 고전합니다. 또한 학교 내 지위를 올리기도 더 어렵습니다.",
 				},
 				{
-					name: "<mouse class='tooltip lblue'>Delinquent<span>
+					name: "<mouse class='tooltip lblue'>불량 학생<span>
 						Modifiers:
 						<ul>
-							<li class='green'>+50% gains to brawling.</li>
-							<li class='green'>+25% gains to skulduggery.</li>
-							<li class='green'>+25% gains to school status.</li>
-							<li class='green'>+25% gains to footwork.</li>
-							<li class='green'>+25% gains to striking.</li>
-							<li class='green'>+25% gains to kicking.</li>
-							<li class='red'>+50% gains to crime.</li>
-							<li class='red'>+25% gains to delinquency.</li>
-							<li class='red'>-50% gains to academics.</li>
+							<li class='green'>난투 상승량 +50%.</li>
+							<li class='green'>속임수 상승량 +25%.</li>
+							<li class='green'>학교 내 지위 상승량 +25%.</li>
+							<li class='green'>풋워크 상승량 +25%.</li>
+							<li class='green'>타격 상승량 +25%.</li>
+							<li class='green'>발차기 상승량 +25%.</li>
+							<li class='red'>범죄도 상승량 +50%.</li>
+							<li class='red'>불량도 상승량 +25%.</li>
+							<li class='red'>학업 상승량 -50%.</li>
 						</ul>
 					</span></mouse>",
 					colour: "lblue",
 					has: $backgroundTraits.includes("delinquent"),
-					text: "People naturally think you're cool, so your school status raises easier. And you're also talented at skulduggery. But you'll struggle with academics.",
+					text: "사람들이 당연하게 당신을 멋지다고 생각하므로 학교 내 지위가 더 쉽게 오릅니다. 속임수에도 재능이 있습니다. 하지만 학업에는 고전합니다.",
 				},
 				{
-					name: "<mouse class='tooltip lblue'>Athlete<span>
+					name: "<mouse class='tooltip lblue'>운동선수<span>
 						Modifiers:
 						<ul>
-							<li class='green'>+25% gains to physique.</li>
-							<li class='green'>+25% gains to athletics.</li>
-							<li class='green'>+25% gains to swimming.</li>
-							<li class='green'>+10% gains to dancing.</li>
-							<li class='red'>-25% gains to academics.</li>
+							<li class='green'>체격 상승량 +25%.</li>
+							<li class='green'>체육 상승량 +25%.</li>
+							<li class='green'>수영 상승량 +25%.</li>
+							<li class='green'>춤 상승량 +10%.</li>
+							<li class='red'>학업 상승량 -25%.</li>
 						</ul>
 						Decay:
 						<ul>
-							<li class='green'>-75% decay to physique.</li>
+							<li class='green'>체격 감소량 -75%.</li>
 						</ul>
 					</span></mouse>",
 					colour: "lblue",
 					has: $backgroundTraits.includes("athlete"),
-					text: "You excel at sports and physical self-expression. So your physique reflects that. But academics kinda go way over your head.",
+					text: "스포츠와 신체를 통한 자기표현에 뛰어납니다. 그래서 체격에도 그것이 드러납니다. 하지만 학업은 도무지 머리에 들어오지 않습니다.",
 				},
 				{
-					name: "<mouse class='tooltip lblue'>Promiscuous<span>
+					name: "<mouse class='tooltip lblue'>문란함<span>
 						Modifiers:
 						<ul>
-							<li class='green'>+25% gains to seduction.</li>
-							<li class='green'>+25% gains to sexual skills.</li>
-							<li class='red'>+25% gains to awareness.</li>
+							<li class='green'>유혹 상승량 +25%.</li>
+							<li class='green'>섹스 스킬 상승량 +25%.</li>
+							<li class='red'>성지식 상승량 +25%.</li>
 						</ul>
 						Decay:
 						<ul>
-							<li class='red'>-50% decay to awareness.</li>
+							<li class='red'>성지식 감소량 -50%.</li>
 						</ul>
 					</span></mouse>",
 					colour: "lewd",
 					has: $backgroundTraits.includes("promiscuous"),
-					text: "You are fairly experienced. Sexual skill and seduction just come naturally to you. Yet with that comes an uncanny awareness of what others ignore.",
+					text: "당신은 꽤 경험이 많습니다. 섹스 스킬과 유혹이 자연스럽게 몸에 뱄습니다. 하지만 그만큼 남들이 외면하는 것을 기이할 정도로 잘 알게 됩니다.",
 				},
 				{
-					name: "<mouse class='tooltip lblue'>Exhibitionist<span>
+					name: "<mouse class='tooltip lblue'>노출증<span>
 						Modifiers:
 						<ul>
-							<li class='green'>-75% gains to exhibitionist fame.</li>
-							<li class='red'>+25% gains to awareness.</li>
+							<li class='green'>노출 명성 상승량 -75%.</li>
+							<li class='red'>성지식 상승량 +25%.</li>
 						</ul>
 						Decay:
 						<ul>
-							<li class='red'>-50% decay to awareness.</li>
+							<li class='red'>성지식 감소량 -50%.</li>
 						</ul>
 					</span></mouse>",
 					colour: "lewd",
 					has: $backgroundTraits.includes("exhibitionist"),
-					text: "Your body has always craved the freedom that comes with your naked form. Yet being so enlightened comes with an uncanny awareness of what others ignore.",
+					text: "당신의 몸은 알몸이 주는 자유를 늘 갈망해 왔습니다. 하지만 그렇게 깨우친 만큼 남들이 외면하는 것을 기이할 정도로 잘 알게 됩니다.",
 				},
 				{
-					name: "<mouse class='tooltip lblue'>Deviant<span>
+					name: "<mouse class='tooltip lblue'>변태<span>
 						Modifiers:
 						<ul>
-							<li class='red'>+25% gains to awareness.</li>
+							<li class='red'>성지식 상승량 +25%.</li>
 						</ul>
 						Decay:
 						<ul>
-							<li class='red'>-50% decay to awareness.</li>
+							<li class='red'>성지식 감소량 -50%.</li>
 						</ul>
 					</span></mouse>",
 					colour: "lewd",
 					has: $backgroundTraits.includes("deviant"),
-					text: "What others find freaky, to you is so very alluring. However, this candid exploration has left you very aware of the darkest corners of the world.",
+					text: "남들이 기괴하게 여기는 것이 당신에게는 더없이 매혹적입니다. 하지만 이렇게 거리낌 없이 탐구한 탓에 세상의 가장 어두운 구석을 아주 잘 알게 되었습니다.",
 				},
 				{
-					name: "<mouse class='tooltip lblue'>Lustful<span>
+					name: "<mouse class='tooltip lblue'>음탕함<span>
 						Modifiers:
 						<ul>
-							<li class='green'>+15% gains to seduction.</li>
+							<li class='green'>유혹 상승량 +15%.</li>
 						</ul>
 					</span></mouse>",
 					colour: "lewd",
@@ -344,75 +344,75 @@
 					text: "시간이 지날수록 흥분이 오르며 이를 관리해야 합니다.",
 				},
 				{
-					name: "<mouse class='tooltip purple'>Detached<span>
+					name: "<mouse class='tooltip purple'>초연함<span>
 						Modifiers:
 						<ul>
-							<li class='green'>-35% stress gains, less while in pain.</li>
-							<li class='green'>-20% love lost.</li>
-							<li class='red'>-25% love gained.</li>
+							<li class='green'>스트레스 증가량 -35%, 고통 중에는 효과가 줄어듭니다.</li>
+							<li class='green'>호감 손실 -20%.</li>
+							<li class='red'>호감 획득 -25%.</li>
 						</ul>
 					</span></mouse>",
 					colour: "purple",
 					has: $backgroundTraits.includes("detached"),
-					text: "You feel things, but it rarely shows. People find you hard to read, and it takes them longer to get close to you.",
+					text: "당신도 느끼는 것은 있지만 좀처럼 겉으로 드러나지 않습니다. 사람들은 당신의 속을 읽기 어려워하고, 당신과 가까워지기까지 더 오래 걸립니다.",
 				},
 				{
-					name: `<mouse class='tooltip purple'>Autism Spectrum
+					name: `<mouse class='tooltip purple'>자폐 스펙트럼
 						<span class='tooltiptext'>
-							You are sensitive to sensory and social demands, prefer familiar routines, and can focus deeply on your interests. The same traits can help or drain you depending on your environment.
+							감각 자극과 사회적 요구에 민감하고, 익숙한 일과를 선호하며, 관심 분야에 깊이 몰입할 수 있습니다. 같은 특성이 환경에 따라 도움이 되기도 하고 힘을 빼앗기도 합니다.
 						</span>
 					</mouse>`,
 					colour: "purple",
 					has: playerHasAutismSpectrum(),
-					text: "Familiar structure and focused interests help, but sensory input, abrupt changes, and accumulated demands can wear you down.",
+					text: "익숙한 구조와 몰입할 관심사는 도움이 되지만, 감각 입력과 갑작스러운 변화, 쌓여 가는 요구는 당신을 지치게 할 수 있습니다.",
 				},
 				{
 					name: () => {
 						const capacity = autismSpectrumPhase();
-						const heading = capacity === "settled" ? "Settled" : capacity === "burnout" ? "Burnout" : "Strained";
+						const heading = capacity === "settled" ? "안정" : capacity === "burnout" ? "번아웃" : "긴장";
 						const colour = capacity === "settled" ? "green" : capacity === "burnout" ? "red" : "gold";
 
 						const effects = {
 							settled: `
-								<li class='green'>All stat gains are increased by 5%.</li>
-								<li class='green'>School grade gains are increased by 25%.</li>
+								<li class='green'>모든 능력치 상승량 +5%.</li>
+								<li class='green'>학교 성적 상승량 +25%.</li>
 							`,
 							strained: `
-								<li class='default-colour'>No bonus or penalty.</li>
+								<li class='default-colour'>보너스도 페널티도 없습니다.</li>
 							`,
 							burnout: `
-								<li class='red'>All stat gains are reduced by 20%.</li>
-								<li class='red'>School grade gains are reduced by 30%.</li>
-								<li class='red'>Study-related demands cause twice as much stress.</li>
-								<li class='red'>Practising skills can cause trauma.</li>
+								<li class='red'>모든 능력치 상승량 -20%.</li>
+								<li class='red'>학교 성적 상승량 -30%.</li>
+								<li class='red'>공부와 관련된 요구가 스트레스를 두 배로 일으킵니다.</li>
+								<li class='red'>스킬을 연습하면 트라우마가 생길 수 있습니다.</li>
 							`,
 						};
 
-						return `<mouse class='tooltip ${colour}'>${heading}: ${autismLoadPercent()}% Load
+						return `<mouse class='tooltip ${colour}'>${heading}: ${autismLoadPercent()}% 부하
 							<span class='tooltiptext'>
-								Comes from Autism Spectrum. Load shows how difficult it is for you to cope with your current demands.
+								자폐 스펙트럼에서 비롯됩니다. 부하는 현재의 요구에 얼마나 대처하기 어려운지를 나타냅니다.
 								<br><br>
 
-								Current effects:
+								현재 효과:
 								<ul>
 									${effects[capacity] || effects.strained}
 								</ul>
 
-								<i class='red'>Load increases from sudden changes, crowds, noise, bright midday light, heat, unclear social situations, and going too long without rest.</i>
-								<i class='green'>Load decreases from sleep, quiet time, calm activities, and spending time on your current interest.</i>
-								<i class='green'>Headphones block most noise in loud places, and playing music blocks more.</i>
+								<i class='red'>부하는 갑작스러운 변화, 인파, 소음, 한낮의 강한 빛, 더위, 불분명한 사회적 상황, 너무 오래 쉬지 못하는 것으로 늘어납니다.</i>
+								<i class='green'>부하는 수면, 조용한 시간, 차분한 활동, 현재 관심사에 시간을 쓰는 것으로 줄어듭니다.</i>
+								<i class='green'>헤드폰은 시끄러운 곳에서 소음 대부분을 막아 주고, 음악을 틀면 더 많이 막아 줍니다.</i>
 								<br><br>
-								You can still recover <b class='gold'>${autismRecoveryLeftToday()}</b> Load today.
-								<b class='gold'>${autismDeliberateLeftToday()}</b> of that requires deliberate regulation.
+								오늘 <b class='gold'>${autismRecoveryLeftToday()}</b>만큼의 부하를 더 회복할 수 있습니다.
+								<b class='gold'>${autismDeliberateLeftToday()}</b>는 의도적인 조절이 필요합니다.
 								<br><br>
-								Your willpower affects when Strained and Burnout begin.
+								의지력이 긴장과 번아웃이 시작되는 시점에 영향을 줍니다.
 								<br>
-								<b class='gold'>Strained: ${autismStrainedThreshold()}% Load</b>
+								<b class='gold'>긴장: ${autismStrainedThreshold()}% 부하</b>
 								<br>
-								<b class='red'>Burnout: ${autismBurnoutThreshold()}% Load</b>
+								<b class='red'>번아웃: ${autismBurnoutThreshold()}% 부하</b>
 								<br><br>
-								A meltdown can happen at <b class='red'>${autismMeltdownLoadValue()}% Load</b> while you also have <b class='red'>${autismMeltdownStressPercent()}% stress</b>.
-								Staying at <b class='red'>${autismLoadTraumaValue()}% Load</b> for a full day without resting causes trauma.
+								<b class='red'>${autismMeltdownLoadValue()}% 부하</b>이면서 동시에 <b class='red'>${autismMeltdownStressPercent()}% 스트레스</b> 상태이면 멜트다운이 일어날 수 있습니다.
+								<b class='red'>${autismLoadTraumaValue()}% 부하</b> 상태로 하루 종일 쉬지 못하면 트라우마가 생깁니다.
 							</span>
 						</mouse>`;
 					},
@@ -424,58 +424,58 @@
 					text: () => {
 						const capacity = autismSpectrumPhase();
 
-						if (capacity === "settled") return "Your Load is low, making daily demands easier to handle.";
-						if (capacity === "burnout") return "Your Load is very high, reducing your gains and making some activities more harmful.";
-						return "Your Load is high enough that you no longer receive the benefits of low Load.";
+						if (capacity === "settled") return "부하가 낮아 일상의 요구를 감당하기가 더 쉽습니다.";
+						if (capacity === "burnout") return "부하가 매우 높아 상승량이 줄고 일부 활동이 더 해롭게 작용합니다.";
+						return "부하가 충분히 높아 더 이상 낮은 부하의 이점을 받지 못합니다.";
 					},
 				},
 				{
 					name: () => {
 						const items = autismObligationLabels();
-						return `<mouse class='tooltip red'>Outstanding: ${items.length}
+						return `<mouse class='tooltip red'>미해결: ${items.length}
 							<span class='tooltiptext'>
-								Comes from Autism Spectrum. These are tasks or problems you know about but have not dealt with yet.
+								자폐 스펙트럼에서 비롯됩니다. 알고 있지만 아직 처리하지 못한 일이나 문제입니다.
 								<br><br>
 								<ul>
 									${items.map(item => `<li class='red'>${item.toUpperFirst()}</li>`).join("")}
 								</ul>
-								<b class='red'>Each outstanding item adds Load every day until you deal with it.</b>
-								Once you deal with an item, it stops adding Load.
+								<b class='red'>미해결 항목은 처리하기 전까지 하루마다 부하를 더합니다.</b>
+								항목을 처리하면 더 이상 부하를 더하지 않습니다.
 							</span>
 						</mouse>`;
 					},
 					colour: "red",
 					has: playerHasAutismSpectrum() && autismObligationLabels().length > 0,
-					text: "Things you know you still need to deal with add Load each day.",
+					text: "아직 처리해야 한다고 알고 있는 일들이 하루마다 부하를 더합니다.",
 				},
 				{
 					name: () => {
 						const masking = autismMaskingLevel();
 						const colour = masking >= 70 ? "red" : masking >= 35 ? "gold" : "purple";
 						const active = autismMaskingActive()
-							? "<b class='gold'>You are masking right now.</b>"
-							: "You are not masking right now.";
+							? "<b class='gold'>지금 마스킹 중입니다.</b>"
+							: "지금은 마스킹하지 않습니다.";
 						const composure =
 							autismComposureLeft() > 0
-								? "<b class='green'>You prepared yourself beforehand. For about " +
+								? "<b class='green'>미리 마음의 준비를 했습니다. 앞으로 약 " +
 									autismComposureLeft() +
-									" more minutes, Masking builds more slowly.</b>"
+									"분 동안 마스킹이 더 느리게 쌓입니다.</b>"
 								: "";
-						return `<mouse class='tooltip ${colour}'>Masking: ${masking}%
+						return `<mouse class='tooltip ${colour}'>마스킹: ${masking}%
 							<span class='tooltiptext'>
-								Comes from Autism Spectrum. Masking means changing how you act to match what other people expect.
+								자폐 스펙트럼에서 비롯됩니다. 마스킹은 다른 사람들이 기대하는 모습에 맞추어 행동을 바꾸는 것을 뜻합니다.
 								<br><br>
 								${active}
 								<br><br>
-								Modifiers:
+								보정치:
 								<ul>
-									<li class='red'>Masking adds Load. Higher Masking adds Load faster.</li>
-									<li class='red'>Masking for too long makes shutdown more likely during an overload.</li>
-									<li class='green'>Stopping Masking in private removes some of the Load and lowers stress.</li>
+									<li class='red'>마스킹은 부하를 더합니다. 마스킹이 높을수록 부하가 더 빨리 쌓입니다.</li>
+									<li class='red'>너무 오래 마스킹하면 과부하 중에 셧다운이 일어날 가능성이 커집니다.</li>
+									<li class='green'>혼자 있을 때 마스킹을 멈추면 부하 일부가 사라지고 스트레스가 줄어듭니다.</li>
 								</ul>
-								Masking builds faster around strangers and slower around people you trust.
-								It does not build when you are alone or asleep. Sleeping also lowers your masking without adding Load.
-								People you live with count as being around you while they are at home.
+								마스킹은 낯선 사람 곁에서 더 빨리 쌓이고, 믿는 사람 곁에서는 더 느리게 쌓입니다.
+								혼자 있거나 잠든 동안에는 쌓이지 않습니다. 잠을 자면 부하를 더하지 않고 마스킹이 줄어듭니다.
+								함께 사는 사람들은 집에 있는 동안 곁에 있는 것으로 칩니다.
 								<br><br>
 								${composure}
 							</span>
@@ -489,11 +489,11 @@
 					text: () => {
 						const masking = autismMaskingLevel();
 
-						if (!autismMaskingActive()) return masking > 0 ? "You are not masking right now. Your Masking level is gradually decreasing as you recover." : "You are not masking.";
-						if (masking >= 70) return "Masking is taking most of your attention.";
-						if (masking >= 35) return "Masking is taking steady effort.";
-						if (masking > 0) return "You are masking with little effort.";
-						return "You are beginning to mask.";
+						if (!autismMaskingActive()) return masking > 0 ? "지금은 마스킹하지 않습니다. 회복하면서 마스킹 수준이 서서히 줄어들고 있습니다." : "마스킹하지 않습니다.";
+						if (masking >= 70) return "마스킹이 주의력 대부분을 차지하고 있습니다.";
+						if (masking >= 35) return "마스킹에 꾸준한 노력이 들어갑니다.";
+						if (masking > 0) return "별다른 노력 없이 마스킹하고 있습니다.";
+						return "마스킹을 시작하고 있습니다.";
 					},
 					meter: {
 						has: playerHasAutismSpectrum(),
@@ -504,18 +504,18 @@
 					},
 				},
 				{
-					name: () => `<mouse class='tooltip gold'>Current Interest: ${autismHyperfixationName().toUpperFirst()}
+					name: () => `<mouse class='tooltip gold'>현재 관심사: ${autismHyperfixationName().toUpperFirst()}
 						<span class='tooltiptext'>
-							Comes from Autism Spectrum. This is the activity drawing you most strongly for the next few weeks.
-							It can help you regulate.
+							자폐 스펙트럼에서 비롯됩니다. 앞으로 몇 주 동안 당신을 가장 강하게 끌어당기는 활동입니다.
+							조절하는 데 도움이 될 수 있습니다.
 							<br><br>
-							Modifiers:
+							보정치:
 							<ul>
-								<li class='green'>Practising it lowers stress and Load.</li>
-								<li class='red'>Abruptly changing tasks raises stress and Load.</li>
-								<li class='red'>More than 2 hours of continuous practice can reduce gains by up to 25%.</li>
-								<li class='orange'>A 3-hour break clears this practice penalty.</li>
-								<li class='orange'>Lessons, studying, swimming, dancing, tending, housekeeping, and training count as practice.</li>
+								<li class='green'>이 활동을 연습하면 스트레스와 부하가 줄어듭니다.</li>
+								<li class='red'>갑자기 작업을 바꾸면 스트레스와 부하가 늘어납니다.</li>
+								<li class='red'>2시간 넘게 쉬지 않고 연습하면 상승량이 최대 25% 줄어들 수 있습니다.</li>
+								<li class='orange'>3시간 쉬면 이 연습 페널티가 사라집니다.</li>
+								<li class='orange'>수업, 공부, 수영, 춤, 관리, 가사, 훈련이 연습으로 칩니다.</li>
 							</ul>
 						</span>
 					</mouse>`,
@@ -523,27 +523,27 @@
 					has: playerHasAutismSpectrum(),
 					text: () => {
 						const days = autismHyperfixationDaysRemaining();
-						return `This interest may shift in ${days} day${days === 1 ? "" : "s"}.`;
+						return `이 관심사는 ${days}일 뒤에 바뀔 수 있습니다.`;
 					},
 				},
 				{
-					name: () => `<mouse class='tooltip red'>${autismOverloadForm() === "shutdown" ? "Shutdown" : "Meltdown"}
+					name: () => `<mouse class='tooltip red'>${autismOverloadForm() === "shutdown" ? "셧다운" : "멜트다운"}
 						<span class='tooltiptext'>
-							Comes from Autism Spectrum. A meltdown or shutdown can happen when both stress and Load become very high.
+							자폐 스펙트럼에서 비롯됩니다. 스트레스와 부하가 모두 매우 높아지면 멜트다운이나 셧다운이 일어날 수 있습니다.
 							<br><br>
-							Modifiers:
+							보정치:
 							<ul>
-								<li class='red'>-35% gains to all activities.</li>
-								<li class='red'>Abrupt changes and prolonged practice cause trauma instead of stress.</li>
-								<li class='green'>Your current interest can still lower stress and Load.</li>
-								<li class='green'>The overload ends when stress falls to 70% or lower.</li>
+								<li class='red'>모든 활동의 상승량 -35%.</li>
+								<li class='red'>갑작스러운 변화와 장시간 연습이 스트레스 대신 트라우마를 일으킵니다.</li>
+								<li class='green'>현재 관심사가 여전히 스트레스와 부하를 줄여 줄 수 있습니다.</li>
+								<li class='green'>스트레스가 70% 이하로 떨어지면 과부하가 끝납니다.</li>
 							</ul>
-							Calming activities can help lower your stress.
+							차분해지는 활동이 스트레스를 줄이는 데 도움이 됩니다.
 						</span>
 					</mouse>`,
 					colour: "red",
 					has: playerHasAutismSpectrum() && autismInMeltdown(),
-					text: "You are overwhelmed. Other activities are much harder until your stress comes down.",
+					text: "압도당했습니다. 스트레스가 내려갈 때까지 다른 활동이 훨씬 어렵습니다.",
 				},
 				{
 					name: () => V.submissive <= 850 ? "나무성애자" : "식물 애호가",
@@ -556,15 +556,15 @@
 					colour: "red",
 					has: $backgroundTraits.includes("plantlover"),
 					text: () =>
-						"You're more vulnerable to aphrodisiacs and alcohol. You draw nourishment from nectar. Drinking it invigorates your body, improving physique and reducing stress. Failing to consume nectar for an extended period will take its toll on your body and eventually cause this trait and the <<if $submissive lte 850>><span class='lewd'>Dendrophile</span><<else>><span class='lewd'>Plant Lover</span><</if>> trait to disappear." +
+						"당신은 최음제와 알코올에 더 취약합니다. 넥타르에서 영양을 얻습니다. 넥타르를 마시면 몸에 활력이 돌아 체격이 오르고 스트레스가 줄어듭니다. 오랫동안 넥타르를 마시지 않으면 몸에 부담이 쌓여 결국 이 특성과 <<if $submissive lte 850>><span class='lewd'>나무성애자</span><<else>><span class='lewd'>식물 애호가</span><</if>> 특성이 사라집니다." +
 						(wearingTidebloomRing()
-							? " <span class='green'>The tidebloom ring keeps the trait active while you wear it.</span>"
+							? " <span class='green'>조수꽃 반지를 끼고 있는 동안에는 이 특성이 유지됩니다.</span>"
 							: "") +
 						"<span class='hidden'></span>",
 				},
 				{
 					name: () => {
-						return (earSlimeThoughts() ? "Inner voice focus: " : "Ear slime focus: ") + $earSlime.focus;
+						return (earSlimeThoughts() ? "내면의 목소리 집중: " : "귀 슬라임 집중: ") + $earSlime.focus;
 					},
 					colour: "lewd",
 					has: $earSlime.focus and $earSlime.focus isnot "none",
@@ -572,13 +572,13 @@
 						let result;
 						switch ($earSlime.focus) {
 							case "pregnancy":
-								result = `You chose the path of pregnancy, causing the ${earSlimeThoughts() ? "voice in your head" : "ear slime"} to amplify traits related to becoming pregnant, while weakening other traits.`;
+								result = `임신의 길을 선택했습니다. ${earSlimeThoughts() ? "머릿속의 목소리" : "귀 슬라임"}【이가】 임신과 관련된 특성을 증폭시키고, 다른 특성은 약화시킵니다.`;
 								break;
 							case "mixed":
-								result = `You chose to walk the path between pregnancy and impregnation, causing the ${earSlimeThoughts() ? "voices in your head" : "ear slime"} to amplify traits related to both, to a lesser degree.`;
+								result = `임신과 임신시키기 사이의 길을 선택했습니다. ${earSlimeThoughts() ? "머릿속의 목소리" : "귀 슬라임"}【이가】 두 쪽 모두와 관련된 특성을 덜한 정도로 증폭시킵니다.`;
 								break;
 							case "impregnation":
-								result = `You chose the path of impregnation, causing the ${earSlimeThoughts() ? "voice in your head" : "ear slime"} to amplify traits related to impregnating others, while weakening other traits.`;
+								result = `임신시키기의 길을 선택했습니다. ${earSlimeThoughts() ? "머릿속의 목소리" : "귀 슬라임"}【이가】 타인을 임신시키는 일과 관련된 특성을 증폭시키고, 다른 특성은 약화시킵니다.`;
 								break;
 						}
 						let parasites = [];
@@ -670,25 +670,25 @@
 					name: "유순함",
 					colour: "meek",
 					has: $submissive gte 1150 and $submissive lt 1500,
-					text: "Your submissive responses sound softer.",
+					text: "당신의 순종적인 반응이 더 부드럽게 들립니다.",
 				},
 				{
 					name: "순종",
 					colour: "sub",
 					has: $submissive gte 1500,
-					text: "Your submissive responses sound more obedient.",
+					text: "당신의 순종적인 반응이 더 복종적으로 들립니다.",
 				},
 				{
 					name: "버릇없음",
 					colour: "brat",
 					has: $submissive lte 850 and $submissive gt 500,
-					text: "Your resistant responses sound more mocking.",
+					text: "당신의 저항적인 반응이 더 조롱하는 투로 들립니다.",
 				},
 				{
 					name: "반항적",
 					colour: "def",
 					has: $submissive lte 500,
-					text: "Your resistant responses are harder to ignore.",
+					text: "당신의 저항적인 반응이 더 무시하기 어렵습니다.",
 				},
 				{
 					name: "순수함",
@@ -760,91 +760,91 @@
 			],
 		},
 		{
-			title: "Transformation Traits",
+			title: "변이 특성",
 			traits: [
 				{
 					name: () => {
-						if (playerFeelsManlike()) return "Wolfboy";
-						if (playerFeelsGirllike()) return "Wolfgirl";
-						return "Wolfkin";
+						if (playerFeelsManlike()) return "늑대소년";
+						if (playerFeelsGirllike()) return "늑대소녀";
+						return "늑대 수인";
 					},
 					colour: "grey",
 					has: effectiveTransformationLevel("wolf") gte 6,
-					text: 'The spirit of the wild lives within you. You are 50% more likely to find valuable items. Defiant options are always available, reducing stress. When too submissive, acting defiant is traumatic and lowers control. Your ears and tail make you more conspicuous.',
+					text: '야생의 정령이 당신 안에 살고 있습니다. 값진 물건을 발견할 확률이 50% 높아집니다. 반항적인 선택지를 언제나 사용할 수 있으며, 이는 스트레스를 줄입니다. 지나치게 순종적일 때 반항적으로 행동하면 트라우마가 생기고 통제력이 낮아집니다. 귀와 꼬리 때문에 더 눈에 띕니다.',
 				},
 				{
 					name: () => {
-						if (playerFeelsManlike()) return "Catboy";
-						if (playerFeelsGirllike()) return "Catgirl";
-						return "Catkin";
+						if (playerFeelsManlike()) return "고양이소년";
+						if (playerFeelsGirllike()) return "고양이소녀";
+						return "고양이 수인";
 					},
 					colour: "grey",
 					has: (effectiveTransformationLevel("cat") gte 6),
-					text: 'You have an urge to lap up cream. Cafe income is increased by 75%. Unlocks the "groom" action while dancing with lewd fluid on your person. Your ears and tail make you more conspicuous.',
+					text: '크림을 핥아먹고 싶은 충동이 듭니다. 카페 수입이 75% 늘어납니다. 몸에 야한 체액을 묻힌 채 춤을 출 때 "치장한다" 행동이 해금됩니다. 귀와 꼬리 때문에 더 눈에 띕니다.',
 				},
 				{
 					name: () => {
-						if (playerFeelsManlike()) return "Bunny boy";
-						if (playerFeelsGirllike()) return "Bunny girl";
-						return "Bunnykin";
+						if (playerFeelsManlike()) return "토끼소년";
+						if (playerFeelsGirllike()) return "토끼소녀";
+						return "토끼 수인";
 					},
 					colour: "grey",
 					has: (effectiveTransformationLevel("bunny") gte 6),
-					text: 'Your submissiveness increases over time. Dancing income is increased by 75%. Your ears and tail make you more conspicuous.',
+					text: '시간이 지날수록 순종성이 높아집니다. 춤 수입이 75% 늘어납니다. 귀와 꼬리 때문에 더 눈에 띕니다.',
 				},
 				{
 					name: () => {
-						if (playerFeelsManlike()) return "Bear boy";
-						if (playerFeelsGirllike()) return "Bear girl";
-						return "Bearkin";
+						if (playerFeelsManlike()) return "곰소년";
+						if (playerFeelsGirllike()) return "곰소녀";
+						return "곰 수인";
 					},
 					colour: "grey",
 					has: (effectiveTransformationLevel("bear") gte 6),
-					text: 'You have an urge to eat honey and laze around. Docker shift and overtime wages are increased by 75%. Your ears and tail make you more conspicuous.',
+					text: '꿀을 먹고 빈둥거리고 싶은 충동이 듭니다. 부두 근무와 초과 근무 임금이 75% 늘어납니다. 귀와 꼬리 때문에 더 눈에 띕니다.',
 				},
 				{
 					name: () => {
-						if (playerFeelsManlike()) return "Bull";
-						if (playerFeelsGirllike()) return "Cow";
-						return "Bovine";
+						if (playerFeelsManlike()) return "불보이";
+						if (playerFeelsGirllike()) return "젖소";
+						return "소 수인";
 					},
 					colour: "brat",
 					has: (effectiveTransformationLevel("cow") gte 6),
-					text: "You yearn to be milked. Milk and semen volume is increased, and planted crops yield 50% more. Certain body parts might grow. Your horns, ears and tail make you more conspicuous.",
+					text: "젖이 짜이기를 갈망합니다. 모유와 정액의 양이 늘고, 심은 작물의 수확량이 50% 늘어납니다. 특정 신체 부위가 커질 수도 있습니다. 뿔과 귀, 꼬리 때문에 더 눈에 띕니다.",
 				},
 				{
 					name: () => {
-						if (V.hallucinations gte 2 || !isBestialityOnForAnyCreature()) return "Harpy";
-						if (playerFeelsManlike()) return "Birdboy";
-						if (playerFeelsGirllike()) return "Birdgirl";
-						return "Birdkin";
+						if (V.hallucinations gte 2 || !isBestialityOnForAnyCreature()) return "하피";
+						if (playerFeelsManlike()) return "새소년";
+						if (playerFeelsGirllike()) return "새소녀";
+						return "새 수인";
 					},
 					colour: "grey",
 					has: effectiveTransformationLevel("bird") gte 6,
-					text: "The skies call to you, and some feral part of you longs to answer. Office work earnings, pound wages, and housekeeping pay are increased by 45%. Your wings make you more conspicuous.",
+					text: "하늘이 당신을 부르고, 당신 안의 야성이 그 부름에 답하고 싶어 합니다. 사무직 수입과 파운드 임금, 가사 보수가 45% 늘어납니다. 날개 때문에 더 눈에 띕니다.",
 				},
 				{
 					name: () => {
-						if (playerFeelsManlike()) return "Foxboy";
-						if (playerFeelsGirllike()) return "Vixen";
-						return "Foxkin";
+						if (playerFeelsManlike()) return "여우소년";
+						if (playerFeelsGirllike()) return "암여우";
+						return "여우 수인";
 					},
 					colour: "",
 					style: `background: linear-gradient(to right,#fe9000 0%, #ffffff 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;`,
 					has: effectiveTransformationLevel("fox") gte 6,
-					text: "You have the urge to keep what's not yours. Crime gain and skulduggery difficulty are reduced by 25%, and valuables sell for 25% more. Your ears and tail make you more alluring and attractive.",
+					text: "당신 것이 아닌 걸 가지고 싶은 충동이 듭니다. 범죄도 상승과 속임수 난이도가 25% 줄고, 값진 물건을 25% 더 비싸게 팝니다. 귀와 꼬리 덕분에 더 매혹적이고 매력적으로 보입니다.",
 				},
 				{
 					name: "피식자 동물",
 					colour: "def",
 					has: $transformationParts.traits.preyAnimal isnot "disabled",
-					text: "You are a prey animal. Your submissiveness increases each day.",
+					text: "당신은 피식자 동물입니다. 순종성이 매일 높아집니다.",
 				},
 				{
 					name: "포식자 동물",
 					colour: "def",
 					has: $transformationParts.traits.predatoryAnimal isnot "disabled",
-					text: "You are a predatory animal. Your defiance increases each day.",
+					text: "당신은 포식자 동물입니다. 반항심이 매일 높아집니다.",
 				},
 				{
 					name: "튼튼한 발",
@@ -856,51 +856,51 @@
 					name: "송곳니",
 					colour: "def",
 					has: !["disabled", "hidden"].includes($transformationParts.traits.fangs),
-					text: "Biting is three times as effective.",
+					text: "깨물기가 세 배로 효과적입니다.",
 				},
 				{
 					name: "수중 폐",
 					colour: "teal",
 					has: Transformations.partActive("traits", "aquatic"),
-					text: "You can breathe underwater.",
+					text: "물속에서 숨을 쉴 수 있습니다.",
 				},
 				{
 					name: "수룡",
 					colour: "navy",
 					has: effectiveTransformationLevel("waterdragon") gte 7,
-					text: "The sea calls to you. You are 50% more likely to find valuable lake treasure. Your skin and horns make you stand out.",
+					text: "바다가 당신을 부릅니다. 값진 호수 보물을 발견할 확률이 50% 높아집니다. 피부와 뿔이 당신을 눈에 띄게 만듭니다.",
 				},
 				{
-					name: "Fortune Stealing",
+					name: "행운 훔치기",
 					colour: "",
 					style: `background: linear-gradient(90deg, #f6c85f 0%, #ffe8a3 50%, #f3b85b 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;`,
 					has: Transformations.chimeraActive("kasha"),
-					text: "Once per encounter you can take an attacker's luck through their own eyes, if your skulduggery is high enough. The stolen luck decreases each day.",
+					text: "속임수가 충분히 높다면 인카운터당 한 번, 공격자의 눈을 통해 그 행운을 빼앗을 수 있습니다. 빼앗은 행운은 매일 줄어듭니다.",
 				},
 				{
-					name: "Ill Omen",
+					name: "불길한 징조",
 					colour: "",
 					style: `background: linear-gradient(90deg, #d8b4f8 0%, #edbfdc 50%, #f4b6b6 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;`,
 					has: Transformations.chimeraActive("catsith"),
-					text: "Once per encounter, you can curse an attacker if your willpower is high enough. For the rest of the fight, their attacks are less accurate and you are harder to hit.",
+					text: "의지력이 충분히 높다면 인카운터당 한 번, 공격자를 저주할 수 있습니다. 남은 싸움 동안 상대의 공격은 덜 정확해지고 당신은 맞히기 더 어려워집니다.",
 				},
 				{
-					name: "Blood Moon Resonance",
+					name: "붉은 달의 공명",
 					colour: "red",
 					has: Transformations.bakunawaResonant(),
-					text: "The red moon hangs low, and something serpentine in you answers it. You feel resonant, coiled, hungry. Fighting back deals 15% more damage until the moon pales.",
+					text: "붉은 달이 낮게 걸려 있고, 당신 안의 뱀 같은 무언가가 그에 응답합니다. 공명하고, 똬리를 틀고, 굶주린 기분이 듭니다. 달이 옅어질 때까지 반격이 15% 더 큰 피해를 줍니다.",
 				},
 				{
-					name: "Accelerated Brood Cycle",
+					name: "단축된 산란 주기",
 					colour: "purple",
 					has: $waterDragonIncubatorTrait is true and isFullWaterDragon(),
-					text: "Your water dragon egg cycle is shorter.",
+					text: "수룡의 알 주기가 더 짧아집니다.",
 				},
 				{
 					name: "용의 우아함",
 					colour: "blue",
 					has: ($TFWaterDragonBuffs is 1 or $transformationParts.traits.leviathan isnot "disabled"),
-					text: "Your draconic build grants you increased swimming ability.",
+					text: "용의 체형 덕분에 수영 능력이 향상됩니다.",
 				},
 				{
 					name: "날카로운 눈",
@@ -915,10 +915,10 @@
 					text: "물이 당신의 감각을 부자연스러울 만큼 날카롭게 만듭니다. 거의 아무것도 당신의 눈을 피하지 못하고, 남들이 보지 못하는 것까지 알아차립니다. 속임수 +5%. 성지식, 트라우마, 환각제와 관계없이 항상 환각을 봅니다.",
 				},
 				{
-					name: "Dragon Tongue",
+					name: "용의 혀",
 					colour: "def",
 					has: Transformations.partActive("traits", "dragonTongue"),
-					text: "Your tongue is long and prehensile, with a forked tip. +5% oral skill.",
+					text: "혀가 길고 물건을 감을 수 있으며 끝이 갈라져 있습니다. 구강 스킬 +5%.",
 				},
 				{
 					name: "오드아이",
@@ -941,22 +941,22 @@
 					text: "야생의 정령이 몸속을 흐르며 감각을 예민하게 만듭니다.",
 				},
 				{
-					name: "Feline Mischief",
+					name: "고양이의 장난기",
 					colour: "pink",
 					has: $DoLPTFBuffs is 1 and $TFCatBuffs is 1,
-					text: "Agility and mischief blend within you, your movements fluid and stealthy.",
+					text: "민첩함과 장난기가 당신 안에서 섞여, 움직임이 유려하고 은밀합니다.",
 				},
 				{
-					name: "Feline Instincts",
+					name: "고양이의 본능",
 					colour: "purple",
 					has: (effectiveTransformationLevel("cat") gte 4),
-					text: "You can hear stalkers approaching. You rest best during midday and late at night, but poorly around dawn and dusk. You can also swipe away a tentacle with your claws, though you can't remove one already inside you.",
+					text: "스토커가 다가오는 소리를 들을 수 있습니다. 한낮과 늦은 밤에 가장 잘 쉬고, 새벽과 해 질 녘에는 잘 쉬지 못합니다. 발톱으로 촉수를 쳐 낼 수도 있지만, 이미 몸속에 들어온 촉수는 떼어 낼 수 없습니다.",
 				},
 				{
-					name: "Feline Grace",
+					name: "고양이의 우아함",
 					colour: "blue",
 					has: (effectiveTransformationLevel("cat") gte 6),
-					text: "You can more easily pull your arms free when someone restrains them. Chirrup at dogs, wolves, foxes, and choose to slink or preen while moving. Your tending skill determines how animals respond to your chirrup.",
+					text: "누군가 팔을 붙잡았을 때 더 쉽게 빼낼 수 있습니다. 개, 늑대, 여우에게 짹짹 소리를 내고, 움직이는 동안 살금살금 걷거나 몸단장을 하는 쪽을 고를 수 있습니다. 관리 스킬이 동물들이 당신의 소리에 어떻게 반응할지 결정합니다.",
 				},
 				{
 					name: "자연의 양육자",
@@ -977,7 +977,7 @@
 					text: "발걸음은 경쾌하고, 바람은 친구이며, 하늘은 한계가 아닙니다.",
 				},
 				{
-					name: "Fox's Guile",
+					name: "여우의 교활함",
 					colour: "gold",
 					has: $DoLPTFBuffs is 1 and $TFFoxBuffs is 1,
 					text: "언제나 유혹적이고 언제나 손닿는 곳에 있지만 결코 붙잡히지 않는 당신의 교활함은 대부분의 사람을 따돌립니다.",
@@ -1005,27 +1005,27 @@
 					name: "타락 천사",
 					colour: "black",
 					has: effectiveTransformationLevel("fallen") gte 4,
-					text: 'The world is so cruel. Though you feel less pure by the day, you will not relinquish yourself. All income is increased by 20%. Unlocks the "disparage" action.',
+					text: '세상은 무척 잔인합니다. 나날이 순수함을 잃어간다고 느끼지만, 스스로를 놓아버리진 않을 것입니다. 모든 수입이 20% 늘어납니다. "비난한다" 행동이 해금됩니다.',
 				},
 				{
 					name: "타락 천사",
 					colour: "black",
 					has: effectiveTransformationLevel("fallen") is 2 or effectiveTransformationLevel("fallen") is 3,
-					text: "The world is so cruel. You feel less pure by the day. All income is increased by 20%.",
+					text: "세상은 무척 잔인합니다. 나날이 순수함을 잃어간다고 느낍니다. 모든 수입이 20% 늘어납니다.",
 				},
 				{
 					name: "강철의 의지",
 					colour: "silver",
 					has: Transformations.partActive("traits", "ironWill"),
 					text: () => V.backgroundTraits.includes("insanity")
-						? "The weight of the world is heavy, but you're strong enough to carry it. Your fractured mind clings to what strength remains: you gain 45% more willpower, and it no longer decays."
-						: "The weight of the world is heavy, but you're strong enough to carry it. You gain 35% more willpower, and it no longer decays.",
+						? "세상의 무게는 무겁지만, 당신은 그것을 견뎌낼 만큼 강합니다. 부서진 정신이 남은 힘에 매달립니다. 의지력을 45% 더 얻고, 더 이상 감소하지 않습니다."
+						: "세상의 무게는 무겁지만, 당신은 그것을 견뎌낼 만큼 강합니다. 의지력을 35% 더 얻고, 더 이상 감소하지 않습니다.",
 				},
 				{
 					name: "천사",
 					colour: "gold",
 					has: effectiveTransformationLevel("angel") gte 6,
-					text: 'You radiate purity. While you are not Fallen, non-sexual income is increased by 50%, and your temple allowance is increased by 75%. Unlocks the "forgive" action once per encounter, removing any trauma gained so far. Beware, losing your virginity will remove this trait and leave you broken.',
+					text: '당신은 순수함을 내뿜습니다. 타락하지 않은 동안 성적이지 않은 수입이 50% 늘어나고, 신전 용돈이 75% 늘어납니다. 인카운터당 한 번 "용서한다" 행동이 해금되어, 여태 얻은 트라우마를 없앱니다. 주의하세요, 순결을 잃으면 이 특성이 사라지고 당신은 부서질 것입니다.',
 				},
 				{
 					name: () => {
@@ -1034,7 +1034,7 @@
 						if (playerFeelsManlike()) {
 							if (isCrossdressing()) {
 								if (V.background && V.background.transgender) {
-									return "Incubus (" + transGenderLabel + ")";
+									return "인큐버스 (" + transGenderLabel + ")";
 								}
 								if (V.player.sex === "f") {
 									return "인큐버스 (♀)";
@@ -1046,7 +1046,7 @@
 						if (playerFeelsGirllike()) {
 							if (isCrossdressing()) {
 								if (V.background && V.background.transgender) {
-									return "Succubus (" + transGenderLabel + ")";
+									return "서큐버스 (" + transGenderLabel + ")";
 								}
 								if (V.player.sex === "m") {
 									return "서큐버스 (♂)";
@@ -1055,17 +1055,17 @@
 							return "서큐버스";
 						}
 
-						return "Demon";
+						return "악마";
 					},
 					colour: "red",
 					has: effectiveTransformationLevel("demon") gte 6,
-					text: "You're devoid of purity. While you are not Fallen, income from sexualised jobs is increased by 50%. You lose trauma and restore your willpower when something cums inside you, or you cum inside something else. Tentacles reduce stress and pain instead of trauma. Beware, ending a day with anything but minimum purity will be very traumatic.",
+					text: "당신에겐 순수함이라곤 남아있지 않습니다. 타락하지 않은 동안 성적인 일에서 얻는 수입이 50% 늘어납니다. 무언가 당신 안에 사정하거나, 당신이 다른 무언가 안에 사정하면 트라우마가 줄고 의지력이 회복됩니다. 촉수는 트라우마 대신 스트레스와 고통을 줄여 줍니다. 주의하세요, 순결도가 최하 수치가 아닌 상태로 하루를 마치면 큰 트라우마를 받게 됩니다.",
 				},
 				{
 					name: "찬란함",
 					colour: "gold",
 					has: effectiveTransformationLevel("angel") gte 4,
-					text: 'You are pure. Unlocks the "banish" action up to five times per day at full angelicness or while an angelic chimera is active, dealing heavy damage to a tentacle. Its strength is greatly increased while at maximum purity. Uses remaining today: ($angelBanish / $angelBanishMax)',
+					text: '당신은 순결합니다. 천사 수치가 가득 찼거나 천사 키메라가 활성화된 동안 하루에 최대 다섯 번 "추방한다" 행동이 해금되어, 촉수에게 큰 피해를 줍니다. 최대 순결도일 때는 그 위력이 크게 증가합니다. 오늘 남은 사용 횟수: ($angelBanish / $angelBanishMax)',
 				},
 				{
 					name: "검은 뿔",
@@ -1088,12 +1088,12 @@
 					colour: () => V.plucked ? "grey" : "gold",
 					has: Transformations.hasFlightWings() and $birdFly gte 1,
 					text: () => {
-						if (V.plucked) return "You're missing some feathers, but your wings feel sleek. Can glide, but flight is temporarily disabled.";
+						if (V.plucked) return "깃털이 몇 개 빠졌지만, 날개는 매끈하게 느껴집니다. 활강은 할 수 있지만, 당분간 날 수는 없습니다.";
 						if (Transformations.hasGwylanStrengthenedWings()) {
 							const days = Math.max(1, Time.date.dayDifference(new DateTime(V.gwylan.wingStrength)));
-							return `Gwylan's potion has strengthened your wings. Can glide from high locations and fly where the wind is willing. ${days} day${days === 1 ? "" : "s"} remaining.`;
+							return `그윌란의 물약이 날개를 강하게 만들었습니다. 높은 곳에서 활강할 수 있고, 바람이 허락하는 곳에서는 날 수도 있습니다. ${days}일 남았습니다.`;
 						}
-						return "Can glide from high locations. Can fly where the wind is willing.";
+						return "높은 곳에서 활강할 수 있습니다. 바람이 허락하는 곳에서는 날 수도 있습니다.";
 					},
 					meter: {
 						has: V.plucked,
@@ -1131,30 +1131,30 @@
 					}
 				},
 				{
-					name: "Sensitivity-decreasing cream",
+					name: "민감도 감소 크림",
 					colour: "lblue",
 					has: typeof getSensitivityMedication === "function" and getSensitivityMedication()?.type is "suppressant",
 					text: () => {
 						const hours = sensitivityMedicationRemainingHours();
-						let result = `The cream is reducing sensation across your body. ${hours} hour${hours is 1 ? "" : "s"} remaining.`;
+						let result = `크림이 온몸의 감각을 무디게 만들고 있습니다. ${hours}시간 남았습니다.`;
 						const streak = sensitivitySuppressantStreakCount();
 						if (streak gte 2) {
-							result += `Using it ${streak >= 4 ? "every day" : "for several days"} is starting to leave the area feeling irritated.`;
+							result += `${streak >= 4 ? "매일" : "며칠 동안"} 사용했더니 해당 부위가 따끔거리기 시작합니다.`;
 						}
 						const medication = getSensitivityMedication();
 						if (medication and medication.tampered) {
-							result += `<span class="purple">Something feels wrong. Beneath the numbness, you have the strange sense that your body's reactions haven't truly disappeared.</span>`;
+							result += `<span class="purple">뭔가 이상합니다. 무감각한 감각 밑에서, 몸의 반응이 정말로 사라진 건 아니라는 묘한 느낌이 듭니다.</span>`;
 						}
 						return result;
 					}
 				},
 				{
-					name: "Sensitivity-increasing cream",
+					name: "민감도 증가 크림",
 					colour: "lewd",
 					has: typeof getSensitivityMedication === "function" and getSensitivityMedication()?.type is "stimulant",
 					text: () => {
 						const hours = sensitivityMedicationRemainingHours();
-						return `A topical neural stimulant is heightening sensation throughout your body. ${hours} hour${hours is 1 ? "" : "s"} remaining.`;
+						return `바르는 신경 자극제가 온몸의 감각을 예민하게 만들고 있습니다. ${hours}시간 남았습니다.`;
 					}
 				},
 				{
@@ -1290,24 +1290,24 @@
 			]
 		},
 		{
-			title: "X-Change Traits",
+			title: "X-체인지 특성",
 			traits: [
 				{
-					name: "X-Change Purity",
+					name: "X-체인지 순결",
 					colour: "",
 					style: `background: linear-gradient(to right,rgb(192, 84, 255) 0%,rgb(255, 217, 243) 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;`,
 					has: V.xchange?.pillPurityTrait === true,
-					text: `X-Change pills have no effect on your body. You can still be dosed, and others may notice, but the pill's effects will not work.`,
+					text: `X-체인지 알약이 당신의 몸에 아무 효과도 내지 못합니다. 여전히 알약을 먹일 수 있고 다른 사람들이 눈치챌 수도 있지만, 알약의 효과는 나타나지 않습니다.`,
 				},
 				{
-					name: "X-Change Gray Agent",
+					name: "X-체인지 그레이 에이전트",
 					colour: "",
 					style: `background: linear-gradient(to right,rgb(150, 150, 160) 0%,rgb(230, 230, 235) 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;`,
 					has: V.xchange?.grayAgentTrait === true,
-					text: `X-Change pills forced on you can't change your sex, but their other effects still work. Pills you take willingly work normally.`,
+					text: `억지로 먹여진 X-체인지 알약은 당신의 성별을 바꾸지 못하지만, 그 밖의 효과는 그대로 나타납니다. 스스로 먹은 알약은 정상적으로 작용합니다.`,
 				},
 				{
-					name: "Anti X-Change therapy",
+					name: "항 X-체인지 요법",
 					colour: "",
 					style: `background: linear-gradient(to right,rgb(255, 252, 84) 0%,rgb(255, 252, 217) 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;`,
 					has: !!(V.xchange?.therapy?.active && V.xchange?.therapy?.countdown > 0),
@@ -1317,57 +1317,57 @@
 						const hours = hoursLeft % 24;
 						let remaining;
 						if (days >= 1) {
-							remaining = `${days} day${days !== 1 ? "s" : ""}`;
-							if (hours > 0) remaining += ` and ${hours} hour${hours !== 1 ? "s" : ""}`;
+							remaining = `${days}일`;
+							if (hours > 0) remaining += ` ${hours}시간`;
 						} else {
-							remaining = `${hoursLeft} hour${hoursLeft !== 1 ? "s" : ""}`;
+							remaining = `${hoursLeft}시간`;
 						}
-						return `Doctor Harper's cleansing treatment is keeping you clean. No new X-Change pill will take hold for ${remaining}.`;
+						return `하퍼 의사의 정화 치료가 몸을 깨끗하게 유지해 주고 있습니다. ${remaining} 동안은 새 X-체인지 알약이 듣지 않습니다.`;
 					},
 				},
 				{
 					name: "???",
 					colour: basicJitterCss(),
 					has: !!(V.xchange?.pill?.active && V.xchange?.pill?.isPremium === true),
-					text: `You feel... strange, as in your body is behaving like it got options, yet you know exactly why. That premium pill hasn't worn off.`,
+					text: `묘한... 기분이 듭니다. 몸이 마치 선택지를 얻은 것처럼 움직이는데, 그 이유는 정확히 알고 있습니다. 그 프리미엄 알약의 효과가 아직 풀리지 않았습니다.`,
 				},
 				{
-					name: "Sexflip",
+					name: "성기 반전",
 					colour: "teal",
 					has: V.xchange.pill?.genderflipEffect,
-					text: `Your genitals have been flipped to the opposite sex.`,
+					text: `성기가 반대 성별로 뒤바뀌었습니다.`,
 				},
 				{
-					name: "Herm",
+					name: "헤름",
 					colour: "teal",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.hermEffect,
-					text: `Your body has both a penis and a vagina.`,
+					text: `당신의 몸에 자지와 보지가 모두 있습니다.`,
 				},
 				{
 					name: () => {
 						const dir = xchangeGenderificationDirection();
-						if (dir === "sissy") return "Sissification";
-						if (dir === "butch") return "Butchification";
-						return "Genderification";
+						if (dir === "sissy") return "시시화";
+						if (dir === "butch") return "부치화";
+						return "성별화";
 					},
 					colour: "lewd",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.genderificationEffect,
-					text: `Your body is different. Wearing clothes that fit your body's appearance feels good and refreshing. But only while you still identify as your original gender.`,
+					text: `당신의 몸이 달라졌습니다. 몸의 겉모습에 어울리는 옷을 입으면 기분이 좋고 상쾌합니다. 하지만 아직 원래 성별로 정체화하고 있는 동안에만 그렇습니다.`,
 				},
 				{
-					name: "Choice",
+					name: "선택",
 					colour: "teal",
 					has: V.xchange.pill?.choiceEffect,
-					text: `This pill's effects remain indefinitely until the respective companion pill is ingested to turn back.`,
+					text: `이 알약의 효과는 되돌리는 짝 알약을 먹을 때까지 무기한 지속됩니다.`,
 				},
 				{
-					name: "Unknown effects",
+					name: "알 수 없는 효과",
 					colour: "purple",
 					has: V.xchange.pill?.active && !V.xchange.pill?.effectsKnown,
-					text: `You don't know any of this pill's effects, besides the sex change.`,
+					text: `성별이 바뀐다는 것 말고는 이 알약의 효과를 하나도 모릅니다.`,
 				},
 				{
-					name: "Duration",
+					name: "지속 시간",
 					colour: "teal",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown,
 					text: () => {
@@ -1376,48 +1376,48 @@
 							playerAwareTheyArePregnant() || xchangeParasitesBlockPill();
 						const visibleTimerPause = pillTimerPaused() && (pregnancyPauseKnown || (!earSlimeThoughts() && V.earSlime.growth > 50));
 						if ((visibleTimerPause || pillIsPermanent() || V.xchange.pill.choiceEffect) && !wondersAboutPillEnd()) {
-							duration = `<mouse class="tooltip">Indefinite<span class="lblue">`;
+							duration = `<mouse class="tooltip">무기한<span class="lblue">`;
 
 							if (V.xchange.pillPermanence === 1 && !V.xchange.pill.choiceEffect) {
-								duration += `Your transformation is now permanent.`;
+								duration += `당신의 변신은 이제 영구적입니다.`;
 							}
 							else {
 								if (pregnancyPauseKnown)
-									duration += `Your transformation cannot end while your pregnancy runs its course. `;
+									duration += `임신이 진행되는 동안에는 변신이 끝날 수 없습니다. `;
 								if (!earSlimeThoughts() && V.earSlime.growth > 50)
-									duration += `A slime is interfering with your genitals. The pill cannot revert itself until the parasite is removed. `;
+									duration += `슬라임이 성기를 방해하고 있습니다. 기생체를 제거하기 전까지 알약은 스스로 되돌릴 수 없습니다. `;
 								if (V.xchange.pill.choiceEffect)
-									duration += `You're under a Choice pill. The effect will last until a Choice Reversal pill is taken.`;
+									duration += `선택 알약의 영향 아래에 있습니다. 선택 되돌림 알약을 먹을 때까지 효과가 지속됩니다.`;
 							}
 							duration += `</span></mouse>.`;
 						}
 						else
-							duration = `<span class=""><<print-pillduration>></span> remaining.`;
+							duration = `<span class=""><<print-pillduration>></span> 남았습니다.`;
 						
 						return duration;
 					},
 				},
 				{
-					name: "Fertile",
+					name: "가임",
 					colour: "lewd",
 					has: V.xchange?.pill?.active && V.xchange?.pill?.effectsKnown && V.xchange?.pill?.fertile &&
 						!V.xchange?.pill?.resistanceFakeout && (V.player?.vaginaExist === true || V.player?.sex === "f"),
-					text: `You can become pregnant if you aren't careful.`,
+					text: `조심하지 않으면 임신할 수 있습니다.`,
 				},
 				{
-					name: "Continue effect",
+					name: "컨티뉴 효과",
 					colour: "lewd",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.continueEffect,
-					text: `Extends pill duration with every climax.`,
+					text: `절정을 맞을 때마다 알약의 지속 시간이 늘어납니다.`,
 				},
 				{
-					name: "Resistance effect",
+					name: "레지스턴스 효과",
 					colour: "lewd",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && (V.xchange.pill?.resistanceEffect || V.xchange.pill?.resistanceFakeout),
-					text: `Pill becomes less likely to expire after its expected duration with each orgasm.`,
+					text: `오르가즘을 맞을 때마다 알약이 예상 지속 시간이 지나도 효과가 끝날 가능성이 낮아집니다.`,
 				},
 				{
-					name: "X-Tend effect",
+					name: "엑스텐드 효과",
 					colour: "lewd",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.xtendEffect,
 					text: () => {
@@ -1433,94 +1433,94 @@
 							change = 3 * Math.trunc(gains / 1000) + (gains % 1000) / 500;
 						}
 
-						return `Let's you grow your original penis with every creampie you receive from a bigger dick that yours. At the risk of forfeiting your gains and shrinking your size if you happen to orgasm. <span class="gold">Current change:</span> ${change > 0? '+'+change.toFixed(2): change.toFixed(2)}cm`;
+						return `자기 것보다 큰 자지에게 질내사정(크림파이)을 받을 때마다 원래 자지가 자랍니다. 하지만 오르가즘을 맞으면 얻은 성장을 잃고 크기가 줄어들 위험이 있습니다. <span class="gold">현재 변화:</span> ${change > 0? '+'+change.toFixed(2): change.toFixed(2)}cm`;
 					},
 				},
 				{
-					name: "Breeder effect",
+					name: "브리더 효과",
 					colour: "lewd",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.breederEffect && V.xchange.pill?.fertile,
 					/* The "Breeder orgasm without creampie" setting lifts the denial, so the description must not keep promising it. */
-					text: `Enhances your fertility. ${
+					text: `가임력이 강화됩니다. ${
 						V.xchange.breederFreeOrgasm
-							? "Triggers earthshattering orgasm upon getting creampied."
-							: "Cannot orgasm unless inseminated, but triggers earthshattering orgasm upon getting creampied."
-					} Diminishes stress while sperm remains inside the vagina.${V.xchange.breederFreeOrgasm ? "" : " Vaginal toys can force an orgasm, but the hollow release is stressful."}`,
+							? "질내사정을 당하면 땅이 뒤흔들리는 오르가즘이 일어납니다."
+							: "정액이 주입되지 않으면 오르가즘을 맞을 수 없지만, 질내사정을 당하면 땅이 뒤흔들리는 오르가즘이 일어납니다."
+					} 정자가 질 안에 남아 있는 동안 스트레스가 줄어듭니다.${V.xchange.breederFreeOrgasm ? "" : " 질에 쓰는 장난감으로 오르가즘을 억지로 일으킬 수 있지만, 공허한 해방감은 스트레스가 됩니다."}`,
 				},
 				{
-					name: "Omega effect",
+					name: "오메가 효과",
 					colour: "lewd",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.omegaEffect,
 					text: `${
 						omegaTargetsAnus()
 							? V.xchange.omegaFreeOrgasm
-								? "Enables anal pregnancy. Triggers an earthshattering orgasm upon getting filled. Diminishes stress while sperm remains inside the anus."
-								: "Enables anal pregnancy. Cannot orgasm unless anally inseminated, but triggers an earthshattering orgasm upon getting filled. Diminishes stress while sperm remains inside the anus. Butt plugs and other anal toys can force an orgasm, but the hollow release is stressful."
+								? "항문 임신이 가능해집니다. 속이 채워지면 땅이 뒤흔들리는 오르가즘이 일어납니다. 정자가 항문 안에 남아 있는 동안 스트레스가 줄어듭니다."
+								: "항문 임신이 가능해집니다. 항문에 정액이 주입되지 않으면 오르가즘을 맞을 수 없지만, 속이 채워지면 땅이 뒤흔들리는 오르가즘이 일어납니다. 정자가 항문 안에 남아 있는 동안 스트레스가 줄어듭니다. 버트 플러그 같은 항문용 장난감으로 오르가즘을 억지로 일으킬 수 있지만, 공허한 해방감은 스트레스가 됩니다."
 							: V.xchange.omegaFreeOrgasm
-								? "Aimed at your womb rather than your ass. Triggers an earthshattering orgasm upon getting creampied. Diminishes stress while sperm remains inside the vagina."
-								: "Aimed at your womb rather than your ass. Cannot orgasm unless inseminated there, but triggers an earthshattering orgasm upon getting creampied. Diminishes stress while sperm remains inside the vagina. Vaginal toys can force an orgasm, but the hollow release is stressful."
-					} Keeps your ass a little slick with natural lubrication.${aboDrivesHeat() ? " Drives your body into heat as your fertile days come around." : ""}${
-						V.xchange.pheromoneAllure ? " Gives off a scent that draws attention." : ""
+								? "엉덩이가 아니라 자궁을 겨냥합니다. 질내사정을 당하면 땅이 뒤흔들리는 오르가즘이 일어납니다. 정자가 질 안에 남아 있는 동안 스트레스가 줄어듭니다."
+								: "엉덩이가 아니라 자궁을 겨냥합니다. 그곳에 정액이 주입되지 않으면 오르가즘을 맞을 수 없지만, 질내사정을 당하면 땅이 뒤흔들리는 오르가즘이 일어납니다. 정자가 질 안에 남아 있는 동안 스트레스가 줄어듭니다. 질에 쓰는 장난감으로 오르가즘을 억지로 일으킬 수 있지만, 공허한 해방감은 스트레스가 됩니다."
+					} 엉덩이가 자연스러운 윤활액으로 늘 조금 촉촉합니다.${aboDrivesHeat() ? " 가임일이 다가오면 몸이 발정기에 접어듭니다." : ""}${
+						V.xchange.pheromoneAllure ? " 시선을 끄는 냄새를 풍깁니다." : ""
 					}`,
 				},
 				{
-					name: "Beta effect",
+					name: "베타 효과",
 					colour: "lewd",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.betaEffect && V.player.vaginaExist,
-					text: `Gives you two wombs. Each conceives and carries on its own schedule, so you can fall pregnant a second time while already carrying, and each is delivered separately.${
-						V.xchange.pheromoneAllure ? " Gives off a faint scent that draws attention." : ""
+					text: `자궁이 두 개가 됩니다. 각각 따로 임신하고 따로 품기 때문에, 이미 임신 중이어도 다시 임신할 수 있으며 각각 따로 출산합니다.${
+						V.xchange.pheromoneAllure ? " 시선을 끄는 희미한 냄새를 풍깁니다." : ""
 					}`,
 				},
 				{
-					name: "Bull effect",
+					name: "불 효과",
 					colour: "lewd",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.bullEffect,
-					text: `Enhances your fertility. Almost guarantees successful impregnation of partners.`,
+					text: `가임력이 강화됩니다. 상대를 거의 확실하게 임신시킵니다.`,
 				},
 				{
-					name: "Alpha effect",
+					name: "알파 효과",
 					colour: "lewd",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.alphaEffect,
-					text: `Gives your penis a knot${
+					text: `자지에 매듭이 생기고${
 						V.xchange.alphaFreeOrgasm
-							? ", and cumming without your cock inside something feels hollow and stressful"
-							: " and prevents orgasm unless your cock is inside something"
-					}, making you prioritize penetrating others over being penetrated.${V.xchange.alphaFreeOrgasm ? "" : " A stroker can force an orgasm, but the hollow release is stressful."}${
-						V.xchange.pill?.alphaGrewPenis ? " This cock is the pill's own work, and goes when it does." : ""
-					}${aboDrivesHeat() && V.player.penisExist ? " Keeps you in rut." : ""}${V.xchange.pheromoneAllure && V.player.penisExist ? " Gives off a scent that draws attention." : ""}`,
+							? ", 자지를 무언가에 넣지 않은 채 사정하면 공허하고 스트레스가 됩니다"
+							: " 자지를 무언가에 넣고 있지 않으면 오르가즘을 맞을 수 없습니다"
+					}. 삽입당하는 것보다 다른 사람에게 삽입하는 것을 우선하게 됩니다.${V.xchange.alphaFreeOrgasm ? "" : " 자위 기구로 오르가즘을 억지로 일으킬 수 있지만, 공허한 해방감은 스트레스가 됩니다."}${
+						V.xchange.pill?.alphaGrewPenis ? " 이 자지는 알약이 만들어 낸 것이며, 알약의 효과가 끝나면 함께 사라집니다." : ""
+					}${aboDrivesHeat() && V.player.penisExist ? " 발정기 상태를 유지시킵니다." : ""}${V.xchange.pheromoneAllure && V.player.penisExist ? " 시선을 끄는 냄새를 풍깁니다." : ""}`,
 				},
 				{
-					name: "Hyper fertility effect",
+					name: "하이퍼 퍼틸리티 효과",
 					colour: "lewd",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.hyperFertilityEffect,
-					text: `Makes conception all but certain from any unprotected encounter, speeds up your pregnancies, and greatly raises the odds of carrying twins, triplets or quadruplets.`,
+					text: `피임하지 않은 모든 관계에서 거의 확실하게 임신하게 되고, 임신이 빨라지며, 쌍둥이·세쌍둥이·네쌍둥이를 가질 확률이 크게 높아집니다.`,
 				},
 				{
-					name: "Fake breeder effect",
+					name: "가짜 브리더 효과",
 					colour: "lewd",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.breederEffect && !V.xchange.pill?.fertile,
-					text: `Infertile. ${
+					text: `불임입니다. ${
 						V.xchange.breederFreeOrgasm
-							? "Triggers earthshattering orgasm upon getting creampied."
-							: "Cannot orgasm unless inseminated, but triggers earthshattering orgasm upon getting creampied."
-					} Diminishes stress while sperm remains inside the vagina.${V.xchange.breederFreeOrgasm ? "" : " Vaginal toys can force an orgasm, but the hollow release is stressful."}`,
+							? "질내사정을 당하면 땅이 뒤흔들리는 오르가즘이 일어납니다."
+							: "정액이 주입되지 않으면 오르가즘을 맞을 수 없지만, 질내사정을 당하면 땅이 뒤흔들리는 오르가즘이 일어납니다."
+					} 정자가 질 안에 남아 있는 동안 스트레스가 줄어듭니다.${V.xchange.breederFreeOrgasm ? "" : " 질에 쓰는 장난감으로 오르가즘을 억지로 일으킬 수 있지만, 공허한 해방감은 스트레스가 됩니다."}`,
 				},
 				{
-					name: "Passion effect",
+					name: "열정 효과",
 					colour: "lewd",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.passionEffect,
-					text: `Steadily dissolves aphrodisiacs into your bloodstream at an hourly rate.`,
+					text: `매시간 일정한 속도로 최음제가 혈류에 꾸준히 녹아듭니다.`,
 				},
 				{
-					name: "Dumb bitch effect",
+					name: "멍청한 암캐 효과",
 					colour: "lewd",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.dumbBitchEffect,
-					text: `Each orgasm fries your brain a little bit each time, making you dumber and less able to resist pleasure. First your grades suffer, then you lose your malice (skulduggery), next goes your willpower, and finally you get lewder and lewder. Diminishes stress while active.`,
+					text: `오르가즘을 맞을 때마다 뇌가 조금씩 타서, 점점 멍청해지고 쾌락에 저항하기 어려워집니다. 먼저 성적이 떨어지고, 다음으로 악의(속임수)를 잃고, 그다음에는 의지력이 사라지며, 마지막에는 점점 더 음란해집니다. 활성화된 동안 스트레스가 줄어듭니다.`,
 				},
 				(() => {
 				const clone = V.xchange?.pill?.clone;
 				return {
-					name: "Clone effect",
+					name: "클론 효과",
 					colour: "teal",
 					has:
 					V.xchange?.pill?.active &&
@@ -1528,46 +1528,46 @@
 					typeof clone === "string" &&
 					clone.trim() !== "" &&
 					clone !== "none",
-					text: "You've been changed into a clone of an existing person.",
+					text: "실존하는 사람의 클론으로 바뀌었습니다.",
 				};
 				})(),
 				{
-					name: "Portal effect",
+					name: "포털 효과",
 					colour: "lewd",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.portalEffect,
-					text: `Allows random NPCs to fuck you remotely, regardless of your consent. <span class="teal"><<print-portalduration>></span> remaining.`,
+					text: `당신의 동의와 상관없이 무작위 NPC가 원격으로 당신을 범할 수 있습니다. <span class="teal"><<print-portalduration>></span> 남았습니다.`,
 				},				
 				{
-					name: "Innocence effect",
+					name: "순수함 효과",
 					colour: "lewd",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.innocenceEffect,
-					text: `Wipes your mind of all awareness of sexuality and shame.`,
+					text: `성과 수치심에 대한 모든 인식을 머릿속에서 지워 버립니다.`,
 				},
 				{
-					name: "Fear toxin effect",
+					name: "공포 독소 효과",
 					colour: "red",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.feartoxinEffect,
-					text: `Keeps your trauma at maximum and self-control at zero while active.`,
+					text: `활성화된 동안 트라우마를 최대로, 자제력을 0으로 유지합니다.`,
 				},
 				{
-					name: "Swell effect",
+					name: "부풀기 효과",
 					colour: "lewd",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.swellEffect,
 					text: () => (V.xchange?.pill?.swellTarget === "penis" || (V.xchange?.pill?.swellTarget == null && V.player.penisExist && !V.player.vaginaExist))
-						? "Increases the size of your penis."
-						: "Increases the size of your breasts and ass.",
+						? "자지의 크기가 커집니다."
+						: "가슴과 엉덩이의 크기가 커집니다.",
 				},
 				{
-					name: "Bimbo effect",
+					name: "빔보 효과",
 					colour: "lewd",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.bimboEffect,
-					text: `Decreases your intelligence and increases your lewdness. Diminishes stress while active.`,
+					text: `지능이 떨어지고 음란함이 늘어납니다. 활성화된 동안 스트레스가 줄어듭니다.`,
 				},
 				{
-					name: "CumCure effect",
+					name: "정액 치료 효과",
 					colour: "lewd",
 					has: V.xchange.pill?.active && V.xchange.pill?.effectsKnown && V.xchange.pill?.cumcureEffect,
-					text: `Reduces the duration of your transformation every time cum is deposited inside you.`,
+					text: `몸속에 정액이 사정될 때마다 변신의 지속 시간이 줄어듭니다.`,
 				},
 			],
 		},
@@ -1575,35 +1575,35 @@
 			title: "특별 특성",
 			traits: [
 				{
-					name: "White so Pale",
+					name: "창백하도록 하얀",
 					colour: "",
 					style: `background: linear-gradient(to right, #f5f1e8 0%, #a9d8e8 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;`,
 					has: whiteSoPaleHeld(),
-					text: "The wishing stones are yours. Your physique is 10% higher, and it decays 20% slower each day.",
+					text: "소원의 돌이 당신의 것입니다. 체격이 10% 높아지고, 매일 20% 더 느리게 감소합니다.",
 				},
 				{
-					name: "Shrine's Fortune",
+					name: "사당의 행운",
 					colour: "gold",
 					has: !$statFreeze and ($daily.moorGamblingLuck),
-					text: "Your prayer at an ancient shrine improves your odds by 40% when playing blackjack with Wren, throwing dice at the pub, or betting on horse races. Lasts until midnight.",
+					text: "오래된 사당에서 올린 기도 덕분에 렌과 블랙잭을 하거나, 술집에서 주사위를 던지거나, 경마에 돈을 걸 때 승률이 40% 오릅니다. 자정까지 지속됩니다.",
 				},
 				{
-					name: "Wren's Read",
+					name: "렌의 눈썰미",
 					colour: "teal",
 					has: !$statFreeze and ($daily.wrenDiceTip),
-					text: "Wren talked you through the dice table at the pub. Your odds there are 10% better. Lasts until midnight.",
+					text: "렌이 술집의 주사위 테이블에 대해 알려 주었습니다. 그곳에서의 승률이 10% 오릅니다. 자정까지 지속됩니다.",
 				},
 				{
-					name: "Four-Leaf Fortune",
+					name: "네잎클로버의 행운",
 					colour: "green",
 					has: !$statFreeze and ($foodstuff.four_leaf_clover and $foodstuff.four_leaf_clover.amount gte 1),
-					text: "Carrying a four-leaf clover improves your odds by 7% when playing blackjack with Wren, throwing dice at the pub, or betting on horse races.",
+					text: "네잎클로버를 지니고 있으면 렌과 블랙잭을 하거나, 술집에서 주사위를 던지거나, 경마에 돈을 걸 때 승률이 7% 오릅니다.",
 				},
 				{
-					name: "Oathbreaker",
+					name: "서약을 깬 자",
 					colour: "wraith",
 					has: ["dead", "sold"].includes($wraith.offspring) and _wraithEventSocial,
-					text: "You failed them. You failed us.",
+					text: "당신은 그들을 저버렸습니다. 우리를 저버렸습니다.",
 					textColour: "wraith"
 				},
 				{
@@ -1613,44 +1613,44 @@
 					text: "최음제와 술에 더 취약합니다. 아편을 흡입하면 잠을 더 잘 자고 불면증이 억제됩니다.",
 				},
 				{
-					name: "Well Fed",
+					name: "배불리 먹음",
 					colour: "green",
 					has: wellFedActive(),
 					text: () => {
 						const fullHours = Math.ceil(((Number(V.foodSatiety) || 0) - 50) / 2);
 						const hoursLeft = Math.max(1, fullHours, Number(V.pocket?.bloated) || 0);
-						return `You've been keeping yourself fed. Stress, trauma, pain and tiredness build 5% slower. Wears off in about ${hoursLeft} hour${hoursLeft === 1 ? "" : "s"}.`;
+						return `꼬박꼬박 챙겨 먹고 있습니다. 스트레스, 트라우마, 고통, 피로가 5% 더 느리게 쌓입니다. 약 ${hoursLeft}시간 뒤에 효과가 사라집니다.`;
 					},
 				},
 				{
-					name: "Bloated",
+					name: "더부룩함",
 					colour: "red",
 					has: bloatedActive(),
 					text: () => {
 						const hoursLeft = Math.max(1, Math.ceil(Number(V.pocket?.bloated) || 0));
-						return `You've eaten too much. Physique, willpower, athletics, dancing, skulduggery, swimming, tending, housekeeping, and English skill checks have an extra 5% chance to fail. Wears off in about ${hoursLeft} hour${hoursLeft === 1 ? "" : "s"}, but eating anything resets it to 10 hours again.`;
+						return `너무 많이 먹었습니다. 체격, 의지력, 체육, 춤, 속임수, 수영, 관리, 가사, 영어 스킬 판정의 실패 확률이 추가로 5% 늘어납니다. 약 ${hoursLeft}시간 뒤에 효과가 사라지지만, 무언가를 먹으면 다시 10시간으로 초기화됩니다.`;
 					},
 				},
 				{
-					name: "Smoker",
+					name: "흡연자",
 					colour: "grey",
 					has: !$statFreeze and ($cigaretteAddiction),
 					text: () => {
 						const since = V.timeSinceCigarette || 0;
 						if (since >= 1440) {
 							const daysLeft = Math.max(1, Math.ceil((10080 - since) / 1440));
-							return `You've a cigarette habit, and it's been a while since your last one. The craving will gnaw at you until you smoke again, or until it fades after about ${daysLeft} more day${daysLeft === 1 ? "" : "s"} clean.`;
+							return `담배 습관이 있고, 마지막으로 피운 지 꽤 되었습니다. 다시 피우거나, 약 ${daysLeft}일 더 끊어서 사라질 때까지 갈망이 당신을 갉아먹을 것입니다.`;
 						}
-						return "You've picked up a cigarette habit. Go too long without one and you'll start to crave it. Stay clean for a week and the habit fades.";
+						return "담배 습관이 생겼습니다. 너무 오래 피우지 않으면 갈망이 시작됩니다. 일주일 동안 끊으면 습관이 사라집니다.";
 					},
 				},
 				{
 					name: () => {
 						const pct = Math.round((V.alcoholTolerance || 0) / 10);
 						if (V.timeSinceDrunk > 4320 && V.drunk <= 0) {
-							return `Alcohol Recovery: ${pct}%`;
+							return `알코올 회복: ${pct}%`;
 						}
-						return `${(V.alcoholTolerance || 0) >= 300 ? "Alcohol Addiction" : "Alcohol Tolerance"}: ${pct}%`;
+						return `${(V.alcoholTolerance || 0) >= 300 ? "알코올 중독" : "알코올 내성"}: ${pct}%`;
 					},
 					colour: "",
 					style: `background: linear-gradient(to right,rgb(187, 192, 221) 0%,rgb(166, 188, 222) 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;`,
@@ -1659,37 +1659,37 @@
 						const pct = Math.round((V.alcoholTolerance || 0) / 10);
 						const daysLeft = Math.ceil(((V.alcoholTolerance || 0) / 1000) * 30);
 						if (V.timeSinceDrunk > 4320 && V.drunk <= 0) {
-							return `Your body is recovering from chronic drunkenness. Tolerance has faded to ${pct}% and will be fully gone after roughly ${daysLeft} more day${daysLeft === 1 ? "" : "s"} of sobriety.`;
+							return `몸이 만성적인 음주에서 회복 중입니다. 내성이 ${pct}%로 줄었으며, 앞으로 약 ${daysLeft}일 더 술을 마시지 않으면 완전히 사라집니다.`;
 						}
 						if ((V.alcoholTolerance || 0) >= 1000) {
-							return "Your body is completely accustomed to being drunk. Alcohol no longer weakens your willpower or prevents you from doing anything that requires sobriety.";
+							return "몸이 취한 상태에 완전히 익숙해졌습니다. 알코올이 더 이상 의지력을 약하게 만들지 않고, 맨정신이 필요한 일을 막지도 않습니다.";
 						}
-						return `Your body has adapted to being drunk (${pct}%). Drunkenness causes less fatigue, clears from your system faster, and is less likely to impair you.`;
+						return `몸이 취한 상태에 적응했습니다 (${pct}%). 취기로 인한 피로가 줄고, 몸에서 더 빨리 빠져나가며, 몸을 가누지 못하게 될 가능성도 낮아집니다.`;
 					},
 				},
 				{
 					name: () => V.submissive <= 850 ? "쾌락주의자" : "절정 중독",
 					colour: "lewd",
 					has: $orgasmtrait gte 1,
-					text: "So many orgasms have had a physiological effect. Cumming is harder, but orgasms relieve more stress. Repeated orgasms give less relief and can eventually add stress, though much less than normal.",
+					text: "너무 많은 오르가즘이 몸에 생리적인 영향을 남겼습니다. 사정하기가 더 어렵지만, 오르가즘이 스트레스를 더 많이 풀어 줍니다. 연이은 오르가즘은 해소 효과가 줄고 결국 스트레스를 더할 수도 있지만, 보통보다는 훨씬 적습니다.",
 				},
 				{
-					name: () => V.submissive <= 850 ? "Cock Enthusiast" : "Cock Addict",
+					name: () => V.submissive <= 850 ? "자지 애호가" : "자지 중독자",
 					colour: "lewd",
 					has: !$statFreeze and !$hc and ($penis_addict_trait gte 1),
-					text: `So many orgasms while getting pounded have had a physiological effect. <<if $xchange.genitalAddictFreeOrgasm>>Cumming without getting railed in your ass<<= $player.vaginaExist? " or your pussy":"">> feels hollow and stressful.<<else>>You've become unable to orgasm unless you're getting railed in your ass<<= $player.vaginaExist? " or your pussy":"">>. Insertable toys can force an orgasm, but the hollow release is stressful.<</if>>`,
+					text: `박히면서 맞은 너무 많은 오르가즘이 몸에 생리적인 영향을 남겼습니다. <<if $xchange.genitalAddictFreeOrgasm>>엉덩이<<= $player.vaginaExist? "나 보지":"">>에 박히지 않은 채 사정하면 공허하고 스트레스가 됩니다.<<else>>엉덩이<<= $player.vaginaExist? "나 보지":"">>에 박히고 있지 않으면 오르가즘을 맞을 수 없게 되었습니다. 삽입하는 장난감으로 오르가즘을 억지로 일으킬 수 있지만, 공허한 해방감은 스트레스가 됩니다.<</if>>`,
 				},
 				{
-					name: () => V.submissive <= 850 ? "Hole Enthusiast" : "Hole Addict",
+					name: () => V.submissive <= 850 ? "구멍 애호가" : "구멍 중독자",
 					colour: "lewd",
 					has: !$statFreeze and !$hc and ($hole_addict_trait gte 1),
-					text: `So many orgasms while ramming away at fleshy holes have had a physiological effect. <<if $xchange.genitalAddictFreeOrgasm>>Cumming without your cock inside something feels hollow and stressful.<<else>>You've become unable to orgasm unless you get your cock into something. A stroker can force an orgasm, but the hollow release is stressful.<</if>><<= !$player.penisExist? " Without a cock, the craving lies dormant and doesn't hold back your orgasms.":"">>`,
+					text: `살구멍을 쑤시면서 맞은 너무 많은 오르가즘이 몸에 생리적인 영향을 남겼습니다. <<if $xchange.genitalAddictFreeOrgasm>>자지를 무언가에 넣지 않은 채 사정하면 공허하고 스트레스가 됩니다.<<else>>자지를 무언가에 넣지 않으면 오르가즘을 맞을 수 없게 되었습니다. 자위 기구로 오르가즘을 억지로 일으킬 수 있지만, 공허한 해방감은 스트레스가 됩니다.<</if>><<= !$player.penisExist? " 자지가 없으면 갈망이 잠들어 있어 오르가즘을 막지 않습니다.":"">>`,
 				},
 				{
-					name: "Oral Fixation",
+					name: "구강 집착",
 					colour: "lewd",
 					has: oralFixationActive(),
-					text: `So much sex with your mouth has had a physiological effect. <<= $xchange.oralFixationFreeOrgasm ? "Cumming without" : "You can't orgasm without">> giving oral<<= $xchange.oralFixationSwallowRelief ? " or having swallowed cum within the last hour" : "">><<= $xchange.oralFixationFreeOrgasm ? " feels hollow and stressful" : "">>. Your mouth is far more sensitive, and swallowed cum has an addictive, arousing effect on your body that makes your head spin.`,
+					text: `입으로 한 너무 많은 섹스가 몸에 생리적인 영향을 남겼습니다. <<= $xchange.oralFixationFreeOrgasm ? "구강성교를 하지 않은 채" : "구강성교를 하지 않은 채">><<= $xchange.oralFixationSwallowRelief ? ", 최근 한 시간 안에 정액을 삼키지도 않은 채" : "">><<= $xchange.oralFixationFreeOrgasm ? " 사정하면 공허하고 스트레스가 됩니다" : "로는 오르가즘을 맞을 수 없습니다">>. 입이 훨씬 더 민감해졌고, 삼킨 정액이 몸을 흥분시키는 중독적인 효과를 내어 머리가 어지러울 정도입니다.`,
 				},
 				{
 					name: "질식애호증",
@@ -1698,16 +1698,16 @@
 					text: "산소가 부족할 때의 감각을 사랑하게 되었습니다. 목이 졸리면 섹스에서 더 큰 쾌락을 느낍니다.",
 				},
 				{
-					name: "Chastity Acclimated",
+					name: "정조대에 익숙해짐",
 					colour: "lewd",
 					has: !$statFreeze and !$hc and ($chastityAcclimatedTrait gte 1),
-					text: "Ten straight days locked away has taken the edge off for good. Chastity you didn't choose builds far less frustration.",
+					text: "열흘 내내 갇혀 지낸 끝에 날카로운 욕구가 영영 무뎌졌습니다. 스스로 택하지 않은 정조대는 훨씬 적은 욕구불만을 쌓습니다.",
 				},
 				{
-					name: "Arousal Acclimated",
+					name: "흥분에 익숙해짐",
 					colour: "lewd",
 					has: !$statFreeze and !$hc and ($arousalDesensitizedTrait gte 1),
-					text: "Two straight weeks of being constantly horny, or long enough locked in chastity, has left you desensitised to your own arousal. Anything that would turn you on now only gets you half as worked up, and being aroused can no longer force your hand.",
+					text: "두 주 내내 줄곧 발정해 있었거나 정조대에 충분히 오래 갇혀 있었던 탓에 스스로의 흥분에 무뎌졌습니다. 예전 같으면 달아올랐을 일에도 이제는 절반만 흥분하고, 흥분했다고 해서 더 이상 억지로 행동하게 되지도 않습니다.",
 				},
 				{
 					name: () => V.submissive <= 850 ? "정액 감별사" : "정액받이",
@@ -1740,10 +1740,10 @@
 					text: "수많은 촉수들이 당신의 몸을 농락했습니다. 촉수에게 공격당할 때 트라우마가 더 천천히 증가합니다.",
 				},
 				{
-					name: "Critter Magnet",
+					name: "작은 생물 자석",
 					colour: "lewd",
 					has: $crittermagnettrait gte 1,
-					text: "After so many encounters with swarms and small creatures, you crave their attention. You strip and submit when they attack, and cannot fight them off. Critter sex soothes stress and trauma.",
+					text: "무리 지은 작은 생물들과 너무 많이 마주친 끝에 그들의 관심을 갈망하게 되었습니다. 그들이 공격하면 옷을 벗고 굴복하며, 맞서 싸울 수 없습니다. 작은 생물과의 섹스는 스트레스와 트라우마를 달래 줍니다.",
 				},
 				{
 					name: () => V.submissive <= 850 ? "무모한 도전자" : "맛있는 자",
@@ -1758,172 +1758,172 @@
 					text: "신선한 모유의 영양을 온전히 이용할 수 있습니다. 마시면 몸에 활력이 돌고 체력이 상승합니다.",
 				},
 				{
-					name: _amcTraitName("Adaptive Muscle Growth", "physique"),
+					name: _amcTraitName("적응형 근육 성장", "체격"),
 					colour: "green",
 					has: $AMCTraits.physique is 2,
-					text: "A unique anatomical trait has gifted you the potential for unmatched muscle growth."
+					text: "독특한 신체 특성 덕분에 비길 데 없는 근육 성장의 잠재력을 타고났습니다."
 				},
 				{
-					name: _amcTraitName("Resilient Nature", "willpower"),
+					name: _amcTraitName("회복력 있는 천성", "의지력"),
 					colour: "green",
 					has: $AMCTraits.willpower is 2,
-					text: "Your natural disposition towards bouncing back when faced with hardship gifts you unique potential for boundless mental fortitude."
+					text: "역경에 부딪혀도 다시 일어서는 타고난 기질 덕분에 한계 없는 정신력을 기를 독특한 잠재력을 지니고 있습니다."
 				},
 				{
-					name: _amcTraitName("Innocent-looking Face", "skulduggery"),
+					name: _amcTraitName("순진해 보이는 얼굴", "속임수"),
 					colour: "green",
 					has: $AMCTraits.skulduggery is 2,
-					text: "Your face features and disposition naturally lend people to trust your words and intentions. Now, if only you had the proper skills to abuse that talent to the fullest..."
+					text: "당신의 이목구비와 성품은 사람들이 당신의 말과 의도를 자연스럽게 믿게 만듭니다. 이제 그 재능을 마음껏 악용할 제대로 된 기술만 있다면..."
 				},
 				{
-					name: _amcTraitName("Rhythmic Sense", "dancing"),
+					name: _amcTraitName("리듬감", "춤"),
 					colour: "green",
 					has: $AMCTraits.dancing is 2,
-					text: "You've got a unique sense for rhythm and timing. With proper training, your movements will be as fluid as water and as a sharp as a blade."
+					text: "리듬과 타이밍에 대한 독특한 감각이 있습니다. 제대로 훈련하면 움직임이 물처럼 유려하면서도 칼날처럼 날카로워질 것입니다."
 				},
 				{
-					name: _amcTraitName("Efficient Respiration", "swimming"),
+					name: _amcTraitName("효율적인 호흡", "수영"),
 					colour: "green",
 					has: $AMCTraits.swimming is 2,
-					text: "A unique anatomical trait has gifted your cells with a specially efficient respiration process. With proper training you'll be able to outlast any normal person's breath, and swim at full strength for longer than anybody else."
+					text: "독특한 신체 특성 덕분에 세포가 유달리 효율적으로 호흡합니다. 제대로 훈련하면 보통 사람의 숨 참기를 능가하고, 누구보다 오래 전력으로 헤엄칠 수 있게 됩니다."
 				},
 				{
-					name: _amcTraitName("Lean Fibers", "athletics"),
+					name: _amcTraitName("가벼운 근섬유", "체육"),
 					colour: "green",
 					has: $AMCTraits.athletics is 2,
-					text: "A unique anatomical trait has made you fairly light for your size. Where the average person peaks, you can still improve your speed and agility even further."
+					text: "독특한 신체 특성 덕분에 덩치에 비해 꽤 가볍습니다. 보통 사람이 한계에 다다르는 지점에서도 속도와 민첩성을 더 끌어올릴 수 있습니다."
 				},
 				{
-					name: _amcTraitName("Empathy", "tending"),
+					name: _amcTraitName("공감", "관리"),
 					colour: "green",
 					has: $AMCTraits.tending is 2,
-					text: "You have a unique talent for understanding other beings and their needs. As your understanding increases, you gain insights into their care that would be impossible for the average person."
+					text: "다른 존재와 그들이 필요로 하는 것을 이해하는 독특한 재능이 있습니다. 이해가 깊어질수록 보통 사람은 얻을 수 없는 돌봄의 통찰을 얻게 됩니다."
 				},
 				{
-					name: _amcTraitName("Multitasking Sense", "housekeeping"),
+					name: _amcTraitName("멀티태스킹 감각", "가사"),
 					colour: "green",
 					has: $AMCTraits.housekeeping is 2,
-					text: "Your ability to multitask gives you unique potential to trivialise small and repetitive tasks, while still remaining capable of focusing on the big picture. You're the envy of housewives and craftmen alike."
+					text: "여러 일을 한꺼번에 해내는 능력 덕분에 사소하고 반복적인 일을 거뜬히 처리하면서도 큰 그림에서 눈을 떼지 않을 독특한 잠재력이 있습니다. 주부와 장인 모두가 부러워할 만합니다."
 				},
 				{
-					name: _amcTraitName("Gifted Situational Awareness", "brawling"),
+					name: _amcTraitName("뛰어난 상황 인식", "난투"),
 					colour: "green",
 					has: $AMCTraits.brawling is 2,
-					text: "Your exceptional ability to keep track of your surroundings helps you see threats better than anybody else. If only you had the experience to manage all that input, you'd be an unmatched brawler."
+					text: "주변을 놓치지 않는 탁월한 능력 덕분에 누구보다 위협을 잘 알아봅니다. 그 모든 정보를 다룰 경험만 있다면 비할 데 없는 난투가가 될 것입니다."
 				},
 				{
-					name: _amcTraitName("Instinctive Footwork", "footwork"),
+					name: _amcTraitName("본능적인 풋워크", "풋워크"),
 					colour: "green",
 					has: $AMCTraits.footwork is 2,
-					text: "You have a natural instinct for balance and positioning. With proper training, your movement could keep you steady where anyone else would stumble."
+					text: "균형과 위치 잡기에 타고난 본능이 있습니다. 제대로 훈련하면 다른 사람이라면 휘청거릴 상황에서도 흔들림 없이 움직일 수 있습니다."
 				},
 				{
-					name: _amcTraitName("Precise Strikes", "striking"),
+					name: _amcTraitName("정밀한 타격", "타격"),
 					colour: "green",
 					has: $AMCTraits.striking is 2,
-					text: "Your hand-eye coordination gives your strikes unusual precision. With proper training, you could hit harder and more accurately than most."
+					text: "손과 눈의 협응력 덕분에 타격이 유달리 정밀합니다. 제대로 훈련하면 대부분의 사람보다 더 강하고 정확하게 칠 수 있습니다."
 				},
 				{
-					name: _amcTraitName("Powerful Legs", "kicking"),
+					name: _amcTraitName("강력한 다리", "발차기"),
 					colour: "green",
 					has: $AMCTraits.kicking is 2,
-					text: "Your legs are naturally suited to delivering powerful kicks. With proper training, you could strike harder and more accurately than most."
+					text: "다리가 본래 강력한 발차기를 날리기에 알맞습니다. 제대로 훈련하면 대부분의 사람보다 더 강하고 정확하게 칠 수 있습니다."
 				},
 				{
-					name: _amcTraitName("Empiric Understanding", "science"),
+					name: _amcTraitName("경험적 이해", "과학"),
 					colour: "green",
 					has: $AMCTraits.science is 2,
-					text: "You've got a talent for understanding natural phenomena through observation. With proper study, you could eventually surpass even the most gifted minds in the world."
+					text: "관찰을 통해 자연 현상을 이해하는 재능이 있습니다. 제대로 공부하면 결국 세상에서 가장 뛰어난 두뇌들마저 넘어설 수 있습니다."
 				},
 				{
-					name: _amcTraitName("Logic Sense", "maths"),
+					name: _amcTraitName("논리 감각", "수학"),
 					colour: "green",
 					has: $AMCTraits.maths is 2,
-					text: "You have exceptional deductive reasoning skills. With proper study, mathemathics will no longer be the esoteric art that others profess."
+					text: "연역적 추론 능력이 탁월합니다. 제대로 공부하면 수학은 더 이상 남들이 말하는 난해한 학문이 아닐 것입니다."
 				},
 				{
-					name: _amcTraitName("Eloquence", "English"),
+					name: _amcTraitName("웅변", "영어"),
 					colour: "green",
 					has: $AMCTraits.english is 2,
-					text: "You have a natural ability for eloquence and rethoric. Your only obstacle is a proper vocabulary and understanding of language to truly become persuasive in any realm."
+					text: "타고난 말솜씨와 수사 능력이 있습니다. 어떤 분야에서든 진정으로 설득력을 갖추려면 알맞은 어휘와 언어에 대한 이해만 갖추면 됩니다."
 				},
 				{
-					name: _amcTraitName("Eidetic Memory", "history"),
+					name: _amcTraitName("영상 기억", "역사"),
 					colour: "green",
 					has: $AMCTraits.history is 2,
-					text: "Memorisation is something trivial for you. With proper study, you'll easily become a boundless repository of historical knowledge."
+					text: "암기는 당신에게 아무것도 아닙니다. 제대로 공부하면 손쉽게 끝없는 역사 지식의 저장고가 될 것입니다."
 				},
 				{
-					name: _amcTraitName("Fetish Sense", "seduction skill"),
+					name: _amcTraitName("페티시 감각", "유혹 스킬"),
 					colour: "green",
 					has: $AMCTraits.seductionskill is 2,
-					text: "You have a natural ability to perceive and understand what makes a person hot and bothered. You only need experience to learn how to best apply pressure on those psychological weak points."
+					text: "무엇이 사람을 달아오르게 하고 안달 나게 만드는지 알아채고 이해하는 타고난 능력이 있습니다. 그 심리적 약점을 어떻게 눌러야 가장 좋은지 배울 경험만 있으면 됩니다."
 				},
 				{
-					name: _amcTraitName("Textured Tongue", "oral skill"),
+					name: _amcTraitName("돌기 있는 혀", "구강 스킬"),
 					colour: "green",
 					has: $AMCTraits.oralskill is 2,
-					text: "You were born with a uniquely textured tongue. With proper practice, you could probably bring sensations with it that a normal person could not."
+					text: "독특한 돌기가 있는 혀를 타고났습니다. 제대로 연습하면 평범한 사람은 줄 수 없는 감각을 선사할 수 있을 것입니다."
 				},
 				{
-					name: _amcTraitName("Yielding Chest", "chest skill"),
+					name: _amcTraitName("말랑한 가슴", "가슴 스킬"),
 					colour: "green",
 					has: $AMCTraits.chestskill is 2,
-					text: "The unreal texture of your chest brings unexpected silky sensations to the touch. With practice, you could probably use it to bring pleasure to new heights for others."
+					text: "현실 같지 않은 가슴의 감촉은 만지면 뜻밖의 비단 같은 느낌을 줍니다. 연습하면 그것으로 다른 사람에게 새로운 경지의 쾌락을 안길 수 있을 것입니다."
 				},
 				{
-					name: _amcTraitName("Dextrous Fingers", "hands skill"),
+					name: _amcTraitName("능숙한 손가락", "손 스킬"),
 					colour: "green",
 					has: $AMCTraits.handskill is 2,
-					text: "You've always had a unique ability to move your fingers in ways that others struggle to. With proper practice, you could make your hands display unreal feats of skill and precision others can only dream of... or, even bring untold pleasures to a lover."
+					text: "남들은 힘들어하는 방식으로 손가락을 움직이는 독특한 능력이 늘 있었습니다. 제대로 연습하면 남들은 꿈도 못 꿀 비현실적인 솜씨와 정밀함을 손으로 보여 줄 수 있습니다... 혹은 연인에게 말로 다할 수 없는 쾌락을 안길 수도 있습니다."
 				},
 				{
-					name: _amcTraitName("Firm Buttocks", "buttocks skill"),
+					name: _amcTraitName("탄탄한 엉덩이", "엉덩이 스킬"),
 					colour: "green",
 					has: $AMCTraits.bottomskill is 2,
-					text: "The inviting firmness of your backside is legend-worthy. What you do with it is up to you."
+					text: "유혹하는 듯한 엉덩이의 탄력은 전설이 될 만합니다. 그것으로 무엇을 할지는 당신에게 달렸습니다."
 				},
 				{
-					name: _amcTraitName("Large Glans", "penile skill"),
+					name: _amcTraitName("큰 귀두", "자지 스킬"),
 					colour: "green",
 					has: $AMCTraits.penileskill is 2,
-					text: "Your mushroom-shaped fuck-stick lets you stimulate ridges and crevices that others cannot. With proper practice, you could bring untold pleasure to a lover, regardless of your size."
+					text: "버섯 모양의 자지 덕분에 다른 사람은 닿지 못하는 주름과 틈새를 자극할 수 있습니다. 제대로 연습하면 크기와 상관없이 연인에게 말로 다할 수 없는 쾌락을 안길 수 있습니다."
 				},
 				{
-					name: _amcTraitName("Pelvic Strength", "vaginal skill"),
+					name: _amcTraitName("골반 근력", "질 스킬"),
 					colour: "green",
 					has: $AMCTraits.vaginalskill is 2,
-					text: "You have unique control over your pelvic muscles. Which with practice, you could use to milk dry anything vaguely phallic-shaped using your vagina."
+					text: "골반 근육을 독특하게 다룰 수 있습니다. 연습하면 그 힘으로 보지를 이용해 조금이라도 남근처럼 생긴 것은 무엇이든 말라붙을 때까지 짜낼 수 있습니다."
 				},
 				{
-					name: _amcTraitName("Fiber-rich Diet", "anal skill"),
+					name: _amcTraitName("섬유질 식단", "항문 스킬"),
 					colour: "green",
 					has: $AMCTraits.analskill is 2,
-					text: "Your anal cavity is always nice and clean without effort. And that complete certainty lets you focus fully on giving pleasure with it."
+					text: "별다른 노력 없이도 항문 안이 언제나 깨끗합니다. 그 확신 덕분에 오롯이 쾌락을 주는 데 집중할 수 있습니다."
 				},
 				{
-					name: _amcTraitName("Thick Thighs", "thigh skill"),
+					name: _amcTraitName("두툼한 허벅지", "허벅지 스킬"),
 					colour: "green",
 					has: $AMCTraits.thighskill is 2,
-					text: "Your thighs are naturally plump and fleshy. Which lets you grip objects and apendages more easily with them, potentially heightening the pleasure you give."
+					text: "허벅지가 타고나길 통통하고 살집이 있습니다. 덕분에 물건이나 신체 부위를 더 쉽게 붙잡을 수 있어, 상대에게 주는 쾌락이 더 커질 수 있습니다."
 				},
 				{
-					name: _amcTraitName("Dextrous Feet", "feet skill"),
+					name: _amcTraitName("능숙한 발", "발 스킬"),
 					colour: "green",
 					has: $AMCTraits.feetskill is 2,
-					text: "Have you seen people play the guitar with their feet? Enough said. You have that potential within you."
+					text: "발로 기타를 치는 사람들을 본 적 있나요? 더 말할 필요도 없습니다. 당신 안에 그런 잠재력이 있습니다."
 				},
 				{
-					name: _amcTraitName("Hyperactive Mammaries", "milk volume"),
+					name: _amcTraitName("과활동 유방", "모유량"),
 					colour: "green",
 					has: $AMCTraits.milk is 2,
-					text: "Your mammaries have an unnatural capacity for milk. Where a normal body would reach its limit, yours can swell with twice as much."
+					text: "유방이 부자연스러울 만큼 많은 젖을 담을 수 있습니다. 보통 몸이라면 한계에 다다를 지점에서도 두 배까지 부풀 수 있습니다."
 				},
 				{
-					name: _amcTraitName("Hyperactive Prostate", "semen volume"),
+					name: _amcTraitName("과활동 전립선", "정액량"),
 					colour: "green",
 					has: $AMCTraits.semen is 2,
-					text: "Your prostate has an unnatural capacity for semen. Where a normal body would be spent, yours can hold twice as much in reserve."
+					text: "당신의 전립선은 정액을 담는 용량이 부자연스럽게 큽니다. 보통의 몸이라면 바닥났을 때에도 당신의 몸은 두 배를 비축해 둘 수 있습니다."
 				},
 				{
                     name: "초월적 학습",
@@ -2263,7 +2263,7 @@
 							&& !!V.poppyDrug?.insomniaSuppress;
 						const pillSuppressed = typeof insomniaSuppressedBySleepAid === "function"
 							&& insomniaSuppressedBySleepAid();
-						if (V.hypnosis_traits.slumber || opiumSuppressed || pillSuppressed) return "Suppressed Insomnia";
+						if (V.hypnosis_traits.slumber || opiumSuppressed || pillSuppressed) return "억제된 불면증";
 						return V.controlled === 0 ? "불면증" : "통제된 불면증";
 					},
 					colour: () => {
@@ -2287,9 +2287,9 @@
 							&& insomniaSuppressedBySleepAid();
 
 						if (V.hypnosis_traits.slumber || opiumSuppressed || pillSuppressed) {
-							return "Your insomnia is suppressed. You can sleep normally.";
+							return "불면증이 억제되어 있습니다. 정상적으로 잠들 수 있습니다.";
 						}
-						return "You get less rest from sleeping.";
+						return "잠을 자도 덜 쉬게 됩니다.";
 					},
 					textColour: () => {
 						const opiumSuppressed = Array.isArray(V.backgroundTraits)
@@ -2306,19 +2306,19 @@
 					},
 				},
 				{
-					name: "Sedative Dependence",
+					name: "진정제 의존",
 					colour: "red",
 					has: typeof sleepAidDependenceLevel === "function" and sleepAidDependenceLevel() gte 1,
 					text: () => sleepAidDependenceLevel() >= 2
-						? "You now depend on sleeping pills. Without them, you can barely sleep."
-						: "Your body is getting used to sleeping pills. You sleep poorly without them.",
+						? "이제 수면제에 의존하고 있습니다. 수면제가 없으면 거의 잠들 수 없습니다."
+						: "몸이 수면제에 익숙해지고 있습니다. 수면제가 없으면 잠을 잘 이루지 못합니다.",
 					textColour: "red",
 				},
 				{
-					name: "Antidepressant",
+					name: "항우울제",
 					colour: "blue",
 					has: typeof antidepressantActive === "function" and antidepressantActive(),
-					text: "Stress rises more slowly, but you become tired faster.",
+					text: "스트레스가 더 느리게 오르지만, 더 빨리 피곤해집니다.",
 					textColour: "black",
 				},
 				{
@@ -2387,10 +2387,10 @@
 				},
 				{
 					name: () => {
-						if (colosseumDrugStage() === "crash") return "Arena Drug Crash";
-						if (calmorylDissociationActive()) return "Calmoryl Dissociation";
-						if (V.controlled > 0) return "Controlled Dissociation";
-						return "Dissociation";
+						if (colosseumDrugStage() === "crash") return "경기장 약물 후유증";
+						if (calmorylDissociationActive()) return "칼모릴 해리 상태";
+						if (V.controlled > 0) return "통제된 해리 상태";
+						return "해리 상태";
 					},
 					colour: () => {
 						if (calmorylDissociationActive() || colosseumDrugStage() === "crash") return "red";
@@ -2399,15 +2399,15 @@
 					},
 					has: $dissociation gte 2,
 					text: () => {
-						if (colosseumDrugStage() === "crash") return `The arena drug has worn off. You feel detached from everything around you. It should ease in about ${Math.ceil((V.xchange.colosseum.drugUntil + 7200 - V.timeStamp) / 60)} minutes.`;
+						if (colosseumDrugStage() === "crash") return `경기장 약물의 효과가 끝났습니다. 주변의 모든 것에서 분리된 듯한 느낌이 듭니다. 약 ${Math.ceil((V.xchange.colosseum.drugUntil + 7200 - V.timeStamp) / 60)}분 후면 가라앉을 것입니다.`;
 						if (calmorylDissociationActive()) {
 							const hours = calmorylDissociationRemainingHours();
-							return `The anti-anxiety tablets make everything feel distant. The effect should last about ${hours} more hour${hours === 1 ? "" : "s"}.`;
+							return `항불안제 정제 때문에 모든 것이 멀게 느껴집니다. 효과는 약 ${hours}시간 더 지속될 것입니다.`;
 						}
 						if (V.controlled > 0) {
-							return "You feel detached from what is happening around you, but you can still keep yourself under control.";
+							return "주변에서 벌어지는 일에서 분리된 듯한 느낌이 들지만, 여전히 스스로를 통제할 수 있습니다.";
 						}
-						return "Nothing feels real.";
+						return "어느 것도 현실 같지 않습니다.";
 					},
 					textColour: () => calmorylDissociationActive() || colosseumDrugStage() === "crash" || V.controlled === 0 ? "red" : "black",
 				},
@@ -2426,7 +2426,7 @@
 					name: "로빈의 보호자",
 					colour: "lblue",
 					has: $robinpaid gte 1,
-					text: $robinStand?.selfSufficient is 1 ? "Robin pays their own way now, but the bond you forged remains. Increases daily trauma decay." : "Robin is dependent on you. You need to be strong. Increases daily trauma decay.",
+					text: $robinStand?.selfSufficient is 1 ? "로빈은 이제 스스로 생계를 꾸리지만, 당신이 맺은 유대는 남아 있습니다. 일일 트라우마 감소량이 늘어납니다." : "로빈은 당신에게 의지하고 있습니다. 당신은 강해져야 합니다. 일일 트라우마 감소량이 늘어납니다.",
 				},
 				{
 					name: "약속의 의식: " + window.KR.gatPersonNameDictKR($templePromised),
@@ -2441,10 +2441,10 @@
 					text: "신전이 이 사실을 알게 될 것입니다.",
 				},
 				{
-					name: "Whitney's Match",
+					name: "휘트니와 한 쌍",
 					colour: "lblue",
 					has: $whitneyRing is true and $worn?.rings?.name is "initialled gemstone ring",
-					text: "You and Whitney wear matching rings. Your current trauma decreases by 10% daily.",
+					text: "당신과 휘트니는 짝을 이룬 반지를 끼고 있습니다. 현재 트라우마가 매일 10% 줄어듭니다.",
 				},
 				{
 					name: "파블로프: 포피",
@@ -2481,10 +2481,10 @@
 					textColour: "red",
 				},
 				{
-					name: () => V.syndromeBailey ? "Stockholm Syndrome: Bailey" : "Stockholm Syndrome: ???",
+					name: () => V.syndromeBailey ? "스톡홀름 신드롬: 베일리" : "스톡홀름 신드롬: ???",
 					colour: "bailey-stockholm",
 					has: $syndromeBaileyBuild gte 1,
-					text: () => V.syndromeBailey ? "<<nnpc_He 'Bailey'>> keeps the worst of them away." : "...",
+					text: () => V.syndromeBailey ? "<<nnpc_He 'Bailey'>>【은는】 최악의 상황은 막아 주잖아요." : "...",
 					textColour: "bailey-stockholm",
 				},
 				{
@@ -2529,34 +2529,34 @@
 					text: "하퍼 의사가 당신에게 뭔가를 하라고 했지만, 아무것도 전혀 기억이 안 납니다.",
 				},
 				{
-					name: "Hypnotic Brooding",
+					name: "희미한 포란",
 					colour: "lblue",
 					has: $hypnosis_traits.dragonbrood is 1,
-					text: "Harper's voice makes nesting and caring for eggs feel calming.",
+					text: "하퍼 의사의 목소리 덕에 둥지를 짓고 알을 돌보는 일이 마음 편하게 느껴집니다.",
 				},
 				{
-					name: "Bewitched Brooding",
+					name: "불안한 포란",
 					colour: "blue",
 					has: $hypnosis_traits.dragonbrood is 2,
-					text: "You often feel the urge to build a nest and care for eggs.",
+					text: "둥지를 짓고 알을 돌보고 싶은 충동을 자주 느낍니다.",
 				},
 				{
-					name: "Beguiled Brooding",
+					name: "강박적인 포란",
 					colour: "purple",
 					has: $hypnosis_traits.dragonbrood is 3,
-					text: "Harper's conditioning makes you feel safer when you follow the urge to nest.",
+					text: "하퍼 의사의 조건화 탓에, 둥지를 짓고 싶은 충동을 따를 때 더 안전하게 느껴집니다.",
 				},
 				{
-					name: "Mesmeric Brooding",
+					name: "매혹된 포란",
 					colour: "pink",
 					has: $hypnosis_traits.dragonbrood is 4,
-					text: "The sounds in the lab make it hard to resist nesting and laying eggs.",
+					text: "연구실의 소리 때문에 둥지를 짓고 알을 낳고 싶은 충동을 참기 어렵습니다.",
 				},
 				{
-					name: "Sublime Brooding",
+					name: "절정의 포란",
 					colour: "red",
 					has: $hypnosis_traits.dragonbrood is 5,
-					text: "The urge to nest and lay eggs feels natural, and resisting Harper is almost impossible.",
+					text: "둥지를 짓고 알을 낳고 싶은 충동이 자연스럽게 느껴지고, 하퍼 의사에게 저항하기는 거의 불가능합니다.",
 				},
 				{
 					name: "희미한 갈망",
@@ -2649,34 +2649,34 @@
 					text: "조우 시작 시 항상 짐승을 도발할 것입니다.",
 				},
 				{
-					name: "Hypnotic Crossdressing",
+					name: "희미한 크로스드레싱",
 					colour: "lblue",
 					has: $hypnosis_traits.crossdressing is 1,
-					text: "Will become stressed while not crossdressing.",
+					text: "크로스드레싱을 하지 않으면 스트레스를 받게 됩니다.",
 				},
 				{
-					name: "Bewitched Crossdressing",
+					name: "불안한 크로스드레싱",
 					colour: "blue",
 					has: $hypnosis_traits.crossdressing is 2,
-					text: () => V.player.gender === "m" ? "Will become unable to wear masculine underwear." : "Will become unable to wear feminine underwear.",
+					text: () => V.player.gender === "m" ? "남성용 속옷을 입을 수 없게 됩니다." : "여성용 속옷을 입을 수 없게 됩니다.",
 				},
 				{
-					name: "Beguiled Crossdressing",
+					name: "강박적인 크로스드레싱",
 					colour: "purple",
 					has: $hypnosis_traits.crossdressing is 3,
-					text: () => V.player.gender === "m" ? "Will become unable to wear masculine underwear. Will become unable to adopt a masculine posture." : "Will become unable to wear feminine underwear. Will become unable to adopt a feminine posture.",
+					text: () => V.player.gender === "m" ? "남성용 속옷을 입을 수 없게 됩니다. 남성적인 자세를 취할 수 없게 됩니다." : "여성용 속옷을 입을 수 없게 됩니다. 여성적인 자세를 취할 수 없게 됩니다.",
 				},
 				{
-					name: "Mesmeric Crossdressing",
+					name: "매혹된 크로스드레싱",
 					colour: "pink",
 					has: $hypnosis_traits.crossdressing is 4,
-					text: () => V.player.gender === "m" ? "Will become unable to wear masculine clothes. Will become unable to adopt a masculine posture." : "Will become unable to wear feminine clothes. Will become unable to adopt a feminine posture.",
+					text: () => V.player.gender === "m" ? "남성용 옷을 입을 수 없게 됩니다. 남성적인 자세를 취할 수 없게 됩니다." : "여성용 옷을 입을 수 없게 됩니다. 여성적인 자세를 취할 수 없게 됩니다.",
 				},
 				{
-					name: "Sublime Crossdressing",
+					name: "절정의 크로스드레싱",
 					colour: "red",
 					has: $hypnosis_traits.crossdressing is 5,
-					text: () => V.player.gender === "m" ? "Will become unable to wear masculine clothes. Will be forced to adopt a feminine posture." : "Will become unable to wear feminine clothes. Will be forced to adopt a feminine posture.",
+					text: () => V.player.gender === "m" ? "남성용 옷을 입을 수 없게 됩니다. 여성적인 자세를 취하도록 강제됩니다." : "여성용 옷을 입을 수 없게 됩니다. 여성적인 자세를 취하도록 강제됩니다.",
 				},
 
 				{
@@ -2784,7 +2784,7 @@
 					name: "최면의 침묵",
 					colour: "purple",
 					has: V.hypnosis_traits.silence gte 1,
-					text: `Your thoughts are solitary and tranquil. ${earSlimeThoughts() ? "The voices in your head are" : "Ear slimes are"} temporarily silenced.`,
+					text: `당신의 생각은 고독하고 고요합니다. ${earSlimeThoughts() ? "머릿속의 목소리가" : "귀 슬라임이"} 일시적으로 조용해집니다.`,
 					meter: {
 						has: V.hypnosisTimers.silence,
 						hide: V.hypnosis_traits.devotion >= 5,
@@ -2822,10 +2822,10 @@
 					},
 				},
 				{
-					name: "Hypnotic Clarity",
+					name: "희미한 명료함",
 					colour: "teal",
 					has: V.hypnosis_traits.clarity gte 1,
-					text: "The noise of a fractured mind is quieted. Insanity's severe symptoms are suppressed while this holds.",
+					text: "산산이 부서진 정신의 소음이 잠잠해집니다. 이 상태가 유지되는 동안 광기의 심각한 증상이 억눌립니다.",
 					meter: {
 						has: V.hypnosisTimers.clarity,
 						hide: V.hypnosis_traits.devotion >= 5,
@@ -2835,10 +2835,10 @@
 					},
 				},
 				{
-					name: "Hypnotic Adaptability",
+					name: "희미한 적응력",
 					colour: "green",
 					has: V.hypnosis_traits.adaptability gte 1,
-					text: "Your Adaptability does not fade while your eyes are uncovered.",
+					text: "눈을 가리지 않은 동안에는 적응력이 줄어들지 않습니다.",
 					meter: {
 						has: V.hypnosisTimers.adaptability,
 						hide: V.hypnosis_traits.devotion >= 5,
@@ -2907,10 +2907,10 @@
 					text: () => playerAwareTheyArePregnant() ? "당신은 생명을 품은 배를 자랑스러워합니다." : "당신은 커다란 배를 자랑스러워합니다.",
 				},
 				{
-					name: "Acceptance: Clear Climax",
+					name: "수용: 투명한 절정",
 					colour: "green",
 					has: $acceptance_clear_climax gte 1000 and playerClearClimax(),
-					text: "You're at peace with your clear climaxes.",
+					text: "당신은 투명한 절정을 받아들이고 평온합니다.",
 				},
 			],
 		},
@@ -2921,35 +2921,35 @@
 					name: "엘크의 흉터",
 					colour: "red",
 					has: $auriga_scar is 1,
-					text: "An invisible wound hangs over your heart. Trauma and awareness increase over time. Purity decreases over time. Your animal transformations no longer lose progress.",
+					text: "보이지 않는 상처가 당신의 심장 주위를 맴돕니다. 트라우마와 인식이 시간이 지남에 따라 증가합니다. 순결도가 시간이 지남에 따라 감소합니다. 동물 변신의 진행도가 더 이상 줄어들지 않습니다.",
 					textColour: "red",
 				},
 				{
 					name: "엘크의 낙인",
 					colour: "red",
 					has: $auriga_scar is 2,
-					text: "A crackling wound surrounds your heart. You're harder to notice, and to recognise as human. Your animal transformations no longer lose progress.",
+					text: "지지직거리는 상처가 심장을 둘러싸고 있습니다. 당신은 눈에 띄기 어려워지고, 인간으로 인식되기도 힘들어집니다. 동물 변신의 진행도가 더 이상 줄어들지 않습니다.",
 					textColour: "red",
 				},
 				{
 					name: "엘크에게 물림",
 					colour: "red",
 					has: $auriga_scar is 3,
-					text: "A hole threatens to swallow your black heart. Something seeks to escape. Your animal transformations no longer lose progress.",
+					text: "구멍이 당신의 검은 심장을 집어삼키려 합니다. 무언가 탈출하려고 합니다. 동물 변신의 진행도가 더 이상 줄어들지 않습니다.",
 					textColour: "red",
 				},
 				{
 					name: "엘크의 파열",
 					colour: "red",
 					has: $auriga_scar is 4,
-					text: "A rupture severs your black, unbeating heart. Damnation is imminent. Your animal transformations no longer lose progress.",
+					text: "파열이 당신의 뛰지 않는 검은 심장을 끊어냅니다. 파멸이 임박했습니다. 동물 변신의 진행도가 더 이상 줄어들지 않습니다.",
 					textColour: "red",
 				},
 				{
 					name: "엘크의 부산물",
 					colour: "red",
 					has: $auriga_scar gte 5,
-					text: "Damnation. Your animal transformations no longer lose progress.",
+					text: "파멸. 동물 변신의 진행도가 더 이상 줄어들지 않습니다.",
 					textColour: "red",
 				},
 			],
@@ -2961,15 +2961,15 @@
 		const held = masteryTraitsHeld();
 		if (!held.length) return;
 		T.traitLists.push({
-			title: "Mastery Traits",
+			title: "숙달 특성",
 			traits: held.map(trait => {
 				const items = trait.requires
 					.split(" + ")
-					.map(part => `<li class='green'>${part} maxed out.</li>`)
+					.map(part => `<li class='green'>${part} 최대치 도달</li>`)
 					.join("");
 				return {
 					name: `<mouse class='tooltip ${trait.colour}'>${trait.name}<span>
-						Earned from:
+						획득 조건:
 						<ul>${items}</ul>
 					</span></mouse>`,
 					colour: trait.colour,

@@ -3120,7 +3120,7 @@ window.dailyConvert = dailyConvert;
 /* Must stay in step with calchairlengthstage(), which is what the length actually becomes once paid for.
    The hairdresser preview reads this, so any divergence shows the player a length they won't get. */
 function convertHairLengthToStage(hair, length) {
-	if (!hair || length == null) throw new Error(`Hair AND Length must be provided to be converted: ${hair} / ${length}`);
+	if (!hair || length == null) throw new Error(`변환을 위해서는 머리카락과 길이를 모두 입력해야 합니다: ${hair} / ${length}`);
 	if (hair !== "fringe" && hair !== "sides") return undefined;
 	const stages = ["short", "shoulder", "chest", "navel", "thighs", "feet"];
 	return stages[Math.trunc(Math.clamp(length, 0, 1000) / 200)];
@@ -3962,15 +3962,15 @@ function hasSharpSenses(sense = "any") {
 		if (currentSkillValue("skulduggery") >= 600) return "숙련된 눈";
 	}
 	if (["any", "hearing"].includes(sense) && !playerWearsHeadphones()) {
-		if (Transformations.partActive("wolf", "ears")) return "wolf ears";
-		if (Transformations.partActive("cat", "ears")) return "cat ears";
-		if (Transformations.partActive("fox", "ears")) return "fox ears";
+		if (Transformations.partActive("wolf", "ears")) return "늑대 귀";
+		if (Transformations.partActive("cat", "ears")) return "고양이 귀";
+		if (Transformations.partActive("fox", "ears")) return "여우 귀";
 		if (currentSkillValue("skulduggery") >= 600) return "숙련된 귀";
 	}
 	if (["instincts"].includes(sense)) {
-		if (Transformations.effectiveLevel("wolf") >= 6) return "wolf instincts";
-		if (Transformations.effectiveLevel("cat") >= 6) return "cat instincts";
-		if (Transformations.effectiveLevel("fox") >= 6) return "fox instincts";
+		if (Transformations.effectiveLevel("wolf") >= 6) return "늑대의 본능";
+		if (Transformations.effectiveLevel("cat") >= 6) return "고양이의 본능";
+		if (Transformations.effectiveLevel("fox") >= 6) return "여우의 본능";
 		if (V.dryad >= 6 || currentSkillValue("tending") >= 900) return "자연에 단련된 본능";
 	}
 	return false;

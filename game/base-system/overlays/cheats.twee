@@ -17,7 +17,7 @@
 	<<set _type to _args[0]>>
 	<<set _id to `stats${_type}virginity`>>
 	<<capture _type _id>>
-		<span @id="_id"><<= ($player.virginity[_type] is true ? "Present" : "Taken by " + ($player.virginity[_type] is false ? "unknown" : $player.virginity[_type]))>></span> |
+		<span @id="_id"><<= ($player.virginity[_type] is true ? "보존됨" : "상실됨: " + ($player.virginity[_type] is false ? "알 수 없음" : ($player.virginity[_type] is "unknown" ? "알 수 없음" : window.KR.gatPersonNameDictKR($player.virginity[_type]))))>></span> |
 		<span @id="_id + 'link'"><<link `($player.virginity[_type] is true ? "상실 처리" : "복구")`>>
 			<<if $player.virginity[_type] is true>>
 				<<set $player.virginity[_type] to "unknown">>
@@ -118,16 +118,16 @@
 	<<numberStepper "오른팔" $player.bodyliquid.rightarm[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.rightarm[arr[0]] = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }}>>
 	<<numberStepper "왼팔" $player.bodyliquid.leftarm[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.leftarm[arr[0]] = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }}>>
 	<<numberStepper "허벅지" $player.bodyliquid.thigh[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.thigh[arr[0]] = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }}>>
-	<<numberStepper "Bottom" $player.bodyliquid.bottom[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.bottom[arr[0]] = value; Wikifier.wikifyEval("<<wetnessCalculate>><<updatesidebarimg>>") }}>>
+	<<numberStepper "엉덩이" $player.bodyliquid.bottom[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.bottom[arr[0]] = value; Wikifier.wikifyEval("<<wetnessCalculate>><<updatesidebarimg>>") }}>>
 	<<numberStepper "배" $player.bodyliquid.tummy[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.tummy[arr[0]] = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }}>>
 	<<numberStepper "가슴" $player.bodyliquid.chest[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.chest[arr[0]] = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }}>>
 	<<numberStepper "얼굴" $player.bodyliquid.face[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.face[arr[0]] = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }}>>
 	<<numberStepper "머리카락" $player.bodyliquid.hair[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.hair[arr[0]] = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }}>>
 	<<numberStepper "발" $player.bodyliquid.feet[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.feet[arr[0]] = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }}>>
-	<<numberStepper "Labia" $player.bodyliquid.vaginaoutside[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.vaginaoutside[arr[0]] = value; Wikifier.wikifyEval("<<wetnessCalculate>><<updatesidebarimg>>") }}>>
-	<<numberStepper "Vagina" $player.bodyliquid.vagina[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.vagina[arr[0]] = value; Wikifier.wikifyEval("<<wetnessCalculate>><<updatesidebarimg>>") }}>>
-	<<numberStepper "Penis" $player.bodyliquid.penis[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.penis[arr[0]] = value; Wikifier.wikifyEval("<<wetnessCalculate>><<updatesidebarimg>>") }}>>
-	<<numberStepper "Anus" $player.bodyliquid.anus[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.anus[arr[0]] = value; Wikifier.wikifyEval("<<wetnessCalculate>><<updatesidebarimg>>") }}>>
+	<<numberStepper "음순" $player.bodyliquid.vaginaoutside[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.vaginaoutside[arr[0]] = value; Wikifier.wikifyEval("<<wetnessCalculate>><<updatesidebarimg>>") }}>>
+	<<numberStepper "보지" $player.bodyliquid.vagina[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.vagina[arr[0]] = value; Wikifier.wikifyEval("<<wetnessCalculate>><<updatesidebarimg>>") }}>>
+	<<numberStepper "자지" $player.bodyliquid.penis[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.penis[arr[0]] = value; Wikifier.wikifyEval("<<wetnessCalculate>><<updatesidebarimg>>") }}>>
+	<<numberStepper "애널" $player.bodyliquid.anus[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.anus[arr[0]] = value; Wikifier.wikifyEval("<<wetnessCalculate>><<updatesidebarimg>>") }}>>
 	<<numberStepper "입" $player.bodyliquid.mouth[_semen] {...T.options, callback: (value, arr) => { V.player.bodyliquid.mouth[arr[0]] = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }}>>
 <</widget>>
 
@@ -137,7 +137,7 @@
 		<div class="settingsToggleItemWide">
 			<span class="gold">기타</span>
 			<br>
-			<<numberStepper "💷 Money" $money {
+			<<numberStepper "💷 돈" $money {
 					activeButtons: ["single", "double", "triple", "quad", "penta"],
 					step: 1000,
 					max: 100000000000,
@@ -153,20 +153,20 @@
 
 			<<if $location is "prison">>
 				<<set $prison.teeth to $prison.teeth or 0>>
-				<<numberStepper "🦷 Teeth" $prison.teeth {callback: (value) => V.prison.teeth = value, disableMinMax: true, step: 1, max: 1000000, colorArr:["--yellow"], percentage: false}>>
+				<<numberStepper "🦷 치아" $prison.teeth {callback: (value) => V.prison.teeth = value, disableMinMax: true, step: 1, max: 1000000, colorArr:["--yellow"], percentage: false}>>
 			<</if>>
 
-			<<numberStepper "Dragon Stars" `$dragonStar || 0` {callback: value => V.dragonStar = value, min: 0, max: 99, step: 1, percentage: false}>>
-			<<numberStepper "Infinite Spray" `$infinitespray ? 1 : 0` {
+			<<numberStepper "용의 별" `$dragonStar || 0` {callback: value => V.dragonStar = value, min: 0, max: 99, step: 1, percentage: false}>>
+			<<numberStepper "무한 스프레이" `$infinitespray ? 1 : 0` {
 				callback: value => {
 					if (value === 1 && !V.infinitespray) Wikifier.wikifyEval("<<spray 5>>");
 					V.infinitespray = value;
 				},
 				min: 0, max: 1, step: 1, percentage: false,
-				valueFormat: value => value ? "On" : "Off"
+				valueFormat: value => value ? "켜짐" : "꺼짐"
 			}>>
-			💤 <<link [[Pass Out Now|$passage]]>><<set $stress to $stressmax>><</link>>
-			| <span class="description">Immediately starts the pass-out sequence for your current location.</span>
+			💤 <<link [[지금 기절한다|$passage]]>><<set $stress to $stressmax>><</link>>
+			| <span class="description">현재 위치에서 기절 연출을 즉시 시작합니다.</span>
 
 			<<if $debug>>
 				페로몬 (디버그): <span id="statsalluretest"><<= $alluretest ? "켜짐" : "꺼짐">></span> |
@@ -195,7 +195,7 @@
 				<<cheatsBody>>
 			</span>
 			<br>
-			<<set _bodysize_words to ["Miniature","Tiny","Small","Normal","Tall","Large","Giant"]>>
+			<<set _bodysize_words to ["극소","아주 작음","작음","보통","키 큼","큼","거대함"]>>
 			체격:
 			<span id="statsBodySize">
 				<<cheatsBodySize>>
@@ -703,7 +703,7 @@
 		<div class="settingsToggleItem">
 			<<set V.cheats to V.cheats or {}>>
 			<<set _hypnosis to ["scream", "cover", "deviancy", "crossdressing"]>>
-			<span class="gold">Hypnosis Traits</span><br>
+			<span class="gold">최면 특성</span><br>
 			<<link "모두 0으로 설정">>
 				<<for _i range _hypnosis>>
 					<<set V.hypnosis_traits[_i] to 0>><<clamp>>
@@ -726,7 +726,7 @@
 
 
 		<div class="settingsToggleItem">
-			<span class="gold">X-Change Pill</span>
+			<span class="gold">X-체인지 알약</span>
 			<br>
 			<div id="cheat-xchange-pills">
 				<<if !$statFreeze>>
@@ -734,20 +734,20 @@
 						<<cheatXchange>>
 					<<else>>
 						<<if playerIsPregnant()>>
-							<span class="red"><b>Caution!</b></span><br>Taking an X-Change pill while pregnant can corrupt your pregnancy state. Consider ending the pregnancy first, or proceed at your own risk.
+							<span class="red"><b>주의!</b></span><br>임신 중에 X-체인지 알약을 먹으면 임신 상태가 손상될 수 있습니다. 먼저 임신을 끝내는 것을 고려하시고, 그렇지 않다면 책임은 본인에게 있습니다.
 						<</if>>
 						<br><br>
-						<<link "Take Sexflip pill">><<set $xchange._cheatDose to true>><<xchange-dose-deliberate>><<take-xchange 3 "genderflip">><<xchange-dose-deliberate-end>><<run delete $xchange._cheatDose>><<updatesidebarimg>><<replace "#cheat-xchange-pills">><<cheatXchange>><</replace>><</link>>
+						<<link "성별 반전 알약 복용">><<set $xchange._cheatDose to true>><<xchange-dose-deliberate>><<take-xchange 3 "genderflip">><<xchange-dose-deliberate-end>><<run delete $xchange._cheatDose>><<updatesidebarimg>><<replace "#cheat-xchange-pills">><<cheatXchange>><</replace>><</link>>
 						<br>
-						<<link "Take Sissy/Butch pill">><<set $xchange._cheatDose to true>><<take-xchange 3 "crossdress">><<run delete $xchange._cheatDose>><<updatesidebarimg>><<replace "#cheat-xchange-pills">><<cheatXchange>><</replace>><</link>>
+						<<link "시시/부치 알약 복용">><<set $xchange._cheatDose to true>><<take-xchange 3 "crossdress">><<run delete $xchange._cheatDose>><<updatesidebarimg>><<replace "#cheat-xchange-pills">><<cheatXchange>><</replace>><</link>>
 						<br>
-						<<link "Take Hermifying pill">><<set $xchange._cheatDose to true>><<xchange-dose-deliberate>><<take-xchange 3 "herm">><<xchange-dose-deliberate-end>><<run delete $xchange._cheatDose>><<updatesidebarimg>><<replace "#cheat-xchange-pills">><<cheatXchange>><</replace>><</link>>
+						<<link "양성화 알약 복용">><<set $xchange._cheatDose to true>><<xchange-dose-deliberate>><<take-xchange 3 "herm">><<xchange-dose-deliberate-end>><<run delete $xchange._cheatDose>><<updatesidebarimg>><<replace "#cheat-xchange-pills">><<cheatXchange>><</replace>><</link>>
 						<br>
-						<<link "Take Gray pill (effect-only)">><<set _grayNoEffects to []>><<save-body>><<xchange-effects 3 _grayNoEffects>><<updatesidebarimg>><<replace "#cheat-xchange-pills">><<cheatXchange>><</replace>><</link>>
+						<<link "그레이 알약 복용 (효과만)">><<set _grayNoEffects to []>><<save-body>><<xchange-effects 3 _grayNoEffects>><<updatesidebarimg>><<replace "#cheat-xchange-pills">><<cheatXchange>><</replace>><</link>>
 						<br>
 					<</if>>
 				<<else>>
-					You cannot apply X-Change pills while stats are frozen, or going through a sidestory.
+					능력치가 동결되어 있거나 사이드 스토리를 진행하는 중에는 X-체인지 알약을 적용할 수 없습니다.
 				<</if>>
 			</div>
 		</div>
@@ -772,7 +772,7 @@
 			<</link>>
 			<br>
 
-			Cock Addict: <span id="statspenisaddicttrait" @class="$penis_addict_trait is 1 ? 'green' : 'red'"><<= $penis_addict_trait is 1 ? "On" : "Off">></span> |
+			자지 중독자: <span id="statspenisaddicttrait" @class="$penis_addict_trait is 1 ? 'green' : 'red'"><<= $penis_addict_trait is 1 ? "켜짐" : "꺼짐">></span> |
 			<<link "변경">>
 				<<if $penis_addict_trait is 1>>
 					<<set $penis_addict_trait to 0>>
@@ -794,7 +794,7 @@
 			<</link>>
 			<br>
 
-			Hole Addict: <span id="statsholeaddicttrait" @class="$hole_addict_trait is 1 ? 'green' : 'red'"><<= $hole_addict_trait is 1 ? "On" : "Off">></span> |
+			구멍 중독자: <span id="statsholeaddicttrait" @class="$hole_addict_trait is 1 ? 'green' : 'red'"><<= $hole_addict_trait is 1 ? "켜짐" : "꺼짐">></span> |
 			<<link "변경">>
 				<<if $hole_addict_trait is 1>>
 					<<set $hole_addict_trait to 0>>
@@ -816,7 +816,7 @@
 			<</link>>
 			<br>
 
-			Oral Fixation: <span id="statsoralfixationtrait" @class="$oral_fixation_trait is 1 ? 'green' : 'red'"><<= $oral_fixation_trait is 1 ? "On" : "Off">></span> |
+			구강 집착: <span id="statsoralfixationtrait" @class="$oral_fixation_trait is 1 ? 'green' : 'red'"><<= $oral_fixation_trait is 1 ? "켜짐" : "꺼짐">></span> |
 			<<link "변경">>
 				<<set $oral_fixation_trait to $oral_fixation_trait is 1 ? 0 : 1>>
 				<<replace "#statsoralfixationtrait">>
@@ -897,7 +897,7 @@
 			<</link>>
 			<br>
 
-			Critter Magnet: <span id="statscrittermagnettrait" @class="$crittermagnettrait is 1 ? 'green' : 'red'"><<= _traitValue[$_traits["crittermagnet"].toString()]>></span> |
+			동물 자석: <span id="statscrittermagnettrait" @class="$crittermagnettrait is 1 ? 'green' : 'red'"><<= _traitValue[$_traits["crittermagnet"].toString()]>></span> |
 			<<link "변경">>
 				<<set $crittermagnettrait += 1>>
 				<<if $crittermagnettrait gte 2>>
@@ -954,7 +954,7 @@
 			<</link>>
 			<br>
 
-			Crossdresser: <span id="statscrossdresser" @class="$backgroundTraits.includes('crossdresser') and !$background.transgender ? 'green' : 'red'"><<= $backgroundTraits.includes("crossdresser") and !$background.transgender ? "On" : "Off">></span> |
+			크로스드레서: <span id="statscrossdresser" @class="$backgroundTraits.includes('crossdresser') and !$background.transgender ? 'green' : 'red'"><<= $backgroundTraits.includes("crossdresser") and !$background.transgender ? "켜짐" : "꺼짐">></span> |
 			<<link "변경">>
 				<<if !$backgroundTraits.includes("crossdresser") or $background.transgender>>
 					<<set $backgroundTraits.pushUnique("crossdresser")>><<set $crossdressingTrait to 100>>
@@ -968,7 +968,7 @@
 			<</link>>
 			<br>
 
-			Transgender: <span id="statstransgender" @class="$background.transgender is true ? 'green' : 'red'"><<= $background.transgender is true ? "On" : "Off">></span> |
+			트랜스젠더: <span id="statstransgender" @class="$background.transgender is true ? 'green' : 'red'"><<= $background.transgender is true ? "켜짐" : "꺼짐">></span> |
 			<<link "변경">>
 				<<if !$background.transgender>>
 					<<set $background.transgender to true>><<set $background.crossdresser to false>>
@@ -982,7 +982,7 @@
 			<</link>>
 			<br>
 
-			Gender-Anxious: <span id="statsgenderanxious" @class="$backgroundTraits.includes('genderAnxious') ? 'green' : 'red'"><<= $backgroundTraits.includes("genderAnxious") ? "On" : "Off">></span> |
+			성별 불안: <span id="statsgenderanxious" @class="$backgroundTraits.includes('genderAnxious') ? 'green' : 'red'"><<= $backgroundTraits.includes("genderAnxious") ? "켜짐" : "꺼짐">></span> |
 			<<link "변경">>
 				<<if !$backgroundTraits.includes("genderAnxious")>>
 					<<set $backgroundTraits.pushUnique("genderAnxious")>><<set $background.genderAnxious to true>>
@@ -1043,7 +1043,7 @@
 				<</replace>>
 			<</link>>
 			<br>
-			Detached: <span id="statsdetached" @class="$backgroundTraits.includes('detached') is true ? 'green' : 'red'"><<= $backgroundTraits.includes("detached") is true ? "On" : "Off">></span> |
+			초연함: <span id="statsdetached" @class="$backgroundTraits.includes('detached') is true ? 'green' : 'red'"><<= $backgroundTraits.includes("detached") is true ? "켜짐" : "꺼짐">></span> |
 			<<link "변경">>
 				<<if !$backgroundTraits.includes("detached")>>
 					<<set $backgroundTraits.pushUnique("detached")>>
@@ -1059,7 +1059,7 @@
 				<</replace>>
 			<</link>>
 			<br>
-			Autism Spectrum: <span id="statsautism" @class="$backgroundTraits.includes('autism') is true ? 'green' : 'red'"><<= $backgroundTraits.includes("autism") is true ? "On" : "Off">></span> |
+			자폐 스펙트럼: <span id="statsautism" @class="$backgroundTraits.includes('autism') is true ? 'green' : 'red'"><<= $backgroundTraits.includes("autism") is true ? "켜짐" : "꺼짐">></span> |
 			<<link "변경">>
 				/* $background.autism is the character-creation input, $backgroundTraits the live state. Keep both in step. */
 				<<if !$backgroundTraits.includes("autism")>>
@@ -1200,128 +1200,128 @@
 
 <<widget "cheatXchange">>
 	<<if xchangePregnancyBlocksRevert()>>
-		<span class="red"><b>Caution!</b><br></span>Using "Force pill to end" while pregnant can corrupt your pregnancy state. Consider ending the pregnancy first, or proceed at your own risk.
+		<span class="red"><b>주의!</b><br></span>임신 중에 "알약 강제 종료"를 사용하면 임신 상태가 손상될 수 있습니다. 먼저 임신을 끝내는 것을 고려하시고, 그렇지 않다면 책임은 본인에게 있습니다.
 		<br>
 	<</if>>
-	<<linkreplace "Force pill to end">>Forced pill to end<<run setup.xChangeRecordActiveBodyVirginity()>><<xchange-restore "force">><<updatesidebarimg>><</linkreplace>>
+	<<linkreplace "알약 강제 종료">>알약을 강제로 종료했습니다<<run setup.xChangeRecordActiveBodyVirginity()>><<xchange-restore "force">><<updatesidebarimg>><</linkreplace>>
 	<br><br>
-	Pill duration: <<if pillIsPermanent()>><span class="green">Permanent</span><<else>><span class="teal"><<print-pillduration>></span><</if>>
+	알약 지속 시간: <<if pillIsPermanent()>><span class="green">영구</span><<else>><span class="teal"><<print-pillduration>></span><</if>>
 	<br>
-	Set duration:
-	<<link "1 day">><<cheat-set-pill-duration 24>><<updatesidebarimg>><<replace "#cheat-xchange-pills">><<cheatXchange>><</replace>><</link>> |
-	<<link "3 days">><<cheat-set-pill-duration 72>><<updatesidebarimg>><<replace "#cheat-xchange-pills">><<cheatXchange>><</replace>><</link>> |
-	<<link "1 week">><<cheat-set-pill-duration 168>><<updatesidebarimg>><<replace "#cheat-xchange-pills">><<cheatXchange>><</replace>><</link>> |
-	<<link "1 month">><<cheat-set-pill-duration 720>><<updatesidebarimg>><<replace "#cheat-xchange-pills">><<cheatXchange>><</replace>><</link>> |
-	<<link "Permanent">><<cheat-set-pill-duration "permanent">><<updatesidebarimg>><<replace "#cheat-xchange-pills">><<cheatXchange>><</replace>><</link>>
+	지속 시간 설정:
+	<<link "1일">><<cheat-set-pill-duration 24>><<updatesidebarimg>><<replace "#cheat-xchange-pills">><<cheatXchange>><</replace>><</link>> |
+	<<link "3일">><<cheat-set-pill-duration 72>><<updatesidebarimg>><<replace "#cheat-xchange-pills">><<cheatXchange>><</replace>><</link>> |
+	<<link "1주일">><<cheat-set-pill-duration 168>><<updatesidebarimg>><<replace "#cheat-xchange-pills">><<cheatXchange>><</replace>><</link>> |
+	<<link "1개월">><<cheat-set-pill-duration 720>><<updatesidebarimg>><<replace "#cheat-xchange-pills">><<cheatXchange>><</replace>><</link>> |
+	<<link "영구">><<cheat-set-pill-duration "permanent">><<updatesidebarimg>><<replace "#cheat-xchange-pills">><<cheatXchange>><</replace>><</link>>
 	<br><br>
-	Sissy/Butch: <span id="xchange-crossdress"><<= $xchange.pill.genderificationEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> | <<link "Change">><<set $xchange.pill.genderificationEffect to $xchange.pill.genderificationEffect? false : true>><<replace "#xchange-crossdress">><<= $xchange.pill.genderificationEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>><</link>>
+	시시/부치: <span id="xchange-crossdress"><<= $xchange.pill.genderificationEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> | <<link "변경">><<set $xchange.pill.genderificationEffect to $xchange.pill.genderificationEffect? false : true>><<replace "#xchange-crossdress">><<= $xchange.pill.genderificationEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>><</link>>
 	<br>
-	Resistance: <span id="xchange-resistance"><<= $xchange.pill.resistanceEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> | <<link "Change">><<set $xchange.pill.resistanceEffect to $xchange.pill.resistanceEffect? false : true>><<set $xchange.pill.resistanceChance to 100>><<replace "#xchange-resistance">><<= $xchange.pill.resistanceEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>><</link>>
+	레지스턴스: <span id="xchange-resistance"><<= $xchange.pill.resistanceEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> | <<link "변경">><<set $xchange.pill.resistanceEffect to $xchange.pill.resistanceEffect? false : true>><<set $xchange.pill.resistanceChance to 100>><<replace "#xchange-resistance">><<= $xchange.pill.resistanceEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>><</link>>
 	<br>
-	Continue: <span id="xchange-continue"><<= $xchange.pill.continueEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> | <<link "Change">><<set $xchange.pill.continueEffect to $xchange.pill.continueEffect? false : true>><<replace "#xchange-continue">><<= $xchange.pill.continueEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>><</link>>
+	컨티뉴: <span id="xchange-continue"><<= $xchange.pill.continueEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> | <<link "변경">><<set $xchange.pill.continueEffect to $xchange.pill.continueEffect? false : true>><<replace "#xchange-continue">><<= $xchange.pill.continueEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>><</link>>
 	<br>
-	Omega:
-	<span id="xchange-omega"><<= $xchange.pill.omegaEffect ? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> |
-	<<link "Change">><<if $xchange.pill.omegaEffect>><<xchange-removeeffect "omega">><<else>><<xchange-addeffect "omega">><</if>><<replace "#xchange-omega">><<= $xchange.pill.omegaEffect ? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>><</link>>
+	오메가:
+	<span id="xchange-omega"><<= $xchange.pill.omegaEffect ? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> |
+	<<link "변경">><<if $xchange.pill.omegaEffect>><<xchange-removeeffect "omega">><<else>><<xchange-addeffect "omega">><</if>><<replace "#xchange-omega">><<= $xchange.pill.omegaEffect ? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>><</link>>
 	<br>
 	<<if $player.sex isnot "m" or (playerIsXChanged() and $xchange.pill.hermEffect)>>
-		Beta:
-		<span id="xchange-beta"><<= $xchange.pill.betaEffect ? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> |
-		<<link "Change">><<if $xchange.pill.betaEffect>><<xchange-removeeffect "beta">><<else>><<xchange-addeffect "beta">><</if>><<replace "#xchange-beta">><<= $xchange.pill.betaEffect ? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>><</link>>
+		베타:
+		<span id="xchange-beta"><<= $xchange.pill.betaEffect ? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> |
+		<<link "변경">><<if $xchange.pill.betaEffect>><<xchange-removeeffect "beta">><<else>><<xchange-addeffect "beta">><</if>><<replace "#xchange-beta">><<= $xchange.pill.betaEffect ? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>><</link>>
 		<br>
-		Breeder:
-		<span id="xchange-breeder"><<= $xchange.pill.breederEffect ? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> |
-		<<link "Change">><<if $xchange.pill.breederEffect>><<xchange-removeeffect "breeder">><<else>><<xchange-addeffect "breeder">><</if>><<replace "#xchange-breeder">><<= $xchange.pill.breederEffect ? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>><</link>>
+		브리더:
+		<span id="xchange-breeder"><<= $xchange.pill.breederEffect ? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> |
+		<<link "변경">><<if $xchange.pill.breederEffect>><<xchange-removeeffect "breeder">><<else>><<xchange-addeffect "breeder">><</if>><<replace "#xchange-breeder">><<= $xchange.pill.breederEffect ? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>><</link>>
 		<br>
-		Fertile:
-		<span id="xchange-fertile"><<= $xchange.pill.fertile ? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> |
-		<<link "Change">><<if $xchange.pill.fertile>><<xchange-removeeffect "fertile">>	<<else>><<xchange-addeffect "fertile">>	<</if>>
-		<<replace "#xchange-fertile">><<= $xchange.pill.fertile ? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>><</link>>
+		가임:
+		<span id="xchange-fertile"><<= $xchange.pill.fertile ? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> |
+		<<link "변경">><<if $xchange.pill.fertile>><<xchange-removeeffect "fertile">>	<<else>><<xchange-addeffect "fertile">>	<</if>>
+		<<replace "#xchange-fertile">><<= $xchange.pill.fertile ? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>><</link>>
 		<br>
 	<</if>>
 	<<if $player.sex isnot "f" or (playerIsXChanged() and $xchange.pill.hermEffect)>>
-		Bull: <span id="xchange-bull"><<= $xchange.pill.bullEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> | <<link "Change">><<set $xchange.pill.bullEffect to $xchange.pill.bullEffect? false : true>><<replace "#xchange-bull">><<= $xchange.pill.bullEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>><</link>>
+		불: <span id="xchange-bull"><<= $xchange.pill.bullEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> | <<link "변경">><<set $xchange.pill.bullEffect to $xchange.pill.bullEffect? false : true>><<replace "#xchange-bull">><<= $xchange.pill.bullEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>><</link>>
 		<br>
-		Alpha:
-		<span id="xchange-alpha"><<= $xchange.pill.alphaEffect ? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> |
-		<<link "Change">><<if $xchange.pill.alphaEffect>><<xchange-removeeffect "alpha">><<else>><<xchange-addeffect "alpha">><</if>><<replace "#xchange-alpha">><<= $xchange.pill.alphaEffect ? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>><</link>>
+		알파:
+		<span id="xchange-alpha"><<= $xchange.pill.alphaEffect ? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> |
+		<<link "변경">><<if $xchange.pill.alphaEffect>><<xchange-removeeffect "alpha">><<else>><<xchange-addeffect "alpha">><</if>><<replace "#xchange-alpha">><<= $xchange.pill.alphaEffect ? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>><</link>>
 		<br>
 	<</if>>
-	Passion: <span id="xchange-passion"><<= $xchange.pill.passionEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> | <<link "Change">><<set $xchange.pill.passionEffect to $xchange.pill.passionEffect? false : true>><<replace "#xchange-passion">><<= $xchange.pill.passionEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>><</link>>
+	열정: <span id="xchange-passion"><<= $xchange.pill.passionEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> | <<link "변경">><<set $xchange.pill.passionEffect to $xchange.pill.passionEffect? false : true>><<replace "#xchange-passion">><<= $xchange.pill.passionEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>><</link>>
 	<br>
-	Dumb Bitch: <span id="xchange-bitch"><<= $xchange.pill.dumbBitchEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> | <<link "Change">><<set $xchange.pill.dumbBitchEffect to $xchange.pill.dumbBitchEffect? false : true>><<replace "#xchange-bitch">><<= $xchange.pill.dumbBitchEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>><</link>>
+	멍청한 암캐: <span id="xchange-bitch"><<= $xchange.pill.dumbBitchEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> | <<link "변경">><<set $xchange.pill.dumbBitchEffect to $xchange.pill.dumbBitchEffect? false : true>><<replace "#xchange-bitch">><<= $xchange.pill.dumbBitchEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>><</link>>
 	<br>
 	<<if $portalPantiesEnabled>>
-		Portal: <span id="xchange-portal"><<= $xchange.pill.portalEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> | <<link "Change">><<set $xchange.pill.portalEffect to $xchange.pill.portalEffect? false : true>><<set $xchange.pill.portalEffectTimer to $xchange.pill.duration>><<replace "#xchange-portal">><<= $xchange.pill.portalEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>><</link>>
+		포털: <span id="xchange-portal"><<= $xchange.pill.portalEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> | <<link "변경">><<set $xchange.pill.portalEffect to $xchange.pill.portalEffect? false : true>><<set $xchange.pill.portalEffectTimer to $xchange.pill.duration>><<replace "#xchange-portal">><<= $xchange.pill.portalEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>><</link>>
 		<br>
 	<</if>>
 
 	/* New effects */
 	순수함:
-	<span id="xchange-innocence"><<= $innocencestate is 1 ? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> |
+	<span id="xchange-innocence"><<= $innocencestate is 1 ? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> |
 	<<link "변경">>
 		<<if $innocencestate is 1>>
 			<<xchange-removeeffect "innocence">>
 		<<else>>
 			<<xchange-addeffect "innocence">>
 		<</if>>
-		<<replace "#xchange-innocence">><<= $innocencestate is 1 ? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>>
+		<<replace "#xchange-innocence">><<= $innocencestate is 1 ? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>>
 	<</link>>
 	<br>
-	Fear Toxin: <span id="xchange-feartoxin"><<= $xchange.pill.feartoxinEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> |
+	공포 독소: <span id="xchange-feartoxin"><<= $xchange.pill.feartoxinEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> |
 	<<link "변경">>
 		<<if $xchange.pill.feartoxinEffect>>
 			<<xchange-removeeffect "feartoxin">>
 		<<else>>
 			<<xchange-addeffect "feartoxin">>
 		<</if>>
-		<<replace "#xchange-feartoxin">><<= $xchange.pill.feartoxinEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>>
+		<<replace "#xchange-feartoxin">><<= $xchange.pill.feartoxinEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>>
 	<</link>>
 	<br>
-	Swell: <span id="xchange-swell"><<= $xchange.pill.swellEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> |
+	부풀기: <span id="xchange-swell"><<= $xchange.pill.swellEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> |
 	<<link "변경">>
 		<<if $xchange.pill.swellEffect>>
 			<<xchange-removeeffect "swell">>
 		<<else>>
 			<<xchange-addeffect "swell">>
 		<</if>>
-		<<replace "#xchange-swell">><<= $xchange.pill.swellEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>>
+		<<replace "#xchange-swell">><<= $xchange.pill.swellEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>>
 	<</link>>
 	<br>
-	Bimbo: <span id="xchange-bimbo"><<= $xchange.pill.bimboEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> |
+	빔보: <span id="xchange-bimbo"><<= $xchange.pill.bimboEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> |
 	<<link "변경">>
 		<<if $xchange.pill.bimboEffect>>
 			<<xchange-removeeffect "bimbo">>
 		<<else>>
 			<<xchange-addeffect "bimbo">>
 		<</if>>
-		<<replace "#xchange-bimbo">><<= $xchange.pill.bimboEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>>
+		<<replace "#xchange-bimbo">><<= $xchange.pill.bimboEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>>
 	<</link>>
 	<br>
-	Cumcure: <span id="xchange-cumcure"><<= $xchange.pill.cumcureEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> |
+	컴큐어: <span id="xchange-cumcure"><<= $xchange.pill.cumcureEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> |
 	<<link "변경">>
 		<<if $xchange.pill.cumcureEffect>>
 			<<xchange-removeeffect "cumcure">>
 		<<else>>
 			<<xchange-addeffect "cumcure">>
 		<</if>>
-		<<replace "#xchange-cumcure">><<= $xchange.pill.cumcureEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>>
+		<<replace "#xchange-cumcure">><<= $xchange.pill.cumcureEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>>
 	<</link>>
 	<br>
-	Hyper Fertility: <span id="xchange-hyperfertility"><<= $xchange.pill.hyperFertilityEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> |
+	하이퍼 퍼틸리티: <span id="xchange-hyperfertility"><<= $xchange.pill.hyperFertilityEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> |
 	<<link "변경">>
 		<<if $xchange.pill.hyperFertilityEffect>>
 			<<xchange-removeeffect "fertility">>
 		<<else>>
 			<<xchange-addeffect "fertility">>
 		<</if>>
-		<<replace "#xchange-hyperfertility">><<= $xchange.pill.hyperFertilityEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>>
+		<<replace "#xchange-hyperfertility">><<= $xchange.pill.hyperFertilityEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>>
 	<</link>>
 	<br>
-	X-Tend: <span id="xchange-xtend"><<= $xchange.pill.xtendEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> | <<link "Change">><<set $xchange.pill.xtendEffect to $xchange.pill.xtendEffect? false : true>><<set $xchange.pill.xtendTracker to {orgasmed: 0, penisSizeGains: 0}>><<replace "#xchange-xtend">><<= $xchange.pill.xtendEffect? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>><</link>>
+	X-텐드: <span id="xchange-xtend"><<= $xchange.pill.xtendEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> | <<link "변경">><<set $xchange.pill.xtendEffect to $xchange.pill.xtendEffect? false : true>><<set $xchange.pill.xtendTracker to {orgasmed: 0, penisSizeGains: 0}>><<replace "#xchange-xtend">><<= $xchange.pill.xtendEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>><</link>>
 	<br><br>
 
-	Effects Known: <span id="xchange-spike"><<= $xchange.pill.effectsKnown? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">></span> | <<link "Change">><<set $xchange.pill.effectsKnown to $xchange.pill.effectsKnown? false : true>><<replace "#xchange-spike">><<= $xchange.pill.effectsKnown? "<span class=\"green\">On</span>" : "<span class=\"red\">Off</span>">><</replace>><</link>>
+	효과 알려짐: <span id="xchange-spike"><<= $xchange.pill.effectsKnown? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> | <<link "변경">><<set $xchange.pill.effectsKnown to $xchange.pill.effectsKnown? false : true>><<replace "#xchange-spike">><<= $xchange.pill.effectsKnown? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>><</link>>
 	<br><br>
 <</widget>>
 
@@ -1616,9 +1616,9 @@
 			<<tficon "cow">>젖소: <<link "설정">><<clearAnimalTransformations>><<cowTransform>><<updatesidebarimg>><</link>> | <<link "해제">><<cowTransform 99>><<updatesidebarimg>><</link>><br>
 			<<tficon "bird">>새: <<link "설정">><<clearAnimalTransformations>><<harpyTransform>><<updatesidebarimg>><</link>> | <<link "해제">><<harpyTransform 99>><<updatesidebarimg>><</link>><br>
 			<<tficon "fox">>여우: <<link "설정">><<clearAnimalTransformations>><<foxTransform>><<updatesidebarimg>><</link>> | <<link "해제">><<foxTransform 99>><<updatesidebarimg>><</link>><br>
-			<<tficon "bear">>Bear: <<link "Set">><<clearAnimalTransformations>><<bearTransform>><<updatesidebarimg>><</link>> | <<link "Clear">><<bearTransform 99>><<updatesidebarimg>><</link>><br>
-			<<tficon "waterdragon">>Water Dragon: <<link "Set">><<clearAnimalTransformations>><<waterdragonTransform>><<updatesidebarimg>><</link>> | <<link "Clear">><<waterdragonTransform 99>><<updatesidebarimg>><</link>><br>
-			<<tficon "bunny">>Bunny: <<link "Set">><<clearAnimalTransformations>><<bunnyTransform>><<updatesidebarimg>><</link>> | <<link "Clear">><<bunnyTransform 99>><<updatesidebarimg>><</link>><br>
+			<<tficon "bear">>곰: <<link "설정">><<clearAnimalTransformations>><<bearTransform>><<updatesidebarimg>><</link>> | <<link "해제">><<bearTransform 99>><<updatesidebarimg>><</link>><br>
+			<<tficon "waterdragon">>수룡: <<link "설정">><<clearAnimalTransformations>><<waterdragonTransform>><<updatesidebarimg>><</link>> | <<link "해제">><<waterdragonTransform 99>><<updatesidebarimg>><</link>><br>
+			<<tficon "bunny">>토끼: <<link "설정">><<clearAnimalTransformations>><<bunnyTransform>><<updatesidebarimg>><</link>> | <<link "해제">><<bunnyTransform 99>><<updatesidebarimg>><</link>><br>
 		</div>
 	<div class="settingsToggleItem">
 		<span class="gold">변신 포인트</span>
@@ -1685,11 +1685,11 @@
 			<span class="gold">휘트니</span>
 			<<numberStepper "<<symbol love>> 애정" `C.npc.Whitney.love` { callback: value => { C.npc.Whitney.love = value }, max: 30 }>>
 			<<numberStepper "<<symbol lust>> 욕정" `C.npc.Whitney.lust` { callback: value => { C.npc.Whitney.lust = value } }>>
-			<<numberStepper "<<symbol dominance-whitney>> Dominance" `C.npc.Whitney.dom` { callback: value => { C.npc.Whitney.dom = value }, max: 20 }>>
+			<<numberStepper "<<symbol dominance-whitney>> 지배욕" `C.npc.Whitney.dom` { callback: value => { C.npc.Whitney.dom = value }, max: 20 }>>
 			|<<if ["dungeon", "pillory"].includes(C.npc.Whitney.state)>>
-				<<link [[Reclaim Whitney|$passage]]>><<reclaimWhitney>><</link>> |
+				<<link [[휘트니를 복귀시킨다|$passage]]>><<reclaimWhitney>><</link>> |
 			<<else>>
-				<<link [[Dismiss Whitney|$passage]]>><<dismissWhitney>><</link>> |
+				<<link [[휘트니를 퇴장시킨다|$passage]]>><<dismissWhitney>><</link>> |
 			<</if>>
 		</div>
 		<div class="settingsToggleItem">
@@ -1704,14 +1704,14 @@
 			<<numberStepper "<<symbol lust>> 욕정" `C.npc.Kylar.lust` { callback: value => { C.npc.Kylar.lust = value } }>>
 			<<numberStepper "<<symbol jealousy>> 질투" `C.npc.Kylar.rage` { callback: value => { C.npc.Kylar.rage = value }, reverse: true }>>
 			|<<if $kylar_mad isnot 1>>
-				<<link [[Enable Kidnapping|$passage]]>><<set $kylar_mad to 1>><</link>> |
+				<<link [[납치 활성화|$passage]]>><<set $kylar_mad to 1>><</link>> |
 			<<elseif $kylar_mad is 1>>
-				<<link [[Disable Kidnapping|$passage]]>><<set $kylar_mad to 0>><</link>> |
+				<<link [[납치 비활성화|$passage]]>><<set $kylar_mad to 0>><</link>> |
 			<</if>>
 			<<if C.npc.Kylar.state is "prison">>
-				<<link [[Reclaim Kylar|$passage]]>><<reclaimKylar>><</link>> |
+				<<link [[카일라를 복귀시킨다|$passage]]>><<reclaimKylar>><</link>> |
 			<<elseif C.npc.Kylar.state is "active">>
-				<<link [[Dismiss Kylar|$passage]]>><<dismissKylar>><</link>> |
+				<<link [[카일라를 퇴장시킨다|$passage]]>><<dismissKylar>><</link>> |
 			<</if>>
 		</div>
 		<div class="settingsToggleItem">
@@ -1721,23 +1721,23 @@
 			<<numberStepper "<<symbol dominance>> 지배욕" `C.npc.Avery.dom` { callback: value => { C.npc.Avery.dom = value } }>>
 			<<if !$avery_mansion>>
 				<<if C.npc.Avery.state is "dismissed">>
-					| <<link [[Reclaim Avery|$passage]]>><<unDismissAvery>><</link>> |
+					| <<link [[에이버리를 복귀시킨다|$passage]]>><<unDismissAvery>><</link>> |
 				<<elseif C.npc.Avery.state is "active">>
-					| <<link [[Dismiss Avery|$passage]]>><<dismissAvery>><</link>> |
+					| <<link [[에이버리를 퇴장시킨다|$passage]]>><<dismissAvery>><</link>> |
 				<</if>>
 			<<else>>
 				<<if $avery_fate is undefined>>
-					Avery has no set fate.
+					에이버리의 운명이 정해지지 않았습니다.
 				<<else>>
 					에이버리의 현재 상태: <<print $avery_fate>>
 				<</if>>
 				<br>
 
-				<<linkreplace "Choose Avery's fate">>
+				<<linkreplace "에이버리의 운명을 고르십시오">>
 					에이버리의 운명을 고르십시오:
 					<br>
 					<<if $avery_fate is "saved" or $avery_fate is "rescued">>
-						<span class="gold">Rescue Avery (current)</span>
+						<span class="gold">에이버리를 구한다 (현재)</span>
 						<br>
 					<<else>>
 						<<link [[에이버리를 구한다|$passage]]>>
@@ -1757,16 +1757,16 @@
 							<<unDismissAvery>>
 						<</link>>
 						<br>
-						This will <span class="lblue">give you the Avery's Saviour Trait.</span>
+						이 선택은 <span class="lblue">'에이버리의 구원자' 특성을 부여합니다.</span>
 						<<if $avery_fate is "ascended" and $auriga_scar isnot undefined and $auriga_scar gte 1>>
 							<br>
-							This will<<if $auriga_scar is 1>> <span class="lblue">remove your Elk-scarred Trait.</span><<else>> <span class="lblue">weaken your Elk Trait.</span><</if>>
+							이 선택은<<if $auriga_scar is 1>> <span class="lblue">'엘크의 흉터' 특성을 제거합니다.</span><<else>> <span class="lblue">엘크 특성을 약화시킵니다.</span><</if>>
 						<</if>>
 						<br>
 					<</if>>
 
 					<<if $avery_fate is "ascended">>
-						<span class="gold">Ascend Avery (current)</span>
+						<span class="gold">에이버리를 승천시킨다 (현재)</span>
 						<br>
 					<<else>>
 						<<link [[에이버리를 승천시킨다|$passage]]>>
@@ -1788,16 +1788,16 @@
 							<<unDismissAvery>>
 						<</link>>
 						<br>
-						This will<<if $auriga_scar is undefined or $auriga_scar lte 0>> <span class="red">give you the Elk-scarred Trait.</span><<else>> <span class="red">worsen your Elk Trait.</span><</if>>
+						이 선택은<<if $auriga_scar is undefined or $auriga_scar lte 0>> <span class="red">'엘크의 흉터' 특성을 부여합니다.</span><<else>> <span class="red">엘크 특성을 악화시킵니다.</span><</if>>
 						<<if $avery_fate is "rescued" or $avery_fate is "saved">>
 							<br>
-							This will <span class="red">remove your Avery's Saviour Trait.</span>
+							이 선택은 <span class="red">'에이버리의 구원자' 특성을 제거합니다.</span>
 						<</if>>
 						<br>
 					<</if>>
 
 					<<if $avery_fate is "fallen">>
-						<span class="gold">Let Avery fall (current)</span>
+						<span class="gold">에이버리를 타락하게 둔다 (현재)</span>
 						<br>
 					<<else>>
 						<<link [[에이버리를 타락하게 둔다|$passage]]>>
@@ -1819,17 +1819,17 @@
 
 						<<if $avery_fate is "ascended" and $auriga_scar isnot undefined and $auriga_scar gte 1>>
 							<br>
-							This will<<if $auriga_scar is 1>> <span class="lblue">remove your Elk-scarred Trait.</span><<else>> <span class="lblue">weaken your Elk Trait.</span><</if>>
+							이 선택은<<if $auriga_scar is 1>> <span class="lblue">'엘크의 흉터' 특성을 제거합니다.</span><<else>> <span class="lblue">엘크 특성을 약화시킵니다.</span><</if>>
 						<</if>>
 						<<if $avery_fate is "rescued" or $avery_fate is "saved">>
 							<br>
-							This will <span class="red">remove your Avery's Saviour Trait.</span>
+							이 선택은 <span class="red">'에이버리의 구원자' 특성을 제거합니다.</span>
 						<</if>>
 						<br>
 					<</if>>
 
 					<<if $avery_fate is "kicked">>
-						<span class="gold">Kick Avery (current)</span>
+						<span class="gold">에이버리를 쫓아낸다 (현재)</span>
 						<br>
 					<<else>>
 						<<link [[에이버리를 쫓아낸다|$passage]]>>
@@ -1851,11 +1851,11 @@
 
 						<<if $avery_fate is "ascended" and $auriga_scar isnot undefined and $auriga_scar gte 1>>
 							<br>
-							This will<<if $auriga_scar is 1>> <span class="lblue">remove your Elk-scarred Trait.</span><<else>> <span class="lblue">weaken your Elk Trait.</span><</if>>
+							이 선택은<<if $auriga_scar is 1>> <span class="lblue">'엘크의 흉터' 특성을 제거합니다.</span><<else>> <span class="lblue">엘크 특성을 약화시킵니다.</span><</if>>
 						<</if>>
 						<<if $avery_fate is "rescued" or $avery_fate is "saved">>
 							<br>
-							This will <span class="red">remove your Avery's Saviour Trait.</span>
+							이 선택은 <span class="red">'에이버리의 구원자' 특성을 제거합니다.</span>
 						<</if>>
 						<br>
 					<</if>>
@@ -1910,7 +1910,7 @@
 	</div>
 	<hr>
 	<div class="settingsGrid">
-		<div class="settingsHeader options"><span class="gold">Bailey Expansion</span></div>
+		<div class="settingsHeader options"><span class="gold">베일리 확장</span></div>
 		<<cheats-bailey>>
 	</div>
 	<hr>
@@ -1927,13 +1927,13 @@
 			<<numberStepper "<<symbol lust>> 욕정" `C.npc.Zephyr.lust` { callback: value => { C.npc.Zephyr.lust = value }, max: 100 }>>
 		</div>
 		<div class="settingsToggleItem">
-			<span class="gold">Quinn</span>
-			<<numberStepper "<<symbol love>> Quinn Love" `C.npc.Quinn.love` { callback: value => { C.npc.Quinn.love = value } }>>
-			<<numberStepper "<<symbol lust>> Lust" `C.npc.Quinn.lust` { callback: value => { C.npc.Quinn.lust = value }, max: 100 }>>
+			<span class="gold">퀸</span>
+			<<numberStepper "<<symbol love>> 퀸 애정" `C.npc.Quinn.love` { callback: value => { C.npc.Quinn.love = value } }>>
+			<<numberStepper "<<symbol lust>> 욕정" `C.npc.Quinn.lust` { callback: value => { C.npc.Quinn.lust = value }, max: 100 }>>
 		</div>
 		<div class="settingsToggleItem">
-			<span class="gold">Modded NPCs</span>
-			<<numberStepper "<<symbol love>> Riley <<print setup.loveAlias.Riley()>>" `(V.NPCName[V.NPCNameList.indexOf("Riley")]?.love ?? C.npc.Riley.love) * 2` { max: 100, callback: value => { const raw = Math.clamp(Math.round(value / 2), 0, 50); C.npc.Riley.love = raw; const npc = V.NPCName[V.NPCNameList.indexOf("Riley")]; if (npc) npc.love = raw;}}>>
+			<span class="gold">모드 NPC</span>
+			<<numberStepper "<<symbol love>> 라일리 <<print setup.loveAlias.라일리()>>" `(V.NPCName[V.NPCNameList.indexOf("라일리")]?.love ?? C.npc.라일리.love) * 2` { max: 100, callback: value => { const raw = Math.clamp(Math.round(value / 2), 0, 50); C.npc.라일리.love = raw; const npc = V.NPCName[V.NPCNameList.indexOf("라일리")]; if (npc) npc.love = raw;}}>>
 		</div>
 		<div class="settingsToggleItem">
 			<span class="gold">교사들</span>
@@ -1958,26 +1958,26 @@
 	</div>
 	<hr>
 	<div class="settingsGrid">
-		<div class="settingsHeader options">Hopeless Cycle</div>
+		<div class="settingsHeader options">희망 없는 순환</div>
 		<<if $hc>>
 			<div class="settingsToggleItemWide">
-				<span class="gold">The Hand's Suspicion</span>
+				<span class="gold">핸드의 의심</span>
 				<br>
-				<span class="description">How suspicious your captor (the Hand) is of you. It climbs when you sneak, steal, or leave signs of tampering; reaching 100 triggers the suspicion ending.</span>
+				<span class="description">포로로 잡은 자(핸드)가 당신을 얼마나 의심하는지를 나타냅니다. 몰래 움직이거나, 훔치거나, 건드린 흔적을 남기면 오르며, 100에 이르면 의심 엔딩이 발동합니다.</span>
 				<br>|
-				<<link "Set to 0" $passage>><<set $hc.suspicion to 0>><<set $cheatReload to true>><</link>> |
-				<<link "Set to 100" $passage>><<set $hc.suspicion to 100>><<set $cheatReload to true>><</link>> |
+				<<link "0으로 설정" $passage>><<set $hc.suspicion to 0>><<set $cheatReload to true>><</link>> |
+				<<link "100으로 설정" $passage>><<set $hc.suspicion to 100>><<set $cheatReload to true>><</link>> |
 			</div>
 			<div class="settingsToggleItemWide">
-				<span class="gold">Loved the Witch</span>
+				<span class="gold">마녀를 사랑함</span>
 				<br>
-				<span class="description">Whether you chose to spare and love the fellow prisoner (the witch) during the blood event. Gates <<worldFemale 'her' 'his'>> bond and its unique endings.</span>
+				<span class="description">피의 사건에서 동료 죄수(마녀)를 살려 주고 사랑하기로 했는지 여부입니다. <<worldFemale '그녀의' '그의'>> 유대와 고유 엔딩을 좌우합니다.</span>
 				<br>|
-				<<link "Set loved: yes" $passage>><<set $hc.loved to true>><<set $cheatReload to true>><</link>> |
-				<<link "Set loved: no" $passage>><<set $hc.loved to false>><<set $cheatReload to true>><</link>> |
+				<<link "사랑함으로 설정" $passage>><<set $hc.loved to true>><<set $cheatReload to true>><</link>> |
+				<<link "사랑하지 않음으로 설정" $passage>><<set $hc.loved to false>><<set $cheatReload to true>><</link>> |
 			</div>
 		<<else>>
-			<div class="settingsToggleItemWide grey">Only available while you're in the Hopeless Cycle (the snake painting's dungeon).</div>
+			<div class="settingsToggleItemWide grey">희망 없는 순환(뱀 그림의 지하 감옥) 안에 있을 때만 사용할 수 있습니다.</div>
 		<</if>>
 	</div>
 		<hr>
@@ -2273,7 +2273,7 @@
 				<br>
 				<<shopicon>><<link [[쇼핑센터|Shopping Centre]]>><<cheats-teleport-function>><</link>>
 				<br>
-				<<townhallicon>><<link [[HBSC Bank Branch|HBSC Bank Branch]]>><</link>>
+				<<townhallicon>><<link [[HBSC 은행 지점|HBSC Bank Branch]]>><</link>>
 				<br>
 				<<if $dorenintro gte 1 and $exposed lte 0>>
 					<<dooricon "doren">><<link [[도렌의 아파트|Doren Entrance]]>><<cheats-teleport-function>><</link>>
@@ -2310,7 +2310,7 @@
 				<<if $soup_kitchen_known is 1 and $exposed lte 0>>
 					<!-- take passage of time into account. Open after school on school days (15:00), or from business hours on weekends/holidays (9:00), until close (21:00) -->
 					<<if (Time.schoolDay ? Time.betweenHours(15, 20, 1) : Time.betweenHours(9, 20, 1))>>
-						<<kitchenicon "soup">><<link [[Soup Kitchen]]>><<cheats-teleport-function>><</link>>
+						<<kitchenicon "soup">><<link [[무료 급식소|Soup Kitchen]]>><<cheats-teleport-function>><</link>>
 					<<else>>
 						<<kitchenicon "soup">><<link [[무료 급식소|Soup Kitchen Closed]]>><<cheats-teleport-function>><</link>>
 					<</if>>
@@ -2353,14 +2353,14 @@
 				<<foresticon>><<link [[깊은 숲|Forest]]>><<set $forest = 99>><<cheats-teleport-function>><</link>><br>
 				<br>
 				<u>호수 지역</u><br>
-				<<lakeicon>><<link [[Forest Lake Shore|Lake Shore]]>><<cheats-teleport-function>><</link>><br>
+				<<lakeicon>><<link [[호수: 물가|Lake Shore]]>><<cheats-teleport-function>><</link>><br>
 				<<lakeicon>><<link [[호수: 모닥불 터|Lake Firepit]]>><<cheats-teleport-function>><</link>><br>
 				<<lakeicon>><<link [[호수: 폭포|Lake Waterfall]]>><<cheats-teleport-function>><</link>><br>
 				<<lakeicon>><<link [[호수: 낚시 바위|Lake Fishing Rock]]>><<cheats-teleport-function>><</link>><br>
 				<<lakeicon>><<link [[호수: 캠프장|Lake Campsite]]>><<cheats-teleport-function>><</link>><br>
 				<br>
 				<u>평원</u><br>
-				<<roadicon>><<link [[Farm Road 1]]>><<cheats-teleport-function>><</link>><br>
+				<<roadicon>><<link [[농장 도로|Farm Road 1]]>><<cheats-teleport-function>><</link>><br>
 				<<farmicon "barn">><<link [[농지|Farmland]]>><<cheats-teleport-function>><</link>><br>
 				<<farmicon "meadow">><<link [[초원|Meadow]]>><<cheats-teleport-function>><</link>><br>
 				<<farmicon "horse">><<link [[승마 학교|Riding School]]>><<cheats-teleport-function>><</link>><br>
@@ -2368,9 +2368,9 @@
 				<<getinicon>><<link [[레미 저택 (비밀 입구)|Estate]]>><<estate_init secret>><<cheats-teleport-function>><</link>><br>
 				<br>
 				<u>황야</u><br>
-				<<mooricon>><<link [[Moor Plains|Moor]]>><<set $moor = 5>><<cheats-teleport-function>><</link>><br>
-				<<mooricon>><<link [[Moor Rocky|Moor]]>><<set $moor = 25>><<cheats-teleport-function>><</link>><br>
-				<<mooricon>><<link [[Moor Bubbles|Moor]]>><<set $moor = 55>><<cheats-teleport-function>><</link>><br>
+				<<mooricon>><<link [[황야: 평원|Moor]]>><<set $moor = 5>><<cheats-teleport-function>><</link>><br>
+				<<mooricon>><<link [[황야: 바위 지대|Moor]]>><<set $moor = 25>><<cheats-teleport-function>><</link>><br>
+				<<mooricon>><<link [[황야: 거품 지대|Moor]]>><<set $moor = 55>><<cheats-teleport-function>><</link>><br>
 				<<mooricon>><<link [[황야: 성|Moor]]>><<set $moor = 100>><<cheats-teleport-function>><</link>><br>
 			</div>
 			<div class="settingsToggleItem">
@@ -2400,17 +2400,17 @@
 				<br>
 				<<starfishicon>><<link [[스타피쉬 가|Starfish Street]]>><<cheats-teleport-function>><</link>>
 				<br>
-				<<clifficon>><<link [[Cliff Street]]>><<cheats-teleport-function>><</link>>
+				<<clifficon>><<link [[클리프 가|Cliff Street]]>><<cheats-teleport-function>><</link>>
 				<br><br>
-				<u>Alleyways</u><br>
-				<<alleyicon>><<link [[Commercial Alleyways]]>><<cheats-teleport-function>><</link>>
+				<u>골목</u><br>
+				<<alleyicon>><<link [[상업 지구 골목|Commercial Alleyways]]>><<cheats-teleport-function>><</link>>
 				<br>
 				<<alleyicon>><<link [[공업 지구 골목|Industrial Alleyways]]>><<cheats-teleport-function>><</link>>
 				<br>
-				<<alleyicon>><<link [[Residential Alleyways]]>><<cheats-teleport-function>><</link>>
+				<<alleyicon>><<link [[거주 지구 골목|Residential Alleyways]]>><<cheats-teleport-function>><</link>>
 				<br><br>
-				<u>Misc</u><br>
-				<<parkicon>><<link [[Park]]>><<cheats-teleport-function>><</link>>
+				<u>기타</u><br>
+				<<parkicon>><<link [[공원|Park]]>><<cheats-teleport-function>><</link>>
 				<hr>
 				<span class="gold">지하</span>
 				<br>
@@ -2433,37 +2433,37 @@
 				<<swimicon>><<link [[해변 근처 바다|Sea]]>><<set $sea = 0>><<cheats-teleport-function>><</link>><br>
 				<<swimicon>><<link [[마을 근처 바다|Sea]]>><<set $sea = 20>><<cheats-teleport-function>><</link>><br>
 				<<swimicon>><<link [[마을에서 먼 바다|Sea]]>><<set $sea = 50>><<cheats-teleport-function>><</link>><br>
-				<<swimicon>><<link [[Sea Horizon Town|Sea]]>><<set $sea = 90>><<cheats-teleport-function>><</link>><br>
+				<<swimicon>><<link [[수평선 쪽 바다|Sea]]>><<set $sea = 90>><<cheats-teleport-function>><</link>><br>
 				<<swimicon>><<link [[끝없는 심해|Sea]]>><<set $sea = 100>><<cheats-teleport-function>><</link>><br>
 				<hr>
 				<span class="gold">위험한 순간이동</span>
 				<br>
-				<span class="red">Caution!</span>
-				<br>Teleporting to these locations may or may not break your save. Use after saving and at your own risk.
+				<span class="red">주의!</span>
+				<br>이 장소로 순간이동하면 세이브 파일이 손상될 수도 있고 아닐 수도 있습니다. 저장한 뒤에 사용하시고, 모든 책임은 본인에게 있습니다.
 				<br><br>
 				<u>숲 지역</u><br>
 				<<edenicon>><<link [[에덴의 오두막|Eden Cabin]]>><<cheats-teleport-function>><</link>><br>
 				<<foresticon "churchyard">><<link [[교회 묘지|Churchyard]]>><<cheats-teleport-function>><</link>><br>
-				<<icon "wolf-cave-entrance.png">><<link [[Wolf Cave|Wolf Cave]]>><<cheats-teleport-function>><</link>><br>
+				<<icon "wolf-cave-entrance.png">><<link [[늑대 동굴|Wolf Cave]]>><<cheats-teleport-function>><</link>><br>
 				<br>
 				<u>기타</u><br>
 				<<compoundicon>><<link [[엘크 가의 단지|Elk Compound]]>><<cheats-teleport-function>><</link>><br>
 				<<asylumicon  "cell">><<link [[정신병원|Asylum Cell]]>><<cheats-teleport-function>><</link>><br>
 				<<if $waterDragonLab and $waterDragonLab.active>>
-					<<hospitalicon>><<link [[Laboratory Experimentation|Water Dragon Lab]]>><<cheats-teleport-function>><</link>><br>
+					<<hospitalicon>><<link [[연구소 실험|Water Dragon Lab]]>><<cheats-teleport-function>><</link>><br>
 				<<else>>
-					<<hospitalicon>><<link [[Laboratory Experimentation|Water Dragon Lab Intro]]>><<cheats-teleport-function>><</link>><br>
+					<<hospitalicon>><<link [[연구소 실험|Water Dragon Lab Intro]]>><<cheats-teleport-function>><</link>><br>
 				<</if>>
-				<<icon "avery_dungeon.png">><<link [[Underground Brothel|Underground Cell]]>><<if not $undergroundbrothel?.active>><<set $undergroundbrothel to {"active": true, "time": 0, "timepass": true, "water": 0, "escape": 0}>><</if>><<cheats-teleport-function>><</link>><br>
+				<<icon "avery_dungeon.png">><<link [[지하 창관|Underground Cell]]>><<if not $undergroundbrothel?.active>><<set $undergroundbrothel to {"active": true, "time": 0, "timepass": true, "water": 0, "escape": 0}>><</if>><<cheats-teleport-function>><</link>><br>
 				<<if $livestock.intro isnot true>>
-					<<icon "grass.png">><<link [[Underground Farm|Livestock Intro]]>><<cheats-teleport-function>><</link>><br>
+					<<icon "grass.png">><<link [[지하 농장|Livestock Intro]]>><<cheats-teleport-function>><</link>><br>
 				<<else>>
-					<<icon "grass.png">><<link [[Underground Farm|Livestock Cell]]>><<cheats-teleport-function>><</link>><br>
+					<<icon "grass.png">><<link [[지하 농장|Livestock Cell]]>><<cheats-teleport-function>><</link>><br>
 				<</if>>
-				<<icon "hookah_smoke.png">><<link [[Tentacle Plains|Tentacle Plains]]>><<cheats-teleport-function>><</link>><br>
-				<<icon "vent_eyes.png">><<link [[Night Monster Lair|Monster Tower]]>><<cheats-teleport-function>><</link>><br>
-				<<birdicon "tower">><<link [[Great Hawk Tower|Bird Tower]]>><<cheats-teleport-function>><</link>><br>
-				<<prisonicon "cell">><<link [[Prison Cell|Prison Cell]]>><<prison_init>><<set $prison.time to Math.trunc(crimeSumCurrent() / 250)>><<crimeClear "all">><<if $prison_intro isnot 1>><<generate_relaxed_guard 0>><<generate_anxious_guard 1>><<generate_veteran_guard 2>><<generate_methodical_guard 3>><<generate_scarred_inmate 4>><<generate_tattooed_inmate 5>><<set $prison_intro to 1>><</if>><<cheats-teleport-function>><</link>><br>
+				<<icon "hookah_smoke.png">><<link [[촉수 평원|Tentacle Plains]]>><<cheats-teleport-function>><</link>><br>
+				<<icon "vent_eyes.png">><<link [[밤의 괴물 소굴|Monster Tower]]>><<cheats-teleport-function>><</link>><br>
+				<<birdicon "tower">><<link [[거대 매의 탑|Bird Tower]]>><<cheats-teleport-function>><</link>><br>
+				<<prisonicon "cell">><<link [[감옥 독방|Prison Cell]]>><<prison_init>><<set $prison.time to Math.trunc(crimeSumCurrent() / 250)>><<crimeClear "all">><<if $prison_intro isnot 1>><<generate_relaxed_guard 0>><<generate_anxious_guard 1>><<generate_veteran_guard 2>><<generate_methodical_guard 3>><<generate_scarred_inmate 4>><<generate_tattooed_inmate 5>><<set $prison_intro to 1>><</if>><<cheats-teleport-function>><</link>><br>
 			</div>
 		<<else>>
 			<div class="settingsToggleItemWide">
@@ -2584,8 +2584,8 @@
 		<div class="settingsToggleItemWide">
 			<span class="gold">온도</span>
 			<br>
-			<span class="description">Will increase or decrease the base temperature until the next day, then go back to the proper temperature over time.<br>
-			The base temperature will still be modified by other factors such as time of day and will not be constant throughout the day.</span>
+			<span class="description">기본 온도를 다음 날까지 올리거나 내립니다. 이후 시간이 지남에 따라 점진적으로 원래 온도로 돌아갑니다.<br>
+			기본 온도는 시간대 등 다른 요인의 영향을 계속 받으며, 하루 종일 일정하게 유지되지는 않습니다.</span>
 			<<numberStepper "외부 온도" `Weather.toSelected(Weather.temperature)` {
 				callback: value => {
 					Weather.Temperature.set(V.options.fahrenheit ? Weather.Temperature.toCelsius(value) : value);
@@ -2600,18 +2600,18 @@
 	</div>
 
 	<div class="settingsGrid">
-		<div class="settingsHeader options">Farming & Cooking</div>
+		<div class="settingsHeader options">농사와 요리</div>
 		<div class="settingsToggleItem">
-			<span class="gold">🌱 Seeds</span><br>
-			<<link [[Unlock All Seeds|$passage]]>><<set $cheatReload to true>><<run unlockAllSeeds()>><</link>>
+			<span class="gold">🌱 씨앗</span><br>
+			<<link [[모든 씨앗 해금|$passage]]>><<set $cheatReload to true>><<run unlockAllSeeds()>><</link>>
 		</div>
 		<div class="settingsToggleItem">
-			<span class="gold">📖 Recipes</span><br>
-			<<link [[Unlock All Recipes|$passage]]>><<set $cheatReload to true>><<learn_recipe_all>><</link>>
+			<span class="gold">📖 조리법</span><br>
+			<<link [[모든 조리법 해금|$passage]]>><<set $cheatReload to true>><<learn_recipe_all>><</link>>
 		</div>
 		<div class="settingsToggleItemWide">
-			<span class="gold">🥕 Ingredients</span><br>
-			<<link [[Get 100 of Every Ingredient|$passage]]>><<set $cheatReload to true>>
+			<span class="gold">🥕 재료</span><br>
+			<<link [[모든 재료 100개 얻기|$passage]]>><<set $cheatReload to true>>
 				<<for _ingredient range Object.keys(setup.foodstuff)>>
 					<<set $foodstuff[_ingredient].amount += 100>>
 				<</for>>
@@ -2620,19 +2620,19 @@
 	</div>
 
 	<div class="settingsGrid">
-		<div class="settingsHeader options">Great Hawk Tower</div>
+		<div class="settingsHeader options">거대 매의 탑</div>
 		<<if $bird and $bird.materials>>
 			<div class="settingsToggleItem">
-				<span class="gold">🪵 Materials</span><br>
-				<<link [[Get 100 Tower Materials|$passage]]>><<set $cheatReload to true>>
+				<span class="gold">🪵 자재</span><br>
+				<<link [[탑 자재 100개 얻기|$passage]]>><<set $cheatReload to true>>
 					<<for _birdMat range ["wood", "fabric", "sticks", "leaves", "junk", "lurkers", "leather", "feathers"]>>
 						<<set $bird.materials[_birdMat] += 100>>
 					<</for>>
 				<</link>>
 			</div>
 			<div class="settingsToggleItem">
-				<span class="gold">💎 Valuables</span><br>
-				<<link [[Get 20 Tower Valuables|$passage]]>><<set $cheatReload to true>>
+				<span class="gold">💎 귀중품</span><br>
+				<<link [[탑 귀중품 20개 얻기|$passage]]>><<set $cheatReload to true>>
 					<<set $bird.materials.valuables ||= {}>>
 					<<for _birdVal range ["bracelet", "wallet", "ring", "watch", "necklace", "antique bullet"]>>
 						<<set $bird.materials.valuables[_birdVal] ||= 0>>
@@ -2641,8 +2641,8 @@
 				<</link>>
 			</div>
 			<div class="settingsToggleItemWide">
-				<span class="gold">🗼 Tower Progress</span><br>
-				<<link [[Quick-Complete Tower|$passage]]>><<set $cheatReload to true>>
+				<span class="gold">🗼 탑 진행</span><br>
+				<<link [[탑 즉시 완성|$passage]]>><<set $cheatReload to true>>
 					<<run Object.assign($bird.upgrades, {
 						mirror: 1, tools: 1, tarp: 1, telescope: 1,
 						shelter: 3, nest: 3, firepit: 3, pot: 3,
@@ -2653,17 +2653,17 @@
 					})>>
 					<<if $bird.firepit>><<run upgradeBirdFirepit()>><</if>>
 				<</link>>
-				| <span class="description">Keeps the legendary trophy event available.</span>
+				| <span class="description">전설의 전리품 이벤트를 계속 열어 둡니다.</span>
 			</div>
 		<<else>>
-			<div class="settingsToggleItemWide grey">Progress the Great Hawk's tower story to unlock these cheats.</div>
+			<div class="settingsToggleItemWide grey">거대 매의 탑 이야기를 진행하면 이 치트가 해금됩니다.</div>
 		<</if>>
 	</div>
 
 	<div class="settingsGrid">
-		<div class="settingsHeader options">School Pool</div>
-		<<numberStepper "🏊 Nude Swim Counter" $swimnudecounter {callback: value => V.swimnudecounter = value, min: 0, max: 100, step: 1, percentage: false}>>
-		<span class="description">Values above 10 trigger Leighton's nude swimming punishment event.</span>
+		<div class="settingsHeader options">학교 수영장</div>
+		<<numberStepper "🏊 알몸 수영 횟수" $swimnudecounter {callback: value => V.swimnudecounter = value, min: 0, max: 100, step: 1, percentage: false}>>
+		<span class="description">10을 넘으면 레이튼의 알몸 수영 벌칙 이벤트가 발동합니다.</span>
 	</div>
 
 	<hr>
@@ -2745,7 +2745,7 @@
 
 		<span class="gold"><<= (_args[0] is "anus" ? "애널" : "질")>> 기생충 임신</span>
 		<br>
-		You can have up to <<number _slots>> <<=_anal>> <<pluralise _slots "parasite">>.
+		최대 <<number _slots>>마리의 <<=_anal>> 기생충을 수용할 수 있습니다.
 		<<if $_pregnancy.fetus.length lt maxParasites(_args[0])>>
 			<br><br>
 			<<if $_aPregnancy.type is "parasite" or $_aPregnancy.type is null>>
@@ -2763,10 +2763,10 @@
 				<<if $_pregnancy.motherStatus lt 2>>
 					<label><<checkbox "_hermaphrodite" false true autocheck>> 후타나리</label>
 				<<else>>
-					You can only have one hermaphrodite parasite in your <<=_args[0]>> at a time.
+					당신의 <<=_args[0] is "anus" ? "항문" : "질">>에는 한 번에 한 마리의 후타나리 기생충만 품을 수 있습니다.
 				<</if>>
 			<<else>>
-				You are currently unable to host parasites due to your current <<=_anal>> pregnancy.
+				현재 <<=_anal>> 임신 중이라 기생충을 품을 수 없습니다.
 			<</if>>
 			<br>
 		<<else>>
@@ -2781,10 +2781,10 @@
 				<<set _fetusCreature to _fetus.creature || "unknown">>
 
 				<<if _fetus.fertilised>>
-					<<= _anal.toUpperFirst()>> slot <<=_i+1>> is pregnant with a <<=_fetusGender>> <<=_fetusCreature>>.
+					<<= _anal.toUpperFirst()>> <<=_i+1>>번째 슬롯은 <<print window.KR.getGenderKR(_fetusGender)>> <<print window.KR.getCreatureTypeKr(_fetusCreature)>>【을를】 임신 중입니다.
 					<br>
 				<<else>>
-					<<= _anal.toUpperFirst()>> slot <<=_i+1>> has a <<=_fetusGender>> <<=_fetusCreature>> egg ready to be fertilised.
+					<<= _anal.toUpperFirst()>> <<=_i+1>>번째 슬롯에 수정 가능한 <<print window.KR.getGenderKR(_fetusGender)>> <<print window.KR.getCreatureTypeKr(_fetusCreature)>> 알이 있습니다.
 					<br>
 				<</if>>
 			<<else>>
@@ -2862,15 +2862,15 @@
 			<br><br>
 			<<if $settings.fertilityCycleEnabled>>
 				<div class="settingsGrid">
-					<div class="settingsHeader options">Menstruation</div>
-					<<numberStepper "🩸 Cycle Day" _menstruation.currentDay {
+					<div class="settingsHeader options">월경</div>
+					<<numberStepper "🩸 주기 일차" _menstruation.currentDay {
 						callback: value => V.sexStats.vagina.menstruation.currentDay = value,
 						min: 0, max: _menstruation.currentDaysMax, step: 1, percentage: false,
-						valueFormat: value => `Day ${Math.trunc(value)} of ${V.sexStats.vagina.menstruation.currentDaysMax}`
+						valueFormat: value => `${Math.trunc(value)}일째 / 총 ${V.sexStats.vagina.menstruation.currentDaysMax}일`
 					}>>
 					<div class="settingsToggleItem">
-						<span class="gold">🥚 Ovulation</span><br>
-						<<link "Ovulate Now">>
+						<span class="gold">🥚 배란</span><br>
+						<<link "지금 배란">>
 							<<set _menstruation.currentDay to _menstruation.stages[2]>>
 							<<replace "#cheatsPregnancyOptions">><<cheatsPregnancyOptions>><</replace>>
 						<</link>>
@@ -2896,7 +2896,7 @@
 						colorArr: ["--teal", "--pink"], activeButtons: ["single", "double"]
 					}>>
 					<<if _activePregnancies.length gt 1>>
-						<<link [[Clear this one|$passage]]>>
+						<<link [[이것만 지운다|$passage]]>>
 							<<run clearPregnancyRecord(_pregId)>>
 						<</link>>
 						<br>
@@ -2934,7 +2934,7 @@
 		<<if !playerIsPregnant() or betaSecondWombOpen()>>
 			<<if $settings.playerPregnancyHumanEnabled or $settings.playerPregnancyBeastEnabled>>
 				<<if betaSecondWombOpen()>>
-					Your second womb is still free.
+					두 번째 자궁이 아직 비어 있습니다.
 					<br>
 				<</if>>
 				<<if $settings.pregnancyType is "realistic">>
@@ -3126,7 +3126,7 @@
 	<<set _fertileNPC to _impregnatableNPC.filter(npcIndex => _eligible.includes($NPCName[npcIndex].nam) and !getActivePregnancies($NPCName[npcIndex].nam).length)>>
 	<<if $player.penisExist and _fertileNPC.length>>
 		<br>
-		You can impregnate <span class="gold">_fertileNPC.length</span> fertile <<pluralise _fertileNPC.length "NPC">>.
+		당신은 <span class="gold">_fertileNPC.length</span>명의 가임기 NPC【을를】 임신시킬 수 있습니다.
 		<br><br>
 		<<for _pregEnabled range _fertileNPC>>
 			<<set _actor to $NPCName[_pregEnabled]>>
@@ -3153,13 +3153,13 @@
 	<<else>>
 		<br>
 		<<if !$player.penisExist>>
-			You can't currently impregnate any NPCs, since you have no penis.
+			당신은 지금 자지가 없어서 어떤 NPC도 임신시킬 수 없습니다.
 		<<else>>
-			You can't currently impregnate any NPCs.
+			당신은 지금 어떤 NPC도 임신시킬 수 없습니다.
 		<</if>>
 		<<if $settings.npcPregnancyEnabled is false>>
 			<br>
-			<span class="red">NPC pregnancy is disabled in settings.</span>
+			<span class="red">설정에서 NPC 임신이 꺼져 있습니다.</span>
 		<</if>>
 	<</if>>
 
@@ -3242,17 +3242,17 @@
 <<widget "autismLoadCheat">>
 	<<if $backgroundTraits.includes("autism")>>
 		<<set _state to ensureAutismSpectrumState()>>
-		Load: <span @class="_state.phase is 'burnout' ? 'red' : _state.phase is 'settled' ? 'green' : 'gold'"><<= autismLoadPercent()>>% (<<= _state.phase.toUpperFirst()>>)</span>
-		<<numberStepper "Set load" _state.load {step: 5, min: 0, max: 100, percentage: false, callback: value => {
+		부하: <span @class="_state.phase is 'burnout' ? 'red' : _state.phase is 'settled' ? 'green' : 'gold'"><<= autismLoadPercent()>>% (<<= ({burnout: "번아웃", strained: "버거움", settled: "안정"})[_state.phase] || _state.phase.toUpperFirst()>>)</span>
+		<<numberStepper "부담 설정" _state.load {step: 5, min: 0, max: 100, percentage: false, callback: value => {
 			autismSetLoad(value);
 			Wikifier.wikifyEval("<<replace '#statsautismload'>><<autismLoadCheat>><</replace>>");
 		}}>>
 		<<if autismInMeltdown()>>
-			| <span class="red">In meltdown</span>
+			| <span class="red">멜트다운 중</span>
 		<</if>>
 		<br>
-		Masking: <span class="purple"><<= autismMaskingLevel()>>%</span>
-		<<numberStepper "Set masking" _state.masking {step: 5, min: 0, max: 100, percentage: false, callback: value => {
+		마스킹: <span class="purple"><<= autismMaskingLevel()>>%</span>
+		<<numberStepper "마스킹 설정" _state.masking {step: 5, min: 0, max: 100, percentage: false, callback: value => {
 			autismSetMasking(value);
 			Wikifier.wikifyEval("<<replace '#statsautismload'>><<autismLoadCheat>><</replace>>");
 		}}>>
@@ -3331,7 +3331,7 @@
 	<<capture _i, _bodyShapeLabelsKr>>
 		<<for _i = 0; _i < setup.bodyShapes.length; _i++>>
 			<span @class="$player.bodyshape is setup.bodyShapes[_i] ? 'goldLink' : 'unselected'">
-				<<link `setup.bodyShapes[_i] is "andro" ? "Androgynous" : setup.bodyShapes[_i].toUpperFirst()`>>
+				<<link `_bodyShapeLabelsKr[setup.bodyShapes[_i]] || (setup.bodyShapes[_i] is "andro" ? "중성적" : setup.bodyShapes[_i].toUpperFirst())`>>
 					<<set $player.bodyshape to setup.bodyShapes[_i]>>
 					<<replace "#statsBodyShape">><<cheatsBodyShape>><</replace>><<updatesidebarimg>>
 				<</link>>
@@ -3381,7 +3381,7 @@
 	<</if>>
 
 	<<if Object.keys(_faceOpts).length is 0>>
-		No face variants available for this face style.
+		이 얼굴형에 쓸 수 있는 얼굴 변형이 없습니다.
 	<<else>>
 		<<listbox "$facevariant" autoselect>>
 			<<optionsfrom _faceOpts>>
@@ -3465,7 +3465,7 @@
 	<<if $earSlime.growth gt 50>><<set _reasons.push("귀 슬라임이 너무 자랐기 때문")>><</if>>
 	<<if _inWardrobe>>
 		<<if _reasons.length gte 1>>
-			<span class="gold"><<= ($player.penisExist and $player.vaginaExist) ? "Hermaphrodite" : $player.penisExist ? "Penis" : $player.vaginaExist ? "Vagina" : "">></span>
+			<span class="gold"><<= ($player.penisExist and $player.vaginaExist) ? "양성" : $player.penisExist ? "자지" : $player.vaginaExist ? "보지" : "">></span>
 			| <<= _reasons.join(", ")>> 이 설정을 변경할 수 없습니다.
 		<<else>>
 			<<if $player.penisExist and !$player.vaginaExist>>
@@ -3490,7 +3490,7 @@
 				<</link>> |
 			<</if>>
 			<<if $player.vaginaExist and !$player.penisExist>>
-				<span class="gold">Vagina</span> 
+				<span class="gold">보지</span>
 			<<else>>
 				<<link "보지">>
 					<<wash>>
@@ -3511,7 +3511,7 @@
 			<</if>>
 		<</if>>
 	<<else>>
-		<span class="gold"><<= ($player.penisExist and $player.vaginaExist) ? "Hermaphrodite" : $player.penisExist ? "Penis" : $player.vaginaExist ? "Vagina" : "">></span> | <<if _reasons.length gte 1>>You cannot change your genitals due to <<= _reasons.join(" and ")>>. Normally, this<<else>>This<</if>> setting can only be changed when accessing your wardrobe.
+		<span class="gold"><<= ($player.penisExist and $player.vaginaExist) ? "양성" : $player.penisExist ? "자지" : $player.vaginaExist ? "보지" : "">></span> | <<if _reasons.length gte 1>><<= _reasons.join(", ")>> 성기를 변경할 수 없습니다. 원래 이 설정은<<else>>이 설정은<</if>> 옷장에 접근할 때만 변경할 수 있습니다.
 	<</if>>
 <</widget>>
 
@@ -3528,16 +3528,16 @@
 			<<else>>
 				<<set $stressmax to 10000>>
 			<</if>>
-			<<numberStepper "Pain" $pain { callback: value => { V.cheatReload = true; V.pain = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: 200, reverse: true}>>
-			<<numberStepper "Arousal" $arousal { callback: value => { V.cheatReload = true; V.arousal = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: 10000, reverse: true}>>
-			<<numberStepper "Willpower" `isNaN($xchange.willpowerPoints) ? Math.max(200, $willpower || 0) : $xchange.willpowerPoints` { callback: value => { V.cheatReload = true; V.xchange.willpowerPoints = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: Math.max(200, $willpower)}>>
-			<<numberStepper "Fatigue" $tiredness { callback: value => { V.cheatReload = true; V.tiredness = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: C.tiredness.max, reverse: true}>>
-			<<numberStepper "Stress" $stress { callback: value => { V.cheatReload = true; V.stress = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: $stressmax, reverse: true}>>
-			<<numberStepper "Trauma" $trauma { callback: value => { V.cheatReload = true; V.trauma = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: 5000, reverse: true}>>
-			<<numberStepper "Control" $control { callback: value => { V.cheatReload = true; V.control = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: 1000}>>
-			<<numberStepper "Alcohol" $drunk { callback: value => { V.cheatReload = true; V.drunk = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: $drunkmax, reverse: true}>>
-			<<numberStepper "Drugs" $drugged { callback: value => { V.cheatReload = true; V.drugged = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: 1000, reverse: true}>>
-			<<numberStepper "Hallucinogens" $hallucinogen { callback: value => { V.cheatReload = true; V.hallucinogen = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: 1000, reverse: true}>>
+			<<numberStepper "고통" $pain { callback: value => { V.cheatReload = true; V.pain = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: 200, reverse: true}>>
+			<<numberStepper "흥분도" $arousal { callback: value => { V.cheatReload = true; V.arousal = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: 10000, reverse: true}>>
+			<<numberStepper "의지력" `isNaN($xchange.willpowerPoints) ? Math.max(200, $willpower || 0) : $xchange.willpowerPoints` { callback: value => { V.cheatReload = true; V.xchange.willpowerPoints = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: Math.max(200, $willpower)}>>
+			<<numberStepper "피로도" $tiredness { callback: value => { V.cheatReload = true; V.tiredness = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: C.tiredness.max, reverse: true}>>
+			<<numberStepper "스트레스" $stress { callback: value => { V.cheatReload = true; V.stress = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: $stressmax, reverse: true}>>
+			<<numberStepper "트라우마" $trauma { callback: value => { V.cheatReload = true; V.trauma = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: 5000, reverse: true}>>
+			<<numberStepper "통제력" $control { callback: value => { V.cheatReload = true; V.control = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: 1000}>>
+			<<numberStepper "취기" $drunk { callback: value => { V.cheatReload = true; V.drunk = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: $drunkmax, reverse: true}>>
+			<<numberStepper "약물" $drugged { callback: value => { V.cheatReload = true; V.drugged = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: 1000, reverse: true}>>
+			<<numberStepper "환각제" $hallucinogen { callback: value => { V.cheatReload = true; V.hallucinogen = value; Wikifier.wikifyEval("<<updatesidebarimg>>") }, max: 1000, reverse: true}>>
 		<<case "crime">>
 			<<for _cr range Object.keys(setup.crimeNames)>>
 				<<capture _cr>>
@@ -3553,7 +3553,7 @@
 			<<numberStepper "임신" $fame.pregnancy { callback: value => { V.fame.pregnancy = value }, max: Math.clamp(playerNormalPregnancyTotal() * $AMCTraits.pregnancyFame,1,8) * 250, step: 2000 / 100, percentage: false, reverse: true}>>
 			<<numberStepper "수정" $fame.impreg { callback: value => { V.fame.impreg = value }, max: 2000 * $AMCTraits.impregFame, reverse: true, percentage: false}>>
 			<<numberStepper "노출" $fame.exhibitionism { callback: value => { V.fame.exhibitionism = value }, max: 2000 * $AMCTraits.exhibitionismFame, reverse: true, percentage: false}>>
-			<<numberStepper "X-Change Fame" $xchange_fame { callback: value => { V.xchange_fame = Math.clamp(value, 0, 1000) }, max: 1000, reverse: true, percentage: false}>>
+			<<numberStepper "X-체인지 명성" $xchange_fame { callback: value => { V.xchange_fame = Math.clamp(value, 0, 1000) }, max: 1000, reverse: true, percentage: false}>>
 			<<if playerNormalPregnancyTotal() lt 8>>
 				<span class="description"><<set _pregsNeeded to Math.trunc(8-playerNormalPregnancyTotal())>>
 				당신의 임신 명성은 당신이 겪은 임신 횟수에 의해 제한됩니다. 최대 임신 명성에 도달하려면 <span class="gold"><<number _pregsNeeded>></span>번 더 임신해야 합니다.</span>
@@ -3565,16 +3565,16 @@
 			<<numberStepper "사교" $fame.social { callback: value => { V.fame.social = value }, max: 2000 * $AMCTraits.socialFame, percentage: false}>>
 			<<numberStepper "모델" $fame.model { callback: value => { V.fame.model = value }, max: 2000 * $AMCTraits.modelFame, percentage: false}>>
 		<<case "skills">>
-			<<numberStepper "Skulduggery" $skulduggery "skulduggery" {max: amcDisplayCap($skulduggery, 1000, $AMCTraits.skulduggery), percentage: false}>>
-			<<numberStepper "Dance" $danceskill "danceskill" {max: amcDisplayCap($danceskill, 1000, $AMCTraits.dancing), percentage: false}>>
-			<<numberStepper "Swimming" $swimmingskill "swimmingskill" {max: amcDisplayCap($swimmingskill, 1000, $AMCTraits.swimming), percentage: false}>>
-			<<numberStepper "Athletics" $athletics "athletics" {max: amcDisplayCap($athletics, 1000, $AMCTraits.athletics), percentage: false}>>
-			<<numberStepper "Tending" $tending "tending" {max: amcDisplayCap($tending, 1000, $AMCTraits.tending), percentage: false}>>
-			<<numberStepper "Housekeeping" $housekeeping "housekeeping" {max: amcDisplayCap($housekeeping, 1000, $AMCTraits.housekeeping), percentage: false}>>
-			<<numberStepper "Brawling" $combatExtended.brawling { callback: value => { V.combatExtended.brawling = value },max: amcDisplayCap($combatExtended.brawling, 1000, $AMCTraits.brawling), percentage: false}>>
-			<<numberStepper "Footwork" $combatExtended.footwork { callback: value => { V.combatExtended.footwork = value },max: amcDisplayCap($combatExtended.footwork, 1000, $AMCTraits.footwork), percentage: false}>>
-			<<numberStepper "Striking" $combatExtended.striking { callback: value => { V.combatExtended.striking = value },max: amcDisplayCap($combatExtended.striking, 1000, $AMCTraits.striking), percentage: false}>>
-			<<numberStepper "Kicking" $combatExtended.kicking { callback: value => { V.combatExtended.kicking = value },max: amcDisplayCap($combatExtended.kicking, 1000, $AMCTraits.kicking), percentage: false}>>
+			<<numberStepper "속임수" $skulduggery "skulduggery" {max: amcDisplayCap($skulduggery, 1000, $AMCTraits.skulduggery), percentage: false}>>
+			<<numberStepper "춤" $danceskill "danceskill" {max: amcDisplayCap($danceskill, 1000, $AMCTraits.dancing), percentage: false}>>
+			<<numberStepper "수영" $swimmingskill "swimmingskill" {max: amcDisplayCap($swimmingskill, 1000, $AMCTraits.swimming), percentage: false}>>
+			<<numberStepper "체육" $athletics "athletics" {max: amcDisplayCap($athletics, 1000, $AMCTraits.athletics), percentage: false}>>
+			<<numberStepper "관리" $tending "tending" {max: amcDisplayCap($tending, 1000, $AMCTraits.tending), percentage: false}>>
+			<<numberStepper "가사" $housekeeping "housekeeping" {max: amcDisplayCap($housekeeping, 1000, $AMCTraits.housekeeping), percentage: false}>>
+			<<numberStepper "난투" $combatExtended.brawling { callback: value => { V.combatExtended.brawling = value },max: amcDisplayCap($combatExtended.brawling, 1000, $AMCTraits.brawling), percentage: false}>>
+			<<numberStepper "풋워크" $combatExtended.footwork { callback: value => { V.combatExtended.footwork = value },max: amcDisplayCap($combatExtended.footwork, 1000, $AMCTraits.footwork), percentage: false}>>
+			<<numberStepper "타격" $combatExtended.striking { callback: value => { V.combatExtended.striking = value },max: amcDisplayCap($combatExtended.striking, 1000, $AMCTraits.striking), percentage: false}>>
+			<<numberStepper "발차기" $combatExtended.kicking { callback: value => { V.combatExtended.kicking = value },max: amcDisplayCap($combatExtended.kicking, 1000, $AMCTraits.kicking), percentage: false}>>
 		<<case "school">>
 			/* normally, school traits are adjusted by the widget "school_skill_change" */
 			<<numberStepper "<<scienceicon>> 과학" $science "science" {
@@ -3595,9 +3595,9 @@
 			}>>
 		<<case "characteristics">>
 			<<numberStepper "<<tficon angel>> 순결도" $purity "purity" {max: 1000}>>
-			<<numberStepper "<<symbol beauty>> Beauty" $beauty "beauty" {max: amcDisplayCap($beauty, 10000, $AMCTraits.beauty), percentage: false}>>
-			<<numberStepper "<<symbol physique>> Physique" $physique "physique" { max: amcDisplayCap($physique, $physiquesize, $AMCTraits.physique), percentage: false, callback: (value) => { State.variables.xchange = State.variables.xchange || {}; State.variables.xchange.physiqueCheatTarget = value; if (typeof window.updatePhysique === "function") { try { window.updatePhysique(); } catch (e) {} } } }>>
-			<<numberStepper "<<symbol willpower>> Willpower" $willpower "willpower" {max: amcDisplayCap($willpower, 1000, $AMCTraits.willpower), percentage: false}>>
+			<<numberStepper "<<symbol beauty>> 미모" $beauty "beauty" {max: amcDisplayCap($beauty, 10000, $AMCTraits.beauty), percentage: false}>>
+			<<numberStepper "<<symbol physique>> 체격" $physique "physique" { max: amcDisplayCap($physique, $physiquesize, $AMCTraits.physique), percentage: false, callback: (value) => { State.variables.xchange = State.variables.xchange || {}; State.variables.xchange.physiqueCheatTarget = value; if (typeof window.updatePhysique === "function") { try { window.updatePhysique(); } catch (e) {} } } }>>
+			<<numberStepper "<<symbol willpower>> 의지력" $willpower "willpower" {max: amcDisplayCap($willpower, 1000, $AMCTraits.willpower), percentage: false}>>
 			<<numberStepper "<<symbol awareness>> 인식" $awareness "awareness" {min: -200, max: 1000, reverse: true}>>
 			<<numberStepper "<<symbol promiscuity>> 음란도" $promiscuity "promiscuity" {reverse: true}>>
 			<<numberStepper "<<symbol exhibitionism>> 노출증" $exhibitionism "exhibitionism" {reverse: true}>>
@@ -3606,16 +3606,16 @@
 				<<numberStepper "<<symbol corruption>> 타락도" $earSlime.corruption { callback: value => {V.earSlime.corruption = value; Wikifier.wikifyEval("<<updatesidebarimg>>")}, reverse: true}>>
 			<</if>>
 		<<case "sex">>
-			<<numberStepper "Seduction" $seductionskill "seductionskill" {max: amcDisplayCap($seductionskill, 1000, $AMCTraits.seductionskill), percentage: false}>>
-			<<numberStepper "Chest" $chestskill "chestskill" {max: amcDisplayCap($chestskill, 1000, $AMCTraits.chestskill), percentage: false}>>
-			<<numberStepper "Buttocks" $bottomskill "bottomskill" {max: amcDisplayCap($bottomskill, 1000, $AMCTraits.bottomskill), percentage: false}>>
-			<<if $player.vaginaExist>><<numberStepper "Vaginal" $vaginalskill "vaginalskill" {max: amcDisplayCap($vaginalskill, 1000, $AMCTraits.vaginalskill), percentage: false}>><</if>>
-			<<if $player.penisExist>><<numberStepper "Penile" $penileskill "penileskill" {max: amcDisplayCap($penileskill, 1000, $AMCTraits.penileskill), percentage: false}>><</if>>
-			<<numberStepper "Thighs" $thighskill "thighskill" {max: amcDisplayCap($thighskill, 1000, $AMCTraits.thighskill), percentage: false}>>
-			<<numberStepper "Oral" $oralskill "oralskill" {max: amcDisplayCap($oralskill, 1000, $AMCTraits.oralskill), percentage: false}>>
-			<<numberStepper "Hands" $handskill "handskill" {max: amcDisplayCap($handskill, 1000, $AMCTraits.handskill), percentage: false}>>
-			<<numberStepper "Anal" $analskill "analskill" {max: amcDisplayCap($analskill, 1000, $AMCTraits.analskill), percentage: false}>>
-			<<numberStepper "Feet" $feetskill "feetskill" {max: amcDisplayCap($feetskill, 1000, $AMCTraits.feetskill), percentage: false}>>
+			<<numberStepper "유혹" $seductionskill "seductionskill" {max: amcDisplayCap($seductionskill, 1000, $AMCTraits.seductionskill), percentage: false}>>
+			<<numberStepper "가슴" $chestskill "chestskill" {max: amcDisplayCap($chestskill, 1000, $AMCTraits.chestskill), percentage: false}>>
+			<<numberStepper "엉덩이" $bottomskill "bottomskill" {max: amcDisplayCap($bottomskill, 1000, $AMCTraits.bottomskill), percentage: false}>>
+			<<if $player.vaginaExist>><<numberStepper "보지" $vaginalskill "vaginalskill" {max: amcDisplayCap($vaginalskill, 1000, $AMCTraits.vaginalskill), percentage: false}>><</if>>
+			<<if $player.penisExist>><<numberStepper "자지" $penileskill "penileskill" {max: amcDisplayCap($penileskill, 1000, $AMCTraits.penileskill), percentage: false}>><</if>>
+			<<numberStepper "허벅지" $thighskill "thighskill" {max: amcDisplayCap($thighskill, 1000, $AMCTraits.thighskill), percentage: false}>>
+			<<numberStepper "입" $oralskill "oralskill" {max: amcDisplayCap($oralskill, 1000, $AMCTraits.oralskill), percentage: false}>>
+			<<numberStepper "손" $handskill "handskill" {max: amcDisplayCap($handskill, 1000, $AMCTraits.handskill), percentage: false}>>
+			<<numberStepper "애널" $analskill "analskill" {max: amcDisplayCap($analskill, 1000, $AMCTraits.analskill), percentage: false}>>
+			<<numberStepper "발" $feetskill "feetskill" {max: amcDisplayCap($feetskill, 1000, $AMCTraits.feetskill), percentage: false}>>
 		
 		<<case "hypnosis">>
 			<br>
@@ -3623,7 +3623,7 @@
 			<<numberStepper "갈망" $hypnosis_traits.scream {callback: value => { V.hypnosis_traits.scream = value }, step: 1, max: 5, percentage: false}>>
 			<<numberStepper "노출" $hypnosis_traits.cover {callback: value => { V.hypnosis_traits.cover = value }, step: 1, max: 5, percentage: false}>>
 			<<numberStepper "이상성욕" $hypnosis_traits.deviancy {callback: value => { V.hypnosis_traits.deviancy = value }, step: 1, max: 5, percentage: false}>>
-			<<numberStepper "Crossdressing" $hypnosis_traits.crossdressing {callback: value => { V.hypnosis_traits.crossdressing = value }, step: 1, max: 5, percentage: false}>>
+			<<numberStepper "크로스드레싱" $hypnosis_traits.crossdressing {callback: value => { V.hypnosis_traits.crossdressing = value }, step: 1, max: 5, percentage: false}>>
 		<<default>>
 			에러: 스킬 문제.
 	<</switch>>

@@ -23,7 +23,7 @@ function sexToysInventoryInit() {
 				const ownedSpan = Object.assign(document.createElement("span"), {
 					id: `sti_already_owned_${idSuffix}`,
 					className: "sti_owned_text",
-					textContent: item.worn ? "worn" : item.packed ? "in bag" : item.carried ? "carried" : "",
+					textContent: item.worn ? "착용 중" : item.packed ? "가방 안" : item.carried ? "소지 중" : "",
 				});
 				ownedSpan.dataset.category = category;
 				ownedSpan.dataset.index = index;
@@ -295,14 +295,14 @@ function sexToysInventoryOnWearClick(index, category) {
 
 	// if player tries to wear a strapon but that under_lower is cursed
 	if (setupCategory === "strap-on" && V.worn.under_lower.cursed === 1) {
-		sexToyNotice("You try to remove the " + V.worn.under_lower.name + " but fail");
+		sexToyNotice(V.worn.under_lower.name + "【을를】 벗으려 하지만 실패한다.");
 		return;
 	}
 
 	if (setupCategory === "butt_plug") {
 		if (V.worn.genitals.cursed === 1 && V.worn.genitals.anal_shield === 1) {
 			// if player tries to wear a butt plug but there is a cursed chastity belt fitted with an anal shield
-			sexToyNotice("You can't get the " + toy.name + " past the " + V.worn.genitals.name + "'s anal shield");
+			sexToyNotice(toy.name + "【을를】 " + V.worn.genitals.name + "의 애널 실드 너머로 넣을 수 없다.");
 			return;
 		}
 	}

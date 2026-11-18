@@ -755,8 +755,8 @@ setup.feats = {
 	},
 	"Mate for life": {
 		// FIX: was duplicate key "Great Hawk the Terror"
-		title: "Mate for life",
-		desc: "You can't change your partner, as this species mates for life.",
+		title: "평생의 짝",
+		desc: "이 종은 평생 짝을 지키므로 짝을 바꿀 수 없다.",
 		difficulty: 2,
 		series: "",
 		filter: ["All", "Social"],
@@ -1708,7 +1708,7 @@ setup.feats = {
 	},
 	"Master Baiter": {
 		title: "마스터 베이터",
-		desc: "Caught the biggest size possible of most fish.",
+		desc: "대부분의 물고기를 가능한 가장 큰 크기로 잡았다.",
 		difficulty: 3,
 		series: "fishing",
 		filter: ["All", "Discoveries-Other"],
@@ -2847,7 +2847,7 @@ setup.feats = {
 		series: "",
 		filter: ["All", "AMC Traits"],
 		softLockable: true,
-		hint: "Hint: Max oral skill and hand skill, both tempered.",
+		hint: "힌트: 단련된 구강 스킬과 손 스킬을 최대치로 올리세요.",
 	},
 	"Rivers of White": {
 		title: "하얀 강",
@@ -2856,7 +2856,7 @@ setup.feats = {
 		series: "",
 		filter: ["All", "AMC Traits"],
 		softLockable: true,
-		hint: "Hint: Reach 12,000 ml of milk capacity with Tempered Milk Volume and Cow TF.",
+		hint: "힌트: 단련된 모유량과 소 변신으로 모유 용량 12,000 ml에 도달하세요.",
 	},
 	"Sticky Fountain": {
 		title: "끈적한 분수",
@@ -2865,7 +2865,7 @@ setup.feats = {
 		series: "",
 		filter: ["All", "AMC Traits"],
 		softLockable: true,
-		hint: "Hint: Reach 12,000 ml of semen capacity with Tempered Semen Volume, Cow TF, and both the Bull and Alpha effects.",
+		hint: "힌트: 단련된 정액량, 소 변신, 불과 알파 효과를 모두 갖춰 정액 용량 12,000 ml에 도달하세요.",
 	},
 	"Many Punch Man": {
 		title: "다중 펀치맨",
@@ -3908,7 +3908,7 @@ const boostData = {
 			missing: "'잔돈' 업적을 달성해서 해금하세요.",
 		},
 		grades: {
-			name: "School Performance Grades",
+			name: "학교 성적",
 			required: ["Perfect Record", "Return to Monke"],
 			cost: 15,
 			maxMultiplier: 2,
@@ -3950,7 +3950,7 @@ const boostData = {
 			missing: "'식물학자' 업적을 달성해서 해금하세요.",
 		},
 		greenThumb: {
-			name: "Green Thumb",
+			name: "식물학자",
 			required: ["Green Fingered", "Grass Toucher"],
 			cost: 40,
 			max: 1,

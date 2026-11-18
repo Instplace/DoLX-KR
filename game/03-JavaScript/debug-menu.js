@@ -170,7 +170,7 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`Replay current passage with new RNG`, stayOnPassageFn],
+			link: [`새 RNG로 현재 passage 재생`, stayOnPassageFn],
 			widgets: [`<<run State.random()>>`],
 		},
 		{
@@ -412,7 +412,7 @@ setup.debugMenu.eventList = {
 			widgets: [`<<unset $container>>`, `<<run delete $sexStats.anus>>`, `<<physicalAdjustmentsInit>>`, `<<containersInit>>`],
 		},
 		{
-			text_only: `\nVaginal Pregnancy<br>(New Pregnancy will only occur if not pregnant, or if a Beta womb is free)\n`,
+			text_only: `\n질 임신<br>(임신 중이 아니거나 베타 자궁이 비어 있을 때만 새 임신 발생)\n`,
 			condition() {
 				return V.player.penisExist === false;
 			},
@@ -695,7 +695,7 @@ setup.debugMenu.eventList = {
 			widgets: [`<<endcombat>>`, `<<set $detention to 55>>`],
 		},
 		{
-			link: [`Work the brothel floor`, `Brothel Client Floor`],
+			link: [`창관 홀에서 일하기`, `Brothel Client Floor`],
 			widgets: [`<<endcombat>>`],
 		},
 		{
@@ -1002,7 +1002,7 @@ setup.debugMenu.eventList = {
 			text_only: "\n\n짐승 조우",
 		},
 		{
-			link: ["Horse", "Livestock Field Deviancy Sex"],
+			link: ["말", "Livestock Field Deviancy Sex"],
 			widgets: ["<<endcombat>>", "<<beastNEWinit 1 'horse'>>", "<<person1>>", "<<set $phase to 2>>", "<<set $sexstart to 1>>"],
 		},
 		{
@@ -1540,7 +1540,7 @@ setup.debugMenu.eventList = {
 			widgets: [`<<set $detention += 10>>`],
 		},
 		{
-			link: [`Suspend Now`, stayOnPassageFn],
+			link: [`지금 정학`, stayOnPassageFn],
 			widgets: [
 				`<<set $delinquency to 1000>>`,
 				`<<run ensureSchoolDiscipline()>>`,
@@ -1549,7 +1549,7 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`End Suspension`, stayOnPassageFn],
+			link: [`정학 종료`, stayOnPassageFn],
 			widgets: [
 				`<<run ensureSchoolDiscipline()>>`,
 				`<<set $schoolDiscipline.daysLeft to 0>>`,
@@ -1891,7 +1891,7 @@ setup.debugMenu.eventList = {
 			widgets: [`<<run debugDiscoverAllFishing()>>`],
 		},
 		{
-			link: [`Unlock all fishing tackle`, stayOnPassageFn],
+			link: [`낚시 도구 전체 해금`, stayOnPassageFn],
 			widgets: [`<<run debugUnlockAllFishingGear()>>`],
 		},
 		{
@@ -2174,7 +2174,7 @@ function patchDebugMenu() {
 	}
 	const mainDebugInfo = document.getElementById("MainDebugInfo");
 	if (mainDebugInfo != null)
-		mainDebugInfo.innerHTML = "Allure: " + V.allure + "<br>Rng: " + V.rng + "<br>Danger: " + V.danger + "<br>Passage: " + V.passage + "<br>";
+		mainDebugInfo.innerHTML = "매력: " + V.allure + "<br>RNG: " + V.rng + "<br>위험: " + V.danger + "<br>패시지: " + V.passage + "<br>";
 	window.cacheDebugDiv();
 }
 window.patchDebugMenu = patchDebugMenu;

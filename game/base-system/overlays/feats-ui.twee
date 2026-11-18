@@ -26,7 +26,7 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 	<<set _keysSetup to Object.keys(setup.feats)>>
 	<<set _keysSave to Object.keys($feats.currentSave)>>
 	<<set _keysAll to Object.keys($feats.allSaves).filter(f => !["points", "specialClothes", "seeds"].includes(f))>>
-	You currently have <<if $feats.allSaves.points isnot undefined>><span class="gold"><<print $feats.allSaves.points>></span><<else>><span class="red">0</span><</if>> <<pluralise $feats.allSaves.points "VrelCoin">>.
+	현재 <<if $feats.allSaves.points isnot undefined>><span class="gold"><<print $feats.allSaves.points>></span><<else>><span class="red">0</span><</if>>개의 <<pluralise $feats.allSaves.points "브렐 코인" "브렐 코인">>【을를】 소지하고 있습니다.
 	달성한 업적:
 	<<if _keysSave.length gte 1>>현재 세이브 파일에서 총 <span class="gold"><<print _keysSave.length>></span>개의 <<pluralise _keysSave.length "업적" "업적">>【을를】 달성했으며, <</if>>
 	전체 <span class="gold"><<print _keysSetup.length>></span>개 중 총 <<if _keysAll.length gte 1>><span class="gold"><<print _keysAll.length>></span><<else>><span class="red">0</span><</if>>개의 <<pluralise _keysAll.length "업적" "업적">>【을를】 해금했습니다.
@@ -231,19 +231,19 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 								<<case "randomClothing">>
 									<<= ($featsBoosts.clothingGender is "Either" ? "Male and Female" : $featsBoosts.clothingGender)>> <<print $featsBoosts.name[_allUpgradeNames[$_i]]>>: <span class="gold"><<print $featsBoosts.upgrades[_allUpgradeNames[$_i]]>></span> <<pluralise $featsBoosts.upgrades[_allUpgradeNames[$_i]] "coin">>
 								<<case "specialClothing">>
-									Special Clothing: <span class="gold"><<print $featsBoosts.upgrades[_allUpgradeNames[$_i]]>></span> <<pluralise $featsBoosts.upgrades[_allUpgradeNames[$_i]] "coin">>
+									특수 의류: <span class="gold"><<print $featsBoosts.upgrades[_allUpgradeNames[$_i]]>></span> <<pluralise $featsBoosts.upgrades[_allUpgradeNames[$_i]] "코인" "코인">>
 									<br>
 										<<foldout false "_unlockedSets">>
 											<span class="gold">해금된 세트</span>
 											<span class="descriptunlocked-hint">
 												<<= Object.keys($featsBoosts.specialClothesSets)
 												.filter(k => $featsBoosts.specialClothesSets[k])
-												.map(k => `${k.replace(/_/g," ").toUpperFirst()}: <span class="gold">${setup.specialClothesSets[k].featCost * ($featsBoosts.upgradeDetails.specialClothing.purchased >= 3 ? 2 : 1)}</span> coins`)
+												.map(k => `${setup.specialClothesSets[k].text}: <span class="gold">${setup.specialClothesSets[k].featCost * ($featsBoosts.upgradeDetails.specialClothing.purchased >= 3 ? 2 : 1)}</span> 코인`)
 												.join("<br>")>>
 											</span>
 										<</foldout>>
 								<<case "xchangePremiumPills">>
-									X-Change Premium Pills: <span class="gold"><<print $featsBoosts.upgradeDetails[_allUpgradeNames[$_i]].purchased>></span> <<pluralise $featsBoosts.upgradeDetails[_allUpgradeNames[$_i]].purchased "pack">>
+									X-체인지 프리미엄 알약: <span class="gold"><<print $featsBoosts.upgradeDetails[_allUpgradeNames[$_i]].purchased>></span> <<pluralise $featsBoosts.upgradeDetails[_allUpgradeNames[$_i]].purchased "팩" "팩">>
 								<<case "seeds">>
 									시작 씨앗: <span class="gold"><<print $featsBoosts.upgrades[_upgradeNames[$_i]]>></span> <<pluralise $featsBoosts.upgrades[_upgradeNames[$_i]] "코인" "코인">>
 									<br>
@@ -257,7 +257,7 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 											</span>
 										<</foldout>>
 								<<default>>
-									<<= $featsBoosts.name[_allUpgradeNames[$_i]]>>: <span class="gold"><<print $featsBoosts.upgrades[_allUpgradeNames[$_i]]>></span> <<pluralise $featsBoosts.upgrades[_allUpgradeNames[$_i]] "coin">>
+									<<= $featsBoosts.name[_allUpgradeNames[$_i]]>>: <span class="gold"><<print $featsBoosts.upgrades[_allUpgradeNames[$_i]]>></span> <<pluralise $featsBoosts.upgrades[_allUpgradeNames[$_i]] "코인" "코인">>
 							<</switch>>
 							</li>
 						<</if>>
@@ -278,19 +278,19 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 
 <<widget "featName">>
 	<<if _upgradeName is "sexRapeTraits">>
-		<span class="gold">Sex-Rape Traits</span>
+		<span class="gold">섹스·강간 특성</span>
 	<<elseif _upgradeName is "sexSkills">>
-		<span class="gold">Sex Skill Grades</span>
+		<span class="gold">섹스 스킬 등급</span>
 	<<elseif _upgradeName is "basicSkills">>
-		<span class="gold">Basic Skill Grades</span>
+		<span class="gold">기본 스킬 등급</span>
 	<<elseif _upgradeName is "advancedTraits">>
-		<span class="gold">Special Advanced Traits</span>
+		<span class="gold">특수 고급 특성</span>
 	<<elseif _upgradeName is "transformations">>
-		<span class="gold">Transformation</span>
+		<span class="gold">변신</span>
 	<<elseif _upgradeName is "sadoMaso">>
-		<span class="gold">Sado-Maso</span>
+		<span class="gold">가학·피학</span>
 	<<elseif _upgradeName is "coreCharacteristics">>
-		<span class="gold">Core Characteristic Grades</span>
+		<span class="gold">핵심 능력치 등급</span>
 	<<else>>
 		<<set _details to $featsBoosts.upgradeDetails[_upgradeName]>>
 		<<if _details.max gte 1>>
@@ -298,7 +298,7 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 			<<case "money">>
 				<span class="gold">시작 소지금</span>
 			<<case "grades">>
-				<span class="gold">School Performance Grades</span>
+				<span class="gold">학교 성적 등급</span>
 			<<case "purity">>
 				<span class="gold">일일 순결함 상승치 증가</span>
 			<<case "newLife">>
@@ -312,11 +312,11 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 			<<case "specialClothing">>
 				<span class="gold">특수 의상</span>
 			<<case "hopelessEndings">>
-				<span class="gold">Hopeless Cycle Endings</span>
+				<span class="gold">절망의 굴레 엔딩</span>
 			<<case "xchangeGrayAgentTrait">>
-				<span class="gold">X-Change Gray Agent</span>
+				<span class="gold">X-체인지 그레이 에이전트</span>
 			<<case "xchangePremiumPills">>
-				<span class="gold">X-Change Premium Pills</span>
+				<span class="gold">X-체인지 프리미엄 알약</span>
 			<<case "seeds">>
 				<span class="gold">시작 씨앗</span>
 			<<case "sexToys">>
@@ -341,7 +341,7 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 <</widget>>
 
 <<widget "sexSkillsFeatUI">>
-	Purchase starting grades for any of your sex skills. Each skill keeps its own unlock level, maximum grade, and VrelCoin cost.
+	섹스 스킬의 시작 등급을 구매합니다. 각 스킬은 고유한 해금 레벨, 최대 등급, 브렐 코인 비용을 가집니다.
 	<div class="groupedFeatGrid">
 		<<for _sexSkillName range _sexSkillUpgradeNames>>
 			<div class="groupedFeatCard" @data-sex-skill="_sexSkillName">
@@ -361,7 +361,7 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 <</widget>>
 
 <<widget "basicSkillsFeatUI">>
-	Purchase starting grades for any of your basic skills. Each skill keeps its own unlock level, maximum grade, and VrelCoin cost.
+	기본 스킬의 시작 등급을 구매합니다. 각 스킬은 고유한 해금 레벨, 최대 등급, 브렐 코인 비용을 가집니다.
 	<div class="groupedFeatGrid">
 		<<for _basicSkillName range _basicSkillUpgradeNames>>
 			<div class="groupedFeatCard" @data-basic-skill="_basicSkillName">
@@ -381,7 +381,7 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 <</widget>>
 
 <<widget "advancedTraitsFeatUI">>
-	Purchase any combination of special advanced traits and boosts. Each keeps its own unlock level, maximum rank, and VrelCoin cost.
+	특수 고급 특성과 강화를 원하는 대로 조합해 구매합니다. 각각 고유한 해금 레벨, 최대 단계, 브렐 코인 비용을 가집니다.
 	<div class="groupedFeatGrid">
 		<<for _advancedTraitName range _advancedTraitUpgradeNames>>
 			<div class="groupedFeatCard" @data-advanced-trait="_advancedTraitName">
@@ -401,7 +401,7 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 <</widget>>
 
 <<widget "transformationsFeatUI">>
-	Purchase a divine transformation, an animal transformation, or both. Each category keeps its own unlocks and VrelCoin cost.
+	신성한 변신, 동물 변신, 또는 둘 다를 구매합니다. 각 분류는 고유한 해금 조건과 브렐 코인 비용을 가집니다.
 	<div class="groupedFeatGrid">
 		<<for _transformationName range ["divineTFs", "animalTFs"]>>
 			<div class="groupedFeatCard" @data-transformation="_transformationName">
@@ -421,7 +421,7 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 <</widget>>
 
 <<widget "sadoMasoFeatUI">>
-	Purchase daily sadism or masochism gains, and optionally start with either or both related traits.
+	하루마다 얻는 가학 성향 또는 피학 성향 상승을 구매하며, 원한다면 관련 특성을 하나 또는 둘 다 가진 채 시작할 수도 있습니다.
 	<div class="groupedFeatGrid">
 		<<for _sadoMasoBoostName range ["sadism", "masochism"]>>
 			<div class="groupedFeatCard" @data-sado-maso-boost="_sadoMasoBoostName">
@@ -452,9 +452,9 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 				<div class="groupedFeatBody">
 					<<if _sadoMasoTraitDetails.max>>
 						<<if _sadoMasoTraitName is "sadistTrait">>
-							Your defiant acts inflict more pain. Inflicting pain increases arousal.
+							당신의 반항적인 행동이 더 큰 고통을 줍니다. 고통을 주면 흥분이 오릅니다.
 						<<else>>
-							Provides resistance to most sources of pain. Those sources increase arousal instead.
+							대부분의 고통에 대한 저항력을 얻습니다. 그런 고통은 대신 흥분을 높입니다.
 						<</if>>
 						<br>
 						<label>
@@ -465,9 +465,9 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 							<<else>>
 								<input type="checkbox" @data-sado-maso-trait-choice="_sadoMasoTraitName" disabled>
 							<</if>>
-							Start with this trait
+							이 특성으로 시작
 						</label>
-						<div class="black small-description" style="margin-top:10px;">(<span class="gold"><<print _sadoMasoTraitDetails.cost>> <<pluralise _sadoMasoTraitDetails.cost "VrelCoin">></span> to purchase)</div>
+						<div class="black small-description" style="margin-top:10px;">(<span class="gold"><<print _sadoMasoTraitDetails.cost>> <<pluralise _sadoMasoTraitDetails.cost "브렐 코인" "브렐 코인">></span> 필요)</div>
 					<<else>>
 						<span class="red"><<print $featsBoosts.missing[_sadoMasoTraitName]>></span>
 					<</if>>
@@ -478,7 +478,7 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 <</widget>>
 
 <<widget "coreCharacteristicsFeatUI">>
-	Purchase starting grades or daily changes for your core characteristics. Each keeps its own unlock level, maximum rank, and VrelCoin cost.
+	핵심 능력치의 시작 등급이나 일일 변화를 구매합니다. 각각 고유한 해금 레벨, 최대 단계, 브렐 코인 비용을 가집니다.
 	<div class="groupedFeatGrid">
 		<<for _characteristicName range _coreCharacteristicUpgradeNames>>
 			<div class="groupedFeatCard" @data-core-characteristic="_characteristicName">
@@ -498,22 +498,22 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 <</widget>>
 
 <<widget "sexRapeTraitsFeatUI">>
-	Choose any combination of sexual and rape-related starting traits. Each selected trait costs its normal amount of VrelCoins.
+	섹스 및 강간과 관련된 시작 특성을 원하는 대로 골라 구매합니다. 선택한 특성은 각각 정해진 브렐 코인을 소모합니다.
 	<div style="margin-top:10px;">
 		<<for _traitName range _traitUpgradeNames>>
 			<<set _traitDetails to $featsBoosts.upgradeDetails[_traitName]>>
 			<<set _traitPurchased to $featsBoosts.upgrades[_traitName] gt 0>>
 			<<set _canPurchaseTrait to _traitPurchased or ($feats.allSaves.points - $featsBoosts.pointsUsed gte _traitDetails.cost)>>
 			<<set _traitDescription to {
-				orgasmTrait: "So many orgasms have had a physiological effect. Cumming is harder, but orgasms relieve more stress. Repeated orgasms give less relief and can eventually add stress, though much less than normal.",
-				chokeTrait: "You've come to love the feeling of lack of oxygen. Getting choked makes sex more pleasurable.",
-				ejacTrait: "You've become accustomed to the scent of ejaculate and can take advantage of its calming effect. Your stress is reduced hourly depending on how much slime and semen covers you.",
-				molestTrait: "You've learned to better cope with psychological trauma. Being molested no longer removes your sense of control (rape still does).",
-				rapeTrait: "You've been raped so much that you've learned how to cope. Trauma increases more slowly.",
-				bestialityTrait: "Animals have tried to " + ($settings.pregnancySpeechEnabled ? "breed" : "mate") + " with you so often that you're used to it. Trauma increases more slowly when attacked by animals.",
-				tentacleTrait: "Many tentacles have had their way with your body. Trauma increases more slowly when attacked by tentacles.",
-				critterMagnetTrait: "You cannot resist swarms and small creatures. You strip and submit to them, and critter sex relieves stress and trauma.",
-				milkDrankTrait: "You take full advantage of the nutrition in fresh breast milk. Drinking it invigorates your body, improving physique.",
+				orgasmTrait: "수많은 절정을 경험한 것이 생리학적 영향을 남겼습니다. 절정에 오르는 것은 더 힘들어지지만, 절정은 더 많은 스트레스를 해소합니다. 절정을 거듭할수록 해소되는 양이 줄어들고 결국 스트레스가 쌓이기도 하지만, 평소보다 훨씬 적습니다.",
+				chokeTrait: "산소가 부족할 때의 감각을 사랑하게 되었습니다. 목이 졸리면 섹스에서 더 큰 쾌락을 느낍니다.",
+				ejacTrait: "정액의 냄새에 익숙해졌고 이를 안정 효과로 삼을 수 있게 되었습니다. 얼마나 많은 슬라임과 정액이 당신을 덮고 있는지에 따라 매시간 스트레스가 감소합니다.",
+				molestTrait: "심리적 트라우마를 잘 견뎌내는 방법을 배웠습니다. 이제 희롱당하더라도 통제력을 상실하지 않습니다 (강간은 여전히 통제력을 상실시킵니다).",
+				rapeTrait: "너무 많이 강간당한 나머지 대처하는 법을 배웠습니다. 트라우마 증가량이 더 느려집니다.",
+				bestialityTrait: "동물들이 계속해서 당신과 " + ($settings.pregnancySpeechEnabled ? "번식" : "교미") + "하려고 하다 보니 이젠 이골이 났습니다. 동물에게 공격당할 때 트라우마가 더 천천히 증가합니다.",
+				tentacleTrait: "수많은 촉수들이 당신의 몸을 농락했습니다. 촉수에게 공격당할 때 트라우마가 더 천천히 증가합니다.",
+				critterMagnetTrait: "무리 지어 다니는 작은 생물들에게 저항할 수 없습니다. 당신은 옷을 벗고 그들에게 굴복하며, 작은 생물과의 섹스는 스트레스와 트라우마를 풀어 줍니다.",
+				milkDrankTrait: "신선한 모유의 영양을 온전히 이용할 수 있습니다. 마시면 몸에 활력이 돌고 체력이 상승합니다.",
 			}[_traitName]>>
 			<div class="settingsToggleItem">
 				<label>
@@ -565,18 +565,18 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 						학점으로 게임을 시작합니다.
 					<<case "purity">>
 						<<if !_purchasedUpgrades>>
-							You will always gain <span class="green">1</span> point of purity per day. Each purchased boost adds one more point of purity every day. It still adds up when other effects are making you lose purity, so you can end the day with a net gain. <i>Actions you take can negate or amplify your purity gains.</i>
+							당신은 항상 매일 <span class="green">1</span>점의 순결도를 얻습니다. 구매한 부스트 하나마다 매일 순결도 1점이 더 늘어납니다. 다른 효과 때문에 순결도가 줄어드는 날에도 합산되므로 하루를 순이득으로 마칠 수 있습니다. <i>당신의 행동에 따라 순결도 획득이 상쇄되거나 증폭될 수 있습니다.</i>
 						<<else>>
-							You will gain <span class="green"><<print 1 + _purchasedUpgrades>></span> points of purity per day from this and the daily point combined. Other effects are added on top, and the total can still be a gain when they cost you purity. <i>Actions you take can negate or amplify your purity gains.</i>
+							이 효과와 일일 기본 점수를 합쳐 매일 <span class="green"><<print 1 + _purchasedUpgrades>></span>점의 순결도를 얻습니다. 다른 효과는 그 위에 더해지며, 순결도를 잃게 하는 효과가 있어도 합계는 여전히 이득일 수 있습니다. <i>당신의 행동에 따라 순결도 획득이 상쇄되거나 증폭될 수 있습니다.</i>
 						<</if>>
 					<<case "impurity">>
 						<<switch _purchasedUpgrades>>
 							<<case 0>>
-								You will always gain <span class="green">1</span> point of purity per day. Each purchased boost takes away one point of purity every day. Once it has used up the daily point, it keeps taking purity away. <i>Actions you take can negate or amplify your purity losses.</i>
+								당신은 항상 매일 <span class="green">1</span>점의 순결도를 얻습니다. 구매한 부스트 하나마다 매일 순결도 1점이 깎입니다. 일일 기본 점수를 모두 소모한 뒤에도 계속 순결도를 깎습니다. <i>당신의 행동에 따라 순결도 감소가 상쇄되거나 증폭될 수 있습니다.</i>
 							<<case 1>>
-								Your daily purity change is <span class="red">0</span>: the boost uses up the daily point. <i>Actions you take can negate or amplify your purity losses.</i>
+								일일 순결도 변화는 <span class="red">0</span>입니다. 부스트가 일일 기본 점수를 모두 소모합니다. <i>당신의 행동에 따라 순결도 감소가 상쇄되거나 증폭될 수 있습니다.</i>
 							<<default>>
-								You will lose <span class="red"><<= _purchasedUpgrades - 1>></span> <<= _purchasedUpgrades is 2 ? "point" : "points">> of purity per day from this and the daily point combined. Other effects are added on top. <i>Actions you take can negate or amplify your purity losses.</i>
+								이 효과와 일일 기본 점수를 합쳐 매일 <span class="red"><<= _purchasedUpgrades - 1>></span>점의 순결도를 잃습니다. 다른 효과는 그 위에 더해집니다. <i>당신의 행동에 따라 순결도 감소가 상쇄되거나 증폭될 수 있습니다.</i>
 						<</switch>>
 					<<case "newLife">>
 						당신은
@@ -587,9 +587,9 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 					<<case "aNewBestFriend">>
 						당신은
 						<<switch $featsBoosts.upgrades.aNewBestFriend>>
-							<<case 0>><span class='red'>without</span> <<if earSlimeThoughts()>>a voice in your head<<else>>an ear slime<</if>>.
-							<<case 10>><span class='green'>with</span> <<if earSlimeThoughts()>>a voice in your head<<else>>an ear slime<</if>>.
-							<<case 20>><span class='green'>with two</span> <<if earSlimeThoughts()>>voices in your head<<else>>ear slimes<</if>>.
+							<<case 0>><<if earSlimeThoughts()>>머릿속 목소리<<else>>귀 슬라임<</if>> <span class='red'>없이</span> 게임을 시작합니다.
+							<<case 10>><<if earSlimeThoughts()>>머릿속 목소리<<else>>귀 슬라임<</if>> <span class='green'>하나와 함께</span> 게임을 시작합니다.
+							<<case 20>><<if earSlimeThoughts()>>머릿속 목소리<<else>>귀 슬라임<</if>> <span class='green'>두 개와 함께</span> 게임을 시작합니다.
 						<</switch>>
 					<<case "randomClothing">>
 						무작위 의류 아이템 <span class="gold"><<= 3 * _purchasedUpgrades>></span>개를 가지고 게임을 시작합니다.
@@ -609,17 +609,17 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 						<<elseif _purchasedUpgrades is 2>>
 							다른 세이브 파일에서 숲속 상점의 특수 의류 세트를 해금한 적이 있다면, <span class="teal">원하는 만큼</span> 구매하여 <span class="green">해금된</span> 상태로 게임을 시작할 수 있습니다.
 						<<else>>
-							You can purchase <span class="teal">any amount</span> of previously unlocked special clothing sets at <span class="gold">twice their normal VrelCoin price</span> and start with their <span class="green">normal story dialogue available</span>.
+							이전에 해금한 특수 의류 세트를 <span class="teal">원하는 만큼</span> <span class="gold">정가의 두 배 브렐 코인</span>으로 구매해 <span class="green">일반 스토리 대사가 열린</span> 상태로 게임을 시작할 수 있습니다.
 						<</if>>
 					<<case "hopelessEndings">>
-						Purchase any of the <span class="gold">Hopeless Cycle</span> endings to <span class="green">read them directly</span> from the painting next game, claiming their rewards without playing the whole sequence again. Buy all, some, or none. <i>The harder the ending, the more it costs.</i>
+						<span class="gold">절망의 굴레</span> 엔딩을 구매하면 다음 게임에서 그림에서 <span class="green">바로 읽을</span> 수 있어, 전체 과정을 다시 플레이하지 않고도 보상을 받습니다. 전부, 일부, 또는 하나도 사지 않아도 됩니다. <i>엔딩이 어려울수록 비용이 더 듭니다.</i>
 					<<case "xchangePremiumPills">>
 						<<set _premiumPillTotal to _purchasedUpgrades * 5>>
 						당신은
 						<<if _premiumPillTotal>>
-							<span class="green"><<print _premiumPillTotal>></span> <<pluralise _premiumPillTotal "X-Change Premium pill">> in your medicine drawer.
+							약 서랍에 X-체인지 프리미엄 <<pluralise _premiumPillTotal "알약" "알약">>을 <span class="green"><<print _premiumPillTotal>></span>개 넣은 채 게임을 시작합니다.
 						<<else>>
-							<span class="red">no</span> X-Change Premium pills.
+							X-체인지 프리미엄 알약이 <span class="red">없는</span> 상태로 게임을 시작합니다.
 						<</if>>
 					<<case "seeds">>
 						<<if _purchasedUpgrades is 0>>
@@ -639,11 +639,11 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 					<<case "greenThumb">>
 						게임을 <span class="green">녹색의 손</span> 특성을 가진 채로 시작합니다.
 					<<case "xchangePurityTrait">>
-						You will start the game permanently <span class="blue">pure of X-Change pill effects</span>.
+						게임을 영구적으로 <span class="blue">X-체인지 알약 효과에 물들지 않은</span> 상태로 시작합니다.
 					<<case "xchangeGrayAgentTrait">>
-						You will start the game with the <span class="teal">Gray Agent</span> in your blood.
+						게임을 <span class="teal">그레이 에이전트</span>가 혈액에 흐르는 상태로 시작합니다.
 					<<case "orgasmTrait" "chokeTrait" "ejacTrait" "molestTrait" "rapeTrait" "bestialityTrait" "tentacleTrait" "critterMagnetTrait" "milkDrankTrait">>
-						You will start the game with the <span class="green"><<print $featsBoosts.name[_name]>></span> trait.
+						게임을 <span class="green"><<print $featsBoosts.name[_name]>></span> 특성을 가진 채로 시작합니다.
 					<<case "divineTFs">>
 						게임을 신성한 변신 상태로 시작합니다.
 					<<case "animalTFs">>
@@ -1128,14 +1128,14 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 				첫 번째 업그레이드를 구매하면 무작위 활동성을 가진 자웅동체 촉수 기생충과 함께 게임을 시작합니다. 완벽한 활동성을 부여하려면 두 번째 무리어미 위업을 달성하십시오.
 			<</if>>
 		<<case "aNewBestFriend">>
-			Purchase this upgrade to start the game with <<if earSlimeThoughts()>>a voice in your head<<else>>an ear slime parasite<</if>>.
+			이 업그레이드를 구매하면 <<if earSlimeThoughts()>>머릿속 목소리와<<else>>귀 슬라임 기생충과<</if>> 함께 게임을 시작합니다.
 		<<case "randomClothing">>
 			각 업그레이드를 구매할 때마다 지정한 성별의 무작위 의류 아이템 3개를 받습니다.
 		<<case "tattoos">>
 			각 업그레이드를 구매할 때마다 원하는 시작 문신이나 낙인을 하나 얻을 수 있습니다.
 		<<case "specialClothing">>
 			<<if _maxUpgrades gte 3>>
-				The first rank allows up to half of previously unlocked special clothing sets. The second allows any amount. The third charges twice each set's normal price and makes selected sets count as normally unlocked, enabling their route dialogue.
+				첫 번째 단계는 이전에 해금한 특수 의류 세트의 최대 절반까지 허용합니다. 두 번째 단계는 원하는 만큼 허용합니다. 세 번째 단계는 각 세트를 정가의 두 배로 청구하며, 선택한 세트를 정상적으로 해금한 것으로 취급해 해당 루트의 대사를 열어 줍니다.
 			<<elseif _maxUpgrades is 2>>
 				첫 번째 업그레이드를 선택하면 이전에 해금한 특수 의류를 최대 절반까지 구매할 수 있습니다. 두 번째 랭크를 구매하면 이전에 해금한 특수 의류를 수량 제한 없이 구매할 수 있습니다.
 			<<else>>
@@ -1149,17 +1149,17 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 			<</if>>
 		<<case "sexToys">>
 			각 업그레이드를 구매할 때마다 원하는 시작 섹스 토이 3개를 받습니다.
-			Novelty chastity devices are placed in your wardrobe with their keys.
+			장난감 정조대가 열쇠와 함께 옷장에 놓입니다.
 		<<case "xchangePremiumPills">>
-			Each purchased pack gives you five X-Change Premium pills.
+			구매한 팩 하나마다 X-체인지 프리미엄 알약 5개가 주어집니다.
 		<<case "greenThumb">>
 			이 업그레이드를 구매하면 <span class="green">녹색의 손</span> 특성을 가진 채로 게임을 시작합니다.
 		<<case "xchangePurityTrait">>
-			Purchase this upgrade to <span class="green">make all X-Change pills permanently harmless</span>. Pills can still be applied and recognised by events, but their transformations and other X-Change effects will not working.
+			이 업그레이드를 구매하면 <span class="green">모든 X-체인지 알약이 영구적으로 무해해집니다</span>. 알약을 사용하거나 이벤트에서 인식할 수는 있지만, 변신을 비롯한 X-체인지 효과는 일어나지 않습니다.
 		<<case "xchangeGrayAgentTrait">>
-			Purchase this upgrade to turn any pill <span class="lewd">forced on you</span> into a <span class="green">gray pill</span>, where its effects still apply, but it can no longer change your sex. Pills you take willingly still work normally.
+			이 업그레이드를 구매하면 <span class="lewd">강제로 먹여진</span> 알약이 <span class="green">그레이 알약</span>이 되어, 효과는 그대로 적용되지만 더는 성별을 바꾸지 못합니다. 자발적으로 먹은 알약은 정상적으로 작동합니다.
 		<<case "orgasmTrait" "chokeTrait" "ejacTrait" "molestTrait" "rapeTrait" "bestialityTrait" "tentacleTrait" "critterMagnetTrait" "milkDrankTrait">>
-			Purchase this upgrade to start with the <span class="green"><<print $featsBoosts.name[_type]>></span> trait.
+			이 업그레이드를 구매하면 <span class="green"><<print $featsBoosts.name[_type]>></span> 특성을 가진 채로 게임을 시작합니다.
 		<<case "divineTFs">>
 			이 업그레이드를 구매하면 신성한 변신 상태로 게임을 시작합니다.
 		<<case "animalTFs">>
@@ -1272,7 +1272,7 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 		</div>
 		<<if _type isnot "specialClothing">>
 			<div class=" black small-description" style="margin-top:10px;">
-				(<span class="gold">_details.cost <<pluralise _details.cost "VrelCoin">></span> per <<= _type is "xchangePremiumPills" ? "pack" : "upgrade">>)
+				(<<= _type is "xchangePremiumPills" ? "팩" : "업그레이드">>당 <span class="gold">_details.cost <<pluralise _details.cost "브렐 코인" "브렐 코인">></span>)
 			</div>
 		<</if>>
 
@@ -1371,7 +1371,7 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 		<br>
 		<div class="settingsHeader" style="margin-bottom: 0.5em">해금할 세트</div>
 		<<if _specialClothingCostMultiplier is 2>>
-			<div class="gold" style="margin-bottom: 0.5em;">Stage 3 story unlocks cost twice each set's normal VrelCoin price.</div>
+			<div class="gold" style="margin-bottom: 0.5em;">3단계 스토리 해금은 각 세트당 정가의 두 배 브렐 코인이 듭니다.</div>
 		<</if>>
 		<form>
 			<fieldset class="specialClothesFeatFieldset">
@@ -1388,7 +1388,7 @@ Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <sp
 										<<run $_clothesToPush.forEach(clothing => $_listFromSets.push(clothing.name.toUpperFirst()))>>
 										<<set $_setFeatCost to $_clothingObject.featCost * _specialClothingCostMultiplier>>
 										<<set $_canAfford to ($feats.allSaves.points - $featsBoosts.pointsUsed) - $_setFeatCost gte 0>>
-										<<set $_costDisplay to "<<print setup.specialClothesSets[$_labelC].featCost * _specialClothingCostMultiplier>>"+ ($options.images is 1 ? " <img class='imgButton' src='img/ui/coin-gold.gif'/>" : "Vrelcoins")>>
+										<<set $_costDisplay to "<<print setup.specialClothesSets[$_labelC].featCost * _specialClothingCostMultiplier>>"+ ($options.images is 1 ? " <img class='imgButton' src='img/ui/coin-gold.gif'/>" : " 브렐 코인")>>
 
 										<<if _totalUnlockedSets.includes($_labelC)>>
 											<<if $_canAfford or $featsBoosts.specialClothesSets[$_labelC]>>

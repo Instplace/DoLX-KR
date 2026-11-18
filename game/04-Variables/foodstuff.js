@@ -3567,6 +3567,7 @@ function initFoodstuff() {
 			index: 162,
 			name: "해바라기",
 			singular: "해바라기",
+			plural: "해바라기",
 			counter: "송이",
 			icon: "sunflower.png",
 			category: "flower",

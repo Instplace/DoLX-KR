@@ -24,7 +24,7 @@ IMPORTANT:
 <<widget "optionsDefaults">>
 	<div class="settingsGrid">
 		<div>
-			<<button "Save All Options As Default">>
+			<<button "모든 옵션을 기본값으로 저장">>
 				<<set _toSaveDefaults to {}>>
 				<<set $options.theme to Theme.getPreference()>>
 				<<run exportSettingsWalk(settingsObjects("general").options, V.options, T.toSaveDefaults)>>
@@ -34,9 +34,9 @@ IMPORTANT:
 				<<set _globalThemeDefaults to {}>>
 				<<run $('[id^="optionsThemeDefault-"]').each(function () {
 					const value = T.globalGeneralDefaults[this.id.substring("optionsThemeDefault-".length)];
-					this.textContent = value === undefined ? "" : " Default: (" + value + ")";
+					this.textContent = value === undefined ? "" : " 기본값: (" + value + ")";
 				})>>
-				<<replace "#optionsDefaultsStatus">>Defaults saved for new games.<</replace>>
+				<<replace "#optionsDefaultsStatus">>새 게임용 기본값을 저장했습니다.<</replace>>
 			<</button>>
 			<<button "저장된 기본값 삭제">>
 				<<run localStorage.removeItem("dolDefaultGeneralSettings")>>
@@ -44,10 +44,10 @@ IMPORTANT:
 				<<set _globalGeneralDefaults to {}>>
 				<<set _globalThemeDefaults to {}>>
 				<<run $('[id^="optionsThemeDefault-"]').empty()>>
-				<<replace "#optionsDefaultsStatus">>Defaults reset.<</replace>>
+				<<replace "#optionsDefaultsStatus">>기본값을 초기화했습니다.<</replace>>
 			<</button>>
 			<span id="optionsDefaultsStatus" role="status"></span>
-			<br><span class="small-description">Defaults apply to new games. Existing saves keep their own options. Settings exports include these options for transfer to another installation.</span>
+			<br><span class="small-description">기본값은 새 게임에 적용됩니다. 기존 세이브는 각자의 옵션을 그대로 유지합니다. 설정 내보내기에는 이 옵션들도 포함되어 다른 설치본으로 옮길 수 있습니다.</span>
 		</div>
 	</div>
 <</widget>>
@@ -117,7 +117,7 @@ IMPORTANT:
 		<div class="settingsToggleItem">
 			<label>
 				<<checkbox "$options.showAllStatMeters" false true autocheck>>
-				Always show sidebar stat meters
+				사이드바 스탯 게이지를 항상 표시
 			</label>
 		</div>
 	</div>
@@ -171,9 +171,9 @@ IMPORTANT:
 			<label><<radiovar "$options.pepperSprayDisplay" "modded9">><<if _peppersprays>><<replace #peppersprays>><<peppersprays>><</replace>><</if>><</radiovar>> 모드 9</label> |
 			<label><<radiovar "$options.pepperSprayDisplay" "none">><<if _peppersprays>><<replace #peppersprays>><<peppersprays>><</replace>><</if>><</radiovar>> 숨김</label>
 			<br>
-			<span class="gold">Dragon stars:</span>
-			<label><<radiovar "$options.dragonStarDisplay" "show">><<if _peppersprays>><<replace #peppersprays>><<peppersprays>><</replace>><</if>><</radiovar>> Show</label> |
-			<label><<radiovar "$options.dragonStarDisplay" "none">><<if _peppersprays>><<replace #peppersprays>><<peppersprays>><</replace>><</if>><</radiovar>> Hidden</label>
+			<span class="gold">드래곤 별:</span>
+			<label><<radiovar "$options.dragonStarDisplay" "show">><<if _peppersprays>><<replace #peppersprays>><<peppersprays>><</replace>><</if>><</radiovar>> 표시</label> |
+			<label><<radiovar "$options.dragonStarDisplay" "none">><<if _peppersprays>><<replace #peppersprays>><<peppersprays>><</replace>><</if>><</radiovar>> 숨김</label>
 		</div>
 		<div class="settingsToggleItem">
 			<span class="gold">온도계 표시:</span>
@@ -195,18 +195,18 @@ IMPORTANT:
 				<<updatesidebarimg>>
 				<span class="gold">네임드 NPC 표시:</span>
 				<br>
-				<label> Select your preferred display style:
+				<label> 선호하는 표시 방식을 선택하십시오:
 				<<listbox "$options.NnpcDisplaySystem" autoselect>>
-					<<option "None" "none">>
-					<<option "Vanilla" "vanilla">>
+					<<option "없음" "none">>
+					<<option "바닐라" "vanilla">>
 					<<option "DOLP" "dolp">>
 				<</listbox>>
-				<mouse class="tooltip linkBlue">(?)<span>The vanilla display offers several features, such as: undressable sprites, and more responsive characters. However, it relies on vanilla styled sprites to function and lacks customisation options, so it likely won't look right with most graphical mods. <br><br>Alternatively, you may choose the good ol' DoLP NNPC display that offers higher fidelity sprites and all of the features you were used to on prior versions.<br><br>If you wish to replace any sprites or even add your own, you'll find the vanilla sprites under "img/clothes/props/npc", and the DoLP sprites under "img/ui/nnpc".</span></mouse>
+				<mouse class="tooltip linkBlue">(?)<span>바닐라 표시 방식은 옷을 벗길 수 있는 스프라이트와 더 반응성 좋은 캐릭터 같은 여러 기능을 제공합니다. 하지만 바닐라 스타일의 스프라이트에 의존해 작동하고 사용자 지정 옵션이 없어서, 대부분의 그래픽 모드와는 어울리지 않을 가능성이 높습니다. <br><br>대신 이전 버전에서 쓰던 모든 기능과 더 높은 해상도의 스프라이트를 제공하는 정통 DoLP NNPC 표시 방식을 선택할 수도 있습니다.<br><br>스프라이트를 교체하거나 직접 추가하려면, 바닐라 스프라이트는 "img/clothes/props/npc"에, DoLP 스프라이트는 "img/ui/nnpc"에 있습니다.</span></mouse>
 				</label>
 				<hr style="border-top: 1px dashed #888; margin-top:10px; margin-bottom:10px;">
-				<span class="gold">DoLP NNPC display settings:</span>
+				<span class="gold">DoLP 네임드 NPC 표시 설정:</span>
 				<br>
-				<div id="autonnpc">Auto Mode: <label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<checkbox "$options.autoNNPCDisplay.enabled" false true autocheck>> <mouse class="tooltip linkBlue">(?)<span>Enable NNPCs appearing when you're in a scene with them.</span></mouse></label></div>
+				<div id="autonnpc">자동 모드: <label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<checkbox "$options.autoNNPCDisplay.enabled" false true autocheck>> <mouse class="tooltip linkBlue">(?)<span>네임드 NPC와 같은 장면에 있을 때 그 NPC가 나타나게 합니다.</span></mouse></label></div>
 				<<set _options = {}>>
 				<<set _options["None"] = 0>>
 				<<set _options["Alex"] = "alex">>
@@ -246,7 +246,7 @@ IMPORTANT:
 				<<set _options["Poppy"] = "poppy">>
 				<<set _options["Others"] = "others">>
 				<<if Object.keys(_options).length > 1>>
-					<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'">NNPC:
+					<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'">네임드 NPC:
 						<div id="nnpc">
 							<<listbox "$options.nnpcDisplay" autoselect>>
 								<<optionsfrom _options>>
@@ -255,13 +255,13 @@ IMPORTANT:
 					</label>
 				<</if>>
 				레이어:
-				<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplayLayer" "front">><<updatesidebarimg>><</radiovar>> Front</label> |
-				<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplayLayer" "back">><<updatesidebarimg>><</radiovar>> Back</label>
+				<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplayLayer" "front">><<updatesidebarimg>><</radiovar>> 앞</label> |
+				<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplayLayer" "back">><<updatesidebarimg>><</radiovar>> 뒤</label>
 				<br>
 				<div id="autoNNPCGenderOverride">
 					<span id="autoNNPCGenderOverrideToggle">
 						<<if $options.autoNNPCDisplay.enabled is true and $options.nnpcDisplay isnot 0 and $options.nnpcDisplay isnot "ivory_wraith" and $options.nnpcDisplay isnot "luchifen">>
-							Gender Override: <label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<checkbox "$options.autoNNPCDisplay[$options.nnpcDisplay].genderOverride" false true autocheck>> <mouse class="tooltip linkBlue">(?)<span>Enable Gender Override. Allows you to pick the NNPC gender sprite instead of their physical gender.</span></mouse></label>
+							성별 덮어쓰기: <label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<checkbox "$options.autoNNPCDisplay[$options.nnpcDisplay].genderOverride" false true autocheck>> <mouse class="tooltip linkBlue">(?)<span>성별 덮어쓰기를 켭니다. 네임드 NPC의 신체 성별 대신 원하는 성별의 스프라이트를 고를 수 있습니다.</span></mouse></label>
 						<</if>>
 					</span>
 				</div>
@@ -269,35 +269,35 @@ IMPORTANT:
 					<<if $options.autoNNPCDisplay.enabled is true and $options.nnpcDisplay isnot 0>>
 						<<if $options.autoNNPCDisplay[$options.nnpcDisplay].genderOverride is true and $options.nnpcDisplay isnot "ivory_wraith" and $options.nnpcDisplay isnot "luchifen">>
 							성별:
-							<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplayGender" "male">><<updatesidebarimg>><</radiovar>> Male</label> |
-							<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplayGender" "female">><<updatesidebarimg>><</radiovar>> Female</label>
-							<<if $options.nnpcDisplay is "night_monster">> | <label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplayGender" "monster">><<updatesidebarimg>><</radiovar>> Monster</label><</if>>
+							<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplayGender" "male">><<updatesidebarimg>><</radiovar>> 남성</label> |
+							<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplayGender" "female">><<updatesidebarimg>><</radiovar>> 여성</label>
+							<<if $options.nnpcDisplay is "night_monster">> | <label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplayGender" "monster">><<updatesidebarimg>><</radiovar>> 괴물</label><</if>>
 							<br>
 						<</if>>
 						/* Beast skin selector: always available for Black Wolf / Great Hawk
 						   so the player can pick Monster form even when Auto Mode is enabled. */
 						<<if $options.nnpcDisplay is "black_wolf" || $options.nnpcDisplay is "great_hawk">>
 							피부:
-							<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplaySkin" "pale">><<updatesidebarimg>><</radiovar>> Pale</label> |
-							<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplaySkin" "dark">><<updatesidebarimg>><</radiovar>> Dark</label> |
-							<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplaySkin" "monster">><<updatesidebarimg>><</radiovar>> Monster</label>
+							<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplaySkin" "pale">><<updatesidebarimg>><</radiovar>> 창백한</label> |
+							<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplaySkin" "dark">><<updatesidebarimg>><</radiovar>> 어두운</label> |
+							<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplaySkin" "monster">><<updatesidebarimg>><</radiovar>> 괴물</label>
 							<br>
 						<</if>>
 					<<elseif $options.nnpcDisplay isnot "ivory_wraith" and $options.nnpcDisplay isnot "luchifen">>
 						성별:
-						<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplayGender" "male">><<updatesidebarimg>><</radiovar>> Male</label> |
-						<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplayGender" "female">><<updatesidebarimg>><</radiovar>> Female</label>
-						<<if $options.nnpcDisplay is "night_monster">> | <label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplayGender" "monster">><<updatesidebarimg>><</radiovar>> Monster</label><</if>>
+						<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplayGender" "male">><<updatesidebarimg>><</radiovar>> 남성</label> |
+						<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplayGender" "female">><<updatesidebarimg>><</radiovar>> 여성</label>
+						<<if $options.nnpcDisplay is "night_monster">> | <label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplayGender" "monster">><<updatesidebarimg>><</radiovar>> 괴물</label><</if>>
 						<br>
 						피부:
-						<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplaySkin" "pale">><<updatesidebarimg>><</radiovar>> Pale</label> |
-						<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplaySkin" "dark">><<updatesidebarimg>><</radiovar>> Dark</label>
-						<<if $options.nnpcDisplay is "black_wolf" || $options.nnpcDisplay is "great_hawk">> | <label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplaySkin" "monster">><<updatesidebarimg>><</radiovar>> Monster</label><</if>>
+						<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplaySkin" "pale">><<updatesidebarimg>><</radiovar>> 창백한</label> |
+						<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplaySkin" "dark">><<updatesidebarimg>><</radiovar>> 어두운</label>
+						<<if $options.nnpcDisplay is "black_wolf" || $options.nnpcDisplay is "great_hawk">> | <label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplaySkin" "monster">><<updatesidebarimg>><</radiovar>> 괴물</label><</if>>
 						<br>
 					<</if>>
 				</span>
 				슬롯:
-				<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplaySlot" 0>><<updatesidebarimg>><</radiovar>> None</label> |
+				<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplaySlot" 0>><<updatesidebarimg>><</radiovar>> 없음</label> |
 				<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplaySlot" 1>><<updatesidebarimg>><</radiovar>> 1</label> |
 				<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplaySlot" 2>><<updatesidebarimg>><</radiovar>> 2</label> |
 				<label data-target='["options.NnpcDisplaySystem"]' data-disabledif="V.options.NnpcDisplaySystem !== 'dolp'"><<radiovar "$options.nnpcDisplaySlot" 3>><<updatesidebarimg>><</radiovar>> 3</label> |
@@ -392,27 +392,27 @@ IMPORTANT:
 										성별:
 										<label><<radiovar "$options.nnpcDisplayGender" "male">><<updatesidebarimg>><</radiovar>> 남성</label> |
 										<label><<radiovar "$options.nnpcDisplayGender" "female">><<updatesidebarimg>><</radiovar>> 여성</label>
-										<<if $options.nnpcDisplay is "night_monster">> | <label><<radiovar "$options.nnpcDisplayGender" "monster">><<updatesidebarimg>><</radiovar>> Monster</label><</if>>
+										<<if $options.nnpcDisplay is "night_monster">> | <label><<radiovar "$options.nnpcDisplayGender" "monster">><<updatesidebarimg>><</radiovar>> 괴물</label><</if>>
 										<br>
 									<</if>>
 									/* Beast skin selector also surfaces in Auto Mode so Monster form is reachable. */
 									<<if $options.nnpcDisplay is "black_wolf" || $options.nnpcDisplay is "great_hawk">>
 										피부:
 										<label><<radiovar "$options.nnpcDisplaySkin" "pale">><<updatesidebarimg>><</radiovar>> 밝은</label> |
-										<label><<radiovar "$options.nnpcDisplaySkin" "dark">><<updatesidebarimg>><</radiovar>> Dark</label> |
-										<label><<radiovar "$options.nnpcDisplaySkin" "monster">><<updatesidebarimg>><</radiovar>> Monster</label>
+										<label><<radiovar "$options.nnpcDisplaySkin" "dark">><<updatesidebarimg>><</radiovar>> 어두운</label> |
+										<label><<radiovar "$options.nnpcDisplaySkin" "monster">><<updatesidebarimg>><</radiovar>> 괴물</label>
 										<br>
 									<</if>>
 								<<elseif $options.nnpcDisplay isnot "ivory_wraith" and $options.nnpcDisplay isnot "luchifen">>
 									성별:
 									<label><<radiovar "$options.nnpcDisplayGender" "male">><<updatesidebarimg>><</radiovar>> 남성</label> |
 									<label><<radiovar "$options.nnpcDisplayGender" "female">><<updatesidebarimg>><</radiovar>> 여성</label>
-									<<if $options.nnpcDisplay is "night_monster">> | <label><<radiovar "$options.nnpcDisplayGender" "monster">><<updatesidebarimg>><</radiovar>> Monster</label><</if>>
+									<<if $options.nnpcDisplay is "night_monster">> | <label><<radiovar "$options.nnpcDisplayGender" "monster">><<updatesidebarimg>><</radiovar>> 괴물</label><</if>>
 									<br>
 									피부:
 									<label><<radiovar "$options.nnpcDisplaySkin" "pale">><<updatesidebarimg>><</radiovar>> 밝은</label> |
 									<label><<radiovar "$options.nnpcDisplaySkin" "dark">><<updatesidebarimg>><</radiovar>> 어두운</label>
-									<<if $options.nnpcDisplay is "black_wolf" || $options.nnpcDisplay is "great_hawk">> | <label><<radiovar "$options.nnpcDisplaySkin" "monster">><<updatesidebarimg>><</radiovar>> Monster</label><</if>>
+									<<if $options.nnpcDisplay is "black_wolf" || $options.nnpcDisplay is "great_hawk">> | <label><<radiovar "$options.nnpcDisplaySkin" "monster">><<updatesidebarimg>><</radiovar>> 괴물</label><</if>>
 									<br>
 								<</if>>
 							<</replace>>
@@ -430,7 +430,7 @@ IMPORTANT:
 
 							<<replace #autoNNPCGenderOverrideToggle>>
 								<<if $options.autoNNPCDisplay.enabled is true and $options.nnpcDisplay isnot 0 and $options.nnpcDisplay isnot "ivory_wraith" and $options.nnpcDisplay isnot "luchifen">>
-									Gender Override: <label><<checkbox "$options.autoNNPCDisplay[$options.nnpcDisplay].genderOverride" false true autocheck>> <mouse class="tooltip linkBlue">(?)<span>Enable Gender Override. Allows you to pick the NNPC gender sprite instead of their physical gender.</span></mouse></label>
+									성별 덮어쓰기: <label><<checkbox "$options.autoNNPCDisplay[$options.nnpcDisplay].genderOverride" false true autocheck>> <mouse class="tooltip linkBlue">(?)<span>성별 덮어쓰기를 켭니다. 네임드 NPC의 신체 성별 대신 원하는 성별의 스프라이트를 고를 수 있습니다.</span></mouse></label>
 								<</if>>
 							<</replace>>
 
@@ -505,8 +505,8 @@ IMPORTANT:
 			<span class="tooltip-anchor linkBlue" tooltip="<span class='blue'>강우량, 수중 기포 등이 포함됩니다. 사이드바의 온도계를 클릭하면 일시적으로 숨겨 플레이어 캐릭터의 사진을 더 쉽게 찍을 수 있습니다!</span>">(?)</span>
 		</div>
 		<div class="settingsToggleItem">
-			<label><<checkbox "$options.showExactMeasurements" false true autocheck>> Show exact measurements</label>
-			<span class="tooltip-anchor linkBlue" tooltip="<span class='blue'>Displays the exact length of penises when being described on text. Note: NPCs are affected by this setting only on their generation step.</span>">(?)</span>
+			<label><<checkbox "$options.showExactMeasurements" false true autocheck>> 정확한 수치 표시</label>
+			<span class="tooltip-anchor linkBlue" tooltip="<span class='blue'>글에서 자지를 묘사할 때 정확한 길이를 표시합니다. 참고: NPC는 생성 단계에서만 이 설정의 영향을 받습니다.</span>">(?)</span>
 		</div>
 		<div class="settingsToggleItem">
 			<span class="gold">미끼 선택 방식:</span>
@@ -592,7 +592,7 @@ IMPORTANT:
 			<label><<radiobutton "$options.playtime" true autocheck>> 활성</label>
 		</div>
 		<div class="settingsToggleItem">
-			<label><<checkbox "$options.showGameVersion" false true autocheck>> Display game version in the top right</label>
+			<label><<checkbox "$options.showGameVersion" false true autocheck>> 오른쪽 위에 게임 버전 표시</label>
 		</div>
 	</div>
 
@@ -628,7 +628,7 @@ IMPORTANT:
 			<label><input type="radio" name="theme" value="macchiato" /> 캣푸친 마키아토</label> |
 			<label><input type="radio" name="theme" value="mocha" /> 캣푸친 모카</label> |
 			<label><input type="radio" name="theme" value="sea" /> 바다</label>
-			<div class="small-description">Theme selection is shared on this installation. Save it with your other defaults or export settings to transfer it to another installation.</div>
+			<div class="small-description">테마 선택은 이 설치본 전체에서 공유됩니다. 다른 기본값과 함께 저장하거나 설정을 내보내어 다른 설치본으로 옮기십시오.</div>
 		</div>
 	</div>
 	<hr>
@@ -638,7 +638,7 @@ IMPORTANT:
 		<div class="settingsToggleItem">
 			패시지:
 			<<listbox "$options.passageLineHeight" autoselect>>
-				<<option "Default" 0>>
+				<<option "기본값" 0>>
 				<<option "1" 1>>
 				<<option "1.25" 1.25>>
 				<<option "1.5" 1.5>>
@@ -650,7 +650,7 @@ IMPORTANT:
 		<div class="settingsToggleItem">
 			오버레이:
 			<<listbox "$options.overlayLineHeight" autoselect>>
-				<<option "Default" 0>>
+				<<option "기본값" 0>>
 				<<option "1" 1>>
 				<<option "1.25" 1.25>>
 				<<option "1.5" 1.5>>
@@ -662,7 +662,7 @@ IMPORTANT:
 		<div class="settingsToggleItemWide">
 			사이드바:
 			<<listbox "$options.sidebarLineHeight" autoselect>>
-				<<option "Default" 0>>
+				<<option "기본값" 0>>
 				<<option "1" 1>>
 				<<option "1.25" 1.25>>
 				<<option "1.5" 1.5>>
@@ -679,7 +679,7 @@ IMPORTANT:
 		<div class="settingsToggleItem">
 			패시지:
 			<<listbox "$options.passageFontSize" autoselect>>
-				<<option "Default" 0>>
+				<<option "기본값" 0>>
 				<<option "10px" 10>>
 				<<option "12px" 12>>
 				<<option "14px" 14>>
@@ -692,7 +692,7 @@ IMPORTANT:
 		<div class="settingsToggleItem">
 			<mouse class="tooltip">오버레이<span class="blue">기본값은 패시지 글꼴 크기와 동일합니다.</span></mouse>:
 			<<listbox "$options.overlayFontSize" autoselect>>
-				<<option "Default" 0>>
+				<<option "기본값" 0>>
 				<<option "10px" 10>>
 				<<option "12px" 12>>
 				<<option "14px" 14>>
@@ -705,7 +705,7 @@ IMPORTANT:
 		<div class="settingsToggleItemWide">
 			사이드바:
 			<<listbox "$options.sidebarFontSize" autoselect>>
-				<<option "Default" 0>>
+				<<option "기본값" 0>>
 				<<option "12px" 12>>
 				<<option "14px" 14>>
 				<<option "16px" 16>>
@@ -781,7 +781,7 @@ IMPORTANT:
 			<br>
 			<label>
 			<<checkbox "$options.textAnimsGlitch" false true autocheck { onToggle: t => setup.arcology.syncGlitch() }>>
-			<span class="luchifen-name" data-text="Cybernetics effects">Glitchy effects</span>
+			<span class="luchifen-name" data-text="사이버네틱 효과">글리치 효과</span>
 			</label>
 		</div>
 	</div>
@@ -790,8 +790,8 @@ IMPORTANT:
 <<widget "optionsThemeDefault">>
 	<<if _args[0]>>
 		<span @id="'optionsThemeDefault-' + _args[0]">
-			<<if _globalThemeDefaults?.[_args[0]] isnot undefined>> Default: (<<print _globalThemeDefaults[_args[0]]>>)
-			<<elseif _globalGeneralDefaults?.[_args[0]] isnot undefined>> Default: (<<print _globalGeneralDefaults[_args[0]]>>)
+			<<if _globalThemeDefaults?.[_args[0]] isnot undefined>> 기본값: (<<print _globalThemeDefaults[_args[0]]>>)
+			<<elseif _globalGeneralDefaults?.[_args[0]] isnot undefined>> 기본값: (<<print _globalGeneralDefaults[_args[0]]>>)
 			<</if>>
 		</span>
 	<</if>>
@@ -801,85 +801,85 @@ IMPORTANT:
 	<<setupOptions>>
 	<<optionsDefaults>>
 	<div class="settingsGrid">
-		<div class="settingsHeader options">Audio</div>
+		<div class="settingsHeader options">오디오</div>
 		<div class="settingsToggleItemWide">
-			<label><<checkbox "$options.audio" 0 1 autocheck>> Enable audio</label>
+			<label><<checkbox "$options.audio" 0 1 autocheck>> 오디오 활성화</label>
 		</div>
 		<div class="settingsToggleItem">
-			<label data-target="options.audio" data-disabledif="V.options.audio===0"><<checkbox "$options.muteonhide" 0 1 autocheck>> Mute on hide</label>
-			<mouse class="tooltip-small linkBlue">(?)<span>Mutes game audio automatically when game is not on your device's main focus, i.e. when switched to another tab, or browser window minimised.</span></mouse>
+			<label data-target="options.audio" data-disabledif="V.options.audio===0"><<checkbox "$options.muteonhide" 0 1 autocheck>> 화면이 가려지면 음소거</label>
+			<mouse class="tooltip-small linkBlue">(?)<span>게임이 기기의 주 포커스에서 벗어났을 때(다른 탭으로 전환했거나 브라우저 창을 최소화했을 때) 게임 오디오를 자동으로 음소거합니다.</span></mouse>
 		</div>
 		<div class="settingsToggleItem">
-			<label data-target="options.audio" data-disabledif="V.options.audio===0"><<checkbox "$options.npcVoiceoverAudio" 0 1 autocheck>> Enable NPC voiceovers</label>
-			<mouse class="tooltip-small linkBlue">(?)<span>Enables moaning and orgasming sounds for NPCs.</span></mouse>
+			<label data-target="options.audio" data-disabledif="V.options.audio===0"><<checkbox "$options.npcVoiceoverAudio" 0 1 autocheck>> NPC 음성 활성화</label>
+			<mouse class="tooltip-small linkBlue">(?)<span>NPC의 신음과 절정 소리를 활성화합니다.</span></mouse>
 		</div>
 		<div class="settingsToggleItem">
-			<label data-target="options.audio" data-disabledif="V.options.audio===0"><<checkbox "$options.voiceoverAudio" 0 1 autocheck>> Enable player voiceovers</label>
-			<mouse class="tooltip-small linkBlue">(?)<span>Enables moaning, panting, and orgasming sounds for the player character.</span></mouse>
+			<label data-target="options.audio" data-disabledif="V.options.audio===0"><<checkbox "$options.voiceoverAudio" 0 1 autocheck>> 플레이어 음성 활성화</label>
+			<mouse class="tooltip-small linkBlue">(?)<span>플레이어 캐릭터의 신음, 헐떡임, 절정 소리를 활성화합니다.</span></mouse>
 		</div>
 		<div class="settingsToggleItem">
-			<label data-target="options.audio" data-disabledif="V.options.audio===0"><<checkbox "$options.postureAffectsVoice" 0 1 autocheck>> Gender posture affects voice</label>
-			<mouse class="tooltip-small linkBlue">(?)<span>When enabled, setting your gender posture to either gender overrides your body's natural voice.</span></mouse>
+			<label data-target="options.audio" data-disabledif="V.options.audio===0"><<checkbox "$options.postureAffectsVoice" 0 1 autocheck>> 성별 자세가 목소리에 영향</label>
+			<mouse class="tooltip-small linkBlue">(?)<span>활성화하면 성별 자세를 어느 쪽 성별로 설정하든 몸의 타고난 목소리 대신 그 성별의 목소리가 쓰입니다.</span></mouse>
 		</div>
 		<div class="settingsToggleItemWide">
-			<span class="gold">Voice per body &amp; identity</span>
-			<mouse class="tooltip-small linkBlue">(?)<span>Pick which voice each of your body/identity states uses, mute your own voice for that state, and choose which NPC voices you hear while in it. "Sissy" (feminine-presenting male) and "Butch" (masculine-presenting female) only differ from Male/Female while "Gender posture affects voice" is enabled. The Herm row appears only while the X-Change herm effect is active.</span></mouse>
+			<span class="gold">몸 &amp; 정체성별 음성</span>
+			<mouse class="tooltip-small linkBlue">(?)<span>몸/정체성 상태마다 어떤 음성을 쓸지, 그 상태에서 자신의 목소리를 음소거할지, 어떤 NPC 음성을 들을지 고릅니다. "시시"(여성스럽게 꾸민 남성)와 "부치"(남성스럽게 꾸민 여성)는 "성별 자세가 목소리에 영향"이 활성화되어 있을 때만 남성/여성과 달라집니다. 헤름 항목은 X-체인지 헤름 효과가 켜져 있는 동안에만 나타납니다.</span></mouse>
 		</div>
 		<div class="settingsToggleItem">
-			<label data-target="options.audio" data-disabledif="V.options.audio===0"><<checkbox "$options.voiceConfig.male.enabled" false true autocheck>> Male</label>
+			<label data-target="options.audio" data-disabledif="V.options.audio===0"><<checkbox "$options.voiceConfig.male.enabled" false true autocheck>> 남성</label>
 			<<listbox "$options.voiceConfig.male.voice" autoselect>>
-				<<option "Female (Hentai)" "v1">><<option "Female (Western)" "v2">><<option "Male" "m">>
+				<<option "여성 (헨타이)" "v1">><<option "여성 (서양)" "v2">><<option "남성" "m">>
 			<</listbox>>
 			NPC: <<listbox "$options.voiceConfig.male.npc" autoselect>>
-				<<option "All" "all">><<option "Male only" "m">><<option "Female only" "f">><<option "None" "off">>
+				<<option "전체" "all">><<option "남성만" "m">><<option "여성만" "f">><<option "없음" "off">>
 			<</listbox>>
 		</div>
 		<div class="settingsToggleItem">
-			<label data-target="options.audio" data-disabledif="V.options.audio===0"><<checkbox "$options.voiceConfig.female.enabled" false true autocheck>> Female</label>
+			<label data-target="options.audio" data-disabledif="V.options.audio===0"><<checkbox "$options.voiceConfig.female.enabled" false true autocheck>> 여성</label>
 			<<listbox "$options.voiceConfig.female.voice" autoselect>>
-				<<option "Female (Hentai)" "v1">><<option "Female (Western)" "v2">><<option "Male" "m">>
+				<<option "여성 (헨타이)" "v1">><<option "여성 (서양)" "v2">><<option "남성" "m">>
 			<</listbox>>
 			NPC: <<listbox "$options.voiceConfig.female.npc" autoselect>>
-				<<option "All" "all">><<option "Male only" "m">><<option "Female only" "f">><<option "None" "off">>
+				<<option "전체" "all">><<option "남성만" "m">><<option "여성만" "f">><<option "없음" "off">>
 			<</listbox>>
 		</div>
 		<<if !$statFreeze and playerIsXChanged() and $xchange.pill.genderificationEffect and xchangeGenderificationDirection() is "sissy">>
 		<div class="settingsToggleItem">
-			<label data-target="options.audio" data-disabledif="V.options.audio===0"><<checkbox "$options.voiceConfig.sissy.enabled" false true autocheck>> Sissy</label>
+			<label data-target="options.audio" data-disabledif="V.options.audio===0"><<checkbox "$options.voiceConfig.sissy.enabled" false true autocheck>> 시시</label>
 			<<listbox "$options.voiceConfig.sissy.voice" autoselect>>
-				<<option "Female (Hentai)" "v1">><<option "Female (Western)" "v2">><<option "Male" "m">>
+				<<option "여성 (헨타이)" "v1">><<option "여성 (서양)" "v2">><<option "남성" "m">>
 			<</listbox>>
 			NPC: <<listbox "$options.voiceConfig.sissy.npc" autoselect>>
-				<<option "All" "all">><<option "Male only" "m">><<option "Female only" "f">><<option "None" "off">>
+				<<option "전체" "all">><<option "남성만" "m">><<option "여성만" "f">><<option "없음" "off">>
 			<</listbox>>
 		</div>
 		<</if>>
 		<<if !$statFreeze and playerIsXChanged() and $xchange.pill.genderificationEffect and xchangeGenderificationDirection() is "butch">>
 		<div class="settingsToggleItem">
-			<label data-target="options.audio" data-disabledif="V.options.audio===0"><<checkbox "$options.voiceConfig.butch.enabled" false true autocheck>> Butch</label>
+			<label data-target="options.audio" data-disabledif="V.options.audio===0"><<checkbox "$options.voiceConfig.butch.enabled" false true autocheck>> 부치</label>
 			<<listbox "$options.voiceConfig.butch.voice" autoselect>>
-				<<option "Female (Hentai)" "v1">><<option "Female (Western)" "v2">><<option "Male" "m">>
+				<<option "여성 (헨타이)" "v1">><<option "여성 (서양)" "v2">><<option "남성" "m">>
 			<</listbox>>
 			NPC: <<listbox "$options.voiceConfig.butch.npc" autoselect>>
-				<<option "All" "all">><<option "Male only" "m">><<option "Female only" "f">><<option "None" "off">>
+				<<option "전체" "all">><<option "남성만" "m">><<option "여성만" "f">><<option "없음" "off">>
 			<</listbox>>
 		</div>
 		<</if>>
 		<<if playerIsHerm()>>
 		<div class="settingsToggleItem">
-			<label data-target="options.audio" data-disabledif="V.options.audio===0"><<checkbox "$options.voiceConfig.herm.enabled" false true autocheck>> Herm</label>
+			<label data-target="options.audio" data-disabledif="V.options.audio===0"><<checkbox "$options.voiceConfig.herm.enabled" false true autocheck>> 헤름</label>
 			<<listbox "$options.voiceConfig.herm.voice" autoselect>>
-				<<option "Female (Hentai)" "v1">><<option "Female (Western)" "v2">><<option "Male" "m">>
+				<<option "여성 (헨타이)" "v1">><<option "여성 (서양)" "v2">><<option "남성" "m">>
 			<</listbox>>
 			NPC: <<listbox "$options.voiceConfig.herm.npc" autoselect>>
-				<<option "All" "all">><<option "Male only" "m">><<option "Female only" "f">><<option "None" "off">>
+				<<option "전체" "all">><<option "남성만" "m">><<option "여성만" "f">><<option "없음" "off">>
 			<</listbox>>
 		</div>
 		<</if>>
 		<div class="settingsToggleItem numberslider-inline">
 			<label data-target="options.audio" data-disabledif="V.options.audio===0">
-			<span class="gold">Master Volume:</span>
-			<mouse class="tooltip-small linkBlue">(?)<span>Controls the overall volume of all audio in the game.</span></mouse>
+			<span class="gold">전체 음량:</span>
+			<mouse class="tooltip-small linkBlue">(?)<span>게임 내 모든 오디오의 전체 음량을 조절합니다.</span></mouse>
 			<<numberslider "$options.mastervolume" $options.mastervolume 0 1 0.01 {
 				onInputChange: value => wikifier("<<master-audio-update>>"),
 				value: () => Math.round($options.mastervolume * 100)+`%`
@@ -888,8 +888,8 @@ IMPORTANT:
 		</div>
 		<div class="settingsToggleItem numberslider-inline">
 			<label data-target="options.audio" data-disabledif="V.options.audio===0">
-			<span class="gold">BGM:</span>
-			<mouse class="tooltip-small linkBlue">(?)<span>Controls the overall volume of the background music. Set to 0% to turn BGM off.</span></mouse>
+			<span class="gold">배경 음악:</span>
+			<mouse class="tooltip-small linkBlue">(?)<span>배경 음악의 전체 음량을 조절합니다. 0%로 설정하면 배경 음악이 꺼집니다.</span></mouse>
 			<<numberslider "$options.bgm_volume" $options.bgm_volume 0 1 0.01 {
 				onInputChange: value => wikifier("<<master-audio-update>>"),
 				value: () => Math.round($options.bgm_volume * 100)+`%`
@@ -898,8 +898,8 @@ IMPORTANT:
 		</div>
 		<div class="settingsToggleItem numberslider-inline">
 			<label data-target="options.audio" data-disabledif="V.options.audio===0">
-			<span class="gold">BGS:</span>
-			<mouse class="tooltip-small linkBlue">(?)<span>Controls the overall volume of the background sounds (including looping sex sounds).</span></mouse>
+			<span class="gold">배경 효과음:</span>
+			<mouse class="tooltip-small linkBlue">(?)<span>배경 효과음(반복되는 섹스 소리 포함)의 전체 음량을 조절합니다.</span></mouse>
 			<<numberslider "$options.bgs_volume" $options.bgs_volume 0 1 0.01 {
 				onInputChange: value => wikifier("<<master-audio-update>>"),
 				value: () => Math.round($options.bgs_volume * 100)+`%`
@@ -908,8 +908,8 @@ IMPORTANT:
 		</div>
 		<div class="settingsToggleItem numberslider-inline">
 			<label data-target="options.audio" data-disabledif="V.options.audio===0">
-			<span class="gold">Ambience:</span>
-			<mouse class="tooltip-small linkBlue">(?)<span>Controls weather and lightning ambience independently of BGS. Set to 0% to disable ambience. Sounds are quieter indoors.</span></mouse>
+			<span class="gold">환경음:</span>
+			<mouse class="tooltip-small linkBlue">(?)<span>날씨와 번개 같은 환경음을 배경 효과음과 별개로 조절합니다. 0%로 설정하면 환경음이 꺼집니다. 소리는 실내에서 더 작게 들립니다.</span></mouse>
 			<<numberslider "$options.ambience_volume" $options.ambience_volume 0 1 0.01 {
 				onInputChange: value => wikifier("<<master-audio-update>>"),
 				value: () => Math.round($options.ambience_volume * 100)+`%`
@@ -918,8 +918,8 @@ IMPORTANT:
 		</div>
 		<div class="settingsToggleItem numberslider-inline">
 			<label data-target="options.audio" data-disabledif="V.options.audio===0">
-			<span class="gold">Voice:</span>
-			<mouse class="tooltip-small linkBlue">(?)<span>Controls the overall volume of voices from characters (including but not limited to orgasming, moaning, and slurping).</span></mouse>
+			<span class="gold">음성:</span>
+			<mouse class="tooltip-small linkBlue">(?)<span>캐릭터 음성(절정, 신음, 핥는 소리 등)의 전체 음량을 조절합니다.</span></mouse>
 			<<numberslider "$options.voice_volume" $options.voice_volume 0 1 0.01 {
 				onInputChange: value => wikifier("<<master-audio-update>>"),
 				value: () => Math.round($options.voice_volume * 100)+`%`
@@ -928,8 +928,8 @@ IMPORTANT:
 		</div>
 		<div class="settingsToggleItem numberslider-inline">
 			<label data-target='["options.audio","options.voiceoverAudio"]' data-disabledif="V.options.audio===0 || V.options.voiceoverAudio===0">
-			<span class="gold">Non-combat arousal moans:</span>
-			<mouse class="tooltip-small linkBlue">(?)<span>Controls the volume of involuntary player moans caused by maxing arousal outside encounters. Set to 0% to mute them. Combat voices are unaffected.</span></mouse>
+			<span class="gold">전투 외 흥분 신음:</span>
+			<mouse class="tooltip-small linkBlue">(?)<span>교전이 아닌 상황에서 흥분이 최대치에 이르러 저절로 터져 나오는 플레이어의 신음 음량을 조절합니다. 0%로 설정하면 음소거됩니다. 전투 중 음성에는 영향이 없습니다.</span></mouse>
 			<<numberslider "$options.nonCombatMoanVolume" $options.nonCombatMoanVolume 0 1 0.01 {
 				onInputChange: value => wikifier("<<update-audio>>"),
 				value: () => Math.round($options.nonCombatMoanVolume * 100)+`%`
@@ -946,36 +946,36 @@ IMPORTANT:
 				<span class="tooltip-anchor linkBlue" tooltip="<span class='linkBlue'>오래된 안드로이드 기기에서는 이미지가 제대로 불러와지지 않을 수 있습니다.</span>">(?)</span>
 			</div>
 			<div class="settingsToggleItem">
-				<label data-target="options.images" data-disabledif="V.options.images===0"><<checkbox "$options.combatImages" 0 1 autocheck>> Enable combat images</label>
+				<label data-target="options.images" data-disabledif="V.options.images===0"><<checkbox "$options.combatImages" 0 1 autocheck>> 전투 이미지 활성화</label>
 			</div>
 
 			<div class="settingsToggleItem" onchange="new Wikifier(null, '<<updatesidebarimg>>')">
-				<label data-target='["options.images","options.altImgAlways"]' data-disabledif="V.options.images===0 || V.options.altImgAlways===1"><<checkbox "$options.useAltImg" 0 1 autocheck>> Swap spriteset on gender:
+				<label data-target='["options.images","options.altImgAlways"]' data-disabledif="V.options.images===0 || V.options.altImgAlways===1"><<checkbox "$options.useAltImg" 0 1 autocheck>> 성별에 따라 스프라이트 세트 교체:
 					<<listbox "$options.altImgGender" autoselect>>
-						<<option "Female" "f">>
-						<<option "Male" "m">>
+						<<option "여성" "f">>
+						<<option "남성" "m">>
 					<</listbox>>
 				</label>
 				<span class="tooltip-anchor linkBlue" tooltip="When enabled, the game loads all its images from 'img2' instead of 'img' whenever your sex matches the selection. WARNING: You must supply your own 'img2' folder. Therefore, this does not work on Dolmods, or APKs without this built-in capability.">(?)</span>
 			</div>
 
 			<div class="settingsToggleItem" onchange="new Wikifier(null, '<<updatesidebarimg>>')">
-				<label data-target='["options.images","options.useAltImg"]' data-disabledif="V.options.images===0 || V.options.useAltImg===1"><<checkbox "$options.altImgAlways" 0 1 autocheck>> Always use alternative spriteset</label>
+				<label data-target='["options.images","options.useAltImg"]' data-disabledif="V.options.images===0 || V.options.useAltImg===1"><<checkbox "$options.altImgAlways" 0 1 autocheck>> 대체 스프라이트 세트를 항상 사용</label>
 				<span class="tooltip-anchor linkBlue" tooltip="When enabled, the game always loads all its images from 'img2' instead of 'img', regardless of your body. This lets you pick your preferred spritepack without it changing when your gender changes. WARNING: You must supply your own 'img2' folder. Therefore, this does not work on Dolmods, or APKs without this built-in capability.">(?)</span>
 			</div>
 
 			<div class="settingsToggleItem">
-				<label data-target='["options.images","options.combatImages"]' data-disabledif="V.options.images===0 || V.options.combatImages===0"><<checkbox "$options.showCombatImgWhileStanding" 0 1 autocheck>> Show combat images while standing</label>
+				<label data-target='["options.images","options.combatImages"]' data-disabledif="V.options.images===0 || V.options.combatImages===0"><<checkbox "$options.showCombatImgWhileStanding" 0 1 autocheck>> 서 있는 동안에도 전투 이미지 표시</label>
 				<span class="tooltip-anchor linkBlue" tooltip="When unchecked, hides the combat images while your PC still has stability remaining. The images show once again after you fall.">(?)</span>
 			</div>
 
 			<div class="settingsToggleItem">
 				<label data-target='["options.images","options.combatImages"]' data-disabledif="V.options.images===0 || V.options.combatImages===0">
-					Show combat images when gender is: 
+					성별이 다음일 때 전투 이미지 표시:
 					<<listbox "$options.showCombatImgWhenGender" autoselect>>
-						<<option "Both" "both">>
-						<<option "Female" "f">>
-						<<option "Male" "m">>
+						<<option "둘 다" "both">>
+						<<option "여성" "f">>
+						<<option "남성" "m">>
 					<</listbox>>
 					
 					<span class="tooltip-anchor linkBlue" tooltip="Shows the combat images when your PC's current sex matches this selection">(?)</span>
@@ -983,21 +983,21 @@ IMPORTANT:
 			</div>
 
 			<div class="settingsToggleItem">
-				<label data-target="options.images" data-disabledif="V.options.images===0"><<checkbox "$options.showCurrentSexIcon" 0 1 autocheck>> Show gender symbol in the sidebar</label>
+				<label data-target="options.images" data-disabledif="V.options.images===0"><<checkbox "$options.showCurrentSexIcon" 0 1 autocheck>> 사이드바에 성별 기호 표시</label>
 			</div>
 
 			<div class="settingsToggleItem">
-				<label>Sidebar symbol:
+				<label>사이드바 기호:
 					<<listbox "$options.currentSexIconIdentity" autoselect>>
-						<<option "Body sex" 0>>
-						<<option "Gender identity" 1>>
+						<<option "신체 성별" 0>>
+						<<option "성 정체성" 1>>
 					<</listbox>>
 				</label>
 				<span class="tooltip-anchor linkBlue" tooltip="Gender identity follows how you feel: boy, girl, or enby. The transgender background uses a trans symbol. Body sex includes pill effects.">(?)</span>
 			</div>
 
 			<div class="settingsToggleItem">
-				<label data-target="options.images" data-disabledif="V.options.images===0"><<checkbox "$options.showPortalXray" 0 1 autocheck>> Show portal xray cut-ins</label>
+				<label data-target="options.images" data-disabledif="V.options.images===0"><<checkbox "$options.showPortalXray" 0 1 autocheck>> 포털 엑스레이 컷인 표시</label>
 				<span class="tooltip-anchor linkBlue" tooltip="Shows xray images when a penetration happens due to a portal pill effect.">(?)</span>
 			</div>
 
@@ -1017,9 +1017,9 @@ IMPORTANT:
 				<span class="tooltip-anchor linkBlue" tooltip="<span class='linkBlue'>오래된 기기에서는 성능 문제가 발생할 수 있습니다.</span>">(?)</span>
 			</div>
 			<div class="settingsToggleItem">
-				<label data-target="options.images" data-disabledif="V.options.images===0"><<checkbox "$options.bodySizeScaling" false true autocheck>> Scale sidebar image to body size
+				<label data-target="options.images" data-disabledif="V.options.images===0"><<checkbox "$options.bodySizeScaling" false true autocheck>> 사이드바 이미지를 체형 크기에 맞춰 조절
 				</label>
-				<span class="tooltip-anchor linkBlue" tooltip="<span class='linkBlue'>Renders the sidebar character larger or smaller based on height. Disable to keep the image at a fixed size.</span>">(?)</span>
+				<span class="tooltip-anchor linkBlue" tooltip="<span class='linkBlue'>사이드바 캐릭터를 키에 따라 더 크게 또는 더 작게 표시합니다. 끄면 이미지 크기를 고정합니다.</span>">(?)</span>
 			</div>
 			<div class="description">변경 사항을 적용하려면 옵션 메뉴를 닫으십시오.</div>
 		</div>
@@ -1294,13 +1294,13 @@ IMPORTANT:
 	</div>
 
 	<div class="p-2 text-align-center">
-		<h3>X-Change Mod</h3>
+		<h3>X-체인지 모드</h3>
 
 		<div class="m-2">
-			<span class="lewd">Creator: </span><span>Akoz</span>
+			<span class="lewd">제작자: </span><span>Akoz</span>
 		</div>
 		<div class="m-2">
-			<span class="lewd">Contributor: </span><span>Aelxer</span>
+			<span class="lewd">기여자: </span><span>Aelxer</span>
 		</div>
 
 	<div class="p-2 text-align-center">
@@ -1308,7 +1308,7 @@ IMPORTANT:
 		<<linkinformation>>
 		<div class="m-2">
 			<p class="gold m-0">비공식 위키</p>
-			[[Vanilla|"https://degreesoflewdity.miraheze.org/wiki/Main_Page"]]<br>
+			[[바닐라|"https://degreesoflewdity.miraheze.org/wiki/Main_Page"]]<br>
 			[[DoLP|"https://dolmodding.miraheze.org/wiki/DoL_Plus"]] | [[DoLX|"https://dolmodding.miraheze.org/wiki/DoL_Plus/X-Change"]]
 		</div>
 	</div>

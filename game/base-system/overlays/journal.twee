@@ -26,15 +26,15 @@
 		<<set _inflTier to setup.inflation.tierForWealth ? setup.inflation.tierForWealth() : null>>
 		<<set _inflTierId to _inflTier ? _inflTier.id : "">>
 		<<if _inflTierId is "parody">>
-			<li><span class="lustful">The town is trapped in a parody spiral. Prices rise by <<print _inflPct>>%.</span></li>
+			<li><span class="lustful">마을이 패러디 같은 악순환에 빠져 있습니다. 물가가 <<print _inflPct>>% 오릅니다.</span></li>
 		<<elseif _inflTierId is "extreme">>
-			<li><span class="red">The town buckles. Prices rise by <<print _inflPct>>%.</span></li>
+			<li><span class="red">마을이 휘청거립니다. 물가가 <<print _inflPct>>% 오릅니다.</span></li>
 		<<elseif _inflTierId is "crisis">>
-			<li><span class="orange">The town struggles. Prices rise by <<print _inflPct>>%.</span></li>
+			<li><span class="orange">마을이 힘겹게 버티고 있습니다. 물가가 <<print _inflPct>>% 오릅니다.</span></li>
 		<<elseif _inflTierId is "bad">>
-			<li><span class="pink">The town feels strained. Prices rise by <<print _inflPct>>%.</span></li>
+			<li><span class="pink">마을에 부담이 느껴집니다. 물가가 <<print _inflPct>>% 오릅니다.</span></li>
 		<<elseif _inflTierId is "onset">>
-			<li><span class="purple">The town feels a subtle strain. Prices rise by <<print _inflPct>>%.</span></li>
+			<li><span class="purple">마을에 은근한 부담이 느껴집니다. 물가가 <<print _inflPct>>% 오릅니다.</span></li>
 		<<else>>
 			/* Return nothing */
 		<</if>>
@@ -142,9 +142,9 @@
 						<<if isRentDue() or isBaileyLookingForPlayer()>>
 							<li>
 							<<if $baileyRefusedToPay>>
-								Bailey will try to visit you again on <<rentday>> and wants <<printmoney $rentMoney>><<babyRentDisplay " plus " " for not looking after your children" "gold">><<bratTaxDisplay " plus " " for being a brat this week" "gold">>.
+								베일리가 <<rentday>>에 다시 찾아오려 할 것이며, 요구하는 금액은 <<printmoney $rentMoney>><<babyRentDisplay " (고아원 아이 돌봄 명목 " " 포함)" "gold"><<bratTaxDisplay " (이번 주 말썽을 부린 대가 " " 포함)" "gold">>입니다.
 							<<else>>
-								Bailey is looking for you and wants <<printmoney $rentMoney>><<babyRentDisplay " plus " " for not looking after your children" "gold">><<bratTaxDisplay " plus " " for being a brat this week" "gold">>.
+								베일리가 당신을 찾고 있으며, 요구하는 금액은 <<printmoney $rentMoney>><<babyRentDisplay " (고아원 아이 돌봄 명목 " " 포함)" "gold"><<bratTaxDisplay " (이번 주 말썽을 부린 대가 " " 포함)" "gold">>입니다.
 							<</if>>
 							<<if $rentThug>>
 								<<if $rentTime is 0 and !$baileyRefusedToPay>>
@@ -161,7 +161,7 @@
 								<</if>>
 							<</if>></li>
 						<<else>>
-							<li>Bailey wants <<printmoney $rentMoney>> on <<rentday>><<babyRentDisplay " plus " " for not looking after your children" "gold">><<bratTaxDisplay " plus " " for being a brat this week" "gold">>.</li>
+							<li><<rentday>>까지 베일리가 요구하는 금액은 <<printmoney $rentMoney>><<babyRentDisplay " (고아원 아이 돌봄 명목 " " 포함)" "gold"><<bratTaxDisplay " (이번 주 말썽을 부린 대가 " " 포함)" "gold">>입니다.</li>
 						<</if>>
 					<<elseif $rentMoney isnot undefined>>
 						<li>베일리가 요구하는 금액은 <<printmoney $rentMoney>><<babyRentDisplay " (고아원 아이 돌봄 명목 " " 포함)" "gold">>입니다.</li>
@@ -200,44 +200,44 @@
 			<</if>>
 
 			<<if $xchange.pubGamblingEnabled and !$weekly.gamblingUpkeepPaid>>
-				<li>Landry expects at least <<printprice 200000>> by Saturday to cover the gambling ring's upkeep.</li>
+				<li>랜드리는 도박판 운영비로 토요일까지 최소 <<printprice 200000>>【을를】 기대합니다.</li>
 			<<elseif $xchange.pubGamblingEnabled and $weekly.gamblingUpkeepPaid>>
-				<li>You already paid the gambling ring's upkeep this week.</li>
+				<li>이번 주 도박판 운영비는 이미 냈습니다.</li>
 			<</if>>
 
 			<<if $xchange.colosseum.heard gte 1 and $xchange.colosseum.keyKnown is 0>>
-				<li>You heard about an Underground Colosseum beneath the industrial district. Landry, Briar, or Bailey may know how to enter.</li>
+				<li>공업 지구 아래에 지하 콜로세움이 있다는 이야기를 들었습니다. 랜드리, 브라이어, 베일리라면 들어가는 방법을 알지도 모릅니다.</li>
 			<<elseif $xchange.colosseum.keyKnown gte 1 and $xchange.colosseum.joined is 0>>
-				<li>You know the passphrase for a steel door behind the old factory in the Industrial Alleyways.
+				<li>공업 지구 골목의 낡은 공장 뒤에 있는 철문의 암호를 알고 있습니다.
 				<<if $fame.scrap lt 1200>>
-					You need a stronger fighting reputation before they will let you in.
+					들여보내 주려면 더 높은 싸움 명성이 필요합니다.
 				<<else>>
-					Your fighting reputation is high enough to enter.
+					싸움 명성이 입장하기에 충분합니다.
 				<</if>></li>
 			<<elseif $xchange.colosseum.joined gte 1>>
-				<li>You fight at the Underground Colosseum as <span class="pink"><<colosseumName>></span>. You are <span class="gold"><<colosseumRankName>>-rank</span> with <<= $xchange.colosseum.rankPoints>> points, <<= $xchange.colosseum.wins>> <<pluralise $xchange.colosseum.wins "win" "wins">>, and <<= $xchange.colosseum.losses>> <<pluralise $xchange.colosseum.losses "loss" "losses">>.
+				<li>당신은 지하 콜로세움에서 <span class="pink"><<colosseumName>></span>라는 이름으로 싸웁니다. 현재 <span class="gold"><<colosseumRankName>> 등급</span>이며 <<= $xchange.colosseum.rankPoints>>점, <<= $xchange.colosseum.wins>><<pluralise $xchange.colosseum.wins "승" "승">>, <<= $xchange.colosseum.losses>><<pluralise $xchange.colosseum.losses "패" "패">>입니다.
 				<<if ($daily.colosseumFights ?? 0) gt 0>>
-					You have fought <<= $daily.colosseumFights>> <<pluralise $daily.colosseumFights "time" "times">> today.
+					오늘 <<= $daily.colosseumFights>><<pluralise $daily.colosseumFights "번" "번">> 싸웠습니다.
 				<</if>></li>
 				<<if $xchange.colosseum.promotionReady>>
-					<li>You can book a promotion bout against the next rank at the match board.</li>
+					<li>대진표 게시판에서 다음 등급을 상대로 한 승급전을 신청할 수 있습니다.</li>
 				<</if>>
 				<<if $xchange.colosseum.injuryDays gt 0>>
-					<li><span class="red">You are still injured from the arena.</span></li>
+					<li><span class="red">경기장에서 입은 부상이 아직 낫지 않았습니다.</span></li>
 				<</if>>
 				<<if $xchange.colosseum.debt gt 0>>
-					<li><span class="red">You owe the Colosseum <span class="gold"><<printmoney $xchange.colosseum.debt>></span>.</span> You can repay it at the fighters' desk or the entrance, even while banned.
-					<<if $xchange.colosseum.debtDeferred>>The house will take your winnings until the balance is cleared.<</if>></li>
+					<li><span class="red">콜로세움에 <span class="gold"><<printmoney $xchange.colosseum.debt>></span>의 빚이 있습니다.</span> 출입이 금지된 동안에도 선수 접수처나 입구에서 갚을 수 있습니다.
+					<<if $xchange.colosseum.debtDeferred>>콜로세움 측이 잔액을 다 갚을 때까지 당신의 상금을 가져갑니다.<</if>></li>
 				<</if>>
-				<<if $xchange.colosseum.ending is "walked">><li>You retired from Colosseum bouts. You can still visit the terraces.</li><</if>>
-				<<if $xchange.colosseum.callbacks.silver>><li>The silver stranger arranged your return as Knife. The fighters' desk is expecting you.</li><</if>>
+				<<if $xchange.colosseum.ending is "walked">><li>콜로세움 경기에서 은퇴했습니다. 관람석에는 여전히 갈 수 있습니다.</li><</if>>
+				<<if $xchange.colosseum.callbacks.silver>><li>은빛 낯선 이가 당신이 나이프로 복귀하도록 주선했습니다. 선수 접수처에서 당신을 기다리고 있습니다.</li><</if>>
 				<<if $xchange.colosseum.ending is "inside">>
-					<li>Gallery records: <<= Math.min(8, $xchange.colosseum.records?.count ?? 8)>> / 8 copied.
+					<li>갤러리 기록: <<= Math.min(8, $xchange.colosseum.records?.count ?? 8)>> / 8 복사 완료.
 					<<if $xchange.colosseum.records?.count lt 8>>
-						<<if $timeStamp gte $xchange.colosseum.records.nextAt>>Return to the private gallery to copy the next page.
-						<<else>>The next opportunity is in about <<= Math.ceil(($xchange.colosseum.records.nextAt - $timeStamp) / 3600)>> hours.<</if>>
-					<<elseif ($xchange.colosseum.records?.count ?? 8) is 8>>You can use the copies at the gallery desk to clear your current Colosseum debt.
-					<<else>>You used the copies to clear your debt. Future debts still count.<</if>></li>
+						<<if $timeStamp gte $xchange.colosseum.records.nextAt>>비공개 갤러리로 돌아가 다음 페이지를 복사하십시오.
+						<<else>>다음 기회는 약 <<= Math.ceil(($xchange.colosseum.records.nextAt - $timeStamp) / 3600)>>시간 뒤입니다.<</if>>
+					<<elseif ($xchange.colosseum.records?.count ?? 8) is 8>>갤러리 접수처에서 복사본을 사용해 현재 콜로세움 빚을 청산할 수 있습니다.
+					<<else>>복사본을 사용해 빚을 청산했습니다. 앞으로 생기는 빚은 그대로 갚아야 합니다.<</if>></li>
 				<</if>>
 				<<if colosseumDrugStage()>><li><<colosseumDrugDescription>></li><</if>>
 			<</if>>
@@ -254,19 +254,19 @@
 				<</if>>
 			<</if>>
 			<<if modLISelected("Poppy") and C.npc.Poppy and C.npc.Poppy.init is 1 and $valentines_poppy_flat_accept is 1>>
-				<li>You have a date with Poppy on Valentine's Day, on <<= getFormattedDate(new DateTime(Time.year, 2, 14))>>. <<nnpc_Hes "Poppy">> expecting you in <<nnpc_his "Poppy">> flat at <<ampm 20 00>>. Remember to dress formally.</li>
+				<li>발렌타인데이(<<= getFormattedDate(new DateTime(Time.year, 2, 14))>>)에 포피와 데이트가 있습니다. <<nnpc_Hes "Poppy">> <<ampm 20 00>>에 <<nnpc_his "Poppy">> 집에서 당신을 기다리고 있습니다. 격식 있는 옷차림을 잊지 마십시오.</li>
 			<</if>>
 
 			<<if ($baileyDateScheduled or $baileyDateAllNightScheduled) and Time.hour lte 20 and !$baileyDateAttended>>
-				<li>You have a date scheduled with Bailey <span class="pink">tonight</span>. <<nnpc_He "Bailey">>'ll wait for you in the orphanage between <span class="gold"><<ampm 19 00>></span> and <span class="gold"><<ampm 20 00>></span>.</li>
+				<li><span class="pink">오늘 밤</span> 베일리와 데이트가 예정되어 있습니다. <<nnpc_He "Bailey">>【은는】 <span class="gold"><<ampm 19 00>></span>부터 <span class="gold"><<ampm 20 00>></span> 사이에 고아원에서 당신을 기다립니다.</li>
 			<</if>>
 
 			<<if $baileyHalloweenScheduled is Time.year and Time.monthDay is 31 and Time.monthName is "October" and (Time.hour lt 19 or (Time.hour is 19 and Time.minute lte 30)) and $baileyHalloweenAttended isnot Time.year>>
-				<li>Bailey is expecting you at <<nnpc_his "Bailey">> charity gala <span class="pink">tonight</span>. <<nnpc_He "Bailey">>'ll pick you up from the orphanage between <span class="gold"><<ampm 18 30>></span> and <span class="gold"><<ampm 19 30>></span>.</li>
+				<li>베일리가 <span class="pink">오늘 밤</span> <<nnpc_his "Bailey">> 자선 파티에서 당신을 기다리고 있습니다. <<nnpc_He "Bailey">>【은는】 <span class="gold"><<ampm 18 30>></span>부터 <span class="gold"><<ampm 19 30>></span> 사이에 고아원으로 당신을 데리러 올 것입니다.</li>
 			<</if>>
 
 			<<if $baileyMonogamous and baileyWeeksMissed() gte 1>>
-				<li>Bailey expects you at <<nnpc_his "Bailey">> flat this weekend, between <span class="gold"><<ampm 21 00>></span> and <span class="gold"><<ampm 6 00>></span>.</li>
+				<li>베일리가 이번 주말에 <span class="gold"><<ampm 21 00>></span>부터 <span class="gold"><<ampm 6 00>></span> 사이에 <<nnpc_his "Bailey">> 집에서 당신을 기다립니다.</li>
 			<</if>>
 
 			<<if $harper_appointments.enabled or $schoolPsych is 1>>
@@ -362,13 +362,13 @@
 			<<if $weekly?.heardShadyDealer and $xchange?.weeklyShadyDealer>>
 				<<set _heardDealer to $weekly.heardShadyDealer & $xchange.weeklyShadyDealer>>
 				<<if _heardDealer & 1>>
-					<li>You overheard that a shady dealer is selling cheap pills in <span class="gold">the residential alleyways</span> this week, at night.</li>
+					<li>수상한 상인이 이번 주 밤에 <span class="gold">거주 지구 골목</span>에서 싼 알약을 판다는 이야기를 엿들었습니다.</li>
 				<</if>>
 				<<if _heardDealer & 2>>
-					<li>You overheard that a shady dealer is selling <span class="lewd">pockethole pills</span> in <span class="gold">the industrial alleyway</span> this week.</li>
+					<li>수상한 상인이 이번 주 <span class="gold">공업 지구 골목</span>에서 <span class="lewd">포켓홀 알약</span>을 판다는 이야기를 엿들었습니다.</li>
 				<</if>>
 				<<if _heardDealer & 4>>
-					<li>You overheard that a shady dealer is selling <span class="green">anti-pills</span> in <span class="gold">the park</span> this week, at night.</li>
+					<li>수상한 상인이 이번 주 밤에 <span class="green">안티 알약</span>을 <span class="gold">공원</span>에서 판다는 이야기를 엿들었습니다.</li>
 				<</if>>
 			<</if>>
 
@@ -381,7 +381,7 @@
 					<</if>>
 					<<nnpc_He Remy>>【은는】 <span class="gold"><<ampm 21 00>></span>부터 <span class="gold">자정</span> 사이에 도착할 것입니다.
 					<<if $farm.wrenSabotage is 1>>
-						<span class="green">Wren's crews are set to sabotage the raid before it reaches the fields.</span>
+						<span class="green">렌의 패거리가 습격이 밭에 닿기 전에 방해할 준비를 마쳤습니다.</span>
 					<</if>>
 				</li>
 			<</if>>
@@ -428,7 +428,7 @@
 					<<case "cliff">>
 						<<set _bikeString to "클리프 가 (카페)">>
 					<<case "lake">>
-						<<set _bikeString to "the lake bus stop">>
+						<<set _bikeString to "호수 버스 정류장">>
 					<<case "alex_farm">>
 						<<set _bikeString to "농지">>
 					<<default>>
@@ -607,13 +607,13 @@
 				<<if setup.inflation.baileyAggressive()>>
 					<<set _inflReason to setup.inflation.baileyAggressionReason()>>
 					<<if _inflReason is "loan">>
-						<li><<icon "mark.gif">><span class="orange">Bailey won't take no for an answer.</span> HBSC has passed your debt to Bailey.</li>
+						<li><<icon "mark.gif">><span class="orange">베일리는 거절을 받아들이지 않습니다.</span> HBSC가 당신의 빚을 베일리에게 넘겼습니다.</li>
 					<<elseif _inflReason is "both">>
-						<li><<icon "mark.gif">><span class="orange">Bailey won't take no for an answer.</span> Your money and HBSC debt have Bailey's attention.</li>
+						<li><<icon "mark.gif">><span class="orange">베일리는 거절을 받아들이지 않습니다.</span> 당신의 돈과 HBSC 빚이 베일리의 눈길을 끌었습니다.</li>
 					<<elseif _inflReason is "relentless">>
-						<li><<icon "mark.gif">><span class="orange">Bailey won't take no for an answer.</span> Bailey has decided to squeeze you dry, whether you can pay or not.</li>
+						<li><<icon "mark.gif">><span class="orange">베일리는 거절을 받아들이지 않습니다.</span> 베일리는 갚을 수 있든 없든 당신을 탈탈 털기로 마음먹었습니다.</li>
 					<<else>>
-						<li><<icon "mark.gif">><span class="orange">Bailey won't take no for an answer.</span> Bailey knows about your money.</li>
+						<li><<icon "mark.gif">><span class="orange">베일리는 거절을 받아들이지 않습니다.</span> 베일리가 당신의 돈에 대해 알고 있습니다.</li>
 					<</if>>
 				<</if>>
 			<</if>>
@@ -622,11 +622,11 @@
 				<<if Tamagotchi.isAlive()>>
 					<<set _petStatus to Tamagotchi.status()>>
 					<<if _petStatus.pendingAttack>>
-						<li><<icon "/furniture/tfplushes.png">> <span class="red">_petStatus.name is under attack on your console! Defend it soon, or it won't survive the week.</span></li>
+						<li><<icon "/furniture/tfplushes.png">> <span class="red">_petStatus.name【이가】 당신의 콘솔에서 공격받고 있습니다! 서둘러 지켜 주지 않으면 이번 주를 넘기지 못할 것입니다.</span></li>
 					<<elseif _petStatus.sleeping>>
-						<li><<icon "/furniture/tfplushes.png">> _petStatus.name is sleeping on your console (about _petStatus.sleepHoursLeft <<= _petStatus.sleepHoursLeft is 1 ? "hour" : "hours">> left).</li>
+						<li><<icon "/furniture/tfplushes.png">> _petStatus.name【은는】 당신의 콘솔에서 자고 있습니다 (약 _petStatus.sleepHoursLeft<<= _petStatus.sleepHoursLeft is 1 ? "시간" : "시간">> 남음).</li>
 					<<elseif _petStatus.pendingSkillChoice>>
-						<li><<icon "/furniture/tfplushes.png">> _petStatus.name has trained enough to learn a new skill on your console.</li>
+						<li><<icon "/furniture/tfplushes.png">> _petStatus.name【이가】 당신의 콘솔에서 충분히 훈련해 새 기술을 배울 수 있게 되었습니다.</li>
 					<<else>>
 						<<set _petNeeds to []>>
 						<<if _petStatus.sick>><<run _petNeeds.push("it's ill")>><</if>>
@@ -634,9 +634,9 @@
 						<<if _petStatus.poops gt 0>><<run _petNeeds.push("it's made a mess")>><</if>>
 						<<if _petStatus.energy lte 15>><<run _petNeeds.push("it's exhausted")>><</if>>
 						<<if _petNeeds.length gt 0>>
-							<li><<icon "/furniture/tfplushes.png">> _petStatus.name needs attention on your console (<<= _petNeeds.join(", ")>>).</li>
+							<li><<icon "/furniture/tfplushes.png">> _petStatus.name【은는】 당신의 콘솔에서 보살핌이 필요합니다 (<<= _petNeeds.join(", ")>>).</li>
 						<<else>>
-							<li><<icon "/furniture/tfplushes.png">> _petStatus.name is happy and well looked after on your console.</li>
+							<li><<icon "/furniture/tfplushes.png">> _petStatus.name【은는】 당신의 콘솔에서 행복하게 잘 보살핌을 받고 있습니다.</li>
 						<</if>>
 					<</if>>
 				<</if>>
@@ -795,19 +795,19 @@
 			<<if $earSlime.event and !_tempEventHide and !$hypnosis_traits.silence gte 1>>
 				<<switch $earSlime.event>>
 					<<case "get sperm into your anus" "get sperm into your vagina" "get sperm into your anus completed" "get sperm into your vagina completed">>
-						<li class="lewd"><<socialiseicon "ask">> The <<slimeWord>> in your head commanded you to get sperm into your <<print $player.vaginaExist ? "vagina" : "anus">>.</li>
+						<li class="lewd"><<socialiseicon "ask">> 머릿속의 <<slimeWord>>【이가】 당신의 <<print $player.vaginaExist ? "질" : "항문">>에 정액을 넣으라고 명령했습니다.</li>
 					<<case "get your own sperm into your anus" "get your own sperm into your vagina" "get your own sperm into your anus completed" "get your own sperm into your vagina completed">>
-						<li class="lewd"><<socialiseicon "ask">> The <<slimeWord>> in your head commanded you to get your own sperm into your <<print $player.vaginaExist ? "vagina" : "anus">>.</li>
+						<li class="lewd"><<socialiseicon "ask">> 머릿속의 <<slimeWord>>【이가】 당신의 <<print $player.vaginaExist ? "질" : "항문">>에 당신 자신의 정액을 넣으라고 명령했습니다.</li>
 					<<case "only sleep naked from now on" "only wear feminine clothes for a while" "only wear masculine clothes for a while">> /* Show nothing */
 					<<default>>
-						<li class="lewd"><<bedicon>> The <<slimeWord>> in your head commanded you to <<print $earSlime.event>><<if $earSlime.noSleep>> before it allows you to sleep<</if>>.</li>
+						<li class="lewd"><<bedicon>> 머릿속의 <<slimeWord>>【이가】 당신에게 <<= window.KR.getEarSlimeOrderKr($earSlime.event)>>라고 명령했습니다<<if $earSlime.noSleep>>. 명령을 따르기 전에는 잠을 잘 수 없습니다<</if>>.</li>
 				<</switch>>
 			<</if>>
 			<<if $earSlime.forcedCommando isnot undefined and !$hypnosis_traits.silence gte 1>>
-				<li class="lewd"><<icon "cross.png" "infront">><span class="clothes-white"><<icon "clothes/plain-panties.png">></span> The <<slimeWord>> in your head commanded you to go commando.</li>
+				<li class="lewd"><<icon "cross.png" "infront">><span class="clothes-white"><<icon "clothes/plain-panties.png">></span> 머릿속의 <<slimeWord>>【이가】 속옷을 입지 말라고 명령했습니다.</li>
 			<</if>>
 			<<if $earSlime.forcedDressing isnot undefined and !$hypnosis_traits.silence gte 1>>
-				<li class="lewd"><<if $earSlime.forcedDressing.type is "f">><<femaleicon>><<else>><<maleicon>><</if>> The <<slimeWord>> in your head commanded you to only wear more <<print $earSlime.forcedDressing.type is "f" ? "feminine" : "masculine">> clothing.</li>
+				<li class="lewd"><<if $earSlime.forcedDressing.type is "f">><<femaleicon>><<else>><<maleicon>><</if>> 머릿속의 <<slimeWord>>【이가】 더 <<print $earSlime.forcedDressing.type is "f" ? "여성스러운" : "남성스러운">> 옷만 입으라고 명령했습니다.</li>
 			<</if>>
 
 			<<if $temple_rank is "prospective">>
@@ -830,7 +830,7 @@
 			<<if $mason_pond is 1>>
 				<li><<socialiseicon "ask">> 메이슨이 도무스 가 아래에 온천으로 만들 수 있는 지하수가 흐른다고 언급했습니다. 하지만 베일리의 허가가 먼저 필요합니다.</li>
 			<<elseif $mason_pond is 2>>
-				<li><<birdicon "wallet">> Bailey wants <<printprice 500000>> to build a spring in the orphanage garden.</li>
+				<li><<birdicon "wallet">> 베일리가 고아원 정원에 온천을 짓는 비용으로 <<printprice 500000>>【을를】 요구했습니다.</li>
 			<<elseif $mason_pond is 3>>
 				<li><<watericon "waterside_wolfcave">> 고아원 정원에 온천을 건설하는 중입니다.</li>
 			<<elseif $mason_pond is 4>>
@@ -852,7 +852,7 @@
 			<<if _eggIcon gt 0>>
 				<li><<birdicon "eggs">> 당신은 수정된 새알 <<number _eggIcon>>개를 가지고 있습니다. 알을 부화시키려면 황야의 <<if $syndromebird>>둥지<<else>>탑<</if>>으로 가져가야 합니다.</li>
 				<<if isFullWaterDragon() and $waterDragonNest and $waterDragonNest.discovered>>
-					<li><<tficon "waterdragon">> You can take your fertilised <<pluralise _eggIcon "egg">> to the hidden nest, where the dragon blood within <<if _eggIcon is 1>>it<<else>>them<</if>> will awaken.</li>
+					<li><<tficon "waterdragon">> 수정된 <<pluralise _eggIcon "알">>【을를】 숨겨진 둥지로 가져가면 <<if _eggIcon is 1>>그 알<<else>>그 알들<</if>> 속의 수룡의 피가 깨어납니다.</li>
 				<</if>>
 			<</if>>
 
@@ -964,7 +964,7 @@
 			<</if>>
 
 			<<if $adultshopgrandopening is true>>
-				<li><<shopicon "adult">> The grand opening of Sirris' adult shop is taking place on Elk Street <span class="pink">today, from <<ampm 9 00>> to <<ampm 21 00>></span>.</li>
+				<li><<shopicon "adult">> 시리스의 성인용품점 그랜드 오픈이 엘크 가에서 <span class="pink">오늘 <<ampm 9 00>>부터 <<ampm 21 00>>까지</span> 진행됩니다.</li>
 			<<elseif $adultshopintro is 1 and $adultshopunlocked is undefined>>
 				<<set $_theshop to "성인용품점">>
 				<li>
@@ -1012,7 +1012,7 @@
 				<li><<harvesticon>> 누군가가 에이버리의 저택 밖에 메모를 남겨두어, 당신이 하베스트 가의 술집으로 찾아오기를 원합니다.</li>
 			<</if>>
 			<<if $fake_artefact is "pc" and $avery_fate isnot "ascended" and (!$avery_mansion or $avery_mansion.landry gte 2)>>
-				<li><<hcicon "bones">>Landry wants you to find the wishing stones in the vault in Avery's mansion and replace them with the fakes <<nnpc_he Landry>> provided. <<nnpc_He Landry>> said that would save Avery from <<nnpc_himself "Avery">>.</li>
+				<li><<hcicon "bones">>랜드리가 에이버리의 저택 금고에서 소원의 돌을 찾아 <<nnpc_he Landry>>【이가】 준 가짜로 바꿔치기하기를 원합니다. <<nnpc_He Landry>>【은는】 그렇게 하면 에이버리를 <<nnpc_himself "Avery">>【으로로】부터 구할 수 있다고 말했습니다.</li>
 			<</if>>
 
 			<<if $gwylan?.request?.event and !($gwylan?.timer?.nobody gte Time.date.timeStamp)>>
@@ -1024,7 +1024,7 @@
 					<<case "yearning">>
 						<li><<shopicon "forest">>그윌란은 제대로 사과하고 싶다며 숲속 상점에서 <<nnpc_him "Gwylan">>【을를】 만나자고 부탁했습니다.</li>
 					<<case "clothing">>
-						<li><<shopicon "forest">>Gwylan has asked you to wear <<if $gwylan.request.items.length gt 1>>some clothes<<else>>a clothing item<</if>> <<if $gwylan.request.details?.fromWardrobe>>you already own <</if>>to the forest shop.</li>
+						<li><<shopicon "forest">>그윌란은 숲속 상점에 올 때 <<if $gwylan.request.details?.fromWardrobe>>이미 가지고 있는 <</if>><<if $gwylan.request.items.length gt 1>>옷 몇 벌<<else>>옷가지<</if>>【을를】 입고 와달라고 부탁했습니다.</li>
 						<<gwylanJournalItems>>
 					<<case "ingredients">>
 						<li><<icon "tending/basket.png">>그윌란은 당신에게 재료를 모아달라고 부탁했습니다.</li>
@@ -1034,13 +1034,13 @@
 						<<gwylanJournalItems>>
 					<<case "recipe">>
 						<<if $gwylan.request.special is "strong wings">>
-							<li><<icon "tending/basket.png">>You asked Gwylan to strengthen your wings. <<nnpc_He "Gwylan">> needs these to make the potion:</li>
+							<li><<icon "tending/basket.png">>당신은 그윌란에게 날개를 강화해 달라고 부탁했습니다. <<nnpc_He "Gwylan">>【은는】 물약을 만들려면 다음 재료가 필요합니다:</li>
 						<<else>>
 							<li><<icon "tending/basket.png">>그윌란은 당신에게 <span class="blue">$gwylan.request.special</span>을 만들 아이템들을 구해달라고 부탁했습니다.</li>
 						<</if>>
 						<<gwylanJournalItems>>
 					<<case "samplePlayer">>
-						<li><<scienceicon>> Gwylan has asked for a fresh sample of your milk. You can provide it at <<nnpc_his "Gwylan">> shop.<<if !gwylanRequestMet()>> <span class="blue">You don't have enough milk yet.</span><</if>></li>
+						<li><<scienceicon>> 그윌란이 당신의 신선한 젖 샘플을 요청했습니다. <<nnpc_his "Gwylan">> 상점에서 제공할 수 있습니다.<<if !gwylanRequestMet()>> <span class="blue">아직 젖이 충분하지 않습니다.</span><</if>></li>
 					<<case "preen">>
 						<<if $gwylan.request.special is "harpy">>
 							<li><<tficon "bird">> 그윌란은 당신의 날개를 손질해주겠다고 요청했습니다.
@@ -1095,36 +1095,36 @@
 			<<if $gwylan?.wingPotionReady>>
 				<<if $gwylan.wingPotionReady gt Time.date.timeStamp>>
 					<<set _wingPotionDays to Math.max(1, Time.date.dayDifference(new DateTime(V.gwylan.wingPotionReady)))>>
-					<li><<icon "tending/basket.png">>Gwylan is preparing a potion for your wings. It will be ready in <span class="blue"><<number _wingPotionDays>> <<pluralise _wingPotionDays "day">>.</span></li>
+					<li><<icon "tending/basket.png">>그윌란이 당신의 날개에 쓸 물약을 만들고 있습니다. 완성까지 <span class="blue"><<number _wingPotionDays>><<pluralise _wingPotionDays "일" "일">></span> 남았습니다.</li>
 				<<else>>
-					<li><<icon "tending/basket.png">>Gwylan's potion for your wings is ready at the forest shop.</li>
+					<li><<icon "tending/basket.png">>그윌란이 만든 날개용 물약이 숲속 상점에 준비되어 있습니다.</li>
 				<</if>>
 			<</if>>
 			<<if $xchange.blackmail.activeQuest and $xchange.blackmail.conclusionPending>>
-				<li><<assignmenticon>> <span class="purple">Your blackmailer has left a letter in your bedroom. You should read it.</span></li>
+				<li><<assignmenticon>> <span class="purple">협박범이 당신의 침실에 편지를 남겼습니다. 읽어 봐야 합니다.</span></li>
 			<<elseif $xchange.blackmail.activeQuest>>
 				<<if $xchange.blackmail.activeQuest.letterDestroyed>>
-					<li><<assignmenticon>> <span class="red">Your blackmailer's letter was destroyed before you could read their demand. You've failed their task.</span></li>
+					<li><<assignmenticon>> <span class="red">협박범의 편지가 요구 사항을 읽기도 전에 파기되었습니다. 협박범이 내린 과제에 실패했습니다.</span></li>
 				<<else>>
-					<li><<assignmenticon>> Your blackmailer has assigned you this task:<li>
+					<li><<assignmenticon>> 협박범이 당신에게 이 과제를 내렸습니다:<li>
 					<<blackmail-checkquest>>
 					<<if $xchange.blackmail.activeQuest.cleared and !$xchange.blackmail.activeQuest.failed>>
-						<li><<ind>><span class="green">You've fulfilled the requirements of your blackmailed task.</span></li>
+						<li><<ind>><span class="green">협박범이 내린 과제의 조건을 충족했습니다.</span></li>
 					<<elseif $xchange.blackmail.activeQuest.failed>>
-						<li><<ind>><span class="red">You've failed your blackmailer's task.</span></li>
+						<li><<ind>><span class="red">협박범의 과제에 실패했습니다.</span></li>
 					<<else>>
-						<li><<ind>><span class="purple">Your task is pending completion.</span></li>
+						<li><<ind>><span class="purple">과제가 아직 완료되지 않았습니다.</span></li>
 					<</if>>
 				<</if>>
 			<</if>>
 			<<if autismHasDocumentation()>>
 				<<set _autismTold to autismDisclosureList().map(who => who is "nurse" ? "the school nurse" : who)>>
-				<li><<assignmenticon>> You carry your diagnostic report and its recommended adjustments. Showing them to someone doesn't use them up.</li>
+				<li><<assignmenticon>> 진단 보고서와 권고된 조정 사항을 가지고 있습니다. 다른 사람에게 보여 줘도 소모되지 않습니다.</li>
 				<<if _autismTold.length>>
-					<li><<ind>>You've shown them to <span class="green"><<= formatList(_autismTold)>></span>.</li>
+					<li><<ind>><span class="green"><<= formatList(_autismTold)>></span>에게 보여 주었습니다.</li>
 				<</if>>
 				<<if autismSchoolPlan()>>
-					<li><<ind>><span class="green">Your support plan is on the school's file.</span></li>
+					<li><<ind>><span class="green">당신의 지원 계획이 학교 서류에 올라 있습니다.</span></li>
 				<</if>>
 			<</if>>
 
@@ -1149,7 +1149,7 @@
 
 	<<if ($valentines is 1) or $halloween is 1 or $christmas is 1>>
 		<hr>
-		<h1 class="header gold bold">Holiday reminders</h1>
+		<h1 class="header gold bold">특별한 날 알림</h1>
 	<</if>>
 	<<if $valentines is 1>>
 		<ul class="journal">
@@ -1212,7 +1212,7 @@
 					<li>쇼핑센터에서 포피에게 줄 선물을 살 수 있습니다.</li>
 				<<elseif $christmas_gift_poppy_wrapped isnot 1>>
 					<<if poppyFlatAccessible()>>
-						<li>You can wrap Poppy's gift at <<nnpc_his "Poppy">> flat, in a room <<nnpc_hes "Poppy">> not in.</li>
+						<li>포피의 선물을 <<nnpc_his "Poppy">> 집에서, <<nnpc_he "Poppy">>【이가】 없는 방에서 포장할 수 있습니다.</li>
 					<<else>>
 						<li>방에서 포피의 선물을 포장할 수 있습니다.</li>
 					<</if>>
@@ -1290,7 +1290,7 @@
 								갈색 여우로부터 다음 파티에서 브라이어가 탑 공사를 돕도록 설득해 달라는 부탁을 받았습니다.
 							<</if>>
 						<<case "Harper">>갈색 여우로부터 다음 파티에서 하퍼의 약병을 바꿔치기해 달라는 부탁을 받았습니다.
-					<<case "HBSC Gala">>The brown fox has asked you to look around the HBSC charity gala for anything hidden.
+					<<case "HBSC Gala">>갈색 여우로부터 HBSC 자선 파티에서 숨겨진 것이 있는지 둘러봐 달라는 부탁을 받았습니다.
 					<</switch>>
 				<</if>>
 				</li>
@@ -1334,7 +1334,7 @@
 					<</if>>
 					<<if $avery_mansion.jobs.includes("meek")>>
 						<br>
-						<<if $speech_attitude is "meek" or $speech_attitude is "shy" or $speech_attitude is "polite" 
+						<<if $speech_attitude is "meek" or $speech_attitude is "shy" or $speech_attitude is "polite"
 							or $speech_attitude is "docile" or $speech_attitude is "flamboyant" or $speech_attitude_avery>>
 							<span class='fa-icon fa-selected'></span>
 						<<else>>
@@ -1385,7 +1385,7 @@
 	<<set _whitneyFcd to $settings.forcedCrossdressingEnabled>>
 	<<if C.npc.Whitney.state is "active" and ($whitneypantiescheck gte 1 or (_whitneyFcd and ($whitneyskirtcheck gte 1 or $whitneyCrossdressSchool gte 1 or $whitneyCrossdressSwimwear gte 1)))>>
 		<hr>
-		<h1 class="header gold bold">Whitney's Rules</h1>
+		<h1 class="header gold bold">휘트니의 규칙</h1>
 		<ul class="journal carry">
 			<<set _whitneyWearingSkirt to (clothingData('lower', $worn.lower, "skirt") is 1)>>
 			<<set _whitneyMaleClothes to Object.keys($worn).filter((slot) => {
@@ -1396,18 +1396,18 @@
 				<<set _whitneyRuleOk to $worn.under_lower.type.includes("naked")>>
 				<li>
 					<<if _whitneyRuleOk>><span class='fa-icon fa-selected'></span><<else>><span class='fa-icon fa-unselected'></span><</if>>
-					<<icon "clothes/plain-panties.png">><span @class="_whitneyRuleOk ? '' : 'red'">Wear no <<if $player.gender_appearance is "f">>panties<<else>>underwear<</if>>. Whitney took yours and expects you bare.</span>
-					<<if !_whitneyRuleOk>><br><span class="blue">You're wearing your $worn.under_lower.name.</span><</if>>
+					<<icon "clothes/plain-panties.png">><span @class="_whitneyRuleOk ? '' : 'red'"><<if $player.gender_appearance is "f">>팬티<<else>>속옷<</if>>【을를】 입지 마십시오. 휘트니가 당신의 것을 가져갔고, 아무것도 입지 않기를 기대합니다.</span>
+					<<if !_whitneyRuleOk>><br><span class="blue">당신은 지금 $worn.under_lower.name【을를】 입고 있습니다.</span><</if>>
 				</li>
 			<<elseif $whitneypantiescheck is 2>>
 				<<set _whitneyRuleOk to !$worn.under_lower.type.includes("naked") and $worn.under_lower.gender is "f">>
 				<li>
 					<<if _whitneyRuleOk>><span class='fa-icon fa-selected'></span><<else>><span class='fa-icon fa-unselected'></span><</if>>
-					<<icon "clothes/plain-panties.png">><span @class="_whitneyRuleOk ? '' : 'red'">Always wear feminine panties.</span>
+					<<icon "clothes/plain-panties.png">><span @class="_whitneyRuleOk ? '' : 'red'">항상 여성용 팬티를 입으십시오.</span>
 					<<if $worn.under_lower.type.includes("naked")>>
-						<br><span class="blue">You're not wearing any underwear.</span>
+						<br><span class="blue">속옷을 입고 있지 않습니다.</span>
 					<<elseif $worn.under_lower.gender isnot "f">>
-						<br><span class="blue">Your $worn.under_lower.name isn't feminine.</span>
+						<br><span class="blue">당신의 $worn.under_lower.name【은는】 여성용이 아닙니다.</span>
 					<</if>>
 				</li>
 			<</if>>
@@ -1416,11 +1416,11 @@
 				<<set _whitneyRuleOk to _whitneyWearingSkirt and $worn.lower.reveal gt 200>>
 				<li>
 					<<if _whitneyRuleOk>><span class='fa-icon fa-selected'></span><<else>><span class='fa-icon fa-unselected'></span><</if>>
-					<<femaleicon>><span @class="_whitneyRuleOk ? '' : 'red'">Wear a short skirt. Nothing too long.</span>
+					<<femaleicon>><span @class="_whitneyRuleOk ? '' : 'red'">짧은 치마를 입으십시오. 너무 길면 안 됩니다.</span>
 					<<if !_whitneyWearingSkirt>>
-						<br><span class="blue">You're not wearing a skirt.</span>
+						<br><span class="blue">치마를 입고 있지 않습니다.</span>
 					<<elseif $worn.lower.reveal lte 200>>
-						<br><span class="blue">Your $worn.lower.name isn't short enough.</span>
+						<br><span class="blue">당신의 $worn.lower.name【은는】 충분히 짧지 않습니다.</span>
 					<</if>>
 				</li>
 			<</if>>
@@ -1428,24 +1428,24 @@
 			<<if _whitneyFcd and $whitneyCrossdressSchool gte 1>>
 				<li>
 					<<if _whitneyMaleClothes.length>><span class='fa-icon fa-unselected'></span><<else>><span class='fa-icon fa-selected'></span><</if>>
-					<<schoolicon "building">><span @class="_whitneyMaleClothes.length ? 'red' : ''">No boy's clothes at school.</span>
+					<<schoolicon "building">><span @class="_whitneyMaleClothes.length ? 'red' : ''">학교에서 남자 옷을 입지 마십시오.</span>
 					<<if _whitneyMaleClothes.length>>
-						<br><span class="blue">You're wearing boys' clothing: <<= _whitneyMaleClothes.map(slot => $worn[slot].name).join(", ")>>.</span>
+						<br><span class="blue">남자 옷을 입고 있습니다: <<= _whitneyMaleClothes.map(slot => $worn[slot].name).join(", ")>>.</span>
 					<</if>>
 				</li>
 			<</if>>
 
 			<<if _whitneyFcd and $whitneyCrossdressSwimwear gte 1>>
-				<li><<swimicon>>During swimming, use the girls' changing room and wear girls' swimwear.</li>
+				<li><<swimicon>>수영 시간에는 여자 탈의실을 쓰고 여자 수영복을 입으십시오.</li>
 			<</if>>
 
 			<<if $whitney_toilet is 1 and $whitney_toilet_gender is not undefined>>
 				<<set _whitneyToiletOk to $changingRoomGender is $whitney_toilet_gender>>
 				<li>
 					<<if _whitneyToiletOk>><span class='fa-icon fa-selected'></span><<else>><span class='fa-icon fa-unselected'></span><</if>>
-					<<bathroomicon "toilet">><span @class="_whitneyToiletOk ? '' : 'red'">Use the <<print $whitney_toilet_gender>>' toilets.</span>
+					<<bathroomicon "toilet">><span @class="_whitneyToiletOk ? '' : 'red'"><<print ({boys: "남자", girls: "여자"})[$whitney_toilet_gender]>> 화장실을 쓰십시오.</span>
 					<<if !_whitneyToiletOk and $changingRoomGender is not undefined>>
-						<br><span class="blue">You're currently in the $changingRoomGender' toilets.</span>
+						<br><span class="blue">당신은 지금 <<print ({boys: "남자", girls: "여자"})[$changingRoomGender]>> 화장실에 있습니다.</span>
 					<</if>>
 				</li>
 			<</if>>
@@ -1705,7 +1705,7 @@
 		소지 중인 물품:
 		<ul class="journal carry">
 			<<if $whitneyWaterdragonPlushie is "carried">>
-				<li><<furnitureicon "waterdragon-plushie">> Whitney's water dragon plushie.</li>
+				<li><<furnitureicon "waterdragon-plushie">> 휘트니의 수룡 인형.</li>
 			<</if>>
 			<<if ["prison", "prison_beach"].includes($location) and $prison.teeth gte 1>>
 				<li><<icon "tending/sharks-teeth.png">> 상어 이빨 <span class="green"><<number $prison.teeth>></span>개.
@@ -1715,10 +1715,10 @@
 				</li>
 			<</if>>
 			<<if $antiquemoney gt 0>>
-				<li><<museumicon>><span class="green">£<<print $antiquemoney>></span> in antiques<<if previewSaleValue(antiqueSaleValue(), "museumAntique") gt $antiquemoney * 100>>, worth around <<printmoney `previewSaleValue(antiqueSaleValue(), "museumAntique")`>><</if>>. You can sell them to the museum.</li>
+				<li><<museumicon>>골동품 <span class="green">£<<print $antiquemoney>></span>어치<<if previewSaleValue(antiqueSaleValue(), "museumAntique") gt $antiquemoney * 100>>(시세 약 <<printmoney `previewSaleValue(antiqueSaleValue(), "museumAntique")`>>)<</if>>. 박물관에 팔 수 있습니다.</li>
 			<</if>>
 			<<if $blackmoney gt 0>>
-				<li><<highicon>><span class="green">£<<print $blackmoney>></span> in stolen goods<<if previewSaleValue(blackMoneySaleValue(), "pubStolenGoods") gt $blackmoney * 100>>, worth around <<printmoney `previewSaleValue(blackMoneySaleValue(), "pubStolenGoods")`>> to the right fence<</if>>. You can sell them to someone on the black market.</li>
+				<li><<highicon>>장물 <span class="green">£<<print $blackmoney>></span>어치<<if previewSaleValue(blackMoneySaleValue(), "pubStolenGoods") gt $blackmoney * 100>>(제대로 된 장물아비에게는 약 <<printmoney `previewSaleValue(blackMoneySaleValue(), "pubStolenGoods")`>>)<</if>>. 암시장의 누군가에게 팔 수 있습니다.</li>
 			<</if>>
 			<<if $phials_held gt 0>>
 				<li><<icon "aphrodisiac.png">> 최음제 <span class="green">$phials_held</span><<pluralise $phials_held "병" "병">>. 엘크 가에서 <<pluralise $phials_held "이것" "이것들">>【을를】 <<if $mathsTraitBuffs.aphrodisiacPhials is 1>><<printmoney `$phials_held * 100000 * (1 + ($mathstrait/4))`>><<else>><<printmoney `$phials_held * 100000`>><</if>>에 팔 수 있습니다.</li>
@@ -1743,7 +1743,7 @@
 				<li><<stallicon "open">> 판매용 <span class="green">물품</span>. 새벽에 콘누다투스 가에서 노점을 빌려 팔 수 있습니다.</li>
 			<</if>>
 			<<if $cigarettes gt 0>>
-				<li><<smokeicon>> <span class="green">$cigarettes</span> <<pluralise $cigarettes "cigarette">>. You can smoke them at the orphanage loft window, and buy more at the pub.</li>
+				<li><<smokeicon>> 담배 <span class="green">$cigarettes</span><<pluralise $cigarettes "개비" "개비">>. 고아원 다락 창가에서 피울 수 있고, 술집에서 더 살 수 있습니다.</li>
 			<</if>>
 				<<if $DoLPSpools isnot undefined>>
 				<li><<shopicon "tailor">> 실패 <span class="green">$DoLPSpools</span>개.</li>
@@ -1788,14 +1788,14 @@
 		<<if _hasCookedFood or _hasFoodNotice>>
 			<br>
 			<details class="journal">
-				<summary class="journal">Foods</summary>
+				<summary class="journal">음식</summary>
 				<<pocketFoodJournal>>
 			</details>
 		<</if>>
 
 
 	<<if $perfumery?.learned or $perfumery?.invited>>
-		<hr><h1 class="header gold bold">Perfumery</h1>
+		<hr><h1 class="header gold bold">향수 공방</h1>
 		<<perfumeryJournal>>
 	<</if>>
 	<<if Object.values($plots).some(loc => loc.length)>> /* display plot readiness */
@@ -2111,11 +2111,11 @@
 			<<if $fishing.locationsFound.length gte _fishingLocations.length and _fishDiscovered gte _fishAllKeys.length>>
 				<span class="green">모든</span> 낚시터와 <span class="green">모든</span> 물고기 종을 발견했으며, 총 <span class="gold"><<= numberOfFishCaught()>></span>마리의 물고기를 낚았습니다.
 			<<elseif $fishing.locationsFound.length gte _fishingLocations.length>>
-				You have discovered <span class="green">every</span> fishing spot and <span class="gold"><<= _fishDiscovered>></span> out of <span class="gold"><<= _fishAllKeys.length>></span> fish species, and caught <span class="gold"><<= numberOfFishCaught()>></span> fish in total.
+				<span class="green">모든</span> 낚시터를 발견했고, 물고기 종은 <span class="gold"><<= _fishAllKeys.length>></span>종 중 <span class="gold"><<= _fishDiscovered>></span>종을 발견했으며, 총 <span class="gold"><<= numberOfFishCaught()>></span>마리의 물고기를 낚았습니다.
 			<<elseif _fishDiscovered gte _fishAllKeys.length>>
 				낚시터는 <span class="gold"><<= _fishingLocations.length>></span>곳 중 <span class="gold"><<= $fishing.locationsFound.length>></span>곳을 발견했고, <span class="green">모든</span> 물고기 종을 발견했으며, 총 <span class="gold"><<= numberOfFishCaught()>></span>마리의 물고기를 낚았습니다.
 			<<else>>
-				You have discovered <span class="gold"><<= $fishing.locationsFound.length>></span> out of <span class="gold"><<= _fishingLocations.length>></span> fishing spots and <span class="gold"><<= _fishDiscovered>></span> out of <span class="gold"><<= _fishAllKeys.length>></span> fish species, and caught <span class="gold"><<= numberOfFishCaught()>></span> fish in total.
+				낚시터는 <span class="gold"><<= _fishingLocations.length>></span>곳 중 <span class="gold"><<= $fishing.locationsFound.length>></span>곳을, 물고기 종은 <span class="gold"><<= _fishAllKeys.length>></span>종 중 <span class="gold"><<= _fishDiscovered>></span>종을 발견했으며, 총 <span class="gold"><<= numberOfFishCaught()>></span>마리의 물고기를 낚았습니다.
 			<</if>>
 			<br><br>
 			<details class="journal">
@@ -2150,7 +2150,7 @@
 							<<fishingLocationGrid _location `journalFishKeys(_location)`>>
 							<<set _locationBaitFish to journalBaitFishKeys(_location)>>
 							<<if _locationBaitFish.length>>
-								<div class="journal-fish-group">Bait fish</div>
+								<div class="journal-fish-group">미끼용 물고기</div>
 								<<fishingLocationGrid _location _locationBaitFish>>
 							<</if>>
 						</details>
@@ -2160,7 +2160,7 @@
 					<summary class="journal">기록</summary>
 					<<fishingRecordList _fishRecordKeys>>
 					<<if _baitFishRecordKeys.length>>
-						<div class="journal-fish-group">Bait fish</div>
+						<div class="journal-fish-group">미끼용 물고기</div>
 						<<fishingRecordList _baitFishRecordKeys>>
 					<</if>>
 				</details>
@@ -2217,7 +2217,7 @@
 			<<journalNotesTextareaSave>>
 			<<capture _listPageName>>
 				<<replace "#journalNotesMessage">>
-					<span class="red">Delete <<= _listPageName>>? Everything written on it will be lost.</span>
+					<span class="red"><<= _listPageName>> 페이지를 삭제하시겠습니까? 적어 둔 내용이 모두 사라집니다.</span>
 					<<link "확인">>
 						<<run journalNotesDeletePage(_listPageName)>>
 						<<replace "#customOverlayContent">><<journalNotes>><</replace>>
@@ -2284,7 +2284,7 @@
 		</div>
 		<br>
 	<</if>>
-	<<button `'<span class="fa-icon fa-save"></span> Save (' + $journalNotesPage + ')'`>>
+	<<button `'<span class="fa-icon fa-save"></span> 저장 (' + $journalNotesPage + ')'`>>
 		<<journalNotesTextareaSave>>
 	<</button>>
 	<label><<checkbox "$options.notesAutoSave" false true autocheck>> 자동 저장</label>

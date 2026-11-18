@@ -2,6 +2,6 @@
  * ?vulva - Returns one of many varieties of terms each referring to
  * 			 Female genitals.
  */
-Template.add("vulva", () => either("vulva", "cunt", "flange", "pussy"));
+Template.add("vulva", () => either("외음부", "씹구멍", "음순", "보지"));
 
-Template.add("Vulva", () => either("Vulva", "Cunt", "Flange", "Pussy"));
+Template.add("Vulva", () => either("외음부", "씹구멍", "음순", "보지"));
