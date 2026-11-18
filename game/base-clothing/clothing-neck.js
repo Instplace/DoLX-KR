@@ -1578,7 +1578,7 @@ function initNeck() {
 			warmth: 1,
 			cost: 20000,
 			description:
-				"A knockoff of the collar Whitney branded you with, sold as a novelty piece. Their name is still written on it in bold letters, but the lock is just for show.",
+				"휘트니가 낙인처럼 채워 준 목줄을 흉내 낸 모조품으로, 신기한 장신구로 팔립니다. 굵은 글씨로 쓰인 휘트니의 이름이 그대로 남아 있지만, 자물쇠는 보여 주기용일 뿐입니다.",
 			shop: ["forest"],
 			collared: 1,
 			accessory: 0,

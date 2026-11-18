@@ -870,7 +870,7 @@ function initSpecialClothes() {
 		},
 		antiques: {
 			text: "골동품 장신구",
-			hint: "find most of them",
+			hint: "대부분 찾아내기",
 			shop: [],
 			featCost: 30,
 			requirements: () => (V.museumAntiques?.museumCount !== undefined && V.museumAntiques.museumCount >= V.museumAntiques.maxCount * 0.8),

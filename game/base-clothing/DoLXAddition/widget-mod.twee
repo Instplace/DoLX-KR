@@ -16,7 +16,7 @@
 <<widget "outfitMakeupSummary">>
 	<<set _outfitMakeup to _args[0]>>
 	<<if !_outfitMakeup>>
-		Not set
+		설정 안 함
 		<<exit>>
 	<</if>>
 	<<set _parts to []>>
@@ -35,7 +35,7 @@
 	<<if _parts.length gt 0>>
 		<<= _parts.join(", ")>>
 	<<else>>
-		Remove makeup
+		화장 지우기
 	<</if>>
 <</widget>>
 
@@ -111,9 +111,9 @@
 	<<if _r and !Object.values(_options).includes(_r)>><<set _options[_r + " (saved)"] to _r>><</if>>
 	<<set _lVar to "$outfit[" + _outfitIndex + "].makeup.eyelenses.left">>
 	<<set _rVar to "$outfit[" + _outfitIndex + "].makeup.eyelenses.right">>
-	Contacts: Left
+	콘택트렌즈: 왼쪽
 	<<listbox `_lVar` autoselect>><<optionsfrom _options>><</listbox>>
-	Right
+	오른쪽
 	<<listbox `_rVar` autoselect>><<optionsfrom _options>><</listbox>>
 	<br>
 <</widget>>
@@ -132,7 +132,7 @@
 		<<outfitEditorMakeupColour _args[0] "blusher" "Blusher">>
 		<<outfitEditorMakeupColour _args[0] "browscolour" "Eyebrow Dye" "hairdye">>
 		<<outfitEditorMakeupLenses _args[0]>>
-		<<link "Use current makeup">>
+		<<link "현재 화장 사용">>
 			<<outfitMakeupSaveCurrent _args[0]>>
 			<<set _id to "#outfitItem-" + _args[0]>>
 			<<replace `_id`>><<outfitEditorItem _args[0]>><</replace>>
@@ -152,12 +152,12 @@
 	<<set _favoriteId to _args[2]>>
 	<<capture _favoriteSlot _favoriteItem _favoriteId>>
 		<<if isWardrobeFavorite(_favoriteSlot, _favoriteItem)>>
-			<span class="wardrobe-favorite-on noDivider"><<link "Unfavorite">>
+			<span class="wardrobe-favorite-on noDivider"><<link "즐겨찾기 해제">>
 				<<run toggleWardrobeFavorite(_favoriteSlot, _favoriteItem, _favoriteId)>>
 				<<updatewardrobe "noflash">>
 			<</link>></span>
 		<<else>>
-			<<link "Favorite">>
+			<<link "즐겨찾기">>
 				<<run toggleWardrobeFavorite(_favoriteSlot, _favoriteItem)>>
 				<<updatewardrobe "noflash">>
 			<</link>>
@@ -186,7 +186,7 @@
 <<widget "wardrobeFavoritesList">>
 	<<set _hasHandbag to $settings.multipleWardrobes and $worn.bag.type.includes("bookbag")>>
 	<<set _favoriteItems to wardrobeFavoriteItems(_selectedWardrobe, _hasHandbag).filter(favorite => wardrobeItemMatches(favorite.item))>>
-	__Favorites__ <i>_favoriteItems.length item<<if _favoriteItems.length isnot 1>>s<</if>></i>
+	__즐겨찾기__ <i>_favoriteItems.length개<<if _favoriteItems.length isnot 1>><</if>></i>
 	<br><br>
 	__Strip__
 	<div class="wardrobe-favorite-strip-actions">
@@ -200,13 +200,13 @@
 			<</if>>
 		<</for>>
 		<<if _stripLinks is 0>>
-			nothing equipped
+			착용한 것 없음
 		<</if>>
 	</div>
 	<br>
 
 	<<if _favoriteItems.length is 0>>
-		<<if wardrobeFilterActive()>>Nothing here matches your search or filters.<<else>>No favorite clothing has been marked in this wardrobe.<</if>>
+		<<if wardrobeFilterActive()>>검색이나 필터와 일치하는 항목이 없습니다.<<else>>이 옷장에는 즐겨찾기로 표시한 옷이 없습니다.<</if>>
 	<<else>>
 		<<wardrobePageControls "favorites" _favoriteItems.length>>
 		<div class="wardrobe-grid">
@@ -222,10 +222,10 @@
 					<<clothingicon _item _wardrobe_list>>
 					<<if _favorite.source is "inventory">>
 						<<wardrobeFavoriteWearLink _itemData.name_cap _i _wear "inventory">>
-						<span class="gold">(In Handbag)</span>
+						<span class="gold">(핸드백 안)</span>
 					<<elseif _favorite.source is "worn">>
 						<<print _itemData.name_cap>>
-						<span class="gold">(Equipped)</span>
+						<span class="gold">(착용 중)</span>
 					<<else>>
 						<<wardrobeFavoriteWearLink _itemData.name_cap _i _wear>>
 					<</if>>
@@ -253,21 +253,21 @@
 							<</if>>
 						<</for>>
 						<<if _broken is 0>>
-							<span @class="(!_item.colour || _item.colour === 0? ' noDivider': '')">(Outfit)</span>
+							<span @class="(!_item.colour || _item.colour === 0? ' noDivider': '')">(한 벌)</span>
 						<<elseif _broken lt _keys.length>>
-							<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Partly Broken)</span>
+							<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(일부 파손)</span>
 						<<else>>
-							<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Broken)</span>
+							<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(파손)</span>
 						<</if>>
 						<<if _item.one_piece is "split">>
-							<span @class="'separated-indicator' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Separated)</span>
+							<span @class="'separated-indicator' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(분리됨)</span>
 						<</if>>
 					<</if>>
 					<<if _item.outfitSecondary isnot undefined>>
 						<<if _item.one_piece is "split">>
-							<span @class="'separated-indicator' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Separated)</span>
+							<span @class="'separated-indicator' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(분리됨)</span>
 						<<else>>
-							<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Broken)</span>
+							<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(파손)</span>
 						<</if>>
 					<</if>>
 					<<wardrobeintegrity _item _wardrobe_list>>

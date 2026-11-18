@@ -1,167 +1,167 @@
 :: WLI Lake Area
 <<effects>><<lakeeffects>>
 
-You approach the spot where the presence feels strongest.<br>
+당신은 기척이 가장 강하게 느껴지는 곳으로 다가간다.<br>
 <br>
 <<if Time.dayState is "night" and !$wraithcompoundmessage and !$weekly.wliModGift>>
-	<<gifticon "love">><<link [[ Leave an offering | WLI Lake Offering List ]]>><</link>>
+	<<gifticon "love">><<link [[ 공물을 바친다 | WLI Lake Offering List ]]>><</link>>
 <<else>>
-	The presence fades.<br>
+	기척이 사라진다.<br>
 <</if>>
 <br>
-<<lakeicon>><<link [[ Back (0:05) | Lake Shore ]]>><<pass 5>><</link>>
+<<lakeicon>><<link [[ 뒤로 (0:05) | Lake Shore ]]>><<pass 5>><</link>>
 
 
 :: WLI Lake Offering List
 <<effects>><<lakeeffects>>
 
-What would you like to offer?
+무엇을 바치시겠습니까?
 <br><br>
 <<food_gift_list>>
 
 <<if _food_gift_found is true>>
-	<<skinicon "give">><<link [[ Offer (0:05) | WLI Lake Offering]]>><<pass 5>><<give_gift "Ivory Wraith">><<set $weekly.wliModGift to true>><</link>>
+	<<skinicon "give">><<link [[ 바친다 (0:05) | WLI Lake Offering]]>><<pass 5>><<give_gift "Ivory Wraith">><<set $weekly.wliModGift to true>><</link>>
 <</if>>
 
 <br>
-<<refuseicon>><<link [[ Reconsider | WLI Lake Offering Reconsider ]]>><</link>>
+<<refuseicon>><<link [[ 다시 생각한다 | WLI Lake Offering Reconsider ]]>><</link>>
 
 
 :: WLI Lake Offering Reconsider
 <<effects>><<lakeeffects>>
 
-Best not to indulge an eldritch horror.
+기괴한 공포의 비위를 맞추지 않는 편이 낫다.
 
 <br><br>
-<<lakeicon>><<link [[ Back (0:05) | Lake Shore ]]>><<pass 5>><</link>>
+<<lakeicon>><<link [[ 뒤로 (0:05) | Lake Shore ]]>><<pass 5>><</link>>
 
 
 :: WLI Lake Offering
 <<effects>><<lakeeffects>>
 
 <<if W.wraithIsAngry()>>
-	"I want to make things right. Please accept my apology," 
+	"바로잡고 싶어. 내 사과를 받아 줘."
 <<else>>
-	"I've brought you something," 
+	"너한테 줄 걸 가져왔어."
 <</if>>
 <<set _gift to setup.foodstuff[$gift].name + (setup.foodstuff[$gift].food.handheld_gift ? " gift" : "")>>
 <<wearProp _gift>>
 
-you announce, setting the _gift on a nearby rock and waiting for a reaction. <br>
+당신은 근처 바위 위에 _gift【을를】 올려 두고 반응을 기다리며 선언한다. <br>
 
 <<if $wli.criteria and !$wli.giftevent and C.npc["Ivory Wraith"].love gte 25>>
-	<span class="teal">An idea strikes you.</span>
+	<span class="teal">문득 한 가지 생각이 스친다.</span>
 	<br><br>
-	<<link [[ Offer your body as a vessel | WLI Lake Possessed ]]>><<npcincr "Ivory Wraith" love 2>><</link>><<gglove>>
+	<<link [[ 몸을 그릇으로 내어 준다 | WLI Lake Possessed ]]>><<npcincr "Ivory Wraith" love 2>><</link>><<gglove>>
 <</if>>
 
 <br>
-<<link [[ Wait (0:??) | WLI Lake Offering Accept ]]>><<set _rng to random(1, 10)>><<pass _rng>><</link>>
+<<link [[ 기다린다 (0:??) | WLI Lake Offering Accept ]]>><<set _rng to random(1, 10)>><<pass _rng>><</link>>
 
 
 :: WLI Lake Offering Accept
 <<effects>><<lakeeffects>>
-Mist erupts from the lake just as you're about to give up. It stretches, enveloping the <<recipe_name $gift>> in lazy swirls. You blink, and the <<recipe_name $gift>> is simply <span class="red">gone.</span><<gtrauma>><<trauma 6>><br><br>
+포기하려는 바로 그 순간 호수에서 안개가 솟아오른다. 안개는 길게 뻗어 <<recipe_name $gift>>【을를】 느릿한 소용돌이로 감싼다. 눈을 깜빡이자 <<recipe_name $gift>>【이가】 그냥 <span class="red">사라져 있다.</span><<gtrauma>><<trauma 6>><br><br>
 
 <<if W.wraithIsAngry()>>
-	The presence seems <span class="blue">a little calmer.</span> <<npcincr "Ivory Wraith" love 1>><<glove>><<lobsession 1>>
+	기척이 <span class="blue">조금 누그러진</span> 듯하다. <<npcincr "Ivory Wraith" love 1>><<glove>><<lobsession 1>>
 <<else>>
-	The presence seems <span class="blue">pleased.</span> <<npcincr "Ivory Wraith" love 2>><<gglove>><<gobsession 1>>
+	기척이 <span class="blue">흡족해하는</span> 듯하다. <<npcincr "Ivory Wraith" love 2>><<gglove>><<gobsession 1>>
 <</if>>
 
 <br><br>
-The mist dissipates, leaving a sweet scent behind.
+안개가 흩어지며 달콤한 향을 남긴다.
 <br><br>
-<<lakeicon>><<link [[ Back (0:05) | Lake Shore ]]>><<endevent>><<pass 5>><</link>>
+<<lakeicon>><<link [[ 뒤로 (0:05) | Lake Shore ]]>><<endevent>><<pass 5>><</link>>
 
 
 :: WLI Lake Possessed
 <<effects>><<wraithPossess>><<set $wli.giftevent to 1>>
 
-"I'll lend you my body. So you can eat properly," you offer.
+"내 몸을 빌려줄게. 제대로 먹을 수 있게." 당신이 제안한다.
 
 <br><br>
-The mist freezes. A pale visage appears before you.<br>
-<span class="wraith">"Clever <<pcpetname "wraith">>. </span> 
+안개가 멈춘다. 창백한 얼굴이 당신 앞에 나타난다.<br>
+<span class="wraith">"영리하네, <<pcpetname "wraith">>【아야】. </span>
 
 <<if W.wraithIsAngry()>>
-	<span class="wraith">Do you seek to repent?"</span> 
-	It inspects you from head to toe, gauging your honesty with intense <<wraithEyes>> eyes. Its gaze lulls you into a trance.
+	<span class="wraith">참회하려는 거야?"</span>
+	그것이 강렬한 <<wraithEyes>> 눈으로 당신의 진심을 가늠하며 머리끝부터 발끝까지 살핀다. 그 시선에 당신은 최면에 걸린 듯 넋이 나간다.
 <<else>>
-	<span class="wraith">Does your kindness truly know no bounds?"</span>
-	You shudder as its pale, cold hands cup your cheeks. It smiles at you. You can feel your heart pounding.
+	<span class="wraith">네 친절엔 정말 끝이 없나 보네?"</span>
+	그것의 창백하고 차가운 손이 당신의 뺨을 감싸자 당신은 몸서리친다. 그것이 당신에게 미소 짓는다. 심장이 쿵쿵 뛰는 것이 느껴진다.
 <</if>>
 
 <br><br>
-It dissipates into mist, enveloping you in a hazy embrace. Sooner than you realize, your body goes numb. You can only watch as your hands clench and unclench on their own.
+그것이 안개로 흩어져 흐릿한 품으로 당신을 감싼다. 깨닫기도 전에 몸의 감각이 사라진다. 두 손이 저절로 쥐어졌다 펴지는 것을 지켜볼 수밖에 없다.
 
 <br><br>
-<span class="wraith"><<link [[ Next | WLI Lake Possessed Eat 2]]>><</link>></span>
+<span class="wraith"><<link [[ 다음 | WLI Lake Possessed Eat 2]]>><</link>></span>
 
 
 :: WLI Lake Possessed Eat 2
 <<effects>>
-You turn. It's hard to tell your thoughts apart. For a moment you just stare at the <<recipe_name $gift>>, unsure of what to do. The very thought of eating seems foreign. You must have forgotten how to, after so long. 
+당신은 몸을 돌린다. 어디까지가 당신의 생각인지 가려내기 어렵다. 잠시 동안 <<recipe_name $gift>>【을를】 그저 바라보며 어찌할 바를 모른다. 먹는다는 생각 자체가 낯설게 느껴진다. 너무 오래된 탓에 먹는 법을 잊어버린 게 분명하다.
 <br><br>
 
-At last, you find the courage to sample it. <br>
-You close your eyes as the rich flavour fills your mouth. It brings back memories.
+마침내 용기를 내어 맛을 본다. <br>
+풍부한 맛이 입안을 채우자 당신은 눈을 감는다. 기억이 되살아난다.
 
 <br><br>
-Memories that are not your own. You try to dwell on them, if only for a moment.<br>
-Faces from people you think you knew overlap until they're barely human. Familiar voices morph together and turn into a cacophony. Your sanity falters with the weight of what seems like multiple lifetimes relived at once, rather than a single one.
+당신 것이 아닌 기억들. 잠깐만이라도 그 기억들에 머물러 보려 한다.<br>
+알고 있었다고 생각한 사람들의 얼굴이 겹치고 겹쳐 사람의 모습이라 하기 어려울 지경이 된다. 낯익은 목소리들이 뒤섞여 불협화음으로 변한다. 하나가 아니라 여러 번의 생을 한꺼번에 다시 사는 듯한 무게에 정신이 흔들린다.
 
 <br><br>
-<span class="wraith"><<link [[ Focus | WLI Lake Possessed Eat 3 ]]>><</link>></span>
+<span class="wraith"><<link [[ 집중한다 | WLI Lake Possessed Eat 3 ]]>><</link>></span>
 
 
 :: WLI Lake Possessed Eat 3
 <<effects>>
-You focus, and the vision becomes clear again.
+집중하자 광경이 다시 또렷해진다.
 
 <<if $wraithPrison and $wraithPrison.vision>>
-	You know this place. <span class="red">You have seen this before.</span>
+	이곳을 안다. <span class="red">전에 본 적이 있다.</span>
 <</if>>
 <br><br>
-You're bound to a plinth, clutching your necklace.<br>
-Your throat feels sore, likely from screaming, but nobody comes to your aid. You struggle against your bindings as the water floods your surroundings. You close your eyes, whispering a desperate prayer that goes unanswered.
+당신은 받침대에 묶인 채 목걸이를 움켜쥐고 있다.<br>
+목이 따갑다. 비명을 질러서일 테지만, 아무도 도우러 오지 않는다. 물이 주위를 가득 채우는 동안 당신은 결박에 맞서 발버둥 친다. 눈을 감고 절박한 기도를 속삭이지만 응답은 없다.
 
 <br><br>
-The water immerses you completely. It feels so cold, yet your lungs burn. <br>
+물이 당신을 완전히 삼킨다. 몹시 차갑지만 폐는 타는 듯하다. <br>
 
 <<set $pain to 100>>
 <<if $wraith.state is "haunt">>
 	<<if $wraithPrison and $wraithPrison.vision>>
-		Your sins weigh you down. A profound guilt washes over you. <span class="red">No amount of gifting will lift the weight of what you've done.</span><br>
+		죄가 당신을 짓누른다. 깊은 죄책감이 밀려온다. <span class="red">아무리 선물을 바쳐도 당신이 저지른 일의 무게는 덜어지지 않는다.</span><br>
 	<<else>>
-		You feel like you did something terrible, though you cannot immediatelly grasp what.<br>
+		끔찍한 짓을 저지른 것 같은 기분이 들지만, 그게 무엇인지는 곧바로 떠오르지 않는다.<br>
 	<</if>>
 <<elseif $wraith.state is "active">>
-	<span class="blue">At least you still have it.</span><br>
+	<span class="blue">적어도 아직 그것이 곁에 있다.</span><br>
 <<else>>
-	A profound sense of loss washes over you.
+	깊은 상실감이 밀려온다.
 <</if>>
 
-You didn't want to remember this. Not right now. <<ggtrauma>><<trauma 18>>
+이걸 떠올리고 싶지 않았다. 지금은 아니다. <<ggtrauma>><<trauma 18>>
 <br><br>
-<span class="wraith"><<link [[ Drown | WLI Lake Possessed Eat 4 ]]>><</link>></span>
+<span class="wraith"><<link [[ 가라앉는다 | WLI Lake Possessed Eat 4 ]]>><</link>></span>
 
 
 :: WLI Lake Possessed Eat 4
 <<effects>>
-It's too much. You pass out. <<set _rng to random(5, 30)>>
+너무 벅차다. 당신은 정신을 잃는다. <<set _rng to random(5, 30)>>
 
 <br><br>
-<<link [[ Everything fades to black... | WLI Lake Possessed Eat Finish ]]>><<set $pain to 0>><<endevent>><<pass _rng>><</link>>
+<<link [[ 모든 것이 어둠 속으로 사라진다... | WLI Lake Possessed Eat Finish ]]>><<set $pain to 0>><<endevent>><<pass _rng>><</link>>
 
 
 :: WLI Lake Possessed Eat Finish
 <<effects>><<wraithExorcise true true>>
-You're coughing. Something is stuck in your throat. You <span class="blue">spit a piece of <<recipe_name $gift>></span>.<br><br>
-You open your eyes, taking a deep breath. You're still at the lake.<br>
-The <<recipe_name $gift>> lies forgotten on the rock, only half-touched. The pale figure is nowhere to be seen. You don't remember when it left your body.
+기침이 난다. 목에 무언가 걸려 있다. 당신은 <span class="blue"><<recipe_name $gift>> 한 조각을 뱉어 낸다</span>.<br><br>
+당신은 눈을 뜨고 숨을 깊이 들이쉰다. 여전히 호숫가다.<br>
+<<recipe_name $gift>>【은는】 바위 위에 잊힌 채 반쯤만 손이 대어져 놓여 있다. 창백한 형체는 어디에도 보이지 않는다. 그것이 언제 당신의 몸을 떠났는지 기억나지 않는다.
 
 <br><br>
 당신은 지체하지 않기로 결심한다.
 <br><br>
-<<lakeicon>><<link [[ Back (0:05) | Lake Shore ]]>><<pass 5>><</link>>
+<<lakeicon>><<link [[ 뒤로 (0:05) | Lake Shore ]]>><<pass 5>><</link>>

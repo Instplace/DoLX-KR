@@ -134,7 +134,7 @@
 			<<if _wearId is "strip" and $worn[_slot].name isnot "naked">>
 				<<if _slot is "genitals" and $worn.genitals.type.includes("chastity") and $worn.genitals.chastityKey is "player" and random(1, 100) lte 10>>
 					<<loseChastityControl "broken">>
-					<span class="red">The key snaps off in the lock. The $worn.genitals.name won't budge.</span>
+					<span class="red">열쇠가 자물쇠 안에서 부러졌다. $worn.genitals.name【은는】 꿈쩍도 하지 않는다.</span>
 					<br>
 					<<continue>>
 				<</if>>
@@ -184,7 +184,7 @@
 			<<continue>>
 		<</if>>
 		<<if $wardrobeOption is "wear" and _slot is "earrings" and !$ears_pierced>>
-			<span class="red">You need pierced ears to wear earrings.</span>
+			<span class="red">귀걸이를 하려면 귀를 뚫어야 한다.</span>
 			<br>
 			<<continue>>
 		<</if>>
@@ -203,19 +203,19 @@
 			<<if $earSlime.forcedCommando isnot undefined and (_slot is "under_lower" or (_item.outfitPrimary and _item.outfitPrimary.under_lower and !["broken","split"].includes(_item.outfitPrimary.under_lower)))>>
 				<<if _item.type.includes("naked") or (_earSlimeEnableSwimwear and _item.type.includes("swim")) or (_earSlimeEnableDancewear and _item.type.includes("dance"))>>
 				<<elseif $earSlime.forcedCommando gte 0>>
-					<span class="red">You are unable to equip your _item.name, as the <<slimeWord>> in your ear is forcing you to go commando.</span>
+					<span class="red">귓속의 <<slimeWord>>【이가】 노팬티로 다니도록 강요하고 있어 _item.name【을를】 입을 수 없다.</span>
 					<br>
 					<<continue>>
 				<<else>>
 					<<run delete $earSlime.forcedCommando>>
 				<</if>>
 			<<elseif _item.reveal lt earSlimeCorruptionClothes() and (["prison", "asylum"].includes($location) or !_allowSchoolClothes) and !_item.type.includesAny("event")>>
-				<span class="red">You were unable to equip your _item.name as the <<slimeWord>> in your ear did not permit it.</span>
+				<span class="red">귓속의 <<slimeWord>>【이가】 허락하지 않아 _item.name【을를】 입을 수 없었다.</span>
 				<br>
 				<<continue>>
 			<<elseif $earSlime.forcedDressing and _item.gender isnot $earSlime.forcedDressing.type and _item.gender isnot "n" and !_item.type.includesAny("event")>>
 				<<if $earSlime.forcedDressing.days gt 0>>
-					<span class="red">You are unable to equip your _item.name, as the <<slimeWord>> in your ear is only permitting more <<print $earSlime.forcedDressing.type is "f" ? "feminine" : "masculine">> clothing.</span>
+					<span class="red">귓속의 <<slimeWord>>【이가】 더 <<print $earSlime.forcedDressing.type is "f" ? "여성스러운" : "남성스러운">> 옷만 허락하고 있어 _item.name【을를】 입을 수 없다.</span>
 					<br>
 					<<continue>>
 				<<else>>
@@ -228,19 +228,19 @@
 			<<if hypnosisTrait("crossdressing") gte 2 and ((_slot is "under_lower" or (_item.outfitPrimary and _item.outfitPrimary.under_lower and !["broken","split"].includes(_item.outfitPrimary.under_lower))) or (_slot is "under_upper" or (_item.outfitPrimary and _item.outfitPrimary.under_upper and !["broken","split"].includes(_item.outfitPrimary.under_upper)))) and _item.gender is $player.gender and !_item.type.includesAny("event")>>
 				<<if _item.type.includes("naked") or (_earSlimeEnableSwimwear and _item.type.includes("swim")) or (_earSlimeEnableDancewear and _item.type.includes("dance"))>>
 				<<else>>
-					<span class="red">You are unable to equip your _item.name, as your compulsion is only permitting more <<print $player.gender is "m" ? "feminine" : "masculine">> clothing.</span>
+					<span class="red">강박 때문에 더 <<print $player.gender is "m" ? "여성스러운" : "남성스러운">> 옷만 입을 수 있어 _item.name【을를】 입을 수 없다.</span>
 					<br>
 					<<continue>>
 				<</if>>
 			<<elseif hypnosisTrait("crossdressing") gte 4 and (_item.gender is $player.gender or _item.type.includesAny("chest_bind")) and !_item.type.includesAny("event")>>
-				<span class="red">You are unable to equip your _item.name, as your compulsion is only permitting more <<print $player.gender is "m" ? "feminine" : "masculine">> clothing.</span>
+				<span class="red">강박 때문에 더 <<print $player.gender is "m" ? "여성스러운" : "남성스러운">> 옷만 입을 수 있어 _item.name【을를】 입을 수 없다.</span>
 				<br>
 				<<continue>>
 			<</if>>
 		<</if>>
 		/*A penis cage needs a penis to cage*/
 		<<if $wardrobeOption is "wear" and _slot is "genitals" and _item.type.includes("cage") and _item.gender is "m" and !$player.penisExist>>
-			<span class="red">You have no penis to lock into your _item.name.</span>
+			<span class="red">_item.name에 가둘 자지가 없다.</span>
 			<br>
 			<<continue>>
 		<</if>>
@@ -285,7 +285,7 @@
 			<<if $DoLPSpools isnot undefined>>
 				<<set _spoolsGained to 1 + Object.keys(_outfitPieceIds).length>>
 				<<set $DoLPSpools += _spoolsGained>>
-				You salvage <span class="green"><<print _spoolsGained>> <<print _spoolsGained is 1 ? "spool" : "spools">></span> from it.
+				그것에서 실패를 <span class="green"><<print _spoolsGained>>개</span> 건진다.
 			<</if>>
 			<<set _selectedWardrobe[_slot].deleteAt(_wearId)>>
 			<br>
@@ -293,9 +293,9 @@
 			/* One spool per damaged piece */
 			<<set _repairSpools to (_item.integrity lt clothingData(_slot,_item,'integrity_max') ? 1 : 0) + Object.entries(_outfitPieceIds).filter(([s, i]) => _selectedWardrobe[s][i].integrity lt clothingData(s,_selectedWardrobe[s][i],'integrity_max')).length>>
 			<<if _repairSpools is 0>>
-				The <<print _item.name>> doesn't need repairing.
+				<<print _item.name>>【은는】 수선할 필요가 없다.
 			<<elseif ($DoLPSpools or 0) lt _repairSpools>>
-				You need <span class="red"><<print _repairSpools>> <<print _repairSpools is 1 ? "spool" : "spools">></span> to repair the <<print _item.name>>.
+				<<print _item.name>>【을를】 수선하려면 실패가 <span class="red"><<print _repairSpools>>개</span> 필요하다.
 			<<else>>
 				<<set $DoLPSpools -= _repairSpools>>
 				<<set _item.integrity to clothingData(_slot,_item,'integrity_max')>>
@@ -412,35 +412,35 @@
 	<div id="wardrobe-legend" class="shop-legend hidden">
 		<div class="legend-caption bold gold">범례</div>
 		<br>
-		Each item lists, in this order:
+		각 항목에는 다음이 이 순서로 표시됩니다.
 		<br>
-		(colour) or (pattern): the colour or pattern of the item.
+		(색상) 또는 (무늬): 항목의 색상 또는 무늬입니다.
 		<br>
-		(Outfit): a set that takes its matching bottom slot with it. <span class="red">(Broken)</span> and <span class="red">(Partly Broken)</span> mean a piece of the set is gone. <span class="separated-indicator">(Separated)</span> means it has been cut into single pieces.
+		(한 벌): 짝이 되는 하의 슬롯까지 함께 차지하는 세트입니다. <span class="red">(파손)</span>과 <span class="red">(일부 파손)</span>은 세트의 한 조각이 없다는 뜻입니다. <span class="separated-indicator">(분리됨)</span>은 낱개로 잘라 놓았다는 뜻입니다.
 		<br>
-		(9/10): integrity, current over maximum. It reads frayed, torn or tattered as it wears down. Low integrity tears more easily.
+		(9/10): 내구도(현재/최대)입니다. 닳을수록 해지고, 찢어지고, 너덜너덜해진 것으로 표시됩니다. 내구도가 낮을수록 더 쉽게 찢어집니다.
 		<br>
-		Reveal: unassuming, smart, tasteful, comfy, seductive, risqué or lewd. How alluring the item makes you.
+		노출도: 평범함, 단정함, 품위있음, 편안함, 매혹적, 아슬아슬, 음란함. 그 옷이 얼마나 매력적으로 보이게 하는지를 나타냅니다.
 		<br>
-		<span class="blue">&#9794;</span> and <span class="pink">&#9792;</span>: the item is made for boys or for girls. No mark means unisex.
+		<span class="blue">&#9794;</span>와 <span class="pink">&#9792;</span>: 남자용 또는 여자용으로 만든 옷입니다. 표시가 없으면 남녀 공용입니다.
 		<br>
-		<span class="cold-resist-icon">20</span> Warmth rating. How well the item protects you from cold.
+		<span class="cold-resist-icon">20</span> 보온 수치입니다. 그 옷이 추위를 얼마나 막아 주는지를 나타냅니다.
 		<br>
-		Trait icons (turn them on in settings): hover one to see what it does.
+		특성 아이콘(설정에서 켤 수 있습니다): 마우스를 올리면 어떤 효과가 있는지 볼 수 있습니다.
 		<br>
-		Favorite: pins the item to the Favorites tab.
+		즐겨찾기: 항목을 즐겨찾기 탭에 고정합니다.
 		<br><br>
 
 		<<if $options.images is 1>>
 			<div class="legend-2em">
 				<img src="img/ui/options.png">
-				Wardrobe settings.
+				옷장 설정.
 			</div>
 			<br>
 		<</if>>
-		Sort: click a key to order the list, click it again to reverse it. The arrow shows the last order used.
+		정렬: 키를 클릭하면 목록이 정렬되고, 다시 클릭하면 순서가 뒤집힙니다. 화살표는 마지막으로 쓴 순서를 보여 줍니다.
 		<br>
-		The Filters button next to the search box narrows the list by gender, reveal, warmth or trait. The search box matches an item's name, colour or pattern. Search and filters apply to every tab and clear when you leave the wardrobe.
+		검색창 옆의 필터 버튼으로 성별, 노출도, 보온성, 특성에 따라 목록을 좁힐 수 있습니다. 검색창은 항목의 이름, 색상, 무늬와 일치하는 것을 찾습니다. 검색과 필터는 모든 탭에 적용되며 옷장을 나가면 초기화됩니다.
 		<br><br>
 
 		<div class="legend-warmth">
@@ -487,9 +487,9 @@
 		<div class="filters">
 			<div id="filter-gender" class="filter-block">
 				<span class="bold gold">성별</span>
-				<label><<checkbox "_wardrobeFilter.gender.female" false true autocheck>> Female</label>
-				<label><<checkbox "_wardrobeFilter.gender.neutral" false true autocheck>> Unisex</label>
-				<label><<checkbox "_wardrobeFilter.gender.male" false true autocheck>> Male</label>
+				<label><<checkbox "_wardrobeFilter.gender.female" false true autocheck>> 여성</label>
+				<label><<checkbox "_wardrobeFilter.gender.neutral" false true autocheck>> 남녀 공용</label>
+				<label><<checkbox "_wardrobeFilter.gender.male" false true autocheck>> 남성</label>
 			</div>
 
 			<div id="filter-reveal" class="filter-block">
@@ -499,8 +499,8 @@
 			<div id="filter-warmth" class="filter-block">
 				<span class="bold gold">보온성</span>
 				<div class="filter-warmth-fromto">
-					<label>from <<numberbox "_wardrobeFilter.warmth.from" _wardrobeFilter.warmth.from>></label>
-					<label>to <<numberbox "_wardrobeFilter.warmth.to" _wardrobeFilter.warmth.to>></label>
+					<label>최소 <<numberbox "_wardrobeFilter.warmth.from" _wardrobeFilter.warmth.from>></label>
+					<label>최대 <<numberbox "_wardrobeFilter.warmth.to" _wardrobeFilter.warmth.to>></label>
 				</div>
 			</div>
 
@@ -536,8 +536,8 @@
 <<widget "wardrobeFilterReveal">>
 	<span class="bold gold">노출도</span>
 	<div class="filter-reveal-fromto">
-		<label>from <<listbox "_wardrobeFilter.reveal.from" autoselect>><<optionsfrom getFilterRevealOptions('from', _wardrobeFilter)>><</listbox>></label>
-		<label>to <<listbox "_wardrobeFilter.reveal.to" autoselect>><<optionsfrom getFilterRevealOptions('to', _wardrobeFilter)>><</listbox>></label>
+		<label>최소 <<listbox "_wardrobeFilter.reveal.from" autoselect>><<optionsfrom getFilterRevealOptions('from', _wardrobeFilter)>><</listbox>></label>
+		<label>최대 <<listbox "_wardrobeFilter.reveal.to" autoselect>><<optionsfrom getFilterRevealOptions('to', _wardrobeFilter)>><</listbox>></label>
 	</div>
 
 	<<run $(() => { $('#filter-reveal select').on('change', (e) => { new Wikifier(null, "<<replace '#filter-reveal'>><<wardrobeFilterReveal>><</replace>>"); }) })>>
@@ -738,11 +738,11 @@
 		<</if>>
 	<</if>>
 
-	<div class="wardrobe-heading">Clothing sets</div>
+	<div class="wardrobe-heading">의상 세트</div>
 	<div id="listoutfits"><<listoutfits>></div>
 
 	<hr>
-	<div class="wardrobe-heading">Clothing</div>
+	<div class="wardrobe-heading">옷</div>
 
 	<<if ["over_head", "over_upper", "over_lower"].includes($lastWardrobeSlot)>>
 		<<set $lastWardrobeSlot to "over">>
@@ -750,12 +750,12 @@
 	<<dynamic "wardrobeLinks" "wardrobeLinks">>
 	<!-- The search box sits outside #wardrobeList so redrawing the list doesn't take its focus. -->
 	<div class="wardrobe-search no-numberify">
-		<label>Search: <<textbox "_wardrobeSearch" _wardrobeSearch>></label>
+		<label>검색: <<textbox "_wardrobeSearch" _wardrobeSearch>></label>
 		<<button "초기화">>
 			<<set _wardrobeSearch to "">>
 			<<run $('#textbox--wardrobesearch').val(''); wardrobeFilterRefresh()>>
 		<</button>>
-		<button type="button" class="wardrobe-filters-toggle" onclick="wardrobeOpenFilters()">Filters<span id="wardrobe-filter-state"><<if _wardrobeFilter.active>> (on)<</if>></span></button>
+		<button type="button" class="wardrobe-filters-toggle" onclick="wardrobeOpenFilters()">필터<span id="wardrobe-filter-state"><<if _wardrobeFilter.active>> (적용 중)<</if>></span></button>
 	</div>
 	<<run (() => {
 		let timer;
@@ -813,30 +813,30 @@
 <<widget "wardrobeLinks">>
 	<<set _wardrobeTabGroups=[
 		{ name: '', links: [
-			{ id: 'favorites', label: 'Favorites' },
+			{ id: 'favorites', label: '즐겨찾기' },
 		] },
-		{ name: 'Body', links: [
-			{ id: 'over', label: 'Over', icon: 'over-outfit' },
-			{ id: 'upper', label: 'Upper', icon: 'upper' },
-			{ id: 'lower', label: 'Lower', icon: 'lower' },
-			{ id: 'under_upper', label: 'Under upper', icon: 'under-upper' },
-			{ id: 'under_lower', label: 'Under lower', icon: 'under-lower' },
-			{ id: 'genitals', label: 'Genitals', icon: 'genitals' },
+		{ name: '몸', links: [
+			{ id: 'over', label: '겉옷', icon: 'over-outfit' },
+			{ id: 'upper', label: '상의', icon: 'upper' },
+			{ id: 'lower', label: '하의', icon: 'lower' },
+			{ id: 'under_upper', label: '속옷 상의', icon: 'under-upper' },
+			{ id: 'under_lower', label: '속옷 하의', icon: 'under-lower' },
+			{ id: 'genitals', label: '성기', icon: 'genitals' },
 		] },
-		{ name: 'Head & neck', links: [
-			{ id: 'head', label: 'Head', icon: 'head' },
-			{ id: 'face', label: 'Face', icon: 'face' },
-			{ id: 'neck', label: 'Neck', icon: 'neck' },
-			{ id: 'scarf', label: 'Scarf', icon: 'scarf' },
-			{ id: 'earrings', label: 'Earrings', icon: 'earrings' },
+		{ name: '머리와 목', links: [
+			{ id: 'head', label: '머리', icon: 'head' },
+			{ id: 'face', label: '얼굴', icon: 'face' },
+			{ id: 'neck', label: '목', icon: 'neck' },
+			{ id: 'scarf', label: '스카프', icon: 'scarf' },
+			{ id: 'earrings', label: '귀걸이', icon: 'earrings' },
 		] },
-		{ name: 'Extras', links: [
-			{ id: 'hands', label: 'Hands', icon: 'hand' },
-			{ id: 'handheld', label: 'Handheld', icon: 'handheld' },
-			{ id: 'bag', label: 'Bag', icon: 'bag' },
-			{ id: 'rings', label: 'Rings', icon: 'rings' },
-			{ id: 'legs', label: 'Legs', icon: 'legs' },
-			{ id: 'feet', label: 'Feet', icon: 'feet' },
+		{ name: '기타', links: [
+			{ id: 'hands', label: '장갑', icon: 'hand' },
+			{ id: 'handheld', label: '휴대품', icon: 'handheld' },
+			{ id: 'bag', label: '가방', icon: 'bag' },
+			{ id: 'rings', label: '반지', icon: 'rings' },
+			{ id: 'legs', label: '다리', icon: 'legs' },
+			{ id: 'feet', label: '신발', icon: 'feet' },
 		] },
 	]>>
 	<div class="wardrobe-tabs no-numberify">
@@ -871,7 +871,7 @@
 		<<set _overItemCount += _selectedWardrobe[_overSlot].length>>
 	<</for>>
 
-	__Over clothes__ <i>_overItemCount / <<= _selectedWardrobe.space * _overSlots.length>></i>
+	__겉옷__ <i>_overItemCount / <<= _selectedWardrobe.space * _overSlots.length>></i>
 	<br>
 	현재 착용 중:
 	<<set _overEquipped to 0>>
@@ -887,7 +887,7 @@
 			<</capture>>
 		<</if>>
 	<</for>>
-	<<if _overEquipped is 0>>nothing<</if>>
+	<<if _overEquipped is 0>>없음<</if>>
 	<br>
 
 	<<wardrobeList "over_head" true true>>
@@ -901,15 +901,15 @@
 	<<if $wardrobeRepeat isnot true or ($wardrobeOption is "repair" and $location isnot "home")>><<set $wardrobeOption to "wear">><</if>>
 
 	<div class="wardrobe-modebar" role="radiogroup" aria-label="What clicking an item does">
-		<span class="wardrobe-mode-caption">Click an item to:</span>
-		<label class="wardrobe-mode"><<radiobutton "$wardrobeOption" "wear" autocheck>><span class="wardrobe-mode-label">Wear</span></label>
+		<span class="wardrobe-mode-caption">항목을 클릭하면:</span>
+		<label class="wardrobe-mode"><<radiobutton "$wardrobeOption" "wear" autocheck>><span class="wardrobe-mode-label">입기</span></label>
 		<<if $sewingKit is 1 and $location is "home">>
-			<label class="wardrobe-mode"><<radiobutton "$wardrobeOption" "repair" autocheck>><span class="wardrobe-mode-label">Repair (0:05 and 1 spool per piece)</span></label>
+			<label class="wardrobe-mode"><<radiobutton "$wardrobeOption" "repair" autocheck>><span class="wardrobe-mode-label">수선하기 (벌당 0:05, 실패 1개)</span></label>
 		<</if>>
-		<label class="wardrobe-mode"><<radiobutton "$wardrobeOption" "separateOutfits" autocheck>><span class="wardrobe-mode-label">Separate Outfits</span></label>
+		<label class="wardrobe-mode"><<radiobutton "$wardrobeOption" "separateOutfits" autocheck>><span class="wardrobe-mode-label">세트 분리하기</span></label>
 		<<if $settings.multipleWardrobes and $wardrobes[$wardrobe_location].transfer && Object.values($wardrobes).filter(w => w.unlocked && w.shopSend).length > 1>>
 			<span class="wardrobe-mode-transfer">
-			<label class="wardrobe-mode"><<radiobutton "$wardrobeOption" "transfer" autocheck>><span class="wardrobe-mode-label">Transfer to:</span></label>
+			<label class="wardrobe-mode"><<radiobutton "$wardrobeOption" "transfer" autocheck>><span class="wardrobe-mode-label">이동할 곳:</span></label>
 			<<set _options to {}>>
 			<<for _label, _value range $wardrobes>>
 				<<if _value.unlocked and _label isnot $wardrobe_location and $wardrobes[_label].shopSend>>
@@ -924,8 +924,8 @@
 			<</listbox>>
 			</span>
 		<</if>>
-		<label class="wardrobe-repeat"><<checkbox "$wardrobeRepeat" false true autocheck>> Repeat Actions</label>
-		<label class="wardrobe-mode wardrobe-mode-danger"><<radiobutton "$wardrobeOption" "delete" autocheck>><span class="wardrobe-mode-label">Discard</span><em class="wardrobe-danger-note">destroys the clicked item</em></label>
+		<label class="wardrobe-repeat"><<checkbox "$wardrobeRepeat" false true autocheck>> 동작 반복</label>
+		<label class="wardrobe-mode wardrobe-mode-danger"><<radiobutton "$wardrobeOption" "delete" autocheck>><span class="wardrobe-mode-label">버리기</span><em class="wardrobe-danger-note">클릭한 항목을 파괴합니다</em></label>
 	</div>
 
 	<<if $wardrobeOption is "delete" and $wardrobeRepeat is true>>
@@ -942,31 +942,31 @@
 
 <<widget "wardrobeStorageSummary">>
 	<<print $wardrobes[$wardrobe_location] ? $wardrobes[$wardrobe_location].name : "Wardrobe">> | <<= getWardrobeItemCount(_selectedWardrobe, true)>> / 3,000
-	<span class="wardrobe-storage-hint">Storage &amp; bulk actions</span>
+	<span class="wardrobe-storage-hint">보관 및 일괄 작업</span>
 <</widget>>
 
 <<widget "wardrobeStorageBody">>
 	<<set _homeLocations to $settings.multipleWardrobes ? getAvailableWardrobeHomes().filter(location => $wardrobe_location isnot location) : []>>
 	<<if _homeLocations.length gt 0>>
 		<div class="wardrobe-storage-group">
-			<b>Move everything</b> to another wardrobe. Automatic returns can exceed the 3,000 item limit.
+			<b>전부 옮기기</b>: 다른 옷장으로 옮깁니다. 자동으로 돌아오는 옷은 3,000개 한도를 넘을 수 있습니다.
 			<br>
 			<<set _targetWardrobe to "wardrobe">>
 			<<set _locationMap = {}>>
 			<<run _homeLocations.forEach(key => _locationMap[$wardrobes[key].name] = key)>>
-			Destination:
+			목적지:
 			<<listbox "_targetWardrobe" autoselect>>
 				<<optionsfrom _locationMap>>
 			<</listbox>>
 			<div class="wardrobe-action">
-				<<link "Transfer">>
+				<<link "이동">>
 					<<set _currentWardrobeObj to selectWardrobe($wardrobe_location)>>
 					<<set _targetWardrobeObj to selectWardrobe(_targetWardrobe, "return")>>
 
 					<<if getWardrobeItemCount(_targetWardrobeObj, true) + getWardrobeItemCount(_currentWardrobeObj, true) gt 3500>>
-						<<replace "#wardrobewear">><span class="red">There isn't enough room to transfer all your clothes. The destination is limited to 3,000 total items.</span><</replace>>
+						<<replace "#wardrobewear">><span class="red">옷을 전부 옮길 공간이 부족합니다. 목적지는 총 3,000개로 제한됩니다.</span><</replace>>
 					<<elseif !Number.isFinite(_targetWardrobeObj.space) or setup.clothes_all_slots.some(slot => (_targetWardrobeObj[slot]?.length || 0) + (_currentWardrobeObj[slot]?.length || 0) > _targetWardrobeObj.space)>>
-						<<replace "#wardrobewear">><span class="red">There isn't enough room to transfer all your clothes. At least one destination slot is full. Nothing was moved.</span><</replace>>
+						<<replace "#wardrobewear">><span class="red">옷을 전부 옮길 공간이 부족합니다. 목적지의 슬롯 중 적어도 하나가 가득 찼습니다. 아무것도 옮겨지지 않았습니다.</span><</replace>>
 					<<else>>
 						<<for _slot range setup.clothes_all_slots>>
 							<<capture _currentWardrobeObj, _slot>>
@@ -987,31 +987,31 @@
 		</div>
 	<<else>>
 		<div class="wardrobe-storage-group">
-			<b>Move everything</b> to another wardrobe.
+			<b>전부 옮기기</b>: 다른 옷장으로 옮깁니다.
 			<br>
-			<span class="grey"><<if !$settings.multipleWardrobes>>Needs multiple wardrobes, which is turned off in settings.<<else>>You have no other wardrobe to move to.<</if>></span>
+			<span class="grey"><<if !$settings.multipleWardrobes>>여러 옷장이 필요하지만 설정에서 꺼져 있습니다.<<else>>옮겨 갈 다른 옷장이 없습니다.<</if>></span>
 		</div>
 	<</if>>
 	<div class="wardrobe-storage-group wardrobe-danger-zone">
-		<b class="red">Destroy</b> every item in one slot. This cannot be undone.
+		<b class="red">파괴</b>: 한 슬롯의 모든 항목을 파괴합니다. 되돌릴 수 없습니다.
 		<br>
 		슬롯:
-		<<print '<select id="wardrobe-bulk-slot"><option value="">Choose a slot...</option>' + setup.clothes_all_slots.filter(slot => Array.isArray(_selectedWardrobe[slot])).map(slot => '<option value="' + slot + '">' + slot.replace(/_/g, " ") + '</option>').join("") + '</select>'>>
+		<<print '<select id="wardrobe-bulk-slot"><option value="">슬롯을 선택하십시오...</option>' + setup.clothes_all_slots.filter(slot => Array.isArray(_selectedWardrobe[slot])).map(slot => '<option value="' + slot + '">' + slot.replace(/_/g, " ") + '</option>').join("") + '</select>'>>
 		<<run setTimeout(() => { const slotSelect = document.getElementById("wardrobe-bulk-slot"); if (slotSelect) slotSelect.selectedIndex = 0; }, 0)>>
 		<span id="wardrobe-bulk-discard">
-			<<link "Destroy all...">>
+			<<link "모두 파괴...">>
 				<<set _discardSlot to (document.getElementById("wardrobe-bulk-slot") ? document.getElementById("wardrobe-bulk-slot").value : "")>>
 				<<if _discardSlot is "">>
-					<<replace "#wardrobe-bulk-hint">>Choose a slot first.<</replace>>
+					<<replace "#wardrobe-bulk-hint">>먼저 슬롯을 선택하십시오.<</replace>>
 				<<else>>
 					<<capture _discardSlot>>
 						<<replace "#wardrobe-bulk-discard">>
-							<span class="red">Destroy all <<= _selectedWardrobe[_discardSlot].length>> items in <<= _discardSlot.replace(/_/g, " ")>>, including favorites? Other outfit pieces will be left incomplete.</span>
-							<<link "Confirm destruction">>
+							<span class="red"><<= _discardSlot.replace(/_/g, " ")>> 슬롯의 항목 <<= _selectedWardrobe[_discardSlot].length>>개를 즐겨찾기까지 모두 파괴하시겠습니까? 같은 세트의 다른 조각은 불완전한 채로 남습니다.</span>
+							<<link "파괴 확인">>
 								<<run discardWardrobeSlot(_selectedWardrobe, _discardSlot)>>
 								<<updatewardrobe>>
 							<</link>> |
-							<<link "Cancel">><<updatewardrobe>><</link>>
+							<<link "취소">><<updatewardrobe>><</link>>
 						<</replace>>
 					<</capture>>
 				<</if>>
@@ -1510,9 +1510,9 @@
 						<<else>><<replace '#oldWardrobeListDisplay'>><<oldWardrobeListDisplay>><</replace>><</if>>
 					<</link>> |
 				<</if>>
-				Page <<= _wardrobePages[_wardrobePageKey] + 1>> / <<= _wardrobePageCount>>
+				페이지 <<= _wardrobePages[_wardrobePageKey] + 1>> / <<= _wardrobePageCount>>
 				<<if _wardrobePages[_wardrobePageKey] lt _wardrobePageCount - 1>>
-					| <<link "Next">>
+					| <<link "다음">>
 						<<set _wardrobePages[_wardrobePageKey]++>>
 						<<if $('#wardrobeList').length>><<replace '#wardrobeList'>><<wardrobeContents>><</replace>>
 						<<else>><<replace '#oldWardrobeListDisplay'>><<oldWardrobeListDisplay>><</replace>><</if>>
@@ -1537,21 +1537,21 @@
 		<div class="wardrobe-listhead">
 			<span>__<<print _wardrobe_list[0].toUpperCase() + _wardrobe_list.substring(1)>>__ <i>_selectedWardrobe[_wardrobe_list].length / _selectedWardrobe.space</i>
 			<<if _wardrobe_list is "upper">>(한 벌 옷은 하의 슬롯도 차지합니다)<</if>>
-			<<if _wardrobe_list is "under_upper">>(Outfits will also take an under lower slot)<</if>></span>
-			<div class="wardrobe-sort">Sort: <<print wardrobeSortLinks(_wardrobe_list, _outfitTypes.includes(_wardrobe_list))>></div>
+			<<if _wardrobe_list is "under_upper">>(한 벌 속옷은 속옷 하의 슬롯도 차지합니다)<</if>></span>
+			<div class="wardrobe-sort">정렬: <<print wardrobeSortLinks(_wardrobe_list, _outfitTypes.includes(_wardrobe_list))>></div>
 		</div>
 		<<if $settings.multipleWardrobes>>
-			Items in handbag:
+			핸드백 안의 항목:
 			<<if $worn.bag.type.includes("bookbag")>>
-				<span class="gold"><<= getWardrobeItemCount("inventory")>>/<<= $wardrobes.inventory.space>> items</span>
+				<span class="gold"><<= getWardrobeItemCount("inventory")>>/<<= $wardrobes.inventory.space>>개</span>
 			<<else>>
-				no handbag equipped
+				착용한 핸드백 없음
 			<</if>>
 			<br>
 		<</if>>
 		<<if $worn[_wardrobe_list].name is "naked">>
 			<div class="wardrobe-equipped">
-				Currently equipped: nothing
+				현재 착용 중: 없음
 			</div>
 		<<else>>
 			<div class="wardrobe-equipped">
@@ -1626,12 +1626,12 @@
 			</div>
 			<div class="wardrobe-mods">
 			<<if $DoLPSpools isnot undefined>>
-				<span class="wardrobe-spools"><<shopicon "tailor">> <span class="green">$DoLPSpools</span> spools</span>
+				<span class="wardrobe-spools"><<shopicon "tailor">> 실패 <span class="green">$DoLPSpools</span>개</span>
 				<div class="no-numberify"><<repairClothing>></div>
 			<</if>>
 
 			<<if canTearClothing(_wardrobe_list, $worn[_wardrobe_list])>>
-				<div class="no-numberify"><<link `"Tear " + $worn[_wardrobe_list].name`>><<ripToNextState _wardrobe_list>><<updatesidebarimg>><<updatewardrobe>><</link>></div>
+				<div class="no-numberify"><<link `$worn[_wardrobe_list].name + "【을를】 찢는다"`>><<ripToNextState _wardrobe_list>><<updatesidebarimg>><<updatewardrobe>><</link>></div>
 			<</if>>
 
 			<<if isConnectedToHood(_wardrobe_list)>>
@@ -1715,7 +1715,7 @@
 					<div>
 						<<clothingicon _item _wardrobe_list>>
 						<<wearlink_norefresh _itemData.name_cap _i _wear "inventory">>
-						<span class="gold">(In Handbag)</span>
+						<span class="gold">(핸드백 안)</span>
 					</div>
 
 					<div class="small-description">
@@ -1739,21 +1739,21 @@
 								<</if>>
 							<</for>>
 							<<if _broken is 0>>
-								<span @class="(!_item.colour || _item.colour === 0? ' noDivider': '')">(Outfit)</span>
+								<span @class="(!_item.colour || _item.colour === 0? ' noDivider': '')">(한 벌)</span>
 							<<elseif _broken lt _keys.length>>
-								<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Partly Broken)</span>
+								<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(일부 파손)</span>
 							<<else>>
-								<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Broken)</span>
+								<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(파손)</span>
 							<</if>>
 							<<if _item.one_piece is "split">>
-								<span @class="'separated-indicator' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Separated)</span>
+								<span @class="'separated-indicator' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(분리됨)</span>
 							<</if>>
 						<</if>>
 						<<if _item.outfitSecondary isnot undefined>>
 							<<if _item.one_piece is "split">>
-								<span @class="'separated-indicator' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Separated)</span>
+								<span @class="'separated-indicator' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(분리됨)</span>
 							<<else>>
-								<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Broken)</span>
+								<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(파손)</span>
 							<</if>>
 						<</if>>
 						<<wardrobeintegrity _item _wardrobe_list>>
@@ -1793,7 +1793,7 @@
 							<<if !_slotsFull>>
 								<<capture _wardrobe_list, _i, _outfitPieceIds>>
 									<span></span>
-									<<link "Move to Wardrobe">>
+									<<link "옷장으로 옮긴다">>
 										<<run transferClothing(_wardrobe_list,_i, "inventory",$wardrobe_location, { moveLinkedPieces: false })>>
 										<<for $_outfitSlot, $_outfitId range _outfitPieceIds>>
 											<<run transferClothing($_outfitSlot,$_outfitId, "inventory",$wardrobe_location, { moveLinkedPieces: false })>>
@@ -1802,7 +1802,7 @@
 									<</link>>
 								<</capture>>
 							<<else>>
-								<span class="gold">Wardrobe Full!</span>
+								<span class="gold">옷장이 가득 찼습니다!</span>
 							<</if>>
 						<</if>>
 					</div>
@@ -1817,9 +1817,9 @@
 		}, [])>>
 		<<if !_combinedWardrobeList and wardrobeFilterActive()>>
 			<<if _wardrobeIndices.length is 0>>
-				Nothing here matches your search or filters.
+				검색이나 필터와 일치하는 항목이 없습니다.
 			<<else>>
-				Showing _wardrobeIndices.length of <<= _selectedWardrobe[_wardrobe_list].filter(item => !item.outfitSecondary || ["broken", "split"].includes(item.outfitSecondary[1])).length>>.
+				전체 <<= _selectedWardrobe[_wardrobe_list].filter(item => !item.outfitSecondary || ["broken", "split"].includes(item.outfitSecondary[1])).length>>개 중 _wardrobeIndices.length개를 표시하고 있습니다.
 			<</if>>
 			<br>
 		<</if>>
@@ -1892,21 +1892,21 @@
 							<</if>>
 						<</for>>
 						<<if _broken is 0>>
-							<span @class="(!_item.colour || _item.colour === 0? ' noDivider': '')">(Outfit)</span>
+							<span @class="(!_item.colour || _item.colour === 0? ' noDivider': '')">(한 벌)</span>
 						<<elseif _broken lt _keys.length>>
-							<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Partly Broken)</span>
+							<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(일부 파손)</span>
 						<<else>>
-							<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Broken)</span>
+							<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(파손)</span>
 						<</if>>
 						<<if _item.one_piece is "split">>
-							<span @class="'separated-indicator' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Separated)</span>
+							<span @class="'separated-indicator' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(분리됨)</span>
 						<</if>>
 					<</if>>
 					<<if _item.outfitSecondary isnot undefined>>
 						<<if _item.one_piece is "split">>
-							<span @class="'separated-indicator' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Separated)</span>
+							<span @class="'separated-indicator' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(분리됨)</span>
 						<<else>>
-							<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Broken)</span>
+							<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(파손)</span>
 						<</if>>
 					<</if>>
 					<<wardrobeintegrity _item _wardrobe_list>>
@@ -1934,7 +1934,7 @@
 						<<if _hasHandbag and !_handbagIsFull>>
 							<<capture _wardrobe_list, _i, _outfitPieceIds>>
 								<span></span>
-								<<link "Move to Handbag">>
+								<<link "핸드백으로 옮긴다">>
 									<<run transferClothing(_wardrobe_list,_i,$wardrobe_location,"inventory", { moveLinkedPieces: false })>>
 									<<for $_outfitSlot, $_outfitId range _outfitPieceIds>>
 										<<run transferClothing($_outfitSlot,$_outfitId, $wardrobe_location,"inventory", { moveLinkedPieces: false })>>
@@ -1943,7 +1943,7 @@
 								<</link>>
 							<</capture>>
 						<<elseif _hasHandbag and _handbagIsFull>>
-							<span class="gold">Handbag Full!</span>
+							<span class="gold">핸드백이 가득 찼습니다!</span>
 						<<else>>
 							/* <span class="default-colour">No Handbag Available</span> */
 						<</if>>
@@ -2372,9 +2372,9 @@
 	<<if _inWardrobe>>
 		<<set $_warmthNow to Weather.BodyTemperature.getWarmth()>>
 		<<if $_minWarmth and getTargetWarmth(36.5) and $_warmthNow lt getTargetWarmth(36.5)>>
-			<br><span class="red">Add <<print getTargetWarmth(36.5) - $_warmthNow>> more warmth to be comfortable.</span>
+			<br><span class="red">쾌적해지려면 보온을 <<print getTargetWarmth(36.5) - $_warmthNow>> 더 높이십시오.</span>
 		<<elseif $_maxWarmth and getTargetWarmth(37.5) and $_warmthNow gt getTargetWarmth(37.5)>>
-			<br><span class="red">Remove <<print $_warmthNow - getTargetWarmth(37.5)>> warmth to be comfortable.</span>
+			<br><span class="red">쾌적해지려면 보온을 <<print $_warmthNow - getTargetWarmth(37.5)>> 낮추십시오.</span>
 		<</if>>
 	<<else>>
 		<hr />
@@ -2412,7 +2412,7 @@
 <<widget "wardrobeSwitcher">>
 	<<set _wardrobeOptions to accessibleWardrobeOptions(_args[0])>>
 	<<if _wardrobeOptions.length gt 1>>
-		<div class="no-numberify">Wardrobe:
+		<div class="no-numberify">옷장:
 			<<for _optionIndex, _option range _wardrobeOptions>>
 				<<if _optionIndex gt 0>>|<</if>>
 				<<if $wardrobe_location is _option.key>>
@@ -2457,7 +2457,7 @@
 		<<case "Sydney Beach Changing Room Leave">>
 			<<set _earSlimeEnableSwimwear to true>>
 			<<if $earSlime.forcedCommando isnot undefined and !$worn.under_lower.type.includes("naked") and $hypnosis_traits?.silence isnot 1>>
-				<span class="red">The <<slimeWord>> in your ear refuses to allow you to leave with <<underwearTypeText>> on.</span>
+				<span class="red">귓속의 <<slimeWord>>【이가】 <<underwearTypeText>>【을를】 입은 채로 나가는 것을 허락하지 않는다.</span>
 			<<elseif $exposed lte 1>>
 				<<getouticon>><<link [[떠난다|Sydney Beach Leave]]>><<cleanupOnWardrobeExit>><</link>>
 			<<else>>
@@ -2500,17 +2500,17 @@
 				이런 모습으로 나갈 수는 없다!
 			<</if>>
 		<<case "Arcology Hotel Wardrobe">>
-			<<link [[Close the wardrobe|Arcology Hotel Room]]>><<cleanupOnWardrobeExit>><</link>>
+			<<link [[옷장을 닫는다|Arcology Hotel Room]]>><<cleanupOnWardrobeExit>><</link>>
 		<<case "Arcology Ship Wardrobe">>
-			<<link [[Close the wardrobe|Arcology Ship Cabin]]>><<cleanupOnWardrobeExit>><</link>>
+			<<link [[옷장을 닫는다|Arcology Ship Cabin]]>><<cleanupOnWardrobeExit>><</link>>
 		<<case "Underground Colosseum Locker">>
-			<<getouticon>><<link [[Leave|Underground Colosseum Washroom]]>><<cleanupOnWardrobeExit>><</link>>
+			<<getouticon>><<link [[떠난다|Underground Colosseum Washroom]]>><<cleanupOnWardrobeExit>><</link>>
 		<<case "Dance Studio Locker">>
-			<<getouticon>><<link [[Leave|Dance Studio Changing Room]]>><<cleanupOnWardrobeExit>><</link>>
+			<<getouticon>><<link [[떠난다|Dance Studio Changing Room]]>><<cleanupOnWardrobeExit>><</link>>
 		<<case "Lake Stash">>
-			<<getouticon>><<link [[Leave|Lake Shore]]>><<cleanupOnWardrobeExit>><</link>>
+			<<getouticon>><<link [[떠난다|Lake Shore]]>><<cleanupOnWardrobeExit>><</link>>
 		<<case "MMA Gym Locker">>
-			<<getouticon>><<link [[Leave|MMA Gym Changing Room]]>><<cleanupOnWardrobeExit>><</link>>
+			<<getouticon>><<link [[떠난다|MMA Gym Changing Room]]>><<cleanupOnWardrobeExit>><</link>>
 		<<case "School Pool Wardrobe">>
 			<<if $changingRoomGender is "boys">>
 				<<getouticon>><<link [[떠난다|School Boy Changing Room]]>><<cleanupOnWardrobeExit>><</link>>
@@ -2540,7 +2540,7 @@
 		<<case "Bird Tower Wardrobe">>
 			<<link [[닫는다|Bird Tower]]>><<cleanupOnWardrobeExit>><</link>>
 		<<case "Water Dragon Nest Wardrobe">>
-			<<link [[Close the chest|Water Dragon Nest]]>><<cleanupOnWardrobeExit>><</link>>
+			<<link [[상자를 닫는다|Water Dragon Nest]]>><<cleanupOnWardrobeExit>><</link>>
 		<<case "Mansion Wardrobe">>
 			<<if $avery_party>>
 				<<link [[나간다|Mansion Party Quinn Change 2]]>><<cleanupOnWardrobeExit>><</link>>
@@ -2594,11 +2594,11 @@
 <<if pocketAvailable()>>
 	<!-- Serving outfits can be folded up and carried to somebody who could wear one for work. See pocket-outfit.js. -->
 	<<if pocketOutfitCarrying()>>
-		<<link [[Serving outfit in your bag|Pocket Pack Outfit]]>><<set $pocketOutfitReturn to "Wardrobe">><</link>>
+		<<link [[가방 속의 서빙 복장|Pocket Pack Outfit]]>><<set $pocketOutfitReturn to "Wardrobe">><</link>>
 		<span class="teal">(<<= pocketOutfitName().toLocaleUpperFirst()>>)</span>
 		<br>
 	<<elseif pocketOutfitCandidates().length gt 0>>
-		<<link [[Fold up a serving outfit|Pocket Pack Outfit]]>><<set $pocketOutfitReturn to "Wardrobe">><</link>>
+		<<link [[서빙 복장을 접어 넣는다|Pocket Pack Outfit]]>><<set $pocketOutfitReturn to "Wardrobe">><</link>>
 		<br>
 	<</if>>
 <</if>>
@@ -2713,14 +2713,14 @@
 <div id="wardrobewear"><<wardrobewear>></div>
 <div id="wardrobeExits"><<wardrobeExits>></div>
 <br>
-<<mirroricon>><<link [[Mirror|Office Agency Mirror]]>><<preMirror>><</link>>
+<<mirroricon>><<link [[거울|Office Agency Mirror]]>><<preMirror>><</link>>
 
 <<wardrobe>>
 
 :: Office Agency Mirror
 <<effects>><<location "officeBuilding">>
 
-<<lockericon>><<link [[Step away|Office Agency Changing Room]]>><<unset $mirrorMenu>><<unset $bodywritingSet>><<postMirror>><</link>>
+<<lockericon>><<link [[물러선다|Office Agency Changing Room]]>><<unset $mirrorMenu>><<unset $bodywritingSet>><<postMirror>><</link>>
 <br>
 
 <<mirror>>
@@ -2778,7 +2778,7 @@
 		<<set _value += Math.floor(tailorClothingCost(_items[_i], _label) * 0.2)>>
 	<</for>>
 <</for>>
-It will earn you <<printmoney _value>>.
+판매하면 <<printmoney _value>>【을를】 벌게 됩니다.
 <br><br>
 <<link [[예|Wardrobe Sale Crate Result]]>><</link>>
 <br>
@@ -2810,7 +2810,7 @@ It will earn you <<printmoney _value>>.
 		<</if>>
 	<</for>>
 <</for>>
-The driver takes the crate away, leaving <<income _value "tailor">> in its place.
+운전기사가 상자를 가져가고, 그 자리에 <<income _value "tailor">>【을를】 남긴다.
 <br><br>
 <<link [[계속하기|$wardrobeReturnLink]]>>
 	<<unset $wardrobeReturnLink>>
@@ -3050,7 +3050,7 @@ The driver takes the crate away, leaving <<income _value "tailor">> in its place
 <</for>>
 <<if _value gt 5000>>
 	<<money `-(_value - 5000)` "tailor">>
-	The driver takes <<printprice `_value - 5000`>> and the crate away.
+	운전기사가 <<printprice `_value - 5000`>>【와과】 상자를 가져간다.
 <<else>>
 	운전기사가 상자를 가져간다.
 <</if>>
