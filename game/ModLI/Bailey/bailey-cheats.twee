@@ -4,45 +4,45 @@
 	<<run C.npc.Bailey.dom = typeof C.npc.Bailey.dom === "number" && !isNaN(C.npc.Bailey.dom) ? C.npc.Bailey.dom : 50>>
 	<<run C.npc.Bailey.love = typeof C.npc.Bailey.love === "number" && !isNaN(C.npc.Bailey.love) ? C.npc.Bailey.love : 0>>
 	<div class="settingsToggleItem">
-		<span class="gold">Core Stats</span>
-		<<numberStepper "<<symbol 'dominance-bailey'>> Dominance" `C.npc.Bailey.dom` { callback: value => { C.npc.Bailey.dom = value }, min: 0, max: 100 }>>
-		<<numberStepper "<<symbol love>> Respect" `C.npc.Bailey.love` { callback: value => { C.npc.Bailey.love = value }, min: 0, max: 100 }>>
-		<<numberStepper "<<symbol lust>> Lust" `C.npc.Bailey.lust` { callback: value => { C.npc.Bailey.lust = value }, min: 0, max: 100 }>>
+		<span class="gold">핵심 수치</span>
+		<<numberStepper "<<symbol 'dominance-bailey'>> 지배력" `C.npc.Bailey.dom` { callback: value => { C.npc.Bailey.dom = value }, min: 0, max: 100 }>>
+		<<numberStepper "<<symbol love>> 존중" `C.npc.Bailey.love` { callback: value => { C.npc.Bailey.love = value }, min: 0, max: 100 }>>
+		<<numberStepper "<<symbol lust>> 욕정" `C.npc.Bailey.lust` { callback: value => { C.npc.Bailey.lust = value }, min: 0, max: 100 }>>
 	</div>
 	<div class="settingsToggleItem">
-		<span class="gold">Stockholm Syndrome</span>
+		<span class="gold">스톡홀름 증후군</span>
 		/* The scenes already seen set a floor that syncBaileyDom restores every passage, so the stepper starts there instead of silently reverting.
 		Clear the scene record below to drop under it. */
 		<<set _stockholmFloor to baileyStockholmFloor()>>
-		<<numberStepper "Stockholm Points" `V.syndromeBaileyBuild` { callback: value => { V.syndromeBaileyBuild = value }, min: _stockholmFloor, max: baileyStockholmFloorMax(), step: 1, percentage: false }>>
+		<<numberStepper "스톡홀름 포인트" `V.syndromeBaileyBuild` { callback: value => { V.syndromeBaileyBuild = value }, min: _stockholmFloor, max: baileyStockholmFloorMax(), step: 1, percentage: false }>>
 		<<if _stockholmFloor gt 0>>
-			<<link [[Clear earned Stockholm points|$passage]]>><<set $baileyStockholmPoints to {}>><<set $syndromeBaileyBuild to 0>><</link>>
+			<<link [[얻은 스톡홀름 포인트를 지운다|$passage]]>><<set $baileyStockholmPoints to {}>><<set $syndromeBaileyBuild to 0>><</link>>
 			<br>
-			<span class="pink">Forgets which Stockholm scenes you've seen, releasing the minimum of _stockholmFloor.</span>
+			<span class="pink">어떤 스톡홀름 장면을 봤는지 기록을 지워서 _stockholmFloor 하한선을 해제합니다.</span>
 			<br>
 		<</if>>
-		<<numberStepper "Times Offered" `V.baileyOffered` { callback: value => { V.baileyOffered = value }, min: 0, step: 1, percentage: false }>>
-		<<numberStepper "Wraith Encounters" `V.baileyWraithSeen` { callback: value => { V.baileyWraithSeen = value }, min: 0, step: 1, percentage: false }>>
+		<<numberStepper "제안 횟수" `V.baileyOffered` { callback: value => { V.baileyOffered = value }, min: 0, step: 1, percentage: false }>>
+		<<numberStepper "원혼 조우 횟수" `V.baileyWraithSeen` { callback: value => { V.baileyWraithSeen = value }, min: 0, step: 1, percentage: false }>>
 		<br>
 		<<if $syndromeBailey>>
-			<<link [[Deactivate Stockholm|$passage]]>><<set $syndromeBailey to false>><<set $baileyTitle to "Bailey">><<if $worn.neck.name is "Bailey's collar">><<set $worn.neck.cursed to 0>><<generalUndress "wardrobe" "neck">><</if>><</link>>
+			<<link [[스톡홀름을 비활성화한다|$passage]]>><<set $syndromeBailey to false>><<set $baileyTitle to "Bailey">><<if $worn.neck.name is "Bailey's collar">><<set $worn.neck.cursed to 0>><<generalUndress "wardrobe" "neck">><</if>><</link>>
 			<br>
-			<span class="pink">Removes Bailey's collar from your neck.</span>
+			<span class="pink">당신의 목에서 베일리의 목줄을 제거합니다.</span>
 		<<else>>
-			<<link [[Activate Stockholm|$passage]]>><<set $syndromeBailey to true>><<set $syndromeBaileyBuild to Math.max($syndromeBaileyBuild, 5)>><<run C.npc.Bailey.dom = Math.max(C.npc.Bailey.dom, 100)>><<baileySeenAdd "collar">><<if $worn.neck.name is "Bailey's collar">><<set $worn.neck.cursed to 1>><<else>><<if $worn.neck.cursed is 1>><<set $worn.neck.cursed to 0>><</if>><<set _collarIdx to setup.clothes.neck.findIndex(function(item) { return item.name === "Bailey's collar"; })>><<if _collarIdx gte 0>><<neckwear _collarIdx>><</if>><</if>><</link>>
+			<<link [[스톡홀름을 활성화한다|$passage]]>><<set $syndromeBailey to true>><<set $syndromeBaileyBuild to Math.max($syndromeBaileyBuild, 5)>><<run C.npc.Bailey.dom = Math.max(C.npc.Bailey.dom, 100)>><<baileySeenAdd "collar">><<if $worn.neck.name is "Bailey's collar">><<set $worn.neck.cursed to 1>><<else>><<if $worn.neck.cursed is 1>><<set $worn.neck.cursed to 0>><</if>><<set _collarIdx to setup.clothes.neck.findIndex(function(item) { return item.name === "Bailey's collar"; })>><<if _collarIdx gte 0>><<neckwear _collarIdx>><</if>><</if>><</link>>
 			<br>
-			<span class="teal">Fixes Bailey's collar on your neck. Anything worn there is returned to your wardrobe.</span>
+			<span class="teal">당신의 목에 베일리의 목줄을 고정합니다. 그곳에 착용한 것은 옷장으로 돌아갑니다.</span>
 		<</if>>
 	</div>
 	<div class="settingsToggleItemWide">
-		<span class="gold">Title System</span> <mouse class="tooltip linkBlue">(?)<span>Lets you pick a custom name for the player to call Bailey (a pet name or honorific), used in Bailey's dialogue. Normally earned through the Stockholm storyline, unlock it here to set a title without progressing that content.</span></mouse>
+		<span class="gold">호칭 시스템</span> <mouse class="tooltip linkBlue">(?)<span>플레이어가 베일리를 부를 이름(애칭이나 경칭)을 직접 정해, 베일리의 대사에 쓸 수 있게 합니다. 보통은 스톡홀름 이야기를 진행하며 얻지만, 여기서 해제하면 해당 내용을 진행하지 않고도 호칭을 정할 수 있습니다.</span></mouse>
 		<br>
 		<<if $baileyTitle isnot "Bailey">>
-			<<link [[Lock Title System|$passage]]>><<set $baileyTitle to "Bailey">><</link>>
+			<<link [[호칭 시스템을 잠근다|$passage]]>><<set $baileyTitle to "Bailey">><</link>>
 		<</if>>
 		<<if $baileyTitle isnot "Bailey">>
 			<br>
-			<span class="description">Current title: <<= $baileyTitle>></span>
+			<span class="description">현재 호칭: <<= $baileyTitle>></span>
 		</div>
 	<</if>>
 <</widget>>
