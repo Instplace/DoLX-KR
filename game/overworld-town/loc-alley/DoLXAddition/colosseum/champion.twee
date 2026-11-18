@@ -4,64 +4,64 @@
 	<<set $daily.colosseumChampionBooking to 1>>
 	<<if random(1, 100) lte 35>>
 		<<set $xchange.colosseum.matchFix to "throw">><<money 150000 "colosseumFix">><<set $xchange.colosseum.fixes += 1>>
-		The receptionist slides an envelope across the desk. "<span class="gold">Fifteen hundred</span>. The gallery wants you to lose this fight on purpose, so fight normally until your opponent puts you down, then stay there."
+		접수원이 봉투를 책상 너머로 밀어 준다. "<span class="gold">1500</span>. 관람석 쪽에서 네가 이 경기를 일부러 지길 바라고 있어. 상대가 널 쓰러뜨릴 때까지는 평소처럼 싸우고, 그다음엔 그대로 누워 있어."
 		<br><br>
-		<<link [[Prepare for the booked fight|Underground Colosseum Prepare Ready]]>><</link>>
+		<<link [[예약된 경기를 준비한다|Underground Colosseum Prepare Ready]]>><</link>>
 	<<elseif !colosseumDrugStage() and random(1, 100) lte 45>>
-		An attendant puts a capped medicine cup beside your booking slip. "House drug. It <span class="gold">reduce most of the pain</span> for an hour, but it won't stop you getting injured.
-		When it wears off, you'll feel detached and confused for a couple of hours. Don't book another fight until that passes."
+		직원이 예약 전표 옆에 뚜껑 덮인 약 컵을 놓는다. "이 집 약이야. 한 시간 동안 <span class="gold">통증 대부분을 줄여 주지만</span>, 다치는 건 막아 주지 않아.
+		약효가 떨어지면 두어 시간 동안 멍하고 혼란스러울 거야. 그게 지나기 전에는 경기를 또 예약하지 마."
 		<br><br>
-		<<link [[Take the dose and prepare|Underground Colosseum Prepare Ready]]>><<set $xchange.colosseum.drugUntil to $timeStamp + 3600>><</link>>
+		<<link [[약을 먹고 준비한다|Underground Colosseum Prepare Ready]]>><<set $xchange.colosseum.drugUntil to $timeStamp + 3600>><</link>>
 		<br>
-		<<link [[Refuse the dose and prepare|Underground Colosseum Prepare Ready]]>><</link>>
+		<<link [[약을 거절하고 준비한다|Underground Colosseum Prepare Ready]]>><</link>>
 	<<else>>
-		The receptionist pushes your booking slip across the desk. "Your name's up. Get downstairs. Keep the crowd waiting and they'll find somebody else to bet on."
+		접수원이 예약 전표를 책상 너머로 밀어 준다. "네 이름이 올라왔어. 아래층으로 내려가. 관중을 기다리게 하면 다들 다른 쪽에 돈을 걸 거야."
 		<br><br>
-		<<link [[Prepare for the booked fight|Underground Colosseum Prepare Ready]]>><</link>>
+		<<link [[예약된 경기를 준비한다|Underground Colosseum Prepare Ready]]>><</link>>
 	<</if>>
 <<else>>
-	The receptionist checks your next booking. "Same rank as you. Get downstairs."
+	접수원이 네 다음 예약을 확인한다. "너랑 같은 등급이야. 아래층으로 내려가."
 	<br><br>
-	<<link [[Prepare for the booked fight|Underground Colosseum Prepare Ready]]>><</link>>
+	<<link [[예약된 경기를 준비한다|Underground Colosseum Prepare Ready]]>><</link>>
 <</if>>
 <br>
 
 :: Underground Colosseum Gallery Desk
 <<set $outside to 0>><<set $location to "colosseum">><<effects>>
-The clerk closes a drawer as you approach. Through the glass behind the desk, a worker is cleaning the pit between fights.
-"You booked? Then get downstairs. Don't stand around here."
+당신이 다가가자 사무원이 서랍을 닫는다. 책상 뒤 유리 너머에서는 일꾼 하나가 경기 사이에 경기장을 청소하고 있다.
+"예약했어? 그럼 아래층으로 내려가. 여기서 얼쩡거리지 마."
 <br><br>
 <<if $xchange.colosseum.ending is "inside">>
 	<<set _records to $xchange.colosseum.records>>
 	<<if !_records or _records.count gte 8>>
-		You have copies showing that eight gallery members paid the Colosseum to change opponents, reduce fighters' pay, buy debts, or decide match results in advance.
+		당신에게는 갤러리 회원 여덟 명이 콜로세움에 돈을 내고 상대를 바꾸게 하거나, 선수들의 출전료를 깎게 하거나, 빚을 사들이게 하거나, 경기 결과를 미리 정하게 했다는 사실을 보여 주는 사본이 있다.
 		<br><br>
 		<<if (!_records or _records.count is 8) and $xchange.colosseum.debt gt 0>>
-			<<link [[Use the copies to demand your debt be cleared|Underground Colosseum Records Leverage]]>><</link>>
+			<<link [[사본을 이용해 빚을 지워 달라고 요구한다|Underground Colosseum Records Leverage]]>><</link>>
 			<br><br>
 		<<elseif _records?.count is 9>>
-			The house has already cleared your debt after your demand. You still have the copies.
+			당신의 요구 후 이 집은 이미 당신의 빚을 지웠다. 사본은 아직 당신에게 있다.
 			<br><br>
 		<<else>>
-			You do not owe the house anything at the moment. You keep the copies in case you need them later.
+			지금 당신은 이 집에 빚진 것이 없다. 나중에 필요할 때를 대비해 사본을 간직한다.
 			<br><br>
 		<</if>>
 	<<else>>
-		<span class="small-description">Records copied: <<= _records.count>> / 8.</span>
+		<span class="small-description">복사한 기록: <<= _records.count>> / 8.</span>
 		<br>
 		<<if $timeStamp gte _records.nextAt>>
-			Workers regularly bring betting money to the desk. The clerk leaves to deal with them, giving you a chance to copy a new page from the record book.
+			일꾼들이 정기적으로 판돈을 카운터로 가져온다. 사무원이 그걸 처리하러 자리를 비우자, 당신이 기록부에서 새 페이지를 복사할 기회가 생긴다.
 			<br><br>
-			<<link [[Wait for the clerk to leave, then copy the page (0:20)|Underground Colosseum Copy Records]]>><</link>>
+			<<link [[사무원이 자리를 뜰 때까지 기다렸다가 페이지를 복사한다 (0:20)|Underground Colosseum Copy Records]]>><</link>>
 			<<skill_difficulty `currentSkillValue("skulduggery")` "Skulduggery" 0 1000>>
 			<br><br>
 		<<else>>
-			There will not be another safe chance for about <<= Math.ceil((_records.nextAt - $timeStamp) / 3600)>> hours.
+			앞으로 <<= Math.ceil((_records.nextAt - $timeStamp) / 3600)>>시간쯤은 안전한 기회가 없을 것이다.
 		<</if>>
 		<br><br>
 	<</if>>
 <</if>>
-<<link [[Return to the terraces|Underground Colosseum Terraces]]>><</link>>
+<<link [[관람석으로 돌아간다|Underground Colosseum Terraces]]>><</link>>
 <br>
 
 :: Underground Colosseum Copy Records
@@ -70,101 +70,101 @@ The clerk closes a drawer as you approach. Through the glass behind the desk, a 
 	<<if random(1, 1000) lte Math.clamp(currentSkillValue("skulduggery"), 100, 1000)>>
 		<<set $xchange.colosseum.records.count += 1>><<set $xchange.colosseum.records.nextAt to $timeStamp + 518400>><<skulduggeryskilluse>>
 		<<switch $xchange.colosseum.records.count>>
-			<<case 1>>The first page names a gallery member, their seat number, and a cash payment. Beside the payment is an order for one fighter to lose. You copy the name, date, amount, and the clerk's initials.
-			<<case 2>>The second record shows a payment made shortly before a fight. The booking beside it was changed at the same time, replacing one opponent with another. You copy both records so the connection is clear.
-			<<case 3>>The third account shows money taken from injured fighters instead of being paid to them. You copy the member's name, the amounts taken, and the notes saying the fighters still owe more.
-			<<case 4>>The fourth record is for a private fight. The fighter's original payment has been crossed out and replaced with a smaller amount. You copy both figures and the name of the person who approved the change.
-			<<case 5>>The fifth record shows a gallery member paying to make a fighter face someone two ranks above them. You copy the payment and the instruction changing the fight.
-			<<case 6>>The sixth account lists several fights where the winner was decided in advance. You copy the dates, fighter names, and the payments beside each result.
-			<<case 7>>The seventh record shows a gallery member buying several fighters' debts from the house, then charging those fighters more than the amount originally owed. You copy the original debts and the larger amounts added afterwards.
-			<<case 8>>The final receipt gives you the eighth name. You match its reference number to the entry in the record book, copy the payment and instruction, then put everything back where you found it. You now have enough evidence to identify all eight members.
+			<<case 1>>첫 번째 페이지에는 갤러리 회원 한 명의 이름과 좌석 번호, 그리고 현금 지불 내역이 적혀 있다. 지불 내역 옆에는 선수 한 명이 지라는 지시가 있다. 당신은 이름, 날짜, 금액, 그리고 사무원의 이니셜을 베낀다.
+			<<case 2>>두 번째 기록에는 경기 직전에 이루어진 지불이 나와 있다. 그 옆의 예약은 같은 때에 바뀌어, 상대 한 명이 다른 사람으로 교체되어 있다. 당신은 연관이 분명하도록 두 기록을 모두 베낀다.
+			<<case 3>>세 번째 장부에는 다친 선수들에게 지급되어야 할 돈이 오히려 빠져나간 내역이 있다. 당신은 회원의 이름과 빼낸 금액, 그리고 선수들이 아직 더 빚졌다고 적힌 메모를 베낀다.
+			<<case 4>>네 번째 기록은 비공개 경기에 관한 것이다. 선수가 원래 받기로 한 금액은 줄이 그어져 있고 그보다 적은 금액으로 대체되어 있다. 당신은 두 금액과 변경을 승인한 사람의 이름을 베낀다.
+			<<case 5>>다섯 번째 기록에는 갤러리 회원 한 명이 돈을 내고 선수가 자신보다 두 등급 위인 상대와 싸우게 만든 내역이 나온다. 당신은 지불 내역과 경기를 바꾼 지시를 베낀다.
+			<<case 6>>여섯 번째 장부에는 승자가 미리 정해진 여러 경기가 적혀 있다. 당신은 날짜, 선수 이름, 그리고 각 결과 옆의 지불 내역을 베낀다.
+			<<case 7>>일곱 번째 기록에는 갤러리 회원 한 명이 이 집에서 여러 선수의 빚을 사들인 뒤 선수들에게 원래 빚진 금액보다 더 많이 청구한 내역이 나온다. 당신은 원래의 빚과 나중에 덧붙은 더 큰 금액을 베낀다.
+			<<case 8>>마지막 영수증에서 여덟 번째 이름이 나온다. 당신은 영수증의 참조 번호를 기록부의 항목과 맞춰 보고, 지불 내역과 지시를 베낀 다음 모든 것을 찾았던 자리에 되돌려 놓는다. 이제 당신에게는 여덟 명 전원을 밝혀낼 증거가 충분하다.
 		<</switch>>
 		<br><br>
-		You hear someone coming along the corridor. You close the drawer and step away before the clerk returns.
+		복도를 따라 누군가 오는 소리가 들린다. 당신은 서랍을 닫고 사무원이 돌아오기 전에 물러난다.
 	<<else>>
 		<<set $xchange.colosseum.records.nextAt to $timeStamp + 86400>><<set $xchange.colosseum.vipPenalty to 0.5>><<stress 10>><<ggstress>>
-		The key jams while you are trying to close the drawer. The clerk returns before you can free it and slams the drawer shut.
-		"Trying to go through my records? Tsk. Half the pay from your next fight is gone. Now get downstairs, motherfucker!"
+		서랍을 닫으려는데 열쇠가 걸려 버린다. 당신이 열쇠를 빼기도 전에 사무원이 돌아와 서랍을 쾅 닫아 버린다.
+		"내 기록을 뒤지려고? 쯧. 다음 경기 출전료는 절반 날아갔어. 이제 아래층으로 내려가, 이 씨발 새끼야!"
 		<br><br>
-		The clerk takes the key and calls a guard. You leave without copying anything new.<<stress 4>><<gstress>>
+		사무원이 열쇠를 빼앗고 경비원을 부른다. 당신은 아무것도 새로 베끼지 못한 채 자리를 떠난다.<<stress 4>><<gstress>>
 	<</if>>
 <<else>>
-	There is no new record you can safely copy now.
+	지금은 안전하게 베낄 수 있는 새 기록이 없다.
 <</if>>
 <br><br>
-<<link [[Return to the terraces|Underground Colosseum Terraces]]>><<endevent>><</link>>
+<<link [[관람석으로 돌아간다|Underground Colosseum Terraces]]>><<endevent>><</link>>
 <br>
 
 :: Underground Colosseum Records Leverage
 <<set $outside to 0>><<set $location to "colosseum">><<effects>><<pass 2>>
 <<if $xchange.colosseum.ending is "inside" and $xchange.colosseum.debt gt 0 and (!$xchange.colosseum.records or $xchange.colosseum.records.count is 8)>>
-	You place one copied receipt on the desk. "I have seven more like this. Clear my debt, and I won't show them to anyone."
+	당신은 베낀 영수증 한 장을 책상 위에 올려놓는다. "이런 게 일곱 장 더 있어. 내 빚을 지워 줘, 그러면 아무한테도 보여 주지 않을게."
 	<br><br>
-	The clerk reads the copy, then takes it into the back office. A few minutes later, the organiser comes out.
-	"You little shit."
+	사무원이 사본을 읽고는 안쪽 사무실로 가져간다. 몇 분 뒤 주최자가 나온다.
+	"이 쪼끄만 새끼가."
 	<br><br>
-	The organiser tells the clerk to clear your balance. You wait until the full amount is crossed out, then take the slip showing that you owe nothing.
+	주최자가 사무원에게 당신의 잔액을 지우라고 지시한다. 당신은 전액에 줄이 그어질 때까지 기다렸다가, 더 이상 빚이 없다고 적힌 전표를 받는다.
 	<<colosseumDebt `-$xchange.colosseum.debt`>><<set $xchange.colosseum.records to {count: 9, nextAt: 0}>>
 	<br><br>
-	The organiser spits into the bin beside the desk. "That balance is dead. Run up another and you'll pay every fucking penny. We're done bargaining."
+	주최자가 책상 옆 쓰레기통에 침을 뱉는다. "그 잔액은 죽었어. 또 빚을 지면 한 푼도 빠짐없이 갚아야 할 거다. 흥정은 이걸로 끝이야."
 <<else>>
-	You do not have a debt you can clear this way.
+	당신에게는 이런 식으로 지울 수 있는 빚이 없다.
 <</if>>
 <br><br>
-<<link [[Leave the gallery|Underground Colosseum Terraces]]>><</link>>
+<<link [[갤러리를 떠난다|Underground Colosseum Terraces]]>><</link>>
 <br>
 
 :: Underground Colosseum Detention
 <<set $outside to 0>><<set $location to "colosseum">><<effects>><<pass 3>>
-The attendants drag you through the grey door and down the stairs. One keeps your arm twisted behind you until they reach a small room with a bench fixed to the floor.
+직원들이 당신을 회색 문을 지나 계단 아래로 끌고 간다. 한 명이 당신의 팔을 등 뒤로 꺾은 채 바닥에 벤치가 고정된 작은 방에 이를 때까지 놓지 않는다.
 <br><br>
-They push you inside and lock the door. A guard stops at the small window and holds up a charge sheet.
-"Five hundred quid handling fee. Pay through the slot and you can walk out now. Refuse, and it goes on the book with everything else you owe."
+그들은 당신을 방 안으로 밀어 넣고 문을 잠근다. 간수 하나가 작은 창가에 서서 청구서를 들어 보인다.
+"처리 수수료 500파운드. 구멍으로 내면 지금 나갈 수 있어. 거절하면 네가 진 다른 빚이랑 같이 장부에 올라가."
 <br><br>
-The guard points to the bench. "Then you stay in here."
+간수가 벤치를 가리킨다. "그러면 여기 있어."
 <br><br>
-Someone in the next room asks for clean water. The guard tells them to be quiet and walks away.
+옆방에서 누군가 깨끗한 물을 달라고 한다. 간수는 조용히 하라고 말하고는 걸어간다.
 <br><br>
-<<link [[Wait in the room (1:00)|Underground Colosseum Detention Wait]]>><</link>>
+<<link [[방에서 기다린다 (1:00)|Underground Colosseum Detention Wait]]>><</link>>
 <br>
-<<link [[Try to open the latch (0:15)|Underground Colosseum Detention Escape]]>><</link>><<skill_difficulty `currentSkillValue("skulduggery")` "Skulduggery" 0 1000>>
+<<link [[걸쇠를 열어 본다 (0:15)|Underground Colosseum Detention Escape]]>><</link>><<skill_difficulty `currentSkillValue("skulduggery")` "Skulduggery" 0 1000>>
 <br>
 
 :: Underground Colosseum Detention Escape
 <<effects>><<pass 15>>
 <<if random(1, 1000) lte Math.clamp(currentSkillValue("skulduggery"), 100, 1000)>>
-	You remove a loose screw from beneath the bench and push it into the door latch. After several attempts, the latch moves far enough for you to open the door.
+	당신은 벤치 아래에서 헐거운 나사를 빼내어 문 걸쇠에 밀어 넣는다. 몇 번 시도한 끝에 걸쇠가 문을 열 수 있을 만큼 움직인다.
 	<br><br>
-	You leave the room and head upstairs. Near the top, two workers pass with empty crates, and you walk behind them until you reach the pit again.
+	당신은 방을 나와 위층으로 향한다. 꼭대기 근처에서 일꾼 둘이 빈 상자를 들고 지나가고, 당신은 그들 뒤를 따라 다시 경기장에 이를 때까지 걷는다.
 	<br><br>
-	A guard notices your wristband after you are already out of the detention corridor. You escaped the room without paying cash, but the five-hundred-pound fee is still added to your Colosseum debt.
+	구금 복도를 이미 벗어난 뒤에야 한 간수가 당신의 손목 밴드를 알아본다. 당신은 현금을 내지 않고 방을 탈출했지만, 500파운드 수수료는 여전히 콜로세움 빚에 더해진다.
 	<<colosseumDebt 50000>>
 <<else>>
-	You try to move the latch with the screw, but it makes enough noise for the guard to hear. The door opens and the guard grabs your wrist before you can hide what you are doing.
-	"Trying to break out? Fine. It's a grand now."
+	당신은 나사로 걸쇠를 움직여 보지만, 간수가 들을 만큼 소리가 크다. 문이 열리고, 당신이 하던 짓을 숨기기도 전에 간수가 당신의 손목을 붙잡는다.
+	"탈출하려고? 좋아. 이제 천 파운드야."
 	<<pain 5>><<stress 10>><<colosseumDebt 100000>>
 	<br><br>
-	The guard pushes you back towards the desk. The new charge is added to your debt.
+	간수가 당신을 카운터 쪽으로 밀어 보낸다. 새 청구액이 당신의 빚에 더해진다.
 <</if>>
 <br><br>
 <<if $xchange.colosseum.matchFix>>
-	<<link [[Return to the desk|Underground Colosseum Postfight Event]]>><</link>>
+	<<link [[카운터로 돌아간다|Underground Colosseum Postfight Event]]>><</link>>
 <<else>>
-	<<link [[Return to the pit|Underground Colosseum Pit]]>><<endevent>><</link>>
+	<<link [[경기장으로 돌아간다|Underground Colosseum Pit]]>><<endevent>><</link>>
 <</if>>
 <br>
 
 :: Underground Colosseum Detention Wait
 <<set $outside to 0>><<set $location to "colosseum">><<effects>><<pass 40>>
 <<colosseumDebt 50000>>
-The guard writes the five-hundred-pound fee beside your name before leaving. You sit on the bench and wait.
+간수는 떠나기 전에 당신의 이름 옆에 500파운드 수수료를 적는다. 당신은 벤치에 앉아 기다린다.
 <br><br>
-Later, the door unlocks. Three guards enter. One comes towards you while the other two remain near the open door.
-"You chose to stay," the first says. "We've still got time before they need this room again."
+잠시 뒤 문이 열린다. 간수 셋이 들어온다. 한 명은 당신 쪽으로 다가오고, 나머지 둘은 열린 문 근처에 남는다.
+"넌 남겠다고 했어." 첫 번째 간수가 말한다. "이 방이 다시 필요해지기 전까지 아직 시간이 있어."
 <br><br>
-The first guard reaches for you while the other two block the doorway.
+첫 번째 간수가 당신에게 손을 뻗는 동안 나머지 둘이 문간을 막는다.
 <br><br>
-<<link [[Next|Underground Colosseum Detention Molest]]>><<set $molestationstart to 1>><</link>>
+<<link [[다음|Underground Colosseum Detention Molest]]>><<set $molestationstart to 1>><</link>>
 <br>
 
 :: Underground Colosseum Detention Molest
@@ -181,58 +181,58 @@ The first guard reaches for you while the other two block the doorway.
 <br><br>
 <<actionsman>>
 <<if _combatend>>
-	<span id="next"><<link [[Next|Underground Colosseum Detention Molest Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Underground Colosseum Detention Molest Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Underground Colosseum Detention Molest]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Underground Colosseum Detention Molest]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Underground Colosseum Detention Molest Finish
 <<set $outside to 0>><<set $location to "colosseum">><<effects>>
 <<pass 20>><<if $finish is 1>><<encounterEndViolence>><</if>>
-Another fight begins and ends upstairs before the guards finally stop. Two of them leave and start talking about the next fight. The <<person1>><<person>> stays to straighten <<his>> uniform.
+위층에서 또 한 경기가 시작되고 끝난 뒤에야 간수들이 마침내 멈춘다. 둘은 다음 경기 이야기를 하며 나가고, <<person1>><<person>>【은는】 남아 <<his>> 제복을 바로잡는다.
 <br><br>
-<<He>> drops the charge sheet onto the bench. The five-hundred-pound fee is still written beside your name.
+<<He>>【은는】 청구서를 벤치 위에 떨어뜨린다. 500파운드 수수료는 여전히 당신의 이름 옆에 적혀 있다.
 <<stress 8>><<ggstress>>
 <br><br>
 <<clotheson>>
 <<endcombat>>
 <<if $xchange.colosseum.matchFix>>
-	<<link [[Return to the desk|Underground Colosseum Postfight Event]]>><</link>>
+	<<link [[카운터로 돌아간다|Underground Colosseum Postfight Event]]>><</link>>
 <<else>>
-	<<link [[Return to the pit|Underground Colosseum Pit]]>><<endevent>><</link>>
+	<<link [[경기장으로 돌아간다|Underground Colosseum Pit]]>><<endevent>><</link>>
 <</if>>
 <br>
 
 :: Underground Colosseum Champion Disrupt
 <<set $outside to 0>><<set $location to "colosseum">><<effects>>
-You leave the unsigned contract on the desk and head towards the service stairs. A guard sits beside the locked door at the bottom, with the room keys hanging on a hook behind the desk.
+당신은 서명하지 않은 계약서를 책상에 두고 직원용 계단으로 향한다. 아래 잠긴 문 옆에 간수가 앉아 있고, 책상 뒤 고리에는 방 열쇠들이 걸려 있다.
 <br><br>
-The fighters are kept beyond that door, with the delivery exit further down the corridor.
+선수들은 그 문 너머에 갇혀 있고, 복도 더 아래쪽에 배달 출구가 있다.
 <br><br>
-You need the keys to get inside.
+안으로 들어가려면 열쇠가 필요하다.
 <br><br>
 <<if setup.inflation.canAfford(20000, "colosseum")>>
-	<<link [[Pay a worker to call the guard upstairs (<<printprice 20000>> 0:10)|Underground Colosseum Champion Disrupt Open]]>><<money -20000 "colosseum">><<pass 10>><</link>>
+	<<link [[일꾼에게 돈을 주고 간수를 위층으로 불러내게 한다 (<<printprice 20000>> 0:10)|Underground Colosseum Champion Disrupt Open]]>><<money -20000 "colosseum">><<pass 10>><</link>>
 	<br>
 <</if>>
-<<link [[Wait until the guard moves, then slip through (0:15)|Underground Colosseum Champion Disrupt Attempt]]>><</link>><<skill_difficulty `currentSkillValue("skulduggery")` "Skulduggery" 0 1000>>
+<<link [[간수가 움직일 때까지 기다렸다가 몰래 지나간다 (0:15)|Underground Colosseum Champion Disrupt Attempt]]>><</link>><<skill_difficulty `currentSkillValue("skulduggery")` "Skulduggery" 0 1000>>
 <br>
-<<link [[Leave the service stairs|Underground Colosseum Terraces]]>><</link>>
+<<link [[직원용 계단에서 물러난다|Underground Colosseum Terraces]]>><</link>>
 <br>
 
 :: Underground Colosseum Champion Disrupt Attempt
 <<effects>><<pass 5>>
 <<if random(1, 1000) lte Math.clamp(currentSkillValue("skulduggery"), 100, 1000)>>
-	A worker in the storage room calls the guard over. The guard leaves the desk to answer.
+	창고의 일꾼 하나가 간수를 부른다. 간수는 책상을 떠나 대답하러 간다.
 	<br><br>
-	You reach the corridor door before it closes and slip through.
+	당신은 복도 문이 닫히기 전에 도착해 몰래 빠져나간다.
 	<br><br>
-	<<link [[Take the room keys|Underground Colosseum Champion Disrupt Open]]>><</link>>
+	<<link [[방 열쇠를 가져간다|Underground Colosseum Champion Disrupt Open]]>><</link>>
 <<else>>
-	The guard sees you heading for the restricted stairs and grabs your shoulder.
-	"Wrong stairs."
+	간수가 당신이 출입 금지 계단으로 향하는 것을 보고 어깨를 붙잡는다.
+	"계단 잘못 골랐어."
 	<br><br>
-	The guard takes you back to the desk. The clerk marks your name and <span class="red">bans you from the Colosseum for one day</span>.
+	간수가 당신을 카운터로 데려간다. 사무원이 당신의 이름에 표시를 하고 <span class="red">당신을 하루 동안 콜로세움에서 출입 금지시킨다</span>.
 	<<set $xchange.colosseum.banUntil to Time.date.timeStamp + 86400>><<stress 10>><<ggstress>>
 	<br><br>
 	<<link [[떠난다|Industrial Alleyways]]>><<endevent>><</link>>

@@ -3,18 +3,18 @@
 	<<set _cropProgressCount to 0>>
 	<<set _canEstimateCropProgress to !$settings.blindStatsEnabled or currentSkillValue('tending') gte 1000 or $backgroundTraits.includes("greenthumb")>>
 	<<if _canEstimateCropProgress>>
-		<span class="small-description">Days left assume the crops are kept watered.</span>
+		<span class="small-description">남은 일수는 작물에 계속 물을 준다고 가정한 값이다.</span>
 	<<else>>
-		<span class="small-description">Raise tending to 1,000, or have the green thumb background, to estimate exact harvest timing while blind stats are enabled.</span>
+		<span class="small-description">블라인드 스탯이 켜져 있을 때 정확한 수확 시기를 가늠하려면 관리를 1,000까지 올리거나 녹색의 손 특성이 있어야 한다.</span>
 	<</if>>
 
 	<table class="statsTable">
 		<thead>
 			<tr>
-				<th scope="col">Plot</th>
-				<th scope="col">Crop</th>
-				<th scope="col">Water</th>
-				<th scope="col">Harvest</th>
+				<th scope="col">밭</th>
+				<th scope="col">작물</th>
+				<th scope="col">물</th>
+				<th scope="col">수확</th>
 			</tr>
 		</thead>
 
@@ -35,7 +35,7 @@
 						<tbody class="stat">
 							<td data-label="Plot">
 								_locationName<br>
-								<span class="small-description">Plot <<print _plotIndex + 1>></span>
+								<span class="small-description">밭 <<print _plotIndex + 1>></span>
 							</td>
 
 							<<if _plant>>
@@ -44,31 +44,31 @@
 								<td data-label="Crop">_cropName</td>
 							<<else>>
 								<<set _growthDays to undefined>>
-								<td data-label="Crop"><span class="red">Unknown crop: _plot.plant</span></td>
+								<td data-label="Crop"><span class="red">알 수 없는 작물: _plot.plant</span></td>
 							<</if>>
 
 							<td data-label="Water">
 								<<if _plot.stage gte 5>>
-									<span class="green">Ready</span>
+									<span class="green">수확 가능</span>
 								<<elseif _plot.bed is "water">>
-									<span class="blue">Aquatic</span>
+									<span class="blue">수생</span>
 								<<elseif _plot.water is 1>>
-									<span class="green">Watered</span>
+									<span class="green">물 줌</span>
 								<<else>>
-									<span class="purple">Dry</span>
+									<span class="purple">건조</span>
 								<</if>>
 							</td>
 
 							<td data-label="Harvest">
 								<<if _plot.stage gte 5>>
-									<span class="green">Now</span>
+									<span class="green">지금</span>
 								<<elseif !_growthDays>>
-									<span class="red">Unknown</span>
+									<span class="red">알 수 없음</span>
 								<<elseif _canEstimateCropProgress>>
 									<<set _daysLeft to Math.max(Math.ceil(_growthDays - (_plot.days || 0)), 1)>>
 									<span class="orange"><<number _daysLeft>> <<pluralise _daysLeft "day">></span>
 								<<else>>
-									<span class="blue">Unknown</span>
+									<span class="blue">알 수 없음</span>
 								<</if>>
 							</td>
 						</tbody>
@@ -79,7 +79,7 @@
 	</table>
 
 	<<if _cropProgressCount is 0>>
-		No crops are currently planted.
+		현재 심어진 작물이 없다.
 	<</if>>
 <</widget>>
 
@@ -91,46 +91,46 @@
 	<<if Time.schoolDay>>
 		<<switch _alexWakeRoll>>
 			<<case 1>>
-				<<He>> shakes your shoulder. "Up you get. You've got school." <<He>> swings <<his>> legs out of bed.
-				"I'll put something on the stove."
+				<<He>>【은는】 당신의 어깨를 흔든다. "일어나. 학교 가야지." <<He>>【은는】 다리를 침대 밖으로 내린다.
+				"스토브에 뭐 좀 올려 둘게."
 			<<case 2>>
-				You wake to Alex pulling a shirt over <<his>> head. "There you are," <<he>> says.
-				"School today. You're eating before you go, I mean it."
+				당신은 알렉스가 머리 위로 셔츠를 꿰입는 모습을 보며 깬다. "일어났네." <<he>>【이가】 말한다.
+				"오늘 학교 가는 날이야. 먹고 가. 진심이야."
 			<<case 3>>
-				"Oi." Alex flicks your ear. "School. Up." <<His>> voice is gruff,
-				but <<he>> waits until your eyes are open before <<he>> stands.
+				"어이." 알렉스가 당신의 귀를 튕긴다. "학교야. 일어나." <<His>> 목소리는 거칠지만,
+				하지만 <<he>>【은는】 당신이 눈을 뜰 때까지 기다렸다가 일어선다.
 			<<default>>
-				<<He>> presses a kiss to your forehead. "Morning. School day. I'll get breakfast on, you get moving."
+				<<He>>【은는】 당신의 이마에 입을 맞춘다. "좋은 아침. 학교 가는 날이야. 내가 아침 차려 놓을 테니까, 넌 어서 움직여."
 		<</switch>>
 	<<else>>
 		<<switch _alexWakeRoll>>
 			<<case 1>>
-				<<He>> stretches, then yawns. "Morning," <<he>> says. "Animals won't feed themselves. Breakfast first, though."
+				<<He>>【은는】 기지개를 켜고 하품한다. "좋은 아침." <<he>>【이가】 말한다. "동물들이 알아서 밥을 먹진 않으니까. 그래도 아침부터 먹자."
 			<<case 2>>
-				You wake to <<him>> sitting up, looking out at the fields.
-				"Weather's holding," <<he>> says, noticing you. "Morning. I'll get the pan going."
+				당신이 눈을 뜨자 <<him>>【이가】 앉아서 들판을 내다보고 있다.
+				"날씨가 계속 좋네." <<he>>【이가】 당신을 알아채고 말한다. "좋은 아침. 팬 올려 놓을게."
 			<<case 3>>
-				Alex grunts, rubs <<his>> face, and sits up on the edge of the bed.
-				"Morning. Tea first. Everything else after."
+				알렉스는 낮게 끙 소리를 내고 얼굴을 문지르며 침대 가장자리에 걸터앉는다.
+				"좋은 아침. 차부터 마시고, 나머지는 그다음에."
 			<<default>>
-				<<He>> squeezes your shoulder as <<he>> climbs past you. "Sleep all right? I'll start breakfast."
+				<<He>>【은는】 당신을 넘어 침대에서 나오며 당신의 어깨를 꼭 쥔다. "잘 잤어? 아침 준비 시작할게."
 		<</switch>>
 	<</if>>
 	<br><br>
 
 	<<if C.npc.Alex.love gte 60>>
-		<<He>> pauses in the doorway and looks back at you. "Don't lie in too long,"
-		<<he>> says, softer than before. "Breakfast is better with company."
+		<<He>>【은는】 문간에서 멈춰 서서 당신을 돌아본다. "너무 오래 누워 있진 마."
+		<<he>>【이가】 아까보다 부드럽게 말한다. "아침은 같이 먹는 게 더 맛있어."
 		<br><br>
 	<</if>>
 
 	<<set _alexWakeBedPassage to ($bus is "farm_alex_room" ? "Farm Alex Bed" : "Farm Bed")>>
 	<<set $alex_bed to "none">><<unset $bedGuest>>
 
-	<<bedicon "zzz">><<link [[Pull the covers back over yourself|_alexWakeBedPassage]]>><<endevent>><</link>>
+	<<bedicon "zzz">><<link [[이불을 다시 뒤집어쓴다|_alexWakeBedPassage]]>><<endevent>><</link>>
 	<br>
 	<<if $bus is "farm_alex_room">>
-		<<getouticon>><<link [[Get up with Alex|Farm Alex Bedroom]]>>
+		<<getouticon>><<link [[알렉스와 함께 일어난다|Farm Alex Bedroom]]>>
 			<<set $wardrobe_location to "alexFarm">>
 			<<wardrobeSelection true>>
 			<<storeon "farm alex bed" "check">>
@@ -140,7 +140,7 @@
 			<<loadTempHairStyle>>
 		<</link>>
 	<<else>>
-		<<getouticon>><<link [[Get up with Alex|Farm Bedroom]]>><<endevent>>
+		<<getouticon>><<link [[알렉스와 함께 일어난다|Farm Bedroom]]>><<endevent>>
 		<<set $wear_outfit to "clotheson">><<bedclotheson "Farm Bed">><</link>>
 	<</if>>
 	<br>
