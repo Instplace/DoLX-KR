@@ -1,0 +1,370 @@
+:: Widgets DoLX Fishing Gear [widget]
+
+/* The tackle summary shown before you cast */
+<<widget "fishingKitSummary">>
+	<<run fishingEnsure()>>
+	<<set _kitRod to fishingRod()>>
+	<<set _kitReel to fishingReel()>>
+	<div class="fishing-kit">
+		<div class="fishing-kit-row">
+			<<if $options.images is 1>><<icon _kitRod.icon>><</if>>
+			<span class="fishing-kit-label">Rod:</span> <span class="teal"><<= _kitRod.displayName>></span>
+		</div>
+		<div class="fishing-kit-row">
+			<<if $options.images is 1>><<icon _kitReel.icon>><</if>>
+			<span class="fishing-kit-label">Reel:</span> <span class="teal"><<= _kitReel.displayName>></span>
+		</div>
+		<div class="fishing-kit-row">
+			<<if $options.images is 1>>
+				<<if $fishing.currentBait and setup.foodstuff[$fishing.currentBait]>><<baiticon $fishing.currentBait>><<else>><<icon `"fish/hook.png"`>><</if>>
+			<</if>>
+			<span class="fishing-kit-label">Bait:</span>
+			<<if $fishing.currentBait and setup.foodstuff[$fishing.currentBait]>>
+				<span class="teal"><<= baitLabel($fishing.currentBait)>></span>
+			<<else>>
+				<span class="grey">Bare hook</span>
+			<</if>>
+		</div>
+	</div>
+<</widget>>
+
+/* The Tackle tab of the bait overlay */
+<<widget "fishingTackleOverlay">>
+	<<run fishingEnsure()>>
+	<div id="tacklePane"><<fishingTackleContents>></div>
+<</widget>>
+
+<<widget "fishingTackleContents">>
+	<div class="small-description">A rod holds the tension of the fight. A reel decides how much of the water you take back. They are separate pieces, so mix them however suits the fish.</div>
+	<br>
+	<<fishingTackleList "rod">>
+	<<fishingTackleList "reel">>
+	<<pocketPackBaitList>>
+<</widget>>
+
+<<widget "fishingTackleList">>
+	<<set _gearKind to _args[0]>>
+	<<set _gearEquipped to _gearKind is "rod" ? fishingRodKey() : fishingReelKey()>>
+	<section class="pocket-section">
+		<header class="pocket-section-header">
+			<span><<= _gearKind is "rod" ? "Rod" : "Reel">></span>
+		</header>
+		<div class="pocket-slots">
+			<<for _gearEntry range fishingGearList(_gearKind)>>
+			<<if fishingGearOwned(_gearKind, _gearEntry.key) or _gearEntry.config.source is "shop">>
+					<div class="fishing-gear-row">
+						<<if $options.images is 1>><span class="pocket-item-icon"><<icon _gearEntry.config.icon>></span><</if>>
+						<span class="pocket-item-name">
+							<span @class="_gearEntry.key is _gearEquipped ? 'teal' : ''"><<= _gearEntry.config.displayName>></span>
+							<br><span class="small-description"><<= _gearEntry.config.blurb>></span>
+						</span>
+						<span class="pocket-item-actions">
+							<<if !fishingGearOwned(_gearKind, _gearEntry.key)>>
+								<<if fishingGearUnlocked(_gearEntry.config)>>
+									<span class="grey">Buy at the bait shop</span>
+								<<else>>
+									<span class="grey">Locked:</span>
+									<<if _gearEntry.config.unlock.fishCaught>>
+										<span class="grey">catch <<= Math.min(numberOfFishCaught(), _gearEntry.config.unlock.fishCaught)>>/<<= _gearEntry.config.unlock.fishCaught>> fish</span>
+									<</if>>
+									<<if _gearEntry.config.unlock.requestsCompleted>>
+										<span class="grey">; finish <<= Math.min(Number($fishing.baitShopRequestsCompleted) || 0, _gearEntry.config.unlock.requestsCompleted)>>/<<= _gearEntry.config.unlock.requestsCompleted>> bait shop requests</span>
+									<</if>>
+								<</if>>
+							<<elseif _gearEntry.key is _gearEquipped>>
+								<span class="green">Equipped</span>
+							<<else>>
+								<<capture _gearKind _gearEntry>>
+									<<link "Equip">>
+										<<run fishingGearEquip(_gearKind, _gearEntry.key)>>
+										<<run pocketCommit()>>
+										<<replace #tacklePane>><<fishingTackleContents>><</replace>>
+									<</link>>
+								<</capture>>
+							<</if>>
+						</span>
+					</div>
+				<</if>>
+			<</for>>
+		</div>
+	</section>
+<</widget>>
+
+/* Packing bait into the POCKET */
+<<widget "refreshBaitPack">>
+	<<if elementExists("#tacklePane")>>
+		<<replace #tacklePane>><<fishingTackleContents>><</replace>>
+	<<elseif elementExists("#baitPackPane")>>
+		<<replace #baitPackPane>><<pocketPackBaitList>><</replace>>
+	<</if>>
+<</widget>>
+
+<<widget "pocketPackBait">>
+	<<run pocketSyncBag()>>
+	<div id="baitPackPane"><<pocketPackBaitList>></div>
+<</widget>>
+
+<<widget "pocketPackBaitList">>
+	<<run fishingEnsure()>>
+	<<run pocketSyncBag()>>
+	<<set _baitPackCapacity to pocketCarryCapacity()>>
+	<<set _baitPackUsed to $pocket.bag.slots.length>>
+	<<set _baitPackKeys to pocketBaitList()>>
+	<section class="pocket-section">
+		<header class="pocket-section-header">
+			<span>Bait you're carrying</span>
+			<span @class="_baitPackUsed gte _baitPackCapacity ? 'red' : 'blue'"><<= _baitPackUsed>>/<<= _baitPackCapacity>> slots used</span>
+		</header>
+		<div class="small-description">One slot per kind, however many you have. The can takes one slot whether it's full or empty.</div>
+		<<if _baitPackKeys.length is 0>>
+			<div class="pocket-empty">You have no bait to pack.</div>
+		<<else>>
+			<div class="pocket-arrange">
+				<<for _baitPackKey range _baitPackKeys>>
+					<div class="pocket-arrange-row">
+						<span class="pocket-arrange-name">
+							<<if $options.images is 1>><<icon `pocketBaitIconPath(_baitPackKey)`>><</if>>
+							<<= pocketBaitName(_baitPackKey)>>
+							<span class="gold">(<<= pocketBaitDetail(_baitPackKey)>>)</span>
+						</span>
+						<<capture _baitPackKey>>
+							<<if pocketCarrying("bait", _baitPackKey)>>
+								<<link "Take out">>
+									<<run pocketBaitToggle(_baitPackKey)>>
+									<<refreshBaitPack>>
+								<</link>>
+							<<elseif _baitPackUsed gte _baitPackCapacity>>
+								<span class="grey"><<= pocketBagName().toLocaleUpperFirst()>> full</span>
+							<<else>>
+								<<link "Pack">>
+									<<run pocketBaitToggle(_baitPackKey)>>
+									<<refreshBaitPack>>
+								<</link>>
+							<</if>>
+						<</capture>>
+					</div>
+				<</for>>
+			</div>
+		<</if>>
+	</section>
+<</widget>>
+
+/* Catching a small one */
+/* Shown the first time the player catches a small fish. */
+<<widget "smallCatchNotice">>
+	<<if fishCatchCount(_args[0]) gt 1>>
+		<br>
+		<span class="green"><<= fishCatchCount(_args[0])>> of them</span> came up on the same hook.
+	<</if>>
+	<<set _baitHint to fishBaitHint(_args[0])>>
+	/* The catch text already names an undersized fish as its small variant */
+	<<if _baitHint>>
+		<br>
+		<span class="green"><<= _baitHint.toUpperFirst()>> make good live bait for something bigger.</span>
+	<</if>>
+<</widget>>
+
+/* The bait shop */
+<<widget "baitShopTackle">>
+	<<run fishingEnsure()>>
+
+	/* The can. Bought once, refilled after that. */
+	<<if !wormCanOwned()>>
+		<<set _canPrice to wormCanBuyPrice()>>
+		<<icon `"fish/mod/wormcan.png"`>>
+		<<if fishingAfford(_canPrice)>>
+			<<link [["A can of worms, filled (" + formatMoney(fishingPrice(_canPrice)) + ")"|Bait Shop]]>>
+				<<money `-_canPrice` "fishing">>
+				<<run wormCanBuy()>>
+				<<set $fishing.baitShopAmbient to "boughtWormCan">>
+				<<endevent>>
+			<</link>>
+		<<else>>
+			A can of worms, filled (<<printprice _canPrice>>). <span class="blue">You can't afford it.</span>
+		<</if>>
+		<br>
+	<<elseif wormCanCount() lt wormCanSize()>>
+		<<set _refillPrice to wormCanRefillPrice()>>
+		<<icon `"fish/mod/wormcan.png"`>>
+		<<if fishingAfford(_refillPrice)>>
+			<<link [["Refill your can of worms, " + wormCanCount() + "/" + wormCanSize() + " (" + formatMoney(fishingPrice(_refillPrice)) + ")"|Bait Shop]]>>
+				<<money `-_refillPrice` "fishing">>
+				<<run wormCanRefill()>>
+				<<set $fishing.baitShopAmbient to "refilledWormCan">>
+				<<endevent>>
+			<</link>>
+		<<else>>
+			Refill your can of worms, <<= wormCanCount()>>/<<= wormCanSize()>> (<<printprice _refillPrice>>). <span class="blue">You can't afford it.</span>
+		<</if>>
+		<br>
+	<<else>>
+		<<icon `"fish/mod/wormcan.png"`>><span class="grey">Your can of worms is full, <<= wormCanCount()>>/<<= wormCanSize()>>.</span>
+		<br>
+	<</if>>
+
+	/* Rods and reels. */
+	<<baitShopGearStock "rod">>
+	<<baitShopGearStock "reel">>
+<</widget>>
+
+<<widget "baitShopGearStock">>
+	<<set _shopGearKind to _args[0]>>
+	<<for _shopGear range fishingGearList(_shopGearKind)>>
+		<<capture _shopGearKind _shopGear>>
+			<<if _shopGear.config.source is "shop" and !fishingGearOwned(_shopGearKind, _shopGear.key)>>
+				<<if $options.images is 1>><<icon _shopGear.config.icon>><</if>>
+			<<if !fishingGearUnlocked(_shopGear.config)>>
+				<span class="grey"><<= _shopGear.config.displayName>> | Locked: catch <<= Math.min(numberOfFishCaught(), _shopGear.config.unlock.fishCaught)>>/<<= _shopGear.config.unlock.fishCaught>> fish<<if _shopGear.config.unlock.requestsCompleted>>; finish <<= Math.min(Number($fishing.baitShopRequestsCompleted) || 0, _shopGear.config.unlock.requestsCompleted)>>/<<= _shopGear.config.unlock.requestsCompleted>> bait shop requests<</if>>.</span>
+			<<elseif fishingAfford(_shopGear.config.price)>>
+				<<link [[_shopGear.config.displayName + " (" + formatMoney(fishingPrice(_shopGear.config.price)) + ")"|Bait Shop]]>>
+					<<money `-_shopGear.config.price` "fishing">>
+					<<run fishingGearGive(_shopGearKind, _shopGear.key)>>
+					<<run fishingGearEquip(_shopGearKind, _shopGear.key)>>
+					<<set $fishing.baitShopAmbient to "boughtTackle">>
+					<<set $fishing.baitShopAmbientGear to _shopGear.config.displayName>>
+					<<endevent>>
+				<</link>>
+			<<else>>
+				<<= _shopGear.config.displayName>> (<<printprice _shopGear.config.price>>). <span class="blue">You can't afford it.</span>
+			<</if>>
+			<br>
+			<</if>>
+		<</capture>>
+	<</for>>
+<</widget>>
+
+/* The journal */
+/* One row of fish icons for a spot: caught ones show, the rest stay question marks. */
+<<widget "fishingLocationGrid">>
+	<div class="itemCollectible">
+		<<for _gridFishKey range _args[1]>>
+			<<if $fishing.record[_gridFishKey]?.foundIn.includes(_args[0])>>
+				<div class="item" @tooltip="fishDisplayName(_gridFishKey).toUpperFirst()">
+					<<icon `fishRecordConfig(_gridFishKey).icon`>>
+				</div>
+			<<else>>
+				<div class="item unknown" tooltip="Unknown fish">
+					<<mysteryicon>>
+				</div>
+			<</if>>
+		<</for>>
+	</div>
+<</widget>>
+
+/* The record cards for a set of fish. Bait fish get their own list rather than sitting among the
+   things you catch with them. */
+<<widget "fishingRecordList">>
+	<div class="fishingRecords">
+		<<for _recordFishKey range _args[0]>>
+			<<set _fishRecord to $fishing.record[_recordFishKey]>>
+			<<if _fishRecord and _fishRecord.numCaught gt 0>>
+				<<set _fishConfig to fishRecordConfig(_recordFishKey)>>
+				<<set _fishName to fishDisplayName(_recordFishKey)>>
+				<<set _largestSizePercent to (_fishRecord.largest - _fishConfig.minSize) / (_fishConfig.maxSize - _fishConfig.minSize)>>
+				<div class="fishingRecord">
+					<div class="item" @tooltip="_fishName.toUpperFirst()">
+						<<icon `_fishConfig.icon`>>
+					</div>
+					<div>
+						<span class="gold bold"><<= _fishName.toUpperFirst()>></span><br>
+						Caught: <<= _fishRecord.numCaught>><br>
+						Biggest: <<= _fishRecord.largest>> cm
+						<<if _largestSizePercent gte 1>>
+							<span class="journalFishingRecordStar" tooltip="Biggest possible!"><<iconUi "star-gold.png">></span>
+						<</if>>
+					</div>
+				</div>
+			<<else>>
+				<div class="fishingRecord">
+					<div class="item unknown" tooltip="Unknown fish">
+						<<mysteryicon>>
+					</div>
+				</div>
+			<</if>>
+		<</for>>
+	</div>
+<</widget>>
+
+:: Fishing Bone Tackle
+<<effects>>
+<<set _boneReturn to fishingWaitPassage($bus)>>
+<<set _bonePiece to boneFindTake()>>
+<<if !_bonePiece>>
+	You reel your line back in, but there is nothing caught on the hook.
+	<br><br>
+	<<link [[Next|_boneReturn]]>><</link>>
+<<else>>
+	<<if _bonePiece is "rod">>
+		As you start reeling in, something heavy drags beneath the water. It does not pull away or fight against you,
+		so you slowly bring it towards the surface.
+		<br><br>
+		A long, pale object rises from the water. You pull it close enough to grab, then lift it out.
+		<br><br>
+		It looks like an old fishing rod, split into several sections. Each section is connected by a hard joint rather
+		than the metal fittings you would expect on a normal rod. Grey fishing line is still wrapped around part of it.
+		<br><br>
+		You turn the rod over in your hands. It is surprisingly light, but it barely bends when you press against it.
+		Looking closer at the pale surface, you realise there is no wood underneath.
+		<br><br>
+		The rod has been made from bone.<<awareness 2>><<gawareness>>
+		<br><br>
+		<span class="purple">You have found the Bone Rod.</span> The rod barely bends under pressure,
+		making it harder for a hooked fish to pull the line around. This also tires the fish more quickly.
+	<<else>>
+		You feel something strike the line while you reel it in. A moment later,
+		the hook catches on something beneath the water.
+		<br><br>
+		Whatever you caught does not struggle. You keep reeling until a small pale object reaches the surface,
+		then pull it out of the water.
+		<br><br>
+		It is an old fishing reel. The spool and most of the body are made from smooth, pale material,
+		while the handle is unusually small in your hand.
+		<br><br>
+		You turn the handle to test it. The reel moves easily despite its age, pulling the line in much faster than you expected.
+		<br><br>
+		When you look at the pale material more closely, you realise what it is.
+		<br><br>
+		The reel has been made from bone.<<awareness 2>><<gawareness>>
+		<br><br>
+		<span class="purple">You have found the Bone Reel.</span> It reels line in very quickly,
+		but pulling at the wrong time makes it easier to lose control of a hooked fish.
+	<</if>>
+	<br><br>
+	<<link [[Put it in your tackle and cast back out|_boneReturn]]>><</link>>
+<</if>>
+
+:: Pocket Eat Bait
+<<effects>>
+<<set _baitEatDestination to $dolxBaitEatReturn or "Bedroom">>
+/* eatBait records which supply the worm came out of, the can or a loose pack. */
+<<set _wormFromCan to $dolxBaitEatenFromCan is true>>
+<<if $dolxBaitEaten is "bait_worm" and effectiveTransformationLevel("bird") gte 3>>
+	You open <<if _wormFromCan>>the tin<<else>>your little can of bait worms<</if>> and pick out one of the worms. It wriggles between your fingers.
+	<br><br>
+	You tip your head back and drop it in. It goes down without nicely, and the wriggling stops
+	almost at once. Without thinking, you reach for another worm. Your fingers are nearly around it before you realise what you're doing and stop yourself.
+	<br><br>
+	<span class="gold">It tasted good.</span><<lstress>><<stress -6>>
+	<<set $daily.fishing to $daily.fishing ?? {}>>
+	<<if not $daily.fishing.eatenWormTf>>
+		<<transform bird 1>>
+		<<set $daily.fishing.eatenWormTf to true>>
+	<</if>>
+<<elseif $dolxBaitEaten is "bait_worm">>
+	You open <<if _wormFromCan>>the tin<<else>>your little can of bait worms<</if>> and pick out one of the worms. It wriggles between your fingers, making you stop before bringing it closer to your mouth.
+	<br><br>
+	You place it on your tongue. The worm moves against the inside of your mouth, and you nearly spit it out. Instead, you close your mouth and swallow before you can change your mind.
+	<br><br>
+	You feel it wriggling in your throat as you swallow. The feeling makes you want to gag, but you force it down.
+	Afterwards, you still with one hand over your stomach. You know the worm has already gone down, but you can still feel the same wriggling sensation inside you.
+	<br><br>
+	You cannot tell if <span class="red">the worm is still moving</span> or if the feeling is only lingering after you swallowed it. <<trauma 18>><<gggtrauma>>
+<<elseif $dolxBaitEaten>>
+	You take the <<= fishDisplayName($dolxBaitEaten)>> from your bait supply and hold it in front of your mouth.
+	<br><br>
+	After looking at it for a few seconds, you open wide and put the whole fish into your mouth. You struggle to swallow it, but eventually force it down. <<fishingEatFishTfProgress>><<lstress>><<stress -6>>
+<<else>>
+	You have nothing to eat.
+<</if>>
+<br><br>
+<<link [[Next|_baitEatDestination]]>><<unset $dolxBaitEaten $dolxBaitEatReturn $dolxBaitEatenFromCan>><</link>>

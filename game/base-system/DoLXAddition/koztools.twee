@@ -1,0 +1,884 @@
+:: X-Change Misc Widgets [widget]
+	<!-- Usage: <<fame-propagate 10 "scrap" "good">> after <<fame>>. Applies the same change to other stored body identities. -->
+	<<widget "fame-propagate">>
+		<<if _args.length gte 2 and $statFreeze isnot true>>
+			<!-- Partial body records have no identity fame yet. Shared fame objects must only receive the penalty once. -->
+			<<set _propagateCurrentFame to $fame>>
+			<<set _propagateFames to [...new Set([$xchange.pill.changedBody?.fame, $xchange.pill.originalBody?.fame, $xchange.pill.hermBody?.fame])].filter(fame => fame && typeof fame === "object" && !Array.isArray(fame) && fame !== $fame)>>
+			<<for _propagateFame range _propagateFames>>
+				<<set $fame to _propagateFame>>
+				<<for _propagateType range _args.slice(1)>>
+					<<fame _args[0] _propagateType>>
+				<</for>>
+			<</for>>
+			<<set $fame to _propagateCurrentFame>>
+		<</if>>
+	<</widget>>
+
+	<!-- Usage: <<xchange-fame 10>>, or <<xchange-fame 10 true>> to apply regardless of mask/gloryhole (e.g. a third party doing it for you, rather than you being recognised in person). -->
+	<<widget "xchange-fame">>
+		<<if _args[0] and $statFreeze isnot true>>
+			<<if _args[1] is true>>
+				<<set _maskFactor to 1>>
+			<<elseif playerIsXChanged() and !$gloryhole>>
+				<!-- A mask/covered face fully hides you below 500 X-Change fame, only halves recognition from 500-999, and stops concealing you at all at 1000 (max): you're too recognisable by then regardless of your face. -->
+				<<if $face isnot "covered" and !$worn.face.type.includes("mask")>>
+					<<set _maskFactor to 1>>
+				<<elseif $xchange_fame gte 1000>>
+					<<set _maskFactor to 1>>
+				<<elseif $xchange_fame gte 500>>
+					<<set _maskFactor to 0.5>>
+				<<else>>
+					<<set _maskFactor to 0>>
+				<</if>>
+			<<else>>
+				<<set _maskFactor to 0>>
+			<</if>>
+			<<if _maskFactor gt 0>>
+				<<set $xchange_fame += _args[0] * _maskFactor * 2>>
+				<<set $xchange_fame to Math.clamp($xchange_fame, 0, 1000)>>
+				<<if $xchange_fame gte 1000>>
+					<<for _name range $NPCNameList>>
+						<<set $xchange.known.pushUnique(_name)>>
+					<</for>>
+				<</if>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "xchange-seen">>
+		<<if $xchange.pill.genderflipEffect>>
+			<<set _increase to 10 * _args[0]>>
+			<<xchange-fame _increase>>
+		<</if>>
+	<</widget>>
+
+	<<widget "currentSexSidebar">>
+		<<if $options.showCurrentSexIcon>>
+			<div id="bodysex-sidebar" class="bodysex-sidebar">
+				<<if $options.currentSexIconIdentity>>
+					<<set _sidebarGender to playerFeltGender()>>
+					<<set _sidebarGenderLabel to $background.transgender ? playerTransLabel() : playerGenderWord()>>
+					<<set _sidebarGenderIcon to $background.transgender ? "trans-" + _sidebarGender + ".png" : (_sidebarGender is "n" ? "nonbinary.png" : (_sidebarGender is "f" ? "female.png" : "male.png"))>>
+					<div @tooltip="'Gender identity: ' + _sidebarGenderLabel"><img draggable="false" @alt="_sidebarGenderLabel" @src="'img/misc/icon/' + _sidebarGenderIcon"></div>
+				<<elseif playerIsXChanged() and $xchange.pill.hermEffect and !$statFreeze>>
+					<div tooltip="<span class='green'>Herm</span>"><img dragable="false" src="img/misc/icon/unisex.png"></div>
+					
+				<<elseif $player.sex is "f">>
+					<<if !$statFreeze and playerIsXChanged() and $xchange.pill.genderificationEffect and !$xchange.pill.genderflipEffect>>
+						<div tooltip="<span class='blue'>Butch</span>"><img dragable="false" src="img/misc/icon/butch.png"></div>
+					<<else>>
+						<div tooltip="<span class='meek'>Female</span>"><img dragable="false" src="img/misc/icon/female.png"></div>
+					<</if>>
+				<<elseif $player.sex is "m">>
+					<<if !$statFreeze and playerIsXChanged() and $xchange.pill.genderificationEffect and !$xchange.pill.genderflipEffect>>
+						<div tooltip="<span class='meek'>Sissy</span>"><img dragable="false" src="img/misc/icon/sissy.png"></div>
+					<<else>>
+						<div tooltip="<span class='blue'>Male</span>"><img dragable="false" src="img/misc/icon/male.png"></div>
+					<</if>>
+				<</if>>
+			</div>
+		<</if>>
+	<</widget>>
+
+	<<widget "arousal-wetness">>
+		<<if $arousal gte $arousalmax * 0.6>>
+			<<set $vaginaArousalWetness to Math.max($vaginaArousalWetness, 10)>>
+		<<elseif $arousal gte $arousalmax * 0.3>>
+			<<set $vaginaArousalWetness to Math.max($vaginaArousalWetness, 5)>>
+		<</if>>
+	<</widget>>
+
+	<<widget "breeder-heat">>
+		<<willpowercombatcheck>>
+		<<if !$willpowerSuccess or !$xchange.heat.resistWithWillpower>>
+			/* Breeding holes: a vagina always counts; omega (and other butt-pregnancy) heat breeds through the anus. Being bred in any eligible hole satisfies the compulsion. */
+			<<set _heatVaginal to $player.vaginaExist and !playerChastity("vagina") and $vaginatarget isnot undefined and $NPCList[$vaginatarget] isnot undefined>>
+			<<set _heatAnal to canBeMPregnant() and !playerChastity("anus")>>
+			<<set _heatAnalTargeted to _heatAnal and $anustarget isnot undefined and $NPCList[$anustarget] isnot undefined>>
+			<<set _vaginalBred to _heatVaginal and ($vaginastate is "penetrated" or $vaginastate is "doublepenetrated")>>
+			<<set _analBred to _heatAnal and ($anusstate is "penetrated" or $anusstate is "doublepenetrated")>>
+			<<set _beingBred to _vaginalBred or _analBred>>
+			<<if _heatVaginal and !_heatAnal>>
+				<<if $anusstate is "entrance" and $vaginastate isnot "doublepenetrated">>
+					<<set $xchange.heat.message to true>>
+					<<set $anusaction to "penispussy">>
+				<</if>>
+				<<if $anusstate is "imminent" and $vaginastate isnot "penetrated">>
+					<<set $xchange.heat.message to true>>
+					<<set $anusaction to "escape">>
+				<</if>>
+			<</if>>
+			<<if $cheekaction is "rub" and !_beingBred and !_heatAnal>>
+				<<set $xchange.heat.message to true>>
+				<<set $cheekaction to "stop">>					
+			<</if>>
+			<<if ($mouthstate is "entrance" or $mouthstate is "imminent" or ($mouthstate is "penetrated" and $head isnot "grappled" and $head isnot "bound")) and !_beingBred>>
+				<<set $xchange.heat.message to true>>
+				<<set $mouthaction to "pullaway">>
+			<</if>>
+			<<if $chestuse is "penis" and !_beingBred>>
+				<<set $xchange.heat.message to true>>
+				<<set $chestaction to "stop">>
+			<</if>>
+			<<if _heatVaginal and !wearingCondom($vaginatarget) and $vaginastate is "penetrated" and $NPCList[$vaginatarget].penis is "vagina" and $leglocktarget is undefined and $leftleg isnot "bound" and $rightleg isnot "bound">> 
+				<<set $xchange.heat.message to true>>
+				<<set $feettarget to $vaginatarget>>
+				<<set $feetaction to "legLock">>
+			<</if>>
+			<<if _heatVaginal and !wearingCondom($vaginatarget) and $feetaction is "legRelease">>
+				<<set $xchange.heat.message to true>>
+				<<set $feetaction to "legLocked">>
+			<</if>>
+			<<if _heatVaginal and !_beingBred and (($vaginaaction is "penisanus" and !_heatAnal) or $vaginaaction is "penisthighs" or $vaginaaction is "penismouth")>>
+				<<set $xchange.heat.message to true>>
+				<<set $vaginaaction to "penistease">>
+			<</if>>
+			<<if _heatVaginal and !_beingBred and !wearingCondom($vaginatarget) and $worn.under_lower.vagina_exposed is 1 and $worn.lower.vagina_exposed is 1 and ($NPCList[$vaginatarget].penis is "vaginaentrance" or $NPCList[$vaginatarget].penis is "vaginaimminent")>>			
+				<<set $xchange.heat.message to true>>
+				<<set $vaginaaction to "vaginapenisfuck">>
+			<</if>>
+			<<if _heatVaginal and !_beingBred and !wearingCondom($vaginatarget) and $NPCList[$vaginatarget].penis is 0 and $NPCList[$vaginatarget].stance isnot "topface" and ($enemytype isnot "man" or ($NPCList[$vaginatarget].location.genitals is 0 and $NPCList[$vaginatarget].location.head isnot "genitals")) and !npcHasStrapon($vaginatarget)>>			
+				<<set $xchange.heat.message to true>>
+				<<set $vaginaaction to "vaginatopenis">>
+			<</if>>
+			<<if $askAction is "condoms">>
+				<<set $xchange.heat.message to true>>
+				<<set $askAction to "noCondoms">>
+			<</if>>
+			<<if $askAction is "novaginal" or $askAction is "askPullOut" or $askAction is "finish" or ($askAction is "noanal" and _heatAnal)>>
+				<<set $xchange.heat.bypassAsk to true>>
+			<</if>>
+			<<if _heatVaginal and ($vaginastate is "penetrated" or $vaginastate is "doublepenetrated") and wearingCondom($vaginatarget) and $mouthstate is 0>>
+				<<set $xchange.heat.message to true>>
+				<<set $mouthtarget to $vaginatarget>>
+				<<set $mouthaction to "ask">>
+				<<set $askAction to "noCondoms">> 
+			<</if>>
+			<<if $thighuse is "penis">>
+				<<set $xchange.heat.message to true>>
+				<<set $thighaction to "stop">>
+			<</if>>
+			<<if _heatVaginal and $vaginastate is "othermouthimminent">>
+				<<set $xchange.heat.message to true>>
+				<<set $vaginaaction to "othermouthescape">>
+			<</if>>
+			<<if _heatVaginal and $vaginastate is "othermouthentrance">>
+				<<set $xchange.heat.message to true>>
+				<<set $vaginaaction to "thighbay">>
+			<</if>>
+			/*Arm Actions */
+			<<if _heatVaginal and $leftarm isnot "bound" and $rightarm isnot "bound" and !_beingBred>>
+				<<set $lefttarget to $vaginatarget>><<set $righttarget to $vaginatarget>>
+				<<if $leftaction is "leftcovervaginameek" or $leftaction is "leftcovervaginalewd" or $leftaction is "leftcovervagina" or $leftaction is "leftgrab">>
+				<<set $xchange.heat.message to true>>
+					<<set $leftaction to "rest">>
+				<</if>>
+				<<if $rightaction is "rightcovervaginameek" or $rightaction is "rightcovervaginalewd" or $rightaction is "rightcovervagina" or $rightaction is "rightgrab">>
+				<<set $xchange.heat.message to true>>
+					<<set $rightaction to "rest">>
+				<</if>>
+				<<if $NPCList[$vaginatarget].penis is "clothed">>
+				<<set $xchange.heat.message to true>>
+					<<set $rightaction to "rightUndressOther">>
+					<<set $undressRightTarget to "lower">>		
+				<</if>>
+				<<if $worn.lower.state is wornSetupClothes("lower").state_base and (wornSetupClothes("lower").skirt isnot 1 or (wornSetupClothes("lower").skirt is 1 and $worn.lower.skirt_down is 1)) and !$worn.lower.type.includes("naked")>>			
+				<<set $xchange.heat.message to true>>
+					<<set $leftaction to "lower">><<set $rightaction to "lower">>
+					<<if $worn.under_lower.state is wornSetupClothes("under_lower").state_base and !$worn.under_lower.type.includes("naked") and !($penisstate isnot 0 and playerHasStrapon())>>
+						<<set $xchange.heat.message to true>>
+						<<set $rightaction to "under_lower">>	
+					<</if>>
+				<</if>>
+				<<if $worn.under_lower.state is wornSetupClothes("under_lower").state_base and !$worn.under_lower.type.includes("naked") and !($penisstate isnot 0 and playerHasStrapon()) and ($worn.lower.state isnot wornSetupClothes("lower").state_base or wornSetupClothes("lower").skirt is 1 or $worn.lower.type.includes("naked"))>>
+					<<set $xchange.heat.message to true>>
+					<<set $rightaction to "under_lower">>			
+				<</if>>
+				<<if wearingCondom($vaginatarget)>>
+					<<set $xchange.heat.message to true>>
+					<<set $rightaction to "npcremovecondom">>		
+				<</if>>
+				<<if (($NPCList[$lefttarget].lefthand and $NPCList[$lefttarget].lefthand.startsWith("vagina")) or ($NPCList[$lefttarget].righthand and $NPCList[$lefttarget].righthand.startsWith("vagina")))>>
+					<<set $xchange.heat.message to true>>
+					<<set $leftaction to "handpullvagina">>
+				<</if>>
+				<<if $NPCList[$lefttarget].mouth and $NPCList[$lefttarget].mouth.startsWith("vagina")>>
+					<<set $xchange.heat.message to true>>
+					<<set $leftaction to "stoporal">>
+				<</if>>
+				<<if $leftarm is "vagina">>
+					<<set $xchange.heat.message to true>>
+					<<set $leftaction to "leftstopvagina">>
+				<</if>>
+				<<if $rightarm is "vagina">>
+					<<set $xchange.heat.message to true>>
+					<<set $rightaction to "rightstopvagina">>
+				<</if>>
+				<<if $leftaction is "leftwork">>
+					<<set $xchange.heat.message to true>>
+					<<set $leftaction to "leftstoppenis">>
+				<</if>>
+				<<if $rightaction is "rightwork">>
+					<<set $xchange.heat.message to true>>
+					<<set $rightaction to "rightstoppenis">>
+				<</if>>
+			<</if>>
+			<<if _heatAnalTargeted>>
+				<<if !_beingBred and ["anusentrance","anusimminent"].includes($NPCList[$anustarget].penis) and !wearingCondom($anustarget)>>
+					<<set $xchange.heat.message to true>>
+					<<set $anusaction to "anuspenisfuck">>
+				<</if>>
+				<<if !_beingBred and (($anusaction is "penispussy" and !_heatVaginal) or ($anusaction is "penispussydap" and !_heatVaginal) or $anusaction is "penismouth" or $anusaction is "penischeeks")>>
+					<<set $xchange.heat.message to true>>
+					<<set $anusaction to "penistease">>
+				<</if>>
+				<<if !wearingCondom($anustarget) and $anusstate is "penetrated" and $NPCList[$anustarget].penis is "anus" and $leglocktarget is undefined and $leftleg isnot "bound" and $rightleg isnot "bound">>
+					<<set $xchange.heat.message to true>>
+					<<set $feettarget to $anustarget>>
+					<<set $feetaction to "legLock">>
+				<</if>>
+				<<if _analBred and !wearingCondom($anustarget) and $feetaction is "legRelease">>
+					<<set $xchange.heat.message to true>>
+					<<set $feetaction to "legLocked">>
+				<</if>>
+				<<if _analBred and wearingCondom($anustarget) and $mouthstate is 0>>
+					<<set $xchange.heat.message to true>>
+					<<set $mouthtarget to $anustarget>>
+					<<set $mouthaction to "ask">>
+					<<set $askAction to "noCondoms">>
+				<</if>>
+				<<if $anusstate is "othermouthimminent">>
+					<<set $xchange.heat.message to true>>
+					<<set $anusaction to "othermouthescape">>
+				<</if>>
+				<<if $anusstate is "othermouthentrance">>
+					<<set $xchange.heat.message to true>>
+					<<set $anusaction to "bottombay">>
+				<</if>>
+				<<if !_heatVaginal>>
+					<<if !_beingBred and !wearingCondom($anustarget) and $NPCList[$anustarget].penis is 0 and $NPCList[$anustarget].stance isnot "topface" and ($enemytype isnot "man" or ($NPCList[$anustarget].location.genitals is 0 and $NPCList[$anustarget].location.head isnot "genitals")) and !npcHasStrapon($anustarget)>>
+						<<set $xchange.heat.message to true>>
+						<<set $anusaction to "anustopenis">>
+					<</if>>
+					/*Arm Actions */
+					<<if $leftarm isnot "bound" and $rightarm isnot "bound" and !_beingBred>>
+						<<set $lefttarget to $anustarget>><<set $righttarget to $anustarget>>
+						<<if $NPCList[$anustarget].penis is "clothed">>
+							<<set $xchange.heat.message to true>>
+							<<set $rightaction to "rightUndressOther">>
+							<<set $undressRightTarget to "lower">>
+						<</if>>
+						<<if $worn.lower.state is wornSetupClothes("lower").state_base and (wornSetupClothes("lower").skirt isnot 1 or (wornSetupClothes("lower").skirt is 1 and $worn.lower.skirt_down is 1)) and !$worn.lower.type.includes("naked")>>
+							<<set $xchange.heat.message to true>>
+							<<set $leftaction to "lower">><<set $rightaction to "lower">>
+							<<if $worn.under_lower.state is wornSetupClothes("under_lower").state_base and !$worn.under_lower.type.includes("naked") and !($penisstate isnot 0 and playerHasStrapon())>>
+								<<set $xchange.heat.message to true>>
+								<<set $rightaction to "under_lower">>
+							<</if>>
+						<</if>>
+						<<if $worn.under_lower.state is wornSetupClothes("under_lower").state_base and !$worn.under_lower.type.includes("naked") and !($penisstate isnot 0 and playerHasStrapon()) and ($worn.lower.state isnot wornSetupClothes("lower").state_base or wornSetupClothes("lower").skirt is 1 or $worn.lower.type.includes("naked"))>>
+							<<set $xchange.heat.message to true>>
+							<<set $rightaction to "under_lower">>
+						<</if>>
+						<<if wearingCondom($anustarget)>>
+							<<set $xchange.heat.message to true>>
+							<<set $rightaction to "npcremovecondom">>
+						<</if>>
+						<<if (($NPCList[$lefttarget].lefthand and $NPCList[$lefttarget].lefthand.startsWith("anus")) or ($NPCList[$lefttarget].righthand and $NPCList[$lefttarget].righthand.startsWith("anus")))>>
+							<<set $xchange.heat.message to true>>
+							<<set $leftaction to "handpullanus">>
+						<</if>>
+						<<if $leftarm is "anus">>
+							<<set $xchange.heat.message to true>>
+							<<set $leftaction to "leftstopanus">>
+						<</if>>
+						<<if $rightarm is "anus">>
+							<<set $xchange.heat.message to true>>
+							<<set $rightaction to "rightstopanus">>
+						<</if>>
+						<<if $leftaction is "leftwork">>
+							<<set $xchange.heat.message to true>>
+							<<set $leftaction to "leftstoppenis">>
+						<</if>>
+						<<if $rightaction is "rightwork">>
+							<<set $xchange.heat.message to true>>
+							<<set $rightaction to "rightstoppenis">>
+						<</if>>
+					<</if>>
+				<</if>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "breeder-heat-chastity">>
+		<<willpowercombatcheck>>
+		<<if !$willpowerSuccess or !$xchange.heat.resistWithWillpower>>
+			<<if playerAwareTheyAreInHeat()>>
+				<span class="red">Your heat consumes you,</span> but your $worn.genitals.name <span class="pink">keeps you from being bred</span>.
+			<<else>>
+				<span class="red">An overwhelming need to breed overcomes you,</span> but your $worn.genitals.name <span class="pink">is in the way</span>.
+			<</if>>
+			<<if $leftarm isnot "bound" and $rightarm isnot "bound" and $worn.lower.state is wornSetupClothes("lower").state_base and (wornSetupClothes("lower").skirt isnot 1 or (wornSetupClothes("lower").skirt is 1 and $worn.lower.skirt_down is 1)) and !$worn.lower.type.includes("naked")>>
+				/* The device is still hidden: tear at the clothes covering it, mirroring the unlocked undress compulsion */
+				Your hands <span class="purple">tear at the clothes</span> covering it.
+				<<set $leftaction to "lower">><<set $rightaction to "lower">>
+				<<if $worn.under_lower.state is wornSetupClothes("under_lower").state_base and !$worn.under_lower.type.includes("naked") and !($penisstate isnot 0 and playerHasStrapon())>>
+					<<set $rightaction to "under_lower">>
+				<</if>>
+			<<elseif $leftarm isnot "bound" and $rightarm isnot "bound" and $worn.under_lower.state is wornSetupClothes("under_lower").state_base and !$worn.under_lower.type.includes("naked") and !($penisstate isnot 0 and playerHasStrapon())>>
+				Your hands <span class="purple">tear at the clothes</span> covering it.
+				<<set $rightaction to "under_lower">>
+			<<elseif $worn.genitals.name is "chastity parasite">>
+				You grab at the creature clinging to your groin and <span class="purple">try to pull it away</span>, but it tightens around you, <span class="lewd">making your arousal worse</span>.
+				<<set $worn.genitals.integrity -= 5>><<arousal 100 "genitals">>
+				<<integritycheck>>
+			<<elseif $leftarm isnot "bound" and $rightarm isnot "bound">>
+				Your hands claw and wrench at the device, <span class="purple">straining against its lock</span>.
+				<<set $worn.genitals.integrity -= 20>>
+				<<integritycheck>>
+			<<elseif $leftarm isnot "bound" or $rightarm isnot "bound">>
+				Your free hand claws and tugs at the device, <span class="purple">straining against its lock</span>.
+				<<set $worn.genitals.integrity -= 10>>
+				<<integritycheck>>
+			<<else>>
+				Restrained, you can only <span class="purple">writhe and grind against the device</span>.
+			<</if>>
+			<<if playerAwareTheyCanBePregnant()>>
+				Part of you <span class="lewd">desperately wants someone to come over the seams</span>, hoping some of it slips through.
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "effectsman-xchange">>
+		<<set $xchange.heat.controlActive to false>>
+		/*Heat Message */
+		<<if $xchange.heat.systemOn and playerHeatMinArousal() and $position isnot "stalk">>
+			/* A combined Alpha/Breeder/Omega body follows its dominant rut while its penis is usable. If caged, receptive heat can still take over. */
+			<<set _alphaDominantHeat to !$statFreeze and !$hc and playerIsXChanged() and $xchange.pill.alphaEffect and $player.penisExist and !playerChastity("penis")>>
+			<<set _heatVaginalTrigger to false>>
+			<<set _heatAnalTrigger to false>>
+			<<if $player.vaginaExist and !playerChastity("vagina") and $vaginatarget isnot undefined>>
+				<<set _vaginaNpc to $NPCList[$vaginatarget]>>
+				<<set _vaginaNpcPenisLocked to (_vaginaNpc and _vaginaNpc.chastity and _vaginaNpc.chastity.penis and _vaginaNpc.chastity.penis.includes("chastity"))>>
+				<<set _heatVaginalTrigger to _vaginaNpc isnot undefined and _vaginaNpc.penis isnot "none" and $vaginastate isnot "othermouth" and !_vaginaNpcPenisLocked>>
+			<</if>>
+			/* Omega (and other butt-pregnancy) heat also answers to the anus */
+			<<if canBeMPregnant() and !playerChastity("anus") and $anustarget isnot undefined>>
+				<<set _anusNpc to $NPCList[$anustarget]>>
+				<<set _anusNpcPenisLocked to (_anusNpc and _anusNpc.chastity and _anusNpc.chastity.penis and _anusNpc.chastity.penis.includes("chastity"))>>
+				<<set _heatAnalTrigger to _anusNpc isnot undefined and _anusNpc.penis isnot "none" and $anusstate isnot "othermouth" and !_anusNpcPenisLocked>>
+			<</if>>
+			<<if (_heatVaginalTrigger or _heatAnalTrigger) and !_alphaDominantHeat>>
+				<<breeder-heat>>
+			<<elseif !_alphaDominantHeat and !($player.vaginaExist and !playerChastity("vagina")) and !(canBeMPregnant() and !playerChastity("anus"))>>
+				/* Every eligible breeding hole is locked behind chastity: heat rails against the device instead of going quiet */
+				<<set _heatLockedNpcPresent to $NPCList.some(npc => npc && npc.active === "active" && npc.penis !== "none" && !(npc.chastity && npc.chastity.penis && npc.chastity.penis.includes("chastity")))>>
+				<<if _heatLockedNpcPresent>>
+					<<breeder-heat-chastity>>
+				<</if>>
+			<</if>>
+		<</if>>
+		<<if $xchange.heat.message or $xchange.heat.bypassAsk>>
+			<<set $xchange.heat.controlActive to true>>
+		<</if>>
+		<<if $xchange.heat.message>>
+			<<if playerAwareTheyAreInHeat()>>
+				<span class="red">Your heat consumes you.</span> <span class="gold">Lust overrides your actions.</span>
+			<<else>>
+				<span class="red">An overwhelming need to breed overcomes you.</span> <span class="gold">Lust overrides your actions.</span>
+			<</if>>
+			<<set $xchange.heat.message to false>>
+		<</if>>
+		<<encounterIdentityEffects>>
+	<</widget>>
+
+	<<widget "arousal-moan">>
+		<<set _gain to _args[0]>>
+		<<set _sensitivity to _args[1]>>
+		<<if $settings.arousalMoanEnabled and _gain gte 400 and _sensitivity gt 1>>
+			<<set _penetrating to playerIsPenetrating()>>
+			<<set _penetrated to playerIsPenetrated()>>
+			/* Being penetrated (or any non-penetrative arousal, e.g. masturbation/petting) moans; actively penetrating someone grunts instead. Doing both at once (e.g. double-dipping) fires both lines. */
+			<<set _showMoan to _penetrated or !_penetrating>>
+			<<set _showGrunt to _penetrating>>
+
+			<<if _showMoan>>
+				<<if $pleasure lt $pleasuremax * 0.2 and $orgasmcurrent lt 1>>
+				<<elseif $pleasure lt $pleasuremax * 0.4 and $orgasmcurrent lt 1>>
+					<<switch $speechcycle>>
+						<<case 0>>
+							"M-mh!"
+						<<case 1>>
+							"Mmph..."
+						<<case 2>>
+							"Ngh..."
+						<<case 3>>
+							"M-mh!"
+						<<case 4>>
+							"Ngh..."
+						<<default>>
+							"Mmph..."
+					<</switch>>
+					<span class="pink">A muffled moan escapes your lips.</span>
+				<<elseif $pleasure lt $pleasuremax * 0.6 and $orgasmcurrent lt 1>>
+					<<switch $speechcycle>>
+						<<case 0>>
+							"A-Ah!<<hearticon>>"
+						<<case 1>>
+							"Mmmh...<<hearticon>>"
+						<<case 2>>
+							"Ngh...<<hearticon>>"
+						<<case 3>>
+							"A-Ah!<<hearticon>>"
+						<<case 4>>
+							"Ngh... Ah...<<hearticon>>"
+						<<default>>
+							"Mmmh...<<hearticon>>"
+					<</switch>>
+					<span class="pink">You moan softly.</span>
+				<<elseif $pleasure lt $pleasuremax * 0.8>>
+					<<switch $speechcycle>>
+						<<case 0>>
+							"A-Ah!...<<hearticon>> Ah...<<hearticon>>"
+						<<case 1>>
+							"Mmmmh...<<hearticon>> Hng!<<hearticon>>"
+						<<case 2>>
+							"Ngh...<<hearticon>> Ah!<<hearticon>>"
+						<<case 3>>
+							"Hah...<<hearticon>> Hah...<<hearticon>>"
+						<<case 4>>
+							"Ngh...<<hearticon>> Ah!<<hearticon>>"
+						<<default>>
+							"Hah...<<hearticon>> Mn...!<<hearticon>>"
+					<</switch>>
+					<span class="pink">You're moaning rhythmically.</span>
+				<<elseif $pleasure lte $pleasuremax>>
+					<<switch $speechcycle>>
+						<<case 0>>
+							"A-Ah...!<<hearticon>> Hah...<<hearticon>> Hmn...!<<hearticon>>"
+						<<case 1>>
+							"Ahn...!<<hearticon>> Ngh...!<<hearticon>> Mnh...!<<hearticon>>"
+						<<case 2>>
+							"Fuck...<<hearticon>> Oh...<<hearticon>> Mnh...!<<hearticon>>"
+						<<case 3>>
+							"Hah...<<hearticon>> Hn...!<<hearticon>> A-Ah...!<<hearticon>>"
+						<<case 4>>
+							"Ah!<<hearticon>> Ah!<<hearticon>> Fuck!<<hearticon>>"
+						<<default>>
+							"Ah...!<<hearticon>> Hah...<<hearticon>> Ohh...!<<hearticon>>"
+					<</switch>>
+					<<if $pleasure is $pleasuremax>>
+						<span class="pink">Your climax approaches.</span>
+					<<else>>
+						<span class="pink">You are gasping uncontrollably.</span>
+					<</if>>
+				<</if>>
+			<</if>>
+
+			<<if _showGrunt>>
+				<<if $pleasure lt $pleasuremax * 0.2 and $orgasmcurrent lt 1>>
+				<<elseif $pleasure lt $pleasuremax * 0.4 and $orgasmcurrent lt 1>>
+					<<switch $speechcycle>>
+						<<case 0>>
+							"Hh..."
+						<<case 1>>
+							"Tch..."
+						<<case 2>>
+							"Ngh."
+						<<case 3>>
+							"Hh..."
+						<<case 4>>
+							"Ntch..."
+						<<default>>
+							"Hh..."
+					<</switch>>
+					<span class="pink">A low grunt escapes your lips.</span>
+				<<elseif $pleasure lt $pleasuremax * 0.6 and $orgasmcurrent lt 1>>
+					<<switch $speechcycle>>
+						<<case 0>>
+							"Hah..."
+						<<case 1>>
+							"Ngh..."
+						<<case 2>>
+							"Fuck..."
+						<<case 3>>
+							"Hah..."
+						<<case 4>>
+							"Hn... Ngh..."
+						<<default>>
+							"Ngh..."
+					<</switch>>
+					<span class="pink">You grunt under your breath.</span>
+				<<elseif $pleasure lt $pleasuremax * 0.8>>
+					<<switch $speechcycle>>
+						<<case 0>>
+							"Hah!... Hah!"
+						<<case 1>>
+							"Ngh! Hnn!"
+						<<case 2>>
+							"Fuck... Ngh!"
+						<<case 3>>
+							"Hnn... Hnn..."
+						<<case 4>>
+							"Ngh! Hah!"
+						<<default>>
+							"Hah... Hnn!"
+					<</switch>>
+					<span class="pink">You're grunting with every thrust.</span>
+				<<elseif $pleasure lte $pleasuremax>>
+					<<switch $speechcycle>>
+						<<case 0>>
+							"Hah...! Hnn! Fuck...!"
+						<<case 1>>
+							"Ngh...! Hnn...! Fuck!"
+						<<case 2>>
+							"Fuck... nh! Ngh...!"
+						<<case 3>>
+							"Hnn... Hah! Fuck...!"
+						<<case 4>>
+							"Hah! Hah! Fuck!"
+						<<default>>
+							"Ngh...! Hmn... Fuck!"
+					<</switch>>
+					<<if $pleasure is $pleasuremax>>
+						<span class="pink">Your climax approaches.</span>
+					<<else>>
+						<span class="pink">You're grunting through gritted teeth.</span>
+					<</if>>
+				<</if>>
+			<</if>>
+
+			<<set $speechcycle to random(0,7)>>
+			<<if $speechcycle gte 7>>
+				<<set $speechcycle to 0>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "willpowercaption">>
+		<<if Number.isFinite($xchange.willpowerPoints)>>
+			<<set _willpowerRestLeft to willpowerRestAllowanceLeft()>>
+			<<set _willpowerTitle to "Willpower: " + $xchange.willpowerPoints.toFixed(2)>>
+			<<if _willpowerRestLeft gt 0>><<set _willpowerTitle += String.fromCharCode(10) + "Rest can restore " + Math.round(_willpowerRestLeft) + " more today.">><</if>>
+			<div id="willpowercaption" @title="_willpowerTitle">
+				<div @class="($options.showCaptionText is true ? '' : 'rightMeterText')">
+					Willpower:
+					<<if $options.showCaptionText is true>>
+						<<if $xchange.willpowerPoints gte $willpowermax * (6/5)>>
+							<span class="gold">You are ironclad.</span>
+						<<elseif $xchange.willpowerPoints gte $willpowermax>>
+							<span class="green">You are resolute.</span>
+						<<elseif $xchange.willpowerPoints gte ($willpowermax / 5) * 4>>
+							<span class="teal">You feel tenacious.</span>
+						<<elseif $xchange.willpowerPoints gte ($willpowermax / 5) * 3>>
+							<span class="lblue">You feel resolved.</span>
+						<<elseif $xchange.willpowerPoints gte ($willpowermax / 5) * 2>>
+							<span class="blue">You feel determined.</span>
+						<<elseif $xchange.willpowerPoints gte $willpowermax / 5>>
+							<span class="purple">You are faltering.</span>
+						<<elseif $xchange.willpowerPoints gte 1>>
+							<span class="pink">You are wavering.</span>
+						<<else>>
+							<span class="red">You surrender.</span>
+						<</if>>
+					<</if>>
+				</div>
+				<<set _showCaptionText to !$options.showCaptionText>>
+				<<amcstatbarinverted $xchange.willpowerPoints $willpowermax _showCaptionText>>
+				<div style="clear:both;"></div>
+			</div>
+		<</if>>
+	<</widget>>
+
+	<<widget "willpowercombatdifficulty">>
+		<<if !$settings.blindStatsEnabled and $settings.skillCheckStyle isnot "skillname">>
+			<<set _difficulty to 100>>
+			<<if $xchange.willpowerSystemEnabled is 1 and ($arousal gte ($arousalmax * 3 / 5) or $orgasmcount gt 0)>>
+				<<set _difficulty to Math.clamp(Math.floor(currentSkillValue('willpower')) / 800, 0, 1) * (100 - Math.clamp(Math.floor(($temple_burden or 0) + bloatedSkillPenalty() + blindSkillFailureChance()), 0, 100))>>
+			<</if>>
+			<<if _difficulty gte 100>>
+				<span class="green">(Very Easy)</span>
+			<<elseif _difficulty gte 80>>
+				<span class="teal">(Easy)</span>
+			<<elseif _difficulty gte 60>>
+				<span class="lblue">(Medium)</span>
+			<<elseif _difficulty gte 40>>
+				<span class="blue">(Challenging)</span>
+			<<elseif _difficulty gte 20>>
+				<span class="purple">(Hard)</span>
+			<<elseif _difficulty gt 0>>
+				<span class="pink">(Very Hard)</span>
+			<<else>>
+				<span class="red">(Impossible)</span>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "willpowercombatcheck">>
+		<<if $xchange.willpowerSystemEnabled is 1>>
+			<<if $arousal gte ($arousalmax * 3 / 5) or $orgasmcount gt 0>>
+				<<silently>><<willpowerdifficulty 1 800>><</silently>>
+				<<if $willpowerSuccess>>
+					<<willpowersuccess>>
+				<<else>>
+					<<willpowerfailure>>
+				<</if>>
+			<<else>>
+				<<set $willpowerSuccess to 1>>
+			<</if>>
+		<<else>>
+			<<set $willpowerSuccess to 1>>
+		<</if>>
+	<</widget>>
+
+	<<widget "willpowercheck">>
+		<<if _args[0] isnot undefined>>
+			<<set _difficulty to _args[0]>>
+		<<else>>
+			<<set _difficulty to 1000>>
+		<</if>>
+		<<silently>><<willpowerdifficulty 1 _difficulty>><</silently>>
+		<<if $xchange.willpowerSystemEnabled is 1>>
+			<<if $willpowerSuccess>>
+				<<willpowersuccess>>
+			<<else>>
+				<<willpowerfailure>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "willpowersuccess">>
+		<<willpower-spending $xchange.willpowerSuccessCost>>
+	<</widget>>
+
+	<<widget "willpowerfailure">>
+		<<willpower-spending $xchange.willpowerFailureCost>>
+	<</widget>>
+
+	<<widget "willpower-spending">>
+		<<if $statFreeze>><<exit>><</if>>
+		<<if _args[0] is undefined>>
+			<<set _willpowerExpenditure to 25>>
+		<<else>>
+			<<set _willpowerExpenditure to _args[0]>>
+		<</if>>
+
+		<<set $xchange.willpowerPoints -= _willpowerExpenditure>>
+		<<willpowerpoints-clamp>>
+	<</widget>>
+
+	<<widget "willpower-recovery">>
+		<<if $statFreeze>><<exit>><</if>>
+		<<if _args[0] is undefined>>
+			<<set _willpowerRecovery to 25>>
+		<<else>>
+			<<set _willpowerRecovery to _args[0]>>
+		<</if>>
+
+		<<set $xchange.willpowerPoints += _willpowerRecovery>>
+		<<willpowerpoints-clamp>>
+	<</widget>>
+
+	<<widget "willpowerpoints-clamp">>
+		<<set $xchange.willpowerPoints to Math.clamp($xchange.willpowerPoints, 0, Math.max(200, $willpower))>>
+		<<if typeof updateDynamicStatCaps is "function">><<run updateDynamicStatCaps()>><</if>>
+	<</widget>>
+
+	<<widget "willpower-orgasm">>
+		<<set _deniedOrgasm to _args[0]>>
+		<!-- Breeder/omega's higher cost is suspended during Gwylan's ritual, matching the pleasure() denial gate being suspended there too. -->
+		<<if _deniedOrgasm or (!$sexRitual and playerIsXChanged() and ($xchange.pill.breederEffect or $xchange.pill.omegaEffect))>>
+			<<set _willpowerExpenditure to 25 * $orgasmcount>>
+		<<elseif $masturbating or $consensual is 1>>
+			<<set _willpowerExpenditure to 5 * $orgasmcount>>
+		<<else>>
+			<<set _willpowerExpenditure to 10 * $orgasmcount>>
+		<</if>>
+		<<willpower-spending _willpowerExpenditure>>
+	<</widget>>
+
+	<<widget "location-danger">>
+		<<set _locationDanger to 0>>
+		<<if $location is "town">>
+			<<switch $bus>>
+				<<case "barb">>
+					<<set _locationDanger to 500>>
+				<<case "cliff">>
+					<<set _locationDanger to 500>>
+				<<case "connudatus">>
+					<<set _locationDanger to 1000>>
+				<<case "danube">>
+					<<set _locationDanger to 0>>
+				<<case "domus">>
+					<<set _locationDanger to 500>>
+				<<case "elk">>
+					<<set _locationDanger to 2000>>
+				<<case "harvest">>
+					<<set _locationDanger to 1500>>
+				<<case "high">>
+					<<set _locationDanger to 1000>>
+				<<case "mer">>
+					<<set _locationDanger to 1000>>
+				<<case "nightingale">>
+					<<set _locationDanger to 1000>>
+				<<case "oxford">>
+					<<set _locationDanger to 1000>>
+				<<case "starfish">>
+					<<set _locationDanger to 1000>>
+				<<case "wolf">>
+					<<set _locationDanger to 500>>
+			<</switch>>	
+
+		<<elseif $location is "alley">>
+			<<switch $bus>>
+				<<case "commercial">>
+					<<set _locationDanger to 1500>>
+				<<case "industrial">>
+					<<set _locationDanger to 2000>>
+				<<case "park">>
+					<<set _locationDanger to 1000>>
+				<<case "residential">>
+					<<if $town_projects.thicket is 4>>
+						<<set _locationDanger to 500>>
+					<<else>>
+						<<set _locationDanger to 1000>>
+					<</if>>
+
+			<</switch>>
+
+		<<elseif $location is "flats">>
+			<<set _locationDanger to 1000>>
+			
+		<<elseif $location is "canals">>
+			<<set _locationDanger to 1500>>
+
+		<</if>>
+	<</widget>>
+
+	<<widget "chitchat">>
+		<<= either(
+			`"...So I told that lot: 'Are you mad? There's no way I'm ever doing that!'" <<he>> recounts with outrage.`,
+			`"...Can you believe it? That police officer really did that. No joke," <<he>> recounts, baffled at the absurdity of the tale.`,
+			`"...And then a dog comes, sticks it in there, and begins to plow furiously. Utterly insane," <<he>> looks slightly flushed as <<he>> recounts the tale.`,
+			`"...So the psycho pulls a knife, and starts threatening everyone with it..." <<he>> recounts, allowing the terror of the tale to sink in.`,
+			`"...So I just open the door, and there's this man with a raging erection, just standing there..." <<his>> cheeks turn a little red as <<he>> remembers it.`,
+			`"...And then this librarian starts writing 'Book Criminal' on some poor sod's bloody forehead. I swear we all burst out laughing when we saw it..." <<he>> laughs heartily.`,
+			`"...And then Leighton took pictures of it all! The poor kid was about to cry..." <<he>> sighs, seemingly feeling empathetic.`,
+			`"...So then this chump takes the drink without a clue, and lo and behold, turns into a bloody woman! And fuck, was that body hot, I tell you..." <<he>> recounts with such enthusiasm <<he>> might explode.`,
+			`"...So we dared this one classmate to take the pill. And later the whole friend group was drooling all over that new body like hungry hyenas!..." <<he>> narrates with an air of superiority as if <<he>> were above all that.`,
+			`"...And I heard someone went to the lake, deep into the night as a test of courage, but was never ever seen again..." pale as a ghost, <<he>> insists this is a real story.`,
+			`"...So if you press all of the buttons at the same time, you can pull off a finisher that all but guarantees you the win..." <<he>> shares some of <<his>> leet strats and insights.`,
+			`"...And then this customer tasted the bun. Eyes went all dreamy right away, like it was the happiest moment of a lifetime, then gobbled the whole thing up..." <<he>> says, looking as if <<he>> had tasted it <<himself>>.`,
+			`"...And we were chased by it all the way until we got out. We were white as sheets afterwards..." <<he>> laughs proudly, as if boasting of <<his>> foolish courage.`,
+			`"...So we smelled this mossy stuff. A few minutes later we were so horny we could barely think straight..." <<he>> seems bashful as <<he>> remembers how it felt.`,
+			`"...And apparently, this one liked the abuse. Like, the claim was that getting choked until almost blacking out made for an explosive orgasm..." <<he>> recounts in disbelief.`,
+			`"...So I tried one of those X-Change pills on a dare, and the next morning my voice was totally different. Never again," <<he>> says, rubbing <<his>> throat.`,
+			`"...So there I am, naked except for a traffic cone on my head, singing the national anthem. Don't ask me how I got there," <<he>> says with a shrug and a cheeky grin.`,
+			`"...And someone actually put the cucumber <i>there</i>. I couldn't eat salad for weeks," <<he>> says, shuddering at the memory.`,
+			`"...So the twins swapped outfits, right in the middle of the party. Everyone lost their damn minds when they came back out..." <<he>> recalls, clearly amused.`,
+			`"...And just as things were heating up, the fire alarm went off, and we all had to run outside, half-dressed, into the snow," <<he>> snickers, shaking <<his>> head at the chaos.`
+		)>>
+	<</widget>>
+
+<<widget "cheesy-pickup-line">>
+	<<print [
+		`"${$player.gender_appearance is "f" ? "Girl" : "Boy"}, you look hella cute. But I suspect that's the least interesting thing about you."`,
+		`"Hey, cutie! What's your name?"`,
+		`"Hey, ${$NPCList[0].gender is "m"
+			? "my cock just died. May I bury it in your ass?"
+			: "my plumbing's a bit leaky. Would you care to check it for me?"}"`,
+		`"Excuse me, I couldn't help but notice you look an awful lot like my next ${$player.gender_appearance is "f" ? "girl" : "boy"}."`,
+		`"Hey, babe! Why don't you sit on my lap and we talk about the first thing that pops up."`,
+		`"Hey, my hands are cold. Should I warm them up in your pants?"`,
+		`"Do you know what winks and fucks like a tiger?"`,
+		`"If I said you have a nice body, would you hold it against me?"`,
+		`"Wanna know how I know we are having sex tonight? I'm stronger than you."`,
+		`"You look killer in ${$worn.lower.plural ? "those" : "that"} ${$worn.lower.name}. Care to share some of that booty?"`,
+		`"I just can't look at you and breathe at the same time... Grace me with your beauty, please."`,
+		`"${$player.gender_appearance is "f"
+			? "Nice legs. What time do they open?"
+			: "Hey there, postman... Is that package for me?"}"`,
+		`"You know, if I were you, I'd have sex with me. Immediately."`,
+		`"Be honest, are you always this tempting, or did I catch you on a good day?"`,
+		`"Is it hot in here, or is it just the way you look at me?"`,
+		`"Is your body a wonderland? Because I'm definitely lost."`,
+		`"Are you a campfire? Because you're hot and I want s'more."`,
+		`"Are you a magician? Because every time I look at you, everyone else disappears and all I see is you on top of me."`,
+		`"Do you want to play house? I'll be the door and you can slam me all night."`,
+		`"Come closer. I want to see what you look like when you're moaning my name."`
+	].random()>>
+
+	<<if $NPCList[0].skills.security gte 800>>
+		<<arousal 500>><<ggarousal>>
+	<<elseif $NPCList[0].skills.security gte 400>>
+		<<arousal 200>><<garousal>>
+	<</if>>
+<</widget>>
+
+	<<widget "pleasurecaption">>
+		<<if Number.isFinite($pleasure)>>
+			<div id="pleasurecaption" @title="'Pleasure: ' + $pleasure.toFixed(2)">
+				<div @class="($options.showCaptionText is true ? '' : 'rightMeterText')">
+					Pleasure:
+					<<if $options.showCaptionText is true>>
+						<<if $pleasure gte $pleasuremax>>
+							<span class="red">About to burst.</span>
+						<<elseif $pleasure gte ($pleasuremax / 5) * 4>>
+							<span class="pink">A climax rises.</span>
+						<<elseif $pleasure gte ($pleasuremax / 5) * 3>>
+							<span class="purple">You feel flushed.</span>
+						<<elseif $pleasure gte ($pleasuremax / 5) * 2>>
+							<span class="blue">You feel hot.</span>
+						<<elseif $pleasure gte $pleasuremax / 5>>
+							<span class="lblue">You feel tingly.</span>
+						<<elseif $pleasure gte 1>>
+							<span class="teal">You feel itchy.</span>
+						<<else>>
+							<span class="green">You feel normal.</span>
+						<</if>>
+					<</if>>
+				</div>
+				<<set _showCaptionText to !$options.showCaptionText>>
+				<<glowstatbar 0 $pleasure $pleasuremax _showCaptionText>>
+			</div>
+		<</if>>
+	<</widget>>
+
+	<<widget "enemypleasure">>
+		<<set _change to _args[0]>>
+		<<set _arousalModifier to Math.clamp(($enemyarousal || 0) / ($enemyarousalmax || 1), 0.1, 1)>>
+		<<set _enemySexModifier to _enemies gt 1 or $NPCList[0].gender isnot "m" or _change lt 0 or $timer? 1 : 0.5>>
+		<<set $enemypleasure += _change * _arousalModifier * _enemySexModifier>>
+	<</widget>>
+
+	<<widget "enemypleasure-edge">>
+		<<set _change to _args[0]>>
+		<<set _initialpleasure to $enemypleasure>>
+
+		<<enemypleasure _change>>
+		<<set $enemypleasure to Math.clamp($enemypleasure, Math.min(_initialpleasure, $enemypleasuremax / 5), $enemypleasuremax)>>
+	<</widget>>
+
+	<<widget "xchangeSkinColourVariableCombine">>
+		<<if _xchangeSkinTone is "no">><<set _xchangeSkinShade to "change">><</if>>
+		<<set $xchange.customisedSkinColour to _xchangeSkinTone + _xchangeSkinShade>>
+	<</widget>>
+
+	<<widget "demonReleaseOption">>
+		<<if demonPurityBurnPending()
+			and playerCannotSelfClimax()
+			and $awareness gte 0
+			and !pcAreArmsBound("both")>>
+			<<skinicon "masturbate">><<link "Force yourself to climax (0:15)" _args[0]>><<pass 15>><</link>>
+			<br>
+		<</if>>
+	<</widget>>
+
+	<<widget "demonForcedRelease">>
+		You can't put it off any longer. You work at yourself hard and fast, not for the pleasure of it but to
+		be done with it, and your body gives in. The burning under your skin fades.
+		<<orgasm>>
+		<<purity -1>>
+		<<set $orgasmcurrent to 0>>
+	<</widget>>

@@ -1,0 +1,211 @@
+stages:
+  - build
+  - deploy
+
+variables:
+  GIT_STRATEGY: fetch
+
+img_job:
+  stage: build
+  script:
+    - |
+      $ErrorActionPreference = "Stop"
+      $FULLVERSION = Get-Content -Raw ./version
+
+      if ($FULLVERSION -match "DoLX (\d+\.\d+\.\d+)(?![a-z]+)") {
+        $VERSION = $matches[1]
+        Write-Host "Building Images Release $VERSION"
+
+        $buildDir = "./build_img"
+        $zipPath = "./DoLX_Images_$VERSION.zip"
+
+        Remove-Item -Recurse -Force $buildDir -ErrorAction SilentlyContinue
+        Remove-Item -Force $zipPath -ErrorAction SilentlyContinue
+
+        New-Item -ItemType Directory -Force "$buildDir/img" | Out-Null
+        New-Item -ItemType Directory -Force "$buildDir/img2" | Out-Null
+        Copy-Item -Path ./img/* -Destination "$buildDir/img/" -Recurse -Force
+        Copy-Item -Path ./img2/* -Destination "$buildDir/img2/" -Recurse -Force
+
+        $imageFiles = Get-ChildItem $buildDir -File -Recurse
+        $rawImageSize = ($imageFiles | Measure-Object Length -Sum).Sum
+        if ($null -eq $rawImageSize) { $rawImageSize = 0 }
+        Write-Host ("Raw images size: {0:N2} MB" -f ($rawImageSize / 1MB))
+
+        tar.exe -a -cf $zipPath -C $buildDir img img2
+        if ($LASTEXITCODE -ne 0) { throw "Images archive creation failed." }
+
+        Add-Type -AssemblyName System.IO.Compression.FileSystem
+        $archive = [System.IO.Compression.ZipFile]::OpenRead((Resolve-Path $zipPath).Path)
+        try {
+          $invalidEntries = @($archive.Entries | Where-Object { $_.FullName -match '\\' } | ForEach-Object FullName)
+        }
+        finally {
+          $archive.Dispose()
+        }
+        if ($invalidEntries) {
+          throw "Images archive contains Windows-style paths: $($invalidEntries -join ', ')"
+        }
+
+        $zipSize = (Get-Item $zipPath).Length
+        Write-Host ("Images zip size: {0:N2} MB" -f ($zipSize / 1MB))
+
+        Write-Host "Finished Building Images Release $VERSION"
+        Write-Host "Uploading Images Release $VERSION"
+
+        $uploadUrl = "$env:CI_API_V4_URL/projects/$env:CI_PROJECT_ID/packages/generic/DoLX_Images/$VERSION/DoLX_Images_$VERSION.zip"
+
+        curl.exe --fail --show-error --silent `
+          --header "JOB-TOKEN: $env:CI_JOB_TOKEN" `
+          --header "Content-Type: application/zip" `
+          --retry 5 `
+          --retry-all-errors `
+          --retry-delay 5 `
+          --upload-file $zipPath `
+          "$uploadUrl"
+
+        if ($LASTEXITCODE -ne 0) { throw "Images upload failed." }
+
+        Remove-Item -Recurse -Force $buildDir -ErrorAction SilentlyContinue
+        Remove-Item -Force $zipPath -ErrorAction SilentlyContinue
+
+        Write-Host "Finished Uploading Images Release $VERSION"
+      }
+      else {
+        Write-Host "Images package skipped (version has suffix): $FULLVERSION"
+      }
+  only:
+    - master
+
+html_job:
+  stage: build
+  variables:
+    GIT_STRATEGY: clone
+  script:
+    - |
+      $ErrorActionPreference = "Stop"
+      $FULLVERSION = Get-Content -Raw ./version
+
+      if ($FULLVERSION -match "DoLX (\d+\.\d+\.\d+[a-z]*)") {
+        $VERSION = $matches[1]
+      }
+      else {
+        throw "Could not parse HTML version from version file: $FULLVERSION"
+      }
+
+      nvm install 24
+      nvm use 24
+
+      Write-Host "Building HTML Release $VERSION"
+
+      $zipPath = "./DoLX_HTML_$VERSION.zip"
+      Remove-Item -Force $zipPath -ErrorAction SilentlyContinue
+
+      ./compile.bat
+      if ($LASTEXITCODE -ne 0) {
+        throw "compile.bat failed with exit code $LASTEXITCODE"
+      }
+      if (-not (Test-Path "./Degrees of Lewdity VERSION.html")) {
+        throw "Compilation did not create the expected HTML file."
+      }
+      Compress-Archive -Path "./Degrees of Lewdity VERSION.html" -DestinationPath $zipPath -Force
+
+      $zipSize = (Get-Item $zipPath).Length
+      Write-Host ("HTML zip size: {0:N2} MB" -f ($zipSize / 1MB))
+
+      Write-Host "Finished Building HTML Release $VERSION"
+      Write-Host "Uploading HTML Release $VERSION"
+
+      $uploadUrl = "$env:CI_API_V4_URL/projects/$env:CI_PROJECT_ID/packages/generic/DoLX_HTML/$VERSION/DoLX_HTML_$VERSION.zip"
+
+      curl.exe --fail --show-error --silent `
+        --header "JOB-TOKEN: $env:CI_JOB_TOKEN" `
+        --header "Content-Type: application/zip" `
+        --retry 5 `
+        --retry-all-errors `
+        --retry-delay 5 `
+        --upload-file $zipPath `
+        "$uploadUrl"
+
+      if ($LASTEXITCODE -ne 0) { throw "HTML upload failed." }
+
+      Remove-Item -Force $zipPath -ErrorAction SilentlyContinue
+      Write-Host "Finished Uploading HTML Release $VERSION"
+  only:
+    - master
+
+release_job:
+  stage: deploy
+  needs:
+    - job: img_job
+    - job: html_job
+  rules:
+    - if: '$CI_COMMIT_TAG'
+      when: never
+    - if: '$CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH'
+  script:
+    - |
+      $ErrorActionPreference = "Stop"
+      $FULLVERSION = Get-Content -Raw ./version
+
+      if ($FULLVERSION -match "DoLX (((\d+\.\d+\.)\d+)[a-z]*)") {
+        $VERSION = $matches[1]
+        $MINOR   = $matches[2]
+      }
+      else {
+        throw "Could not parse release version from version file: $FULLVERSION"
+      }
+
+      Write-Host "Creating release $VERSION..."
+
+      function Test-PackageLink {
+        param(
+          [Parameter(Mandatory=$true)][string]$Name,
+          [Parameter(Mandatory=$true)][string]$Url
+        )
+
+        Write-Host "Checking $Name package link: $Url"
+        curl.exe --fail --show-error --silent --location --head `
+          --header "JOB-TOKEN: $env:CI_JOB_TOKEN" `
+          --retry 5 `
+          --retry-all-errors `
+          --retry-delay 5 `
+          "$Url" | Out-Null
+
+        if ($LASTEXITCODE -ne 0) {
+          throw "$Name package link is missing or inaccessible: $Url"
+        }
+      }
+
+      $htmlObj = @{
+        name = "DownloadMe_DoLX_HTML_$VERSION"
+        url  = "$env:CI_API_V4_URL/projects/$env:CI_PROJECT_ID/packages/generic/DoLX_HTML/$VERSION/DoLX_HTML_$VERSION.zip"
+      }
+      $htmlJSON = ($htmlObj | ConvertTo-Json -Compress)
+
+      $imageObj = @{
+        name = "DownloadMe_DoLX_Images_$MINOR"
+        url  = "$env:CI_API_V4_URL/projects/$env:CI_PROJECT_ID/packages/generic/DoLX_Images/$MINOR/DoLX_Images_$MINOR.zip"
+      }
+      $imageJSON = ($imageObj | ConvertTo-Json -Compress)
+
+      Test-PackageLink "HTML" $htmlObj.url
+      Test-PackageLink "Images" $imageObj.url
+
+      $releaseArgs = @(
+        "create",
+        "--name", "DoL:X-Change Edition $VERSION",
+        "--description", "DoLX_Changelog.md",
+        "--ref", "$env:CI_COMMIT_SHA",
+        "--tag-name", "$VERSION",
+        "--assets-link", "$htmlJSON",
+        "--assets-link", "$imageJSON"
+      )
+
+      & "C:\GitLab Runner\release-cli.exe" @releaseArgs
+
+      if ($LASTEXITCODE -ne 0) {
+        throw "release-cli failed."
+      }
+  after_script:
+    - echo "Finished creating release."

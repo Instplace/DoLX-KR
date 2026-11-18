@@ -1,0 +1,85 @@
+:: DoLX UI Toggle JS [script]
+setup.customUi = {
+	className: "custom-ui",
+	lastEnabled: null,
+	applyQueued: false,
+
+	getPreference() {
+		if (!window.State || !State.variables) {
+			return false;
+		}
+		return State.variables.dolxCustomUIEnabled === true ||
+			State.variables.dolxCustomUIEnabled === 1 ||
+			State.variables.dolxCustomUIEnabled === "1";
+	},
+
+	setPreference(enabled) {
+		if (!window.State || !State.variables) {
+			return;
+		}
+		State.variables.dolxCustomUIEnabled = enabled ? 1 : 0;
+	},
+
+	apply(force = false) {
+		const root = document.documentElement;
+		if (!root) {
+			return;
+		}
+
+		const enabled = this.getPreference();
+		if (!force && this.lastEnabled === enabled && root.classList.contains(this.className) === enabled) {
+			return;
+		}
+
+		root.classList.toggle(this.className, enabled);
+		this.lastEnabled = enabled;
+	},
+
+	scheduleApply() {
+		if (this.applyQueued) return;
+		this.applyQueued = true;
+
+		const run = () => {
+			this.applyQueued = false;
+			this.apply();
+		};
+
+		if (typeof window.requestAnimationFrame === "function") {
+			window.requestAnimationFrame(run);
+		} else {
+			window.setTimeout(run, 0);
+		}
+	},
+};
+
+$(document).on(":storyready :onloadsave :passagestart", function () {
+	if (window.setup && setup.customUi) {
+		setup.customUi.apply();
+	}
+});
+
+
+:: DoLX UI Toggle Widgets [widget]
+<<widget "customUiStartButton">>
+	<div class="custom-ui-start-button"><<customUiToggleButton>></div>
+<</widget>>
+
+<<widget "customUiToggleButton">>
+	<<if $dolxCustomUIEnabled>>
+		<<button "CHANGE TO PLAIN UI">>
+			<<customUiSwitch false>>
+		<</button>>
+	<<else>>
+		<<button "CHANGE TO UPDATED UI">>
+			<<customUiSwitch true>>
+		<</button>>
+	<</if>>
+<</widget>>
+
+<<widget "customUiSwitch">>
+	<<run setup.customUi.setPreference(_args[0])>>
+	<<run setup.customUi.apply(true)>>
+	<<if document.querySelector(".custom-ui-start-button") isnot null>>
+		<<replace ".custom-ui-start-button">><<customUiToggleButton>><</replace>>
+	<</if>>
+<</widget>>

@@ -1,0 +1,1123 @@
+:: MMA Gym
+<<set $outside to 0>><<set $location to "mma_gym">><<effects>><<npc Riley>><<person1>>
+<<if $mmagymintro is undefined or $mmagymintro is null>><<set $mmagymintro to 0>><</if>>
+<<if $mmaGymAccessAsked is undefined>><<set $mmaGymAccessAsked to 0>><</if>>
+<<if $mmaGymAccessUnlocked is undefined>><<set $mmaGymAccessUnlocked to 0>><</if>>
+<<if $mmaGymSparUnlocked is undefined>><<set $mmaGymSparUnlocked to 0>><</if>>
+<<if $mmaConditioningUnlocked is undefined>><<set $mmaConditioningUnlocked to 0>><</if>>
+<<if $mmaWeightsSessions is undefined>><<set $mmaWeightsSessions to 0>><</if>>
+<<set _openinghours to 0>><<if Time.hour gte 8 and Time.hour lt 21>><<set _openinghours to 1>><</if>>
+
+<<if $mmagymintro isnot 1 and _openinghours is 1>>
+	<<mmaGymIntro "MMA Gym">>
+<<elseif _openinghours is 0 and Time.hour isnot $closinghour>>
+	The building is dark outside opening hours. Without the music and shouting, the place feels bigger. But you spot a standard cash register sits on a counter. It's locked tight.
+	<br><br><<set $lock to 200>>
+	<<if currentSkillValue('skulduggery') gte $lock>>
+		<<if $leftarm is "bound" and $rightarm is "bound">>
+			You think you'd be able to pick the lock, <span class="blue">if your arms weren't bound.</span>
+			<br><br>
+		<<else>>
+			<<wearProp "lockpick">>
+			<span class="green">The lock looks easy to pick.</span>
+			<br><br>
+			<<lockicon "pick">><<link [[Pick it (0:10)|MMA Gym Register Sneak]]>><<handheldon>><<pass 10>><<crimeUp 10 "thievery">><</link>><<crime "thievery">>
+			<br>
+		<</if>>
+	<<else>>
+		<span class="red">The lock looks beyond your ability to pick.</span><<skulduggeryrequired>>
+		<br><br>
+	<</if>>
+	<<nightingaleicon>><<link [[Leave|Nightingale Street]]>><<endevent>><</link>>
+<<else>>
+	The MMA gym smells of sweat, disinfectant, and old rubber. Heavy bags sway along one wall, a cramped weights area sits beyond a rack of battered plates, and a square of mats at the back serves as Riley's class space. Most of it is old and worn, except the front of the gym, where a row of new treadmills and cable machines stands under bright lights beside the glass door of a VIP lounge for members who pay extra.
+	<br><br>
+	<<if $stress gte $stressmax>>
+		<<passoutshop>>
+	<<else>>
+		<<if $pleasure gte $pleasuremax>>
+			<<orgasmLocation "mmaGym">>
+		<</if>>
+		<<if _openinghours is 1>>
+			<<lockericon>><<link [[Changing room|MMA Gym Changing Room]]>><</link>>
+			<br><<mmaGymAveryWhitneyHook>><br>
+		<</if>>
+		<<if Time.hour is $closinghour>>
+			It is closing time. Riley starts shooing everyone toward the door.<<if $exposed gte 1>> Your stomach drops as you remember what state of dress you are in.<</if>>
+			<br>
+			<<storeon "mma_gym" "check">>
+			<<if _store_check is 1>>
+				<br>
+				You remember you left your clothes in the changing room.
+				<br>
+				<<nightingaleicon>><<link [[Dress before leaving|Nightingale Street]]>><<storeon "mma_gym">><<endevent>><</link>>
+				<br>
+			<</if>>
+		<<elseif $exposed gte 1>>
+			<span class="blue">You're too exposed to use anything or interact with anyone.</span>
+			<<covered>><br>
+		<<elseif $leftarm is "bound" or $rightarm is "bound">>
+			<span class="blue">You can't make proper use of the gym room with your hands bound.</span>
+			<br>
+		<<elseif _openinghours is 1 and $exposed lt 1>>
+			<<icon "physique.png">><<link [[Use the weights room (0:30)|MMA Weights Room]]>><<set $phase to 0>><<pass 30>><</link>><<gphysique>><<gathletics>><<note " Moderate fatigue" "red">>
+			<br>
+			<<if $mmaGymAccessUnlocked isnot 1>>
+				<<if $mmaGymAccessAsked isnot 1>>
+					<<socialiseicon "ask">><<link [[Ask Riley about using the rest of the gym|MMA Gym Access Request]]>><<set $phase to 0>><</link>>
+					<br>
+				<<else>>
+					<<socialiseicon "ask">><<link [[Ask Riley for another assessment (0:30)|MMA Riley Challenge Start]]>><<set $mmaRileyChallengeMode to "unlock">><<set $phase to 0>><<pass 30>><</link>>
+					<br>
+				<</if>>
+			<<else>>
+				<<if $combatExtended.standingFights is 1 and $combatExtended.footworkToggle is 1>>
+					<<if setup.inflation.canAfford(2200, "mmaGymLessons")>>
+						<<mmagymicon>><<link [[Take a footwork lesson (<<printprice 2200>> 1:00)|Footwork Lesson]]>><<set $phase to 0>><<set $gymstage to 0>><<money -2200 "mmaGymLessons">><</link>><<gfootwork>><<note " Heavy fatigue risk" "red">>
+						<br>
+					<<else>>
+						<span class="blue">You can't afford a footwork lesson.</span>
+						<br>
+					<</if>>
+				<</if>>
+				<<if $combatExtended.strikingToggle is 1>>
+					<<if setup.inflation.canAfford(2800, "mmaGymLessons")>>
+						<<mmagymicon>><<link [[Take a striking lesson (<<printprice 2800>> 1:00)|Striking Lesson]]>><<set $phase to 0>><<set $gymstage to 0>><<money -2800 "mmaGymLessons">><</link>><<gstriking>><<note " Heavy fatigue risk" "red">>
+						<br>
+					<<else>>
+						<span class="blue">You can't afford a striking lesson.</span>
+						<br>
+					<</if>>
+				<</if>>
+				<<if $combatExtended.kickingToggle is 1>>
+					<<if setup.inflation.canAfford(2800, "mmaGymLessons")>>
+						<<mmagymicon>><<link [[Take a kicking lesson (<<printprice 2800>> 1:00)|Kicking Lesson]]>><<set $phase to 0>><<set $gymstage to 0>><<money -2800 "mmaGymLessons">><</link>><<gkicking>><<note " Heavy fatigue risk" "red">>
+						<br>
+					<<else>>
+						<span class="blue">You can't afford a kicking lesson.</span>
+						<br>
+					<</if>>
+				<</if>>
+				<<if $mmaConditioningUnlocked is 1>>
+					<<if setup.inflation.canAfford(5000, "mmaGymLessons")>>
+						<<mmagymicon>><<link [[Take a conditioning lesson (<<printprice 5000>> 1:00)|Conditioning Lesson 1]]>><<set $phase to 0>><<money -5000 "mmaGymLessons">><</link>><<gphysique>><<gathletics>><<gwillpower>><<note " Brutal fatigue" "red">>
+						<br>
+					<<else>>
+						<span class="blue">You can't afford a conditioning lesson.</span>
+						<br>
+					<</if>>
+				<<else>>
+					<span class="blue">Riley hasn't opened conditioning work to you yet.</span>
+					<br>
+				<</if>>
+			<</if>>
+			<<socialiseicon>><<link [[Spar with the regulars (0:45)|MMA Regular Sparring]]>><</link>><<gathletics>><<note " Moderate fatigue" "red">>
+			<br>
+		<</if>>
+		<<if _openinghours is 1 and $mmaGymSparUnlocked is 1 and $exposed lt 1>>
+			<<socialiseicon>><<link [[Spar with Riley (0:30)|MMA Riley Challenge Start]]>><<set $mmaRileyChallengeMode to "spar">><<set $phase to 0>><<pass 30>><</link>>
+			<br>
+		<</if>>
+		<<storeon "mma_gym" "check">>
+		<<if _store_check is 1 and ($worn.upper.name is "naked" or $worn.lower.name is "naked") and $exposed is 1>>
+			You left clothes in the changing room. Your <span class="lewd"><<lewdness>></span> is fine in here, but it would be considered lewd outside.
+			<br><br>
+			<<if $exhibitionism gte 15>>
+				<<nightingaleicon>><<link [[Go outside anyway|MMA Gym Outside Exhibitionism]]>><</link>>
+				<br>
+			<</if>>
+			<<link [[Return to the changing room|MMA Gym Changing Room]]>><</link>>
+		<<else>>
+			<br>
+			<<nightingaleicon>><<link [[Leave|Nightingale Street]]>><<endevent>><</link>>
+		<</if>>
+	<</if>>
+<</if>>
+
+:: MMA Gym Introduction
+<<effects>>
+<<if $phase is 1>>
+	You hover at the edge of the floor. "Uh... hello."
+	<br><br>
+	Riley gives you one look. "Speak up. This isn't a library." <<He>> jerks <<his>> chin toward the others. "You want to train, get on the floor. You want to stand there looking lost, use the door instead."
+	<br><br>
+	Heat climbs up your neck. You hurry into line before <<he>> can dismiss you outright.
+<<elseif $phase is 2>>
+	You meet Riley's stare. "I'm ready."
+	<br><br>
+	"Good," Riley says. "Stay that confident when your legs start shaking." <<He>> points you toward the marked space. "Listen the first time and you'll waste less of mine."
+	<br><br>
+	You take your place while Riley starts the warm-up.
+<<elseif $phase is 3>>
+	<<promiscuity1>>You let your gaze linger. "You greet all new students like that?"
+	<br><br>
+	Riley's mouth twitches. "Only the ones who mistake this place for flirting practice." <<He>> brushes past you. "Eyes forward. Hands up."
+	<br><br>
+	So much for that. The class moves, and you move with it.
+<</if>>
+<br><br>
+<<link [[Next|$mmaGymIntroExit]]>><<unset $mmaGymIntroExit>><<endevent>><</link>>
+
+:: MMA Weights Room
+<<set $outside to 0>><<set $location to "mma_gym">><<effects>><<speechresolve>>
+<<if $mmaWeightsSessions is undefined>><<set $mmaWeightsSessions to 0>><</if>>
+<<if $mmaGymAccessUnlocked is undefined>><<set $mmaGymAccessUnlocked to 0>><</if>>
+<<if $mmaConditioningUnlocked is undefined>><<set $mmaConditioningUnlocked to 0>><</if>>
+<<if currentSkillValue('physique') lt 1000>>
+	<<set _failChance to 47>>
+<<elseif currentSkillValue('physique') lt 2500>>
+	<<set _failChance to 37>>
+<<elseif currentSkillValue('physique') lt 5000>>
+	<<set _failChance to 27>>
+<<elseif currentSkillValue('physique') lt 8000>>
+	<<set _failChance to 17>>
+<<else>>
+	<<set _failChance to 7>>
+<</if>>
+<<if ($willpower gte 500 or $athletics gte 700) and _failChance gt 7>><<set _failChance to 7>><</if>>
+<<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
+	<<set _weightsThought to "You force the bar back up. Stronger means harder to corner, harder to scare, harder to push around when someone decides you look easy.">>
+<<elseif _speechAttitudeResolved is "docile">>
+	<<set _weightsThought to "You follow the count Riley sets and make yourself finish each lift properly. It is easier to obey the rhythm than admit how much you need this strength.">>
+<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+	<<set _weightsThought to "You keep your breathing even and your form clean, even when your muscles start to shake. If Riley wants to correct you, you won't make it easy.">>
+<<elseif _speechAttitudeResolved is "confident">>
+	<<set _weightsThought to "The work is simple enough to trust: lift, breathe, recover, and prove you belong here without needing to say it out loud.">>
+<<elseif _speechAttitudeResolved is "bratty">>
+	<<set _weightsThought to "The thought flashes between sets: beat Riley, shut the smug idiots up, stop letting anyone in town look down on you.">>
+<<elseif _speechAttitudeResolved is "cruel">>
+	<<set _weightsThought to "You picture Riley, the regulars, and everyone who ever thought you were easy to push around, and you use the anger to finish each lift. Let them laugh while they still can.">>
+<<else>>
+	<<set _weightsThought to "You tell yourself it's worth it. If you get stronger, Riley might let you use more of the gym.">>
+<</if>>
+<<wearProp "weight">>
+The weights room is cramped and noisy, all clashing plates and sharp corrections. Riley keeps you moving between rack, bench, and sled without leaving much time to recover.
+<<print _weightsThought>>
+<br><br>
+<<if random(1,100) lte _failChance>>
+	Your form goes before you're half done. Riley stops you cold and makes you start over.
+	<br><br>
+	"Again," Riley says. "If you get sloppy under a bar, you get hurt. Learn that now."
+	<<physique 1>><<gphysique>><<athletics 1>><<gathletics>><<pain 2>><<gpain>><<tiredness 6>><<ggtiredness>><<stress 3>><<gstress>>
+<<elseif currentSkillValue('physique') gte 8000>>
+	You finish sore and breathing hard, but steady enough that Riley only needs to correct you once.
+	<<physique 2>><<gphysique>><<athletics 1>><<gathletics>><<tiredness 3>><<gtiredness>><<stress 2>><<gstress>>
+<<elseif currentSkillValue('physique') gte 5000>>
+	By the end your limbs feel heavy and your shirt sticks to your back, but you keep your form together and get through the full session cleanly.
+	<<physique 2>><<gphysique>><<athletics 1>><<gathletics>><<tiredness 6>><<ggtiredness>><<stress 3>><<gstress>>
+<<else>>
+	It is ugly work. Your muscles burn, your breathing turns ragged, and Riley has to keep dragging you back into proper position before you hurt yourself.
+	<<physique 1>><<gphysique>><<athletics 1>><<gathletics>><<tiredness 7>><<ggtiredness>><<stress 4>><<gstress>>
+<</if>>
+<<set $mmaWeightsSessions += 1>><<if $mmaWeightsSessions gt 5>><<set $mmaWeightsSessions to 5>><</if>>
+<br><br>
+<<if $mmaGymAccessUnlocked isnot 1 and $mmaWeightsSessions gte 2>>
+	At the end of your set, you notice Riley watching you with <<his>> arms folded. <<He>> doesn't praise you, but <<he>> doesn't send you away either.
+	<br><br>
+<</if>>
+<<if $mmaGymAccessUnlocked is 1 and $mmaConditioningUnlocked isnot 1 and $mmaWeightsSessions gte 5 and currentSkillValue('physique') gte 5000>>
+	<<set $mmaConditioningUnlocked to 1>>
+	Riley stops you before you leave. "You are finally strong enough that I can start testing your willpower too. Conditioning. Different kind of ugly. Interested?"<<npcincr Riley love 1>><<glove>>
+	<br>
+	<span class="green"><i>The conditioning lesson unlocked!</i></span>
+	<br><br>
+<</if>>
+Riley glances at the clock. "Enough. Wipe the bench down when you're done."
+<br><br>
+<<link [[Next|MMA Gym]]>><<endevent>><<handheldon>><</link>>
+
+:: MMA Gym Access Request
+<<set $outside to 0>><<set $location to "mma_gym">><<effects>><<set $mmaGymAccessAsked to 1>>
+<<if $leftarm is "bound" or $rightarm is "bound">>
+	You glance past the weights room towards the hanging bags and the mat space beyond. "Can I use the rest of the gym too?"
+	<br><br>
+	Riley follows your look, then glances down at your bound hands.
+	"Not like that."
+	<br><br>
+	Before you can argue, <<he>> steps in close, catches your wrists, and turns them enough to inspect the binding properly. <<His>> fingers are rough but steady as <<he>> tests the knot, then reaches for a small blade kept nearby with the gym supplies.
+	<br><br>
+	"You want to train in my gym, you use your hands properly."
+	<br><br>
+	The edge slips beneath the binding and parts it. The pressure falls away at once, leaving your skin tingling as blood rushes back into your hands. Riley tosses the cut length aside and gives your wrists one last look before releasing you.
+	<br><br>
+	"There." <<He>> jerks <<his>> chin towards the equipment. "Now ask again."
+	<br><br><<unbind>>
+	<<link [[Next|MMA Gym Access Request]]>><</link>>
+<<else>>
+	You look past the weights room toward the bags and mats. "Can I use the rest of the gym too?"
+	<br><br>
+	A couple of regulars laugh before Riley can answer. "That one?" someone says. "Give it a week."
+	<br><br>
+	Riley cuts across them with a stare sharp enough to silence the whole corner. "<<pShe "Riley">> asked me, not you."
+	Then <<he>> looks you over. "More floor space means more chances to hurt yourself. <span class="red">So earn it</span>. Beat me in an assessment round and you can use the rest."
+	<br><br>
+	The laughter does not start up again.
+	<br><br>
+	<<link [[Take the assessment now (0:30)|MMA Riley Challenge Start]]>><<set $mmaRileyChallengeMode to "unlock">><<pass 30>><</link>>
+	<br>
+	<<link [[Back off for now|MMA Gym]]>><<endevent>><</link>>
+<</if>>
+
+:: MMA Riley Challenge Choice Result
+<<if $mmaRileyLastAction>>
+	<<print $mmaRileyLastAction>>
+	<br><br>
+	<<if $mmaRileyLastScore gte 3>>
+		For a moment, it actually works. Riley's posture shifts and a few people at ringside stop looking bored.
+		<<physique 1>><<athletics 1>><<ggphysique>><<gathletics>>
+	<<elseif $mmaRileyLastScore gte 1>>
+		It is not wrong, just not enough. You stay in the exchange, but it costs you.
+		<<tiredness 6>><<ggtiredness>>
+	<<else>>
+		Riley sees it coming and makes you pay for it. The hit lands hard, and nobody watching tells Riley to go easy on you.
+		<<pain 12>><<ggpain>>
+	<</if>>
+	<br><br>
+<</if>>
+
+:: MMA Riley Challenge Start
+<<set $outside to 0>><<set $location to "mma_gym">><<effects>>
+<<if $mmaRileyChallengeMode isnot "spar">><<set $mmaRileyChallengeMode to "unlock">><</if>>
+<<set $mmaRileyScore to 0>><<set $mmaRileyWaveScore to 0>><<set $mmaRileyLastScore to 0>><<set $mmaRileyLastAction to 0>>
+<<if $leftarm is "bound" or $rightarm is "bound">>
+	Riley's eyes drop to your hands and <<his>> expression hardens. "No. We are not doing this with your hands tied up."
+	<br><br>
+	<<if $mmaRileyChallengeMode is "spar">>
+		"You want to spar, you use your hands properly," <<he>> says, already stepping in.
+	<<else>>
+		"You want me to assess your movement, I need to see all of it," <<he>> says, already stepping in.
+	<</if>>
+	<<He>> strips the binding away and jerks <<his>> chin toward the mat. "There. Try again."
+	<br><br><<unbind>>
+	<<link [[Next|MMA Riley Challenge Start]]>><</link>>
+<<else>>
+
+<<if $mmaRileyChallengeMode is "unlock">>
+	Riley steps through the ropes and jerks <<his>> chin for you to follow.
+	"Five reads. Two waves. Show me you can think, move, and keep your nerve when somebody better than you is trying to make you stupid."
+	<br><br>
+	The people near the ring go quiet. They want a show.
+	<br><br>
+	<<if $mmaWeightsSessions gte 3>>
+		Your sessions in the weights room have made you stronger, so at least you aren't stepping into the ring completely unprepared.
+		<br><br>
+	<</if>>
+<<else>>
+	Riley rolls one shoulder and motions you in. "Again. Five reads. I want to see whether you learned something or just got lucky last time."
+	<br><br>
+	There is less laughter this time. More watching.
+	<br><br>
+<</if>>
+Riley circles first, relaxed, waiting to see how you choose to open.
+<br><br>
+<<switch random(1,6)>>
+	<<case 1>>
+		<<link [[Stay patient and keep your guard high|MMA Riley Challenge 2]]>><<set $mmaRileyLastAction to "You hold your guard high and refuse to chase the first opening Riley offers.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><<set $mmaRileyWaveScore += 3>><</link>>
+		<br>
+		<<link [[Step in hard and try to bully space from Riley|MMA Riley Challenge 2]]>><<set $mmaRileyLastAction to "You step in hard, trying to bully some space out of Riley before Riley can settle.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><<set $mmaRileyWaveScore -= 3>><</link>>
+		<br>
+		<<link [[Circle and probe with your feet first|MMA Riley Challenge 2]]>><<set $mmaRileyLastAction to "You circle first and watch Riley's feet, probing for something cleaner than a blind entry.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><<set $mmaRileyWaveScore += 1>><</link>>
+	<<case 2>>
+		<<link [[Stay patient and keep your guard high|MMA Riley Challenge 2]]>><<set $mmaRileyLastAction to "You hold your guard high and refuse to chase the first opening Riley offers.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><<set $mmaRileyWaveScore += 3>><</link>>
+		<br>
+		<<link [[Circle and probe with your feet first|MMA Riley Challenge 2]]>><<set $mmaRileyLastAction to "You circle first and watch Riley's feet, probing for something cleaner than a blind entry.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><<set $mmaRileyWaveScore += 1>><</link>>
+		<br>
+		<<link [[Step in hard and try to bully space from Riley|MMA Riley Challenge 2]]>><<set $mmaRileyLastAction to "You step in hard, trying to bully some space out of Riley before Riley can settle.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><<set $mmaRileyWaveScore -= 3>><</link>>
+	<<case 3>>
+		<<link [[Step in hard and try to bully space from Riley|MMA Riley Challenge 2]]>><<set $mmaRileyLastAction to "You step in hard, trying to bully some space out of Riley before Riley can settle.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><<set $mmaRileyWaveScore -= 3>><</link>>
+		<br>
+		<<link [[Stay patient and keep your guard high|MMA Riley Challenge 2]]>><<set $mmaRileyLastAction to "You hold your guard high and refuse to chase the first opening Riley offers.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><<set $mmaRileyWaveScore += 3>><</link>>
+		<br>
+		<<link [[Circle and probe with your feet first|MMA Riley Challenge 2]]>><<set $mmaRileyLastAction to "You circle first and watch Riley's feet, probing for something cleaner than a blind entry.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><<set $mmaRileyWaveScore += 1>><</link>>
+	<<case 4>>
+		<<link [[Step in hard and try to bully space from Riley|MMA Riley Challenge 2]]>><<set $mmaRileyLastAction to "You step in hard, trying to bully some space out of Riley before Riley can settle.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><<set $mmaRileyWaveScore -= 3>><</link>>
+		<br>
+		<<link [[Circle and probe with your feet first|MMA Riley Challenge 2]]>><<set $mmaRileyLastAction to "You circle first and watch Riley's feet, probing for something cleaner than a blind entry.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><<set $mmaRileyWaveScore += 1>><</link>>
+		<br>
+		<<link [[Stay patient and keep your guard high|MMA Riley Challenge 2]]>><<set $mmaRileyLastAction to "You hold your guard high and refuse to chase the first opening Riley offers.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><<set $mmaRileyWaveScore += 3>><</link>>
+	<<case 5>>
+		<<link [[Circle and probe with your feet first|MMA Riley Challenge 2]]>><<set $mmaRileyLastAction to "You circle first and watch Riley's feet, probing for something cleaner than a blind entry.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><<set $mmaRileyWaveScore += 1>><</link>>
+		<br>
+		<<link [[Stay patient and keep your guard high|MMA Riley Challenge 2]]>><<set $mmaRileyLastAction to "You hold your guard high and refuse to chase the first opening Riley offers.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><<set $mmaRileyWaveScore += 3>><</link>>
+		<br>
+		<<link [[Step in hard and try to bully space from Riley|MMA Riley Challenge 2]]>><<set $mmaRileyLastAction to "You step in hard, trying to bully some space out of Riley before Riley can settle.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><<set $mmaRileyWaveScore -= 3>><</link>>
+	<<case 6>>
+		<<link [[Circle and probe with your feet first|MMA Riley Challenge 2]]>><<set $mmaRileyLastAction to "You circle first and watch Riley's feet, probing for something cleaner than a blind entry.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><<set $mmaRileyWaveScore += 1>><</link>>
+		<br>
+		<<link [[Step in hard and try to bully space from Riley|MMA Riley Challenge 2]]>><<set $mmaRileyLastAction to "You step in hard, trying to bully some space out of Riley before Riley can settle.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><<set $mmaRileyWaveScore -= 3>><</link>>
+		<br>
+		<<link [[Stay patient and keep your guard high|MMA Riley Challenge 2]]>><<set $mmaRileyLastAction to "You hold your guard high and refuse to chase the first opening Riley offers.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><<set $mmaRileyWaveScore += 3>><</link>>
+<</switch>>
+<</if>>
+
+:: MMA Riley Challenge 2
+<<set $outside to 0>><<set $location to "mma_gym">><<effects>>
+<<include "MMA Riley Challenge Choice Result">>
+Riley clips your guard and crowds in, trying to turn the pace ugly before you can settle.
+<br><br>
+How do you deal with the pressure?
+<br><br>
+<<switch random(1,6)>>
+	<<case 1>>
+		<<link [[Reset your feet and make Riley come to you again|MMA Riley Challenge 3]]>><<set $mmaRileyLastAction to "You reset your feet instead of panicking, forcing Riley to come find you again on your terms.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><<set $mmaRileyWaveScore += 3>><</link>>
+		<br>
+		<<link [[Throw back immediately and try to win the exchange now|MMA Riley Challenge 3]]>><<set $mmaRileyLastAction to "You fire back immediately, more irritated than balanced, trying to win the exchange before it finishes forming.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><<set $mmaRileyWaveScore -= 3>><</link>>
+		<br>
+		<<link [[Fight for position and lean into Riley's pressure|MMA Riley Challenge 3]]>><<set $mmaRileyLastAction to "You meet the pressure and fight Riley for position instead of giving ground for free.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><<set $mmaRileyWaveScore += 1>><</link>>
+	<<case 2>>
+		<<link [[Reset your feet and make Riley come to you again|MMA Riley Challenge 3]]>><<set $mmaRileyLastAction to "You reset your feet instead of panicking, forcing Riley to come find you again on your terms.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><<set $mmaRileyWaveScore += 3>><</link>>
+		<br>
+		<<link [[Fight for position and lean into Riley's pressure|MMA Riley Challenge 3]]>><<set $mmaRileyLastAction to "You meet the pressure and fight Riley for position instead of giving ground for free.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><<set $mmaRileyWaveScore += 1>><</link>>
+		<br>
+		<<link [[Throw back immediately and try to win the exchange now|MMA Riley Challenge 3]]>><<set $mmaRileyLastAction to "You fire back immediately, more irritated than balanced, trying to win the exchange before it finishes forming.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><<set $mmaRileyWaveScore -= 3>><</link>>
+	<<case 3>>
+		<<link [[Throw back immediately and try to win the exchange now|MMA Riley Challenge 3]]>><<set $mmaRileyLastAction to "You fire back immediately, more irritated than balanced, trying to win the exchange before it finishes forming.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><<set $mmaRileyWaveScore -= 3>><</link>>
+		<br>
+		<<link [[Reset your feet and make Riley come to you again|MMA Riley Challenge 3]]>><<set $mmaRileyLastAction to "You reset your feet instead of panicking, forcing Riley to come find you again on your terms.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><<set $mmaRileyWaveScore += 3>><</link>>
+		<br>
+		<<link [[Fight for position and lean into Riley's pressure|MMA Riley Challenge 3]]>><<set $mmaRileyLastAction to "You meet the pressure and fight Riley for position instead of giving ground for free.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><<set $mmaRileyWaveScore += 1>><</link>>
+	<<case 4>>
+		<<link [[Throw back immediately and try to win the exchange now|MMA Riley Challenge 3]]>><<set $mmaRileyLastAction to "You fire back immediately, more irritated than balanced, trying to win the exchange before it finishes forming.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><<set $mmaRileyWaveScore -= 3>><</link>>
+		<br>
+		<<link [[Fight for position and lean into Riley's pressure|MMA Riley Challenge 3]]>><<set $mmaRileyLastAction to "You meet the pressure and fight Riley for position instead of giving ground for free.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><<set $mmaRileyWaveScore += 1>><</link>>
+		<br>
+		<<link [[Reset your feet and make Riley come to you again|MMA Riley Challenge 3]]>><<set $mmaRileyLastAction to "You reset your feet instead of panicking, forcing Riley to come find you again on your terms.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><<set $mmaRileyWaveScore += 3>><</link>>
+	<<case 5>>
+		<<link [[Fight for position and lean into Riley's pressure|MMA Riley Challenge 3]]>><<set $mmaRileyLastAction to "You meet the pressure and fight Riley for position instead of giving ground for free.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><<set $mmaRileyWaveScore += 1>><</link>>
+		<br>
+		<<link [[Reset your feet and make Riley come to you again|MMA Riley Challenge 3]]>><<set $mmaRileyLastAction to "You reset your feet instead of panicking, forcing Riley to come find you again on your terms.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><<set $mmaRileyWaveScore += 3>><</link>>
+		<br>
+		<<link [[Throw back immediately and try to win the exchange now|MMA Riley Challenge 3]]>><<set $mmaRileyLastAction to "You fire back immediately, more irritated than balanced, trying to win the exchange before it finishes forming.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><<set $mmaRileyWaveScore -= 3>><</link>>
+	<<case 6>>
+		<<link [[Fight for position and lean into Riley's pressure|MMA Riley Challenge 3]]>><<set $mmaRileyLastAction to "You meet the pressure and fight Riley for position instead of giving ground for free.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><<set $mmaRileyWaveScore += 1>><</link>>
+		<br>
+		<<link [[Throw back immediately and try to win the exchange now|MMA Riley Challenge 3]]>><<set $mmaRileyLastAction to "You fire back immediately, more irritated than balanced, trying to win the exchange before it finishes forming.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><<set $mmaRileyWaveScore -= 3>><</link>>
+		<br>
+		<<link [[Reset your feet and make Riley come to you again|MMA Riley Challenge 3]]>><<set $mmaRileyLastAction to "You reset your feet instead of panicking, forcing Riley to come find you again on your terms.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><<set $mmaRileyWaveScore += 3>><</link>>
+<</switch>>
+
+:: MMA Riley Challenge 3
+<<set $outside to 0>><<set $location to "mma_gym">><<effects>>
+<<include "MMA Riley Challenge Choice Result">>
+Riley cuts you toward the ropes and waits half a beat, like <<he>> wants to see whether you will waste the space <<he>> just gave you.
+<br><br>
+What do you do?
+<br><br>
+<<switch random(1,6)>>
+	<<case 1>>
+		<<link [[Slip off the line and take the space Riley offered|MMA Riley Challenge Intermission]]>><<set $mmaRileyLastAction to "You slip off the line and take the space Riley offered before Riley can close it again.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><<set $mmaRileyWaveScore += 3>><</link>>
+		<br>
+		<<link [[Stand your ground and swing big to force respect|MMA Riley Challenge Intermission]]>><<set $mmaRileyLastAction to "You plant your feet and swing too big, trying to force respect out of Riley instead of earning it.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><<set $mmaRileyWaveScore -= 3>><</link>>
+		<br>
+		<<link [[Tie Riley up and buy yourself a second to think|MMA Riley Challenge Intermission]]>><<set $mmaRileyLastAction to "You tie Riley up long enough to buy yourself a second to breathe and think.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><<set $mmaRileyWaveScore += 1>><</link>>
+	<<case 2>>
+		<<link [[Slip off the line and take the space Riley offered|MMA Riley Challenge Intermission]]>><<set $mmaRileyLastAction to "You slip off the line and take the space Riley offered before Riley can close it again.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><<set $mmaRileyWaveScore += 3>><</link>>
+		<br>
+		<<link [[Tie Riley up and buy yourself a second to think|MMA Riley Challenge Intermission]]>><<set $mmaRileyLastAction to "You tie Riley up long enough to buy yourself a second to breathe and think.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><<set $mmaRileyWaveScore += 1>><</link>>
+		<br>
+		<<link [[Stand your ground and swing big to force respect|MMA Riley Challenge Intermission]]>><<set $mmaRileyLastAction to "You plant your feet and swing too big, trying to force respect out of Riley instead of earning it.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><<set $mmaRileyWaveScore -= 3>><</link>>
+	<<case 3>>
+		<<link [[Stand your ground and swing big to force respect|MMA Riley Challenge Intermission]]>><<set $mmaRileyLastAction to "You plant your feet and swing too big, trying to force respect out of Riley instead of earning it.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><<set $mmaRileyWaveScore -= 3>><</link>>
+		<br>
+		<<link [[Slip off the line and take the space Riley offered|MMA Riley Challenge Intermission]]>><<set $mmaRileyLastAction to "You slip off the line and take the space Riley offered before Riley can close it again.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><<set $mmaRileyWaveScore += 3>><</link>>
+		<br>
+		<<link [[Tie Riley up and buy yourself a second to think|MMA Riley Challenge Intermission]]>><<set $mmaRileyLastAction to "You tie Riley up long enough to buy yourself a second to breathe and think.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><<set $mmaRileyWaveScore += 1>><</link>>
+	<<case 4>>
+		<<link [[Stand your ground and swing big to force respect|MMA Riley Challenge Intermission]]>><<set $mmaRileyLastAction to "You plant your feet and swing too big, trying to force respect out of Riley instead of earning it.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><<set $mmaRileyWaveScore -= 3>><</link>>
+		<br>
+		<<link [[Tie Riley up and buy yourself a second to think|MMA Riley Challenge Intermission]]>><<set $mmaRileyLastAction to "You tie Riley up long enough to buy yourself a second to breathe and think.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><<set $mmaRileyWaveScore += 1>><</link>>
+		<br>
+		<<link [[Slip off the line and take the space Riley offered|MMA Riley Challenge Intermission]]>><<set $mmaRileyLastAction to "You slip off the line and take the space Riley offered before Riley can close it again.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><<set $mmaRileyWaveScore += 3>><</link>>
+	<<case 5>>
+		<<link [[Tie Riley up and buy yourself a second to think|MMA Riley Challenge Intermission]]>><<set $mmaRileyLastAction to "You tie Riley up long enough to buy yourself a second to breathe and think.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><<set $mmaRileyWaveScore += 1>><</link>>
+		<br>
+		<<link [[Slip off the line and take the space Riley offered|MMA Riley Challenge Intermission]]>><<set $mmaRileyLastAction to "You slip off the line and take the space Riley offered before Riley can close it again.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><<set $mmaRileyWaveScore += 3>><</link>>
+		<br>
+		<<link [[Stand your ground and swing big to force respect|MMA Riley Challenge Intermission]]>><<set $mmaRileyLastAction to "You plant your feet and swing too big, trying to force respect out of Riley instead of earning it.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><<set $mmaRileyWaveScore -= 3>><</link>>
+	<<case 6>>
+		<<link [[Tie Riley up and buy yourself a second to think|MMA Riley Challenge Intermission]]>><<set $mmaRileyLastAction to "You tie Riley up long enough to buy yourself a second to breathe and think.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><<set $mmaRileyWaveScore += 1>><</link>>
+		<br>
+		<<link [[Stand your ground and swing big to force respect|MMA Riley Challenge Intermission]]>><<set $mmaRileyLastAction to "You plant your feet and swing too big, trying to force respect out of Riley instead of earning it.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><<set $mmaRileyWaveScore -= 3>><</link>>
+		<br>
+		<<link [[Slip off the line and take the space Riley offered|MMA Riley Challenge Intermission]]>><<set $mmaRileyLastAction to "You slip off the line and take the space Riley offered before Riley can close it again.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><<set $mmaRileyWaveScore += 3>><</link>>
+<</switch>>
+
+:: MMA Riley Challenge Intermission
+<<set $outside to 0>><<set $location to "mma_gym">><<effects>>
+<<include "MMA Riley Challenge Choice Result">>
+<<if $mmaRileyWaveScore gte 5>>
+	Riley steps back and nods once. "You are progressing. Don't ruin it by getting excited."
+<<elseif $mmaRileyWaveScore gte 0>>
+	Riley steps back and looks at you for a long moment without saying anything.
+	<br><br>
+	"Again," <<he>> says at last.
+<<else>>
+	One of the gym-goers laughs. Another joins in. Riley doesn't shut them up. <<He>> just looks at you.
+	<br><br>
+	"Again," <<he>> says.
+<</if>>
+<br><br>
+The second wave starts rougher. Riley doesn't ease you in this time.
+<br><br>
+How do you answer the next engagement?
+<br><br>
+<<switch random(1,6)>>
+	<<case 1>>
+		<<link [[Take a breath, keep structure, and make Riley reset with you|MMA Riley Challenge 5]]>><<set $mmaRileyLastAction to "You take a breath and rebuild your structure, refusing to let Riley drag you into a mess just because you are tired.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><</link>>
+		<br>
+		<<link [[Lunge first before Riley can get set|MMA Riley Challenge 5]]>><<set $mmaRileyLastAction to "You lunge first, tired and impatient, trying to steal the moment before Riley can shape it.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><</link>>
+		<br>
+		<<link [[Jam the exchange and make it scrappy|MMA Riley Challenge 5]]>><<set $mmaRileyLastAction to "You jam the exchange and make it scrappy, buying yourself work instead of clarity.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><</link>>
+	<<case 2>>
+		<<link [[Take a breath, keep structure, and make Riley reset with you|MMA Riley Challenge 5]]>><<set $mmaRileyLastAction to "You take a breath and rebuild your structure, refusing to let Riley drag you into a mess just because you are tired.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><</link>>
+		<br>
+		<<link [[Jam the exchange and make it scrappy|MMA Riley Challenge 5]]>><<set $mmaRileyLastAction to "You jam the exchange and make it scrappy, buying yourself work instead of clarity.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><</link>>
+		<br>
+		<<link [[Lunge first before Riley can get set|MMA Riley Challenge 5]]>><<set $mmaRileyLastAction to "You lunge first, tired and impatient, trying to steal the moment before Riley can shape it.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><</link>>
+	<<case 3>>
+		<<link [[Lunge first before Riley can get set|MMA Riley Challenge 5]]>><<set $mmaRileyLastAction to "You lunge first, tired and impatient, trying to steal the moment before Riley can shape it.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><</link>>
+		<br>
+		<<link [[Take a breath, keep structure, and make Riley reset with you|MMA Riley Challenge 5]]>><<set $mmaRileyLastAction to "You take a breath and rebuild your structure, refusing to let Riley drag you into a mess just because you are tired.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><</link>>
+		<br>
+		<<link [[Jam the exchange and make it scrappy|MMA Riley Challenge 5]]>><<set $mmaRileyLastAction to "You jam the exchange and make it scrappy, buying yourself work instead of clarity.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><</link>>
+	<<case 4>>
+		<<link [[Lunge first before Riley can get set|MMA Riley Challenge 5]]>><<set $mmaRileyLastAction to "You lunge first, tired and impatient, trying to steal the moment before Riley can shape it.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><</link>>
+		<br>
+		<<link [[Jam the exchange and make it scrappy|MMA Riley Challenge 5]]>><<set $mmaRileyLastAction to "You jam the exchange and make it scrappy, buying yourself work instead of clarity.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><</link>>
+		<br>
+		<<link [[Take a breath, keep structure, and make Riley reset with you|MMA Riley Challenge 5]]>><<set $mmaRileyLastAction to "You take a breath and rebuild your structure, refusing to let Riley drag you into a mess just because you are tired.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><</link>>
+	<<case 5>>
+		<<link [[Jam the exchange and make it scrappy|MMA Riley Challenge 5]]>><<set $mmaRileyLastAction to "You jam the exchange and make it scrappy, buying yourself work instead of clarity.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><</link>>
+		<br>
+		<<link [[Take a breath, keep structure, and make Riley reset with you|MMA Riley Challenge 5]]>><<set $mmaRileyLastAction to "You take a breath and rebuild your structure, refusing to let Riley drag you into a mess just because you are tired.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><</link>>
+		<br>
+		<<link [[Lunge first before Riley can get set|MMA Riley Challenge 5]]>><<set $mmaRileyLastAction to "You lunge first, tired and impatient, trying to steal the moment before Riley can shape it.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><</link>>
+	<<case 6>>
+		<<link [[Jam the exchange and make it scrappy|MMA Riley Challenge 5]]>><<set $mmaRileyLastAction to "You jam the exchange and make it scrappy, buying yourself work instead of clarity.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><</link>>
+		<br>
+		<<link [[Lunge first before Riley can get set|MMA Riley Challenge 5]]>><<set $mmaRileyLastAction to "You lunge first, tired and impatient, trying to steal the moment before Riley can shape it.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><</link>>
+		<br>
+		<<link [[Take a breath, keep structure, and make Riley reset with you|MMA Riley Challenge 5]]>><<set $mmaRileyLastAction to "You take a breath and rebuild your structure, refusing to let Riley drag you into a mess just because you are tired.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><</link>>
+<</switch>>
+
+:: MMA Riley Challenge 5
+<<set $outside to 0>><<set $location to "mma_gym">><<effects>>
+<<include "MMA Riley Challenge Choice Result">>
+The last exchange comes with your lungs still burning.
+<br><br>
+How do you close?
+<br><br>
+<<switch random(1,6)>>
+	<<case 1>>
+		<<link [[Take the clean exit and finish balanced|MMA Riley Challenge Result]]>><<set $mmaRileyLastAction to "You take the clean exit and finish balanced, choosing control over drama.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><</link>>
+		<br>
+		<<link [[Bet everything on one desperate hard finish|MMA Riley Challenge Result]]>><<set $mmaRileyLastAction to "You bet everything on one desperate hard finish, tired enough to confuse risk with courage.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><</link>>
+		<br>
+		<<link [[Cover up, survive it, and end on your feet|MMA Riley Challenge Result]]>><<set $mmaRileyLastAction to "You cover up, survive the moment, and settle for ending the exchange on your feet.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><</link>>
+	<<case 2>>
+		<<link [[Take the clean exit and finish balanced|MMA Riley Challenge Result]]>><<set $mmaRileyLastAction to "You take the clean exit and finish balanced, choosing control over drama.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><</link>>
+		<br>
+		<<link [[Cover up, survive it, and end on your feet|MMA Riley Challenge Result]]>><<set $mmaRileyLastAction to "You cover up, survive the moment, and settle for ending the exchange on your feet.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><</link>>
+		<br>
+		<<link [[Bet everything on one desperate hard finish|MMA Riley Challenge Result]]>><<set $mmaRileyLastAction to "You bet everything on one desperate hard finish, tired enough to confuse risk with courage.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><</link>>
+	<<case 3>>
+		<<link [[Bet everything on one desperate hard finish|MMA Riley Challenge Result]]>><<set $mmaRileyLastAction to "You bet everything on one desperate hard finish, tired enough to confuse risk with courage.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><</link>>
+		<br>
+		<<link [[Take the clean exit and finish balanced|MMA Riley Challenge Result]]>><<set $mmaRileyLastAction to "You take the clean exit and finish balanced, choosing control over drama.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><</link>>
+		<br>
+		<<link [[Cover up, survive it, and end on your feet|MMA Riley Challenge Result]]>><<set $mmaRileyLastAction to "You cover up, survive the moment, and settle for ending the exchange on your feet.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><</link>>
+	<<case 4>>
+		<<link [[Bet everything on one desperate hard finish|MMA Riley Challenge Result]]>><<set $mmaRileyLastAction to "You bet everything on one desperate hard finish, tired enough to confuse risk with courage.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><</link>>
+		<br>
+		<<link [[Cover up, survive it, and end on your feet|MMA Riley Challenge Result]]>><<set $mmaRileyLastAction to "You cover up, survive the moment, and settle for ending the exchange on your feet.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><</link>>
+		<br>
+		<<link [[Take the clean exit and finish balanced|MMA Riley Challenge Result]]>><<set $mmaRileyLastAction to "You take the clean exit and finish balanced, choosing control over drama.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><</link>>
+	<<case 5>>
+		<<link [[Cover up, survive it, and end on your feet|MMA Riley Challenge Result]]>><<set $mmaRileyLastAction to "You cover up, survive the moment, and settle for ending the exchange on your feet.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><</link>>
+		<br>
+		<<link [[Take the clean exit and finish balanced|MMA Riley Challenge Result]]>><<set $mmaRileyLastAction to "You take the clean exit and finish balanced, choosing control over drama.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><</link>>
+		<br>
+		<<link [[Bet everything on one desperate hard finish|MMA Riley Challenge Result]]>><<set $mmaRileyLastAction to "You bet everything on one desperate hard finish, tired enough to confuse risk with courage.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><</link>>
+	<<case 6>>
+		<<link [[Cover up, survive it, and end on your feet|MMA Riley Challenge Result]]>><<set $mmaRileyLastAction to "You cover up, survive the moment, and settle for ending the exchange on your feet.">><<set $mmaRileyLastScore to 1>><<set $mmaRileyScore += 1>><</link>>
+		<br>
+		<<link [[Bet everything on one desperate hard finish|MMA Riley Challenge Result]]>><<set $mmaRileyLastAction to "You bet everything on one desperate hard finish, tired enough to confuse risk with courage.">><<set $mmaRileyLastScore to -3>><<set $mmaRileyScore -= 3>><</link>>
+		<br>
+		<<link [[Take the clean exit and finish balanced|MMA Riley Challenge Result]]>><<set $mmaRileyLastAction to "You take the clean exit and finish balanced, choosing control over drama.">><<set $mmaRileyLastScore to 3>><<set $mmaRileyScore += 3>><</link>>
+<</switch>>
+
+:: MMA Riley Challenge Result
+<<set $outside to 0>><<set $location to "mma_gym">><<effects>>
+<<include "MMA Riley Challenge Choice Result">>
+<<if $mmaRileyChallengeMode is "unlock">>
+	<<if $mmaRileyScore gte 10 and ($mmaWeightsSessions gte 3 or currentSkillValue('physique') gte 4200)>>
+		<<set $mmaGymAccessUnlocked to 1>><<set $mmaGymSparUnlocked to 1>>
+		Riley pulls back first.
+		"Good. You thought your way through it. Bags, mats, lessons. <span class="green">The rest of the gym is open to you now</span>. Mostly."<<npcincr Riley love 1>><<glove>>
+		<br><br>
+		The regulars who laughed earlier do not have much to say about that.
+	<<elseif $mmaRileyScore gte 8>>
+		Riley gives you a long look, then taps two fingers against your shoulder.
+		<br><br>
+		"Your reads are getting there. Your body isn't." <<He>> jerks <<his>> chin toward the weights. "Use the weights room. Come back when strength catches up to nerve."
+		<br><br>
+		<span class="purple">You are closer than before, but not through yet.</span>
+	<<elseif $mmaRileyScore gte 4>>
+		Riley ends it without hurry. "You had moments. Then you let them go. Use the weights room. Build something worth trusting."
+	<<else>>
+		Riley shuts the exchange down with blunt finality. "Back to the weights room. You want more access, earn it with work instead of wishful thinking."
+		<br><br>
+		A couple of the gym-goers laugh, and this time you know exactly why.
+	<</if>>
+<<else>>
+	<<if $mmaRileyScore gte 12>>
+		Riley gives a short nod. "Better. Now you look like somebody who might actually be learning."<<npcincr Riley love 1>><<glove>>
+	<<elseif $mmaRileyScore gte 6>>
+		Riley looks you over, unreadable as ever. "You held together longer. Keep doing that."
+	<<else>>
+		Riley reads every move before you make it and punishes each mistake. "Hnh." <<He>> steps back. "More weights. More work. Then try again."
+	<</if>>
+	<<if $mmaConditioningUnlocked isnot 1 and $mmaGymAccessUnlocked is 1 and $mmaRileyScore gte 8>>
+		<br><br>
+		<<set $mmaConditioningUnlocked to 1>>
+		Riley tosses you a towel. "You are finally stubborn enough for conditioning. Ask when you want that to become your problem."<<npcincr Riley love 1>><<glove>>
+		<br><br>
+		<span class="green"><i>The conditioning lesson unlocked!</i></span>
+	<</if>>
+<</if>>
+<<unset $mmaRileyChallengeMode>><<unset $mmaRileyScore>><<unset $mmaRileyWaveScore>><<unset $mmaRileyLastScore>><<unset $mmaRileyLastAction>>
+<br><br>
+<<link [[Next|MMA Gym]]>><<endevent>><</link>>
+
+:: Conditioning Lesson 1
+<<set $outside to 0>><<set $location to "mma_gym">><<effects>>
+<<if $mmagymintro isnot 1>>
+	<<mmaGymIntro "Conditioning Lesson 1">>
+<<else>>
+	<<pass 15>>
+	<<if currentSkillValue('physique') lt 2500 or $willpower lt 150>>
+		<<set _failChance to 57>>
+	<<elseif currentSkillValue('physique') lt 4500 or $willpower lt 300>>
+		<<set _failChance to 37>>
+	<<elseif currentSkillValue('physique') lt 7000 or $willpower lt 500>>
+		<<set _failChance to 20>>
+	<<else>>
+		<<set _failChance to 8>>
+	<</if>>
+	Riley starts you on tire flips. By the sixth rep your grip is slick and your back is already hot with strain.
+	<br><br>
+	<<if random(1,100) lte _failChance>>
+		The tire stalls halfway up and drags you down with it. Riley makes you reset and finish the set properly, which hurts more than the failed attempt.
+		"Again. Sloppy effort still counts as sloppy effort."
+		<<physique 1>><<willpower 1>><<pain 2>><<tiredness 7>><<stress 3>><<gphysique>><<gwillpower>><<gpain>><<ggtiredness>><<gstress>>
+	<<else>>
+		You get through the set by brute force and stubbornness, ugly near the end but still moving.
+		<<physique 2>><<willpower 1>><<tiredness 5>><<stress 2>><<ggphysique>><<gwillpower>><<gtiredness>><<gstress>>
+	<</if>>
+	<br><br>
+	<<link [[Next|Conditioning Lesson 2]]>><</link>>
+<</if>>
+
+:: Conditioning Lesson 2
+<<set $outside to 0>><<set $location to "mma_gym">><<effects>><<pass 15>>
+<<if currentSkillValue('physique') lt 2500 or $willpower lt 150>>
+	<<set _failChance to 55>>
+<<elseif currentSkillValue('physique') lt 4500 or $willpower lt 300>>
+	<<set _failChance to 35>>
+<<elseif currentSkillValue('physique') lt 7000 or $willpower lt 500>>
+	<<set _failChance to 18>>
+<<else>>
+	<<set _failChance to 8>>
+<</if>>
+Riley puts you on carries and sled work next. There's no proper rest between sets, so you never get your breath back.
+<br><br>
+<<if random(1,100) lte _failChance>>
+	Your legs wobble, the sled drifts, and Riley halts the drill long enough to make you start the length over from the beginning.
+	<br><br>
+	"If your feet go, everything goes," Riley says.
+	<<physique 1>><<athletics 1>><<pain 2>><<tiredness 7>><<stress 3>><<gphysique>><<gathletics>><<gpain>><<ggtiredness>><<gstress>>
+<<else>>
+	You keep the line straight and force yourself through the full set without giving Riley a reason to stop you.
+	<<physique 2>><<athletics 1>><<tiredness 4>><<stress 2>><<ggphysique>><<gathletics>><<gtiredness>><<gstress>>
+<</if>>
+<br><br>
+<<link [[Next|Conditioning Lesson 3]]>><</link>>
+
+:: Conditioning Lesson 3
+<<set $outside to 0>><<set $location to "mma_gym">><<effects>><<pass 15>>
+<<if currentSkillValue('physique') lt 2500 or $willpower lt 150>>
+	<<set _failChance to 55>>
+<<elseif currentSkillValue('physique') lt 4500 or $willpower lt 300>>
+	<<set _failChance to 35>>
+<<elseif currentSkillValue('physique') lt 7000 or $willpower lt 500>>
+	<<set _failChance to 18>>
+<<else>>
+	<<set _failChance to 8>>
+<</if>>
+Next come medicine-ball slams and jump rope. Your shoulders ache, your calves are tight, and Riley doesn't ease up.
+<br><br>
+<<if random(1,100) lte _failChance>>
+	The rope catches your ankles and the next slam almost slips from your hands. Riley makes you take a breath, then puts you straight back to work.
+	<br><br>
+	"You do not get cleaner by stopping," <<he>> says.
+	<<athletics 1>><<willpower 1>><<pain 2>><<tiredness 8>><<stress 3>>
+<<else>>
+	You keep moving through the burn, ugly but disciplined, and finish the rotation without dropping the pace.
+	<<athletics 1>><<willpower 2>><<tiredness 7>><<stress 2>>
+<</if>>
+<<gwillpower>><<gathletics>><<ggtiredness>><<gstress>>
+<br><br>
+<<link [[Next|Conditioning Lesson 4]]>><</link>>
+
+:: Conditioning Lesson 4
+<<set $outside to 0>><<set $location to "mma_gym">><<effects>><<pass 15>>
+<<if currentSkillValue('physique') lt 2500 or $willpower lt 150>>
+	<<set _failChance to 55>>
+<<elseif currentSkillValue('physique') lt 4500 or $willpower lt 300>>
+	<<set _failChance to 35>>
+<<elseif currentSkillValue('physique') lt 7000 or $willpower lt 500>>
+	<<set _failChance to 18>>
+<<else>>
+	<<set _failChance to 8>>
+<</if>>
+Riley ends the hour with burpees, sprawls, and one last stretch of carrying weight when your legs have nothing left.
+<br><br>
+<<if random(1,100) lte _failChance>>
+	You break before the session does. Riley catches it immediately and drives you through the final reps anyway, leaving you aching all over.
+	<br><br>
+	"That is why conditioning exists," Riley says. "So you do not fall apart the first time you're tired."
+	<<physique 1>><<athletics 1>><<willpower 1>><<pain 3>><<tiredness 9>><<stress 4>>
+<<else>>
+	You finish the hour on stubbornness alone, lungs burning and limbs heavy, but still moving when Riley finally calls it.
+	<<physique 2>><<athletics 1>><<willpower 2>><<tiredness 8>><<stress 3>>
+<</if>>
+<<gwillpower>><<gathletics>><<gphysique>><<ggtiredness>><<gstress>>
+<br><br>
+Riley checks the clock. "Enough. Get water before you drop on my floor."
+<br><br>
+<<link [[Next|MMA Gym]]>><<endevent>><</link>>
+
+:: Footwork Lesson
+<<set $outside to 0>><<set $location to "mma_gym">><<effects>>
+<<if $mmagymintro isnot 1>>
+	<<mmaGymIntro "Footwork Lesson">>
+<<else>>
+	<<pass 20>>
+	<<if $combatExtended.footwork lt 200>>
+		<<set _failChance to 58>>
+	<<elseif $combatExtended.footwork lt 400>>
+		<<set _failChance to 38>>
+	<<elseif $combatExtended.footwork lt 600>>
+		<<set _failChance to 21>>
+	<<else>>
+		<<set _failChance to 8>>
+	<</if>>
+	<<if $gymstage is 0>>
+		Riley tapes lines across the floor and has you work pivots, resets, and quick angle changes until thinking gets replaced by repetition.
+	<<elseif $gymstage is 1>>
+		The second block is all movement under pressure. Riley crowds your space, forcing you to step cleanly or get clipped with a pad.
+	<<else>>
+		The final block is nothing but tired legs and one more demand: move properly anyway.
+	<</if>>
+	<<if random(1,100) lte _failChance>>
+		You cross your feet, lose your balance, and eat Riley's correction more than once before it starts to stick.<<gpain>><<pain 2>>
+		<br><br>
+		"Again," Riley says. "Bad feet get you hit first."
+		<<footwork 6>><<tiredness 7>><<stress 3>>
+	<<elseif $combatExtended.footwork gte 600>>
+		Your steps stay light and measured even when Riley changes the angle on you without warning.
+		<<footwork 8>><<physique 1>><<tiredness 6>><<stress 2>><<gphysique>>
+	<<elseif $combatExtended.footwork gte 400>>
+		You keep the pattern most of the time, though your feet still tangle when Riley speeds the drill up.
+		<<footwork 8>><<physique 1>><<tiredness 7>><<stress 2>><<gphysique>>
+	<<else>>
+		The drill fights you the whole way through. You keep having to slow down, reset, and build the rhythm again from the floor up.
+		<<footwork 7>><<tiredness 8>><<stress 3>>
+	<</if>>
+	<<gfootwork>><<ggtiredness>><<gstress>>
+	<br><br>
+	<<if $gymstage gte 2>>
+		<<set $gymstage to 0>>
+		Riley lowers the pads. "Enough. Walk straight before you try walking fast."
+		<br><br>
+		<<link [[Next|MMA Gym]]>><<endevent>><</link>>
+	<<else>>
+		Riley points back to the tape. "Next block. Do not start getting lazy now."
+		<br><br>
+		<<link [[Next|Footwork Lesson]]>><<set $gymstage += 1>><</link>>
+	<</if>>
+<</if>>
+
+:: Striking Lesson
+<<set $outside to 0>><<set $location to "mma_gym">><<effects>>
+<<if $mmagymintro isnot 1>>
+	<<mmaGymIntro "Striking Lesson">>
+<<else>>
+	<<pass 20>>
+	<<if $combatExtended.striking lt 200>>
+		<<set _failChance to 58>>
+	<<elseif $combatExtended.striking lt 400>>
+		<<set _failChance to 38>>
+	<<elseif $combatExtended.striking lt 600>>
+		<<set _failChance to 21>>
+	<<else>>
+		<<set _failChance to 8>>
+	<</if>>
+	<<if $gymstage is 0>>
+		Riley starts you on mitt work, breaking each combination apart the second your guard drops.
+	<<elseif $gymstage is 1>>
+		The bag work that follows is heavier and uglier, all force and recovery while your shoulders start to burn.
+	<<else>>
+		By the last round Riley is forcing combinations out of you when your arms already want to hang loose.
+	<</if>>
+	<br><br>
+	<<if random(1,100) lte _failChance>>
+		Your punches start to loop wide and your guard slips. Riley stops the drill, resets your stance, and makes you throw it all again until the panic leaves your hands.<<trauma 2>><<gtrauma>>
+		<br><br>
+		"Power is cheap," Riley says. "Control is harder."
+		<<striking 6>><<tiredness 7>><<stress 3>>
+	<<elseif $combatExtended.striking gte 600>>
+		Your punches land clean and straight, with enough control left over to recover properly after each combination.
+		<<striking 8>><<physique 1>><<tiredness 6>><<stress 2>><<gphysique>>
+	<<elseif $combatExtended.striking gte 400>>
+		Most of your shots land well enough, though Riley catches every time your shoulders creep up.
+		<<striking 8>><<physique 1>><<tiredness 7>><<stress 2>><<gphysique>>
+	<<else>>
+		You hit hard enough, but not neatly. Riley keeps taking the sequence apart and forcing you to rebuild it piece by piece.
+		<<striking 7>><<tiredness 8>><<stress 3>>
+	<</if>>
+	<<gstriking>><<gtiredness>><<gstress>>
+	<br><br>
+	<<if $gymstage gte 2>>
+		<<set $gymstage to 0>>
+		Riley lowers the mitts. "That is enough. Shake your arms out and leave."
+		<br><br>
+		<<link [[Next|MMA Gym]]>><<endevent>><</link>>
+	<<else>>
+		Riley jerks <<his>> chin toward the next bag. "Next block. Keep your hands up."
+		<br><br>
+		<<link [[Next|Striking Lesson]]>><<set $gymstage += 1>><</link>>
+	<</if>>
+<</if>>
+
+:: Kicking Lesson
+<<set $outside to 0>><<set $location to "mma_gym">><<effects>>
+<<if $mmagymintro isnot 1>>
+	<<mmaGymIntro "Kicking Lesson">>
+<<else>>
+	<<pass 20>>
+	<<if $combatExtended.kicking lt 200>>
+		<<set _failChance to 55>>
+	<<elseif $combatExtended.kicking lt 400>>
+		<<set _failChance to 35>>
+	<<elseif $combatExtended.kicking lt 600>>
+		<<set _failChance to 18>>
+	<<else>>
+		<<set _failChance to 8>>
+	<</if>>
+	<<if $gymstage is 0>>
+		Riley starts with target work, changing angles and heights.
+	<<elseif $gymstage is 1>>
+		The next block is heavy-bag work, full-power kicks and quick recoveries back into stance.
+	<<else>>
+		The last round is balance under fatigue. Your hips ache, your standing leg burns, and Riley still wants clean technique.
+	<</if>>
+	<br><br>
+	<<if random(1,100) lte _failChance>>
+		A lazy recovery costs you your balance. Riley makes you reset and run the sequence again until your feet stop sliding.<<gpain>>
+		<br><br>
+		"If you cannot recover, do not throw it," Riley says.
+		<<kicking 6>><<pain 1>><<tiredness 7>><<stress 3>>
+	<<elseif $combatExtended.kicking gte 600>>
+		Your kicks crack into the pads with good weight behind them, and you recover cleanly each time.
+		<<kicking 8>><<physique 1>><<tiredness 6>><<stress 2>><<gphysique>>
+	<<elseif $combatExtended.kicking gte 400>>
+		You land most of the set well, though a few slower recoveries earn you a sharp correction from Riley.
+		<<kicking 8>><<physique 1>><<tiredness 7>><<stress 2>><<gphysique>>
+	<<else>>
+		Your form keeps slipping once the fatigue sets in. Riley has to keep stopping you before bad habits settle into the drill.
+		<<kicking 7>><<tiredness 8>><<stress 3>>
+	<</if>>
+	<<gkicking>><<gtiredness>><<gstress>>
+	<br><br>
+	<<if $gymstage gte 2>>
+		<<set $gymstage to 0>>
+		Riley steps back. "Enough. Stretch before your legs seize up."
+		<br><br>
+		<<link [[Next|MMA Gym]]>><<endevent>><</link>>
+	<<else>>
+		Riley taps the next pad into place. "Again. Cleaner this time."
+		<br><br>
+		<<link [[Next|Kicking Lesson]]>><<set $gymstage += 1>><</link>>
+	<</if>>
+<</if>>
+
+:: MMA Gym Change
+<<effects>>
+<<if $leftarm is "bound" or $rightarm is "bound">>
+	You try to work your clothes loose, but your bound wrists make a mess of it.
+	<br><br>
+<<elseif $worn.upper.name isnot "naked">>
+	<<if $worn.lower.name isnot "naked" and $worn.upper.set isnot $worn.lower.set>>
+		You remove your $worn.lower.name and hang it on one of the metal hooks.
+		<<lowerundress "mma_gym">>
+	<<else>>
+		You remove your $worn.upper.name and hang it on one of the metal hooks.
+		<<upperundress "mma_gym">>
+	<</if>>
+<<elseif $worn.lower.name isnot "naked">>
+	You remove your $worn.lower.name and hang it on one of the metal hooks.
+	<<lowerundress "mma_gym">>
+<<else>>
+	You have already stripped down as much as you can.
+<</if>>
+<br><br>
+<<link [[Next|MMA Gym Changing Room]]>><</link>>
+
+:: MMA Gym Changing Room
+<<set $outside to 0>><<set $location to "mma_gym">><<effects>>
+The MMA gym's changing room is narrow, tiled, and warmer than the floor outside. Lockers line one wall, and the others have benches with clothes hooks above them. The shower stalls hide behind a strip of clouded plastic that does not reach the floor.
+<br><br>
+You could change into your uniform, or similar clothes that are easy to move in here.
+<br><br>
+<<storeon "mma_gym" "check">>
+<<if _store_check is 1>>
+	You left your clothes here.
+	<br>
+	<<bathroomicon "robe">><<link [[Wear them|MMA Gym Changing Room]]>><<storeon "mma_gym">><</link>>
+	<br>
+<</if>>
+<<if $leftarm is "bound" or $rightarm is "bound">>
+	<span class="blue">You can't change properly with your hands bound.</span>
+	<br>
+<<else>>
+	<<if $worn.upper.name isnot "naked" or $worn.lower.name isnot "naked">>
+		<<lockericon "put in">><<link [[Change out of your clothes|MMA Gym Change]]>><</link>>
+		<br>
+	<</if>>
+	<<lockericon>><<link [[Locker|MMA Gym Locker]]>><</link>>
+	<br>
+	<<if $worn.upper.name is "naked" and $worn.lower.name is "naked">>
+		<<bathroomicon "shower">><<link [[Use the showers (0:10)|MMA Gym Shower]]>><<pass 10>><</link>>
+		<br>
+	<<else>>
+		<span class="blue">You should strip down before using the showers.</span>
+		<br>
+	<</if>>
+<</if>>
+<br>
+<<getouticon>><<link [[Return to the gym|MMA Gym]]>><<endevent>><</link>>
+
+:: MMA Gym Locker [exitCheckBypass]
+<<set $outside to 0>><<set $location to "mma_gym">><<effects>>
+<<run ensureMmaGymWardrobe()>>
+<<set $wardrobe_location to "mmaGym">>
+<<wardrobeSelection>>
+You stand in front of your open locker.
+<br><br>
+<div id="wardrobewear"><<wardrobewear>></div>
+<div id="wardrobeExits"><<wardrobeExits>></div>
+<<wardrobe>>
+
+:: MMA Gym Shower
+<<endevent>><<generate1>><<person1>><<effects>><<set _molestChance to 10>>
+<<if $exposed gte 1>><<set _molestChance += 8>><</if>><<if $allure gte 100>><<set _molestChance += 6>><</if>><<if $allure gte 250>><<set _molestChance += 6>><</if>><<if $world_corruption_soft gte 50>><<set _molestChance += 10>><</if>>
+You step under one of the showers and pull the curtain across. The water comes out cold enough to make you tense, then turns warm before settling into something you can stand.
+<br><br>
+Steam builds against the tiles.
+<br><br>
+<<if random(1, 100) lte _molestChance>>
+	Somewhere behind you, two lockers shut one after the other, and the changing room goes quiet.
+	<br><br>
+	Footsteps cross the wet floor and stop outside your shower. You wait for whoever it is to move on, but the shape behind the curtain stays where it is.
+	<br><br>
+	"Still in here?" <<he>> says. "Thought you were done on the mats."
+	<br><br>
+	The curtain pulls aside, revealing a <<person>> standing there in the steam. <<He>> grins. "Well... Look at that."
+	<br><br>
+	<<link [[Next|MMA Gym Molestation]]>><<set $molestationstart to 1>><</link>>
+<<else>>
+	You stay beneath the water until the sweat is gone. By the time you turn the shower off, the worst of the gym stink has washed down the drain.
+	<<wash>><<tiredness -1>><<ltiredness>><<stress -1>><<lstress>>
+	<br><br>
+	<<link [[Next|MMA Gym Changing Room]]>><<endevent>><</link>>
+<</if>>
+
+:: MMA Gym Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+<<effects>>
+<<effectsman>><<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if $alarm is 1>>
+	<<if $rescue is 1>>
+	<<else>>
+		The shower walls throw your cry back at you. No one comes quickly enough.
+		<<set $alarm to 0>>
+		<<if $drugged gte 1>>Intoxicated as you are, you can't cry very convincingly.<</if>>
+		<br><br>
+		<<if $enemypleasure gte $enemypleasuremax>>
+			<span id="next"><<link [[Next|MMA Gym Molestation Ejaculation]]>><</link>></span><<nexttext>>
+		<<elseif $enemyhealth lte 0>>
+			<span id="next"><<link [[Next|MMA Gym Molestation Escape]]>><</link>></span><<nexttext>>
+		<<elseif $finish is 1>>
+			<span id="next"><<link [[Next|MMA Gym Molestation Ejaculation]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[Next|MMA Gym Molestation]]>><</link>></span><<nexttext>>
+		<</if>>
+	<</if>>
+<<elseif $enemypleasure gte $enemypleasuremax>>
+	<span id="next"><<link [[Next|MMA Gym Molestation Ejaculation]]>><</link>></span><<nexttext>>
+<<elseif $enemyhealth lte 0>>
+	<span id="next"><<link [[Next|MMA Gym Molestation Escape]]>><</link>></span><<nexttext>>
+<<elseif $finish is 1>>
+	<span id="next"><<link [[Next|MMA Gym Molestation Ejaculation]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|MMA Gym Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: MMA Gym Molestation Ejaculation
+<<effects>><<ejaculation>>
+<<if $enemyanger gte ($enemyangermax / 5) * 3>>
+	<<He>> steps back first, still glaring as if you are the one who made trouble. You tense when <<he>> leans close again, but <<he>> only wipes <<his>> mouth with the back of <<his>> hand.
+	<br><br>
+	"Keep your mouth shut, <<bitch>>." Before leaving, <<he>> spits near your feet. You flinch.
+	<<wash>><<faceejacstat>><<ejacstat>><<set $facegoo += 1>>
+<<elseif $enemyanger gte 1>>
+	<<He>> backs off with a sharp breath, annoyed. <<He>> glances toward the door, listening for any movement beyond it.
+	<br><br>
+	"Don't make this my problem," <<he>> says. Then <<he>> slips past the lockers and leaves you there, the door swinging shut behind <<him>>.
+<<else>>
+	<<encounterEndViolence>>
+	<<He>> stays close for a moment, watching you gather yourself on the wet tile. <<He>> doesn't look like someone who did anything wrong.
+	<br><br>
+	<<He>> gives you a thin smile. "Gym stays in the gym, yeah?"
+	<br><br>
+	Then <<he>> steps away, leaving you with the running water and nothing else.
+<</if>>
+<<endcombat>>
+<<tearful>> you force yourself upright. <<clotheson>>
+<br><br>
+<<link [[Next|MMA Gym Changing Room]]>><</link>>
+
+:: MMA Gym Molestation Escape
+<<effects>>
+<<He>> yells out and hits the tile hard. <<tearful>> <span class="green">you use the chance to get out of the shower</span>, stumbling between the lockers before <<he>> can grab you again.
+<br><br>
+<<endcombat>>
+<<npc Riley>><<person1>><<npcincr Riley love 1>>
+Riley is coming into the changing room as you reach the door, and <<he>> can tell something's wrong the moment <<he>> sees you. <<His>> jaw tightens, but <<he>> keeps <<his>> distance. 
+<<if $worn.upper.name is "naked" and $worn.lower.name is "naked">>
+	<<He>> just takes a clean towel from nearby and offers it to you, letting you get covered before anyone looks over.
+	<br><br>
+	<<clothesontowel>>
+	You take it and wrap it around yourself.
+<<else>>
+	<<clotheson>>
+<</if>>
+Riley waits, then asks for a name.
+<br><br>
+You shake your head. You just want out of this room.
+<br><br>
+Riley does not press. <<He>> only turns towards the regulars and says something too quietly for you to hear. The changing room stays quieter after that.
+<br><br>
+<<link [[Next|MMA Gym Changing Room]]>><</link>>
+
+:: MMA Gym Outside Exhibitionism
+<<effects>><<endevent>>
+<<flaunting>> You push through the gym door and step out onto Nightingale Street without bothering to change first. The door swings shut behind you, and the cold air hits your bare skin.
+<br><br>
+<<generate1>><<person1>>A <<person>> walking <<his>> dog stares at you for a moment before looking away. Across the road, two people by the kebab shop nudge each other and watch you pass, but nobody says anything.
+<<exhibitionism3>>
+<br><br>
+<<link [[Next|Nightingale Street]]>><<endevent>><</link>>
+
+:: MMA Regular Sparring
+<<endevent>><<generate1>><<person1>><<effects>><<pass 45>><<set _sparRoll to random(1, 4)>><<speechresolve>>
+Riley pairs you with a <<person>> after a warm-up. "Light work," Riley says, which in this room seems to mean nobody is supposed to admit how hard they are trying.
+<br><br>
+<<if _sparRoll is 1>>
+	Your partner starts taking advantage of the resets. Each time you break apart, <<his>> hands touch somewhere new: your waist, then your hip, and finally your groin.
+	<br><br>
+	<<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
+		You keep your guard up, pretending not to notice until Riley calls time. The regular smirks as <<he>> backs away.
+		<<arousal 300>><<stress 2>><<athletics 1>><<garousal>><<gstress>><<gathletics>>
+	<<elseif _speechAttitudeResolved is "docile">>
+		You let the reset happen, shoulders tight and mouth shut, because making trouble here feels worse than enduring it. Riley's whistle finally cuts the round apart.
+		<<arousal 300>><<stress 3>><<athletics 1>><<garousal>><<gstress>><<gathletics>>
+	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+		You catch <<his>> wrist the next time it wanders. "Hands where they're meant to be."
+		<br><br>
+		The words come out controlled enough to make the nearest regulars look away. Riley notices, and the rest of the round stays almost respectable.
+		<<athletics 1>><<stress 2>><<gathletics>><<gstress>>
+	<<elseif _speechAttitudeResolved is "confident">>
+		You stop giving <<him>> clean resets. Every move costs <<him>> something, and after the second one <<he>> starts remembering where <<his>> hands belong.
+		<<athletics 1>><<tiredness 8>><<gathletics>><<gtiredness>>
+	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+		You shove <<him>> off the next time <<he>> drifts in. "Try training instead of pawing. You might learn something."
+		<br><br>
+		A few people snort. Your partner's smile drops, and the rest of the round gets so rough that Riley has to shout at both of you.
+		<<athletics 1>><<pain 2>><<stress 3>><<gathletics>><<gpain>><<gstress>>
+	<<else>>
+		You stop giving <<him>> clean resets. Every clinch costs <<him>> something.
+		<<athletics 1>><<tiredness 8>><<gathletics>><<gtiredness>>
+	<</if>>
+<<elseif _sparRoll is 2>>
+	Riley stops the round to correct your stance, steps in, moves your guard by hand, nudges your elbow into place.
+	<br><br>
+	<<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
+		"I want to get it right," you say, quieter than you meant to.
+		<br><br>
+		"Then stop apologising with your shoulders," Riley says. "You are allowed to take space. Start acting like it."
+		<<willpower 1>><<gwillpower>><<stress 4>><<gstress>>
+	<<elseif _speechAttitudeResolved is "docile">>
+		"Show me again," you say, holding still as Riley moves your guard.
+		<br><br>
+		Riley's mouth tightens. "Don't go limp. Help me fix it, or you'll just need fixing twice."
+		<<willpower 1>><<gwillpower>><<stress 3>><<gstress>>
+	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+		"Again, please," you say, trying to make the request sound steadier than your breath.
+		<br><br>
+		Riley gives you another correction, brisk and exact. "There. Polite is fine. Useful is better."
+		<<physique 1>><<gphysique>><<tiredness 5>><<gtiredness>>
+	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+		"Should I start making you look bad?"
+		<br><br>
+		Riley laughs. "Please do. It would be a nice change from correcting you."
+		<br><br>
+		Riley doesn't give you time to enjoy it.
+		<<athletics 1>><<pain 3>><<gathletics>><<gpain>>
+	<<else>>
+		You nod, reset your feet, and repeat the movement until Riley no longer has to touch your elbow back into place.
+		<br><br>
+		"Better," Riley says. "Do it before you need saving next time."
+		<<athletics 1>><<tiredness 6>><<gtiredness>><<gathletics>>
+	<</if>>
+<<elseif _sparRoll is 3>>
+	The round turns scrappy when your partner tries to rush every exchange. It is ugly work, full of elbows tucked too late and feet fighting for space on the mat.
+	<br><br>
+	<<if currentSkillValue('athletics') gte 700 or currentSkillValue('physique') gte 5000>>
+		You keep calm under the rush, step out of <<his>> path, and let <<him>> chase you into bad positions until Riley finally calls time.
+		<br><br>
+		"Not bad," Riley says.
+		<<athletics 2>><<physique 1>><<tiredness 8>><<gathletics>><<gphysique>><<gtiredness>>
+	<<else>>
+		You make it through, though it is a mess. <<He>> keeps rushing you back while Riley shouts at you to move.
+		<<athletics 1>><<pain 3>><<tiredness 8>><<stress 3>><<gathletics>><<gpain>><<gtiredness>><<gstress>>
+	<</if>>
+<<else>>
+	This time the spar stays clean. You throw strikes and reset until the round starts feeling like actual training.
+	<<athletics 1>><<physique 1>><<willpower 1>><<tiredness 6>><<gathletics>><<gphysique>><<gwillpower>><<gtiredness>>
+<</if>>
+<br><br>
+Riley claps once. "Done. Water, then out of the way."
+<br><br>
+<<link [[Next|MMA Gym]]>><<endevent>><</link>>

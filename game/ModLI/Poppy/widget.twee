@@ -1,0 +1,691 @@
+:: Poppy Widgets [widget]
+/*
+│    ██████╗ ██████╗ ██████╗ ███████╗
+│   ██╔════╝██╔═══██╗██╔══██╗██╔════╝
+│   ██║     ██║   ██║██████╔╝█████╗
+│   ██║     ██║   ██║██╔══██╗██╔══╝
+│   ╚██████╗╚██████╔╝██║  ██║███████╗
+│    ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝
+*/
+<<widget "poppySocialPrep">>
+	<<script>>
+		if (C && C.npc && C.npc.Poppy && C.npc.Poppy.init === 1) {
+			statusCheck("Poppy");
+		} else {
+			T.poppyPatienceRaw = 0;
+		}
+
+		/* define once */
+		if (!setup.poppyPatienceIcon) {
+			setup.poppyPatienceIcon = function (val) {
+				var v = Number(val) || 0;
+				if (v <= 0) return "img/ui/sym-patience-empty.png";
+				if (v > 100) v = 100;
+				return "img/ui/sym-patience-" + (Math.ceil(v / 20) * 20) + ".png";
+			};
+		}
+	<</script>>
+<</widget>>
+
+/* For cheat menu */
+<<widget "poppyTemper">>
+	<<if ((typeof T !== "undefined" && T && typeof T.poppyPatienceRaw !== "undefined" && T.poppyPatienceRaw !== null) ? (Number(T.poppyPatienceRaw) || 0) : (Number(C.npc?.Poppy?.patience) || 0)) gte 0>>
+		<<numberStepper "<img src='img/ui/sym-patience-100.png' class='icon'> Patience" `C.npc.Poppy.patience` {
+			callback: value => {
+				let v = Math.max(-100, Math.min(100, Number(value) || 0));
+				C.npc.Poppy.patience = v;
+				C.npc.Poppy.anger = Math.max(0, -v);
+				if (typeof statusCheck === "function") {
+					statusCheck("Poppy");
+				} else {
+					T.poppyPatienceRaw = v;
+					T.poppyPatience = Math.max(0, v);
+					T.poppyAnger = Math.max(0, -v);
+				}
+				Wikifier.wikifyEval("<<replace '#poppytemper'>><<poppyTemper>><</replace>>");
+				Wikifier.wikifyEval("<<replace '#poppydesc'>><<poppyTemperDesc>><</replace>>");
+			},
+			min: -100,
+			max: 100,
+			step: 1,
+			percentage: false,
+			valueFormat: value => `<b>${Math.abs(Number(value) || 0)}%</b>`
+		}>>
+	<<else>>
+		<<numberStepper "<img src='img/ui/sym-poppy-rage.png' class='icon'> Anger" `C.npc.Poppy.patience` {
+			callback: value => {
+				let v = Math.max(-100, Math.min(100, Number(value) || 0));
+				C.npc.Poppy.patience = v;
+				C.npc.Poppy.anger = Math.max(0, -v);
+				if (typeof statusCheck === "function") {
+					statusCheck("Poppy");
+				} else {
+					T.poppyPatienceRaw = v;
+					T.poppyPatience = Math.max(0, v);
+					T.poppyAnger = Math.max(0, -v);
+				}
+				Wikifier.wikifyEval("<<replace '#poppytemper'>><<poppyTemper>><</replace>>");
+				Wikifier.wikifyEval("<<replace '#poppydesc'>><<poppyTemperDesc>><</replace>>");
+			},
+			min: -100,
+			max: 100,
+			step: 1,
+			percentage: false,
+			valueFormat: value => `<b>${Math.abs(Number(value) || 0)}%</b>`
+		}>>
+	<</if>>
+<</widget>>
+<<widget "poppyTemperDesc">>
+	<<if (Number(C.npc?.Poppy?.patience) || 0) gte 0>>
+		Setting Poppy's patience below 0% will switch it to anger.
+	<<else>>
+		Raising it back to 0% switches to patience.
+	<</if>>
+<</widget>>
+
+/* BODYWRITING REACTION MID ENCOUNTER */
+<<widget "bodypart_admire_poppy">>
+	<<set _poppyOtherLI to ["Robin", "Whitney", "Kylar", "Sydney", "Eden", "Avery", "Alex", "Gwylan", "Black Wolf", "Great Hawk"]>>
+	<<if _poppyOtherLI.includes($skin[_args[0]].special)>>
+		<<run if (typeof statusCheck === "function") statusCheck("Poppy")>>
+		<<if !$speechAdmired>><<set $speechAdmired to 1>>
+			Poppy narrows <<his>> eyes. "<<print $skin[_args[0]].writing>> huh... does that mean you belong to <<nnpc_him $skin[_args[0]].special>> too?" <<He>> presses <<his>> palm onto your <<bodypart _args[0]>> and sinks <<his>> sharp nails into your skin without breaking it.
+			<<npcincr Poppy love -2>><<llove>><<npcincr Poppy patience -4>><<if C.npc.Poppy.patience gte 0>><<llpatience>><<else>><<gganger>><</if>><<stress 300>><<gstress>><<pain 300>><<gpain>>
+		<</if>>
+	<<elseif $skin[_args[0]].pen is "tattoo">>
+		<<run if (typeof statusCheck === "function") statusCheck("Poppy")>>
+		<<if !$speechAdmired>><<set $speechAdmired to 1>>
+			"It looks good on you." <<He>> caresses your <<bodypart _args[0]>>. "Makes you all the more attractive..." <<He>> licks <<his>> lips. <<if Number($poppyromance) gte 0>><<npcincr Poppy lust 3>><<glust>><br><</if>>
+		<</if>>
+	<<else>>
+		<<bodypart_admire_generic _args[0]>>
+	<</if>>
+<</widget>>
+
+/* POPPY ICONS */
+<<widget "poppyicon">><<silently>>
+	<<set _key to (_args[0] || "flat").toLowerCase()>>
+	<<set _iconFile to "poppy/poppy-flat.png">>
+	<<switch _key>>
+		<<case "living_room">>
+			<<if $christmas is 1>>
+				<<set _iconFile to "poppy/poppy-living-room-xmas.png">>
+			<<else>>
+				<<set _iconFile to "poppy/poppy-living-room.png">>
+			<</if>>
+		<<case "kitchen">>
+			<<if $christmas is 1>>
+				<<set _iconFile to "poppy/poppy-kitchen-xmas.png">>
+			<<else>>
+				<<set _iconFile to "poppy/poppy-kitchen.png">>
+			<</if>>
+		<<case "bathroom">>
+			<<set _iconFile to "poppy/poppy-bath-room.png">>
+		<<case "wardrobe">>
+			<<set _iconFile to "poppy/poppy-wardrobe.png">>
+		<<case "mirror">>
+			<<set _iconFile to "poppy/poppy-mirror.png">>
+		<<case "bed">>
+			<<if $christmas is 1>>
+				<<set _iconFile to "poppy/poppy-bed-xmas.png">>
+			<<elseif $halloween is 1>>
+				<<set _iconFile to "poppy/poppy-bed-halloween.png">>
+			<<else>>
+				<<set _iconFile to "poppy/poppy-bed.png">>
+			<</if>>
+		<<case "door">>
+			<<if $christmas is 1>>
+				<<set _iconFile to "poppy/poppy-door-xmas.png">>
+			<<else>>
+				<<set _iconFile to "poppy/poppy-flat.png">>
+			<</if>>
+		<<case "poppy">>
+			<<set _iconFile to "poppy/poppy-poppy.png">>
+		<<case "board">>
+			<<set _iconFile to "poppy/poppy-wall-grid-board.png">>
+		<<case "window">>
+			<<set _windowTime to (Weather.bloodMoon or $forcedBloodmoon) ? "bloodmoon" : (Weather.dayState is "night" ? "night" : "day")>>
+			<<set _windowWeather to "clear">>
+			<<switch Weather.name>>
+				<<case "storm" "thunderstorm">>
+					<<set _windowWeather to "stormy">>
+				<<case "lightPrecipitation" "heavyPrecipitation">>
+					<<if Weather.precipitation is "snow">>
+						<<set _windowWeather to "cloudy">>
+					<<else>>
+						<<set _windowWeather to "rainy">>
+					<</if>>
+				<<case "cloudy">>
+					<<set _windowWeather to "cloudy">>
+				<<default>>
+					<<if Weather.precipitation is "rain">>
+						<<set _windowWeather to "rainy">>
+					<<elseif Weather.precipitation is "snow">>
+						<<set _windowWeather to "cloudy">>
+					<</if>>
+			<</switch>>
+			<<set _iconFile to "poppy/poppy-window-" + _windowTime + "-" + _windowWeather + ".png">>
+		<<case "flat">>
+			<<if $halloween is 1>>
+				<<set _iconFile to "poppy/poppy-flat-halloween.png">>
+			<<else>>
+				<<set _iconFile to "poppy/poppy-flat.png">>
+			<</if>>
+		<<default>>
+			<<if $halloween is 1>>
+				<<set _iconFile to "poppy/poppy-flat-halloween.png">>
+			<<else>>
+				<<set _iconFile to "poppy/poppy-flat.png">>
+			<</if>>
+	<</switch>>
+<</silently>><<icon _iconFile>><</widget>>
+
+/* Poppy pregnancy data migration */
+<<widget "poppyPregnancy">>
+	<<if $objectVersion.poppyPregnancy is undefined or $objectVersion.poppyPregnancy lt 2>>
+		<<if C.npc.Poppy>>
+			<<if C.npc.Poppy.pregnancy is undefined>>
+				<<set C.npc.Poppy.pregnancy to { fetus: [], enabled: true, type: null }>>
+			<<else>>
+				<<if !Array.isArray(C.npc.Poppy.pregnancy.fetus)>>
+					<<set C.npc.Poppy.pregnancy.fetus to []>>
+				<</if>>
+				<<if typeof C.npc.Poppy.pregnancy.enabled !== "boolean">>
+					<<set C.npc.Poppy.pregnancy.enabled to true>>
+				<</if>>
+				<<if C.npc.Poppy.pregnancy.type is "none" or C.npc.Poppy.pregnancy.type is undefined>>
+					<<set C.npc.Poppy.pregnancy.type to null>>
+				<<elseif C.npc.Poppy.pregnancy.type and !C.npc.Poppy.pregnancy.fetus.length and !C.npc.Poppy.pregnancy.timerEnd>>
+					<<set C.npc.Poppy.pregnancy.type to null>>
+				<</if>>
+			<</if>>
+			<<set $objectVersion.poppyPregnancy to 2>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+/*
+│   ████████╗██████╗  █████╗ ██╗████████╗
+│   ╚══██╔══╝██╔══██╗██╔══██╗██║╚══██╔══╝
+│      ██║   ██████╔╝███████║██║   ██║
+│      ██║   ██╔══██╗██╔══██║██║   ██║
+│      ██║   ██║  ██║██║  ██║██║   ██║
+│      ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝   ╚═╝
+*/
+
+/*
+	Caller:
+	- <<poppyOpiumPulse>>             = repeated / auto-detect knowledge
+	- <<poppyOpiumPulse 1>>           = repeated / force known-science version
+	- <<poppyOpiumPulse false true>>   = first-time / auto-detect knowledge
+	- <<poppyOpiumPulse 1 true>>      = first-time / force known-science version
+*/
+<<widget "poppyOpiumPulse">>
+	<<set _poppyOpiumForceKnown to (_args.length gt 0 ? _args[0] : null)>>
+	<<set _poppyOpiumFirstTime to (_args.length gt 1 ? !!_args[1] : false)>>
+	<<set _poppyHasPavlovTrait to ($backgroundTraits.includes("pavlovpoppy"))>>
+	<<set _poppyOpiumTiredGain to (_poppyHasPavlovTrait ? 2 : 3)>>
+
+	<<run _poppyOpiumResult = poppyOpiumPulse(_poppyOpiumForceKnown)>>
+	<br><br>
+	<<if _poppyOpiumResult.relieved>>
+		<<if _poppyOpiumFirstTime>>
+			<span class="green"><i>You smell a powdery scent that makes you feel relieved.</i></span>
+		<<else>>
+			<span class="green"><i>You feel relieved.</i></span>
+		<</if>>
+		<<lpain>><<pain -3>>
+	<<else>>
+		<<if _poppyOpiumFirstTime>>
+			<span class="lewd"><i>You smell a powdery scent that makes you feel drowsy.</i></span>
+		<<else>>
+			<span class="lewd"><i>You feel drowsy.</i></span>
+		<</if>>
+		<<gtiredness>><<tiredness _poppyOpiumTiredGain>>
+	<</if>>
+
+	<<if _poppyOpiumResult.learnedKnowledge>>
+		<br>
+		<span class="red"><i>You realise that you've been inhaling opium all this time, resulting in drowsiness.</i></span>
+	<</if>>
+	<br><br>
+<</widget>>
+
+/*
+│    ███████╗██╗   ██╗███████╗███╗   ██╗████████╗
+│    ██╔════╝██║   ██║██╔════╝████╗  ██║╚══██╔══╝
+│    █████╗  ██║   ██║█████╗  ██╔██╗ ██║   ██║
+│    ██╔══╝  ╚██╗ ██╔╝██╔══╝  ██║╚██╗██║   ██║
+│    ███████╗ ╚████╔╝ ███████╗██║ ╚████║   ██║
+│    ╚══════╝  ╚═══╝  ╚══════╝╚═╝  ╚═══╝   ╚═╝
+*/
+<<widget "poppyFirstMeetingInit">>
+	<<if !$daily or typeof $daily isnot "object" or Array.isArray($daily)>><<set $daily to {}>><</if>>
+	<<if !$daily.poppy or typeof $daily.poppy isnot "object" or Array.isArray($daily.poppy)>><<set $daily.poppy to {}>><</if>>
+	<<if $poppySeen is undefined>>
+		<<set $poppySeen to []>>
+	<<elseif !Array.isArray($poppySeen)>>
+		<<set $poppySeen_legacy to $poppySeen>>
+		<<set $poppySeen to []>>
+	<</if>>
+	<<if typeof $poppyromance isnot "number">><<set $poppyromance to -1>><</if>>
+
+	<<if C.npc.Poppy>>
+		<<set _p to C.npc.Poppy>>
+		<<set _p.init to 1>><<set _p.intro to 1>><<set _p.aware to 1>><<set _p.name_known to 1>>
+		<<if !_p.timer or typeof _p.timer isnot "object" or Array.isArray(_p.timer)>><<set _p.timer to {}>><</if>>
+		<<if _p.timer.lastInteraction is undefined or _p.timer.lastInteraction is "">><<set _p.timer.lastInteraction to Time.date.timeStamp>><</if>>
+		<<if _p.timer.lastPatienceDecay is undefined or _p.timer.lastPatienceDecay is "">><<set _p.timer.lastPatienceDecay to Time.date.timeStamp>><</if>>
+		<<if typeof _p.patience isnot "number" or Number.isNaN(_p.patience)>><<set _p.patience to 100>><</if>>
+
+		<<if !$poppySeen.includes("talk_intro")>><<set $poppySeen.push("talk_intro")>><</if>>
+		<<if !$poppySeen.includes("classroom_intro")>><<set $poppySeen.push("classroom_intro")>><</if>>
+		<<run statusCheck("Poppy")>>
+	<<else>>
+		<<run console.warn("[Poppy intro] C.npc.Poppy is not available yet during first meeting. Intro init was skipped to avoid setting half-complete flags.")>>
+	<</if>>
+
+	<<poppyPregnancy>>
+<</widget>>
+
+/*
+	Poppy flat helpers
+	- Keeps the flat chain self-contained
+	- Mirrors the schedule idea from the design draft
+*/
+<<widget "poppyFlatInit">>
+	/* Persistent containers */
+	<<if !$daily or typeof $daily isnot "object" or Array.isArray($daily)>><<set $daily to {}>><</if>>
+	<<if !$poppyFlat or typeof $poppyFlat isnot "object" or Array.isArray($poppyFlat)>><<set $poppyFlat to {}>><</if>>
+	<<if !$daily.poppy or typeof $daily.poppy isnot "object" or Array.isArray($daily.poppy)>><<set $daily.poppy to {}>><</if>>
+	<<if !$daily.poppy.flatMeals or typeof $daily.poppy.flatMeals isnot "object" or Array.isArray($daily.poppy.flatMeals)>><<set $daily.poppy.flatMeals to {}>><</if>>
+	<<if !$daily.poppy.flatTending or typeof $daily.poppy.flatTending isnot "object" or Array.isArray($daily.poppy.flatTending)>><<set $daily.poppy.flatTending to {}>><</if>>
+	<<if typeof $poppyFlat.windowRoom isnot "string">><<set $poppyFlat.windowRoom to "living_room">><</if>>
+	<<if typeof $poppyFlat.kickedUntilDay isnot "number">><<set $poppyFlat.kickedUntilDay to -1>><</if>>
+	<<if typeof $daily.poppy.flatBaileySeenDay isnot "number">><<set $daily.poppy.flatBaileySeenDay to -1>><</if>>
+	<<if $poppySeen is undefined>>
+		<<set $poppySeen to []>>
+	<<elseif !Array.isArray($poppySeen)>>
+		<<set $poppySeen_legacy to $poppySeen>>
+		<<set $poppySeen to []>>
+	<</if>>
+
+	/* poppySchedule owns flat presence, room, and meal state. */
+	<<run poppySchedule()>>
+
+	/* Bailey trigger flags */
+	<<set _rentDue to (Number($rentMoney) || 0) + (Number($babyRent) || 0)>>
+	<<set _notYetToday to ($daily.poppy.flatBaileySeenDay isnot Time.days)>>
+	/* Two-tier overdue: -2+ any time, or -1..0 only during waking hours (4-21). */
+	<<set _rentOverdue to ($rentTime lte -2) or ($rentTime lte 0 and Time.hour gte 4 and Time.hour lte 21)>>
+	<<set T.poppyFlatBaileyDue to !!(_rentOverdue and _notYetToday and _rentDue gt 0)>>
+	<<set T.poppyFlatBaileyHome to $poppyFlat.home is true>>
+	<<set T.poppyFlatBaileyLowPatience to !!(T.poppyStatus and T.poppyStatus.includes("LowPatience"))>>
+<</widget>>
+<<widget "poppyFlatContents">>
+	<<if $bus isnot "poppy_living_room">><<poppyicon "living_room">><<link [[Living room (0:01)|Flats Poppy Living Room]]>><<pass 1>><</link>><br><</if>>
+	<<if $bus isnot "poppy_kitchen">><<poppyicon "kitchen">><<link [[Kitchen (0:01)|Flats Poppy Kitchen]]>><<pass 1>><</link>><br><</if>>
+	<<if $bus isnot "poppy_bathroom">><<poppyicon "bathroom">><<link [[Bathroom (0:01)|Flats Poppy Bathroom]]>><<pass 1>><</link>><br><</if>>
+	<<if $bus isnot "poppy_bedroom">><<poppyicon "bed">><<link [[Bedroom (0:01)|Flats Poppy Bedroom]]>><<pass 1>><</link>><br><</if>>
+	<<getouticon>><<link [[Leave the flat|Flats]]>><<pass 1>><<endevent>><<set $eventskip to 0>><</link>>
+<</widget>>
+
+<<widget "poppyChristmasWrapOption">>
+	<<if $christmas_wrap is 1 and $christmas_gift_poppy isnot undefined and $christmas_gift_poppy.endsWith("_unwrapped")>>
+		<<set _poppyWrapRoom to ($bus or "").replace("poppy_", "")>>
+		<<if !$poppyFlat.home or $poppyFlat.room isnot _poppyWrapRoom>>
+			<<gifticon "wrapping">><<link [[Wrap Poppy's gift (0:10)|Flats Poppy Wrap Gift]]>><<pass 10>><<set $christmas_gift_poppy to $christmas_gift_poppy.replace("_unwrapped", "")>><<set $christmas_gift_poppy_wrapped to 1>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<</widget>>
+
+/* Offers the one-per-bad-end heart to heart. _args[0] is "flat" or "lake". */
+<<widget "poppyComfortOption">>
+	<<if poppyBadEndComfortAvailable()>>
+		<<socialiseicon>><<link [[Tell Poppy where you've been (0:05)|Poppy Comfort Talk]]>><<pass 5>><<set $poppyComfortVenue to _args[0]>><<set $daily.poppy.lastAction to "chat">><</link>><<lstress>><<ltrauma>><<gpatience>>
+		<br>
+	<</if>>
+<</widget>>
+
+/* Shared passage header for the comfort talk, which runs at either venue. */
+<<widget "poppyComfortHeader">>
+	<<if $poppyComfortVenue is "lake">>
+		<<effects>><<lakeeffects>>
+	<<else>>
+		<<set $location to "flats">><<set $bus to "poppy_living_room">><<set $outside to 0>><<effects>>
+	<</if>>
+	<<run poppySchedule()>><<speechresolve>>
+<</widget>>
+
+/* Perfumery */
+<<widget "perfumeryPoppyPrep">>
+	<<if _args[0] isnot "conversation">><<set $location to "flats">><<set $bus to "poppy_living_room">><<set $outside to 0>><<set $perfumeryVenue to "poppy">><</if>>
+	<<effects>>
+	<<if setup.perfumery.enabled() and $modLIUnlocks?.Poppy and C.npc.Poppy?.init is 1>><<run poppySchedule()>><</if>>
+<</widget>>
+<<widget "perfumeryConversationReturn">>
+	<<if $perfumeryVenue is "poppy" and setup.perfumery.canVisit()>>
+		<<link [[Return to your conversation|Flats Poppy Social]]>><</link>>
+	<<elseif $perfumeryVenue is "poppy">>
+		<<link [[Leave the doorway|Flats]]>><</link>>
+	<<elseif $perfumeryVenue is "bedroom">>
+		<<link [[Back|Flats Poppy Bedroom]]>><</link>>
+	<<else>>
+		<<link [[Return to the lakeside|Lake Shore]]>><</link>>
+	<</if>>
+<</widget>>
+
+/* Menu */
+<<widget "poppyLakeMenu">>
+<<effects>><<lakeeffects>><<run poppySchedule()>><<bodywritingExposureCheck>>
+	<<set _poppyMins to Time.minutesSinceMidnight>>
+	<<set _poppyPrecip to Weather.precipitation>>
+	<<set _poppyLow to (T.poppyStatus and T.poppyStatus.includes("LowPatience"))>>
+	<<set _poppyRom to Number($poppyromance)>>
+	<<set _poppyRaw to (Number(T.poppyPatienceRaw) || 0)>>
+	<<set _poppyAngerSide to (_poppyRaw lt 0)>>
+	<<set _poppyPositive to (_poppyRaw gt 0)>>
+
+	<<set _poppyPostAction to ($eventskip is 1)>><<set _poppyFreshEntry to ($eventskip isnot 1)>>
+	<<set _poppyLeaveNow to (!C.npc.Poppy or C.npc.Poppy.init isnot 1 or T.poppy_location isnot "lake" or _poppyMins lt 540 or _poppyMins gte 720 or _poppyPrecip is "rain" or _poppyPrecip is "snow")>>
+
+	/* Fresh entry: direct scene injection is fine */
+	<<if _poppyFreshEntry and _poppyLeaveNow>>
+		<<include "Lake Poppy Departure">>
+	<<elseif _poppyFreshEntry and $tiredness gte C.tiredness.max>>
+		<<include "Lake Poppy Pass Out">>
+	<<elseif _poppyFreshEntry and _poppyRom gte 0 and !$poppySeen.includes("lake_postclaim_intro")>>
+		<<include "Lake Poppy Invite Home">>
+	<<elseif _poppyFreshEntry and _poppyRom gte 0 and C.npc.Poppy.init is 1 and _bodywriting_exposed gte 1 and !$daily.poppy.bodywriting and _bodypart>>
+		<<include "Poppy Bodywriting Reaction">>
+
+	/* Post-action return: use Next links instead of include */
+	<<elseif _poppyPostAction and _poppyLeaveNow>>
+		Poppy glances at <<his>> watch. "Oh, look at the time."
+		<br><br>
+		<<link [[Next|Lake Poppy Departure]]>><</link>>
+	<<elseif _poppyPostAction and $tiredness gte C.tiredness.max>>
+		A sudden wave of exhaustion hits you.
+		<br><br>
+		<<link [[Next|Lake Poppy Pass Out]]>><</link>>
+	<<elseif _poppyPostAction and !$daily.poppy.lakeNap and !$daily.poppy.forceNoNap and !_poppyLow and ($daily.poppy.lastAction is "chat" or $daily.poppy.lastAction is "flirt") and random(1,100) gte 82>>
+		<<set $daily.poppy.lakeNap to true>>
+		Poppy looks rather drowsy.
+		<br><br>
+		<<link [[Next|Lake Poppy Doze]]>><</link>>
+	<<else>>
+		<<if _poppyFreshEntry>>
+				<<if $awarelevel gte 5>>
+					Poppy's ears twitch as you get closer. 
+					<br><br>
+					<<if _poppyLow>>But <<he>> doesn't acknowledge you.<<else>><<He>> turns <<his>> head towards you and smiles.<</if>> You sit down beside Poppy.
+				<<else>>
+					<<if _poppyLow>>Poppy doesn't acknowledge you.<<else>>Poppy turns <<his>> head towards you and smiles.<</if>>
+					<br><br>
+					You sit down beside Poppy.
+				<</if>>
+
+				<<if !_poppyLow and !$poppySeen.includes("lake_meditation_intro") and !Weather.isFrozen("lake")>>
+					<br><br>
+					"Perfect weather to enjoy the beauty of nature, don't you think?" <<His>> smile widens as a duck swam by with its little ducklings. "I named that one Sei." <<He>> points at a duck from across the river and laughs.
+					<<set $poppySeen.push("lake_meditation_intro")>>
+				<</if>>
+				<<poppyOpiumPulse>>
+		<</if>>
+		<<poppyComfortOption "lake">>
+		<<perfumeryInvitation "lake">>
+		<<socialiseicon>><<link [[Chat with Poppy (0:15)|Lake Poppy Chat]]>><<pass 15>><<set $daily.poppy.lastAction to "chat">><<run setup.perfumery.social("Poppy")>><</link>><<if T.poppyLoveGainAllowed>><<glove>><</if>><<if _poppyPositive>><<gpatience>><<else>><<langer>><</if>>
+		<br>
+		<<if (npcIsPregnant("Poppy") and knowsAboutPregnancy("Poppy", "pc")) or (playerIsPregnant() and playerAwareTheyArePregnant() and knowsAboutPregnancy("pc", "Poppy"))>>
+			<<if playerIsPregnant() and playerAwareTheyArePregnant() and knowsAboutPregnancy("pc", "Poppy")>><<pregnancyicon "player">><<else>><<pregnancyicon>><</if>><<link [[Talk about the pregnancy (0:15)|Poppy Pregnancy Chat]]>><<pass 15>><<set $daily.poppy.lastAction to "chat">><</link>><<if T.poppyLoveGainAllowed>><<glove>><</if>>
+			<br>
+		<</if>>
+		<<socialiseicon>><<link [[Flirt (0:15)|Lake Poppy Flirt]]>><<pass 15>><<set $daily.poppy.lastAction to "flirt">><</link>><<promiscuous1>><<if T.poppyLoveGainAllowed>><<glove>><</if>><<if _poppyRom gte 0 and !_poppyLow>><<glust>><</if>>
+		<br>
+		<<if effectiveTransformationLevel("wolf") gte 6>>
+			<<tficon "wolf">><<link [[Howl (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "wolf">><</link>>
+			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
+			<br>
+		<<elseif effectiveTransformationLevel("fox") gte 6>>
+			<<tficon "fox">><<link [[Yip (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "fox">><</link>>
+			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
+			<br>
+		<<elseif effectiveTransformationLevel("cow") gte 6>>
+			<<tficon "cow">><<link [[Gently headbutt (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "cow">><</link>>
+			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
+			<br>
+		<<elseif effectiveTransformationLevel("bird") gte 6>>
+			<<birdicon "sing">><<link [[Sing (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "harpy">><</link>>
+			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
+			<br>
+		<<elseif effectiveTransformationLevel("cat") gte 6>>
+			<<tficon "cat">><<link [[Nuzzle (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "cat">><</link>>
+			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
+			<br>
+		<<elseif effectiveTransformationLevel("bear") gte 6>>
+			<<tficon "bear">><<link [[Lean (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "bear">><</link>>
+			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
+			<br>
+		<<elseif effectiveTransformationLevel("bunny") gte 6>>
+			<<tficon "bunny">><<link [[Headbutt (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "bunny">><</link>>
+			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
+			<br>
+		<</if>>
+		<<poppyChristmasGiftOption "lake">>
+		<<if _poppyLow>>
+			<<skinicon "give">><span class="black">Gift food</span> | <span class="red">Poppy is too irritated to accept anything right now.</span>
+		<<elseif canGiftFood("Poppy")>>
+			<<skinicon "give">><<link [[Gift food|Poppy Lake Gifts List]]>><<set $daily.poppy.lastAction to "gift">><</link>>
+		<</if>>
+		<br>
+		<<getouticon>><<link [[Leave|Lake Shore]]>><<endevent>><<set $eventskip to 0>><</link>>
+	<</if>>
+<</widget>>
+<<widget "poppyLakeReturn">>
+	<<run poppySchedule()>>
+	<<set _poppyMins to Time.minutesSinceMidnight>>
+	<<set _poppyPrecip to Weather.precipitation>>
+	<<if !C.npc.Poppy or C.npc.Poppy.init isnot 1 or T.poppy_location isnot "lake" or _poppyMins lt 540 or _poppyMins gte 720 or _poppyPrecip is "rain" or _poppyPrecip is "snow">>
+		Poppy glances at <<his>> watch. "Oh, look at the time."
+		<br><br>
+		<<link [[Next|Lake Poppy Departure]]>><<set $eventskip to 0>><</link>>
+	<<else>>
+		<<set $eventskip to 1>>
+		<<poppyLakeMenu>>
+	<</if>>
+<</widget>>
+
+<<widget "poppyFlatsMenu">>
+<<set $bus to "poppy_living_room">><<effects>><<run poppySchedule()>><<bodywritingExposureCheck>>
+	<<set _poppyLow to (T.poppyStatus and T.poppyStatus.includes("LowPatience"))>>
+	<<set _poppyRom to Number($poppyromance)>>
+	<<set _poppyRaw to (Number(T.poppyPatienceRaw) || 0)>>
+	<<set _poppyAngerSide to (_poppyRaw lt 0)>>
+	<<set _poppyPositive to (_poppyRaw gt 0)>>
+
+	<<set _poppyPostAction to ($eventskip is 1)>><<set _poppyFreshEntry to ($eventskip isnot 1)>>
+	<<set _poppyLeaveNow to (!C.npc.Poppy or C.npc.Poppy.init isnot 1 or !$poppyFlat.home or $poppyFlat.room isnot "living_room")>>
+
+	/* Fresh entry: direct scene injection is fine */
+	<<if _poppyFreshEntry and _poppyLeaveNow>>
+		<<include "Flats Poppy Departure">>
+	<<elseif _poppyFreshEntry and $tiredness gte C.tiredness.max>>
+		<<include "Flats Poppy Pass Out">>
+	<<elseif _poppyFreshEntry and _poppyRom gte 0 and C.npc.Poppy.init is 1 and _bodywriting_exposed gte 1 and !$daily.poppy.bodywriting and _bodypart>>
+		<<include "Flats Poppy Bodywriting Reaction">>
+
+	/* Post-action return: use Next links instead of include */
+	<<elseif _poppyPostAction and _poppyLeaveNow>>
+		Poppy glances at <<his>> watch. "Oh, look at the time."
+		<br><br>
+		<<link [[Next|Flats Poppy Departure]]>><</link>>
+	<<elseif _poppyPostAction and $tiredness gte C.tiredness.max>>
+		A sudden wave of exhaustion hits you.
+		<br><br>
+		<<link [[Next|Flats Poppy Pass Out]]>><</link>>
+	<<elseif _poppyPostAction and !$daily.poppy.flatsNap and !$daily.poppy.forceNoNap and !_poppyLow and ($daily.poppy.lastAction is "chat" or $daily.poppy.lastAction is "flirt") and random(1,100) gte 82>>
+		<<set $daily.poppy.flatsNap to true>>
+		Poppy looks rather drowsy.
+		<br><br>
+		<<link [[Next|Flats Poppy Doze]]>><</link>>
+	<<else>>
+		<<if _poppyFreshEntry>>
+				<<if $awarelevel gte 5>>
+					<<if _poppyLow>>
+						Poppy's fox ears twitch as you get closer. The cushion sinks as you sit down beside Poppy. <<He>> doesn't acknowledge you.
+					<<else>>
+						Poppy's fox ears twitch as you get closer. <<He>> turns <<his>> head towards you and smiles. The cushion sinks as you sit down beside Poppy.
+					<</if>>
+				<<else>>
+					<<if _poppyLow>>
+						The cushion sinks as you sit down beside Poppy. <<He>> doesn't acknowledge you.
+					<<else>>
+						<<He>> turns <<his>> head towards you and smiles. The cushion sinks as you sit down beside Poppy.
+					<</if>>
+				<</if>>
+			<<poppyOpiumPulse>>
+		<</if>>
+		<<if playerAwareTheyArePregnant()>>
+			<<if C.npc.Poppy.pregnancy.test is true>>
+				/* PC came back with paternity proof */
+				<<procedureicon "paternity">><<link [[Show Poppy the paternity result (0:05)|Poppy Pregnancy Reveal]]>><<pass 5>><</link>>
+				<br><br>
+			<<elseif !knowsAboutPregnancy("pc", "Poppy")>>
+				/* PC has never told Poppy; show whatever PC has */
+				<<if getPlayerPregnancy()?.ultrasoundDone and C.npc.Poppy.pregnancy.ultraSound is "requested">>
+					/* Poppy already saw the test once and asked for proof */
+					<<pregnancyicon "player">><<link [[Show Poppy the ultrasound (0:05)|Poppy Pregnancy Reveal]]>>
+						<<set C.npc.Poppy.pregnancy.ultraSound to "collected">><<pass 5>>
+					<</link>>
+					<br>
+				<<elseif getPlayerPregnancy()?.ultrasoundDone>>
+					/* PC has both test and ultrasound in hand, combined reveal */
+					<<pregnancyicon "player">><<link [[Show Poppy the pregnancy test and ultrasound (0:05)|Poppy Pregnancy Reveal]]>>
+						<<set C.npc.Poppy.pregnancy.ultraSound to "collected">><<pass 5>>
+					<</link>>
+					<br>
+				<<else>>
+					/* PC only has the test */
+					<<pregnancytesticon>>
+					<<if !V.player.vaginaExist>>
+						<<link [[Show Poppy the pregnancy test (0:05)|Poppy Pregnancy Reveal Mpreg Alt]]>><<pass 5>><</link>>
+					<<else>>
+						<<link [[Show Poppy the pregnancy test (0:05)|Poppy Pregnancy Reveal]]>><<pass 5>><</link>>
+					<</if>>
+					<br>
+				<</if>>
+			<br>
+			<</if>>
+		<</if>>
+		<<poppyComfortOption "flat">>
+		<<perfumeryInvitation "poppy">>
+		<<if $perfumery?.invited and setup.perfumery.canVisit()>>
+			<<icon "tending/white-rose.png">><<link [[Talk at the perfumery table|Poppy Perfumery Visit]]>><<set $perfumeryVenue to "poppy">><</link>><br>
+		<</if>>
+		<<if !$poppySeen.includes("flat_chat_plant") and _poppyRom gte 0>>
+			<<socialiseicon>><<link [[Chat (0:15)|Flats Poppy Chat Plant]]>><<pass 15>><<set $daily.poppy.lastAction to "chat">><<run setup.perfumery.social("Poppy")>><</link>><<if T.poppyLoveGainAllowed>><<glove>><</if>><<if _poppyPositive>><<gpatience>><<else>><<langer>><</if>>
+			<br>
+		<<else>>
+			<<socialiseicon>><<link [[Chat (0:15)|Flats Poppy Chat]]>><<pass 15>><<set $daily.poppy.lastAction to "chat">><<run setup.perfumery.social("Poppy")>><</link>><<if T.poppyLoveGainAllowed>><<glove>><</if>><<if _poppyPositive>><<gpatience>><<else>><<langer>><</if>>
+			<br>
+		<</if>>
+		<<if (npcIsPregnant("Poppy") and knowsAboutPregnancy("Poppy", "pc")) or (playerIsPregnant() and playerAwareTheyArePregnant() and knowsAboutPregnancy("pc", "Poppy"))>>
+			<<if playerIsPregnant() and playerAwareTheyArePregnant() and knowsAboutPregnancy("pc", "Poppy")>><<pregnancyicon "player">><<else>><<pregnancyicon>><</if>><<link [[Talk about the pregnancy (0:15)|Poppy Pregnancy Chat]]>><<pass 15>><<set $daily.poppy.lastAction to "chat">><</link>><<if T.poppyLoveGainAllowed>><<glove>><</if>>
+			<br>
+		<</if>>
+		<<socialiseicon>><<link [[Flirt (0:15)|Flats Poppy Flirt]]>><<pass 15>><<set $daily.poppy.lastAction to "flirt">><</link>><<promiscuous1>><<if T.poppyLoveGainAllowed>><<glove>><</if>><<if _poppyRom gte 0 and !_poppyLow>><<glust>><</if>>
+		<br>
+		<<if _poppyRom gte 0 and !_poppyLow and !$daily.poppy.outing and Time.hour gte 8 and Time.hour lt 18>>
+			<<socialiseicon "ask">><<link [[Ask Poppy out|Poppy Outing Choice]]>><<set $daily.poppy.lastAction to "outing">><</link>><<glove>><<gpatience>>
+			<br>
+		<</if>>
+		<<if effectiveTransformationLevel("wolf") gte 6>>
+			<<tficon "wolf">><<link [[Howl (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "wolf">><</link>>
+			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
+			<br>
+		<<elseif effectiveTransformationLevel("fox") gte 6>>
+			<<tficon "fox">><<link [[Yip (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "fox">><</link>>
+			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
+			<br>
+		<<elseif effectiveTransformationLevel("cow") gte 6>>
+			<<tficon "cow">><<link [[Gently headbutt (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "cow">><</link>>
+			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
+			<br>
+		<<elseif effectiveTransformationLevel("bird") gte 6>>
+			<<birdicon "sing">><<link [[Sing (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "harpy">><</link>>
+			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
+			<br>
+		<<elseif effectiveTransformationLevel("cat") gte 6>>
+			<<tficon "cat">><<link [[Nuzzle (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "cat">><</link>>
+			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
+			<br>
+		<<elseif effectiveTransformationLevel("bear") gte 6>>
+			<<tficon "bear">><<link [[Lean (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "bear">><</link>>
+			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
+			<br>
+		<<elseif effectiveTransformationLevel("bunny") gte 6>>
+			<<tficon "bunny">><<link [[Headbutt (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "bunny">><</link>>
+			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
+			<br>
+		<</if>>
+		<<poppyChristmasGiftOption "flat">>
+		<<if _poppyLow>>
+			<<skinicon "give">><span class="black">Gift food</span> | <span class="red">Poppy is too irritated to accept anything right now.</span>
+		<<elseif canGiftFood("Poppy")>>
+			<<skinicon "give">><<link [[Gift food|Flats Poppy Gift Food]]>><<set $daily.poppy.lastAction to "gift">><</link>>
+		<</if>>
+		<br>
+		<<getouticon>><<link [[Leave|Flats Poppy Living Room]]>><<set $eventskip to 0>><</link>>
+	<</if>>
+<</widget>>
+
+<<widget "poppyChristmasGiftOption">>
+	<<if $christmas is 1 and $christmas_gift_poppy_wrapped is 1 and $christmas_gift_poppy_given is undefined>>
+		<<if _args[0] is "lake">>
+			<<gifticon "love">><<link [[Give Poppy Christmas gift (0:10)|Poppy Christmas Gift]]>><<pass 10>><<set $daily.poppy.lastAction to "gift">><<set $poppyGiftVenue to "lake">><</link>>
+		<<else>>
+			You see Poppy adjusting some Christmas ornaments.
+			<br><br>
+			<<gifticon "love">><<link [[Give Poppy Christmas gift (0:10)|Poppy Christmas Gift]]>><<pass 10>><<set $daily.poppy.lastAction to "gift">><<set $poppyGiftVenue to "flat">><</link>>
+		<</if>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "poppyChristmasTuxedoOpener">>
+	<<if C.npc.Poppy.pronoun is "f">>
+		Poppy pauses when <<he>> sees the suit. <<He>> glances up at you for a moment, then smirks. "If you want to see me in a suit, you could've just said so~" Poppy holds up the suit and sways it.
+	<<else>>
+		"Oh wow! This must have been expensive, isn't it?" Poppy feels the fabric of the suit, a smile starts to creep onto <<his>> face.
+	<</if>>
+	<br><br>
+<</widget>>
+
+<<widget "poppyChristmasGiftReturn">>
+	<<if poppyGiftAtFlat()>>
+		<<set $eventskip to 1>>
+		<<poppyFlatsMenu>>
+	<<else>>
+		<<poppyLakeReturn>>
+	<</if>>
+	<<unset $poppyGiftVenue>>
+<</widget>>
+
+<<widget "poppyChristmasBaileyPayment">>
+	While you're speaking to Poppy, you see the door to Bailey's office open behind <<him>> as Bailey comes out to investigate the hubbub caused by Poppy's gift of sweets. <<nnpc_He "Bailey">> doesn't look happy.
+	<br><br>
+	Poppy notices you looking over <<his>> shoulder and turns around to see Bailey. <<He>> approaches Bailey with something in <<his>> hand. 
+	<br><br>
+	<<if currentSkillValue('skulduggery') gte 200>>
+		<span class="teal">With a thief's eye, you see what others miss.</span> Poppy is handing Bailey a small stack of cash.
+		<br><br>
+	<<elseif hasSharpSenses("sight") or hasSharpSenses("instincts")>>
+		Your <span class="green">sharp eyes</span> catch the movement of Poppy's fingers. <<Hes>> handing Bailey a small stack of cash.
+		<br><br>
+	<<else>>
+		Bailey's expression changes as Poppy approaches. Whatever Poppy says is too quiet for you to hear.
+		<br><br>
+	<</if>>
+	Bailey takes it and nods <<nnpc_his "Bailey">> head. <<nnpc_He "Bailey">> heads out of the orphanage, likely wanting to get away from the noise.
+<</widget>>

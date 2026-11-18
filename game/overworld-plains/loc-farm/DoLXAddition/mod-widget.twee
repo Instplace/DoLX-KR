@@ -1,0 +1,147 @@
+:: Farm Mod Widgets [widget]
+<<widget "tendingCropProgressStats">>
+	<<set _cropProgressCount to 0>>
+	<<set _canEstimateCropProgress to !$settings.blindStatsEnabled or currentSkillValue('tending') gte 1000 or $backgroundTraits.includes("greenthumb")>>
+	<<if _canEstimateCropProgress>>
+		<span class="small-description">Days left assume the crops are kept watered.</span>
+	<<else>>
+		<span class="small-description">Raise tending to 1,000, or have the green thumb background, to estimate exact harvest timing while blind stats are enabled.</span>
+	<</if>>
+
+	<table class="statsTable">
+		<thead>
+			<tr>
+				<th scope="col">Plot</th>
+				<th scope="col">Crop</th>
+				<th scope="col">Water</th>
+				<th scope="col">Harvest</th>
+			</tr>
+		</thead>
+
+		<<for _location range Object.keys($plots || {})>>
+			<<set _plotsHere to $plots[_location]>>
+			<<if Array.isArray(_plotsHere)>>
+				<<set _locationName to _location.replace(/_/g, " ").toLocaleUpperFirst()>>
+				<<if _location is "alex_farm">><<set _locationName to "Alex's farm">><</if>>
+				<<if _location is "farm">><<set _locationName to "Alex's farm">><</if>>
+				<<if _location is "garden">><<set _locationName to "Orphanage garden">><</if>>
+
+				<<for _plotIndex to 0; _plotIndex lt _plotsHere.length; _plotIndex++>>
+					<<set _plot to _plotsHere[_plotIndex]>>
+					<<if _plot and _plot.stage gte 1 and _plot.plant isnot "none">>
+						<<set _cropProgressCount++>>
+						<<set _plant to setup.foodstuff[_plot.plant]>>
+
+						<tbody class="stat">
+							<td data-label="Plot">
+								_locationName<br>
+								<span class="small-description">Plot <<print _plotIndex + 1>></span>
+							</td>
+
+							<<if _plant>>
+								<<set _cropName to ((_plant.tending?.seed_name || _plant.plural || _plant.name || _plot.plant).replace(/_/g, " ")).toLocaleUpperFirst()>>
+								<<set _growthDays to _plant.tending?.growth_days>>
+								<td data-label="Crop">_cropName</td>
+							<<else>>
+								<<set _growthDays to undefined>>
+								<td data-label="Crop"><span class="red">Unknown crop: _plot.plant</span></td>
+							<</if>>
+
+							<td data-label="Water">
+								<<if _plot.stage gte 5>>
+									<span class="green">Ready</span>
+								<<elseif _plot.bed is "water">>
+									<span class="blue">Aquatic</span>
+								<<elseif _plot.water is 1>>
+									<span class="green">Watered</span>
+								<<else>>
+									<span class="purple">Dry</span>
+								<</if>>
+							</td>
+
+							<td data-label="Harvest">
+								<<if _plot.stage gte 5>>
+									<span class="green">Now</span>
+								<<elseif !_growthDays>>
+									<span class="red">Unknown</span>
+								<<elseif _canEstimateCropProgress>>
+									<<set _daysLeft to Math.max(Math.ceil(_growthDays - (_plot.days || 0)), 1)>>
+									<span class="orange"><<number _daysLeft>> <<pluralise _daysLeft "day">></span>
+								<<else>>
+									<span class="blue">Unknown</span>
+								<</if>>
+							</td>
+						</tbody>
+					<</if>>
+				<</for>>
+			<</if>>
+		<</for>>
+	</table>
+
+	<<if _cropProgressCount is 0>>
+		No crops are currently planted.
+	<</if>>
+<</widget>>
+
+<!-- Alex wakes at five to start breakfast and rouses the player on the way out of bed. -->
+<<widget "alexCompanionWake">>
+	<<npc Alex>><<person1>>
+	<<set _alexWakeRoll to random(1, 4)>>
+
+	<<if Time.schoolDay>>
+		<<switch _alexWakeRoll>>
+			<<case 1>>
+				<<He>> shakes your shoulder. "Up you get. You've got school." <<He>> swings <<his>> legs out of bed.
+				"I'll put something on the stove."
+			<<case 2>>
+				You wake to Alex pulling a shirt over <<his>> head. "There you are," <<he>> says.
+				"School today. You're eating before you go, I mean it."
+			<<case 3>>
+				"Oi." Alex flicks your ear. "School. Up." <<His>> voice is gruff,
+				but <<he>> waits until your eyes are open before <<he>> stands.
+			<<default>>
+				<<He>> presses a kiss to your forehead. "Morning. School day. I'll get breakfast on, you get moving."
+		<</switch>>
+	<<else>>
+		<<switch _alexWakeRoll>>
+			<<case 1>>
+				<<He>> stretches, then yawns. "Morning," <<he>> says. "Animals won't feed themselves. Breakfast first, though."
+			<<case 2>>
+				You wake to <<him>> sitting up, looking out at the fields.
+				"Weather's holding," <<he>> says, noticing you. "Morning. I'll get the pan going."
+			<<case 3>>
+				Alex grunts, rubs <<his>> face, and sits up on the edge of the bed.
+				"Morning. Tea first. Everything else after."
+			<<default>>
+				<<He>> squeezes your shoulder as <<he>> climbs past you. "Sleep all right? I'll start breakfast."
+		<</switch>>
+	<</if>>
+	<br><br>
+
+	<<if C.npc.Alex.love gte 60>>
+		<<He>> pauses in the doorway and looks back at you. "Don't lie in too long,"
+		<<he>> says, softer than before. "Breakfast is better with company."
+		<br><br>
+	<</if>>
+
+	<<set _alexWakeBedPassage to ($bus is "farm_alex_room" ? "Farm Alex Bed" : "Farm Bed")>>
+	<<set $alex_bed to "none">><<unset $bedGuest>>
+
+	<<bedicon "zzz">><<link [[Pull the covers back over yourself|_alexWakeBedPassage]]>><<endevent>><</link>>
+	<br>
+	<<if $bus is "farm_alex_room">>
+		<<getouticon>><<link [[Get up with Alex|Farm Alex Bedroom]]>>
+			<<set $wardrobe_location to "alexFarm">>
+			<<wardrobeSelection true>>
+			<<storeon "farm alex bed" "check">>
+			<<if _store_check is 1>>
+				<<storeon "farm alex bed">>
+			<</if>>
+			<<loadTempHairStyle>>
+		<</link>>
+	<<else>>
+		<<getouticon>><<link [[Get up with Alex|Farm Bedroom]]>><<endevent>>
+		<<set $wear_outfit to "clotheson">><<bedclotheson "Farm Bed">><</link>>
+	<</if>>
+	<br>
+<</widget>>

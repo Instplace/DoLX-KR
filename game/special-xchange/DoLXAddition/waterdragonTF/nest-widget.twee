@@ -1,0 +1,244 @@
+:: Water Dragon Nest Widgets [widget]
+
+<<widget "waterDragonNestDefaults">>
+	<<if !$waterDragonNest>>
+		<<set $waterDragonNest to {discovered:false, eggsLaid:0, pastelEggsLaid:0, harperInterest:0, tended:0, labEggsLaid:0, labStays:0, harperDeal:0, hatched:0, labChoicePill:false, labChoicePillFound:false, cleanliness:0, decorations:[], decorationSlots:[null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]}>>
+	<<else>>
+		<<if $waterDragonNest.discovered is undefined>><<set $waterDragonNest.discovered to false>><</if>>
+		<<if $waterDragonNest.eggsLaid is undefined>><<set $waterDragonNest.eggsLaid to 0>><</if>>
+		<<if $waterDragonNest.pastelEggsLaid is undefined>><<set $waterDragonNest.pastelEggsLaid to 0>><</if>>
+		<<if $waterDragonNest.harperInterest is undefined>><<set $waterDragonNest.harperInterest to 0>><</if>>
+		<<if $waterDragonNest.tended is undefined>><<set $waterDragonNest.tended to 0>><</if>>
+		<<if $waterDragonNest.labEggsLaid is undefined>><<set $waterDragonNest.labEggsLaid to 0>><</if>>
+		<<if $waterDragonNest.labStays is undefined>><<set $waterDragonNest.labStays to 0>><</if>>
+		<<if $waterDragonNest.harperDeal is undefined>><<set $waterDragonNest.harperDeal to 0>><</if>>
+		<<if $waterDragonNest.hatched is undefined>><<set $waterDragonNest.hatched to 0>><</if>>
+		<<if $waterDragonNest.labChoicePill is undefined>><<set $waterDragonNest.labChoicePill to false>><</if>>
+		<<if $waterDragonNest.labChoicePillFound is undefined>><<set $waterDragonNest.labChoicePillFound to false>><</if>>
+		/* Re-armed on every load, so saves made before the beach could wash up an anti-Choice pill still qualify. */
+		<<if $waterDragonNest.labChoicePill isnot true and $waterDragonNest.labChoicePillFound isnot true and $waterDragonNest.labStays gte 1 and $xchange?.pill?.choiceEffect>>
+			<<set $waterDragonNest.labChoicePill to true>>
+		<</if>>
+		<<if $waterDragonNest.cleanliness is undefined>><<set $waterDragonNest.cleanliness to 0>><</if>>
+		<<if !Array.isArray($waterDragonNest.decorations)>><<set $waterDragonNest.decorations to []>><</if>>
+		<<if !Array.isArray($waterDragonNest.decorationSlots)>>
+			<<set $waterDragonNest.decorationSlots to [null,null,null,null,null,null,null,null,null,null,null,null,null,null,null]>>
+		<<elseif $waterDragonNest.decorationSlots.length lt 15>>
+			<<run V.waterDragonNest.decorationSlots.push(...Array(15 - V.waterDragonNest.decorationSlots.length).fill(null))>>
+		<<elseif $waterDragonNest.decorationSlots.length gt 15>>
+			<<set $waterDragonNest.decorationSlots to $waterDragonNest.decorationSlots.slice(0, 15)>>
+		<</if>>
+	<</if>>
+	<<set $waterDragonNest.cleanliness to Math.clamp($waterDragonNest.cleanliness, 0, 100)>>
+	/* Repair older clutches missing their incubation delay or left between the naming preview and hatch. */
+	<<run (V.childRecords || []).filter(child => ["hawk", "human"].includes(child.species) && child.development?.dragonNest && child.bornDate === null).forEach(child => {
+		const pregnancy = V.pregnancies?.[child.pregnancyId];
+		if (pregnancy && pregnancy.deliveredDate !== null) child.species = "hawk";
+		if (pregnancy && pregnancy.deliveredDate !== null && typeof pregnancy.hatchDelay !== "number") {
+			pregnancy.hatchDelay = random(0, PregnancyConstants.birdHatchDelay);
+		}
+	})>>
+	<<if !$pregnancyStats.humanToysUnlocked and ($childRecords || []).some(child => child.development?.dragonNest and child.species is "human" and child.bornDate isnot null)>>
+		<<set $pregnancyStats.humanToysUnlocked to true>>
+	<</if>>
+<</widget>>
+
+/* Keep the eggs broodable until Next records the hatch; the naming cards preview their human form. */
+<<widget "waterDragonHatchUi">>
+	<div class="settingsGrid m-0 childContainer">
+		<<for _dnId range $eggsHatched>>
+			<<set _egg to $childRecords[_dnId]>>
+			<<capture _egg>>
+				<div @id="'child-' + _egg.childId" class="childUi">
+					<<birthChildElement _egg "human">>
+				</div>
+			<</capture>>
+		<</for>>
+	</div>
+	<br>
+	<<link [["Next (00:20)"|_args[0]]]>>
+		<<run $eggsHatched.forEach(id => {
+			const child = V.childRecords[id];
+			child.species = "human";
+			child.features.beastTransform = "waterdragon";
+			child.features.skinColour = "waterdragon";
+			if (!child.name) child.name = generateBabyName(undefined, child.gender, child.childId);
+			recordBirth(id);
+		})>>
+		<<set $pregnancyStats.humanToysUnlocked to true>>
+		<<pass 20>>
+	<</link>>
+<</widget>>
+
+<<widget "waterDragonDecorationArrange">>
+		<div class="waterdragon-decoration-palette">
+			<<set _dnPlacedDecorationIndices to $waterDragonNest.decorationSlots.filter(slot => slot isnot null)>>
+			<<set _dnAvailableDecorationSymbols to []>>
+			<<for _dnDecorationIndex to 0; _dnDecorationIndex lt $waterDragonNest.decorations.length; _dnDecorationIndex++>>
+				<<if !_dnPlacedDecorationIndices.includes(_dnDecorationIndex)>><<run _dnAvailableDecorationSymbols.pushUnique($waterDragonNest.decorations[_dnDecorationIndex])>><</if>>
+			<</for>>
+			<<for _dnDecorationSymbol range _dnAvailableDecorationSymbols>>
+				<<set _dnAvailableDecorationIndices to []>>
+				<<for _dnDecorationIndex to 0; _dnDecorationIndex lt $waterDragonNest.decorations.length; _dnDecorationIndex++>>
+					<<if $waterDragonNest.decorations[_dnDecorationIndex] is _dnDecorationSymbol and !_dnPlacedDecorationIndices.includes(_dnDecorationIndex)>><<run _dnAvailableDecorationIndices.push(_dnDecorationIndex)>><</if>>
+				<</for>>
+				<<set _dnDecorationChoiceIndex to _dnAvailableDecorationIndices[0]>>
+				<<set _dnDecorationCount to _dnAvailableDecorationIndices.length>>
+				<<capture _dnDecorationSymbol _dnDecorationChoiceIndex _dnDecorationCount>>
+					<span @class="($waterDragonDecorationChoice isnot null and $waterDragonNest.decorations[$waterDragonDecorationChoice] is _dnDecorationSymbol ? 'selected ' : '') + (_dnDecorationCount gt 1 ? 'multiple' : '')">
+						<<link _dnDecorationSymbol>>
+							<<set $waterDragonDecorationChoice to _dnDecorationChoiceIndex>>
+							<<replace "#waterdragon-decoration-arrange">><<waterDragonDecorationArrange>><</replace>>
+						<</link>>
+					</span>
+				<</capture>>
+			<</for>>
+		</div>
+		<br>
+		<div class="waterdragon-decoration-board arranging">
+			<<for _dnSlot to 0; _dnSlot lt 15; _dnSlot++>>
+				<<set _dnPlacedIndex to $waterDragonNest.decorationSlots[_dnSlot]>>
+				<<set _dnSlotSymbol to _dnPlacedIndex is null ? "＋" : $waterDragonNest.decorations[_dnPlacedIndex]>>
+				<<capture _dnSlot _dnPlacedIndex _dnSlotSymbol>>
+					<span @class="_dnPlacedIndex is null ? 'empty' : ''">
+						<<link _dnSlotSymbol>>
+							<<if $waterDragonDecorationChoice isnot null>>
+								<<run V.waterDragonNest.decorationSlots = V.waterDragonNest.decorationSlots.map(slot => slot === V.waterDragonDecorationChoice ? null : slot)>>
+								<<set $waterDragonNest.decorationSlots[_dnSlot] to $waterDragonDecorationChoice>>
+								<<set $waterDragonDecorationChoice to null>>
+							<<elseif _dnPlacedIndex isnot null>>
+								<<set $waterDragonDecorationChoice to _dnPlacedIndex>>
+								<<set $waterDragonNest.decorationSlots[_dnSlot] to null>>
+							<</if>>
+							<<replace "#waterdragon-decoration-arrange">><<waterDragonDecorationArrange>><</replace>>
+						<</link>>
+					</span>
+				<</capture>>
+			<</for>>
+		</div>
+<</widget>>
+
+/* --- Shared egg-laying logic ---------------------------------------------------------------
+   Used by the normal, realistic childbirth, and overdue laying scenes to avoid duplicate code.
+   Results are stored in temp variables for the calling widget to use. */
+/* Roll each egg separately for a pastel shell. */
+<<widget "waterDragonEggPastelRoll">>
+	<<set _dragonClutchSize to Math.clamp(Number(_args[0]) || 1, 1, 3)>>
+	<<set _dragonPastelCount to 0>>
+	<<for _dragonEggIndex to 0; _dragonEggIndex lt _dragonClutchSize; _dragonEggIndex++>>
+		<<if random(1, 100) lte 23>><<set _dragonPastelCount++>><</if>>
+	<</for>>
+	<<set _dragonPlainCount to _dragonClutchSize - _dragonPastelCount>>
+<</widget>>
+
+/* Dragon egg laying now causes pain and arousal based on the number of eggs.
+   "rough" is used for overdue laying away from the nest. */
+<<widget "waterDragonEggStrain">>
+	<<set _dragonStrainCount to Math.clamp(Number(_args[0]) || 1, 1, 3)>>
+	<<set _dragonRough to _args[1] is "rough">>
+	<<set _dragonArousal to (_dragonRough ? 2000 : 3000) + 1000 * (_dragonStrainCount - 1)>>
+	<<set _dragonPain to (_dragonRough ? 22 : 14) + 6 * (_dragonStrainCount - 1)>>
+	<<set _dragonFatigue to 6 * _dragonStrainCount>>
+	<<arousal _dragonArousal>><<pain _dragonPain>><<tiredness _dragonFatigue>>
+	<<gggarousal>><<if _dragonRough>><<gggpain>><<else>><<ggpain>><</if>><<gtiredness>>
+	<<if $pleasure gte $pleasuremax>>
+		<br><br>
+		<<orgasm>>
+		<<set $orgasmcurrent to 0>>
+	<</if>>
+<</widget>>
+
+/* Hands over the clutch and records it. Reads the counts <<waterDragonEggPastelRoll>> set. */
+<<widget "waterDragonEggReward">>
+	<<waterDragonNestDefaults>>
+	<<if _dragonPlainCount gte 1>>
+		<<set _dragonPlainType to "water_dragon_egg">>
+		<<foodstufficon _dragonPlainType>> <span class="green">You gained <<if _dragonPlainCount is 1>>a<<else>><<print _dragonPlainCount>><</if>> <<print setup.foodstuff[_dragonPlainType].name>><<if _dragonPlainCount gt 1>>s<</if>>.</span><<tending_give _dragonPlainType _dragonPlainCount>>
+	<</if>>
+	<<if _dragonPastelCount gte 1>>
+		<<set _dragonPastelType to "water_dragon_egg_pastel">>
+		<<foodstufficon _dragonPastelType>> <span class="green">You gained <<if _dragonPastelCount is 1>>a<<else>><<print _dragonPastelCount>><</if>> <<print setup.foodstuff[_dragonPastelType].name>><<if _dragonPastelCount gt 1>>s<</if>>.</span><<tending_give _dragonPastelType _dragonPastelCount>>
+	<</if>>
+	<<set $waterDragonNest.eggsLaid += _dragonClutchSize>>
+	<<set $waterDragonNest.pastelEggsLaid += _dragonPastelCount>>
+<</widget>>
+
+<<widget "waterDragonEggLayEvent">>
+	<<if _args[0] isnot "waterDragonNest" and Transformations.waterDragonEggsOverdue()>>
+		<<set _dragonClutch to Math.clamp(Number($waterDragonEggs.count) || 1, 1, 3)>>
+		<<set _dragonClutchSize to _dragonClutch>>
+		<<set _dragonPastelCount to 0>>
+		<<set _dragonPlainCount to _dragonClutch>>
+		<<wearProp `"waterdragon egg " + _dragonClutch`>>
+		You wake in the dark with your knees already drawn up. The pull towards the sea is still there, but your body has stopped waiting for it.
+		<span class="red">You have carried this too long.</span>
+		<br><br>
+		There is no sea grass to rake up and no warm stone to brace against. You get onto your hands and knees where you are, bite down on whatever is nearest, and push.
+		<<waterDragonEggStrain _dragonClutch "rough">>
+		<br><br>
+		<<pluralise _dragonClutch "It comes" "They come">> out slowly and badly, and <<pluralise _dragonClutch "lands" "land">> against your leg. The <<pluralise _dragonClutch "shell is" "shells are">> pearl white and quite plain. Nothing glitters above <<pluralise _dragonClutch "it" "them">>, and no marks brighten anywhere.
+		<br><br>
+		<span class="blue">It should not have happened here.</span> <<gtrauma>><<trauma 6>><<ggstress>><<stress 6>>
+		<br><br>
+		You clean yourself up as best you can and wrap <<pluralise _dragonClutch "the egg" "the eggs">> to carry.
+		<<waterDragonEggReward>>
+		<<set $waterDragonEggs to Transformations.rollWaterDragonEggCycle()>>
+	<<else>>
+		/* Keep waking-effect branches to one line plus the link. */
+		/* This link skips the normal bed exit, so return stored clothes first. */
+		<<bedstorereturn>>
+		<<if _args[0] is "waterDragonNest">>
+			You wake with your hands resting against the warm stones. A heavy weight presses low inside you,
+			and you go still when you realise what it means. <span class="navy">The egg is ready.</span>
+			<br><br>
+			You are already in the nest, so there is nothing left to do but get it ready.
+			<br><br>
+			<<tficon "waterdragon">><<link [[Prepare the nest|Water Dragon Egg Laying]]>><</link>>
+		<<else>>
+			You wake suddenly with a strange weight low inside you. It grows stronger when you sit up,
+			and you put a hand over yourself. You can hear the sea, even though it is a long way from here.
+			<br><br>
+			<span class="blue">The egg is ready.</span> You know you need to reach the coastal cliffs and find somewhere safe to lay it.
+			<br><br>
+			<<set _nestRoute to ($waterDragonNest and $waterDragonNest.discovered ? "Water Dragon Nest Discovery 2" : "Water Dragon Nest Discovery")>>
+			<<tficon "waterdragon">><<link "Follow the pull (0:30)" _nestRoute>><<pass 30>><</link>>
+		<</if>>
+		<<exitAll>>
+	<</if>>
+<</widget>>
+
+/* Rendered inline among other waking-effect one-liners (the effect.js warning already narrates the waters breaking), so keep it to a single line plus the link. */
+<<widget "waterDragonPregnancyEvent">>
+	/* As above: this link skips the usual "climb out of bed" step, so reclaim the bedtime stash before leaving. */
+	<<bedstorereturn>>
+	<<if _args[0] is "waterDragonNest">>
+		You wake as a contraction tightens through you. The marks around the hollow brighten in answer,
+		and the warm stones shift beneath your hands. You are <span class="navy">already where you need to be</span>.
+		<br><br>
+		<<tficon "waterdragon">><<link [[Lower yourself into the hollow|Water Dragon Pregnancy Labour]]>><</link>>
+	<<else>>
+		This feels <span class="navy">nothing like carrying an unfertilised egg</span>. You can feel the eggs moving inside you, and right after it comes a strong need to reach the coastal cliffs.
+		<br><br>
+		<<tficon "waterdragon">><<link [[Follow the pull to the coast|Water Dragon Pregnancy Journey]]>><<pass 30>><</link>>
+	<</if>>
+<</widget>>
+
+
+:: Water Dragon Nest Wardrobe [exitCheckBypass]
+<<location "beach">><<set $outside to 0>><<effects>>
+You open the driftwood chest. The lining of crushed shell keeps the spray and the sand off your clothes.
+<br><br>
+<<set $wardrobe_location to "waterDragonNest">>
+<<wardrobeSelection>>
+<div id="wardrobewear"><<wardrobewear>></div>
+<div id="wardrobeExits"><<wardrobeExits>></div>
+<<wardrobe>>
+
+:: Water Dragon Nest Settings [exitCheckBypass]
+<<if $options.images is 1>>
+	<span id="bannerStyle">
+		<img class="resize" src="img/misc/banner.png">
+	</span>
+<</if>>
+<<set $settingsExitPassage to "Water Dragon Nest">>
+<<settings>>

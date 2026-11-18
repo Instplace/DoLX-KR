@@ -1,0 +1,415 @@
+:: Pirate Rope
+<<set $outside to 1>><<effects>>
+<<bind>>
+You are suspended and tied to the mast on the pirate ship.
+<<if Time.dayState is "night">>
+	<<if Weather.precipitation is "rain">>
+		The chill rain makes you shiver.
+	<<else>>
+		The chill night breeze makes you shiver.
+	<</if>>
+<<else>>
+	<<if $exposed gte 1>>
+		The crew leer at your <<nudity>> as they work.
+	<<else>>
+		The crew carry on their work around you, occasionally throwing an amused look your way.
+	<</if>>
+<</if>>
+<br><br>
+
+
+<<if (dangerEvent() or $eventforced) and $eventskip is 0>>
+	<<cleareventpool>>
+	<<addinlineevent "pirate_rope_day_1" 1>>
+		<<generateRole 0 0 "pirate">><<person1>>
+		A <<person>> swaggers up to you with <<his>> phone in hand. <<He>> crouches nearby, and points the camera at <<him>> and you, posing for a selfie.
+		<br><br>
+
+		<<link [[Smile for the camera|Pirate Rope Smile]]>><</link>>
+		<br>
+		<<link [[Hide your face|Pirate Rope Look]]>><</link>>
+		<br>
+	<</addinlineevent>>
+
+	<<addinlineevent "pirate_rope_day_2" 1>>
+		<<generateRole 0 0 "pirate">><<generateRole 1 0 "pirate">><<person1>>
+		A <<person>> and <<person2>><<person>> approach you. "We're gonna fuck you, then let you down. Sound good?"
+		<br><br>
+
+		<<link [[Agree|Pirate Rope Rape Agree]]>><</link>>
+		<br>
+		<<link [[Refuse|Pirate Rope Rape Refuse]]>><<pirate_status 1 "scum">><</link>><<grespect "scum">>
+		<br>
+	<</addinlineevent>>
+
+	<<addinlineevent "pirate_rope_day_3" 1>>
+		<<generateRole 0 0 "pirate">><<generateRole 1 0 "pirate">><<generateRole 2 0 "pirate">><<person1>>
+		A group of pirates, a <<person>>, <<person2>><<person>>, and <<person3>><<person>>, sit on the railing to your side and hurl insults at you.
+		<br><br>
+
+		<<link [[Call them slackers in a loud voice|Pirate Rope Slackers]]>><<pirate_status 1 "scum">><</link>><<grespect "scum">>
+		<br>
+		<<link [[Focus on other things|Pirate Rope Focus]]>><<stress -6>><</link>><<lstress>>
+		<br>
+	<</addinlineevent>>
+	<<runeventpool>>
+<<else>>
+	<<if Time.dayState is "night">>
+		<span class="blue">There aren't many people around at this time of night.</span>
+		<br>
+	<<else>>
+		<<link [[Insult the crew (1:00)|Pirate Rope Insult]]>><<def 1>><<pass 60>><<pirate_status 1 "scum">><</link>><<grespect "scum">>
+		<br>
+		<<link [[Call for help|Pirate Rope Call]]>><<sub 1>><<pirate_status -3>><</link>><<llrespect>>
+		<br>
+	<</if>>
+	<<link [[Struggle (1:00)|Pirate Rope Struggle]]>><<pass 60>><</link>><<difficulty 15>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Pirate Rope Struggle
+<<effects>>
+
+You squirm, twist, and pull against the rope.
+
+<<if $rng lte 15>>
+	The rope has a lot of slack to it, <span class="green">and you're able to work it free.</span> After some effort, you're able to slip an arm free, and from there the rest of your body.
+	<br><br>
+	You land on the deck.
+	<br><br>
+	<<link [[Next|Pirate Deck]]>><<clotheson>><<unbind>><</link>>
+	<br>
+<<else>>
+	The rope has some slack to it, <span class="red">but you're unable to break free.</span>
+	<br><br>
+	<<link [[Next|Pirate Rope]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Pirate Rope Insult
+<<effects>>
+<<speechresolve>>
+
+<<if _speechAttitudeResolved is "meek">>
+	You heckle the crew, casting insinuations about their parentage, their dress sense, and anywhere else you sense would be a soft spot to stick a dagger in. Your voice catches once, then steadies when a pirate turns red.
+<<elseif _speechAttitudeResolved is "shy">>
+	You try to heckle the crew, aiming small barbs at their clothes and work. A few words come out too quiet, but enough land for the nearer pirates to hear.
+<<elseif _speechAttitudeResolved is "docile">>
+	You offer a timid insult about the crew's work ethic, then another about their taste in boots. It is not much, but being tied up has left you with little else to throw.
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel" or _speechAttitudeResolved is "confident")>>
+	You hurl insults at the crew, casting insinuations about their parentage, their endowments, and anywhere else you sense would be a tender spot to smack.
+	<<if _speechAttitudeResolved is "cruel">>
+		You pick the sore points with care, smiling when one of them stops laughing.
+	<</if>>
+<<else>>
+	You shout insults at the crew, casting insinuations about their parentage, their prowess, and anything else you sense would get they pissed off. You keep your voice clear, making sure none of them can pretend they missed it.
+<</if>>
+<br><br>
+They throw insults back at you, but they're distracted by their work, and can't give as good as they get.
+<br><br>
+
+<<link [[Next|Pirate Rope]]>><</link>>
+<br>
+
+
+
+:: Pirate Rope Call
+<<effects>>
+
+<<npc "Zephyr">><<person1>>
+You call for help. The pirates laugh at you, but Captain Zephyr emerges from <<his>> cabin. <<He>> joins in the laughter when <<he>> sees you.
+<br><br>
+"How'd ye get yourself tied up like that?" <<he>> says, marching over. <<He>> examines the rope a moment, then tugs. It slackens in an instant, and you fall to the deck. "Ye should leave the rigging to the experts."
+<br><br>
+
+<<He>> strides away.
+<br><br>
+
+<<link [[Next|Pirate Deck]]>><<clotheson>><<unbind>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+
+:: Pirate Rope Smile
+<<effects>>
+
+<<if $exposed gte 2>>
+	<<fameexhibitionism 10>>
+<<elseif $exposed gte 1>>
+	<<fameexhibitionism 5>>
+<</if>>
+You smile for the <<persons>> selfie. "Thanks love," <<he>> says as <<he>> returns to work.
+<br><br>
+
+<<link [[Next|Pirate Rope]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Pirate Rope Look
+<<effects>>
+<<speechresolve>>
+
+<<if _speechAttitudeResolved is "meek">>
+	You look away from the camera, hiding your face before the <<person>> can catch your expression.
+<<elseif _speechAttitudeResolved is "shy">>
+	You duck your face aside at once, wishing the rope would let you fold smaller.
+<<elseif _speechAttitudeResolved is "docile">>
+	You turn your head away without a word, letting the <<person>> have their laugh.
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel" or _speechAttitudeResolved is "confident")>>
+	You twist your face away from the camera, ruining the picture on purpose.
+	<<if _speechAttitudeResolved is "cruel">>
+		You hope <<he>> wastes time trying again and drops the phone.
+	<</if>>
+<<else>>
+	You look away from the camera, refusing to give the <<person>> a clean shot.
+<</if>>
+<br><br>
+"Why so shy?" the <<person>> says with a laugh, before returning to work.
+<br><br>
+
+<<link [[Next|Pirate Rope]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Pirate Rope Rape Agree
+<<effects>>
+<<speechresolve>>
+
+<<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
+	You nod, unable to look either pirate in the eye.
+<<elseif _speechAttitudeResolved is "docile">>
+	You nod because arguing seems useless while the rope holds you in place.
+<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+	You give a small nod, trying to keep some grace in an ugly situation.
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel" or _speechAttitudeResolved is "confident")>>
+	You nod, but the look you give them is anything but thankful.
+	<<if _speechAttitudeResolved is "cruel">>
+		You file away their faces while they smirk.
+	<</if>>
+<<else>>
+	You nod, keeping your jaw set.
+<</if>>
+The <<person>> tugs on one of the ropes, lowering the suspension of coils, but not allowing you to escape.
+<br><br>
+
+<<link [[Next|Pirate Rope Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Pirate Rope Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Pirate Rope Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Pirate Rope Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Pirate Rope Rape Finish
+<<effects>>
+<<if $enemypleasure gte $enemypleasuremax>>
+	<<ejaculation>>
+	<<tearful>> you recover.
+	<br><br>
+	<<if random(1, 2) gte 2>>
+		"I think we said something about letting <<phim stranger>> down," the <<person2>><<person>> says.
+		<br><br>
+		"We say a lot of dumb things while horny," the <<person1>><<person>> replies.
+		<br><br>
+
+		<<link [[Demand to be let down|Pirate Rope Rape Demand]]>><<def 1>><<pirate_status 1 "scum">><</link>><<grespect "scum">>
+		<br>
+		<<link [[Remain silent|Pirate Rope Rape Silent]]>><</link>>
+		<br>
+	<<else>>
+		The <<person2>><<person>> tugs on another of the ropes, and the whole network loosens, allowing you to pull yourself free.
+		<br><br>
+		<<unbind>>
+		<<clotheson>>
+		<<endcombat>>
+		<<link [[Next|Pirate Deck]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+
+<<elseif $enemyhealth lte 0>>
+	With what limited movement you have in your legs, you kick the rope up, whirling it around the <<person1>><<person>> and <<person2>><<person>>. They pull apart the tangle of rope to free themselves, freeing you in the process.
+	<br><br>
+	The onlooking crew find this very amusing.<<ggrespect>><<pirate_status 3>>
+	<br><br>
+	<<tearful>> you climb to your feet.
+	<br><br>
+	<<unbind>>
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[Next|Pirate Deck]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	/* No decisive outcome, such as giving up the encounter. */
+	<<if $finish is 1>><<encounterEndViolence>><</if>>
+	They lose interest in you. The <<person2>><<person>> tugs on another of the ropes, and the whole network loosens, allowing you to pull yourself free.
+	<br><br>
+	<<tearful>> you climb to your feet.
+	<<unbind>>
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[Next|Pirate Deck]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+
+:: Pirate Rope Rape Refuse
+<<effects>>
+<<speechresolve>>
+
+<<if (_speechAttitudeResolved is "shy" or _speechAttitudeResolved is "meek")>>
+	You shake your head, then force out a quiet, "No."
+<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+	"No," you say. "Let me down instead."
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+	"No," you snap. "Find someone impressed by you."
+<<else>>
+	"No," you say, keeping your voice steady.
+<</if>>
+<br><br>
+
+<<if random(1, 2) gte 2>>
+
+	"So the <<bitch_pirate>> likes being tied up," the <<person1>><<person>> laughs. "So be it."
+	<br><br>
+	They walk away, leaving you tied to the mast.
+	<br><br>
+
+	<<link [[Next|Pirate Rope]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	"We only asked as a politeness," the <<person1>><<person>> says. "We don't care what scum like you want." The <<person2>><<person>> tugs on one of the ropes, lowering the suspension of coils, but not allowing you to escape.
+	<br><br>
+
+	<<link [[Next|Pirate Rope Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Pirate Rope Rape Demand
+<<effects>>
+<<speechresolve>>
+
+<<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
+	"You promised you'd let me down," you cry. "Please fulfil your promise."
+<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+	"You gave your word," you say. "I am asking you to keep it."
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+	"Let me down like you said you would at once," you say. "Or you'll pay."
+<<else>>
+	"You said you'd let me down," you say. "I didn't take you for liars."
+<</if>>
+<br><br>
+
+The <<person1>><<person>> laughs. "What a mouth!"
+<br>
+"I don't recall saying nothing about letting some <<bitch_pirate>> run free."
+<br>
+"Me neither."
+<br><br>
+
+They walk away.
+<br><br>
+
+<<endcombat>>
+
+<<link [[Next|Pirate Rope]]>><<set $eventskip to 1>><</link>>
+<br>
+
+
+:: Pirate Rope Rape Silent
+<<effects>>
+<<speechresolve>>
+
+<<if _speechAttitudeResolved is "meek">>
+	You remain silent, eyes lowered as the <<person1>><<person>> and <<person2>><<person>> walk away.
+<<elseif _speechAttitudeResolved is "shy">>
+	You keep quiet and turn your face aside while the <<person1>><<person>> and <<person2>><<person>> leave.
+<<elseif _speechAttitudeResolved is "docile">>
+	You do not argue. The <<person1>><<person>> and <<person2>><<person>> take your silence as permission to walk away.
+<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+	You swallow what you want to say and watch the <<person1>><<person>> and <<person2>><<person>> go.
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+	You keep silent, but the look you give the <<person1>><<person>> and <<person2>><<person>> follows them across the deck.
+<<else>>
+	You remain silent as the <<person1>><<person>> and <<person2>><<person>> walk away.
+<</if>>
+They leave you tied to the mast.
+<br><br>
+<<endcombat>>
+
+<<link [[Next|Pirate Rope]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Pirate Rope Slackers
+<<effects>>
+<<speechresolve>>
+
+<<if _speechAttitudeResolved is "meek">>
+	"I don't think Zephyr would be happy to find you slacking," you shout.
+<<elseif _speechAttitudeResolved is "shy">>
+	"I don't think you're meant to be sitting there," you call, trying to make your voice carry. "Zephyr might notice."
+<<elseif _speechAttitudeResolved is "docile">>
+	"You should probably get back to work," you say, glancing towards the deck behind you. "Before Zephyr sees."
+<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+	"Shouldn't you be earning your keep?" you ask. "It would be a shame if Zephyr found you lounging."
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+	"Quit slacking you useless good-for-nothings," you say.
+	<<if _speechAttitudeResolved is "cruel">>
+		"You look tired from doing nothing."
+	<</if>>
+<<else>>
+	"Shouldn't you be working?" you ask. "You shouldn't be slacking while the others work."
+<</if>>
+<br><br>
+<<npc "Zephyr" 4>><<person4>>
+The pirates step forward to challenge your assertion, but are interrupted. "Slacking?" Zephyr roars over the sound of the waves. The pirates cast an anxious glance somewhere behind you, towards the sound of approaching stomps. They hurry to busy themselves.
+<br><br>
+
+<<link [[Next|Pirate Rope]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Pirate Rope Focus
+<<effects>>
+<<speechresolve>>
+
+<<if _speechAttitudeResolved is "meek">>
+	You do your best to ignore them, fixing your mind on the waves until their insults blur into the wind.
+<<elseif _speechAttitudeResolved is "shy">>
+	You listen to the sea, pretending the pirates are farther away than they are.
+<<elseif _speechAttitudeResolved is "docile">>
+	You let the insults pass over you and focus on the creak of the mast, waiting for them to tire themselves out.
+<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+	You refuse to reward them with a reaction. Instead, you listen to the water and let your thoughts drift towards town.
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+	You ignore them with effort, saving your breath rather than spending it on fools.
+	<<if _speechAttitudeResolved is "cruel">>
+		You count their voices instead, deciding which one annoys you most.
+	<</if>>
+<<else>>
+	You do your best to ignore them, instead listening to the sound of the waves, and letting your thoughts drift towards the town.
+<</if>>
+Without a response, the pirates grow bored and return to work.
+<br><br>
+
+<<link [[Next|Pirate Rope]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>

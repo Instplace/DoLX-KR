@@ -1,0 +1,229 @@
+:: Street Police Sergeant Widgets [widget]
+
+/* Whitney's stepparent is a police sergeant who knows the PC as the delinquent Whitney runs with, and abuses that badge to corner them on patrol.
+   Added to the street event pool (loc-street widgets.twee) once Whitney is active and either the PC has a criminal record or Whitney dominates them. */
+<<widget "eventPoliceSergeant">>
+	<<set $weekly.policeSergeant to true>>
+	<<generatePoliceSergeant>><<generatePolice 2>>
+	<<person1>>
+	<<if $policeSergeantIntro is undefined>>
+		<<set $policeSergeantIntro to 1>>
+		You hear <span class="purple">a police siren</span> for a second.
+		<br><br>
+
+		You look around to find the source of it, and spot a police car parked on the other side of the street. A tall, well-built <<person1>><<person>> gets out, followed by a <<person2>><<person>> who seems to be <<person1>><<his>> partner.
+		<br><br>
+
+		"Oi, you little bitch! Come over 'ere, quickly!" says the <<person1>><<person>>. Not seeing any way around it, you comply.
+		<br><br>
+
+		The <<person>> closes the remaining distance and throws an arm around your shoulders, as if you were old friends.
+		"See what I was telling you about?" <<he>> tells the <<person2>><<person>>. "This little piece of shit is the delinquent my stepkid Whitney runs around with. Thick as thieves, the pair of them."
+		<br><br>
+
+		<<person1>>"I'm Whitney's <<print $NPCList[0].pronoun is "f" ? "stepmum" : "stepdad">>. <<police_sergeant>>. Sergeant, to you," <<he>> says, squeezing your shoulder until it hurts. "Whatever that brat's been teaching you, it ends now. I see you on my streets, you come when you're called. Got it?"
+		<br><br>
+
+		"Today you're off the hook. Consider yourself lucky," <<he>> grins. "Dispatch sent a report of another fucking rape."
+		<br><br>
+
+		And with that, <<police_sergeant>> gets back in the car with <<his>> partner and pulls out into the street. Before the window closes, you hear <<him>> mutter, "Ha! Can't deal with a little rape. What's this town coming to?"
+		<br><br>
+		<<endevent>>
+		<<destinationeventend>>
+	<<else>>
+		You hear <span class="purple">a police siren</span> for a second.
+		<br><br>
+		"Oi! Whitney's little friend! Over 'ere, now." It's <<police_sergeant>>, Whitney's <<print $NPCList[0].pronoun is "f" ? "stepmum" : "stepdad">>, leaning out of the window of <<his>> patrol car.
+		<br><br>
+
+		<<link [[Comply|Police Sergeant Chase]]>><<set $phase to 0>><<sub 1>><</link>>
+		<br>
+		<<link [[Run away|Police Sergeant Chase]]>><<set $phase to 1>><<def 1>><</link>><<athleticsdifficulty 200 1200>>
+		<br>
+	<</if>>
+<</widget>>
+
+:: Police Sergeant Chase
+<<set $outside to 1>><<effects>>
+
+<<if $phase is 1 and $athleticsSuccess>>
+	You turn and run. Doors slam behind you, and you hear the sergeant swearing as you dart down a side street and through a gap in a fence.
+	<br><br>
+	By the time the siren starts up again, you're long gone. <<He>> won't forget this.<<crimeUp 10 "resisting">><<gcrime "resisting">>
+	<br><br>
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	<<rng>>
+	<<if $phase is 1>>
+		You turn and run, but the <<person2>><<person>> is quicker than <<he>> looks. <<person1>><<He>> catches you by the collar before you reach the corner and drags you back to the car.<<gpain>><<pain 4>><<crimeUp 10 "resisting">><<gcrime "resisting">>
+		<br><br>
+		"Running from the police now? You and Whitney really are a matching set," <<police_sergeant>> sneers.
+	<<else>>
+		You know better than to defy a police sergeant, so you comply.
+	<</if>>
+	<br><br>
+
+	<<police_sergeant>> gives a nod to <<person1>><<his>> partner, and the <<person2>><<person>> climbs into the back of the car. "Passenger seat. We're on patrol, so make it fast," says <<person1>><<police_sergeant>>.
+	<br><br>
+
+	You take a deep breath before getting in.
+	<<if $rng gte 75>>
+		"I don't know why you make it so hard every time. Just accept it," <<he>> says, matter-of-factly.
+	<<elseif $rng gte 50>>
+		"I don't know what Whitney sees in you." <<He>> groans.
+	<</if>>
+	<br><br>
+
+	A few moments pass as <<police_sergeant>> drives around, and then <<he>> finally adds: "You know? I could really use some head right about now. Get to work." The <<person2>><<person>> in the back seat chuckles.
+	<br><br>
+
+	<<person1>>
+	<<if $molestedBySergeant>>
+		<<police_sergeant>> doesn't spare another word. <<He>> expects full cooperation.
+	<<else>>
+		You stare at <<him>>, stunned by the request. "You think I'm joking? Get that fucking mouth of yours working, or I'll make it work," <<police_sergeant>> barks.
+	<</if>>
+	<br><br>
+
+	<<set $molestedBySergeant to 1>>
+	<<link [[Comply|Police Sergeant Oral]]>><<trauma 6>><<stress 6>><<sub 1>><<set $molestationstart to 1>><</link>><<gtrauma>><<gstress>>
+	<br>
+	<<if $promiscuity gte 55>>
+		<<link [[Give oral|Police Sergeant Oral]]>><<sub 1>><<set $sexstart to 1>><</link>><<promiscuous4>>
+		<br>
+	<</if>>
+	<<link [[Fight|Police Sergeant Fight]]>><<set $fightstart to 1>><<def 1>><</link>>
+	<br>
+<</if>>
+
+:: Police Sergeant Oral
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+
+	<<maninit>>
+	<<set _start to true>>
+<</if>>
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+
+	<<maninit>>
+	<<set _start to true>>
+<</if>>
+
+<<if _start>>
+	<<set $position to "doggy">>
+	<<He>> casually <<npcUndressText $NPCList[0] "lower" "self">>, <<npcRevealText $NPCList[0] "lower">>. <<He>> smirks.
+	<<if $NPCList[0].vagina isnot "none" and ($NPCList[0].penis is "none" or random(0,1))>>
+		"This is where you belong, bitch."
+		<br><br>
+
+		<<He>> grabs your head and pulls it into <<his>> crotch. "Whitney thinks <<nnpc_he "Whitney">> owns you? Get real. Get to work!"
+		<<set $NPCList[0].vagina to "mouth">><<set $NPCList[0].location.genitals to "head">>
+		<<set $mouthuse to "othervagina">><<set $mouthstate to "othervagina">><<set $mouthtarget to 0>>
+	<<else>>
+		"This is where you belong, bitch."
+		<br><br>
+
+		<<He>> grabs your head and pulls it into <<his>> crotch. "Whitney thinks <<nnpc_he "Whitney">> owns you? Get real. Get to work!"
+		<<npcoral>>
+	<</if>>
+	<<violence 4>>
+
+	<<if $consensual>>
+		<<promiscuity4>><<policeSergeantLove 5>>
+	<<else>>
+		<br><br>
+	<</if>>
+
+	<<set $NPCList[0].lefthand to "hair">><<set $enemyanger to 70>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Police Sergeant Oral Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Police Sergeant Oral]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Police Sergeant Oral Finish
+<<effects>>
+<<if $enemypleasure gte $enemypleasuremax>>
+	<<ejaculation>>
+
+	<<His>> partner cheers from the back seat. <<police_sergeant>> pulls over and shoves you out at your original destination. "Say hi to Whitney for me," <<he>> sneers, and pulls the door shut.
+	<br><br>
+<<elseif $enemyhealth lte 0>>
+	<<police_sergeant>> shouts in pain and slams on the brakes. "Get out! Get the fuck out of my car!" <<He>> shoves you onto the pavement.<<policeSergeantLove -5>><<crimeUp 50 "assault">><<gcrime "assault">>
+	<br><br>
+<<else>>
+	<<if $finish is 1>><<encounterEndViolence>><</if>>
+	<<police_sergeant>> scoffs and pulls over. "Useless. Just like Whitney." <<He>> shoves you out onto the pavement.
+	<br><br>
+<</if>>
+<<tearful>> you climb to your feet.
+<br><br>
+<<clotheson>>
+<<endcombat>>
+<<destinationeventend>>
+
+:: Police Sergeant Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	You lash out at <<police_sergeant>>. "Assaulting an officer? Oh, you've done it now," <<he>> says, almost delighted.
+	<<crimeUp 50 "assault">><<gcrime "assault">>
+<</if>>
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[Next|Police Sergeant Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Police Sergeant Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Police Sergeant Fight Finish
+<<effects>>
+<<if $enemyhealth lte 0>>
+	<<police_sergeant>> doubles over, and you wrench the door open before <<his>> partner can grab you. You run until the siren fades behind you.<<policeSergeantLove -10>>
+	<br><br>
+	<<tearful>> you slow to a walk.
+<<elseif $enemypleasure gte $enemypleasuremax>>
+	<<ejaculation>>
+	<<police_sergeant>> pulls over and shoves you out. "Whitney taught you nothing," <<he>> sneers.
+	<br><br>
+	<<tearful>> you climb to your feet.
+<<else>>
+	<<police_sergeant>> pins you against the door until you stop struggling. "We'll call that resisting arrest," <<he>> says, and pulls over to dump you on the pavement.<<gpain>><<pain 8>>
+	<br><br>
+	<<tearful>> you climb to your feet.
+<</if>>
+<br><br>
+<<clotheson>>
+<<endcombat>>
+<<destinationeventend>>

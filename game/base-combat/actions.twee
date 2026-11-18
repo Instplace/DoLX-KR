@@ -1,0 +1,183 @@
+:: Widgets Actions Man [widget]
+<<widget "actionsman">>
+	<<reverseRapeCheck>>
+	<<exposure>>
+	<<set $face to 0>>
+
+	<<if $enemyno gte 2>>
+		<<set $pronoun to "n">>
+	<<else>>
+		<<set _pronounSource to 0>>
+		<<if $NPCList[$active_enemy]>>
+			<<set _pronounSource to $NPCList[$active_enemy]>>
+		<<elseif $NPCList[$index]>>
+			<<set _pronounSource to $NPCList[$index]>>
+		<<elseif $NPCList[0]>>
+			<<set _pronounSource to $NPCList[0]>>
+		<</if>>
+		<<if _pronounSource and _pronounSource.pronoun is "m">>
+			<<set $pronoun to "m">>
+		<<elseif _pronounSource and _pronounSource.pronoun is "f">>
+			<<set $pronoun to "f">>
+		<<elseif _pronounSource and _pronounSource.pronoun is "i">>
+			<<set $pronoun to "i">>
+		<<elseif _pronounSource and _pronounSource.pronoun is "n">>
+			<<set $pronoun to "n">>
+		<<elseif _pronounSource and _pronounSource.pronoun is "t">>
+			<<set $pronoun to "t">>
+		<<else>>
+			<<set $pronoun to 0>>
+		<</if>>
+	<</if>>
+	<!-- Clear encounter-only knot state if the Alpha anatomy/effect is removed during combat. -->
+	<<if $alphaKnotSwollen and !(!$statFreeze and !$hc and playerIsXChanged() and $xchange.pill.alphaEffect and $player.penisExist and !playerHasStrapon() and !playerChastity())>>
+		<<unset $alphaKnotSwollen>>
+		<<unset $alphaKnotTarget>>
+	<</if>>
+	<!-- Alpha knots swell as the player approaches orgasm, then remain swollen for the encounter. -->
+	<<if !$statFreeze and !$hc and !$alphaKnotSwollen and playerIsXChanged() and $xchange.pill.alphaEffect and $player.penisExist and !playerHasStrapon() and !playerChastity() and $pleasure gte ($pleasuremax / 5) * 4>>
+		<<if $penisuse is "othervagina" and $NPCList[$penistarget] and $NPCList[$penistarget].vagina is "penis">>
+			<<set $alphaKnotSwollen to true>>
+			<<set $alphaKnotTarget to $penistarget>>
+			<<set $speechAlphaKnot to "vagina">>
+			<<set $speechAlphaKnotTarget to $penistarget>>
+		<<elseif $penisuse is "otheranus">>
+			<<for _akI to 0; _akI lt $enemynomax; _akI++>>
+				<<if !$alphaKnotSwollen and $NPCList[_akI] and ($NPCList[_akI].penis is "otheranus" or $NPCList[_akI].vagina is "otheranus")>>
+					<<set $alphaKnotSwollen to true>>
+					<<set $alphaKnotTarget to _akI>>
+					<<set $speechAlphaKnot to "anus">>
+					<<set $speechAlphaKnotTarget to _akI>>
+				<</if>>
+			<</for>>
+		<</if>>
+		<<if $alphaKnotSwollen>>
+			<<knot_stat>>
+		<</if>>
+	<</if>>
+	<<if $ejaculating is 1>>
+		<span class="purple">
+		<<if $enemytype isnot "beast">>
+			<<ejaculation>>
+		<<else>>
+			<<beastejaculation>>
+		<</if>>
+		</span>
+	<<else>>
+		<<animateCombat>>
+	<</if>>
+
+	<div @class="($debugLines ? 'debugLines-actionsman' : '')">
+
+	<<fetishPregnancyImg>>
+
+	<<if $traumafocus gte 1 and $traumafocusintro isnot 1 and !calmorylDissociationActive() and colosseumDrugStage() isnot "crash">>
+		<<set $traumafocusintro to 1>>
+		<i>As you gain focus, you become more and more likely to escape your helpless state of dissociation.</i>
+		<br><br>
+	<</if>>
+
+	<<if $traumafocus gt random(1, 1000) and $dissociation gte 2 and $combat is 1 and !calmorylDissociationActive() and colosseumDrugStage() isnot "crash">>
+		<<set $traumafocus to 0>><<set $trauma -= 1000>><<set $dissociation to 1>>
+		/* Preserve regained lucidity if Insanity's default combat state is recalculated. */
+		<<set $insanityDissociationLucid to 1>><<unset $insanityDissociationTurns>>
+		<span class="green">Your lucidity returns.</span>
+		<<ltrauma>>
+		<br>
+		<span class="red">The weight of reality crashes down on you.</span>
+		<br><br>
+	<</if>>
+
+	<<oxygen 50>>
+
+	<<willpowerpain>>
+	<<willpowerorgasm>>
+	<<actioncarry>>
+	<<actioncarrydrop>>
+
+	<<combatstate>>
+	<<carryblock>>
+
+	<<if $possessed or ($trance lte 0 and $panicparalysis is 0 and ($panicviolence is 0 or $position is "stalk"))>>
+		<<if $dissociation lte 1 and $orgasmdown lte 0 and ($pain lt 100 or $willpowerpain is undefined) and !$possessed>>
+			<<if $options.images is 1 and $options.combatImages is 1 and $consensual is 1 and $position_lock isnot 1>>
+				<<if $position is "doggy">>
+					| <label>Roll over <<radiobutton "$bodyaction" "missionary">></label>
+				<<elseif $position is "missionary" and !["facesit", "anal"].includes($mouthuse)>>
+					| <label>Roll over <<radiobutton "$bodyaction" "doggy">></label>
+				<</if>>
+				<<if $position isnot "stalk">>
+					| <label>Rest <<radiobutton "$bodyaction" "rest" checked>></label>
+					<br>
+				<</if>>
+			<</if>>
+		<</if>>
+
+		<<if $options.combatControls isnot "disabled">>
+			<<generateActionsMan>>
+		<</if>>
+		<br>
+	<</if>>
+
+	<br><br>
+
+	<<set $face to 0>>
+
+	</div>
+
+	/*Due to how combat is setup, this is the best location for it*/
+	<<setupMidOrgasm>>
+
+	<<if $combatExtended.reverseRape is 1 and $combatExtended.reverseRapeEnd is 0 and $combatExtended.reverseRapeStart is 1>>
+		/* Combat Continues */
+	<<else>>
+		<<set _combatend to
+			($alarm is 1 and $rescue gte 1) or
+			($enemyhealth lte 0) or
+			($enemypleasure gte $enemypleasuremax) or
+			($finish is 1)
+		>>
+	<</if>>
+	
+	<!-- Lose consciousness if it has been 20+ seconds since PC ran out of air -->
+	<<if $suffocating gte 2 and $suffocated isnot 1 and !_combatend>>
+		<<set $previousPassage = $passage>>
+		<<set $suffocationPhase to 1>>
+		<<set $suffocated to 1>>
+
+		<<set $nextPassage to "Man combat suffocated">>
+	<</if>>
+
+	<<if _combatend>>
+		<<bgs "stop">>
+	<</if>>
+
+	<<if $debug and $combatDemoDebugText isnot 0>>
+		<div id="combatDebug">
+			__Debug__
+			<br>
+			Enemy Health: $enemyhealth -- Enemy Health Max: $enemyhealthmax
+			<br>
+			Enemy number: $enemyno -- Enemy max number: $enemynomax
+			<br><br>
+			<<for _i to 0; _i lt $enemynomax; _i++>>
+				<<if $NPCList[_i]>>
+				#<<print _i>>: $NPCList[_i].fullDescription
+				<br>
+				Head Location: $NPCList[_i].location.head -- Genitals Location: $NPCList[_i].location.genitals
+				<br>
+				Active: $NPCList[_i].active -- Stance: $NPCList[_i].stance -- Health: $NPCList[_i].health
+				<br>
+				Penis: $NPCList[_i].penis -- Vagina: $NPCList[_i].vagina -- Mouth: $NPCList[_i].mouth -- Anus: $NPCList[_i].anus
+				/* Note: Anus is literally not a real var for npcs yet. Don't think anything is wrong when you see it isn't printing a logical value. A rework is required first. */
+				<br>
+				Left Hand: $NPCList[_i].lefthand -- Right Hand: $NPCList[_i].righthand
+				<br><br>
+				<<else>>
+				#<<print _i>>: <span class="red">[slot empty]</span>
+				<br><br>
+				<</if>>
+			<</for>>
+		</div>
+	<</if>>
+<</widget>>

@@ -1,0 +1,101 @@
+:: PassageHeader
+<<if !$cheatReload>>
+	<<set $passagePrev to $passage ? $passage : "none">>
+<</if>>
+<<set $passage to $passageOverride ? $passageOverride : passage()>>
+<<set $tags to tags()>>
+
+<<if !["Start", "Start2", "Clothes Testing", "Renderer Test Page", "Tips"].includes($passage) && !$bypassHeader>>
+	<<doVersionCheck>>
+	<<if !$passage.includes(" Settings") and !$cheatReload>>
+		<<if $passagePrev isnot $passage>>
+			<<set $passageChangesCount to ($passageChangesCount || 0) + 1>>
+		<</if>>
+		<<set $passageCount to ($passageCount || 0) + 1>>
+	<</if>>
+<</if>>
+
+<<unset $passageOverride>>
+<<unset $bypassHeader>>
+<<unset $cheatReload>>
+
+:: Widgets VersionCheck [widget]
+<<widget "doVersionCheck">>
+	/* Run stuff on every save load */
+	<<if onLoadUpdateCheck>>
+		<<set $saveVersion to ($saveVersions ? $saveVersions.last() : "ancient")>> /*update save version */
+	<</if>>
+
+	/* Run stuff on every page refresh, save load, or version mismatch */
+	<<if versionUpdateCheck or onLoadUpdateCheck or !$saveVersions or $saveVersions.last() isnot StartConfig.version>>
+		/* PERF PATCH that decide BEFORE clearing the flags whether this is a real version mismatch or just a same-version load/refresh. */
+		<<set _needsMigration to (!$saveVersions or $saveVersions.last() isnot StartConfig.version)>>
+
+		<<set versionUpdateCheck to false>>
+		<<set onLoadUpdateCheck to false>>
+
+		/* The no-argument breastfed widget previously subtracted an undefined milk amount. */
+		<<script>>
+			for (const variables of [V, ...State.history.map(moment => moment.variables)]) {
+				if (Number.isNaN(variables.hunger)) variables.hunger = 0;
+				if (Number.isNaN(variables.thirst)) variables.thirst = 0;
+			}
+		<</script>>
+
+		/* convert game version to numeric value for use in <<backComp>> */
+		<<set _version to (V.saveVersions?.last()?.match(/\d+/g) || [0]).map(Number).reduce((acc, num, index) => acc + num * Math.pow(100, 3 - index), 0)>>
+		/* preserve prng so updater code won't alter which events are picked, don't forget to restore it
+			it needs to use $ instead of _ because pre-weather save update code runs Engine.play() and that destroys temp variables
+			and probably causes some other bad effects. honestly, version updater needs a major update itself. */
+		<<set $prngpull to State.prng.pull>>
+
+		/* Before every pipeline below, on both paths: they discard clothes whose slot has moved. */
+		<<clothingSlotMigration>>
+
+		/* Only run migration pipelines when the saved version actually changed. */
+		<<if _needsMigration>>
+			<<backComp>>
+			<<modupdate>>
+		<<else>>
+			/* Recover gameplay settings skipped when an older mod created a partial settings object. */
+			<<migrateGameplaySettings>>
+		<</if>>
+
+		<<updatehistorycontrols>>
+		<<set _preventUpdate to true>> /*prevent rewriting autosaves */
+		<<set _saveLoaded to true>>
+		<<set Time.set()>>
+		<<if _needsMigration>>
+			<<xchange-modupdate>>
+		<</if>>
+		<<xchange-loadinit>>
+		/* Older lab egg-laying scenes marked a separate pregnancy as giving birth. Keep genuine birth scenes intact. */
+		<<if $waterDragonNest?.labStays gt 0 and !$birth and !$waterDragonBirthContext and $combat isnot 1 and !/birth|labour|laying/i.test($passage)>>
+			<<run getActivePregnancies("pc").forEach(pregnancy => {
+				if (pregnancy.birthInProgress) pregnancy.birthInProgress = false;
+			})>>
+		<</if>>
+		<<modLI-init>>
+		<<setFont>>
+		<<run zoom($options.zoom)>>
+		<<run syncFavourites()>>
+		<<run initCustomLenses()>>	/* push custom eyelenses inside setup.colours.eyes; on every load/refresh it needs to be done. */
+		<<run syncDebugAddedEvents()>>
+		<<run toggleConfirmDialogUponTabClose()>> /* enable/disable confirm dialog when user tries to close browser tab. based on V.options.confirmDialogUponTabClose */
+		<<set State.prng.pull to $prngpull>> /* restore prng */
+		<<unset $prngpull>>
+		<<generateTipsList>>
+	<</if>>
+
+	/* Variables that you need to check on every passage */
+	<<run updateCalmorylDissociation()>>
+	<!-- Returns true on the single tick the comedown's trauma lands, so the arena can say so. -->
+	<<if $xchange?.colosseum?.drugUntil isnot undefined>><<run colosseumDrugTick()>><</if>>
+	<<run refreshSleepAidState()>>
+	<<set $link_table to []>>
+	<<set $map.hideLinksCheck to []>>
+	/* Determine if the player is in a safe passage. Used to catch softlocks */
+	<<if setup.majorAreas.includes($passage)>>
+		<<set $safePassage to $passage>>
+	<</if>>
+<</widget>>

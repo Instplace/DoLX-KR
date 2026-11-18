@@ -1,0 +1,378 @@
+:: Widgets managePill [widget]
+<<widget "managePill">>
+	<<if _args[0] and _args[1] and _args[2]>>
+		<<if _args[3] isnot true or $sexStats.pills[_args[0]].owned[_args[1]] gt 0>>
+			<<set $sexStats.pills[_args[0]].owned[_args[1]] += _args[2]>>
+			<<if _args[3] is true>>
+				<<set $sexStats.pills[_args[0]].type to _args[1]>>
+				<<set $sexStats.pills[_args[0]].doseTaken++>>
+				<<set $pillsConsumed++>>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+:: Take Pill From Medicine Drawer
+/* An antidote taken while the pill timer is frozen never triggers at all, so it replaces the usual agony message rather than following it.
+   The reason stays hidden on purpose: an unnoticed pregnancy shouldn't be given away by a pill menu. */
+<<if $xchangeAntidoteFizzle>>
+	<span class="purple">You down the pill with some hesitation after having read the warning label.</span>
+	<br><br>
+	You brace yourself for everything the label promised, and wait. Nothing comes. No pain, no fever, no relief. Nothing at all, as if you'd swallowed a sugar tablet. <span class="pink">This doesn't feel right.</span>
+	<br><br>
+	<span class="red">You wonder what could be making the pill have no effect.</span>
+<<else>>
+	<<print $lastPillTakenDescription>>
+<</if>>
+<<unset $xchangeAntidoteFizzle>>
+<<if V.xchange.pill && V.xchange.pill.testPending>><<xchange-test>><</if>>
+<<if V.lastPillTakenDescription.includes("cream")>>
+	<<wearProp "parasite cream">>
+	<br><br>
+<<elseif V.lastPillTakenDescription.includes("spray")>>
+	<<wearProp "hairspray">>
+	<br><br>
+<<elseif V.lastPillTakenDescription.includes("fertility")>>
+	<<wearProp "fertility pills">>
+	<br><br>
+<<else>>
+	<<wearProp "pills">>
+	<br><br>
+<</if>>
+<<if $pocketPillReturn>>
+	<<set _pocketPillDestination to $pocketPillReturn>>
+	<<link [[Return|_pocketPillDestination]]>><<unset $pocketPillReturn>><</link>>
+<<else>>
+	<<link [[Return|PillCollection]]>><</link>>
+<</if>>
+
+:: PillCollection
+<<if $pocketPillReturn>>
+	<<set _pocketPillDestination to $pocketPillReturn>>
+	<<link [[Return|_pocketPillDestination]]>><<unset $pocketPillReturn>><</link>>
+<<else>>
+
+<<set $outside to 0>><<effects>>
+<<run window.backCompPillsInventory()>>
+<<set _pills to $sexStats.pills>>
+
+You open the medicine drawer.
+<br><br>
+<div class="hpi_gridHeader">
+	<div class="hpi_header">
+	Medicine Drawer
+	</div>
+</div>
+<div class="hpi_gridContainer" id="homeMainPillContainer"></div>
+<<run window.generateHomePillsInventory()>>
+<br>
+<div class="hpi_gridDescContainer" id="homeDescPillContainer" style="display:none">
+	<div id="hpi_descContainer">
+		<div id="hpi_desc_img"></div>
+		<div id="hpi_desc"></div>
+		<div class="hpi_closeContainer" id="hpi_closeContainer1" title="close" onclick="document.getElementById(`homeDescPillContainer`).style.display = `none`">x</div>
+	</div>
+</div>
+<br>
+<<link [[Step away|$pillsExitPassage]]>><<unset $pillsExitPassage>><</link>>
+<</if>>
+
+:: PillCollectionPainkillerOverdose
+<<set $outside to 0>><<effects>>
+/* Prescription painkillers have a lower safe limit. */
+<<set _painkillerName to ($overdosePillsTaken is "prescription painkillers") ? "prescription painkillers" : "painkillers">>
+<<set _painkillerLimit to (_painkillerName is "prescription painkillers") ? 2 : 3>>
+<<set _painkillerDoses to Math.max(_painkillerLimit + 1, painkillerDosesToday())>>
+<<set _painkillerOverdose to _painkillerDoses - _painkillerLimit>>
+<<unset $overdosePillsTaken>>
+You swallow another painkiller. After a while, you start to feel unwell.
+<br><br>
+<<if _painkillerOverdose lte 2>>
+	Your stomach feels sick and your head grows heavy. You steady yourself as a wave of dizziness passes.
+	<<set _painkillerTime to _painkillerOverdose * 2>>
+	<<stress `_painkillerOverdose * 3`>>
+	<<tiredness `_painkillerOverdose * 3`>>
+	<<gstress>><<gtiredness>>
+<<elseif _painkillerOverdose lte 4>>
+	You suddenly feel dizzy and sit down before you fall. Your vision blurs and your hands begin to shake. You stay there until you feel able to stand again.
+	<<set _painkillerTime to _painkillerOverdose * 5>>
+	<<stress `_painkillerOverdose * 3`>>
+	<<trauma _painkillerOverdose>>
+	<<pain _painkillerOverdose>>
+	<<tiredness `_painkillerOverdose * 4`>>
+	<<awareness -1>>
+	<<ggstress>><<gtrauma>><<gpain>><<ggtiredness>>
+<<else>>
+	Nausea hits you hard. Your heart beats quickly and you struggle to stay on your feet. The room starts to spin, forcing you down onto the floor until you begin to recover.
+	<<set _painkillerTime to Math.min(120, _painkillerOverdose * 10)>>
+	<<set _painkillerStress to Math.min(30, _painkillerOverdose * 3)>>
+	<<set _painkillerTrauma to Math.min(20, _painkillerOverdose * 2)>>
+	<<set _painkillerPain to Math.min(20, _painkillerOverdose * 2)>>
+	<<set _painkillerTiredness to Math.min(40, _painkillerOverdose * 5)>>
+	<<stress _painkillerStress>>
+	<<trauma _painkillerTrauma>>
+	<<pain _painkillerPain>>
+	<<tiredness _painkillerTiredness>>
+	<<awareness -2>>
+	<<gggstress>><<ggtrauma>><<ggpain>><<gggtiredness>>
+<</if>>
+<br><br>
+<<link [[Recover|PillCollection]]>><<pass _painkillerTime>><</link>>
+
+:: PillCollectionSleepOverdose
+<<set $outside to 0>><<effects>><<passout>><<tiredness 5>>
+You take another sleeping pill before the last one has worn off.
+<br><br>
+A few minutes later, your legs begin to feel weak. You put the packet down and try to steady yourself, but your vision blurs. You sink to the floor before you can reach the bed.
+<br><br>
+<<link [[You lose consciousness...|PillCollectionSleepOverdoseWake]]>><<pass 3 hours>><</link>>
+
+:: PillCollectionSleepOverdoseWake
+<<set $outside to 0>><<effects>><<run consumeSleepAid()>>
+You wake on the floor several hours later. Your head hurts, your body feels heavy, and you cannot remember falling asleep.
+<br><br>
+<span class="red">You still feel exhausted.</span>
+<<stress 4>><<tiredness 10>><<pain 5>><<ggstress>><<gtiredness>><<gpain>>
+<br><br>
+<<link [[Get up|PillCollection]]>><</link>>
+
+:: PillCollectionCalmorylPassOut
+<<set $outside to 0>><<effects>><<passout>>
+You swallow another anti-anxiety tablet. Before you can put the packet away, your vision starts to blur.
+<br><br>
+You reach for something to steady yourself, but your legs suddenly give way. You fall to the floor as everything around you goes dark.
+<br><br>
+<<link [[Everything fades to black...|PillCollectionCalmorylWake]]>><<pass 60>><</link>>
+
+:: PillCollectionCalmorylWake
+<<set $outside to 0>><<effects>>
+You open your eyes about an hour later. Your head feels heavy, and it takes you a few seconds to remember what happened.
+<br><br>
+You try to move, but your body still feels weak and unsteady.<<tiredness 5>><<gtiredness>>
+<br><br>
+<<link [[Try to get up|PillCollection]]>><</link>>
+
+:: PillCollectionSecondDose
+<<set $outside to 0>><<effects>>
+
+Disregarding the warning label, you exceed the recommended dosage of the hormonal pills.
+<br>
+<<run window.onSecondDoseTakenSetVars()>>
+<<set _result to random(0, 100)>>
+<<if _result gte 80 + _risk>>
+	<<set $timePassed to 2>> Despite the warning, nothing bad seems to happen.
+<<elseif _result gte 70 + _risk>>
+	<<set $timePassed to 2>> Your <<print ($pillCat is "breast" ? "breasts feel a little odd for a few minutes, but seem" : $pillCat + " feels a little odd for a few minutes, but seems")>> fine afterwards.
+<<elseif _result gte 60 + _risk>>
+	<<set $timePassed to 10>> Your <<print ($pillCat is "breast" ? "breasts feel a little warm for a few minutes, but seem" : $pillCat + " feels a little warm for a few minutes, but seems")>> fine afterwards.
+	<<garousal>><<arousal 500>>
+<<elseif _result gte 40 + _risk>>
+	<<set $timePassed to 20>> Your <<print ($pillCat is "breast" ? "breasts suddenly start" : $pillCat + " suddenly starts")>> to feel really warm and itchy. You are unable to concentrate on anything else until the feeling passes.
+	<<garousal>><<gpain>><<pain 3>><<arousal 2000>>
+<<elseif _result gte 5 + _risk>>
+	<<set $timePassed to 30>>
+	<<switch _pillAmountOfCategoriesUsed>>
+		<<case 1>>
+			You feel a sharp pain in your <<print ($pillCat is "breast" ? "breasts" : $pillCat)>>.
+		<<case 2>>
+			You feel a sharp pain in your <<print ($pillCat is "breast" ? "breasts" : $pillCat)>>, followed by another sharp pain in your <<print _secondaryPill>><<pain 12>><<set $timePassed += 30>>.
+		<<case 3>>
+			You feel a sharp pain in your <<print ($pillCat is "breast" ? "breasts" : $pillCat)>>, followed by more sharp pains in your <<print ($pillCat is "breast" ? "penis and bottom" : ($pillCat is "penis" ? "breasts and bottom" : "breasts and penis"))>><<pain 12>><<set $timePassed += 30>>.
+	<</switch>>
+	<<gpain>><<pain 12>>
+	<br><br>
+	It takes some time but you gradually feel better.
+<<else>>
+	<<set $timePassed to random(120, 420)>>
+	<<switch _pillAmountOfCategoriesUsed>>
+		<<case 1>>
+			You feel a sharp pain in your <<print ($pillCat is "breast" ? "breasts" : $pillCat)>>. It continues to get worse until you pass out.
+		<<case 2>>
+			You feel a sharp pain in your <<print ($pillCat is "breast" ? "breasts" : $pillCat)>>, followed by another sharp pain in your <<print _secondaryPill>><<pain 12>><<set $timePassed += 30>>. It continues to get worse until you pass out.
+		<<case 3>>
+			You feel a sharp pain in your <<print ($pillCat is "breast" ? "breasts" : $pillCat)>>, followed by more sharp pains in your <<print ($pillCat is "breast" ? "penis and bottom" : ($pillCat is "penis" ? "breasts and bottom" : "breasts and penis"))>><<pain 12>><<set $timePassed += 30>>. It continues to get worse until you pass out.
+	<</switch>>
+	<<ggstress>><<gtrauma>><<gpain>>
+	<<set $pain += 400>><<pain 1>><<set $stress += 4000>><<trauma 100>>
+	<<set _passout to true>>
+<</if>>
+
+<<set _hoursPassed to Math.floor($timePassed / 60)>>
+<<set _minutesPassed to $timePassed - (_hoursPassed * 60)>>
+
+<br><br>
+<<if _passout is true>>
+	<<link [[Next|PillCollectionPassOut]]>><<pass $timePassed>><</link>>
+<<else>>
+	<<print '<<link [[Next ('+_hoursPassed+':'+ (_minutesPassed lt 10 ? "0" : "") + _minutesPassed + ')|PillCollection]]>><<unset $pillCat>><<pass $timePassed>><<unset $timePassed>><</link>>'>>
+<</if>>
+
+:: PillCollectionPassOut
+<<set $outside to 0>><<effects>>
+<<set _pills to $sexStats.pills>>
+<<set $pain += 300>><<pain 1>>
+You end up waking in agony and wondering what had happened to you. After a brief feel around your body, you shriek in pain after briefly touching your <<print ($pillCat is "breast" ? "breasts" : $pillCat)>>. You end up spending more time lying down till you feel like you can move without something else happening to you.
+
+<br><br>
+As you get up, you check the time to find that <<if $timePassed gt 240>>many<<else>>only a couple of<</if>> hours have passed since you took that pill.
+
+<<set _change to random(100, 500)>>
+<<if _change gte 200>>
+	You give your <<print ($pillCat is "breast" ? "breasts" : $pillCat)>> a check over. You think something might have changed about <<print ($pillCat is "breast" ? "them" : "it")>>.
+<</if>>
+<<if $pillCat is "breast">>
+	<<if _pills.lastTaken[$pillCat] is "growth">>
+		<<set $breastgrowthtimer -= _change>>
+	<<else>>
+		<<set $breastgrowthtimer += _change>>
+	<</if>>
+<<elseif $pillCat is "penis">>
+	<<if _pills.lastTaken[$pillCat] is "growth">>
+		<<set $penisgrowthtimer -= _change>>
+		<<set $sexStats.pills.pills["penis growth"].overdose += 5>>
+	<<else>>
+		<<set $penisgrowthtimer += _change>>
+		<<set $sexStats.pills.pills["penis reduction"].overdose += 5>>
+	<</if>>
+<<else>>
+	<<if _pills.lastTaken[$pillCat] is "growth">>
+		<<set $bottomgrowthtimer -= _change>>
+	<<else>>
+		<<set $bottomgrowthtimer += _change>>
+	<</if>>
+<</if>>
+<<mouth_sensitivity 0.25>>
+<<breast_sensitivity 0.25>>
+<<bottom_sensitivity 0.25>>
+<<genital_sensitivity 0.25>>
+<<clamp>>
+<br><br>
+<<link [[Next (1:00)|PillCollection]]>><<unset $pillCat>><<pass 60>><<unset $timePassed>><</link>>
+
+:: PillCollectionSecondDosePregnancy
+<<set $outside to 0>><<effects>>
+<<cleareventpool>>
+<<set _pills to $sexStats.pills>>
+<<set _menstruation to $sexStats.vagina.menstruation>>
+/*If this passage has no links, double check the widget 'autoTakePillCheck' for the $location variable */
+<<if $overdosePillsTaken is "fertility booster" or _pills.lastTaken.pregnancy is "fertility booster">>
+	<<set _fertilityPillName to "fertility booster">>
+	Disregarding the warning label, you take a second dose of the fertility pills.
+	<br><br>
+	<<addinlineevent "no fertility overdose" 10>>
+		Despite the warning, nothing wrong seems to happen.
+		<br><br>
+		<<link [[Next (0:02)|PillCollection]]>><<pass 2>><</link>>
+	<</addinlineevent>>
+	<<addinlineevent "simple fertility overdose" 5>>
+		Despite the warning, you only feel a little warm for a few minutes but feel fine afterwards. <<garousal>><<arousal 100>>
+		<br><br>
+		<<link [[Next (0:03)|PillCollection]]>><<pass 3>><</link>>
+	<</addinlineevent>>
+	<<addinlineevent "simple fertility overdose 2" 4>>
+		You start to feel a strange warmth around your <<genitals 2>> for a few minutes but feel fine afterwards. It was oddly soothing. <<garousal>><<arousal 200>>
+		<<if _pills.pills[_fertilityPillName].doseTaken lt 3>>
+			<<set _pills.pills[_fertilityPillName].doseTaken to 3>>
+		<</if>>
+		<br><br>
+		<<link [[Next (0:05)|PillCollection]]>><<pass 5>><</link>>
+	<</addinlineevent>>
+	<<addinlineevent "advanced fertility overdose" 2>>
+		You start feeling a strange warmth around your <<genitals 2>>, however, it doesn't seem to stop until at one point you feel like it's burning you. The heat seems to start expanding to other areas of your body but then begins to subside. <<garousal>><<arousal 1000>><<gpain>><<pain 10>>
+		<<if _pills.pills[_fertilityPillName].doseTaken lt 4>>
+			<<set _pills.pills[_fertilityPillName].doseTaken to 4>>
+		<</if>>
+		<<if !_menstruation.running>>
+		<<elseif _menstruation.currentState is "normal">>
+			<<for _i to 0; _i lt 2; _i++>>
+				<<if _menstruation.currentDay lt _menstruation.stages[3] - 1.5>>
+					<<set _menstruation.currentDay += 1>>
+				<</if>>
+			<</for>>
+			<<if _menstruation.baseDays gte 28>>
+				<<set _menstruation.baseDays-->>
+			<</if>>
+		<</if>>
+		<br><br>
+		<<link [[Next (0:15)|PillCollection]]>><<pass 15>><</link>>
+	<</addinlineevent>>
+	<<addinlineevent "advanced fertility overdose" 2>>
+		You feel a strange warmth around your <<genitals 2>>, intensifying until it practically burns. It quickly spreads through the rest of your body, and you collapse from the pain. You remain that way until the heat finally dies down. <<garousal>><<arousal 1000>><<ggpain>><<pain 100>>
+		<<if _pills.pills[_fertilityPillName].doseTaken lt 4>>
+			<<set _pills.pills[_fertilityPillName].doseTaken to 4>>
+		<</if>>
+		<<if !_menstruation.running>>
+		<<elseif _menstruation.currentState is "normal">>
+			<<for _i to 0; _i lt 6; _i++>>
+				<<if _menstruation.currentDay lt _menstruation.stages[3] - 1.5>>
+					<<set _menstruation.currentDay += 1>>
+				<</if>>
+			<</for>>
+			<<if _menstruation.baseDays gte 24>>
+				<<set _menstruation.baseDays-->>
+			<</if>>
+		<</if>>
+		<br><br>
+		<<link [[Next (1:00)|PillCollection]]>><<pass 60>><</link>>
+	<</addinlineevent>>
+	<<addinlineevent "advanced fertility overdose 2" 2>>
+		You feel a strange warmth around your <<genitals 2>>, intensifying until it practically burns. It quickly spreads through the rest of your body, and you collapse from the pain. The sheer intensity overwhelms your senses, and your vision fades to black... <<garousal>><<arousal 1000>><<ggpain>><<pain 100>>
+		<<if _pills.pills[_fertilityPillName].doseTaken lt 4>>
+			<<set _pills.pills[_fertilityPillName].doseTaken to 4>>
+		<</if>>
+		<<if !_menstruation.running>>
+		<<elseif _menstruation.currentState is "normal">>
+			<<set _menstruation.currentDay to _menstruation.stages[3] - 0.5>>
+			<<menstruationCycle "overdose">>
+			<<set _menstruation.currentDay to _menstruation.stages[3] - 0.5>>
+			<<if _menstruation.baseDays gte 18>>
+				<<set _menstruation.baseDays-->>
+			<</if>>
+		<</if>>
+		<<rutCycle true>>
+		<br><br>
+		<<link [[Next (3:00)|PillCollectionFertilityPassOut]]>><<pass 3 hours>><</link>>
+	<</addinlineevent>>
+<<elseif $overdosePillsTaken is "contraceptive" or _pills.lastTaken.pregnancy is "contraceptive">>
+	Disregarding the warning label, you take a second dose of the contraceptive pills.
+	<br><br>
+	<<addinlineevent "no contraceptive overdose" 10>>
+		Despite it, nothing wrong seems to happen.
+		<br><br>
+		<<link [[Next (0:02)|PillCollection]]>><<pass 2>><</link>>
+	<</addinlineevent>>
+	<<addinlineevent "simple contraceptive overdose" 5>>
+		Despite it, you only feel a little chilly for a few minutes but feel fine afterwards. <<larousal>><<arousal -100>>
+		<br><br>
+		<<link [[Next (0:03)|PillCollection]]>><<pass 3>><</link>>
+	<</addinlineevent>>
+	<<addinlineevent "contraceptive overdose" 3>>
+		After a few minutes, an odd, chilly sensation hits you. It spreads through your <<genitals 2>>, leaving a slight numbness in its wake that quickly dissipates on its own.<<llarousal>><<arousal -200>>
+		<br><br>
+		<<if $genitalsensitivity gt 2>>
+			<<genital_sensitivity -0.25>>
+		<</if>>
+		<<if $bottomsensitivity gt 2>>
+			<<bottom_sensitivity -0.25>>
+		<</if>>
+		<<link [[Next (0:30)|PillCollection]]>><<pass 30>><</link>>
+	<</addinlineevent>>
+<</if>>
+<<if !_eventpool.length>>
+	<<addinlineevent "Pills Error" 1>>
+		<span class="red">An error has occur, people report this to the dev's with a save.</span>
+		<br><br>
+		<<link [[Next|PillCollection]]>><</link>>
+	<</addinlineevent>>
+<</if>>
+<<unset $overdosePillsTaken>>
+
+<<runeventpool>>
+
+:: PillCollectionFertilityPassOut
+<<set $outside to 0>><<effects>>
+
+You slowly regain consciousness, with your <<genitals 2>> feeling rather warm. You feel oddly comfortable. You wonder what effect the pills had on you.
+
+<br><br>
+<<link [[Next (0:02)|PillCollection]]>><<pass 2>><</link>>

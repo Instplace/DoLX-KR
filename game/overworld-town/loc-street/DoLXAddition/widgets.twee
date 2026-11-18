@@ -1,0 +1,90 @@
+:: Widgets X-Change Events [widget]
+
+<<widget "street-resistance-whoring">>
+	<<rng>>
+	<<set _targetsex to $player.sex is "m"? "f": "m">>
+	<<set _npcPronoun to ($rng lte maleChance(_targetsex) ? "m" : "f")>>
+	<<generateNPC 1 a _npcPronoun>>
+	
+    <<person1>>A car pulls up alongside you. The driver, a <<person>>, waves a wad of cash along with a pill at you. "<span class="pink">That's a Resistance</span>. Let me fuck you and I'll pay you <<printmoney 100000>>. Get in."
+	<br><br>
+
+	<<if $earSlime.growth gt 50 and ($earSlime.growth gte 80 - ($earSlime.promiscuity * 10))>>
+		You feel the <<slimeWord>> in your head command you to <span class="lewd">get in the car and give yourself to <<him>></span>. It promises rewards if you comply, and threatens consequences if you do not.
+		<br><br>
+
+		<<link [[Obey|XChange Street Car Slime Obey]]>>
+			<<corruption 1>><<pain -4>><<stress -6>><<trauma -12>><<sub 2>>
+			<<if $promiscuity lte 14>><<set $desperateaction to (earSlimeThoughts() ? "the voice in your head commanded you to do it" : "the ear slime commanded you to do it")>><</if>>
+		<</link>><<promiscuous2>><<gcorruption>><<lpain>><<lltrauma>><<lstress>>
+		<br>
+		<<link [[Defy|XChange Street Car Slime Defy]]>><<corruption -1>><<pain 8>><<stress 6>><<trauma 6>><<def 1>><</link>><<lcorruption>><<ggpain>><<ggtrauma>><<ggstress>>
+		<br>
+	<<else>>
+		<<if !hasSexStat("promiscuity",2)>>
+			<<if $uncomfortable.prostituting>>
+				You are not promiscuous enough to take up <<his>> offer.
+			<<else>>
+				<<His>> offer repulses you, but you need the money.
+			<</if>>
+			<br><br>
+		<</if>>
+
+		<<if hasSexStat("promiscuity",2)>>
+			<<if $rng lte 15 and (crimeSumCurrent() gte 1000 or $fame.prostitution gte 400)>>
+				<<link [[Get in|XChange Street Car]]>><<set $phase to 10>><</link>><<promiscuous2>>
+				<br>
+			<<else>>
+				<<link [[Get in|XChange Street Car]]>><<set $phase to 1>><</link>><<promiscuous2>>
+				<br>
+			<</if>>
+		<</if>>
+
+		<<if !hasSexStat("promiscuity",2) and $uncomfortable.prostituting is false>>
+			<<if $rng lte 15 and (crimeSumCurrent() gte 1000 or $fame.prostitution gte 400)>>
+				<<link [[Reluctantly get in|XChange Street Car]]>><<set $desperateaction to 1>><<set $phase to 10>><</link>><<promiscuous2>>
+				<br>
+			<<else>>
+				<<link [[Reluctantly get in|XChange Street Car]]>><<set $desperateaction to 1>><<set $phase to 1>><</link>><<promiscuous2>>
+				<br>
+			<</if>>
+		<</if>>
+		<<link [[Refuse|XChange Street Car]]>><<set $phase to 2>><</link>><<gstress>>
+	<</if>>
+	<br>
+<</widget>>
+
+
+<<widget "mailboxsteallink">>
+	<<set _street to _args[0]>>
+	<<set _streetName to _args[1]>>
+	<<set _returnPassage to _args[2]>>
+	<<set _min to _args[3]>>
+	<<set _max to _args[4]>>
+	<<set _place to _args[5]>>
+	<<if !$daily.mailboxSteal or typeof $daily.mailboxSteal isnot "object" or Array.isArray($daily.mailboxSteal)>>
+		<<set $daily.mailboxSteal to {}>>
+	<</if>>
+	<<if !$daily.mailboxSteal[_street]>>
+		<<if pcAreArmsBound("both")>>
+			<<crimeicon "mark">><span class="red">You can't steal from a mailbox with your arms bound.</span>
+			<br>
+		<<else>>
+			<<set $skulduggerydifficulty to 800>>
+			<<capture _street, _streetName, _returnPassage, _min, _max, _place>>
+				<<crimeicon "mark">><<link [[Steal from a mailbox (0:02)|Street Mailbox Steal]]>>
+					<<set $mailboxSteal to {
+						street: _street,
+						streetName: _streetName,
+						returnPassage: _returnPassage,
+						min: _min,
+						max: _max,
+						place: _place
+					}>>
+					<<pass 2>><<crimeUp 3 "petty">>
+				<</link>><<skulduggerydifficulty>><<crime "petty">>
+			<</capture>>
+			<br>
+		<</if>>
+	<</if>>
+<</widget>>

@@ -1,0 +1,560 @@
+:: XChange NPC Targeted Actions Widgets [widget]
+
+    <<widget "pickupXchangePill">>
+        <<if $enemytype is "man">>
+            <<set $_hand to _args[0]>>
+            <<set $_pills to window.listUniqueCarriedXchangePills()>>
+
+            <<if $_hand is "left" and ($lefttarget isnot "self" or $options.targetYourself is false or _targetnumber is 1)>>
+                <<if $_pills.length gt 0>>
+                    <<set _pillsLeft to {}>>
+
+                    <<run $_pills.forEach(pill => {
+                        if ($currentXchangePillRight is undefined or pill.name isnot $currentXchangePillRight.name){
+                            _pillsLeft[pill.name] = pill;
+                        }
+                    })>>
+                    <<if Object.keys(_pillsLeft).length gte 1>>
+                        <<set _leftaction["Pick up pill:"] to "pickupXchangePill">>
+                    <</if>>
+                <</if>>
+            <</if>>
+
+            <<if $_hand is "right" and ($righttarget isnot "self" or $options.targetYourself is false or _targetnumber is 1)>>
+                <<if $_pills.length gt 0>>
+                    <<set _pillsRight to {}>>
+
+                    <<run $_pills.forEach(pill => {
+                        if ($currentXchangePillLeft is undefined or pill.name isnot $currentXchangePillLeft.name){
+                            _pillsRight[pill.name] = pill;
+                        }
+                    })>>
+                    <<if Object.keys(_pillsRight).length gte 1>>
+                        <<set _rightaction["Pick up pill:"] to "pickupXchangePill">>
+                    <</if>>
+                <</if>>
+            <</if>>
+        <</if>>
+    <</widget>>
+
+    <<widget "heldXchangePill">>
+        <<if _args[0] isnot undefined>>
+            <<if _args[0] is "left">>
+                /* rest */
+                <<set _leftaction["Rest"] to "heldXchangePill">>
+
+                /* Drop pill */
+                <<set _leftaction["Pocket your pill"] to "dropXchangePill">>
+
+                /* Pill the targeted NPC (non-pillable named NPCs slap it away on resolve) */
+                <<if $lefttarget isnot undefined and $lefttarget isnot "self">>
+                    <<set _actiontext to ($npcpillingasked is $lefttarget ? "Pill ": "Attempt to pill ")+$NPCList[$lefttarget].pronouns.him>>
+                    <<set _leftaction[_actiontext] to "xchangePillOther">>
+                <</if>>
+
+                /* Pill yourself */
+                <<if !playerIsXChanged() and ($lefttarget is "self" or $options.targetYourself is false or _targetnumber is 1)>>
+                    <<set _leftaction["Pill yourself"] to "xchangePillSelf">>
+                <</if>>
+            <</if>>
+
+            <<if _args[0] is "right">>
+                /* rest */
+                <<set _rightaction["Rest"] to "heldXchangePill">>
+
+                /* Drop pill */
+                <<set _rightaction["Pocket your pill"] to "dropXchangePill">>
+
+                /* Pill the targeted NPC (non-pillable named NPCs slap it away on resolve) */
+                <<if $righttarget isnot undefined and $righttarget isnot "self">>
+                    <<set _actiontext to ($npcpillingasked is $righttarget ? "Pill ": "Attempt to pill ")+$NPCList[$righttarget].pronouns.him>>
+                    <<set _rightaction[_actiontext] to "xchangePillOther">>
+                <</if>>
+
+                /* Pill yourself */
+                <<if !playerIsXChanged() and ($righttarget is "self" or $options.targetYourself is false or _targetnumber is 1)>>
+                    <<set _rightaction["Pill yourself"] to "xchangePillSelf">>
+                <</if>>
+            <</if>>
+        <</if>>
+    <</widget>>
+
+    <<widget "effectsPickupXchangePill">>
+        /* Start with a pill on hand: Before combat do this: <<set $leftarm to "heldXchangePill">><<set $currentXchangePillLeft to clone(setup.pills[0])>> */
+        /* That will effectively mimic this widget so that a player starts combat holding a pill */
+        <<if $leftaction is "pickupXchangePill" and $rightaction is "pickupXchangePill" and $selectedXchangePillRight.name is $selectedXchangePillLeft.name>>
+                <<set $leftaction to 0>><<set $leftactiondefault to "rest">><<set $rightaction to 0>><<set $rightactiondefault to "rest">><<set $rightarm to "heldXchangePill">>
+                <<set $currentXchangePillRight to $selectedXchangePillRight>><<set $xchangePillReveal to 1>>
+                You pull out a $currentXchangePillRight.name pill and hold it with your right hand.
+        <<else>>
+            <<if $leftaction is "pickupXchangePill" and $selectedXchangePillLeft>>
+                <<set $leftaction to 0>><<set $leftactiondefault to "rest">><<set $leftarm to "heldXchangePill">>
+                <<set $currentXchangePillLeft to $selectedXchangePillLeft>><<set $xchangePillReveal to 1>>
+                You pull out a $currentXchangePillLeft.name pill with your left hand.
+            <</if>>
+            <<if $rightaction is "pickupXchangePill" and $selectedXchangePillRight>>
+                <<set $rightaction to 0>><<set $rightactiondefault to "rest">><<set $rightarm to "heldXchangePill">>
+                <<set $currentXchangePillRight to $selectedXchangePillRight>><<set $xchangePillReveal to 1>>
+                You pull out a $currentXchangePillRight.name pill with your right hand.
+            <</if>>
+        <</if>>
+    <</widget>>
+
+    <<widget "effectsDropXchangePill">>
+        <<if $leftaction is "dropXchangePill" and $rightaction is "dropXchangePill">>
+            <<set $leftaction to 0>><<set $leftactiondefault to "rest">><<set $leftarm to 0>><<set $rightaction to 0>><<set $rightactiondefault to "rest">><<set $rightarm to 0>>
+            You pocket your pills.
+            <<unset $currentXchangePillLeft>><<unset $currentXchangePillRight>>
+        <<else>>
+            <<if $leftaction is "dropXchangePill">>
+                <<set $leftaction to 0>><<set $leftactiondefault to "rest">><<set $leftarm to 0>>
+                You pocket the $currentXchangePillLeft.name in your left hand.
+                <<unset $currentXchangePillLeft>>
+            <</if>>
+            <<if $rightaction is "dropXchangePill">>
+                <<set $rightaction to 0>><<set $rightactiondefault to "rest">><<set $rightarm to 0>>
+                You pocket the $currentXchangePillRight.name in your right hand.
+                <<unset $currentXchangePillRight>>
+            <</if>>
+        <</if>>
+    <</widget>>
+
+    <<widget "xchange-pilled-descriptor">><<set _t to _args[0]>><<set _pilledHerm to !!($NPCList[_t].xchange and $NPCList[_t].xchange.hermEffect)>><<if ["Whitney","Robin","Kylar","Sydney","Bailey","Gwylan","Poppy"].includes($NPCList[_t].fullDescription)>><<set $speechpill to (_pilledHerm ? "herm" : 1)>><</if>><<= ($NPCList[_t].teen ? $NPCList[_t].pronouns.boy : $NPCList[_t].pronouns.man) + (_pilledHerm ? " sporting both a stiff cock and a needy pussy" : "")>><</widget>>
+
+    <<widget "xchange-pilled-subject">><<set _sn to $NPCList[_args[0]]>><<if $NPCNameList.includes(_sn.fullDescription) or _sn.name is _sn.fullDescription>><<= _sn.fullDescription>><<else>>the previously <<= _sn.fullDescription>><</if>><</widget>>
+
+    <<widget "xchange-raul-pill-flavour">>
+        <<if $statFreeze and $NPCList[_args[0]] and $NPCList[_args[0]].fullDescription is "Raul">>
+            None of this is in the book. You're the one imagining it, so <span class="purple">Raul changes anyway</span>.
+        <</if>>
+    <</widget>>
+
+    <<widget "xchange-pilled-fury">>
+        <<set _ft to _args[0]>>
+        <<if $NPCList[_ft].fullDescription is "Bailey">>
+            <<personselect _ft>>
+            <br><br>
+            Bailey goes very still as the change settles. <<He>> looks down at <<his>> unfamiliar body once, slowly, like <<hes>> tallying the damage, then back up at you. You've seen Bailey annoyed. You've seen Bailey angry. You've never seen this.
+            <<set _furyFreeHand to ($NPCList[_ft].lefthand is 0 ? "lefthand" : ($NPCList[_ft].righthand is 0 ? "righthand" : 0))>>
+            <<set _furyCanChoke to $settings.asphyxiaLevel gte 1 and $nochoke isnot 1 and $neckuse isnot "hand" and !($worn.neck.name is "familiar collar" and $worn.neck.cursed is 1)>>
+            <<if _furyFreeHand and _furyCanChoke>>
+                "Do you have any idea what you've just cost yourself?" <<His>> hand <span class="red">snaps around your throat and squeezes</span>. "I'm going to collect every penny of this out of your hide."
+                <<set $NPCList[_ft][_furyFreeHand] to "throat">><<set $neckuse to "hand">><<violence 4>>
+            <<elseif _furyFreeHand>>
+                <<He>> seizes a fistful of your hair and <span class="red">wrenches your head back</span>, <<his>> face an inch from yours. "You'll pay for this. With interest."
+                <<set $NPCList[_ft][_furyFreeHand] to "hair">><<set $speechHair to 1>><<violence 3>>
+            <<else>>
+                <<He>> <span class="red">wrenches your head back by the hair</span> hard enough to make your eyes water. "You'll pay for this. Every hour of it."
+                <<violence 3>>
+            <</if>>
+            <<set $enemyanger += 60>><<set $enemytrust -= 40>>
+        <</if>>
+    <</widget>>
+
+    /* The pill fails to land. Two reasons, in order:
+    - $statFreeze: a flashback, vision or dream. The scene already went the way it went, so the pill
+      does nothing and the NPC has no reaction to give. Raul is exempt (see npcXchangePillable).
+    - Otherwise a named NPC who refuses on their own account, and is angered by the attempt.
+    _args[0] = "left"/"right" hand, _args[1] = target index. Resets the holding hand and unsets the held pill. */
+    <<widget "xchange-pill-slap">>
+        <<set _slapHand to _args[0]>><<set _slapTarget to _args[1]>><<set _slapFrozen to !!$statFreeze>>
+        <<if _slapHand is "left">>
+            <<set $leftaction to 0>><<set $leftactiondefault to "rest">><<set $leftarm to 0>><<unset $currentXchangePillLeft>>
+        <<else>>
+            <<set $rightaction to 0>><<set $rightactiondefault to "rest">><<set $rightarm to 0>><<unset $currentXchangePillRight>>
+        <</if>>
+        <<if _slapFrozen>>
+            <<personselect _slapTarget>>
+            You force the pill into <<his>> mouth. <span class="purple">Nothing happens</span>. None of this is real, and the pill has nothing real to work on.
+        <<elseif $NPCList[_slapTarget].fullDescription is "Whitney">>
+            Whitney's hand snaps up and <span class="red">smacks the pill clean out of your grip</span>. "You think you can pull that shit on me, slut? Not a fucking chance."
+            <<set $enemyanger += 50>><<set $enemytrust -= 30>>
+        <<else>>
+            <<= $NPCList[_slapTarget].fullDescription>> <span class="red">knocks the pill from your hand</span> with a furious snarl. "Get that thing away from me!"
+            <<set $enemyanger += 50>><<set $enemytrust -= 30>>
+        <</if>>
+    <</widget>>
+
+    <<widget "effectsUseXchangePill">>
+        <<if $leftaction is "xchangePillSelf" and $rightaction is "xchangePillSelf">>
+            <<set $leftaction to 0>><<set $leftactiondefault to "rest">><<set $leftarm to 0>><<set $rightaction to 0>><<set $rightactiondefault to "rest">><<set $rightarm to 0>>
+            You swallow the pills, <span class="purple">surrendering yourself to the change.</span>
+            <<run $currentXchangePillLeft.effects.forEach(effect => {
+                Wikifier.wikifyEval(effect);
+            })>>
+            <<run $currentXchangePillRight.effects.forEach(effect => {
+                Wikifier.wikifyEval(effect);
+            })>>
+            <<set $sexStats.pills.pills[$currentXchangePillLeft.name].owned-->>
+            <<set $sexStats.pills.pills[$currentXchangePillRight.name].owned-->>
+            <<unset $currentXchangePillLeft>><<unset $currentXchangePillRight>>
+        <<else>>
+            <<if $leftaction is "xchangePillSelf">>
+                <<set $leftaction to 0>><<set $leftactiondefault to "rest">><<set $leftarm to 0>>
+                You swallow the $currentXchangePillLeft.name in your left hand, <span class="purple">surrendering to the change.</span>
+                <<run $currentXchangePillLeft.effects.forEach(effect => {
+                    Wikifier.wikifyEval(effect);
+                })>>
+                <<set $sexStats.pills.pills[$currentXchangePillLeft.name].owned-->>
+                <<unset $currentXchangePillLeft>>
+            <</if>>
+            <<if $rightaction is "xchangePillSelf">>
+                <<set $rightaction to 0>><<set $rightactiondefault to "rest">><<set $rightarm to 0>>
+                You swallow the $currentXchangePillRight.name in your right hand, <span class="purple">surrendering to the change.</span>
+                <<run $currentXchangePillRight.effects.forEach(effect => {
+                    Wikifier.wikifyEval(effect);
+                })>>
+                <<set $sexStats.pills.pills[$currentXchangePillRight.name].owned-->>
+                <<unset $currentXchangePillRight>>
+            <</if>>
+        <</if>>
+
+        <<if $leftaction is "xchangePillOther">>
+            <<set $sexStats.pills.pills[$currentXchangePillLeft.name].owned-->>
+            <<if $npcpillingasked is $lefttarget>>
+                <<set $leftaction to 0>><<set $leftactiondefault to "rest">><<set $leftarm to 0>>
+                You present $NPCList[$lefttarget].pronouns.him the pill, and $NPCList[$lefttarget].pronouns.he <span class="lewd">opens $NPCList[$lefttarget].pronouns.his mouth</span> allowing you to feed it to $NPCList[$lefttarget].pronouns.him.
+                The change is instantaneous, <<xchange-pilled-subject $lefttarget>> is now nothing more than a
+                <<npc-select-xchange-target $lefttarget>>
+                <<run $currentXchangePillLeft.npcEffects.forEach(npcEffect => {
+                    Wikifier.wikifyEval(npcEffect);
+                })>>
+                <<xchange-pilled-descriptor $lefttarget>>.
+                <<xchange-pilled-fury $lefttarget>>
+                <<xchange-raul-pill-flavour $lefttarget>>
+                <<unset $currentXchangePillLeft>>
+
+            <<elseif not npcXchangePillable($lefttarget)>>
+                <<xchange-pill-slap "left" $lefttarget>>
+
+            <<else>>
+                You throw yourself onto<<= (!$NPCNameList.includes($NPCList[$lefttarget].fullDescription) and $NPCList[$lefttarget].name isnot $NPCList[$lefttarget].fullDescription) ? " the":"">> $NPCList[$lefttarget].fullDescription, and after some struggle
+
+                <<set _physiquemin to ($NPCList[$lefttarget].skills.athletics - ($enemyhealthmax - $enemyhealth) * ($NPCList[$lefttarget].skills.athletics/$enemyhealthmax)) * 16>>
+                <<set _physiquemax to 15000 - ($enemyhealthmax - $enemyhealth) * ($NPCList[$lefttarget].skills.athletics/$enemyhealthmax) * 16>>
+                <<silently>><<physiquedifficulty _physiquemin _physiquemax>><</silently>>
+
+                <<if $physiqueSuccess>>
+                    <<set $leftaction to 0>><<set $leftactiondefault to "rest">><<set $leftarm to 0>>
+                    you manage to outmaneuver $NPCList[$lefttarget].pronouns.him, <span class="green">shoving your pill into $NPCList[$lefttarget].pronouns.his mouth</span> and forcing $NPCList[$lefttarget].pronouns.him to swallow.
+                    The change is instantaneous, <<xchange-pilled-subject $lefttarget>> is now nothing more than a
+                    <<npc-select-xchange-target $lefttarget>>
+                    <<run $currentXchangePillLeft.npcEffects.forEach(npcEffect => {
+                        Wikifier.wikifyEval(npcEffect);
+                    })>>
+                    <<xchange-pilled-descriptor $lefttarget>>.
+                    <<xchange-pilled-fury $lefttarget>>
+                    <<xchange-raul-pill-flavour $lefttarget>>
+                    <<unset $currentXchangePillLeft>>
+
+                <<elseif !playerIsXChanged() and playerMayBeSpiked()>>
+                    <<set $leftaction to 0>><<set $leftactiondefault to "rest">><<set $leftarm to 0>>
+                    $NPCList[$lefttarget].pronouns.he overpowers you, taking the pill away from you and <span class="red">forcing it down your throat</span>.
+                    <<run $currentXchangePillLeft.effects.forEach(effect => {
+                        Wikifier.wikifyEval(effect);
+                    })>>
+                    <<unset $currentXchangePillLeft>>
+
+                <<else>>
+                    <<set $leftaction to 0>><<set $leftactiondefault to "rest">><<set $leftarm to 0>>
+                    $NPCList[$lefttarget].pronouns.he <span class="brat">whacks the pill away from your hand</span>.
+                    <<unset $currentXchangePillLeft>>
+
+                <</if>>
+            <</if>>
+            
+        <</if>>
+        <<if $rightaction is "xchangePillOther">>
+            <<set $sexStats.pills.pills[$currentXchangePillRight.name].owned-->>
+            <<if $npcpillingasked is $righttarget>>
+                <<set $rightaction to 0>><<set $rightactiondefault to "rest">><<set $rightarm to 0>>
+                You present $NPCList[$righttarget].pronouns.him the pill, and $NPCList[$righttarget].pronouns.he <span class="lewd">opens $NPCList[$righttarget].pronouns.his mouth</span> allowing you to feed it to $NPCList[$righttarget].pronouns.him.
+                The change is instantaneous, <<xchange-pilled-subject $righttarget>> is now nothing more than a
+                <<npc-select-xchange-target $righttarget>>
+                <<run $currentXchangePillRight.npcEffects.forEach(npcEffect => {
+                    Wikifier.wikifyEval(npcEffect);
+                })>>
+                <<xchange-pilled-descriptor $righttarget>>.
+                <<xchange-pilled-fury $righttarget>>
+                <<xchange-raul-pill-flavour $righttarget>>
+                <<unset $currentXchangePillRight>>
+
+            <<elseif not npcXchangePillable($righttarget)>>
+                <<xchange-pill-slap "right" $righttarget>>
+
+            <<else>>
+                You throw yourself onto<<= (!$NPCNameList.includes($NPCList[$righttarget].fullDescription) and $NPCList[$righttarget].name isnot $NPCList[$righttarget].fullDescription) ? " the":"">> $NPCList[$righttarget].fullDescription, and after some struggle
+
+                <<set _physiquemin to ($NPCList[$righttarget].skills.athletics - ($enemyhealthmax - $enemyhealth) * ($NPCList[$righttarget].skills.athletics/$enemyhealthmax)) * 16>>
+                <<set _physiquemax to 15000 - ($enemyhealthmax - $enemyhealth) * ($NPCList[$righttarget].skills.athletics/$enemyhealthmax) * 16>>
+                <<silently>><<physiquedifficulty _physiquemin _physiquemax>><</silently>>
+
+                <<if $physiqueSuccess>>
+                    <<set $rightaction to 0>><<set $rightactiondefault to "rest">><<set $rightarm to 0>>
+                    you manage to outmaneuver $NPCList[$righttarget].pronouns.him, <span class="green">shoving your pill into $NPCList[$righttarget].pronouns.his mouth</span> and forcing $NPCList[$righttarget].pronouns.him to swallow.
+                    The change is instantaneous, <<xchange-pilled-subject $righttarget>> is now nothing more than a
+                    <<npc-select-xchange-target $righttarget>>
+                    <<run $currentXchangePillRight.npcEffects.forEach(npcEffect => {
+                        Wikifier.wikifyEval(npcEffect);
+                    })>>
+                    <<xchange-pilled-descriptor $righttarget>>.
+                    <<xchange-pilled-fury $righttarget>>
+                    <<xchange-raul-pill-flavour $righttarget>>
+                    <<unset $currentXchangePillRight>>
+
+                <<elseif !playerIsXChanged() and playerMayBeSpiked()>>
+                    <<set $rightaction to 0>><<set $rightactiondefault to "rest">><<set $rightarm to 0>>
+                    $NPCList[$righttarget].pronouns.he overpowers you, taking the pill away from you and <span class="red">forcing it down your throat</span>.
+                    <<run $currentXchangePillRight.effects.forEach(effect => {
+                        Wikifier.wikifyEval(effect);
+                    })>>
+                    <<unset $currentXchangePillRight>>
+
+                <<else>>
+                    <<set $rightaction to 0>><<set $rightactiondefault to "rest">><<set $rightarm to 0>>
+                    $NPCList[$righttarget].pronouns.he <span class="brat">whacks the pill away from your hand</span>.
+                    <<unset $currentXchangePillRight>>
+
+                <</if>>
+            <</if>>
+        <</if>>
+    <</widget>>
+
+    <<widget "effectsAskNpcXchangePill">>
+        <<if $mouthaction is "ask" and $askAction is "askXchangePill">>
+			<<set $mouthaction to 0>><<set _sound to 1>>
+			<<if $neckuse is "hand" and $oxygen lt $oxygenmax and $asphyxiaLvl gte 2>>
+				<<wheeze "ask <<him>> to let you pill <<him>">>
+			<<else>>
+				<<set $mouthactiondefault to "rest">>
+                <<brat 5 demanding>><<if !$gloryhole and $gamemode isnot "soft">><<seductionskillusecombat>><</if>><<unset $askAction>>
+                You ask <<him>> to let you pill <<him>>.
+
+                <<if $NPCList[$mouthtarget].fullDescription is "Whitney" and npcXchangePillable($mouthtarget)>>
+                    <<set $npcpillingasked to $mouthtarget>><<He_Short>> grins and tips <<his>> head back, <span class="green">mouth open in amused acceptance</span>.
+                    <span class="gold">You may now pill <<him>> without opposition.</span>
+
+                <<elseif $role is "islander" and (!$islander_language or $islander_language lt 100)>>
+                    <span class="red"><<if $enemyno gte 2>>They don't<<else>><<He>> doesn't<</if>> understand your words,</span> and <<if $enemyno gte 2>>ignore<<else>>ignores<</if>> them.
+
+                <<elseif $combatgoal is "strip">>
+                    "<span class="pink">No</span>," <<if $enemyno gte 2>>they laugh<<else>><<he>> laughs<</if>>. <<if !playerIsXChanged()>>"If anything, I should be pilling you."<<else>>"Don't even think about it."<</if>>
+                    
+                <<elseif npcXchangePillable($mouthtarget) and combatSkillCheck("seduction", $mouthtarget, $NPCList[$mouthtarget].fullDescription)>>
+                    <<set $npcpillingasked to $mouthtarget>><span class="green"><<He_Short>> nods in acknowledgement.</span>
+                    <span class="gold">You may now pill <<him>> without opposition.</span>
+
+                <<elseif $enemyanger gte $enemyangermax * (2/5)>>
+                    <<His>> answer arrives within a single breath, "<span class="red">Stupid slut</span>, you think you are in any position to be asking for anything?"
+
+                <<else>> 
+                    <<He>> pauses for a moment to ponder, <span class="red">"No, I don't think I'd want that."</span>
+                
+                <</if>>
+			<</if>>
+		<</if>>
+    <</widget>>
+
+    /* Reaction when the player reveals/brandishes an X-Change pill in combat.
+       Called from init.twee when $xchangePillReveal is set. Mirrors the sextoy-reveal
+       Uses $xchangePillWord (a story var) so the text survives the deferred event pool. */
+    <<widget "npc-reaction-pill">>
+        <<set $xchangePillWord to ($rightarm is "heldXchangePill" and $leftarm is "heldXchangePill" ? "pills" : "pill")>>
+
+        <<if $enemyno gte 2>>
+            <<set $speechPillState to $speechPillState or either("curious", "aroused", "wary", "angry")>>
+            <<cleareventpool>>
+            <<switch $speechPillState>>
+                <<case "curious">>
+                    <<addinlineevent>>They eye the X-Change $xchangePillWord in your hand with open curiosity.<</addinlineevent>>
+                    <<addinlineevent>>They murmur amongst themselves, intrigued by your X-Change $xchangePillWord.<</addinlineevent>>
+                <<case "aroused">>
+                    <<addinlineevent>>They grin at the sight of your X-Change $xchangePillWord, excited by the idea.<<set $enemyarousal += 40>><</addinlineevent>>
+                <<case "wary">>
+                    <<addinlineevent 0.5>>They tense, eyeing your X-Change $xchangePillWord warily.<<set $enemytrust -= 30>><</addinlineevent>>
+                <<default>>
+                    <<addinlineevent 0.5>>They recoil from your X-Change $xchangePillWord. "Keep that away from us!"<<set $enemyanger += 40>><<set $enemytrust -= 30>><</addinlineevent>>
+            <</switch>>
+            <<runeventpool>>
+        <<elseif $NPCList[0] and npcXchangePillable(0) and ["Whitney", "Robin", "Kylar", "Sydney", "Bailey", "Gwylan", "Poppy"].includes($NPCList[0].fullDescription)>>
+            /* Pillable named NPCs voice their own reaction in their speech file. */
+            <<set $speechpillreveal to 1>>
+        <<elseif $NPCList[0] and $NPCNameList.includes($NPCList[0].fullDescription)>>
+            /* Named but not pillable (incl. Whitney when love/dom fails): they want nothing to do with it. */
+            <<cleareventpool>>
+            <<addinlineevent>><<He>> notices the X-Change $xchangePillWord and sneers. "Don't even think about using that on me."<<set $enemyanger += 20>><<set $enemytrust -= 20>><</addinlineevent>>
+            <<runeventpool>>
+        <<else>>
+            <<set $speechPillState to $speechPillState or either("curious", "aroused", "wary", "angry")>>
+            <<cleareventpool>>
+            <<switch $speechPillState>>
+                <<case "curious">>
+                    <<addinlineevent>><<He>> eyes the X-Change $xchangePillWord in your hand with curiosity.<</addinlineevent>>
+                    <<addinlineevent>><<He>> studies your X-Change $xchangePillWord, trying to work out what you intend.<</addinlineevent>>
+                <<case "aroused">>
+                    <<addinlineevent>><<His>> breath quickens at the sight of your X-Change $xchangePillWord, excited by the possibilities.<<set $enemyarousal += 50>><</addinlineevent>>
+                    <<addinlineevent>><<He>> licks <<his>> lips at your X-Change $xchangePillWord. "Now that could be fun."<<set $enemyarousal += 40>><</addinlineevent>>
+                <<case "wary">>
+                    <<addinlineevent 0.5>><<He>> eyes your X-Change $xchangePillWord warily, unsure of your intentions.<<set $enemytrust -= 30>><</addinlineevent>>
+                <<default>>
+                    <<addinlineevent 0.5>><<He>> glares at your X-Change $xchangePillWord. "Keep that away from me."<<set $enemyanger += 40>><<set $enemytrust -= 30>><</addinlineevent>>
+            <</switch>>
+            <<runeventpool>>
+        <</if>>
+    <</widget>>
+
+<!--
+Shared knot reaction. Prints the "locked together" narration plus a personality or situation-flavoured line for the NPC the player is knotted inside.
+_args[0] = hole the knot caught in ("vagina" or "anus").
+_args[1] = NPC index (defaults to the currently selected _n).
+Callers must guard on playerIsXChanged() and $xchange.pill.alphaEffect and $player.penisExist. The widget also requires the encounter knot state, so an NPC orgasm cannot swell the player's knot by itself.
+-->
+<<widget "alphaKnotDialogue">>
+	<!-- Print at most once per render: the speech path (on the player's orgasm) and the ejaculation path (on the NPC's) can both reach here in the same turn. -->
+	<<if $alphaKnotSwollen and not _alphaKnotNarrated>>
+	<<set _alphaKnotNarrated to true>>
+	<<set _akHole to _args[0] is "vagina" ? "vagina" : "anus">>
+	<<set _akIdx to _args[1] isnot undefined ? _args[1] : _n>>
+	<<personselect _akIdx>>
+	<!-- Resolve which reaction bank to use: named NPC, then situational encounter, else generic. -->
+	<<if $NPCList[_akIdx] and setup.NPCNameList.includes($NPCList[_akIdx].fullDescription)>>
+		<<set _knotKey to $NPCList[_akIdx].fullDescription>>
+	<<elseif $NPCList[_akIdx] and $NPCList[_akIdx].type is "plant">>
+		<<set _knotKey to "plant">>
+	<<elseif $position is "wall" and ($walltype is "pillory" or $walltype is "cleanpillory")>>
+		<<set _knotKey to "pillory">>
+	<<elseif $position is "wall">>
+		<<set _knotKey to "wall">>
+	<<elseif $punishmentposition is "gloryhole" or $gloryhole>>
+		<<set _knotKey to "gloryhole">>
+	<<else>>
+		<<set _knotKey to "">>
+	<</if>>
+	<!-- Opening narration. The plant has no pussy/ass to speak of, so it gets its own line. -->
+	<<if _knotKey is "plant">>
+		The plant's fleshy orifice clamps around the knot swollen at the base of your cock, refusing to release you.
+	<<else>>
+		<<He>> tenses as your knot swells and catches <<if _akHole is "vagina">>inside <<his>> pussy<<else>>inside <<his>> ass<</if>>, locking you together.
+	<</if>>
+	<<switch _knotKey>>
+	<<case "Whitney">>
+		<<print [
+			`Whitney's eyes go wide, then <<he>> lets out a breathless laugh. "The hell? What is that... hnng—! Something just got bigger inside me, slut."`,
+			`<<He>> squirms, a grin fighting through the gasp. "You think locking yourself in me puts you in charge? Cute. Ah—!"`,
+			`<<He>> grits <<his>> teeth as it swells. "Nngh—! Fine, stay stuck then. Just means I get to make you regret it up close."`,
+			`<<He>> claws at your back, breathless and grinning all at once. "Did you... hah! Actually knot me? You've got nerve, <<slut>>. I'll make you pay for it slow."`,
+			`<<He>> rocks against the swell, jaw tight. "So this is your game. Lock me down, keep me here. I almost like it. Almost."`
+		][random(0, 4)]>>
+	<<case "Kylar">>
+		<<print [
+			`Kylar gasps and clutches you. "It's swelling inside me! You're locking us together. D-Don't ever pull out. Mark me. I'm yours."`,
+			`<<He>> shudders violently. "I can feel every twitch. This is love, isn't it? You knotted me. Me. Every part of me is yours now."`,
+			`Kylar sobs with joy, grinding down onto the knot. "Breed me, fill me! Don't you dare take it out until every last drop is mine."`,
+			`Kylar's whole body locks around you, tears of joy on <<his>> cheeks. "We're stuck. We're really stuck. This is how it's meant to be! Me and you, joined, no one else ever."`,
+			`<<He>> nuzzles into your neck. "You've claimed me from the inside. I can feel exactly how much of you won't let go. K-Keep me like this forever."`
+		][random(0, 4)]>>
+	<<case "Robin">>
+		<<print [
+			`Robin whimpers. "I-It's getting bigger...! I can't—hnn! It won't come out, will it? P-Please be gentle..."`,
+			`<<He>> gasps, blushing furiously. "Oh gosh, we're—we're stuck together. I-I don't know what to do, just... just hold me until it passes?"`,
+			`Robin buries <<his>> face against you. "It's so much... just don't let go, okay? I-I feel safe if you hold me while we're like this."`,
+			`<<He>> squeaks, then goes quiet and clingy. "W-We have to stay together now? ...That's okay. As long as it's you."`
+		][random(0, 3)]>>
+	<<case "Sydney">>
+		<<print [
+			`Sydney gasps, wide-eyed. "It's swelling, I can't move...? Wh-What is this? God forgive me, why does being trapped like this feel..."`,
+			`<<He>> shivers, torn between panic and something warmer. "We're locked together. This is wrong. This is—hnn! Why can't I want it to stop?"`,
+			`Sydney's breath catches on a broken prayer. "I should push you away, I should—oh, but you're locked so deep in me now, and Heaven help me, I don't want you to leave."`,
+			`<<He>> flushes to the ears, hands fluttering uselessly. "It won't... we're joined, we can't part, I-Is it a sin if neither of us can help it?"`
+		][random(0, 3)]>>
+	<<case "Eden">>
+		<<print [
+			`Eden gives a low growl as the knot catches. "So the prey's got teeth. Locking me down, are you? Bold."`,
+			`<<He>> bares <<his>> teeth in a grin. "Stuck together now, city rat. Good. Neither of us is going anywhere."`,
+			`Eden drags you closer by the hips, feral grin widening. "Trapped your own self in the wolf, cub. Reckon you meant to. Good."`,
+			`<<He>> huffs against your ear, pleased. "Can't run now even if you wanted. That's how I like my company. Settle in."`
+		][random(0, 3)]>>
+	<<case "Alex">>
+		<<print [
+			`Alex gasps softly, then steadies you. "Easy now—Oh! We're locked together, aren't we? It's alright. We'll wait it out, together."`,
+			`<<He>> flushes but smiles gently. "That's... quite something. Don't fret, we're in no hurry. I've got you."`,
+			`<<He>> presses a slow kiss to your temple as <<he>> settles around you. "Nothin' to do now but breathe and stay close. Suits me just fine."`
+		][random(0, 2)]>>
+	<<case "Leighton">>
+		<<print [
+			`<<He>> stiffens, composure cracking. "How... utterly indecent. You've locked us together like a pair of animals. Hnn—! Do not look so pleased with yourself!"`,
+			`Leighton exhales sharply through <<his>> nose. "This is most irregular. I trust you understand I cannot simply excuse myself now."`,
+			`Leighton draws a measured breath, colour high on <<his>> cheeks. "You will not breathe a word of this to a soul. Is that understood? ...And do not stop on my account."`
+		][random(0, 2)]>>
+	<<case "Gwylan">>
+		<<print [
+			`Gwylan lets out a slow breath. "Ah. That's the knot, then. Bold of you. Seems we'll be here a while."`,
+			`<<He>> chuckles, unhurried. "Locked in, are we? No sense struggling. Let it run its course."`,
+			`Gwylan settles back with a low, amused hum. "Well. You've committed us both now. I've weathered longer waits than this..."`
+		][random(0, 2)]>>
+	<<case "Avery">>
+		<<print [
+			`Avery's smile falters. "You've—Hah! Rather literally attached yourself to me. How presumptuous."`,
+			`<<He>> arches a brow, breathing hard. "Locking me in place? That's certainly one way to get your money's worth."`,
+			`Avery exhales through <<his>> nose. "You've made this rather difficult to walk away from. I suppose that was the point."`
+		][random(0, 2)]>>
+	<<case "Morgan">>
+		<<print [
+			`Morgan coos, breathless. "There it is! Ah, <<mummy>> can feel you swelling, keeping yourself right where you belong. Good <<charles>>."`,
+			`<<He>> smiles, dreamy. "Locked to <<mummy>> now. You couldn't leave me if you tried. Isn't that so much better?"`,
+			`Morgan wraps <<his>> legs around you, keeping you buried. "Shh. No squirming. <<Mummy>> wants to feel every second of you locked up tight where you belong."`
+		][random(0, 2)]>>
+	<<case "Zephyr">>
+		<<print [
+			`Zephyr lets out a low whistle even as <<he>> gasps. "Hah—! That's some equipment on you. Locked me up tight. Colour me impressed."`,
+			`<<He>> grins through gritted teeth. "Nngh—not bad, <<lass>>. Guess we're cooling down together whether I like it or not."`,
+			`Zephyr huffs a laugh, chest heaving. "Some finish. Can't tap out of this one... clock runs 'til that knot says so. Call it endurance training."`
+		][random(0, 2)]>>
+	<<case "Harper">>
+		<<print [
+			`Harper's breath hitches, but <<his>> tone stays even. "Fascinating, a knotting response. We appear to be locked. I'll note the duration."`,
+			`<<He>> exhales. "Involuntary retention. Remarkable. Do hold still; I'd like clean data on this."`,
+			`Harper's composure slips. "The locking reflex is stronger than the literature suggests. We'll simply have to remain... thorough until it subsides."`
+		][random(0, 2)]>>
+	<<case "Bailey">>
+		<<print [
+			`Bailey grunts. "The hell's this...?! You've gone and stuck yourself in me. Nngh. That's coming out of what you owe."`,
+			`<<He>> sneers through the gasp. "Locked in, are you? Fine. You weren't leaving 'til I said so anyway."`,
+			`Bailey barks a laugh. "Look at you, chained to me by your own damn cock. Most reliable you've ever been."`
+		][random(0, 2)]>>
+	<<case "gloryhole">>
+		<<print [
+			`A startled voice filters through the partition as your knot seals you into the hole. "The... the hell? It's stuck!"`,
+			`Fingers scrabble at the far side of the wall as your knot swells too thick to pull free. Whoever's back there isn't going anywhere either.`,
+			`The body on the other side jerks, then stills, thoroughly caught on your knot through the glory hole.`
+		][random(0, 2)]>>
+	<<case "wall">>
+		<<print [
+			`Through the wall a muffled voice rises, panicked. "It won't... why won't it come out?!" <<He>> squirms against the partition, thoroughly stuck.`,
+			`<<He>> pounds a fist on the far side of the wall as your knot holds <<him>> fast. "Let me go! What did you do?!"`
+		][random(0, 1)]>>
+	<<case "pillory">>
+		<<print [
+			`<<He>> tries to rise off your cock and can't, the knot holding <<him>> down. "It won't let go! You're the one in the stocks and you've still trapped me!"`,
+			`<<He>> wriggles helplessly, stuck fast on the knot of the very person locked in the pillory. "This is humiliating. For both of us, apparently."`
+		][random(0, 1)]>>
+	<<case "plant">>
+		<<print [
+			`Vines twitch and coil tighter as it throbs slowly around you, in no hurry to let go.`,
+			`The orifice pulses and grips, sealing your cock inside as sap-slick tendrils hold the two of you fast.`
+		][random(0, 1)]>>
+	<<default>>
+		<<if $enemyanger lte 40>>
+			"Careful... I can feel it swelling."
+		<<elseif $enemyanger lte 100>>
+			"You're stuck inside me!"
+		<<else>>
+			"Don't think that means you get to stay there."
+		<</if>>
+	<</switch>>
+	<!-- NPCs that support a lust stat gain 3 lust from being knotted. Situational/unnamed targets aren't whitelisted, so they're skipped. -->
+	<<if _knotKey and setup.lustWhitelist.includes(_knotKey)>>
+		<<npcincr _knotKey lust 3>>
+	<</if>>
+	<</if>>
+<</widget>>

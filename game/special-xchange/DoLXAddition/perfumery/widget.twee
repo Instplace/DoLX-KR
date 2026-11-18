@@ -1,0 +1,164 @@
+:: Perfumery Widgets [widget]
+<<widget "perfumeryJournal">>
+	<<run setup.perfumery.state()>>
+	<div id="perfumeryJournalContent"><<perfumeryJournalContent>></div>
+<</widget>>
+<<widget "perfumeryJournalContent">>
+	<ul class="journal">
+		<li><<perfumeryicon>> Perfumery skill <span class="green"><<print $perfumery.skill>></span>/100. Lessons completed: <span class="green"><<print $perfumery.lesson>></span>/4.</li>
+		<li><<perfumeryicon "bottle">> <span class="green"><<print $perfumery.containers>></span> empty <<pluralise $perfumery.containers "bottle">>. Liquids for mixing perfume: soft <span class="green"><<print $perfumery.solvent.soft>></span>, clear <span class="green"><<print $perfumery.solvent.clear>></span>, bright <span class="green"><<print $perfumery.solvent.bright>></span>.</li>
+		<<if $perfumery.session and $perfumery.session.stage isnot "concluded">><li><<icon "tending/white-rose.png">> You still need to talk to Poppy about your perfume experiment.</li><</if>>
+		<<if !$perfumery.bottles.length and !$perfumery.journal.length>><li><<perfumeryicon "manual">> You haven't written any perfume formulas in your notebook yet.</li><</if>>
+	</ul>
+	<<if $perfumery.bottles.length>>
+		<details class="journal"><summary class="journal">Bottles</summary>
+			<ul class="journal">
+			<<for _b range $perfumery.bottles>>
+				<li><<perfumeryIcon _b>><<print Util.escapeMarkup(_b.name)>> (<<print _b.uses>> applications). <<print Util.escape(setup.perfumery.notes(_b.formula))>>
+				<<if setup.perfumery.ready(_b)>>
+					Ready to wear.
+					<<if _b.uses gt 0 and setup.perfumery.enabled()>>
+						<<capture _b>><<link "Wear">><<run setup.perfumery.apply(_b.id)>><<replace "#perfumeryJournalContent">><<perfumeryJournalContent>><</replace>><</link>><</capture>>
+					<</if>>
+				<<else>>Maturing for <<print Math.ceil((_b.made + _b.formula.age * 86400 - $timeStamp) / 3600)>> more hours.<</if>>
+				</li>
+			<</for>>
+			</ul>
+		</details>
+	<</if>>
+	<<if $perfumery.journal.length>>
+		<details class="journal"><summary class="journal">Formulas</summary>
+			<ul class="journal">
+			<<for _entry range $perfumery.journal>>
+				<li><<perfumeryIcon _entry>><<print Util.escapeMarkup(_entry.name)>>. <<print Util.escape(setup.perfumery.notes(_entry.formula))>>
+				<<print _entry.formula.concentration>>% concentrate, <<print _entry.formula.solvent>> spirit, <<print _entry.formula.age>> days maturing. Previous results: <<print _entry.results.join(", ")>>.</li>
+			<</for>>
+			</ul>
+		</details>
+	<</if>>
+	<<if $perfumery.characters?.memories.length>>
+		<details class="journal"><summary class="journal">Fragrance memories</summary>
+			<ul class="journal">
+			<<for _who range Object.keys($perfumery.characters.known)>>
+				<<set _whoText to setup.perfumeryCharacters.knownText(_who)>>
+				<<if _whoText>><li><<print Util.escape(_whoText)>></li><</if>>
+			<</for>>
+			<<for _m range $perfumery.characters.memories.slice(-10).reverse()>>
+				<li><<print Util.escapeMarkup(setup.perfumeryCharacters.memoryText(_m))>> <span class="grey">(<<print Util.escapeMarkup(_m.name)>>)</span></li>
+			<</for>>
+			</ul>
+		</details>
+	<</if>>
+	<<if $perfumery.extraction and ($perfumery.extraction.profiles.length or Object.keys($perfumery.extraction.stock).length)>>
+		<details class="journal"><summary class="journal">Extracts</summary>
+			<ul class="journal">
+			<li>Extraction practice: <span class="green"><<print $perfumery.extraction.practice>></span>/100.</li>
+			<<for _key, _amount range $perfumery.extraction.stock>>
+				<li><<print Util.escape(setup.perfumeryModel.name(_key))>>: <span class="green"><<print _amount>></span> measures.</li>
+			<</for>>
+			<<for _profile range $perfumery.extraction.profiles>>
+				<<set _aroma to setup.perfumeryExtraction.profile(_profile.key)>>
+				<li><<print Util.escapeMarkup(_profile.name)>>: tested <<print _profile.runs>> times<<if _profile.runs gte 2>>. You can now collect this scent more quickly<</if>>. <<print Util.escape(_aroma.selected.join(", "))>>.</li>
+			<</for>>
+			</ul>
+		</details>
+	<</if>>
+<</widget>>
+<<widget "perfumeryicon">>
+	<<icon `"perfumery/perfume" + (_args[0] ? "-" + _args[0] : "") + ".png"`>>
+<</widget>>
+/* _args: buy() kind, label, price in pence, spirit type */
+<<widget "perfumeryShopItem">>
+	<<set _icon to _args[0] is "solvent" ? "spirit-" + _args[3] : {manual: "manual", equipment: "case", container: "bottle"}[_args[0]]>>
+	<<set _price to setup.inflation ? setup.inflation.price(_args[2]) : _args[2]>>
+	<<perfumeryicon _icon>>
+	<<if $money gte _price>>
+		<<capture _args>><<link `_args[1] + " (" + formatMoney(_price) + ")"` $passage>><<run setup.perfumery.buy(_args[0], _args[3])>><</link>><</capture>>
+	<<else>>
+		<span class="grey"><<print _args[1]>> (<<printprice _args[2]>>). You can't afford it.</span>
+	<</if>>
+	<br>
+<</widget>>
+<<widget "perfumeryInvitation">>
+	<<if setup.perfumery.canInvite() and !$perfumery?.invited>>
+		<<capture _args>><<socialiseicon "ask">><<link [[Ask about Poppy's fragrance|Poppy Perfumery Invitation]]>><<set $perfumeryVenue to _args[0]>><</link>><br><</capture>>
+	<</if>>
+<</widget>>
+
+/* Avery's perfume scene takes over the date like an interrupting event. Its steps run in
+   Perfumery Avery Scene, and the end shows _args[1], an include-only passage holding the host's own
+   next options, so the date carries on without re-entering a passage that passes time. */
+<<widget "perfumeryAvery">>
+	<<set _av to setup.perfumeryCharacters.averyScene(_args[0])>>
+	<<if _av and !_av.shown>>
+		<<set $perfumeryAveryScene to Object.assign(clone(_av), { cont: _args[1] })>>
+		<<set _av to $perfumeryAveryScene>>
+		<<if _av.mode is "notice">><<set _pm to _av.r>><<set _pmPassage to "Perfumery Avery">><</if>>
+		<<include "Perfumery Avery">>
+		<<exitAll>>
+	<</if>>
+<</widget>>
+<<widget "perfumeryAveryLater">>
+	<<set _avLater to setup.perfumeryCharacters.averyLater(_args[0])>>
+	<<if _avLater>>
+		<<if _args[1]>><br><br><</if>>
+		<<set _avNow to _args[0] is "hotel" ? "As you take your seat at the balcony table" : "When the food arrives">>
+		<<set _avThen to _args[0] is "hotel" ? "when I came in" : "when we sat down">>
+		<<if _avLater.worse>>
+			<<print _avNow>>, Avery looks at your wrist for a moment before <<nnpc_he "Avery">> speaks. "That perfume smelled better <<print _avThen>>. I expected it to last longer."
+		<<elseif _avLater.better>>
+			<<print _avNow>>, Avery leans closer to you. "Your perfume smells much better now," <<nnpc_he "Avery">> says with a small smile. "I wasn't impressed <<print _avThen>>."
+		<<else>>
+			<<print _avNow>>, you notice that your perfume smells different from before. Avery glances at your wrist, but <<nnpc_he "Avery">> says nothing about it.
+		<</if>>
+		<br><br>
+	<</if>>
+<</widget>>
+<<widget "perfumeryAveryPhase">>
+	<<print String(_args[0] ?? "").replace(/^[^:]+: /, "")>>
+<</widget>>
+
+/* One fragrance moment per passage. notice() is read-only.
+   A remark prints in place. A moment that asks something takes over the scene: <<exitAll>> stops the host,
+   the choice links go to Perfumery Moment Reply, and its Next returns to the host, where notice() is
+   now spent for the day so the scene plays normally. Call it before the host's own stat changes. */
+<<widget "perfumeryMoment">>
+	<<set _pm to setup.perfumeryCharacters.notice(_args[0], _args[1], _args[2] ?? 40)>>
+	<<if _pm>>
+		<<set _pmPassage to "Perfumery Moment " + _args[0]>>
+		<<if setup.perfumeryCharacters.asks(_pm)>>
+			<<set $perfumeryMoment to { id: _args[0], back: passage() }>>
+			<<include _pmPassage>>
+			<<exitAll>>
+		<<else>>
+			<<include _pmPassage>>
+		<</if>>
+	<</if>>
+<</widget>>
+<<widget "perfumeryNotice">>
+	<<set _pm.outcome to setup.perfumeryCharacters.commit(_pm.id, _pm.ctx, "notice", _args[0] ?? {})>>
+<</widget>>
+<<widget "perfumeryLoveIcon">>
+	<<if _pm.outcome?.love gt 0>><<glove>><<elseif _pm.outcome?.love lt 0>><<llove>><</if>>
+<</widget>>
+
+/* Each scene passage shows its opening when _pe.choice is unset, and the reply once a choice link has run. */
+<<widget "perfumeryStreetEncounter">>
+	<<set _pe to setup.perfumeryEncounters.begin("street")>>
+	<<if _pe>>
+		<<include `"Perfumery Street " + _pe.id`>>
+	<<else>>
+		<<destinationeventend>>
+	<</if>>
+<</widget>>
+<<widget "perfumeryHallwayEncounter">>
+	<<set _pe to setup.perfumeryEncounters.begin("hallway")>>
+	<<if _pe>>
+		<<include `"Perfumery Hallway " + _pe.id`>>
+	<<else>>
+		<<link [[Next|Hallways]]>><<set $eventskip to 1>><</link>>
+	<</if>>
+<</widget>>
+<<widget "perfumeryWord">>
+	<<print setup.perfumeryEncounters.word(_args[0])>>
+<</widget>>

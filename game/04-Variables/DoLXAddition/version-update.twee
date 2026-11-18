@@ -1,0 +1,2165 @@
+:: X-Change Compat Helpers [script]
+/* Compatibility helper: some older TwineScript used `defined(x)` in if conditions.
+   SugarCube doesn't provide it by default. */
+if (typeof window.defined !== "function") { window.defined = function (v) { return v !== undefined && v !== null; }; }
+
+:: Widgets X-Change Variable Updates [widget]
+<<widget "xchange-init">>
+	<<if $monthly is undefined>><<set $monthly to { }>><</if>>
+	<<if $xchange is undefined or $xchange is null or typeof $xchange isnot "object" or Array.isArray($xchange)>>
+		<<set $xchange to {
+			nonconEnabled: 1,
+			pillPermanence: 0,
+			continueDurationCapEnabled: true,
+			disregardGender: 0,
+			genderIdentityEnabled: true,
+			impuritySensitivityBonus: 1,
+			pillSensitivityChange: 1,
+			postPermanenceFertilityReset: 1,
+			grayPillGenderflip: 0,
+			omegaShrinkGenitals: 0,
+			omegaNeedsNoVagina: 0,
+			alphaGrowsPenis: 0,
+			aboDrivesHeat: 1,
+			pheromoneAllure: 1,
+			npcPillChangesGender: 1,
+			chastityKeepBeltShape: 1,
+			willpowerPoints: Math.max(200, $willpower || 0),
+			breastsize: $player.breastsize,
+			bottomsize: $player.bottomsize,
+			penissize: $player.penissize,
+			known: [],
+		}>>
+	<</if>>
+	/* Standalone guards: the block above only runs for brand-new games.
+	   Old saves that already have $xchange but are missing newer fields need these. */
+	<<if $xchange.nonconEnabled is undefined>><<set $xchange.nonconEnabled to 1>><</if>>
+	<<if $xchange.pillPermanence is undefined>><<set $xchange.pillPermanence to 0>><</if>>
+	<<if $xchange.continueDurationCapEnabled is undefined>><<set $xchange.continueDurationCapEnabled to true>><</if>>
+	<<if $xchange.disregardGender is undefined>><<set $xchange.disregardGender to 0>><</if>>
+	<<if $xchange.genderIdentityEnabled is undefined>><<set $xchange.genderIdentityEnabled to true>><</if>>
+	<<if $xchange.impuritySensitivityBonus is undefined>><<set $xchange.impuritySensitivityBonus to 1>><</if>>
+	<<if $xchange.pillSensitivityChange is undefined>><<set $xchange.pillSensitivityChange to 1>><</if>>
+	<<if $xchange.postPermanenceFertilityReset is undefined>><<set $xchange.postPermanenceFertilityReset to 1>><</if>>
+	<<if $xchange.grayPillGenderflip is undefined>><<set $xchange.grayPillGenderflip to 0>><</if>>
+	<<if $xchange.omegaShrinkGenitals is undefined>><<set $xchange.omegaShrinkGenitals to 0>><</if>>
+	/* Alpha/Beta/Omega pill behaviour */
+	<<if $xchange.omegaNeedsNoVagina is undefined>><<set $xchange.omegaNeedsNoVagina to 0>><</if>>
+	<<if $xchange.alphaGrowsPenis is undefined>><<set $xchange.alphaGrowsPenis to 0>><</if>>
+	<<if $xchange.aboDrivesHeat is undefined>><<set $xchange.aboDrivesHeat to 1>><</if>>
+	<<if $xchange.pheromoneAllure is undefined>><<set $xchange.pheromoneAllure to 1>><</if>>
+	<<if $xchange.bodyAdjustmentEnabled is undefined>><<set $xchange.bodyAdjustmentEnabled to 0>><</if>>
+	<<if $xchange.npcPillChangesGender is undefined>><<set $xchange.npcPillChangesGender to 1>><</if>>
+	<<if $xchange.chastityKeepBeltShape is undefined>><<set $xchange.chastityKeepBeltShape to 1>><</if>>
+	<<if $xchange.willpowerPoints is undefined or $xchange.willpowerPoints is null or isNaN($xchange.willpowerPoints)>><<set $xchange.willpowerPoints to Math.max(200, $willpower || 0)>><</if>>
+	<<if $xchange.breastsize is undefined>><<set $xchange.breastsize to $player.breastsize>><</if>>
+	<<if $xchange.bottomsize is undefined>><<set $xchange.bottomsize to $player.bottomsize>><</if>>
+	<<if $xchange.penissize is undefined>><<set $xchange.penissize to $player.penissize>><</if>>
+	<<if $xchange.known is undefined>><<set $xchange.known to []>><</if>>
+	/* optional: if an old save made it the wrong type */
+	<<if $xchange.known isnot undefined and !Array.isArray($xchange.known)>><<set $xchange.known to []>><</if>>
+	/* Underground Colosseum */
+	<<if $xchange.colosseum is undefined or $xchange.colosseum is null or typeof $xchange.colosseum isnot "object" or Array.isArray($xchange.colosseum)>>
+		<<set $xchange.colosseum to {heat: 0, injury: 0, injuryDays: 0, debt: 0, quits: 0, watcherSeen: 0, watcherAsk: 0, hostPronoun: "", briarWatch: 0, briarReported: 0, baileyKnows: 0, baileyTitleUsed: 0, debtDeferred: 0, heard: 0, keyKnown: 0, joined: 0, route: "", story: 0, storyDay: 0, contacts: 0, ending: "", banUntil: 0, rank: 0, rankPoints: 0, promotionReady: 0, wins: 0, losses: 0, protects: 0, fixes: 0, dirtyFights: 0, lastOpponentRank: -1, opponentStreak: 0, visitEvents: 0, backDowns: 0, nurseKnows: 0, hunt: 0, huntUntil: 0, huntWins: 0, callbacks: {protect: 0, fix: 0}, rivals: {rookie: 0, veteran: 0}}>>
+	<</if>>
+	<<if !Number.isFinite($xchange.colosseum.heard)>><<set $xchange.colosseum.heard to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.keyKnown)>><<set $xchange.colosseum.keyKnown to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.joined)>><<set $xchange.colosseum.joined to 0>><</if>>
+	<<if !["", "landry", "briar", "bailey"].includes($xchange.colosseum.route)>><<set $xchange.colosseum.route to $xchange.colosseum.keyKnown ? "landry" : "">><</if>>
+	<<if !Number.isFinite($xchange.colosseum.story)>><<set $xchange.colosseum.story to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.storyDay)>><<set $xchange.colosseum.storyDay to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.contacts)>><<set $xchange.colosseum.contacts to 0>><</if>>
+	<<if typeof $xchange.colosseum.ending isnot "string">><<set $xchange.colosseum.ending to "">><</if>>
+	<<if !Number.isFinite($xchange.colosseum.banUntil)>><<set $xchange.colosseum.banUntil to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.nurseKnows)>><<set $xchange.colosseum.nurseKnows to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.hunt)>><<set $xchange.colosseum.hunt to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.huntUntil)>><<set $xchange.colosseum.huntUntil to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.huntWins)>><<set $xchange.colosseum.huntWins to 0>><</if>>
+	<<set $xchange.colosseum.hunt to Math.clamp(Math.trunc($xchange.colosseum.hunt), 0, 3)>>
+	<<set $xchange.colosseum.huntUntil to Math.max(0, Math.trunc($xchange.colosseum.huntUntil))>>
+	<<set $xchange.colosseum.huntWins to Math.clamp(Math.trunc($xchange.colosseum.huntWins), 0, 3)>>
+	<<if $xchange.colosseum.banUntil gt Time.date.timeStamp + 259200>>
+		<<set $xchange.colosseum.banUntil -= $xchange.colosseum.banUntil gt Time.date.timeStamp + 172800000 ? (259200000 - 259200) : (172800000 - 172800)>>
+	<</if>>
+	<<if !Number.isFinite($xchange.colosseum.rankPoints)>><<set $xchange.colosseum.rankPoints to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.rank)>><<set $xchange.colosseum.rank to $xchange.colosseum.rankPoints gte 900 ? 6 : $xchange.colosseum.rankPoints gte 725 ? 5 : $xchange.colosseum.rankPoints gte 550 ? 4 : $xchange.colosseum.rankPoints gte 375 ? 3 : $xchange.colosseum.rankPoints gte 225 ? 2 : $xchange.colosseum.rankPoints gte 100 ? 1 : 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.promotionReady)>><<set $xchange.colosseum.promotionReady to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.wins)>><<set $xchange.colosseum.wins to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.losses)>><<set $xchange.colosseum.losses to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.protects)>><<set $xchange.colosseum.protects to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.fixes)>><<set $xchange.colosseum.fixes to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.dirtyFights)>><<set $xchange.colosseum.dirtyFights to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.lastOpponentRank)>><<set $xchange.colosseum.lastOpponentRank to -1>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.opponentStreak)>><<set $xchange.colosseum.opponentStreak to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.visitEvents)>><<set $xchange.colosseum.visitEvents to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.backDowns)>><<set $xchange.colosseum.backDowns to 0>><</if>>
+	<<if $xchange.colosseum.callbacks is undefined or $xchange.colosseum.callbacks is null or typeof $xchange.colosseum.callbacks isnot "object" or Array.isArray($xchange.colosseum.callbacks)>><<set $xchange.colosseum.callbacks to {protect: 0, fix: 0}>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.callbacks.protect)>><<set $xchange.colosseum.callbacks.protect to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.callbacks.fix)>><<set $xchange.colosseum.callbacks.fix to 0>><</if>>
+	<<if $xchange.colosseum.rivals is undefined or $xchange.colosseum.rivals is null or typeof $xchange.colosseum.rivals isnot "object" or Array.isArray($xchange.colosseum.rivals)>><<set $xchange.colosseum.rivals to {rookie: 0, veteran: 0}>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.rivals.rookie)>><<set $xchange.colosseum.rivals.rookie to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.rivals.veteran)>><<set $xchange.colosseum.rivals.veteran to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.heat)>><<set $xchange.colosseum.heat to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.injury)>><<set $xchange.colosseum.injury to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.injuryDays)>><<set $xchange.colosseum.injuryDays to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.debt)>><<set $xchange.colosseum.debt to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.quits)>><<set $xchange.colosseum.quits to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.betrayAmbush)>><<run delete $xchange.colosseum.betrayAmbush>><</if>>
+	<<run delete $xchange.colosseum.showerCold>>
+	<<if $xchange.colosseum.cardBet and (typeof $xchange.colosseum.cardBet isnot "object" or Array.isArray($xchange.colosseum.cardBet) or !Number.isFinite($xchange.colosseum.cardBet.stake) or !Number.isFinite($xchange.colosseum.cardBet.odds))>>
+		<<run delete $xchange.colosseum.cardBet>>
+	<</if>>
+	<<if $xchange.colosseum.records isnot undefined>>
+		<<if typeof $xchange.colosseum.records isnot "object" or $xchange.colosseum.records is null or Array.isArray($xchange.colosseum.records) or !Number.isFinite($xchange.colosseum.records.count) or !Number.isFinite($xchange.colosseum.records.nextAt)>>
+			<<run delete $xchange.colosseum.records>>
+		<<else>>
+			<<set $xchange.colosseum.records.count to Math.clamp(Math.trunc($xchange.colosseum.records.count), 0, 9)>>
+			<<set $xchange.colosseum.records.nextAt to Math.max(0, Math.trunc($xchange.colosseum.records.nextAt))>>
+		<</if>>
+	<</if>>
+	<<if !Number.isFinite($xchange.colosseum.drugUntil)>><<run delete $xchange.colosseum.drugCrashed>><</if>>
+	<<if $xchange.colosseum.matchFix isnot undefined and !["throw", "betray", "refused"].includes($xchange.colosseum.matchFix)>>
+		<<run delete $xchange.colosseum.matchFix>>
+	<</if>>
+	<<if $xchange.colosseum.vipPenalty isnot undefined>>
+		<<if !Number.isFinite($xchange.colosseum.vipPenalty) or $xchange.colosseum.vipPenalty lte 0 or $xchange.colosseum.vipPenalty gte 1>>
+			<<run delete $xchange.colosseum.vipPenalty>>
+		<</if>>
+	<</if>>
+	<<if !Number.isFinite($xchange.colosseum.watcherSeen)>><<set $xchange.colosseum.watcherSeen to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.watcherAsk)>><<set $xchange.colosseum.watcherAsk to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.wager) or $xchange.colosseum.wager lte 0>><<run delete $xchange.colosseum.wager>><</if>>
+	<<if !["m", "f"].includes($xchange.colosseum.hostPronoun)>><<set $xchange.colosseum.hostPronoun to "">><</if>>
+	<<if !Number.isFinite($xchange.colosseum.briarWatch)>><<set $xchange.colosseum.briarWatch to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.baileyKnows)>><<set $xchange.colosseum.baileyKnows to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.baileyTitleUsed)>><<set $xchange.colosseum.baileyTitleUsed to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.briarReported)>><<set $xchange.colosseum.briarReported to 0>><</if>>
+	<<if !Number.isFinite($xchange.colosseum.debtDeferred)>><<set $xchange.colosseum.debtDeferred to 0>><</if>>
+	<<if $xchange.colosseum.injuryDays lte 0>><<set $xchange.colosseum.injury to 0>><<set $xchange.colosseum.injuryDays to 0>><</if>>
+	<<if !["", "champion", "inside", "disrupted", "walked"].includes($xchange.colosseum.ending)>><<set $xchange.colosseum.ending to "">><</if>>
+	<<set $xchange.colosseum.rank to Math.clamp(Math.trunc($xchange.colosseum.rank), 0, 6)>><<set $xchange.colosseum.rankPoints to Math.clamp(Math.trunc($xchange.colosseum.rankPoints), 0, 1000)>><<set $xchange.colosseum.story to Math.clamp(Math.trunc($xchange.colosseum.story), 0, 6)>><<set $xchange.colosseum.storyDay to Math.max(0, Math.trunc($xchange.colosseum.storyDay))>><<set $xchange.colosseum.contacts to Math.clamp(Math.trunc($xchange.colosseum.contacts), 0, 31)>><<set $xchange.colosseum.banUntil to Math.max(0, $xchange.colosseum.banUntil)>><<set $xchange.colosseum.protects to Math.max(0, Math.trunc($xchange.colosseum.protects))>><<set $xchange.colosseum.fixes to Math.max(0, Math.trunc($xchange.colosseum.fixes))>><<set $xchange.colosseum.dirtyFights to Math.max(0, Math.trunc($xchange.colosseum.dirtyFights))>><<set $xchange.colosseum.visitEvents to Math.clamp(Math.trunc($xchange.colosseum.visitEvents), 0, 2)>><<set $xchange.colosseum.backDowns to Math.clamp(Math.trunc($xchange.colosseum.backDowns), 0, 99)>><<set $xchange.colosseum.callbacks.protect to Math.max(0, Math.trunc($xchange.colosseum.callbacks.protect))>><<set $xchange.colosseum.callbacks.fix to Math.max(0, Math.trunc($xchange.colosseum.callbacks.fix))>><<set $xchange.colosseum.rivals.rookie to Math.clamp(Math.trunc($xchange.colosseum.rivals.rookie), 0, 4)>><<set $xchange.colosseum.rivals.veteran to Math.clamp(Math.trunc($xchange.colosseum.rivals.veteran), 0, 3)>><<set $xchange.colosseum.heat to Math.clamp(Math.trunc($xchange.colosseum.heat), 0, 100)>><<set $xchange.colosseum.injury to Math.clamp(Math.trunc($xchange.colosseum.injury), 0, 3)>><<set $xchange.colosseum.injuryDays to Math.clamp(Math.trunc($xchange.colosseum.injuryDays), 0, 14)>><<set $xchange.colosseum.debt to Math.max(0, Math.trunc($xchange.colosseum.debt))>><<set $xchange.colosseum.quits to Math.max(0, Math.trunc($xchange.colosseum.quits))>><<set $xchange.colosseum.watcherSeen to Math.clamp(Math.trunc($xchange.colosseum.watcherSeen), 0, 3)>>
+
+	/* Anti X-Change therapy (Harper hospital treatment that keeps the player "clean" from involuntary pilling).
+	   questStage: 0 not asked, 1 asked & refused (waiting for Harper), 2 Harper found PC (explanation pending), 3 unlocked & purchasable.
+	   active/countdown/duration track the current clean period, measured in hours like $xchange.pill. */
+	<<if $xchange.therapy is undefined or $xchange.therapy is null or typeof $xchange.therapy isnot "object" or Array.isArray($xchange.therapy)>>
+		<<set $xchange.therapy to {
+			questStage: 0,
+			refusedDay: null,
+			active: false,
+			countdown: 0,
+			duration: 0,
+		}>>
+	<</if>>
+	<<if $xchange.therapy.questStage is undefined>><<set $xchange.therapy.questStage to 0>><</if>>
+	<<if $xchange.therapy.refusedDay is undefined>><<set $xchange.therapy.refusedDay to null>><</if>>
+	<<if $xchange.therapy.active is undefined>><<set $xchange.therapy.active to false>><</if>>
+	<<if $xchange.therapy.countdown is undefined>><<set $xchange.therapy.countdown to 0>><</if>>
+	<<if $xchange.therapy.duration is undefined>><<set $xchange.therapy.duration to 0>><</if>>
+
+	<<if $xchange._didSpikepoolKeyFix2 is not true>>
+		<<if $xchange._didSpikepoolKeyFix isnot undefined>><<unset $xchange._didSpikepoolKeyFix>><</if>>
+		<<set $xchange._didSpikepoolKeyFix2 to true>> /* delete later */
+		/* Consolidate all dumb-bitch toggle variants into canonical $xchange.spikepool.dumbbitch, then drop the legacy keys so settings and the spike pool read one source of truth. */
+		<<if $xchange.spikepool isnot undefined>>
+			<<set _dbDisabled to $xchange.spikepool.dumbbitch is 0 or $xchange.spikepool.dumbbitch is false
+				or $xchange.spikepool["dumb-bitch"] is 0 or $xchange.spikepool["dumb-bitch"] is false
+				or $xchange.spikepool.dumbBitch is 0 or $xchange.spikepool.dumbBitch is false>>
+			<<set $xchange.spikepool.dumbbitch to _dbDisabled ? 0 : 1>>
+			<<run delete $xchange.spikepool["dumb-bitch"]>>
+			<<run delete $xchange.spikepool.dumbBitch>>
+		<</if>>
+	<</if>>
+
+	<<if $xchange.pill is undefined or $xchange.pill is null or typeof $xchange.pill isnot "object" or Array.isArray($xchange.pill)>>
+		<<set $xchange.pill to {
+			active: false,
+			duration: 0,
+			testPending: false,
+			effectsKnown: false,
+			durationDetailRoll: 0,
+			genderflipEffect: false,
+			genderificationEffect: false,
+			innocenceEffect: false,
+			innocenceWasNatural: false,
+			feartoxinEffect: false,
+			cumcureEffect: false,
+			breederEffect: false,
+			omegaEffect: false,
+			alphaEffect: false,
+			alphaGrewPenis: false,
+			betaEffect: false,
+			swellEffect: false,
+			bimboEffect: false,
+			hyperFertilityEffect: false,
+			continueEffect: false,
+			resistanceEffect: false,
+			resistanceChance: 100,
+			originalBody: {},
+			changedBody: {},
+			hermBody: {},
+			clone: "none",
+			clonedBody: {},
+		}>>
+	<</if>>
+	<<if $xchange.spikerates is undefined>>
+		<<set $xchange.spikerates to {
+			genderflip: 10,
+			crossdress: 7,
+			herm: 4,
+			breeder: 2,
+			bull: 2,
+			continue: 3,
+			resistance: 3,
+			portal: 2,
+			fertile: 2,
+			passion: 1,
+			"dumb-bitch": 1,
+			innocence: 1,
+			feartoxin: 1,
+			fertility: 4,
+			omega: 2,
+			alpha: 2,
+			beta: 2,
+		}>>
+	<</if>>
+
+	/* Backfill for old saves that predate the effect. */
+	<<if $xchange.pill isnot undefined and $xchange.pill.hyperFertilityEffect is undefined>><<set $xchange.pill.hyperFertilityEffect to false>><</if>>
+	<<if $xchange.pill isnot undefined and $xchange.pill.omegaEffect is undefined>><<set $xchange.pill.omegaEffect to false>><</if>>
+	<<if $xchange.pill isnot undefined and $xchange.pill.alphaEffect is undefined>><<set $xchange.pill.alphaEffect to false>><</if>>
+	<<if $xchange.pill isnot undefined and $xchange.pill.alphaGrewPenis is undefined>><<set $xchange.pill.alphaGrewPenis to false>><</if>>
+	<<if $xchange.pill isnot undefined and $xchange.pill.betaEffect is undefined>><<set $xchange.pill.betaEffect to false>><</if>>
+	<<if $xchange.pill isnot undefined and $xchange.pill.innocenceWasNatural is undefined>><<set $xchange.pill.innocenceWasNatural to $xchange.pill.innocenceEffect is true and $innocencestate is 1 and typeof $innocenceawareness isnot "number">><</if>>
+	<<if $xchange.spikerates isnot undefined and $xchange.spikerates.fertility is undefined>><<set $xchange.spikerates.fertility to 4>><</if>>
+	<<if $xchange.spikerates isnot undefined and $xchange.spikerates.omega is undefined>><<set $xchange.spikerates.omega to 2>><</if>>
+	<<if $xchange.spikerates isnot undefined and $xchange.spikerates.alpha is undefined>><<set $xchange.spikerates.alpha to 2>><</if>>
+	<<if $xchange.spikerates isnot undefined and $xchange.spikerates.beta is undefined>><<set $xchange.spikerates.beta to 2>><</if>>
+	<<if $xchange.pill isnot undefined and $xchange.pill.feartoxinEffect is undefined>><<set $xchange.pill.feartoxinEffect to false>><</if>>
+	<<if $xchange.spikerates isnot undefined and $xchange.spikerates.feartoxin is undefined>><<set $xchange.spikerates.feartoxin to 1>><</if>>
+	/* Fix older saves where random Bimbo could be applied without Swell. Runs once so Swell can still be removed normally later. */
+	<<if $xchange.bimboSwellRepaired is undefined>>
+		<<set $xchange.bimboSwellRepaired to true>>
+		<<if $xchange.pill.active and $xchange.pill.bimboEffect and !$xchange.pill.swellEffect>>
+			<<xchange-addeffect "swell">>
+			<<run setup.xChangeRepairNoticeOnce("repair_xchange_bimbo_swell", "<b>Save repair notice</b><br>Your active <b>Bimbo</b> effect was missing its built-in Swell effect. X-Change has applied it and restored the intended body changes.")>>
+		<</if>>
+	<</if>>
+	
+	/* GI system defaults */
+	<<if $genderidentity is undefined>>
+		<<set _giInitRange to ($xchange.giRange is undefined ? 1500 : $xchange.giRange)>>
+		<<if typeof mapToLegacyGenderIdentity is "function" and $player isnot undefined>>
+			<<run mapToLegacyGenderIdentity()>>
+			<<set $genderidentity to ($xchange.giTarget is undefined ? ($player.gender is "f" ? _giInitRange : $player.gender is "n" ? _giInitRange / 2 : 0) : $xchange.giTarget)>>
+		<<else>>
+			<<set $genderidentity to ($player.gender is "f" ? _giInitRange : $player.gender is "n" ? _giInitRange / 2 : 0)>>
+		<</if>>
+		<<set $genderidentitymax to _giInitRange>>
+	<</if>>
+	<<if $xchange.giAutoEnabled is undefined>><<set $xchange.giAutoEnabled to false>><</if>>
+	<<if $xchange.euphoriaAcclimationEnabled is undefined>><<set $xchange.euphoriaAcclimationEnabled to true>><</if>>
+	<<if $xchange.audienceDysphoriaEnabled is undefined>><<set $xchange.audienceDysphoriaEnabled to true>><</if>>
+	<<if $xchange.giTransformEnabled is undefined>><<set $xchange.giTransformEnabled to false>><</if>>
+	<<if $xchange.giTransformThreshold is undefined>><<set $xchange.giTransformThreshold to 120>><</if>>
+	<<if $xchange.giStepPerDay is undefined>><<set $xchange.giStepPerDay to 30>><</if>>
+
+	/* For Gender Identity Setting (Dysphoria) */
+	<<if $xchange.giBreastSizeEnabled is undefined>><<set $xchange.giBreastSizeEnabled to false>><</if>>
+	<<if $xchange.giAssSizeEnabled is undefined>><<set $xchange.giAssSizeEnabled to false>><</if>>
+	<<if $xchange.giGenitalsEnabled is undefined>><<set $xchange.giGenitalsEnabled to false>><</if>>
+	<<if $xchange.giHairLengthEnabled is undefined>><<set $xchange.giHairLengthEnabled to false>><</if>>
+	<<if $xchange.giBodySizeEnabled is undefined>><<set $xchange.giBodySizeEnabled to false>><</if>>
+	<<if $xchange.giFecundityEnabled is undefined>><<set $xchange.giFecundityEnabled to false>><</if>>
+	<<if $xchange.giBreastSizeConfigured is undefined>><<set $xchange.giBreastSizeConfigured to false>><</if>>
+	<<if $xchange.giAssSizeConfigured is undefined>><<set $xchange.giAssSizeConfigured to false>><</if>>
+	<<if $xchange.giGenitalsConfigured is undefined>><<set $xchange.giGenitalsConfigured to false>><</if>>
+	<<if $xchange.giHairLengthConfigured is undefined>><<set $xchange.giHairLengthConfigured to false>><</if>>
+	<<if $xchange.giBodySizeConfigured is undefined>><<set $xchange.giBodySizeConfigured to false>><</if>>
+	<<if $xchange.giFecundityConfigured is undefined>><<set $xchange.giFecundityConfigured to false>><</if>>
+
+	/* Migrate single genital preferred to dual-preference fields (vagina + penis size) */
+	<<if $identity and $identity.body and $identity.body.genitals>>
+		<<if $identity.body.genitals.preferredVagina is undefined>>
+			<<set $identity.body.genitals.preferredVagina to ($identity.body.genitals.preferred is "vagina")>>
+		<</if>>
+		<<if $identity.body.genitals.preferredPenis is undefined>>
+			<<set _oldPref to $identity.body.genitals.preferred>>
+			<<if _oldPref is "tinypenis" or _oldPref is "smallpenis" or _oldPref is "mediumpenis" or _oldPref is "bigpenis">>
+				<<set $identity.body.genitals.preferredPenis to _oldPref>>
+			<<else>>
+				<<set $identity.body.genitals.preferredPenis to false>>
+			<</if>>
+		<</if>>
+		<<if $identity.body.genitals.tinypenis is undefined>>
+			<<set $identity.body.genitals.tinypenis to {
+				acceptance : true,
+				reject : false,
+				dysphoria: 0,
+				dysphoriaCap : 100,
+				tolerance : 0
+			}>>
+		<</if>>
+	<</if>> /* delete later */
+
+	/* Migrate single pronoun preferred to multi-preference fields */
+	<<if $identity and $identity.presentation and $identity.presentation.pronouns>>
+		<<set _oldPP to $identity.presentation.pronouns.preferred>>
+		<<if $identity.presentation.pronouns.preferredMasculine is undefined>>
+			<<set $identity.presentation.pronouns.preferredMasculine to (_oldPP is "m" or ["body","clothing","appearance","posture"].includes(_oldPP))>>
+		<</if>>
+		<<if $identity.presentation.pronouns.preferredFeminine is undefined>>
+			<<set $identity.presentation.pronouns.preferredFeminine to (_oldPP is "f" or ["body","clothing","appearance","posture"].includes(_oldPP))>>
+		<</if>>
+		<<if $identity.presentation.pronouns.preferredNeutral is undefined>>
+			<<set $identity.presentation.pronouns.preferredNeutral to (_oldPP is "n" or ["body","clothing","appearance","posture"].includes(_oldPP))>>
+		<</if>>
+		/* If this was a dynamic mode, all three types were available. */
+		<<if ["body","clothing","appearance","posture"].includes(_oldPP)>>
+			<<if $identity.presentation.pronouns.pronounDynamicMode is undefined>>
+				<<set $identity.presentation.pronouns.pronounDynamicMode to _oldPP>>
+			<</if>>
+		<<elseif $identity.presentation.pronouns.pronounDynamicMode is undefined>>
+			<<set $identity.presentation.pronouns.pronounDynamicMode to "">>
+		<</if>>
+	<</if>> /* delete later */
+
+	<<if $identity and $identity.presentation and $identity.presentation.pronouns>>
+		<<repairPronounPreferenceFallback>>
+	<</if>>
+
+	<<if $xchange_fame is undefined>>
+		<<set $xchange_fame to 0>>
+	<</if>>
+	<!-- Fame titles are rebuilt from lookup data on demand now, so the stored copy is dead weight in the save. -->
+	<<if $fameTitles isnot undefined>>
+		<<unset $fameTitles>>
+	<</if>>
+	<<if $hourlyFemininity is undefined>>
+		<<set $hourlyFemininity to 0>>
+	<</if>>
+
+	<<if $xchange.willpowerSystemEnabled is undefined>>
+		<<set $xchange.willpowerSystemEnabled to 1>>
+		<<set $xchange.willpowerSuccessCost to 25>>
+		<<set $xchange.willpowerFailureCost to 5>>
+	<</if>>
+	<<if $xchange.willpowerRestEnabled is undefined>><<set $xchange.willpowerRestEnabled to 1>><</if>>
+	<<if $xchange.willpowerRestPercent is undefined or isNaN($xchange.willpowerRestPercent)>><<set $xchange.willpowerRestPercent to 100>><</if>>
+
+	/* Hypnosis Variables */
+	<<if $hypnotistChance is undefined>><<set $hypnotistChance to 1>><</if>>
+	<<if $angryHypnotist is undefined>><<set $angryHypnotist to false>><</if>>
+	<<if $deviantHypnotist is undefined>><<set $deviantHypnotist to false>><</if>>
+	<<if $hypnosis_traits.crossdressing is undefined or $hypnosis_traits.crossdressing lt 0>><<set $hypnosis_traits.crossdressing to -1>><</if>>
+
+	<<if $xchange.supporterCode is undefined>>
+		<<set $xchange.supporterCode to "">>
+	<</if>>
+
+	<<if $xchange.expectedGenderBy is undefined or $xchange.expectedGenderBy is null or typeof $xchange.expectedGenderBy isnot "object" or Array.isArray($xchange.expectedGenderBy)>>
+		<<set $xchange.expectedGenderBy to {}>>
+	<</if>>
+	<<if !Array.isArray($xchange.genderChangeReacted)>>
+		<<set $xchange.genderChangeReacted to []>>
+	<</if>>
+
+	<<if $portalPantiesEnabled is undefined>>
+		<<set $portalPantiesEnabled to 1>>
+	<</if>>
+
+	<<portalPantiesSetup>>
+	/* Defaults for combat-pilling controls (back-compat for older saves) */
+	<<if $xchange.combatPillingChance is undefined>><<set $xchange.combatPillingChance to 25>><</if>>
+	<<if $xchange.combatPillingBeastsEnabled is undefined>><<set $xchange.combatPillingBeastsEnabled to 0>><</if>>
+	<<if $xchange.combatPillingMonsterPeopleEnabled is undefined>><<set $xchange.combatPillingMonsterPeopleEnabled to 0>><</if>>
+	<<if $xchange.combatPillingPureRatio is undefined>><<set $xchange.combatPillingPureRatio to 0>><</if>>
+	<<if $xchange.combatPillingDrawChance is undefined>><<set $xchange.combatPillingDrawChance to 15>><</if>>
+	<<if $xchange.spikeSideEffectsEnabled is undefined>><<set $xchange.spikeSideEffectsEnabled to 1>><</if>>
+
+	<<if $recentmolest is undefined>><<set $recentmolest to -1>><</if>>
+	<<if $recentrape is undefined>><<set $recentrape to -1>><</if>>
+	<<if $hole_addict_trait is undefined>><<set $hole_addict_trait to 0>><</if>>
+	<<if $penis_addict_trait is undefined>><<set $penis_addict_trait to 0>><</if>>
+	<<if $penis_addict_trait is 1 and $hole_addict_trait is 1>><<set $hole_addict_trait to -1>><</if>>
+	<<if $penis_addict_trait is 1 and $hole_addict_trait is 0>><<set $hole_addict_trait to -1>><</if>>
+	<<if $hole_addict_trait is 1 and $penis_addict_trait is 0>><<set $penis_addict_trait to -1>><</if>>
+
+	<<if $xchange.blackmail is undefined>><<blackmail-init>><</if>>
+
+	<<if $xchange.faceChangesEnabled is undefined>>
+		<<set $xchange.faceChangesEnabled to 1>>
+	<</if>>
+
+	<<if $options.mastervolume is undefined>>
+		<<set $options.mastervolume to 0.5>>
+		<<set $options.muteonhide to 1>>
+	<</if>>
+
+	<<if $options.bgm_volume is undefined>>
+		<<set $options.bgm_volume to 1>>
+		<<set $options.bgs_volume to 1>>
+		<<set $options.voice_volume to 1>>
+	<</if>>
+	<<if $options.nonCombatMoanVolume is undefined>>
+		<<set $options.nonCombatMoanVolume to 1>>
+	<</if>>
+
+	<<if $options.hidePortalXray is undefined>>
+		<<set $options.hidePortalXray to 0>>
+	<</if>>
+
+	<<if $beingPenetratedOrgasmStat is undefined>>
+		<<set $beingPenetratedOrgasmStat to 0>>
+	<</if>>
+
+	<<if $penetratingOrgasmStat is undefined>>
+		<<set $penetratingOrgasmStat to 0>>
+	<</if>>
+
+	<<if $options.showCombatImgWhileStanding is undefined>>
+		<<set $options.showCombatImgWhileStanding to 1>>
+	<</if>>
+	
+	<<if ndef $options.showCurrentSexIcon>>
+		<<set $options.showCurrentSexIcon to 0>>
+	<</if>>
+	<<if ndef $options.currentSexIconIdentity>>
+		<<set $options.currentSexIconIdentity to 0>>
+	<</if>>
+
+	<<if ndef $options.showPortalXray>>
+		<<set $options.showPortalXray to 1>>
+	<</if>>
+
+	<<if $xchange.randomiseHairColour is undefined>>
+		<<set $xchange.randomiseHairColour to 0>>
+		<<set $xchange.randomiseEyeColour to 0>>
+		<<set $xchange.randomiseSkinColour to 0>>
+	<</if>>
+
+	<<if $xchange.blackmailHalt is undefined>>
+		<<set $xchange.blackmailHalt to 14>>
+	<</if>>
+
+	<<if $options.showCombatImgWhenGender is undefined>>
+		<<set $options.showCombatImgWhenGender to "both">>
+	<</if>>
+
+	<<if $options.hideCombatImgWhileStanding isnot undefined>>
+		<<set $options.showCombatImgWhileStanding to $options.hideCombatImgWhileStanding ? 0 : 1>><<unset $options.hideCombatImgWhileStanding>>
+		<<set $options.showCurrentSexIcon to $options.hideCurrentSexIcon ? 0 : 1>><<unset $options.hideCurrentSexIcon>>
+		<<set $options.showPortalXray to $options.hidePortalXray ? 0 : 1>><<unset $options.hidePortalXray>>
+	<</if>>
+
+	<<if $refractoryPeriod is undefined>>
+		<<set $refractoryPeriod to 0>>
+	<</if>>
+
+	<<if $options.useAltImg is undefined>>
+		<<set $options.useAltImg to 0>>
+		<<set $options.altImgGender to "m">>
+	<</if>>
+
+	<<if $options.altImgAlways is undefined>>
+		<<set $options.altImgAlways to 0>>
+	<</if>>
+
+	<<if $xchange.pregnancyMultPercent is undefined>>
+		<<set $xchange.pregnancyMultPercent to 25>>
+	<</if>>
+
+	<<if $xchange.spikepool is undefined>>
+		<<set $xchange.spikepool to {
+			crossdresser: 1,
+			bull: 1,
+			breeder: 1,
+			resistance: 1,
+			continue: 1,
+			passion: 1,
+			dumbbitch: 1,
+			herm: 0,
+			innocence: 1,
+			swell: 1,
+			bimbo: 1,
+			cumcure: 1,
+			fertility: 0,
+			omega: 0,
+			alpha: 0,
+			beta: 0,
+			feartoxin: 0,
+
+		}>>
+	<</if>>
+
+	<<if $xchange.customisedEyeColour is undefined>>
+	<<set $xchange.customisedEyeColour to "nochange">>
+	<</if>>
+	<<if $xchange.customisedHairColour is undefined>>
+	<<set $xchange.customisedHairColour to "nochange">>
+	<</if>>
+	<<if $xchange.customisedSkinColour is undefined>>
+	<<set $xchange.customisedSkinColour to "nochange">>
+	<</if>>
+	<<if $xchange.customisedDemeanour is undefined>>
+	<<set $xchange.customisedDemeanour to "nochange">>
+	<</if>>
+
+	<<if $xchange.portalFrequency is undefined>>
+		<<set $xchange.portalFrequency to 100>>
+	<</if>>
+
+	<<if $xchange.combatPillingEnabled is undefined>>
+		<<set $xchange.combatPillingEnabled to 0>>
+	<</if>>
+
+	<<if $xchange.restrictedSexCombatPilling is undefined>>
+		<<set $xchange.restrictedSexCombatPilling to 1>>
+	<</if>>
+
+	<<set $AMCTraits.beauty to 2>>
+	<<if $options.f_voice is undefined>>
+		<<set $options.f_voice to "v1">>
+	<</if>>
+	<<run ensureVoiceConfig()>>
+
+	<<if $pleasure is undefined or $pleasure is null or isNaN($pleasure)>>
+		<<set $pleasure to 0>>
+	<</if>>
+	<<if $pleasuremax is undefined or $pleasuremax is null or isNaN($pleasuremax)>>
+		<<set $pleasuremax to 10000>>
+	<</if>>
+
+	<<if $xchange.combatPillingIfPilled is undefined>>
+		<<set $xchange.combatPillingIfPilled to 0>>
+	<</if>>
+
+	<<if $xchange.sizeOverride is undefined>>
+		<<set $xchange.sizeOverride to "default">>
+	<</if>>
+
+	<<if $xchange.physiqueChangePercent is undefined>>
+		<<set $xchange.physiqueChangePercent to 100>>
+	<</if>>
+
+	<<if $xchange.useHermBalls is undefined>>
+		<<set $xchange.useHermBalls to 0>>
+	<</if>>
+
+	<<if $xchange.spikepool isnot undefined and $xchange.spikepool.herm is undefined>>
+		<<set $xchange.spikepool.herm to 0>>
+	<</if>>
+
+	<<if $xchange.spikepool isnot undefined and $xchange.spikepool.fertility is undefined>>
+		<<set $xchange.spikepool.fertility to 0>>
+	<</if>>
+
+	<<if $xchange.spikepool isnot undefined and $xchange.spikepool.omega is undefined>>
+		<<set $xchange.spikepool.omega to 0>>
+	<</if>>
+
+	<<if $xchange.spikepool isnot undefined and $xchange.spikepool.alpha is undefined>>
+		<<set $xchange.spikepool.alpha to 0>>
+	<</if>>
+
+	<<if $xchange.spikepool isnot undefined and $xchange.spikepool.beta is undefined>>
+		<<set $xchange.spikepool.beta to 0>>
+	<</if>>
+
+	/* Fear Toxin is harsh enough to be opt-in, like Herm and Alpha. */
+	<<if $xchange.spikepool isnot undefined and $xchange.spikepool.feartoxin is undefined>>
+		<<set $xchange.spikepool.feartoxin to 0>>
+	<</if>>
+
+	<<if $xchange.backComp is undefined or $xchange.backComp is null or typeof $xchange.backComp isnot "object" or Array.isArray($xchange.backComp)>>
+		<<set $xchange.backComp to {}>>
+	<</if>>
+
+	<<if !Number.isFinite($xchange.resistanceDaysPenalty)>><<set $xchange.resistanceDaysPenalty to 30>><</if>>
+	<<if !Number.isFinite($xchange.resistanceOrgasmPenalty)>><<set $xchange.resistanceOrgasmPenalty to 0.7>><</if>>
+
+	<<if ndef $xchange.genitalAddictTraitsEnabled>>
+		<<set $xchange.genitalAddictTraitsEnabled to 1>>
+	<</if>>
+	<<if ndef $xchange.critterMagnetTraitEnabled>>
+		<<set $xchange.critterMagnetTraitEnabled to 1>>
+	<</if>>
+	<<if ndef $xchange.chastityAcclimatedTraitEnabled>>
+		<<set $xchange.chastityAcclimatedTraitEnabled to 1>>
+	<</if>>
+	<<if ndef $xchange.oralFixationTraitEnabled>>
+		<<set $xchange.oralFixationTraitEnabled to 1>>
+	<</if>>
+	<<if ndef $xchange.oralFixationSwallowRelief>>
+		<<set $xchange.oralFixationSwallowRelief to 1>>
+	<</if>>
+	<<if ndef $xchange.arousalAcclimatedTraitEnabled>>
+		<<set $xchange.arousalAcclimatedTraitEnabled to 1>>
+	<</if>>
+	<<if ndef $xchange.insanityDisturbedTraitsEnabled>>
+		<<set $xchange.insanityDisturbedTraitsEnabled to 0>>
+	<</if>>
+	<<if ndef $xchange.heatBlocksScream>>
+		<<set $xchange.heatBlocksScream to 0>>
+	<</if>>
+	<<if ndef $xchange.insanityBecomesPermanent>>
+		<<set $xchange.insanityBecomesPermanent to 0>>
+	<</if>>
+	<<if ndef $xchange.blindAdaptabilityKeep>>
+		<<set $xchange.blindAdaptabilityKeep to "fade">>
+	<</if>>
+	<<if ndef $xchange.blindAdaptabilityNoLove>>
+		<<set $xchange.blindAdaptabilityNoLove to 0>>
+	<</if>>
+
+	<<if ndef $xchange.pill.hermBody>>
+		<<set $xchange.pill.hermBody to {}>>
+	<</if>>
+
+	<<if $xchange.backComp.remyHermBreastOverflow isnot true>>
+		<<set $xchange.backComp.remyHermBreastOverflow to true>> /* delete later */
+		<<set _remyBreastRepairMax to Number.isFinite(Number($breastsizemax)) ? Number($breastsizemax) : 12>>
+		<<set _remyBreastRepaired to false>>
+		<<if $xchange.known.includes("Remy") and $xchange.pill.hermEffect and Number.isFinite(Number($player.breastsize)) and Number($player.breastsize) gt _remyBreastRepairMax and Number($player.breastsize) lte _remyBreastRepairMax + 1>>
+			<<set $player.breastsize to _remyBreastRepairMax>>
+			<<set _remyBreastRepaired to true>>
+		<</if>>
+		<<if $xchange.known.includes("Remy") and Number.isFinite(Number($xchange.pill.hermBody.breastsize)) and Number($xchange.pill.hermBody.breastsize) gt _remyBreastRepairMax and Number($xchange.pill.hermBody.breastsize) lte _remyBreastRepairMax + 1>>
+			<<set $xchange.pill.hermBody.breastsize to _remyBreastRepairMax>>
+			<<set _remyBreastRepaired to true>>
+		<</if>>
+		<<if _remyBreastRepaired>>
+			<<run setup.xChangeRepairNoticeOnce("repair_remy_herm_breastsize_overflow", "<b>Save repair notice</b><br>An older Underground Farm dose pushed your herm body's breast size beyond the valid maximum. X-Change has restored it to the largest valid size.")>>
+		<</if>>
+	<</if>>
+
+	<<if ndef $xchange.NNPCcombatPillingEnabled>>
+		<<set $xchange.NNPCcombatPillingEnabled to 1>>
+	<</if>>
+
+	<<if $xchange.errorLog is undefined or $xchange.errorLog is null or !Array.isArray($xchange.errorLog)>>
+		<<set $xchange.errorLog to []>>
+	<</if>>
+
+	<<if $identityCap is undefined>>
+		<<set $identityCap to false>>
+	<</if>>
+
+	/* DoLP/modUpdate owns $background shape migration.
+	DoLX only patches X-Change background flags when $background is already a safe object. */
+	<<if $background isnot undefined and $background isnot null and typeof $background is "object" and !Array.isArray($background)>>
+		<<if $background.genderAnxious is undefined>>
+			<<set $background.genderAnxious to false>>
+		<</if>>
+		<<if $background.transgender is undefined>>
+			<<set $background.transgender to false>>
+		<</if>>
+	<</if>>
+	<<if ndef $options.postureAffectsVoice>>
+		<<set $options.postureAffectsVoice to 0>>
+	<</if>>
+
+	<<if $whackRandom is undefined>>
+		<<set $whackRandom to false>>
+	<</if>>
+
+	<<if ndef $xchange.spikerates.swell>>
+		<<set $xchange.spikerates.swell to 2>>
+		<<set $xchange.spikerates.bimbo to 1>>
+		<<set $xchange.spikerates.cumcure to 1>>
+	<</if>>
+
+	<<if $xchange.cumcureTime is undefined>>
+		<<set $xchange.cumcureTime to 3>>
+	<</if>>
+
+	<<if $xchange.pill.resistanceOrgasmsStat is undefined>>
+		<<set $xchange.pill.resistanceOrgasmsStat to 0>>
+	<</if>>
+
+	<<if ndef $xchange.heat>>
+		<<set $xchange.heat to {}>>
+	<</if>>
+
+	<<if $xchange.awareness is undefined>>
+		<<set $xchange.awareness to 0>>
+	<</if>>
+
+	<<if $xchange.heat.bypassAsk is undefined>>
+		<<set $xchange.heat.bypassAsk to false>>
+	<</if>>
+
+	/* Heat switches use 0/1. Using a boolean here breaks settings export. */
+	<<if $xchange.heat.systemOn is undefined>>
+		<<set $xchange.heat.systemOn to 0>>
+	<</if>>
+	<<if $xchange.heat.resistWithWillpower is undefined>>
+		<<set $xchange.heat.resistWithWillpower to 1>>
+	<</if>>
+
+	<<if $xchange.breederFreeOrgasm is undefined>>
+		<<set $xchange.breederFreeOrgasm to false>>
+	<</if>>
+	<!-- Omega used to share the Breeder toggle, so carry the player's old choice over. -->
+	<<if $xchange.omegaFreeOrgasm is undefined>>
+		<<set $xchange.omegaFreeOrgasm to $xchange.breederFreeOrgasm is true>>
+	<</if>>
+	<<if $xchange.alphaFreeOrgasm is undefined>>
+		<<set $xchange.alphaFreeOrgasm to false>>
+	<</if>>
+	<<if $xchange.genitalAddictFreeOrgasm is undefined>>
+		<<set $xchange.genitalAddictFreeOrgasm to false>>
+	<</if>>
+	<<if $xchange.oralFixationFreeOrgasm is undefined>>
+		<<set $xchange.oralFixationFreeOrgasm to false>>
+	<</if>>
+
+	<<if $xchange.breederInfertile is undefined>>
+		<<set $xchange.breederInfertile to false>>
+	<</if>>
+
+	<<if $xchange.alwaysFertile is undefined>>
+		<<set $xchange.alwaysFertile to false>>
+	<</if>>
+
+	<<if $xchange.fertilityStrengthPercent is undefined>>
+		<<set $xchange.fertilityStrengthPercent to 100>>
+	<</if>>
+	
+	<<if $identity is undefined>>
+		<<set $identity to {
+			init : 0,
+			presentation : {
+				appearance : {
+					masculine : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					feminine : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					neutral : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					preferred : "f"
+				},
+				clothing : {
+					masculine : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					feminine : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					neutral : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					preferred : "f"
+				},
+				makeup : {
+					wearing : {
+						acceptance : true,
+						reject : false,
+						dysphoria : 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					bare : {
+						acceptance : true,
+						reject : false,
+						dysphoria : 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					/* "Don't care" until the player says otherwise: this object is built before character creation
+					picks a gender, so keying the default off $player.gender only ever produced "n" anyway. */
+					preferred : "n"
+				},
+				pronouns : {
+					masculine : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0,
+						misgendered: 0
+					},
+					feminine : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0,
+						misgendered: 0
+					},
+					neutral : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0,
+						misgendered: 0
+					},
+					preferred : $player.gender,
+					preferredMasculine : $player.gender is "m",
+					preferredFeminine : $player.gender is "f",
+					preferredNeutral : $player.gender is "n",
+					pronounDynamicMode : ""
+				}
+			},
+			body : {
+				chest : {
+					flat : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					small : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					medium : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					big : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					preferred : "medium"
+				},
+				bottom : {
+					small : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					medium : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					big : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					preferred : "medium"
+				},
+				genitals : {
+					vagina : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					tinypenis : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					smallpenis : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					mediumpenis : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					bigpenis : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					preferred : "vagina",
+					preferredVagina : true,
+					preferredPenis : false
+				},
+				hairlength : {
+					short : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					medium : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					long : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					preferred : "medium"
+				},
+				bodysize : {
+					tiny : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					small : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					normal : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					large : {
+						acceptance : true,
+						reject : false,
+						dysphoria: 0,
+						dysphoriaCap : 100,
+						tolerance : 0
+					},
+					preferred : "normal"
+				},
+				lactation : {
+					acceptance : true,
+					reject : false,
+					preferred : "none",
+					dysphoria: 0,
+					dysphoriaCap : 100,
+					tolerance : 0
+				},
+				pregnancy : {
+					acceptance : true,
+					reject : false,
+					preferred: "none",
+					dysphoria: 0,
+					dysphoriaCap : 100,
+					tolerance : 0
+				}
+			}
+		}>>
+	<</if>> 
+
+	/* --- Ensure expanded body size identity options exist (miniature/tall/giant) --- */
+	<<set $identity to $identity || {}>>
+	<<set $identity.body to $identity.body || {}>>
+	<<set $identity.body.bodysize to $identity.body.bodysize || {}>>
+
+	<<if $identity.body.bodysize.preferred is undefined>>
+		<<set $identity.body.bodysize.preferred to "normal">>
+	<</if>>
+
+	<<set _bsDefault to {acceptance:true, reject:false, dysphoria:0, dysphoriaCap:100, tolerance:0}>>
+
+	<<if $identity.body.bodysize.miniature is undefined>>
+		<<set $identity.body.bodysize.miniature to clone(_bsDefault)>>
+	<</if>>
+	<<if $identity.body.bodysize.tall is undefined>>
+		<<set $identity.body.bodysize.tall to clone(_bsDefault)>>
+	<</if>>
+	<<if $identity.body.bodysize.giant is undefined>>
+		<<set $identity.body.bodysize.giant to clone(_bsDefault)>>
+	<</if>>
+
+	/* --- Ensure the Androgynous Appearance / Neutral Clothing identity axes exist (added alongside the masculine/feminine tracks) ---
+	   New games get these from the $identity default above; this is the only path that creates them on a save
+	   that already had an $identity, so it lives exactly as long as pre-androgynous saves are supported.
+	   Deleting it means those saves crash on the missing keys, so it must go together with the repair below. */
+	<<set $identity.presentation to $identity.presentation || {}>>
+	<<set $identity.presentation.appearance to $identity.presentation.appearance || {}>>
+	<<set $identity.presentation.clothing to $identity.presentation.clothing || {}>>
+	<<set $identity.presentation.makeup to $identity.presentation.makeup || {}>>
+	<<if $identity.presentation.makeup.wearing is undefined>>
+		<<set $identity.presentation.makeup.wearing to clone(_bsDefault)>>
+	<</if>>
+	<<if $identity.presentation.makeup.bare is undefined>>
+		<<set $identity.presentation.makeup.bare to clone(_bsDefault)>>
+	<</if>>
+	/* Existing saves never went through lockInIdentity for this axis, so both sides start at zero tolerance while
+	marked accepted. The first daily tick reads that as acceptance running out and announces a breakdown the
+	player never earned, so seed the tolerance that lock-in would have given them. */
+	<<for _makeupState range ["wearing", "bare"]>>
+		<<if $identity.presentation.makeup[_makeupState].acceptance and !$identity.presentation.makeup[_makeupState].reject>>
+			<<set $identity.presentation.makeup[_makeupState].tolerance to Math.max(Number($identity.presentation.makeup[_makeupState].tolerance) || 0, 100)>>
+		<</if>>
+	<</for>>
+	<<if $identity.presentation.makeup.preferred is undefined>>
+		/* Preserve existing saves until the player chooses a makeup stance. New characters receive their starting preference in the full identity object above. */
+		<<set $identity.presentation.makeup.preferred to "n">>
+	<</if>>
+
+	<<if $identity.presentation.appearance.neutral is undefined>>
+		<<set $identity.presentation.appearance.neutral to clone(_bsDefault)>>
+	<</if>>
+	<<if $identity.presentation.clothing.neutral is undefined>>
+		<<set $identity.presentation.clothing.neutral to clone(_bsDefault)>>
+	<</if>>
+
+	/* One-time repair for saves that predate the presentation rework. */
+	<<if !$dolxIdentityPresentationReworked>>
+		<<set $dolxIdentityPresentationReworked to true>> /* delete later */
+
+		/* The hourly "you feel awkward/gross in these clothes" line is gone; clothing now speaks through the
+		   normal dysphoria reason channel, once per change of outfit. Drop any value left mid-flight. */
+		<<unset $genderStressMessage>>
+
+		/* Older saves may not have starting tolerance for the new androgynous traits.
+		This can make an accepted trait immediately drop to 0 tolerance and become unaccepted, causing dysphoria for a preference the player never chose.
+		Transgender saves can have the same issue because their Identity settings remain editable and may never receive the normal starting tolerance.
+
+		Seed the missing tolerance only once. After that, let the normal tolerance system handle any changes. */
+		<<if $identity.init gte 2 or ($background and $background.transgender)>>
+			<<set _appearanceNeutral to $identity.presentation.appearance.neutral>>
+			<<set _clothingNeutral to $identity.presentation.clothing.neutral>>
+			<<if !_appearanceNeutral.reject>>
+				<<set _appearanceNeutral.acceptance to true>>
+				<<set _appearanceNeutral.tolerance to Math.max(Number(_appearanceNeutral.tolerance) || 0, $identity.presentation.appearance.preferred is "n" ? 200 : 100)>>
+			<</if>>
+			<<if !_clothingNeutral.reject>>
+				<<set _clothingNeutral.acceptance to true>>
+				<<set _clothingNeutral.tolerance to Math.max(Number(_clothingNeutral.tolerance) || 0, $identity.presentation.clothing.preferred is "u" ? 200 : 100)>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $identityOption is undefined>>
+		<<set $identityOption to false>>
+	<</if>>
+
+	<<if $identityPreference is undefined>>
+		<<set $identityPreference to false>>
+	<</if>>
+
+	<<if ndef $xchange.savedNpcBodies>>
+		<<set $xchange.savedNpcBodies to {}>>
+	<</if>>
+
+	<<if ndef $options.NnpcDisplaySystem>>
+		<<set $options.NnpcDisplaySystem to "vanilla">>
+	<</if>>
+
+	<<if ndef $xchange.timesTaken>>
+		<<set $xchange.timesTaken to {
+			player: 0,
+		}>>
+		<<for _n to 0; _n lt $NPCName.length; _n++>>
+			<<set $xchange.timesTaken[$NPCNameList[_n]] to 0>>
+		<</for>>
+	<</if>>
+
+	<<if ndef $options.showExactMeasurements>>
+		<<set $options.showExactMeasurements to true>>
+	<</if>>
+
+	/* These are standalone guards: they cover old saves where $xchange.pill exists but is missing sub-keys, 
+	so the full-object initializer above (which only fires when $xchange.pill is undefined) wouldn't repair them. */
+	<<if $xchange.pill isnot undefined and $xchange.pill isnot null and typeof $xchange.pill is "object" and !Array.isArray($xchange.pill)>>
+		<<if $xchange.pill.originalBody is undefined or $xchange.pill.originalBody is null or typeof $xchange.pill.originalBody isnot "object" or Array.isArray($xchange.pill.originalBody)>><<set $xchange.pill.originalBody to {}>><</if>>
+		<<if $xchange.pill.changedBody is undefined or $xchange.pill.changedBody is null or typeof $xchange.pill.changedBody isnot "object" or Array.isArray($xchange.pill.changedBody)>>
+			<<if $xchange.pill.active>>
+				<<run console.warn("X-Change: pill is active but changedBody is missing on load (migration/corruption).")>>
+				<<set $xchange.errorLog.push("Pill was active but changedBody was missing on load. Some effects may be inconsistent; please export/save+report if you see issues.")>>
+			<</if>>
+			<<set $xchange.pill.changedBody to {}>>
+		<</if>>
+		<<if $xchange.pill.clonedBody is undefined or $xchange.pill.clonedBody is null or typeof $xchange.pill.clonedBody isnot "object" or Array.isArray($xchange.pill.clonedBody)>><<set $xchange.pill.clonedBody to {}>><</if>>
+		/* clone is a string sentinel ("none"), not an object; explicit falsy check */
+		<<if !$xchange.pill.clone>><<set $xchange.pill.clone to "none">><</if>>
+	<</if>>
+
+	/* One-time fix: Whitney's re-cage events used to fit a penis chastity cage onto a pill-feminized body with no penis. Adapt an already-worn cage into the belt shape, the same way the pill transformation itself does. Chastity parasites are living slime, not a metal cage, and keep their shape. */
+	<<if $xchange._didCageOnFemaleFix2 isnot true>> /* delete later */
+		<<if $xchange._didCageOnFemaleFix isnot undefined>><<unset $xchange._didCageOnFemaleFix>><</if>>
+		<<set $xchange._didCageOnFemaleFix2 to true>>
+		<<if $worn isnot undefined and $worn.genitals isnot undefined>>
+			<<set _chastityAdapted to setup.xchangeAdaptChastityToBody()>>
+			<<if _chastityAdapted>><<set $xchange.chastityAdaptedMessage to _chastityAdapted>><</if>>
+		<</if>>
+	<</if>>
+
+	/* One-time fix: the old reshaping code renamed a chastity device's .name but not its .name_cap, so the statistics
+	   overlay and the wardrobe still called a reshaped belt a "Chastity cage". Resync the two on already-reshaped saves. */
+	<<if $xchange._didChastityNameCapFix isnot true>>
+		<<set $xchange._didChastityNameCapFix to true>> /* delete later */
+		<<if $worn isnot undefined and $worn.genitals isnot undefined and Array.isArray($worn.genitals.type) and $worn.genitals.type.includes("chastity")>>
+			<<if typeof $worn.genitals.name is "string" and $worn.genitals.name isnot $worn.genitals.name_cap>>
+				<<if typeof $worn.genitals.name_cap isnot "string" or $worn.genitals.name_cap.toLowerCase() isnot $worn.genitals.name.toLowerCase()>>
+					<<set $worn.genitals.name_cap to $worn.genitals.name.toUpperFirst()>>
+				<</if>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	/* One-time fix: "keep belt shape" also held a cage that had only been reshaped into a belt, so turning male again left it a belt. Reshape it back. */
+	<<if $xchange._didCageBeltRevertFix isnot true>>
+		<<set $xchange._didCageBeltRevertFix to true>> /* delete later */
+		<<if $worn isnot undefined and $worn.genitals isnot undefined>>
+			<<set _chastityAdapted to setup.xchangeAdaptChastityToBody()>>
+			<<if _chastityAdapted>><<set $xchange.chastityAdaptedMessage to _chastityAdapted>><</if>>
+		<</if>>
+	<</if>>
+
+	/* One-time fix: Harper's lab never turned its hatchlings human, so they stayed hawks. */
+	<<if $xchange._didLabHatchlingSpeciesFix isnot true>>
+		<<set $xchange._didLabHatchlingSpeciesFix to true>> /* delete later */
+		<<run (V.childRecords || []).forEach(child => {
+			if (child?.development?.dragonNest && child.species === "hawk" && child.bornDate !== null) child.species = "human";
+		})>>
+	<</if>>
+
+	/* permaReflection state object */
+	<<if $xchange.permaReflection is undefined>>
+		<<set $xchange.permaReflection to {pending: false, lastShownDay: -1, answer: null, snapshot: null, lastReminderDay: -1}>>
+	<</if>>
+
+	/* Morning-after pill counter: scalar stat recovery. Older saves/builds could leave it missing or NaN, which breaks statistics text. */
+	<<if $pregnancyStats isnot undefined>>
+		<<if $pregnancyStats.aftermorningpills is undefined or !Number.isFinite(Number($pregnancyStats.aftermorningpills))>>
+			<<set $pregnancyStats.aftermorningpills to 0>>
+		<<else>>
+			<<set $pregnancyStats.aftermorningpills to Number($pregnancyStats.aftermorningpills)>>
+		<</if>>
+	<</if>>
+
+	/* Premium pill inventory slot to ensure it exists so the Briar premium-pill flow in main.twee 
+	(e.g. $sexStats.pills.pills["X-Change Premium"].owned += 1) doesn't throw on first use. Hardcoded to the canonical key. */
+	<<if $sexStats isnot undefined and $sexStats.pills isnot undefined and $sexStats.pills.pills isnot undefined>>
+		<<if $sexStats.pills.pills["X-Change Premium"] is undefined>>
+			<<set $sexStats.pills.pills["X-Change Premium"] to {owned: 0, doseTaken: 0, overdose: 0}>>
+		<</if>>
+	<</if>>
+	<<if $xchange.premium is undefined>>
+		<<set $xchange.premium to {}>>
+	<</if>>
+
+	/* --- $sexStats.vagina skeleton safety net --- */
+	<<if $sexStats isnot undefined>>
+		<<if $sexStats.vagina is undefined>>
+			<<set _esBaseDays to random(24,38)>>
+			<<if _esBaseDays lt 26>>
+				<<set _esBaseDaysRng to random(0,4)>>
+			<<elseif _esBaseDays gte 30>>
+				<<set _esBaseDaysRng to random(-4,0)>>
+			<<else>>
+				<<set _esBaseDaysRng to random(-2,2)>>
+			<</if>>
+			<<set _esCurrentDaysMax to _esBaseDays + random(0, _esBaseDaysRng)>>
+			<<set $sexStats.vagina to {
+				"pregnancy": { "fetus": [], "givenBirth": 0, "parasiteBirthEvents": 0, "totalBirthEvents": 0, "motherStatus": 0, "waterBreaking": false, "type": null, "timer": null, "timerEnd": null, "awareOf": null, "potentialFathers": [] },
+				"menstruation": { "baseDays": _esBaseDays, "baseDaysRng": _esBaseDaysRng, "currentDay": random(0, _esBaseDays + random(0, _esBaseDaysRng)), "currentDaysMax": _esCurrentDaysMax, "currentState": "normal", "recoveryTime": null, "recoveryTimeStart": null, "recoveryStage": null, "periodEnabled": true, "running": false, "stages": [0, 0, 0, 0] }
+			}>>
+			<<set _esMenstruation to $sexStats.vagina.menstruation>>
+			<<set _esMenstruation.stages to rollMenstrualStages(_esMenstruation.currentDaysMax)>>
+			<<set _esMenstruation.fertileLeadDays to random(PregnancyConstants.menstrualCycle.fertileLeadDaysMin, PregnancyConstants.menstrualCycle.fertileLeadDaysMax)>>
+			<<if $player isnot undefined and $player.vaginaExist>><<set $sexStats.vagina.menstruation.running to true>><</if>>
+		<</if>>
+		<<if $sexStats.vagina.menstruation is undefined>>
+			<<set $sexStats.vagina.menstruation to { running: false }>>
+		<<elseif $sexStats.vagina.menstruation.running is undefined>>
+			<<set $sexStats.vagina.menstruation.running to false>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "xchange-init2">>
+	<<if $customColors is undefined or $customColors is null or typeof $customColors isnot "object">><<set $customColors to {}>><</if>>
+	<<if $customColors.presets is undefined or $customColors.presets is null or typeof $customColors.presets isnot "object">><<set $customColors.presets to {}>><</if>>
+	<<xchangeStartMedicineCabinet>>
+	<<if Object.keys($customColors.presets).length lt 10>>
+		<<for _i to 1; _i lte 10; _i++>>
+			<<set $customColors.presets["custom"+_i] to {
+				ver: 3,
+				color: 0,
+				value: 0,
+				brightness: 0,
+				saturation: 0,
+				contrast: 1,
+			}>>
+		<</for>>
+	<</if>>
+
+	/* Show normal sidebar stat meters by default */
+	<<set $options.showAllStatMeters ??= true>>
+
+	<<if $danceSkillDecay is undefined>><<set $danceSkillDecay to 0>><</if>>
+	<<if $danceStudio isnot undefined>>
+		<<if $danceStudio.training is undefined>><<set $danceStudio.training to {}>><</if>>
+		<<if $danceStudio.training.subscriptionUntil is undefined>><<set $danceStudio.training.subscriptionUntil to 0>><</if>>
+		<<if $danceStudio.training.injury is undefined>><<set $danceStudio.training.injury to "none">><</if>>
+		<<if $danceStudio.training.injuryUntil is undefined>><<set $danceStudio.training.injuryUntil to 0>><</if>>
+		<<if $danceStudio.training.masteryUntil is undefined>><<set $danceStudio.training.masteryUntil to 0>><</if>>
+		<<if $danceStudio.training.lastDecay is undefined>><<set $danceStudio.training.lastDecay to 0>><</if>>
+	<</if>>
+
+	<<if ndef $xchange.baseStats>>
+		<<set $xchange.baseStats to {}>>
+		<<if playerIsXChanged()>>
+			<<set _ogbody to $xchange.pill.originalBody>>
+			<<set _physiquesizes to [6000, 10000, 12000, 15000]>>
+			<<set $xchange.baseStats.physique to $physique * _physiquesizes[_ogbody.bodysize] / $physiquesize>>
+			<<set $xchange.baseStats.physiquesize to _physiquesizes[_ogbody.bodysize]>>
+		<<else>>
+			<<set $xchange.baseStats.physique to $physique>>
+			<<set $xchange.baseStats.physiquesize to $physiquesize>>
+		<</if>>
+	<</if>>
+
+	<<for _n to 0; _n lt $NPCName.length; _n++>>
+		<<if ndef $NPCName[_n].startingSex>>
+			<<set $NPCName[_n].startingSex to $NPCName[_n].gender>>
+		<</if>>
+		<<if ndef $xchange.savedNpcBodies[$NPCNameList[_n]]>>
+			<<set $xchange.savedNpcBodies[$NPCNameList[_n]] to {}>>
+			<<set $xchange.savedNpcBodies[$NPCNameList[_n]].original to {}>>
+			<<set $xchange.savedNpcBodies[$NPCNameList[_n]].genderswap to {}>>
+			<<set $xchange.savedNpcBodies[$NPCNameList[_n]].herm to {}>>
+		<</if>>
+	<</for>>
+
+<</widget>>
+
+/* Static setup data, built once per page load from StoryInit. Start2 already reads it for the gender-identity meter, before any load path runs. */
+<<widget "identityIndexInit">>
+	<<set setup.identityIndex to {
+		"Pronoun Preferences": { 
+			"Masculine Pronouns": "<<dysphoriaicon 'male.png'>>",
+			"Feminine Pronouns": "<<dysphoriaicon 'female.png'>>",
+			"Neutral Pronouns": "<<dysphoriaicon 'unisex.png'>>",
+		},
+		"Appearance Preferences": {
+			"Masculine Appearance": "<<dysphoriaicon 'men-toilet.png'>>",
+			"Feminine Appearance": "<<dysphoriaicon 'women-toilet.png'>>",
+			"Androgynous Appearance": "<<dysphoriaicon-split 'women-toilet.png' 'men-toilet.png'>>",
+		},
+		"Clothing Preferences": {
+			"Masculine Clothing": "<<dysphoriaicon-color 'clothes/straight-trousers.png' 'filter: hue-rotate(206deg) saturate(229%) brightness(178%) contrast(113%)'>>",
+			"Feminine Clothing": "<<dysphoriaicon-color 'clothes/school-skirt.png' 'filter: hue-rotate(320deg) saturate(120%) brightness(100%) contrast(117%)'>>",
+			"Neutral Clothing": "<<dysphoriaicon 'clothes/bathrobe.png'>>",
+		},
+		"Makeup Preferences": {
+			"Wearing Makeup": "<<dysphoriaicon 'cosmetics.gif'>>",
+			"Bare Face": "<<skinicon 'wash'>>",
+		},
+		"Chest Preferences": {
+			"Flat Chest": "<<dysphoriaicon 'basement_door.png'>>",
+			"Small Breasts": `<<skinicon 'smallBreasts'>>`,
+			"Medium Breasts": "<<skinicon 'bigBreasts'>>",
+			"Big Breasts": "<<skinicon 'breastEnlarge'>>",
+		},
+		"Butt Preferences": {
+			"Small Ass": "<<dysphoriaicon 'bandages.png'>>",
+			"Medium Ass": "<<dysphoriaicon 'tending/apple.png'>>",
+			"Big Ass": "<<dysphoriaicon 'tending/peach.png'>>",
+		},
+		"Genital Preferences": {
+			"Vagina": "<<skinicon 'vagina'>>",
+			"Tiny Penis": "<<skinicon 'tinyPenis'>>",
+			"Small Penis": "<<skinicon 'smallPenis'>>",
+			"Medium Penis": "<<skinicon 'mediumPenis'>>",
+			"Big Penis": "<<skinicon 'bigPenis'>>",
+		},
+		"Hair Preferences": {
+			"Short Hair": "<<dysphoriaicon 'algae.png'>>",
+			"Medium Hair": "<<dysphoriaicon 'bush.png'>>",
+			"Long Hair": "<<dysphoriaicon 'kylars_grounds.png'>>",
+		},
+		"Body Size Preferences": {
+			"Miniature Body": "<<dysphoriaicon 'rat.png'>>",
+			"Tiny Body": "<<dysphoriaicon 'chicken.png'>>",
+			"Small Body": "<<dysphoriaicon 'wolf-pup.png'>>",
+			"Normal Body": "<<dysphoriaicon 'dog.png'>>",
+			"Tall Body": "<<dysphoriaicon 'black-dog.png'>>",
+			"Large Body": "<<dysphoriaicon 'cow.png'>>",
+			"Giant Body": "<<dysphoriaicon 'black-wolf.png'>>",
+		},
+		"Maternity Preferences": {
+			"Lactation": "<<dysphoriaicon 'tending/babybottle.png'>>",
+			"Pregnancy": "<<pregnancyicon 'player'>>",
+		},
+	}>>
+<</widget>>
+
+/* Settings slider migration. Runs after key migrations and on same-version loads.
+   Fixes missing, NaN, or old 0 values that would crash sliders with a minimum of 1.
+   Only repairs settings values, not body or game state. */
+<<widget "xchangeSettingsSliderRepair">>
+	<<run (() => {
+		const V = (typeof State !== "undefined" && State.variables) ? State.variables : window.V;
+		if (!V) return;
+		/* Ear slimes split off from the general slime toggle. Existing saves inherit whatever they had set for slimes. */
+		if (V.settings && V.settings.earSlimesEnabled === undefined) {
+			V.settings.earSlimesEnabled = V.settings.slimesEnabled !== false;
+		}
+		if (V.settings && V.settings.earSlimeThoughts === undefined) V.settings.earSlimeThoughts = false;
+		const topLevelSliders = { wardrobeMult: { min: 1, max: 20, def: 1 }, parasiteCapMult: { min: 1, max: 10, def: 1 } };
+		for (const k of Object.keys(topLevelSliders)) {
+			const s = topLevelSliders[k];
+			const v = Number(V[k]);
+			V[k] = Number.isFinite(v) ? Math.min(s.max, Math.max(s.min, v)) : s.def;
+		}
+		const x = V.xchange;
+		if (!x) return;
+		/* spikerates: sliders use 1-10. genderflip and fertile have no sliders, but still need valid values for the spike pool. */
+		const rateDefaults = {
+			genderflip: 10, crossdress: 7, herm: 4, breeder: 2, bull: 2,
+			continue: 3, resistance: 3, portal: 2, fertile: 2, passion: 1,
+			"dumb-bitch": 1, innocence: 1, feartoxin: 1, fertility: 4, swell: 2, bimbo: 1, cumcure: 1,
+		};
+		if (!x.spikerates || typeof x.spikerates !== "object" || Array.isArray(x.spikerates)) x.spikerates = {};
+		for (const k of Object.keys(rateDefaults)) {
+			const v = x.spikerates[k];
+			x.spikerates[k] = Number.isFinite(v) ? Math.min(10, Math.max(1, v)) : rateDefaults[k];
+		}
+		/* Scalar sliders whose min is above 0, so a stale 0 / NaN / missing value crashes them too. */
+		const scalarSliders = {
+			combatPillingDrawChance: { min: 1, max: 50, def: 15 },
+			cumcureTime: { min: 1, max: 24, def: 3 },
+			resistanceOrgasmPenalty: { min: 0.5, max: 0.99, def: 0.7 },
+			fertilityStrengthPercent: { min: 25, max: 400, def: 100 },
+		};
+		for (const k of Object.keys(scalarSliders)) {
+			const s = scalarSliders[k];
+			const v = x[k];
+			x[k] = Number.isFinite(v) ? Math.min(s.max, Math.max(s.min, v)) : s.def;
+		}
+		/* X-Change body size limits: fill in the sliders and keep them inside their ranges. */
+		try {
+			setup.xChangeEnsureBodySizeSettings();
+		} catch (e) {}
+		/* Trait toggles. Missing settings count as off, so only add missing ones without changing the player's choices. */
+		const toggleDefaults = {
+			genitalAddictTraitsEnabled: 1, critterMagnetTraitEnabled: 1, chastityAcclimatedTraitEnabled: 1,
+			arousalAcclimatedTraitEnabled: 1, insanityDisturbedTraitsEnabled: 0, insanityBecomesPermanent: 0, heatBlocksScream: 0,
+			blindAdaptabilityKeep: "fade", blindAdaptabilityNoLove: 0,
+			oralFixationTraitEnabled: 1, oralFixationSwallowRelief: 1,
+		};
+		for (const k of Object.keys(toggleDefaults)) {
+			if (x[k] === undefined || x[k] === null) x[k] = toggleDefaults[k];
+		}
+	})()>>
+<</widget>>
+
+<<widget "clothingSlotMigration">>
+	<<if !$jacketsMovedToCoatSlot or !$bagsMovedToOwnSlot or !$scarvesMovedToOwnSlot>>
+		<<if !$jacketsMovedToCoatSlot>>
+			<<script>>
+				const jackets = setup.clothes.over_upper.filter(item => item.imgSlot === "upper").map(item => item.name);
+				["worn", "carried"].forEach(where => {
+					const slots = V[where];
+					if (!slots || !slots.upper || !slots.over_upper) return;
+					if (jackets.includes(slots.upper.name) && slots.over_upper.index > 0 && Array.isArray(V.wardrobe?.over_upper)) {
+						V.wardrobe.over_upper.push(clone(slots.over_upper));
+						slots.over_upper = clone(setup.clothes.over_upper[0]);
+					}
+				});
+				convertNormalToOver(jackets);
+			<</script>>
+		<</if>>
+		<<if !$bagsMovedToOwnSlot>>
+			<<script>>convertHandheldToBag();<</script>>
+		<</if>>
+		<<if !$scarvesMovedToOwnSlot>>
+			<<script>>convertNeckToScarf();<</script>>
+		<</if>>
+		<<updateClothes>>
+		<<set $jacketsMovedToCoatSlot to true>>
+		<<set $bagsMovedToOwnSlot to true>>
+		<<set $scarvesMovedToOwnSlot to true>>
+	<</if>>
+	<<run backfillOutfitSlots()>>
+<</widget>>
+
+<<widget "xchange-loadinit">>
+	<<run setup.xchangeRunLoadCompat()>>
+	/* Older Gwylan requests copied missing mod catalogue slots as "none". */
+	<<if $gwylan?.request?.event is "clothing">>
+		<<run $gwylan.request.items?.forEach(item => {
+			if (item.category !== "clothing" || item.slot !== "none") return;
+			const slots = setup.clothes_all_slots.filter(slot => setup.clothes[slot].some(clothes => clothes.name === item.name));
+			if (slots.length === 1) item.slot = slots[0];
+		})>>
+	<</if>>
+	/* Use vanilla's legacy sprite mapping for complete cached bodies that predate bodyshape. */
+	<<if setup.xChangeMigrateLegacyHermSnapshots()>>
+		<<run setup.xChangeRepairNoticeOnce("repair_xchange_legacy_body_snapshot", "<b>Save repair notice</b><br>Stored X-Change bodies used legacy body-sex or appearance fields. Missing body shapes now use the same mapping as vanilla's old-character update. Recorded sizes and body history were preserved.")>>
+	<</if>>
+	<<unset $xchange._didLegacyBodySexFix>>
+		<<if $xchange.pill?.active and $xchange.pill.baseSex isnot undefined and !["m", "f"].includes($xchange.pill.baseSex)>>
+			<<set $xchange.pill.baseSex to undefined>>
+		<</if>>
+		<<if $xchange.pill?.active and $xchange.pill.baseSex is undefined>>
+			<<set _xcBaseSex to undefined>>
+			<<if ["m", "f"].includes($xchange.pill.originalBody?.sex)>>
+				<<set _xcBaseSex to $xchange.pill.originalBody?.sex>>
+			<<elseif $xchange.pill.baseGenitals isnot undefined and $xchange.pill.baseGenitals isnot null and typeof $xchange.pill.baseGenitals is "object">>
+				<<if $xchange.pill.baseGenitals.penis is true and $xchange.pill.baseGenitals.vagina isnot true>>
+					<<set _xcBaseSex to "m">>
+				<<elseif $xchange.pill.baseGenitals.vagina is true and $xchange.pill.baseGenitals.penis isnot true>>
+					<<set _xcBaseSex to "f">>
+				<</if>>
+			<</if>>
+			<<if _xcBaseSex isnot undefined>>
+				<<set $xchange.pill.baseSex to _xcBaseSex>>
+			<</if>>
+		<</if>>
+	<<if $xchange isnot undefined and $xchange.transIdentitySeeded is undefined>><<set $xchange.transIdentitySeeded to true>><</if>>
+	<<script>>window.repairInvalidHairColours?.();<</script>>
+	<<run fishingEnsure()>>
+	/* A restored X-Change body could bring back a demon skin after the demon TF was gone. */
+	<<if $player.skin_temp and ["demon", "demonBlue", "demonPurple", "demonRed"].includes($player.skin.color)>><<syncDemonSkin>><</if>>
+	<<waterDragonNestDefaults>><<if $waterDragonLab>><<waterDragonLabDefaults>><</if>>
+	<<if $waterDragonEggs and !isFullWaterDragon() and !($waterDragonLab and $waterDragonLab.active)>><<unset $waterDragonEggs>><</if>>
+	<<dhmInit>>
+	<<wliInit>>
+	<<worldGenderOverrideInit>>
+	<<run ensureRobinStand()>>
+	/* Self-sufficiency and Bailey's Robin-targeting flag are mutually exclusive; older saves could hold both. */
+	<<if $robinStand.selfSufficient is 1 and $robinfirstrentfight>><<set $robinfirstrentfight to 0>><</if>>
+	<<if playerIsXChanged()>><<xchange-fertility-override>><</if>>
+	<<ccmodVersionCheck>>
+	<<ensureTransformationTraits>>
+	<<run restoreActiveBlackmailQuest()>>
+	<<xchangeSettingsSliderRepair>>
+	<<script>>setup.inflation?.ensureSettings?.();<</script>>
+	<<script>>window.repairNonFiniteNumerics?.();<</script>>
+	<<script>>window.clearOrphanWetnessKeys?.();<</script>>
+	<<script>>window.ejectOrphanVaginalDildo?.();<</script>>
+	<<run pruneClothes()>><<run pruneNPCName()>>
+	<<museumAntiqueText>>
+	/* Prune unused antique entries absent from this version, preserving collected antiques. */
+	<<for _labelM, _valueM range $museumAntiques.antiques>>
+		<<if !_museumAntiqueText[_labelM] and _valueM is "notFound">>
+			<<run delete $museumAntiques.antiques[_labelM]>>
+			<<run $museumAntiqueJournalHints?.delete(_labelM)>>
+			<<if $winterHint is _labelM>><<set $winterHint to "notGiven">><</if>>
+		<</if>>
+	<</for>>
+	<<set $museumAntiques.maxCount to Object.keys($museumAntiques.antiques).filter(name => _museumAntiqueText[name]).length>>
+	<<run repairWardrobeSlots()>>
+	<<run reclaimStrandedWardrobeItems()>>
+	<<physicalAdjustmentsInit>>
+	<<master-audio-update>>
+	<<clamp>>
+<</widget>>
+
+<<widget "xchange-modupdate">>
+	<<if $options.dragonStarDisplay is undefined>><<set $options.dragonStarDisplay to "show">><</if>>
+	/* Chastity control data lives on each item. Backfill old purchases in every owned-clothing location without rewriting NPC-fitted devices. */
+	<<if $chastityAcclimation is undefined>><<set $chastityAcclimation to 0>><</if>>
+	/* Uses the same setting check as the hourly update, so disabled traits stay hidden when loading a save. */
+	<<if $chastityAcclimatedTrait is undefined>><<set $chastityAcclimatedTrait to ($xchange?.chastityAcclimatedTraitEnabled isnot 0 and $chastityAcclimation gte 14400) ? 1 : 0>><</if>>
+	<<if $lustfulAcclimation is undefined>><<set $lustfulAcclimation to 0>><</if>>
+	<<if $arousalDesensitizedTrait is undefined>><<set $arousalDesensitizedTrait to ($xchange?.arousalAcclimatedTraitEnabled isnot 0 and ($lustfulAcclimation gte 20160 or $chastityAcclimatedTrait is 1)) ? 1 : 0>><</if>>
+	<<run window.backfillChastityKeys()>>
+	<<if $worn?.vibrator>>
+		<<run window.initWornVibratorDefaults($worn.vibrator)>>
+	<</if>>
+	<<if $xchangePill isnot undefined>>
+		<<set $xchange.pill to $xchangePill>>
+		<<unset $xchangePill>>
+	<</if>>
+
+	<<xchange-init>>
+	<<xchange-init2>>
+	<<if $robinGivenTotal is undefined>><<set $robinGivenTotal to 0>><</if>>
+	<<if $settings.maggotsEnabled is undefined>><<set $settings.maggotsEnabled to true>><</if>>
+
+	/* Backfill the Gentleman's Club feats only when the save proves it reached the unpaid stage before the feats existed. */
+	<<if !$xchange.backComp.gentlemansClubFeats>>
+		<<set $xchange.backComp.gentlemansClubFeats to true>> /* delete later */
+		<<if $xchange.blackmail?.paymentsRemoved>>
+			<<earnFeat "How They Get You">>
+			<<earnFeat "They Got You">>
+		<</if>>
+	<</if>>
+	/* The wraith's body roll used to be keyed on its NPC init flag. Record whether a save already rolled one before anything below can set that flag, or an established wraith would be rerolled into a different body. */
+	<<if $wraith and $wraith.bodyGenerated is undefined>>
+		<<set $wraith.bodyGenerated to (C.npc["Ivory Wraith"].init is 1)>>
+	<</if>>
+	/* Breaking free of the wraith's possession skipped setting $wraithIntro, so saves that resisted their first encounter never unlocked its social tab card. Backfill for anyone who has demonstrably met it. */
+	<<if !$xchange.backComp.wraithIntroSocial>>
+		<<set $xchange.backComp.wraithIntroSocial to true>> /* delete later */
+		<<if $wraith.seen gte 1 or $wraith.possessCount gte 1 or C.npc["Ivory Wraith"].init is 1>>
+			<<set $wraithIntro to true>>
+			/* Possessions that never generated the wraith leave the named NPC uninitialised, which hides its social card regardless of the intro flag. */
+			<<if C.npc["Ivory Wraith"].init isnot 1>>
+				<<initnpc "Ivory Wraith">>
+			<</if>>
+		<</if>>
+	<</if>>
+	/* Sweep up strap-on copies older versions filed into wardrobes as underwear, and the genitals slot clothing sets recorded but could never wear. */
+	<<if !$xchange.backComp.clothingSetStraponCleanup>>
+		<<set $xchange.backComp.clothingSetStraponCleanup to true>> /* delete later */
+		<<script>>
+			window.removePhantomStraponGarments?.();
+			window.dropClothingSetGenitals?.();
+		<</script>>
+	<</if>>
+	<<if !$xchange.backComp.childHairColourSpacing>>
+		<<set $xchange.backComp.childHairColourSpacing to true>> /* delete later */
+		<<script>>
+			for (const record of Object.values(V.childRecords ?? {})) {
+				if (record?.features?.hairColour === "dark brown") record.features.hairColour = "darkbrown";
+			}
+		<</script>>
+	<</if>>
+
+	/* One-time repair: borrowed kaiju costumes used the normal clothing-loss rebuy path after the costume became a forest-shop item, silently stacking complete outfits in hidden over-outfit wardrobe slots. */
+	<<if !$dolxKaijuCostumeUnlockRepaired>>
+		<<set $dolxKaijuCostumeUnlockRepaired to true>> /* delete later */
+		<<unset $dolxKaijuCostumesRepaired>>
+		<<run (() => {
+			const kaijuPieces = {
+				over_upper: "kaiju costume",
+				over_lower: "kaiju bottoms",
+				over_head: "kaiju hood",
+			};
+			const wardrobes = [];
+			if (V.wardrobe && typeof V.wardrobe === "object") wardrobes.push(V.wardrobe);
+			if (V.wardrobes && typeof V.wardrobes === "object") {
+				for (const wardrobe of Object.values(V.wardrobes)) {
+					if (wardrobe && typeof wardrobe === "object" && Object.keys(kaijuPieces).some(slot => Array.isArray(wardrobe[slot]))) wardrobes.push(wardrobe);
+				}
+			}
+			const looseContainers = [V.worn, V.carried].filter(container => container && typeof container === "object");
+			const hasKaiju = looseContainers.some(container => Object.entries(kaijuPieces).some(([slot, name]) => container[slot]?.name === name)) ||
+				Object.entries(kaijuPieces).some(([slot, name]) => Array.isArray(V.store?.[slot]) && V.store[slot].some(item => item?.name === name)) ||
+				wardrobes.some(wardrobe => Object.entries(kaijuPieces).some(([slot, name]) => Array.isArray(wardrobe[slot]) && wardrobe[slot].some(item => item?.name === name)));
+			if (!hasKaiju) return;
+
+			if (!Array.isArray(V.specialClothesEvents)) V.specialClothesEvents = [];
+			V.specialClothesEvents.pushUnique("kaiju");
+			if (Array.isArray(V.specialClothes)) {
+				for (const name of Object.values(kaijuPieces)) {
+					const special = V.specialClothes.find(item => item.name === name);
+					if (special) special.unlocked = 3;
+				}
+			}
+
+			const targetWardrobe = wardrobes.find(wardrobe => wardrobe.over_upper?.some(item => item?.name === kaijuPieces.over_upper)) ||
+				wardrobes.find(wardrobe => Object.entries(kaijuPieces).some(([slot, name]) => wardrobe[slot]?.some(item => item?.name === name)));
+			for (const [slot, name] of Object.entries(kaijuPieces)) {
+				let keeper;
+				for (const wardrobe of wardrobes) {
+					if (!Array.isArray(wardrobe[slot])) continue;
+					for (let i = wardrobe[slot].length - 1; i >= 0; i--) {
+						if (wardrobe[slot][i]?.name !== name) continue;
+						keeper ||= wardrobe[slot][i];
+						wardrobe[slot].splice(i, 1);
+					}
+				}
+				if (keeper && targetWardrobe) {
+					if (!Array.isArray(targetWardrobe[slot])) targetWardrobe[slot] = [];
+					targetWardrobe[slot].push(keeper);
+				}
+			}
+		})()>>
+	<</if>>
+
+	/* One-time scrub: saves written while animatemodel stamped a fabricated "vine" NPC stub into $NPCList still carry it, and it renders as "the undefined vineperson" until the slot is next cleared. */
+	<<if !$dolxNpcStubsScrubbed>>
+		<<set $dolxNpcStubsScrubbed to true>> /* delete later */
+		<<run window.scrubFabricatedNPCStubs?.()>>
+	<</if>>
+
+	/* One-time repair: inventory sextoy `worn` flags stranded by old code that cleared V.worn slots without syncing them (made carried toys count as worn for the addiction/pill orgasm gates). */
+	<<if !$dolxSexToyWornFlagsSynced>>
+		<<set $dolxSexToyWornFlagsSynced to true>> /* delete later */
+		<<run window.syncSexToyWornFlags?.()>>
+	<</if>>
+
+	<<if !$dolxSageHatRelocked>>
+		<<set $dolxSageHatRelocked to true>> /* delete later */
+		<<run (() => {
+			const hat = Array.isArray(V.specialClothes) && V.specialClothes.find(c => c.name === "sage witch hat");
+			if (hat && hat.unlocked === 3 && !V.gwylanSeen?.includes("ritual_sex")) hat.unlocked = 0;
+		})()>>
+	<</if>>
+
+	/* One-time backfill: saves started with the rank-3 special clothing feat boost predate $specialClothesStorySets, so their imported story unlocks were unreachable. Reconstruct it from sets whose items all sit at unlock level 3 without their requirements being met. */
+	/* The first version of this backfill counted items lifted to level 3 by a seasonal set (Halloween, Valentine's...) or by their own unlock condition, so every costume in that season got a story unlock the player never earned. Ranks 1-2 import at level 2, so only rank 3 leaves items at 3 with nothing else explaining it. Rerun it with that check, dropping entries that fail it. */
+	<<if !$dolxStorySetsBackfilled2>>
+		<<unset $dolxStorySetsBackfilled>>
+		<<set $dolxStorySetsBackfilled2 to true>> /* delete later */
+		<<run (() => {
+			if (!Array.isArray(V.specialClothes)) return;
+			const imported = setName => {
+				const requirements = setup.specialClothesSets[setName]?.requirements;
+				if (typeof requirements === "function" && requirements()) return false;
+				const items = setup.specialClothes.filter(item => item.sets.includes(setName));
+				return items.length > 0 && items.every(item =>
+					V.specialClothes.find(c => c.name === item.name)?.unlocked === 3
+					&& !item.requirements?.()
+					&& !item.sets.some(other => other !== setName && setup.specialClothesSets[other]?.requirements?.()));
+			};
+			const boosted = V.featsBoosts?.upgrades?.specialClothing > 0;
+			if (Array.isArray(V.specialClothesStorySets)) V.specialClothesStorySets = boosted ? V.specialClothesStorySets.filter(imported) : [];
+			if (!boosted) return;
+			for (const setName of getSpecialSets(set => set.feat)) {
+				if (!imported(setName)) continue;
+				if (!Array.isArray(V.specialClothesStorySets)) V.specialClothesStorySets = [];
+				V.specialClothesStorySets.pushUnique(setName);
+			}
+		})()>>
+	<</if>>
+
+	/* One-time repair two-tone dye */
+	<<if !$dolxTwoToneStyleRepaired2>> /* delete later */
+		<<unset $dolxTwoToneStyleRepaired>>
+		<<set $dolxTwoToneStyleRepaired2 to true>>
+		<<run (() => {
+			const isVanillaGradientStyle = style => !!setup.colours.hairgradients_prototypes?.sides?.[style];
+			const isGradientStyle = style => isVanillaGradientStyle(style) || Object.values(setup.dhmod.moddedGradients).includes(style);
+			if (V.hairColourStyle === "gradient" && V.hairColourGradient && !isGradientStyle(V.hairColourGradient.style)) {
+				V.hairColourGradient.style = "low-ombre";
+			}
+			if (V.hairFringeColourStyle === "gradient" && V.hairFringeColourGradient && !isGradientStyle(V.hairFringeColourGradient.style)) {
+				V.hairFringeColourGradient.style = "low-ombre";
+			}
+			if (V.twoToneStyle && !isVanillaGradientStyle(V.twoToneStyle)) V.twoToneStyle = "low-ombre";
+		})()>>
+	<</if>>
+
+	/* One-time repair: Poppy's bed sleep-outfit links stored undressed clothes under location "Flats Poppy Bed", but the wake-up links only retrieve from "bed", so those clothes were stranded forever. Return them to the wardrobe. */
+	<<if !$dolxPoppyBedStoreReclaimed>>
+		<<set $dolxPoppyBedStoreReclaimed to true>> /* delete later */
+		<<run (() => {
+			if (!V.store || !V.wardrobe) return;
+			for (const slot of Object.keys(V.store)) {
+				const items = V.store[slot];
+				if (!Array.isArray(items)) continue;
+				for (let i = items.length - 1; i >= 0; i--) {
+					const item = items[i];
+					if (!item || item.location !== "Flats Poppy Bed") continue;
+					if (!item.temp && !setup.wardrobeSkip.includes(item.name) && Array.isArray(V.wardrobe[slot])) V.wardrobe[slot].push(item);
+					items.splice(i, 1);
+				}
+			}
+		})()>>
+	<</if>>
+
+	/* One-time repair for Bailey's cursed collar.
+	If Stockholm is inactive, unlock the collar so old saves cannot get stuck with it permanently fixed. */
+	<<if !$dolxBaileyCollarUnfixed2 and $worn isnot undefined and $worn.neck isnot undefined>>
+		<<if $syndromeBailey isnot true>>
+			<<if $worn.neck.name is "Bailey's collar" and $worn.neck.cursed is 1>>
+				<<set $worn.neck.cursed to 0>>
+			<</if>>
+			<<set $dolxBaileyCollarUnfixed2 to true>> /* delete later */
+		<</if>>
+	<</if>>
+
+	/* Breeder edging migration. Root vars are canonical; old nested pill vars are one-time legacy input. */
+	<<if def $xchange.pill.breederEdgingCount>>
+		<<set $xchange.breederEdgingCount to $xchange.pill.breederEdgingCount>>
+		<<unset $xchange.pill.breederEdgingCount>>
+	<<elseif ndef $xchange.breederEdgingCount>>
+		<<set $xchange.breederEdgingCount to 0>>
+	<</if>>
+	<<if def $xchange.pill.breederEdgingStress>>
+		<<set $xchange.breederEdgingStress to $xchange.pill.breederEdgingStress>>
+		<<unset $xchange.pill.breederEdgingStress>>
+	<<elseif ndef $xchange.breederEdgingStress>>
+		<<set $xchange.breederEdgingStress to (($xchange.pill.breederEffect or $xchange.pill.omegaEffect) ? 100 : 0)>>
+	<</if>>
+
+	<<if $genderknown is undefined or $genderknown is null>><<set $genderknown to []>><</if>>
+	<<if !Array.isArray($transgenderknown)>><<set $transgenderknown to []>><</if>>
+	<<if $schoolrep and $schoolrep.transgender is undefined>><<set $schoolrep.transgender to null>><</if>>
+
+	/* Catalogue backfill for saves that already passed the current $objectVersion.specialClothes gate.
+	   Only fires when new special clothes have been added since the save last ran the versioned block, and specialClothesUpdate is idempotent. */
+	<<if Array.isArray($specialClothes) and $specialClothes.length lt setup.specialClothes.length>>
+		<<specialClothesUpdate>>
+	<</if>>
+	<<if $wardrobes isnot undefined and $wardrobes isnot null and typeof $wardrobes is "object" and !Array.isArray($wardrobes) and $wardrobes.inventory is undefined>>
+		<<wardrobesUpdate>>
+	<</if>>
+
+	<<if Object.keys($xchange.pill.changedBody).length gt 0 && $xchange.pill.changedBody.fame is undefined>>
+		<<set $xchange.pill.changedBody.fame to {
+			bestiality: 0,
+			business: 0,
+			exhibitionism: 0,
+			good: 0,
+			impreg: 0,
+			model: 0,
+			pimp: 0,
+			pregnancy: 0,
+			prostitution: 0,
+			rape: 0,
+			scrap: 0,
+			sex: 0,
+			social: 0,
+		}>>
+	<</if>>
+	
+	<<if Object.keys($xchange.pill.originalBody).length gt 0 && $xchange.pill.originalBody.fame is undefined>>
+		<<set $xchange.pill.originalBody.fame to $fame>>
+	<</if>>
+
+	<<if Object.keys($xchange.pill.originalBody).length gt 0 && $xchange.pill.originalBody.promiscuity is undefined>>
+		<<set $xchange.pill.originalBody.promiscuity to $promiscuity>>
+	<</if>>
+
+	<<if Object.keys($xchange.pill.originalBody).length gt 0 && $xchange.pill.originalBody.exhibitionism is undefined>>
+		<<set $xchange.pill.originalBody.exhibitionism to $exhibitionism>>
+	<</if>>
+
+	<<if Object.keys($xchange.pill.originalBody).length gt 0 && $xchange.pill.originalBody.deviancy is undefined>>
+		<<set $xchange.pill.originalBody.deviancy to $deviancy>>
+	<</if>>
+
+	<<if Object.keys($xchange.pill.changedBody).length gt 0 && $xchange.pill.changedBody.promiscuity is undefined>>
+		<<set $xchange.pill.changedBody.promiscuity to 0>>
+	<</if>>
+
+	<<if Object.keys($xchange.pill.changedBody).length gt 0 && $xchange.pill.changedBody.exhibitionism is undefined>>
+		<<set $xchange.pill.changedBody.exhibitionism to 0>>
+	<</if>>
+
+	<<if Object.keys($xchange.pill.changedBody).length gt 0 && $xchange.pill.changedBody.deviancy is undefined>>
+		<<set $xchange.pill.changedBody.deviancy to 0>>
+	<</if>>
+
+	<<if $xchangeStatSplit is undefined>>
+		<<set $xchangeStatSplit to false>>
+	<</if>>
+
+	<<if $xchange.heat.message is undefined>>
+		<<set $xchange.heat.message to false>>
+	<</if>>
+
+	<<if $xchange.science is undefined>>
+		<<set $xchange.science to 1>>
+	<</if>>
+
+	<<if $xchange.math is undefined>>
+		<<set $xchange.math to 1>>
+	<</if>>
+
+	<<if $xchange.english is undefined>>
+		<<set $xchange.english to 1>>
+	<</if>>
+
+	<<if $xchange.history is undefined>>
+		<<set $xchange.history to 1>>
+	<</if>>
+
+	<<if $xchangeknown isnot undefined>>
+		<<set $xchange.known to $xchangeknown>>
+		<<unset $xchangeknown>>
+	<</if>>
+	
+	<<for _npc range $genderknown>>
+		<<set $xchange.expectedGenderBy[_npc] to $player.sex>>
+	<</for>>
+
+	<<if Object.keys($xchange.pill.changedBody).length gt 0 and $xchange.pill.changedBody.haircolour is undefined>>
+		<<set $xchange.pill.changedBody.leftEyeColour = $leftEyeColour>>
+		<<set $xchange.pill.changedBody.rightEyeColour = $rightEyeColour>>
+		<<set $xchange.pill.changedBody.haircolour = $haircolour>>
+		<<set $xchange.pill.changedBody.hairfringecolour = $hairfringecolour>>
+		<<set $xchange.pill.changedBody.hairtype to $hairtype>>
+		<<set $xchange.pill.changedBody.fringetype to $fringetype>>
+		<<set $xchange.pill.changedBody.hairposition to $hairposition>>
+		<<set $xchange.pill.changedBody.skinColor to $player.skin.color>>
+	<</if>>
+
+	<<if Object.keys($xchange.pill.originalBody).length gt 0 and $xchange.pill.originalBody.haircolour is undefined>>
+		<<set $xchange.pill.originalBody.leftEyeColour = $leftEyeColour>>
+		<<set $xchange.pill.originalBody.rightEyeColour = $rightEyeColour>>
+		<<set $xchange.pill.originalBody.haircolour = $haircolour>>
+		<<set $xchange.pill.originalBody.hairfringecolour = $hairfringecolour>>
+		<<set $xchange.pill.originalBody.hairtype to $hairtype>>
+		<<set $xchange.pill.originalBody.fringetype to $fringetype>>
+		<<set $xchange.pill.originalBody.hairposition to $hairposition>>
+		<<set $xchange.pill.originalBody.skinColor to $player.skin.color>>
+	<</if>>
+
+	<<if $schoolevent gt 2>><<set $schoolevent to 0>><</if>>
+	<<if $recentmolest is -1>><<set $recentmolest to Math.max($moleststat - Time.days, 0)>><</if>>
+	<<if $recentrape is -1>><<set $recentrape to Math.max($rapestat - Time.days, 0)>><</if>>
+
+	<<if $xchange.machine isnot undefined>>
+		<<set $machineVaginalBought to $xchange.machine.vaginalBought? $xchange.machine.vaginalBought : 0>>
+		<<set $machineAnalBought to $xchange.machine.analBought? $xchange.machine.analBought : 0>>
+		<<unset $xchange.machine>>
+	<</if>>
+
+	<<if $portalPanties and $portalPanties.state and $portalPanties.state.mouth isnot undefined>>
+		<<unset $portalPanties.state.mouth>>
+	<</if>>
+
+	<<if Object.keys($xchange.pill.originalBody).length gt 0 and $xchange.pill.originalBody.facestyle is undefined>>
+		<<set $xchange.pill.originalBody.facevariant to "default">>
+		<<set $xchange.pill.originalBody.facestyle to "default">>
+		<<if Object.keys($xchange.pill.changedBody).length gt 0 and $xchange.pill.changedBody.facestyle is undefined>>
+			<<set $xchange.pill.changedBody.facevariant to $player.gender is "m"? "catty" : "aloof">>
+			<<set $xchange.pill.changedBody.facestyle to "default">>
+		<</if>>
+	<</if>>
+
+	<!-- Attempt to fix bad initialisation of these variables -->
+	<<if isNaN($beingPenetratedOrgasmStat)>>
+		<<set $beingPenetratedOrgasmStat to 0>>
+	<</if>>
+	<<if isNaN($penetratingOrgasmStat)>>
+		<<set $penetratingOrgasmStat to 0>>
+	<</if>>
+
+	<<if $xchange.pill.genderflipEffect is undefined>>
+		<<if $xchange.pill.active>>
+			<<set $xchange.pill.genderflipEffect to true>>
+		<<else>>
+			<<set $xchange.pill.genderflipEffect to false>>
+		<</if>>
+	<</if>>
+
+	<<if Object.keys($xchange.pill.changedBody).length gt 0 and $xchange.pill.changedBody.naturalhaircolour is undefined>>
+		<<set $xchange.pill.changedBody.naturalhaircolour to $naturalhaircolour>>
+		<<set $xchange.pill.changedBody.hairColourGradient to $hairColourGradient>>
+		<<set $xchange.pill.changedBody.hairColourStyle to $hairColourStyle>>
+		<<set $xchange.pill.changedBody.hairFringeColourGradient to $hairFringeColourGradient>>
+		<<set $xchange.pill.changedBody.hairFringeColourStyle to $hairFringeColourStyle>>
+	<</if>>
+
+	<<if Object.keys($xchange.pill.originalBody).length gt 0 and $xchange.pill.originalBody.naturalhaircolour is undefined>>
+		<<set $xchange.pill.originalBody.naturalhaircolour to $naturalhaircolour>>
+		<<set $xchange.pill.originalBody.hairColourGradient to $hairColourGradient>>
+		<<set $xchange.pill.originalBody.hairColourStyle to $hairColourStyle>>
+		<<set $xchange.pill.originalBody.hairFringeColourGradient to $hairFringeColourGradient>>
+		<<set $xchange.pill.originalBody.hairFringeColourStyle to $hairFringeColourStyle>>
+	<</if>>
+
+	<<set _map to {
+		"default": "default",
+		"masc": "aloof",
+		"fem": "catty"
+	}>>
+	<<if $facestyle is "fem" or $facestyle is "masc">>
+		<<set $facevariant to _map[$facestyle]>>
+		<<set $facestyle to "default">>
+	<</if>>
+	
+	<<if Object.keys($xchange.pill.originalBody).length gt 0 and $xchange.pill.originalBody.facevariant is undefined>>
+		<<set $xchange.pill.originalBody.facevariant to _map[$xchange.pill.originalBody.facestyle]>>
+		<<set $xchange.pill.originalBody.facestyle to "default">>
+		<<if Object.keys($xchange.pill.changedBody).length gt 0>>
+			<<set $xchange.pill.changedBody.facevariant to _map[$xchange.pill.changedBody.facestyle]>>
+			<<set $xchange.pill.changedBody.facestyle to "default">>
+		<</if>>
+	<</if>>
+
+	<!-- Repairing corrupted variables -->
+	<<if isNaN(V.arousal)>><<set V.arousal to 0>><</if>>
+	<<run (function () {
+		var V = State.variables;
+		if (!Array.isArray(V.trackedArousal) || V.trackedArousal.includes(NaN)) { V.trackedArousal = [0]; }
+	})()>>
+	<<if isNaN(V.vaginaArousalWetness)>><<set V.vaginaArousalWetness to 1>><</if>>
+	<<if isNaN(V.vaginaWetness)>><<set V.vaginaWetness to 1>><</if>>
+	<<if isNaN($combatExtended.brawling)>><<set $combatExtended.brawling to 0>><</if>>
+
+	<<if $xchange.blackmail and $xchange.blackmail.questsCompleted is undefined>>
+		<<set $xchange.blackmail.questsCompleted to 0>>
+	<</if>>
+
+	<<if $xchange.blackmail and $xchange.blackmail.hasMaterial and $xchange.blackmail.courier is undefined>>
+		/* Saves from before the courier system existed always delivered via the orphanage/mansion, so any letter already in flight keeps that exact behaviour. */
+		<<set $xchange.blackmail.courier to "home">>
+		<<set $xchange.blackmail.courierAfk to false>>
+		<<set $xchange.blackmail.courierReady to 7>>
+	<</if>>
+
+	<<if playerIsXChanged() and $xchange.pill.countdown is undefined>>
+		<<set $xchange.pill.countdown to $xchange.pill.duration>>
+	<</if>>
+
+	<<if Object.keys($xchange.pill.originalBody).length gt 0 and $xchange.pill.originalBody.semen_amount is undefined>>
+		<<set $xchange.pill.originalBody.semen_amount to 0>>
+		<<set $xchange.pill.originalBody.milk_amount to 0>>
+		<<if Object.keys($xchange.pill.changedBody).length gt 0>>
+			<<set $xchange.pill.changedBody.semen_amount to 0>>
+			<<set $xchange.pill.changedBody.milk_amount to 0>>
+		<</if>>
+	<</if>>
+
+	<<if $combat is 1 and $enemypleasure is undefined>>
+		<<set $enemypleasure to 0>>
+	<</if>>
+	<<if $combat is 1 and $enemypleasuremax is undefined>>
+		<<set $enemypleasuremax to 500>>
+	<</if>>
+
+	<<if $neckTucked is undefined>><<set $neckTucked to false>><</if>>
+
+	<<if $xchange.backComp["250824"] is undefined>>
+		<<set $xchange.backComp["250824"] to true>>
+		<<if playerIsXChanged()>>
+			<<set _pillSensitivityChange to ($player.sex is "f"? -1 : 1) * V.xchange.pillSensitivityChange>>
+			<<if typeof insanitySensitivityAdjustment === "function">>
+				<<set _pillSensitivityChange to insanitySensitivityAdjustment(_pillSensitivityChange)>>
+			<</if>>
+			<<set $breastsensitivity = Math.clamp($breastsensitivity + _pillSensitivityChange, 0.25, 6)>>
+			<<set $bottomsensitivity = Math.clamp($bottomsensitivity + _pillSensitivityChange, 0.25, 3)>>
+			<<set $genitalsensitivity = Math.clamp($genitalsensitivity + _pillSensitivityChange, 0.25, 10)>>
+		<</if>>
+	<</if>>
+
+	/* One-time repair for the pre-fix insanity sensitivity bug, which reflected positive sensitivity changes into negatives and pushed some players' base sensitivity below its normal floor of 1 (down to 0.25).
+	Restore any sub-floor value to 1; values at or above 1 are legitimate and left alone. NaN/undefined compare false against "lt 1" and are intentionally left for the dedicated numeric repair. */
+	<<if $xchange.backComp["insanitySensRepair"] is undefined>>
+		<<set $xchange.backComp["insanitySensRepair"] to true>> /* delete later */
+		<<if $breastsensitivity lt 1>><<set $breastsensitivity to 1>><</if>>
+		<<if $bottomsensitivity lt 1>><<set $bottomsensitivity to 1>><</if>>
+		<<if $genitalsensitivity lt 1>><<set $genitalsensitivity to 1>><</if>>
+		<<if $mouthsensitivity lt 1>><<set $mouthsensitivity to 1>><</if>>
+	<</if>>
+
+	<<for _cr range Object.keys(setup.crimeNames)>>
+		<<if ndef $crime[_cr]>>
+			<<set $crime[_cr] to {
+				current: 		0, 
+				history: 		0, 
+				daily: 			0, 
+				count: 			0, 
+				countHistory: 	0}>>
+			<<set $xchange.errorLog.push(`Crime "${_cr}" data was missing and was initialised as a new empty category.`)>>
+		<</if>>
+	<</for>>
+
+	<<if isNaN($innocencetrauma) or isNaN($trauma)>>
+		<<if isNaN($trauma)>>
+			<<if !isNaN($innocencetrauma) and $innocencestate isnot 1>>
+				<<set $trauma to Number($innocencetrauma)>>
+				<<set $innocencetrauma to 0>>
+			<<else>>
+				<<set $trauma to 0>>
+			<</if>>
+		<</if>>
+		<<if isNaN($innocencetrauma)>>
+			<<set $innocencetrauma to 0>>
+		<</if>>
+	<</if>>
+
+	<<if !["m","f","n"].includes($player.gender) or !["m","f"].includes($player.sex)>>
+		<<set $effectsmessage to 1>>
+		<<set $hermSaveWarningMessage to 1>>
+		<<set $player.gender to "m">>
+		<<set $player.sex to "m">>
+		<<set $player.gender_body to "m">>
+		<<set $vaginause to "none">>
+		<<set $vaginastate to "none">>
+		<<set $penisuse to 0>>
+		<<set $penisstate to 0>>
+		<<set $player.ballsExist to true>>
+		<<set $player.penisExist to true>>
+		<<set $player.vaginaExist to false>>
+		<<set $sexStats.vagina.menstruation.running = false>>
+		<<set $xchange.saveWasLoadedAsHerm to 1>>
+	<</if>>
+
+	<!-- One-time heal for a lingering invalid live gender_body: an older version of the conversion above reset sex/gender to male but NOT gender_body, so a legacy "h" body could stay frozen as "h" (and the block won't fire again once sex is valid).
+	Only m/f/a are valid; derive from the body's sex. Runs once. -->
+	<<if !$xchange.fixLiveGenderBody>>
+		<<set $xchange.fixLiveGenderBody to true>> /* delete later */
+		<<if !["m","f","a"].includes($player.gender_body)>>
+			<<set $player.gender_body to (["m","f"].includes($player.sex) ? $player.sex : "m")>>
+			<<run $xchange.errorLog.push("Player gender_body held an invalid legacy value (e.g. \"h\") and has been normalised to match the body's sex.")>>
+			<<set $effectsmessage to 1>>
+		<</if>>
+	<</if>>
+
+	<!-- One-time realign: the gender-identity shift used to leave $player.sex stale until every secondary change finished, so mid-shift saves can carry fully swapped genitals under the old sex label.
+	Sex means anatomy everywhere else, so realign the unambiguous cases once. -->
+	<<if !$xchange.fixGiStaleSex>>
+		<<set $xchange.fixGiStaleSex to true>> /* delete later */
+		<<if $player.sex is "m" and $player.vaginaExist and !$player.penisExist>>
+			<<set $player.sex to "f">>
+			<<run $xchange.errorLog.push("Physical sex was still recorded as male on a fully female body (stale mid-shift data) and has been corrected.")>>
+		<<elseif $player.sex is "f" and $player.penisExist and !$player.vaginaExist>>
+			<<set $player.sex to "m">>
+			<<run $xchange.errorLog.push("Physical sex was still recorded as female on a fully male body (stale mid-shift data) and has been corrected.")>>
+		<</if>>
+	<</if>>
+
+	<!-- One-time repair: character creation never actually synced $player.gender_body to the chosen sex - it's initialised to "a" (variables-start.twee) and nothing
+	else touches it unless a herm-capable X-Change pill applies. So any save whose player never took a herm pill has been silently misreading as a herm to everything
+	that keys off gender_body, e.g. the "Body appearance" apparent-femininity factor (contributes 0 instead of +-200) and setup.xChangeTransformedRole.
+	playerIsXChanged() stays true even for permanent pills, so a genuine herm body is never touched here. Runs once. -->
+	<<if !$xchange.fixDefaultGenderBody>>
+		<<set $xchange.fixDefaultGenderBody to true>> /* delete later */
+		<<if $player.gender_body is "a" and !playerIsXChanged()>>
+			<<set $player.gender_body to $player.sex>>
+			<<run $xchange.errorLog.push("Player gender_body was stuck at the character-creation default \"a\" instead of matching the body's actual sex, and has been corrected.")>>
+			<<set $effectsmessage to 1>>
+		<</if>>
+	<</if>>
+
+	<!-- One-time repair: earlier widget hermify keyed genital-restore on gender IDENTITY, so a herm whose body sex and identity disagreed (e.g. a female-identifying male) could be left with a size-0 (Micro) penis, and making that herm permanent froze the Micro in place.
+	A herm always has a penis, so give any currently-herm body (and its cached herm snapshot) a proper size; at least Normal, capped to the configured range. -->
+	<<if !$xchange.fixHermMicroPenis>>
+		<<set $xchange.fixHermMicroPenis to true>> /* delete later */
+		<<set _hermPenisFixApplied to false>>
+		<<if setup.xChangeTransformedRole($player.gender_body) is "herm" and $player.penisExist and $player.vaginaExist and (!Number.isInteger($player.penissize) or $player.penissize lt 1)>>
+			<<if Number.isInteger($penissizemin) and Number.isInteger($penissizemax) and $penissizemax gte $penissizemin>>
+				<<set $player.penissize to random(Math.clamp(4, $penissizemin, $penissizemax), $penissizemax)>>
+			<<else>>
+				<<set $player.penissize to 4>>
+			<</if>>
+			<<if $player.ballsExist and (!Number.isInteger($ballssize) or $ballssize lt 1)>>
+				<<set $ballssize to random(1,5)>>
+			<</if>>
+			<<set _hermPenisFixApplied to true>>
+		<</if>>
+		<!-- Also repair the cached herm snapshot so reverting and re-herming doesn't restore the old Micro. -->
+		<<if $xchange.pill and $xchange.pill.hermBody and $xchange.pill.hermBody.penisExist and $xchange.pill.hermBody.vaginaExist and (!Number.isInteger($xchange.pill.hermBody.penissize) or $xchange.pill.hermBody.penissize lt 1)>>
+			<<if Number.isInteger($penissizemin) and Number.isInteger($penissizemax) and $penissizemax gte $penissizemin>>
+				<<set $xchange.pill.hermBody.penissize to random(Math.clamp(4, $penissizemin, $penissizemax), $penissizemax)>>
+			<<else>>
+				<<set $xchange.pill.hermBody.penissize to 4>>
+			<</if>>
+			<<set _hermPenisFixApplied to true>>
+		<</if>>
+		<<if _hermPenisFixApplied>>
+			<<run $xchange.errorLog.push("A hermaphrodite body was left with a size-0 (Micro) penis by an earlier bug; it has been restored to a proper size.")>>
+		<</if>>
+	<</if>>
+
+	<!-- Adapt any leftover non-DoLX herm NPCs (gender not m/f) to a single available sex, mirroring the player pass above.
+	     Routes by the NPC's canonical startingSex so they return to their normal sex (default male).
+		 Skips NPCs that are herm via a live DoLX pill (.xchange), since that's an intended, temporary state, not stale cross-mod data. -->
+	<<if Array.isArray($NPCName)>>
+		<<for _hermIdx to 0; _hermIdx lt $NPCName.length; _hermIdx++>>
+			<<set _hermNpc to $NPCName[_hermIdx]>>
+			<!-- Luchifen is a DoLX herm by design, not leftover cross-mod data. -->
+			<<if _hermNpc and !["m","f"].includes(_hermNpc.gender) and !_hermNpc.xchange and ($NPCNameList && $NPCNameList[_hermIdx]) isnot "Luchifen">>
+				<<set _targetNameIndex to _hermIdx>>
+				<<set _targetName to undefined>>
+				<<set _targetNo to undefined>>
+				<<if _hermNpc.startingSex is "f">>
+					<<npc-become-girl>>
+				<<else>>
+					<<npc-become-boy>>
+				<</if>>
+				<<set $effectsmessage to 1>>
+				<<set $hermSaveWarningMessage to 1>>
+				<<set $xchange.saveWasLoadedAsHerm to 1>>
+				<<run $xchange.errorLog.push(`Leftover herm NPC from another build "${($NPCNameList && $NPCNameList[_hermIdx]) || _hermNpc.fullDescription || _hermNpc.description || _hermIdx}" was adapted to ${_hermNpc.gender is "f" ? "female" : "male"}.`)>>
+			<</if>>
+		<</for>>
+	<</if>>
+
+	<<if $xchange.saveWasLoadedAsHerm>>
+		<<run console.warn("WARNING: This save featured a herm from another build at some point! This bug report may be invalid!")>>
+	<</if>>
+
+	<<if $beauty gt 18600>>
+		<<set $beauty to 20000>>
+	<</if>>
+
+	<<if $identity.init lt 2>>
+		<<set $effectsmessage to 1>>
+		<<set $identityWarningMessage to 1>>
+	<</if>>
+
+	<<if $averytimespilled is undefined>>
+		<<set $averytimespilled to 0>>
+	<</if>>
+
+	<<if $xchange.spikerates["dumb-bitch"] is undefined>>
+		<<set $xchange.spikerates["dumb-bitch"] to $xchange.spikerates["dumbbitch"]>>
+		<<unset $xchange.spikerates["dumbbitch"]>>
+	<</if>>
+
+	<<if $xchange.removerPillCatalogue>>
+		<<for _i to 0; _i lt $xchange.removerPillCatalogue.length; _i++>>
+			<<if $xchange.removerPillCatalogue[_i] is "dumbbitch">>
+				<<set $xchange.removerPillCatalogue[_i] to "dumb-bitch">>
+			<</if>>
+		<</for>>
+	<</if>>
+<</widget>>
+	
+<<widget "xchangeStartMedicineCabinet">>
+	<<run (() => {
+		const V = State.variables;
+		V.sexStats ??= {}; V.sexStats.pills ??= {}; V.sexStats.pills.pills ??= {}; V.sexStats.pills.boughtOnce = true;
+		const antidoteItem = setup && setup.pharmacyItems ? setup.pharmacyItems["xchange_antidote"] : null;
+		if (!antidoteItem || !antidoteItem.type) {return;}
+			const key = antidoteItem.type;
+		if (V.sexStats.pills.pills[key] == null || typeof V.sexStats.pills.pills[key] !== "object") {
+			V.sexStats.pills.pills[key] = { owned: 0 };
+		}
+		const slot = V.sexStats.pills.pills[key];
+		if (typeof slot.owned !== "number" || Number.isNaN(slot.owned)) {
+			const repairedOwned = Number(slot.owned);
+			slot.owned = Number.isFinite(repairedOwned) ? repairedOwned : 0;
+		}
+		/* The starter antidote is granted once per save */
+		if (V.dolxStartAntidoteGranted) return;
+		V.dolxStartAntidoteGranted = true;
+		if (slot.owned < 1) {slot.owned = 1;}
+	})()>>
+<</widget>>

@@ -1,0 +1,1327 @@
+:: Pharmacy
+<<unset $pharmacyItem>>
+<<if $daily.pharm.closed>>
+	A "Closed" sign hangs on the door. You tug the door but it's locked.
+	<br><br>
+
+	<<link [[Go back|Hospital Foyer]]>><</link>>
+<<else>>
+	<<set $outside to 0>><<set $location to "hospital">><<effects>>
+	<<endevent>>
+	You are inside the hospital pharmacy.
+
+	<<if "pharmNurse" in $per_npc>>
+		<<loadNPC 0 "pharmNurse">><<person1>>
+		<<if $daily.pharm.seductionResult is "fail">>
+			<br>
+			The <<person>> looks up from <<his>> book. "Hey, you're back." <<He>> returns to reading.
+		<<elseif $daily.pharm.seductionResult is "pass">>
+			<<if $daily.pharm.sexResult is "buy">>
+				The <<person>> at the till looks up at you, then returns to <<his>> book with a faint blush.
+			<<elseif $daily.pharm.sexResult is "embarrassed">>
+				The <<person>> at the till looks up at you with a smirk, then returns to <<his>> book.
+			<<else>>
+				The <<person>> at the till looks up at you, then returns to <<his>> book.
+			<</if>>
+		<<else>>
+			The <<person>> at the till looks up at you, then returns to <<his>> book.
+		<</if>>
+	<<else>>
+		<<generateRole 0 0 "nurse">><<person1>>
+		<<saveNPC 0 "pharmNurse">>
+		A $description <<male>> nurse sits by the till and reads a book.
+	<</if>>
+	<br>
+	<<if $brothelVending?.status is "set" and $settings.condomLevel gte 1 and !($brothelVending.products % 2)>>
+		<br>
+		<<socialiseicon "ask">><<link [[Ask about buying condoms in bulk (0:15)|Pharmacy Buy Condoms in Bulk]]>><<unset $phase2>><<pass 15>><</link>>
+		<br><br>
+	<</if>>
+	Looking at the items on the shelves, you notice a few objects of interest.
+	<br><br>
+
+	<<if $pharmacyXChangeView is undefined>><<set $pharmacyXChangeView to "menu">><</if>>
+	X-Change:
+	<br>
+	<<if $pharmacyXChangeView is "menu">>
+		<<pillicon "xchangeGray">><<link [[Browse Gray X-Change|Pharmacy]]>><<set $pharmacyXChangeView to "gray">><</link>>
+		<br>
+		<<pillicon "xchangePink">><<link [[Browse Pink X-Change|Pharmacy]]>><<set $pharmacyXChangeView to "pink">><</link>>
+		<br>
+		<<pillicon "xchangeBlue">><<link [[Browse Blue X-Change|Pharmacy]]>><<set $pharmacyXChangeView to "blue">><</link>>
+		<br>
+		<<pillicon "xchangePurple">><<link [[Browse Purple X-Change|Pharmacy]]>><<set $pharmacyXChangeView to "purple">><</link>>
+		<br>
+		<<pillicon "pillcure">><<link [[Browse Antidotes & Tests|Pharmacy]]>><<set $pharmacyXChangeView to "support">><</link>>
+		<br><br>
+	<<elseif $pharmacyXChangeView is "pink">>
+		See other variants: <<link [[Gray|Pharmacy]]>><<set $pharmacyXChangeView to "gray">><</link>> | <<link [[Blue|Pharmacy]]>><<set $pharmacyXChangeView to "blue">><</link>> | <<link [[Purple|Pharmacy]]>><<set $pharmacyXChangeView to "purple">><</link>> | <<link [[Antidotes & Tests|Pharmacy]]>><<set $pharmacyXChangeView to "support">><</link>>
+		<br>
+		<<pillicon "xchangePink">><<link [[Pack of 3 X-Change Basics|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_pink_basic"]>><</link>>
+		<br>
+		<<pillicon "xchangePink">><<link [[X-Change NOW|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_pink_now"]>><</link>>
+		<br>
+		<<pillicon "xchangePink">><<link [[X-Change Weekly|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_pink_weekly"]>><</link>>
+		<br>
+		<<pillicon "xchangePink">><<link [[X-Change Xtra Strength|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_pink_xtra"]>><</link>>
+		<br>
+		<<pillicon "xchangePink">><<link [[X-Change Continue|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_pink_continue"]>><</link>>
+		<br>
+		<<pillicon "xchangePink">><<link [[X-Change Resistance|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_pink_resistance"]>><</link>>
+		<br>
+		<<pillicon "xchangePink">><<link [[X-Change Breeder|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_pink_breeder"]>><</link>>
+		<br>
+		<<pillicon "xchangePink">><<link [[X-Change Hyper Fertility|Pharmacy Sale]]>><<set $pharmacyItem to clone(setup.pharmacyItems["xchange_pink_breeder"])>><<set $pharmacyItem.name to "X-Change Pink Hyper Fertility">><<set $pharmacyItem.type to "X-Change Pink Hyper Fertility">><</link>>
+		<br>
+		<<pillicon "xchangePink">><<link [[X-Change Innocence|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_pink_innocence"]>><</link>>
+		<br>
+		<<pillicon "xchangePink">><<link [[X-Change Swell|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_pink_swell"]>><</link>>
+		<br>
+		<<pillicon "xchangePink">><<link [[X-Change Bimbo|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_pink_bimbo"]>><</link>>
+		<br>
+		<<pillicon "xchangePink">><<link [[X-Change CumCure|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_pink_cumcure"]>><</link>>
+		<br>
+		<<pillicon "xchangePink">><<link [[X-Change Sissy|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_sissy"]>><</link>>
+		<br>
+		<<pillicon "xchangePink">><<link [[X-Change X-Tend|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_pink_xtend"]>><</link>>
+		<br><br>
+	<<elseif $pharmacyXChangeView is "blue">>
+		See other variants: <<link [[Gray|Pharmacy]]>><<set $pharmacyXChangeView to "gray">><</link>> | <<link [[Pink|Pharmacy]]>><<set $pharmacyXChangeView to "pink">><</link>> | <<link [[Purple|Pharmacy]]>><<set $pharmacyXChangeView to "purple">><</link>> | <<link [[Antidotes & Tests|Pharmacy]]>><<set $pharmacyXChangeView to "support">><</link>>
+		<br>
+		<<pillicon "xchangeBlue">><<link [[Pack of 3 X-Change Basics|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_blue_basic"]>><</link>>
+		<br>
+		<<pillicon "xchangeBlue">><<link [[X-Change NOW|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_blue_now"]>><</link>>
+		<br>
+		<<pillicon "xchangeBlue">><<link [[X-Change Weekly|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_blue_weekly"]>><</link>>
+		<br>
+		<<pillicon "xchangeBlue">><<link [[X-Change Xtra Strength|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_blue_xtra"]>><</link>>
+		<br>
+		<<pillicon "xchangeBlue">><<link [[X-Change Continue|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_blue_continue"]>><</link>>
+		<br>
+		<<pillicon "xchangeBlue">><<link [[X-Change Resistance|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_blue_resistance"]>><</link>>
+		<br>
+		<<pillicon "xchangeBlue">><<link [[X-Change Bull|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_blue_bull"]>><</link>>
+		<br>
+		<<pillicon "xchangeBlue">><<link [[X-Change Hyper Fertility|Pharmacy Sale]]>><<set $pharmacyItem to clone(setup.pharmacyItems["xchange_blue_bull"])>><<set $pharmacyItem.name to "X-Change Blue Hyper Fertility">><<set $pharmacyItem.type to "X-Change Blue Hyper Fertility">><</link>>
+		<br>
+		<<pillicon "xchangeBlue">><<link [[X-Change Innocence|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_blue_innocence"]>><</link>>
+		<br>
+		<<pillicon "xchangeBlue">><<link [[X-Change Swell|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_blue_swell"]>><</link>>
+		<br>
+		<<pillicon "xchangeBlue">><<link [[X-Change Himbo|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_blue_himbo"]>><</link>>
+		<br>
+		<<pillicon "xchangeBlue">><<link [[X-Change CumCure|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_blue_cumcure"]>><</link>>
+		<br>
+		<<pillicon "xchangeBlue">><<link [[X-Change Butch|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_butch"]>><</link>>
+		<br><br>
+	<<elseif $pharmacyXChangeView is "purple">>
+		See other variants: <<link [[Gray|Pharmacy]]>><<set $pharmacyXChangeView to "gray">><</link>> | <<link [[Pink|Pharmacy]]>><<set $pharmacyXChangeView to "pink">><</link>> | <<link [[Blue|Pharmacy]]>><<set $pharmacyXChangeView to "blue">><</link>> | <<link [[Antidotes & Tests|Pharmacy]]>><<set $pharmacyXChangeView to "support">><</link>>
+		<br>
+		<<pillicon "xchangePurple">><<link [[Pack of 3 X-Change Purple Basics|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_purple_basic"]>><</link>>
+		<br>
+		<<pillicon "xchangePurple">><<link [[X-Change Purple NOW|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_purple_now"]>><</link>>
+		<br>
+		<<pillicon "xchangePurple">><<link [[X-Change Purple Weekly|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_purple_weekly"]>><</link>>
+		<br>
+		<<pillicon "xchangePurple">><<link [[X-Change Purple Xtra Strength|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_purple_xtra"]>><</link>>
+		<br>
+		<<pillicon "xchangePurple">><<link [[X-Change Purple Continue|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_purple_continue"]>><</link>>
+		<br>
+		<<pillicon "xchangePurple">><<link [[X-Change Purple Resistance|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_purple_resistance"]>><</link>>
+		<br>
+		<<pillicon "xchangePurple">><<link [[X-Change Purple Breeder|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_purple_breeder"]>><</link>>
+		<br>
+		<<pillicon "xchangePurple">><<link [[X-Change Purple Bull|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_purple_bull"]>><</link>>
+		<br>
+		<<pillicon "xchangePurple">><<link [[X-Change Hyper Fertility|Pharmacy Sale]]>><<set $pharmacyItem to clone(setup.pharmacyItems["xchange_purple_breeder"])>><<set $pharmacyItem.name to "X-Change Purple Hyper Fertility">><<set $pharmacyItem.type to "X-Change Purple Hyper Fertility">><</link>>
+		<br><br>
+	<<elseif $pharmacyXChangeView is "support">>
+		See other variants: <<link [[Gray|Pharmacy]]>><<set $pharmacyXChangeView to "gray">><</link>> | <<link [[Pink|Pharmacy]]>><<set $pharmacyXChangeView to "pink">><</link>> | <<link [[Blue|Pharmacy]]>><<set $pharmacyXChangeView to "blue">><</link>> | <<link [[Purple|Pharmacy]]>><<set $pharmacyXChangeView to "purple">><</link>>
+		<br>
+		<<pillicon "pillcure">><<link [[X-Change Antidote|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_antidote"]>><</link>>
+		<br>
+		<<pillicon "pillcure">><<link [[X-Change Antidote Forte|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_antidote_forte"]>><</link>>
+		<br>
+		<<pregnancytesticon>><<link [[X-Change Test|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_test"]>><</link>>
+		<br><br>
+	<<elseif $pharmacyXChangeView is "gray">>
+		<<run setup.ensureGrayPharmacyItems()>>
+		See other variants: <<link [[Pink|Pharmacy]]>><<set $pharmacyXChangeView to "pink">><</link>> | <<link [[Blue|Pharmacy]]>><<set $pharmacyXChangeView to "blue">><</link>> | <<link [[Purple|Pharmacy]]>><<set $pharmacyXChangeView to "purple">><</link>> | <<link [[Antidotes & Tests|Pharmacy]]>><<set $pharmacyXChangeView to "support">><</link>>
+		<br>
+		<<pillicon "xchangeGray">><<link [[X-Change Resistance|Pharmacy Sale]]>><<set $phase2 to "pills">><<set $pharmacyItem to setup.pharmacyItems["xchange_gray_resistance"]>><</link>>
+		<br>
+		<<pillicon "xchangeGray">><<link [[X-Change Continue|Pharmacy Sale]]>><<set $phase2 to "pills">><<set $pharmacyItem to setup.pharmacyItems["xchange_gray_continue"]>><</link>>
+		<br>
+		<<pillicon "xchangeGray">><<link [[X-Change Weekly Extension|Pharmacy Sale]]>><<set $phase2 to "pills">><<set $pharmacyItem to setup.pharmacyItems["xchange_gray_extension"]>><</link>>
+		<br><br>
+		/* Weekly picks built in plain JS (dense array; also self-heals a corrupt stored value such as the old sparse "[empty x 2]"). */
+		<<run (function () {
+			var w = State.variables.weekly; var cur = w.pharmacyGrayStock; var valid = Array.isArray(cur) && cur.filter(function (k) { return typeof k === "string"; }).length === 2; if (valid) { return; }
+			var pool = ["xchange_gray_breeder", "xchange_gray_bull", "xchange_gray_hyper_fertility", "xchange_gray_fertility", "xchange_gray_xtend"];
+			for (var i = pool.length - 1; i > 0; i--) {var j = Math.floor(Math.random() * (i + 1)); var t = pool[i]; pool[i] = pool[j]; pool[j] = t;}
+			w.pharmacyGrayStock = [pool[0], pool[1]];
+		})()>>
+		This week's special stock:
+		<br>
+		<<for _grayKey range $weekly.pharmacyGrayStock>>
+			<<set _grayLabel to setup.pharmacyItems[_grayKey].name>>
+			<<capture _grayKey _grayLabel>>
+				<<pillicon "xchangeGray">><<link _grayLabel "Pharmacy Sale">><<set $phase2 to "pills">><<set $pharmacyItem to setup.pharmacyItems[_grayKey]>><</link>>
+				<br>
+			<</capture>>
+		<</for>>
+		<<socialiseicon "ask">><<link [[Ask why the gray selection is so limited|Pharmacy Gray Ask]]>><</link>>
+		<br><br>
+	<</if>>
+
+	Under Trials:
+	<br>
+	<<pillicon "premium">><<link [[X-Change Clone: Whitney|Pharmacy Sale]]>><<set $pharmacyItem to setup.pharmacyItems["xchange_clone_whitney"]>><</link>><br>
+	<br>
+
+	<<if $player.penisExist>>
+		Penis Enhancement Pills:
+		<br>
+		<<pillicon "penisReduce">><<link [[Pack of 14 penis reduction|Pharmacy Sale]]>><<set $phase2 to "pills">><<set $pharmacyItem to clone(setup.pharmacyItems["penis_reduction"])>><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["penis reduction"].owned>></span>
+		<br>
+		<<pillicon "penisEnlarge">><<link [[Pack of 14 penis growth|Pharmacy Sale]]>><<set $phase2 to "pills">><<set $pharmacyItem to clone(setup.pharmacyItems["penis_growth"])>><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["penis growth"].owned>></span>
+		<br>
+		<<pillicon "penisBlock">><<link [[Pack of 14 penis growth blocker|Pharmacy Sale]]>><<set $phase2 to "pills">><<set $pharmacyItem to clone(setup.pharmacyItems["penis_blocker"])>><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["penis blocker"].owned>></span>
+		<br><br>
+	<</if>>
+
+	Breast Enhancement Pills:
+	<br>
+	<<pillicon "breastReduce">><<link [[Pack of 14 breast reduction|Pharmacy Sale]]>><<set $phase2 to "pills">><<set $pharmacyItem to clone(setup.pharmacyItems["breast_reduction"])>><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["breast reduction"].owned>></span>
+	<br>
+	<<pillicon "breastEnlarge">><<link [[Pack of 14 breast growth|Pharmacy Sale]]>><<set $phase2 to "pills">><<set $pharmacyItem to clone(setup.pharmacyItems["breast_growth"])>><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["breast growth"].owned>></span>
+	<br>
+	<<pillicon "breastBlock">><<link [[Pack of 14 breast growth blocker|Pharmacy Sale]]>><<set $phase2 to "pills">><<set $pharmacyItem to clone(setup.pharmacyItems["breast_blocker"])>><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["breast blocker"].owned>></span>
+	<br><br>
+
+	Butt Enhancement Pills:
+	<br>
+	<<pillicon "bottomReduce">><<link [[Pack of 14 butt reduction|Pharmacy Sale]]>><<set $phase2 to "pills">><<set $pharmacyItem to clone(setup.pharmacyItems["bottom_reduction"])>><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["bottom reduction"].owned>></span>
+	<br>
+	<<pillicon "bottomEnlarge">><<link [[Pack of 14 butt growth|Pharmacy Sale]]>><<set $phase2 to "pills">><<set $pharmacyItem to clone(setup.pharmacyItems["bottom_growth"])>><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["bottom growth"].owned>></span>
+	<br>
+	<<pillicon "bottomBlock">><<link [[Pack of 14 butt growth blocker|Pharmacy Sale]]>><<set $phase2 to "pills">><<set $pharmacyItem to clone(setup.pharmacyItems["bottom_blocker"])>><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["bottom blocker"].owned>></span>
+	<br><br>
+
+	Parasite Prevention:
+	<br>
+	<<procedureicon "parasite">><<link [[Tube of anti-parasite cream|Pharmacy Sale]]>><<set $phase2 to "parasite cream">><<set $pharmacyItem to clone(setup.pharmacyItems["Anti-Parasite Cream"])>><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["Anti-Parasite Cream"].owned>></span>
+	<br><br>
+
+	Personal Care:
+	<br>
+	<<schoolicon "infirmary">><<link [[Pack of 14 painkillers|Pharmacy Sale]]>><<set $phase2 to "pills">><<set $pharmacyItem to clone(setup.pharmacyItems["painkillers"])>><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills.painkillers?.owned || 0>></span>
+	<br>
+	<<pillicon "pill">><<link [[Pack of 14 anti-anxiety tablets|Pharmacy Sale]]>><<set $phase2 to "pills">><<set $pharmacyItem to clone(setup.pharmacyItems.calmoryl)>><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["anti-anxiety tablets"]?.owned || 0>></span>
+	<br>
+	<<icon "sharks-teeth.png">><<link [[Pack of 14 sleeping pills|Pharmacy Sale]]>><<set $phase2 to "pills">><<set $pharmacyItem to clone(setup.pharmacyItems.sleeping_pills)>><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["sleeping pills"]?.owned || 0>></span>
+	<br>
+	<<icon "cream.png">><<link [[Buy sensitivity cream|Pharmacy Sensitivity Cream]]>><</link>>
+	<br>
+	<<icon "hairgel.png">><<link [[Tube of lube|Pharmacy Sale]]>><<set $phase2 to "hairgel">><<set $pharmacyItem to clone(setup.pharmacyItems["lube_tube"])>><</link>> | Owned: <span class="gold"><<= $player.inventory.sextoys["lube tube"]?.length || 0>></span>
+	<br><br>
+
+	<<if $prescriptions and ($prescriptions.painkiller or $prescriptions.sleep or $prescriptions.antidepressant)>>
+		Prescription Counter:
+		<br>
+		<<if $prescriptions.painkiller>>
+			<<if $prescriptions.collected.painkiller>>
+				<<ind>><span class="blue">You've collected the painkillers on this prescription.</span>
+				<br>
+			<<else>>
+				<<schoolicon "infirmary">><<link [[Collect your painkillers|Pharmacy Prescription Collect]]>><<set $prescriptionCollect to "painkiller">><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["prescription painkillers"]?.owned || 0>></span>
+				<br>
+			<</if>>
+			<<ind>><span class="gold">Painkiller prescription: <<= prescriptionDaysLeft("painkiller")>> day<<if prescriptionDaysLeft("painkiller") isnot 1>>s<</if>> left.</span>
+			<br>
+		<</if>>
+		<<if $prescriptions.sleep>>
+			<<if $prescriptions.collected.sleep>>
+				<<ind>><span class="blue">You've collected the sleeping pills on this prescription.</span>
+				<br>
+			<<else>>
+				<<icon "pill-strong.png">><<link [[Collect your sleeping pills|Pharmacy Prescription Collect]]>><<set $prescriptionCollect to "sleep">><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["prescription sleeping pills"]?.owned || 0>></span>
+				<br>
+			<</if>>
+			<<ind>><span class="gold">Sleeping pill prescription: <<= prescriptionDaysLeft("sleep")>> day<<if prescriptionDaysLeft("sleep") isnot 1>>s<</if>> left.</span>
+			<br>
+		<</if>>
+		<<if $prescriptions.antidepressant>>
+			<<if $prescriptions.collected.antidepressant>>
+				<<ind>><span class="blue">You've collected Doctor Harper's prescription with the antidepressant added.</span>
+				<br>
+			<<else>>
+				<<pillicon "pill">><<link [[Collect your antidepressant prescription|Pharmacy Prescription Collect]]>><<set $prescriptionCollect to "antidepressant">><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["Dr Harper's prescription"]?.owned || 0>></span>
+				<br>
+			<</if>>
+			<<ind>><span class="gold">Antidepressant prescription: <<= prescriptionDaysLeft("antidepressant")>> day<<if prescriptionDaysLeft("antidepressant") isnot 1>>s<</if>> left.</span>
+			<br>
+		<</if>>
+		<br>
+	<</if>>
+
+	Family Planning:
+	<br>
+	<<sextoysicon "pump">><<link [[Breast pump|Pharmacy Sale]]>><<set $phase2 to "breast pump">><<set $pharmacyItem to clone(setup.pharmacyItems["breast_pump"])>><</link>> | Owned: <span class="gold"><<= $player.inventory.sextoys["breast pump"]?.length || 0>></span>
+	<br>
+	<<pregnancytesticon>><<link [[Pack of 2 pregnancy tests|Pharmacy Sale]]>><<unset $phase2>><<set $pharmacyItem to clone(setup.pharmacyItems["pregnancy_test"])>><</link>> | Owned: <span class="gold"><<= $pregnancyTest || 0>></span>
+	<br>
+	<<pillicon "fertility">><<link [[Pack of 14 fertility pills|Pharmacy Sale]]>><<set $phase2 to "pills">><<set $pharmacyItem to clone(setup.pharmacyItems["fertility_pills"])>><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["fertility booster"].owned>></span>
+	<br><br>
+
+	Contraceptives:
+	<br>
+	<<if $brothelVending?.status is "set" and $brothelVending.products % 2 and $brothelVending.condomsToRefill gte 10 and $settings.condomLevel gte 1>>
+		<<condomicon>><<link [[Buy condoms for the brothel (0:10)|Pharmacy Buy Condoms in Bulk]]>><<unset $phase2>><<pass 10>><</link>>
+		<br>
+	<</if>>
+	<<if $settings.condomLevel gte 1>>
+		<<condomicon>><<link [[Pack of 3 condoms|Pharmacy Sale]]>><<set $phase2 to "condom">><<set $pharmacyItem to clone(setup.pharmacyItems["condoms"])>><</link>> | Owned: <span class="gold"><<= $condoms || 0>></span>
+		<br>
+	<</if>>
+	<<pillicon "contraceptive">><<link [[Pack of 14 contraceptive pills|Pharmacy Sale]]>><<unset $phase2>><<set $phase2 to "pills">><<set $pharmacyItem to clone(setup.pharmacyItems["contraceptive_pills"])>><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["contraceptive"].owned>></span>
+	<br>
+	<<pillicon "morningAfter">><<link [[Ask for the morning-after-pill|Pharmacy Morning After pill]]>><<unset $phase2>><<set $pharmacyItem to clone(setup.pharmacyItems["Morning_After_pill"])>><</link>>
+	<br><br>
+
+	Contacts:
+	<br>
+	<<cosmeticsicon "contacts">><<link [[Take a look at the contact lenses display|Pharmacy Lenses]]>><<unset $phase2>><</link>>
+	<<if !($daily.pharm.impatient gte 3) and $lenses_ordered.length gt 0>>
+		<br>
+		<<cosmeticsicon "contacts">><<link [[Ask if your custom contact lenses arrived|Pharmacy Ask If Lenses Delivered]]>><<unset $phase2>><</link>>
+	<</if>>
+	<br><br>
+	<<getouticon>><<link [[Return to foyer|Hospital Foyer]]>><<endevent>><<unset $pharmacyXChangeView>><</link>>
+<</if>>
+
+:: Pharmacy Lenses
+An assortment of colourful contact lenses is displayed behind the glass. You can purchase lenses to change the colour of your eyes.
+<<if $makeup.owned.eyelenses.length + $makeup.owned.custom_eyelenses.length gt 0>>
+	<br>
+	You already own lenses of the following colours:
+	<span style="display: inline-block;">
+	<<set _lenses to []>>
+	<<run $makeup.owned.eyelenses.forEach(colour => {
+		const colourClass = colour.replace(/ /g, '-')
+		_lenses.push(`<span @class="'eye-${colourClass}'"><span class="left-iris" style="color:#6E4E11;">${colour}</span></span>`);
+	})>>
+	<<if ($makeup.owned.custom_eyelenses.length gt 0)>>
+		<<set _uniqueCustomLenses to [...new Set($makeup.owned.custom_eyelenses)]>> /* Filter out non-unique lenses */
+		<<run _uniqueCustomLenses.forEach(lens => {
+			const colour = window.colorNameTranslate(lens, "spaced name");
+			const colourClass = nullable(nullable($custom_eyecolours.find(c => c.name is colour)).canvasfilter).blend; /* nullable fix to be removed when we can use ?. again */
+			if (colourClass){
+				_lenses.push(`<span class="eye-custom"><span @style="'color:${colourClass}'">${colour}</span></span>`);
+			}
+		})>>
+	<</if>>
+
+	<<print _lenses.join(", ")>>. /* Print the list */
+	</span>
+<</if>>
+<br><br>
+
+<<set _availableColours = ["dark blue", "light blue", "purple", "hazel", "amber", "green", "light green", "lime green", "grey", "light grey", "red", "pink", "brown", "black"].filter(x => !$makeup.owned.eyelenses.includes(x))>>
+<<if _availableColours.length == 0>>
+	You have collected all available colours of contact lenses. There's nothing left for you to buy.
+	<br><br>
+<<else>>
+	Each pair of lenses costs <<printprice 20000>>.
+	<br>
+	<<set _lensChoice = _availableColours[0]>>
+	<<for _i, _colour range _availableColours>>
+		<label><span @class="'eye-' + _colour.replace(/ /g, '-')"><span class="colour-eye" style="color:#6E4E11;">_colour</span></span>&nbsp;<<print '<<radiobutton "_lensChoice" "'+_colour+'" ' + (_lensChoice is _colour ? "checked" : "") + '>>'>></label> |
+	<</for>>
+
+	<br><br>
+
+	<<if setup.inflation.canAfford(20000, "pharmacyContacts")>>
+		<<link [[Buy and send home|Pharmacy Lenses]]>><<money -20000 "pharmacyContacts">><<set $makeup.owned.eyelenses.push(_lensChoice)>><</link>>
+		<br>
+		<<link [[Buy and wear|Pharmacy]]>><<money -20000 "pharmacyContacts">><<set $makeup.owned.eyelenses.push(_lensChoice)>><<set $makeup.eyelenses = {"left":_lensChoice, "right":_lensChoice}>><</link>>
+		<br>
+	<<else>>
+		<span class="purple">You can't afford the purchase.</span>
+		<br>
+	<</if>>
+<</if>>
+<<link [[Ask for custom-coloured contact ones|Pharmacy Ask Custom Lenses]]>><</link>>
+<br>
+<<link [[Go back|Pharmacy]]>><</link>>
+
+:: Pharmacy Ask Custom Lenses
+<<if $daily.pharm.impatient gt 2>>
+	"Who do we have here," says the nurse, a rictus on <<his>> face. "Get out, you wasted enough of my time already. Try again tomorrow if you're done with your little game."
+	<br><br><<getouticon>><<link [[Leave|Pharmacy Lenses]]>><</link>>
+<<else>>
+	<<if $custom_lenses_already_ordered is 1>>
+		"I hope the ones you ordered last time please you," the nurse says. "You know the prices, <<printprice 45000>> for the product, plus <<printprice 5000>> for the delivery. <<printprice 95000>> total if you pick two different colours for each eye."
+	<<else>>
+		"Not pleased with the ones available?" the nurse asks.
+		"I could place an order for ones with a colour of your choosing, but this will double the cost. Count about <<printprice 45000>> for the product, plus <<printprice 5000>> for the delivery which takes about a day. If you wish to choose two different colours for each eye, it will be <<printprice 95000>> total."
+	<</if>>
+	<br><br>
+	<<if setup.inflation.canAfford(50000, "pharmacyContacts")>>
+		<<ind>><<link [[Choose your custom colour|Pharmacy Select Custom Lenses]]>><<set $pharmacy_order_colours to 1>><</link>>
+		<br>
+	<<else>>
+		<span class="purple">You can't afford the purchase.</span>
+		<br>
+	<</if>>
+	<<if setup.inflation.canAfford(95000, "pharmacyContacts")>>
+		<<ind>><<link [[Choose a different colour for each eye|Pharmacy Select Custom Lenses]]>><<set $pharmacy_order_colours to 2>><</link>>
+		<br>
+	<<elseif setup.inflation.canAfford(50000, "pharmacyContacts")>>
+		<span style="color:#566a9b; cursor:pointer">Choose a different colour for each eye</span> <span class="purple">You can't afford the purchase.</span>
+		<br>
+	<</if>>
+	<<getouticon>><<link [[Go back|Pharmacy Lenses]]>><</link>>
+<</if>>
+
+:: Pharmacy Select Custom Lenses
+"Here," <<he>> says, handing you a tablet. "You can use the colour palette to help you. Pick any colour you like and I'll place the order for you."
+<br><br><br>
+<<if $pharmacy_order_colours is 2>>
+	<div style="display:inline-block; text-align:center; margin-right:2em; vertical-align:top;">
+		Left eye
+		<div id="picker0"></div>
+	</div>
+	<div style="display:inline-block; text-align:center; vertical-align:top;">
+		Right eye
+		<div id="picker1"></div>
+	</div>
+<<else>>
+	<div id="picker0"></div>
+<</if>>
+<<set _color_lenses_temp>> <!-- used inside colorWheelContactLenses() -->
+<<run colorWheelContactLenses()>>
+<br><br>
+<<link [[Order it|Pharmacy Order Custom Lenses]]>>
+	<<money -50000 "pharmacyContacts">>
+	<<set $custom_lenses_already_ordered to 1>>
+	<<run $lenses_ordered.push([window.colorNamer(_color_lenses_temp[0].hexString), Time.monthDay.toString() + Time.month + Time.year.toString(), [_color_lenses_temp[0].hexString, _color_lenses_temp[0].hsl["l"] / 500]])>>
+	<<if $pharmacy_order_colours is 2>>
+		<<money -45000 "pharmacyContacts">>
+		<<run $lenses_ordered.push([window.colorNamer(_color_lenses_temp[1].hexString), Time.monthDay.toString() + Time.month + Time.year.toString(), [_color_lenses_temp[1].hexString, _color_lenses_temp[1].hsl["l"] / 500]])>>
+	<</if>>
+<</link>>
+<br>
+<<link [[Go back|Pharmacy]]>><</link>>
+
+:: Pharmacy Order Custom Lenses
+"Here is your receipt," the nurse adds, handing you the ticket. "It's likely to arrive by tomorrow, you come back anytime with your receipt and whoever is on duty that day will hand it over to you."
+<br><br>
+<<link [[Next|Pharmacy]]>><</link>>
+
+:: Pharmacy Ask If Lenses Delivered
+<<if $daily.pharm.impatient is 1>>
+	"Hello how can I he—" <<He>> frowns. "Don't you think I forgot last time. It's not cool; you can't just send me looking for your package and just leave. Don't do that again, please."
+	<br>You apologise, and <<he>> then goes to check if your package arrived.
+<<elseif $daily.pharm.impatient is 2>>
+	"Who do we have here?" says the nurse, a rictus on <<his>> face. "Get out, you wasted enough of my time already. Try again tomorrow if you're done with your little game."
+	<<set $daily.pharm.impatient to 3>>
+<<else>>
+	"How can I h—" <<He>> stops. "Oh, you're the one who ordered the contact lenses. Hold on a second sweetheart, I'll check if we received them already." You watch as <<he>> disappears in a back room.
+<</if>>
+<br><br>
+<<if !($daily.pharm.impatient gte 2)>>
+	<<loitericon>><<link [[Wait (0:15)|Pharmacy Ask If Lenses Delivered 2]]>><<set $daily.pharm.impatient to 0>><<pass 15>><</link>>
+	<br>
+<</if>>
+<<getouticon>><<link [[Leave|Pharmacy]]>><<set $daily.pharm.impatient to ($daily.pharm.impatient + 1) || 1>><</link>>
+
+:: Pharmacy Ask If Lenses Delivered 2
+<<set _received to 0>>
+<<set _tmp_length to clone($lenses_ordered.length)>>
+<<for _i = 0; _i < $lenses_ordered.length; _i++>>
+	<<if Time.monthDay.toString() + Time.month + Time.year.toString() != $lenses_ordered[_i][1]>>
+		<<set _received += 1>>
+		<<set _spaced_colour_name = window.colorNameTranslate($lenses_ordered[_i][0], "spaced name")>>
+		<<run $makeup.owned.custom_eyelenses.push(clone($lenses_ordered[_i][0]))>>
+		<<run $custom_eyecolours.push({
+			variable: $lenses_ordered[_i][0],
+			name: _spaced_colour_name,
+			name_cap: _spaced_colour_name.toUpperFirst(),
+			csstext: $lenses_ordered[_i][0],
+			natural: false,
+			lens: true,
+			canvasfilter: {
+				blend: $lenses_ordered[_i][2][0],
+				brightness: +$lenses_ordered[_i][2][1]
+			}
+		})>>
+		<<run $lenses_ordered.deleteAt(_i)>>
+		<<run _i-->>
+	<</if>>
+<</for>>
+<<if _received > 0>>
+	<<run window.initCustomLenses()>>	/* push custom eyelenses inside setup.colours.eyes */
+	<<if _received isnot _tmp_length>>
+		<<He>> returns a little while later, noticeably panting. "We received the <<if _received > 1>><<print _received>><</if>> contact lenses you ordered, but for the other <<print (_tmp_length - _received == 1) ? 'one' : _tmp_length - _received>> you'll have to try again tomorrow," <<he>> says while handing you the package.
+	<<else>>
+		You see the nurse coming back from the room, with a small package in the hands, "Here it is," <<he>> says handing it to you.
+		<br>
+		"If anything's wrong you just come back here sweetie, and we'll sort a solution out."
+	<</if>>
+	<br><br>
+
+	<span class="gold">You pick up the package containing your contact lenses.</span>
+<<else>>
+	A few moments later <<he>> returns, "It hasn't arrived yet, sorry honey. Try again tomorrow. I'm sure it'll have arrived by then."
+<</if>>
+<br><br>
+<<getouticon>><<link [[Leave|Pharmacy]]>><</link>>
+
+:: Pharmacy Prescription Collect
+<<set $outside to 0>><<set $location to "hospital">><<effects>>
+<<if "pharmNurse" in $per_npc>><<loadNPC 0 "pharmNurse">><<person1>><</if>>
+<<set _collected to collectPrescriptionBox($prescriptionCollect)>>
+<<if _collected gt 0>>
+	<<He>> checks your prescription on the screen, then fetches a box from the locked shelf behind the counter.
+	<<if $prescriptionCollect is "painkiller">>
+		"Ten doses. These are much stronger than the ones on the shelf, so no more than two in a day."
+	<<elseif $prescriptionCollect is "sleep">>
+		"Ten tablets. One before bed, never two. Using them too often will make it harder to sleep without them."
+	<<else>>
+		"Ten doses of Doctor Harper's usual tablets, with the antidepressant added. Take one each day."
+	<</if>>
+	<br><br>
+
+	<<He>> slides the box across. "No charge, it's on your prescription. That's your lot until next week."
+	<br><br>
+
+	<<set _prescriptionName to $prescriptionCollect is "painkiller" ? "prescription painkillers" : ($prescriptionCollect is "sleep" ? "prescription sleeping pills" : "doses of Doctor Harper's prescription")>>
+	<span class="green">You collected <<print _collected>> <<print _prescriptionName>>.</span>
+	<br><br>
+<<else>>
+	<<He>> checks the screen and shakes <<his>> head. "Nothing due on that prescription right now."
+	<br><br>
+<</if>>
+<<unset $prescriptionCollect>>
+<<link [[Go back|Pharmacy]]>><</link>>
+
+:: Pharmacy Sensitivity Cream
+<<set $outside to 0>><<set $location to "hospital">><<effects>>
+<<if "pharmNurse" in $per_npc>><<loadNPC 0 "pharmNurse">><<person1>><</if>>
+The nurse sets aside the book. "What kind of cream are you looking for? Something to increase sensitivity, or something to decrease it?"
+<br><br>
+<<link [[Sensitivity-increasing cream|Pharmacy Sale]]>><<set $phase2 to "parasite cream">><<set $pharmacyItem to clone(setup.pharmacyItems["sensitivity_stimulant"])>><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["sensitivity-increasing cream"].owned>></span>
+<br>
+<<link [[Sensitivity-decreasing cream|Pharmacy Sale]]>><<set $phase2 to "parasite cream">><<set $pharmacyItem to clone(setup.pharmacyItems["sensitivity_suppressant"])>><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["sensitivity-decreasing cream"].owned>></span>
+<br><br>
+
+<<getouticon>><<link [[Never mind|Pharmacy]]>><</link>>
+
+:: Pharmacy Sale
+<<set $outside to 0>><<set $location to "hospital">><<effects>>
+<<wearProp $phase2>>
+The <<person>> looks at the <<print $pharmacyItem.name>> you're holding.
+<<set _displayPrice to setup.inflation ? setup.inflation.price($pharmacyItem.price) : $pharmacyItem.price>>
+<<formatmoney _displayPrice>>
+<<switch $pharmacyItem.type>>
+	<<case "penis reduction">>
+		"That'll be _printmoney.<<if !$daily.pharm.seductionResult>> So is it too big, or do you just want it to be tiny?<</if>>"
+	<<case "penis growth">>
+		"That'll be _printmoney.<<if !$daily.pharm.seductionResult>> So you think yours is too small?<</if>>"
+	<<case "penis blocker">>
+		"_printmoney please.<<if !$daily.pharm.seductionResult>> I wonder how big you are.<</if>>"
+	<<case "breast reduction">>
+		"_printmoney please. The effects will vary."
+	<<case "breast growth">>
+		"_printmoney please. The effects will vary."
+	<<case "breast blocker">>
+		"_printmoney please."
+	<<case "bottom reduction">>
+		"_printmoney please. The effects will vary."
+	<<case "bottom growth">>
+		"_printmoney please. The effects will vary."
+	<<case "bottom blocker">>
+		"_printmoney please."
+	<<case "sensitivity-decreasing cream">>
+		"_printmoney please. The tube contains 14 applications. Each will dampen sensation throughout your body for 16 hours. Don't apply it more than once per day."
+	<<case "sensitivity-increasing cream">>
+		"_printmoney please. The tube contains 14 applications. Each will heighten sensation throughout your body for 16 hours. Don't apply it more than once per day."
+	<<case "Anti-Parasite Cream">>
+		"_printmoney please. The tube should last for about 2 weeks, depending on where you need to apply it."
+	<<case "painkillers">>
+		"_printmoney please. There are 14 doses in the pack. Take them when you need them, but be aware that they may make you drowsy. More than three doses in one day can be dangerous."
+	<<case "sleeping pills">>
+		"_printmoney please. There are 14 tablets. Take one shortly before bed and no more than one a night. They're mild, so they may not help much if pain or stress is keeping you awake."
+	<<case "anti-anxiety tablets">>
+		"_printmoney please. There are 14 tablets. Take no more than one a day. Two can make you ill. Three or more can leave you dazed and unable to function. Five can make you pass out. Each extra tablet will make the effects last longer."
+	<<case "lube tube">>
+		"_printmoney please. It's a smaller tube, so you should get about 3 uses out of it."
+	<<case "Breast Pump">>
+		"_printmoney please."
+	<<case "condoms">>
+		"_printmoney please." <<He>> looks you over.
+		<<if $player.gender_appearance is "m">>
+			"Glad to see people playing it safe. Your girl is lucky."
+		<</if>>
+	<<case "pregnancy test">>
+		"_printmoney please." <<He>> looks you over.
+		<<if $player.gender_appearance is "m">>
+			"Your girl is lucky.
+		<<else>>
+			"Hope you get the result you're after.
+		<</if>>
+		They're somewhat inaccurate right after conception, so just give it some time, or take another test a couple of days later."
+		<<if $pregnancyTest is undefined>><<set $pregnancyTest to 0>><</if>>
+	<<case "fertility booster">>
+		"_printmoney please." <<He>> looks you over.
+		<<if $player.gender_appearance is "m">>
+			"Trying to get your girl knocked up? Good luck.
+		<<else>>
+			"Oh, who's gonna be the lucky father?
+			<!-- ^ This reads kinda weirdly -->
+		<</if>>
+		Take one per day, try to normalise the time."
+	<<case "contraceptive">>
+		"_printmoney please.
+		<<if $player.gender_appearance is "m">>
+			Glad to see people playing it safe. Your girl is lucky.
+		<</if>>
+		Take one per day, and try to normalise the time. You still need to be careful, though. The only sure way to be safe is to be abstinent."
+	<<case "X-Change Pink Hyper Fertility">>
+		"_printmoney please. Effects last for a week. Beware that this is an extreme fertility pill. It also accelerates any pregnancy already in progress."
+	<<case "X-Change Blue Hyper Fertility">>
+		"_printmoney please. The effects last for a week. It greatly increases fertility and sperm production."
+	<<case "X-Change Purple Hyper Fertility">>
+		"_printmoney please. The effects last for a week. It gives you both a working womb and fertile sperm, and greatly increases fertility. Any existing pregnancy will also progress faster."
+	<<case "X-Change Pink Basic" "X-Change Blue Basic" "X-Change Purple Basic">>
+		"These are under a special promotion. Only _printmoney for a pack of 3 pills. Effects last for a day."
+	<<case "X-Change Pink NOW" "X-Change Blue NOW" "X-Change Purple NOW">>
+		"_printmoney please. Effects last for about 6 hours."
+	<<case "X-Change Pink Weekly" "X-Change Blue Weekly" "X-Change Purple Weekly" "X-Change Pink CumCure" "X-Change Blue CumCure">>
+		"_printmoney please. Effects last for about 7 days."
+	<<case "X-Change Pink Xtra Strength" "X-Change Blue Xtra Strength" "X-Change Purple Xtra Strength">>
+		"_printmoney please. Effects last 30 days."
+	<<case "X-Change Pink Continue" "X-Change Blue Continue" "X-Change Purple Continue">>
+		"_printmoney please. Effects last for 3 days, but duration may be extended with every climax."
+	<<case "X-Change Pink Resistance" "X-Change Blue Resistance" "X-Change Purple Resistance">>
+		"_printmoney please. Effects last for a day, but may become permanent with every climax."
+	<<case "X-Change X-Tend">>
+		"_printmoney please. Effects last for about 7 days..." <<He>> draws in a massive breath before dropping a big sigh as if preparing for something <<he>> dreads. 
+		<br><br>
+		As you ponder what is going in <<his>> head, <<he>> begins to spout all once: "Taking in sperm from superior virile members into your womb will allow you to grow in size yourself once you turn back. However, be advised that orgasming at any point of its duration will forfeit any gains as well as cause a significant reduction to your genital size. You've been warned."
+		<br><br>
+		<<He>> puts the box back on the counter. "Make sure you understand that before you take it."
+	<<case "X-Change Pink Breeder" "X-Change Purple Breeder">>
+		"_printmoney please. Effects last for a week. Beware that this is a very high fertility pill."
+	<<case "X-Change Pink Innocence" "X-Change Blue Innocence">>
+		"_printmoney please. Effects last for only a day."
+	<<case "X-Change Blue Bull" "X-Change Purple Bull">>
+		"_printmoney please. The effects last for a week. It greatly increases your virility."
+	<<case "X-Change Clone: Whitney" "X-Change Sissy" "X-Change Butch" "X-Change Pink Swell" "X-Change Blue Swell" "X-Change Pink Bimbo" "X-Change Blue Himbo">>
+		"_printmoney please. Effects last for only a day."
+	<<case "X-Change Antidote">>
+		"_printmoney please. It shortens your current X-Change effect by 24 hours, but causes severe pain."
+	<<case "X-Change Antidote Forte">>
+		"_printmoney please. It shortens your current X-Change effect by 7 days, but causes severe pain and stress."
+	<<case "X-Change Test">>
+		"_printmoney please. It identifies your current X-Change effects and gives a better estimate of how long they will last."
+	<<case "X-Change Breeder" "X-Change Bull" "X-Change Swell" "X-Change Hyper Fertility" "X-Change Fertility" "X-Change Passion" "X-Change Innocence" "X-Change Bimbo" "X-Change CumCure" "X-Change Dumb-Bitch" "X-Change X-Tend (Gray)" "X-Change Resistance" "X-Change Continue" "X-Change Weekly Extension" "X-Change Portal">>
+		"_printmoney please. It contains one X-Change effect and will not change your sex on its own."
+	<<default>>
+		<<run throw new Error(`Missing pharmacyItem type! ${V.pharmacyItem.type}`)>>
+<</switch>>
+<br><br>
+
+<<if setup.inflation.canAfford($pharmacyItem.price, "pharmacy")>>
+	<<set _singlexchangepills to [
+		"X-Change Pink NOW",
+		"X-Change Blue NOW",
+		"X-Change Purple NOW",
+		"X-Change Pink Weekly",
+		"X-Change Blue Weekly",
+		"X-Change Purple Weekly",
+		"X-Change Pink Continue",
+		"X-Change Blue Continue",
+		"X-Change Purple Continue",
+		"X-Change Pink Resistance",
+		"X-Change Blue Resistance",
+		"X-Change Purple Resistance",
+		"X-Change Pink Xtra Strength",
+		"X-Change Blue Xtra Strength",
+		"X-Change Purple Xtra Strength",
+		"X-Change Pink Breeder",
+		"X-Change Pink Hyper Fertility",
+		"X-Change Blue Bull",
+		"X-Change Blue Hyper Fertility",
+		"X-Change Pink CumCure",
+		"X-Change Blue CumCure",
+		"X-Change Purple Breeder",
+		"X-Change Purple Bull",
+		"X-Change Purple Hyper Fertility",
+		"X-Change Pink Innocence",
+		"X-Change Blue Innocence",
+		"X-Change Pink Swell",
+		"X-Change Blue Swell",
+		"X-Change Pink Bimbo",
+		"X-Change Blue Himbo",
+		"X-Change Sissy",
+		"X-Change Butch",
+		"X-Change X-Tend",
+		"X-Change Test",
+		"X-Change Clone: Whitney",
+		"X-Change Antidote",
+		"X-Change Antidote Forte",
+		"X-Change Breeder",
+		"X-Change Bull",
+		"X-Change Swell",
+		"X-Change Hyper Fertility",
+		"X-Change Fertility",
+		"X-Change Passion",
+		"X-Change Innocence",
+		"X-Change Bimbo",
+		"X-Change CumCure",
+		"X-Change Dumb-Bitch",
+		"X-Change X-Tend (Gray)",
+		"X-Change Resistance",
+		"X-Change Continue",
+		"X-Change Weekly Extension",
+		"X-Change Portal",
+	]>>
+	
+	<<switch $pharmacyItem.type>>
+		<<case "Breast Pump">>
+			<<link [[Hand over the money|Pharmacy]]>><<run sexShopOnBuyClick(setup.sextoys.findIndex(item => item.name === "breast pump"), false, T.prop.colour.replace(" ","-"), false)>><<money `-$pharmacyItem.price` "pharmacyBreastPump">><</link>>
+		<<case "condoms">>
+			<<link [[Hand over the money|Pharmacy]]>><<money `-$pharmacyItem.price` "pharmacyCondoms">><<gcondoms 3>><</link>>
+		<<case "pregnancy test">>
+			<<link [[Hand over the money|Pharmacy]]>><<money `-$pharmacyItem.price` "pharmacyPregnancyTest">><<set $pregnancyTest += 2>><</link>>
+		<<case "Anti-Parasite Cream">>
+			<<link [[Hand over the money|Pharmacy]]>><<handheldon>><<money `-$pharmacyItem.price` "pharmacyCream">><<pharmacyAddOwned 1>><<boughtOnce>><</link>>
+		<<case "lube tube">>
+			<<link [[Hand over the money|Pharmacy]]>><<money `-$pharmacyItem.price` "pharmacyLube">><<run window.sexShopOnBuyClick(setup.sextoys.findIndex(item => item.name === "lube tube"), false, false, false)>><</link>>
+		<<case "X-Change Pink Basic" "X-Change Blue Basic" "X-Change Purple Basic">>
+			<<link [[Hand over the money|Pharmacy]]>><<handheldon>><<money `-$pharmacyItem.price` "pharmacyXChange">><<pharmacyAddOwned 3>><<boughtOnce>><</link>>
+		<<case "X-Change Pink NOW" "X-Change Blue NOW" "X-Change Purple NOW" "X-Change Pink Weekly" "X-Change Blue Weekly" "X-Change Purple Weekly" "X-Change Pink Continue" "X-Change Blue Continue" "X-Change Purple Continue" "X-Change Pink Resistance" "X-Change X-Tend" "X-Change Blue Resistance" "X-Change Purple Resistance" "X-Change Pink Xtra Strength" "X-Change Blue Xtra Strength" "X-Change Purple Xtra Strength" "X-Change Pink Breeder" "X-Change Pink Hyper Fertility" "X-Change Purple Breeder" "X-Change Blue Bull" "X-Change Blue Hyper Fertility" "X-Change Purple Bull" "X-Change Purple Hyper Fertility" "X-Change Test" "X-Change Clone: Whitney" "X-Change Antidote" "X-Change Antidote Forte" "X-Change Sissy" "X-Change Butch" "X-Change Pink Innocence" "X-Change Blue Innocence" "X-Change Pink Swell" "X-Change Blue Swell" "X-Change Pink Bimbo" "X-Change Blue Himbo" "X-Change Pink CumCure" "X-Change Blue CumCure" "X-Change Breeder" "X-Change Bull" "X-Change Swell" "X-Change Hyper Fertility" "X-Change Fertility" "X-Change Passion" "X-Change Innocence" "X-Change Bimbo" "X-Change CumCure" "X-Change Dumb-Bitch" "X-Change X-Tend (Gray)" "X-Change Resistance" "X-Change Continue" "X-Change Weekly Extension" "X-Change Portal">>
+			<<link [[Buy 1 at once|Pharmacy]]>><<handheldon>><<money `-$pharmacyItem.price` "pharmacyXChange">><<pharmacyAddOwned 1>><<boughtOnce>><</link>>
+		<<default>>
+			<<link [[Hand over the money|Pharmacy]]>><<money `-$pharmacyItem.price` "pharmacyPills">><<pharmacyAddOwned 14>><<boughtOnce>><</link>>
+	<</switch>>
+	<br>
+	/* Pills per purchase: Basic variants are packs of 3, listed single pills are 1, everything else is not bulk-buyable. */
+	<<if ["X-Change Pink Basic", "X-Change Blue Basic", "X-Change Purple Basic"].includes($pharmacyItem.type)>>
+		<<set _bulkPillsEach to 3>>
+		<<set _bulkUnit to " packs">>
+	<<elseif _singlexchangepills.includes($pharmacyItem.type)>>
+		<<set _bulkPillsEach to 1>>
+		<<set _bulkUnit to "">>
+	<<else>>
+		<<set _bulkPillsEach to 0>>
+	<</if>>
+	<<if _bulkPillsEach gt 0>>
+		<<if setup.inflation.canAfford($pharmacyItem.price * 5, "pharmacy")>>
+			<<link `"Buy 5" + _bulkUnit + " at once"` "Pharmacy">><<handheldon>><<money `-$pharmacyItem.price * 5` "pharmacyXChange">><<pharmacyAddOwned `_bulkPillsEach * 5`>><<boughtOnce>><</link>><br>
+		<<else>>
+			<span class="purple">You cannot afford 5<<print _bulkUnit>> at once.</span>
+			<br>
+		<</if>>
+		<<if setup.inflation.canAfford($pharmacyItem.price * 10, "pharmacy")>>
+			<<link `"Buy 10" + _bulkUnit + " at once"` "Pharmacy">><<handheldon>><<money `-$pharmacyItem.price * 10` "pharmacyXChange">><<pharmacyAddOwned `_bulkPillsEach * 10`>><<boughtOnce>><</link>><br><br>
+		<<else>>
+			<span class="purple">You cannot afford 10<<print _bulkUnit>> at once.</span>
+			<br><br>
+		<</if>>
+	<</if>>
+<<else>>
+	<span class="purple">You cannot afford them.</span>
+	<br>
+<</if>>
+<<if $pharmacyItem.type.includes("penis") and hasSexStat("promiscuity", 2) and !$daily.pharm.seductionResult>>
+	<<link [[Seduce|Pharmacy Seduction]]>><</link>><<seductiondifficulty>><<promiscuous2>>
+	<br>
+<</if>>
+<<link [[Don't buy|Pharmacy]]>><</link>>
+
+:: Widgets boughtOnce [widget]
+<<widget "boughtOnce">>
+	<<set $sexStats.pills.boughtOnce to true>>
+<</widget>>
+
+:: Widgets pharmacyAddOwned [widget]
+<<widget "pharmacyAddOwned">>
+	<<set _amount to Number(_args[0])>>
+	<<if !Number.isFinite(_amount) or _amount lte 0>>
+		<<run throw new Error(`[Pharmacy] Invalid owned increment for ${V.pharmacyItem?.type}: ${_args[0]}`)>>
+	<</if>>
+	<<if $pharmacyItem is undefined or $pharmacyItem.type is undefined>>
+		<<run throw new Error("[Pharmacy] Missing pharmacyItem while trying to add owned stock.")>>
+	<</if>>
+	<<if $sexStats is undefined>><<set $sexStats to {}>><</if>>
+	<<if $sexStats.pills is undefined>><<set $sexStats.pills to {}>><</if>>
+	<<if $sexStats.pills.pills is undefined>><<set $sexStats.pills.pills to {}>><</if>>
+	<<if $sexStats.pills.pills[$pharmacyItem.type] is undefined>>
+		<<run console.warn(`[Pharmacy] Creating missing pill inventory slot for ${V.pharmacyItem.type}.`)>>
+		<<set $sexStats.pills.pills[$pharmacyItem.type] to { owned: 0 }>>
+	<<elseif !Number.isFinite($sexStats.pills.pills[$pharmacyItem.type].owned)>>
+		<<run throw new Error(`[Pharmacy] Invalid owned count for ${V.pharmacyItem.type}: ${V.sexStats?.pills?.pills?.[V.pharmacyItem.type]?.owned}`)>>
+	<</if>>
+	<<set $sexStats.pills.pills[$pharmacyItem.type].owned += _amount>>
+<</widget>>
+
+:: Pharmacy Seduction
+"Why don't you see for yourself?" you say, leaning closer across the counter.
+<br><br>
+
+<<set $seductiondifficulty to (8888 - ($rng * 20) - ($pharmacyItem.type.includes("growth") ? 500 : 1000))>>
+<<seductioncheck>>
+<<seductionskilluptext>>
+<<seductionskilluse>>
+
+<<if $seductionrating gte $seductionrequired>>
+	<<set $daily.pharm.seductionResult to "pass">>
+	The nurse checks the pharmacy door and the empty aisle before closing <<his>> book. <<He>> takes your hand and pulls you behind the counter.
+	<br><br>
+	"Come here," <<he>> says. <<He>> pushes you against the wall, drops to <<his>> knees and reaches for your <<allBottomsUnderwear>>, pulling them aside to expose you.
+	<br><br>
+
+	<<set $sexstart to 1>>
+	<<link [[Next|Pharmacy Encounter Sex]]>><</link>>
+<<else>>
+	<<set $daily.pharm.seductionResult to "fail">>
+	The nurse stares at you, then laughs. Heat rises to your face.<<ggstress>><<stress 23>>
+	<br><br>
+	"Nice try, <<lass>>," <<he>> says, pushing the box back towards you. "So, are you buying them or not?"
+	<br><br>
+
+	A box of <<print $pharmacyItem.name>> lies on the table.
+	<br><br>
+
+	<<if setup.inflation.canAfford($pharmacyItem.price, "pharmacy")>>
+		<<set _displayPrice to setup.inflation ? setup.inflation.price($pharmacyItem.price) : $pharmacyItem.price>>
+		<<formatmoney _displayPrice>>
+		<<link [["Pay " + _printmoney|Pharmacy Seduction End]]>><<set $phase to "pay">><</link>>
+	<<else>>
+		<span class="purple">You cannot afford them.</span>
+	<</if>>
+	<br>
+	<<link [[Never mind|Pharmacy Seduction End]]>><<set $phase to "nevermind">><</link>>
+<</if>>
+
+:: Pharmacy Seduction End
+<<switch $phase>>
+	<<case "nevermind">>
+		You turn towards the door without buying the pills.
+		<br>
+		"Hey," <<he>> says behind you. "I didn't mean to upset you."
+		<br><br>
+
+		<<link [[Next|Hospital Foyer]]>><<endevent>><</link>>
+	<<case "pay">>
+		You put the money on the counter without looking at <<him>>. <<He>> takes it, and you pick up the box before heading for the door.
+		<br><br>
+
+		<<money `-$pharmacyItem.price` "pharmacy">><<pharmacyAddOwned 14>><<boughtOnce>>
+		<<link [[Next|Hospital Foyer]]>><<endevent>><</link>>
+<</switch>>
+<<unset $pharmacyItem>>
+
+:: Pharmacy Encounter Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+
+	<<if $worn.lower.name isnot "naked">>
+		<<set $NPCList[0].lefthand to "lowerclothes">>
+		<<set $NPCList[0].righthand to "lowerclothes">>
+	<<elseif $worn.under_lower.name isnot "naked">>
+		<<set $NPCList[0].lefthand to "underlowerclothes">>
+		<<set $NPCList[0].righthand to "underlowerclothes">>
+	<</if>>
+	<<set $NPCList[0].mouth to "penisentrance">>
+	<<set $NPCList[0].location.head to "genitals">>
+	<<npcidlegenitals>>
+	<<set $enemytrust += 100>>
+	<<set $position to "doggy">>
+	<br><br>
+<</if>>
+
+<<set $exposedPrev to $exposed>>
+<<effectsman>>
+<<man>>
+<<exposure>>
+
+<!-- Reaction to seeing penis for the first time during encounter -->
+<<if $exposed is 2 and $exposedPrev lt 2>> <!-- if penis was exposed just now -->
+	<<if playerChastity()>>
+		The nurse pulls back as soon as <<he>> sees your <<genitals>>.
+		<br>
+		"What the fuck is this?" <<he>> says. "That's not funny."
+		<br><br>
+		<<He>> gets back to <<his>> feet and points towards the door. "I'm done. Get out."
+		<br>
+		"How disappointing."
+		<<set $finish to 1>><<set $phase to "chastity">>
+	<<elseif $player.penissize lte 2>>
+		<<He>> freezes the moment your <<penis>> is revealed.
+		<<if $player.penissize lte random(0,3)>> <!-- More likely at smaller sizes; guaranteed at smallest, but never impossible -->
+			<<He>> looks it over, then starts laughing. "What the fuck? You were showing off over this?"
+			<br><br>
+
+			<<He>> stands and pulls <<his>> clothes back into place. "Yeah, no. I'm not in the mood any more."
+			<<incggpenisinsecurity>>
+			<br><br>
+
+			<<He>> gets up, fixes <<his>> clothing and returns to the till and <<his>> book.
+			<<set $finish to 1>><<set $phase to "tiny">>
+		<<else>>
+			<<He>> gives a short laugh. "Aw. That's cute."
+			<<incggpenisinsecurity>>
+		<</if>>
+	<<elseif $player.penissize is 3>>
+		<<if $rng gte 71>>
+			You hear a snicker as your <<penis>> flops out, but <<he>> doesn't say anything and keeps going.
+		<<else>>
+			<<He>> stops short the moment your <<penis>> flops out. "Oh, and that's it? You sounded like you had something special in your pants," <<he>> says.
+			<br><br>
+
+			"I'm not impressed. And I kinda lost all desire to go on. Buy more pills and come back when you're bigger."
+			<<incggpenisinsecurity>>
+			<br><br>
+
+			<<He>> gets up, fixes <<his>> clothing and returns to the till and <<his>> book.
+			<<set $finish to 1>><<set $phase to "small">>
+		<</if>>
+	<<elseif $player.penissize is 5>>
+		You hear a gasp of surprise coming from down below as your <<penis>> flops out.
+		<br>
+		You look at <<his>> face and see <<his>> eyes light up.
+	<<elseif $player.penissize gte 6>>
+		"Shit," you hear a quiet whisper from down below as your <<penis>> flops out.
+		<br>
+		You look down and see <<him>> staring at your cock, mouth agape.
+		<<if insecurityExists("penis_big")>>
+			<<acceptance "penis_big" 10>><<gacceptance>>
+		<</if>>
+	<</if>>
+	<br><br>
+<</if>>
+<<if $finish isnot 1>>
+	<<stateman>>
+	<<actionsman>>
+<</if>>
+
+<<if _combatend or $finish is 1>>
+	<span id="next"><<link [[Next|Pharmacy Encounter Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Pharmacy Encounter Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Pharmacy Encounter Sex Finish
+<<set $outside to 0>><<set $location to "hospital">><<effects>>
+<<set $daily.pharm.sexFinished to true>>
+
+<<capture $pharmacyItem>>
+<<if $enemypleasure gte $enemypleasuremax>>
+	<<ejaculation>>
+
+	The nurse braces a hand against the counter and gets back to <<his>> feet. <<tearful>> You steady yourself while <<he>> pulls <<his>> clothes back into place.
+	<br><br>
+
+	<<clotheson>>
+
+	<<He>> returns to the till, still smiling as <<he>> reaches for the box you wanted to buy.
+	<br>
+	<<if !$pharmacyItem.type.includes("reduction") or $player.penissize lt 5>>
+		<<set $pharmacyItem.price /= 2>>
+		"All right, sweetie. Half price," <<he>> says, setting the box on the counter. "That'll be <<printprice $pharmacyItem.price true>>."
+		<br>
+		<<He>> gives you a wink. "Come back if you need more."
+		<br><br>
+
+		<<endcombat>>
+		<<if setup.inflation.canAfford($pharmacyItem.price, "pharmacy")>>
+			<<set _displayPrice to setup.inflation ? setup.inflation.price($pharmacyItem.price) : $pharmacyItem.price>>
+			<<formatmoney _displayPrice>>
+			<<pillicon>><<link [["Buy " + $pharmacyItem.name + " for " + _printmoney|Pharmacy]]>>
+				<<set $eventskip to 1>><<set $daily.pharm.sexResult to "buy">>
+				<<money `-$pharmacyItem.price` "pharmacy">><<pharmacyAddOwned 14>><<boughtOnce>>
+			<</link>>
+		<<else>>
+			<span class="purple">You cannot afford them.</span>
+		<</if>>
+	<<else>>
+		<<set $pharmacyItem to clone(setup.pharmacyItems["penis_blocker"])>>
+		<<set $pharmacyItem.price /= 2>>
+		"Sorry, sweetheart. I can't sell you these reduction pills after what you've done to me with your juicy cock. I just can't. I want it to stay as big as it is."
+		<br>
+		"I can sell you growth blocker pills at a discount instead." <<He>> smiles.
+		<br><br>
+
+		<<endcombat>>
+		<<if setup.inflation.canAfford($pharmacyItem.price, "pharmacy")>>
+			<<set _displayPrice to setup.inflation ? setup.inflation.price($pharmacyItem.price) : $pharmacyItem.price>>
+			<<formatmoney _displayPrice>>
+			<<pillicon>><<link [["Buy growth blocker pills for " + _printmoney|Pharmacy]]>>
+				<<set $eventskip to 1>><<set $daily.pharm.sexResult to "buy">>
+				<<money `-$pharmacyItem.price` "pharmacy">><<pharmacyAddOwned 14>><<boughtOnce>>
+			<</link>>
+		<<else>>
+			<span class="purple">You cannot afford them.</span>
+		<</if>>
+	<</if>>
+	<br>
+	<<getouticon>><<link [[Don't buy|Pharmacy]]>><<set $eventskip to 1>><<set $daily.pharm.sexResult to "dontBuy">><</link>>
+
+<<elseif $enemyhealth lte 0>>
+	The <<personsimple>> drops to the floor and holds <<his>> injuries. <<tearful>> You take a second to steady yourself.
+	<br><br>
+
+	<<clotheson>>
+
+	You look at the counter and see the box of <<print $pharmacyItem.name>> you tried to purchase.
+	<br><br>
+
+	<<set $daily.pharm.closed to true>>
+	<<ind>><<link [[Steal the pills before the nurse gets up|Hospital Foyer]]>>
+		<<set $eventskip to 1>>
+		<<crimeUp $pharmacyItem.price "thievery">><<pharmacyAddOwned 14>><<boughtOnce>>
+	<</link>><<crime "thievery">>
+	<br>
+	<<getouticon>><<link [[Just leave|Hospital Foyer]]>><<set $eventskip to 1>><</link>>
+	<<endcombat>>
+	<<clearNPC "pharmNurse">>
+
+<<elseif $finish is 1>>
+	<<encounterEndViolence>>
+	<<set $daily.pharm.sexResult to "embarrassed">>
+	<<switch $phase>>
+		<<case "chastity">>
+			You push yourself back up without saying anything and fix your clothes.
+			<<clotheson>><<endcombat>>
+
+		<<case "tiny">>
+			Face red from intense embarrassment, you rise to your feet. <<clotheson>>
+			The nurse doesn't even look your way.
+			<br><br>
+			<<endcombat>>
+
+		<<case "small">>
+			You stand and fix your clothes while the nurse walks back to the till. <<clotheson>>
+			"Don't forget your pills," <<he>> says. <<if $pharmacyItem.type.includes("growth")>>"You need them."<</if>>
+			<br><br>
+			<<endcombat>>
+
+			<<if setup.inflation.canAfford($pharmacyItem.price, "pharmacy")>>
+				<<set _displayPrice to setup.inflation ? setup.inflation.price($pharmacyItem.price) : $pharmacyItem.price>>
+				<<formatmoney _displayPrice>>
+				<<pillicon>><<link [["Pay " + _printmoney + " for " + $pharmacyItem.name|Pharmacy]]>>
+					<<set $eventskip to 1>>
+					<<money `-$pharmacyItem.price` "pharmacy">><<pharmacyAddOwned 14>><<boughtOnce>>
+				<</link>>
+				<br>
+			<<else>>
+				<span class="purple">You cannot afford them.</span>
+			<</if>>
+
+		<<default>>
+			<!-- Is this for error catching? I don't think it should be able to happen. -->
+			The <<personsimple>> looks dejected as <<he>> gets up and fixes <<his>> clothing. <<He>> returns to the till, and picks up <<his>> book.
+			<br>
+			<<clotheson>><<endcombat>>
+	<</switch>>
+
+	<<getouticon>><<link [[Leave|Hospital Foyer]]>><<set $eventskip to 1>><</link>>
+<<else>>
+	<<encounterEndViolence>>
+    You can't take it anymore.<<clotheson>>
+	<<link [[Next|Hospital Foyer]]>><<endcombat>><<set $eventskip to 1>><</link>>
+<</if>>
+<</capture>>
+
+<<unset $pharmacyItem>>
+<<unset $exposedPrev>>
+
+:: Pharmacy Morning After pill
+<<set $outside to 0>><<set $location to "hospital">><<effects>>
+You ask the nurse for a morning-after pill.
+<br><br>
+<<if playerBellyVisible() or playerAwareTheyArePregnant()>>
+	The nurse looks at your <<bellyDescription "pc">> before answering.
+	<br><br>
+	"You <<if $pregnancyStats.aftermorningpills>>already know you <</if>>shouldn't take this while you're pregnant," <<he>> says. "It can make you seriously ill, and it won't work the way you want it to."
+	<br><br>
+	<<He>> keeps the packet behind the counter. "If you still insist, it's <<printprice 50000>>. I can only give you one, and you have to take it here while I watch."
+	<br><br>
+	<<if not playerAwareTheyArePregnant()>>
+		<<if setup.inflation.canAfford(50000, "pharmacyAfterPill")>>
+			<<link [[Hand over the money and take the pill anyway (0:15)|Pharmacy Morning After pill 2]]>><<pass 15>><</link>>
+		<<else>>
+			<span class="purple">You cannot afford it.</span>
+		<</if>>
+	<<else>>
+		You know you are pregnant and decide not to risk taking it.
+		<br>
+	<</if>>
+	<br>
+	<<link [["Don't buy"|Pharmacy]]>><</link>>
+<<else>>
+	The nurse opens a drawer and takes out a packet containing a single pill.
+	<br><br>
+	"This only works for a short time after sex," <<he>> says. "If a pregnancy has already started, taking it can make you ill.<<if $pregnancyStats.aftermorningpills>> Don't use these as your regular contraception. Condoms or contraceptive pills are safer for that.<</if>>"
+	<br><br>
+	<<He>> places the packet on the counter, but keeps one hand over it. "It's <<printprice 50000>>. I can't sell these in bulk, and you need to take it here so I can make sure you're all right."
+	<br><br>
+	<<if playerAwareTheyArePregnant()>>
+		You know you are pregnant and decide not to risk taking it.
+	<<elseif setup.inflation.canAfford(50000, "pharmacyAfterPill")>>
+		<<link [[Hand over the money and take the pill (0:15)|Pharmacy Morning After pill 2]]>><<pass 15>><</link>>
+	<<else>>
+		<span class="purple">You cannot afford it.</span>
+	<</if>>
+	<br>
+	<<link [["Don't buy"|Pharmacy]]>><</link>>
+<</if>>
+
+:: Pharmacy Morning After pill 2
+<<set $outside to 0>><<set $location to "hospital">><<effects>>
+<<money -50000 "pharmacyAfterPill">>
+<<set _morningAfterPillResult to takeMorningAfterPill()>>
+
+The nurse takes your payment, pushes a chair out from behind the counter and tells you to sit. <<He>> gives you the pill with a cup of water and watches until you swallow it.
+<br><br>
+<<switch _morningAfterPillResult>>
+	<<case "notPregnant">>
+		You wait in the chair. A cool feeling spreads through your lower belly, but nothing else happens.
+		<br><br>
+		The nurse checks your pupils, then wraps a blood-pressure cuff around your arm. After checking the reading, <<he>> removes it.
+		<br><br>
+		"Everything looks fine. You can go."
+		<<lllarousal>><<llstress>>
+		<br><br>
+		<<arousal -5000>>
+		<<stress -12>>
+		<<link [[Go back|Pharmacy]]>><</link>>
+	<<case "success">>
+		A cool feeling spreads through your lower belly. A mild ache follows, making you press a hand against your stomach while you wait.
+		<br><br>
+		The nurse notices and comes over to check your pupils and blood pressure.
+		<br><br>
+		"The pill has worked," <<he>> says. "The pain should ease soon. You can go when you feel steady enough."
+		<<lllarousal>><<llstress>><<gpain>>
+		<br><br>
+		<<arousal -5000>>
+		<<stress -12>>
+		<<pain 2>>
+		<<link [[Go back|Pharmacy]]>><</link>>
+	<<case "aLittleLate">>
+		An ache starts low in your belly and quickly becomes sharp enough to make you bend forward in the chair. You press both hands against your stomach.
+		<br><br>
+		The nurse comes over, checks your pupils, then takes your blood pressure.
+		<br><br>
+		"You've left it very late," <<he>> says. "The pill has worked, but don't wait this long next time. Stay seated until the pain settles."
+		<<lllarousal>><<llstress>><<ggpain>>
+		<br><br>
+		<<arousal -5000>>
+		<<stress -12>>
+		<<pain 8>>
+		<<link [[Go back|Pharmacy]]>><</link>>
+	<<case "late">>
+		Pain hits low in your belly. You grab the edge of the chair and fold forward while the nurse hurries over.
+		<br><br>
+		<<He>> checks your pupils and takes your blood pressure. Another pain makes you curl over your stomach before <<he>> finishes.
+		<br><br>
+		"It's been too long since you needed it," <<he>> says. "The pill has worked, but you're going to hurt for a while. Don't leave it this late again."
+		<<lllarousal>><<ggtrauma>><<ggpain>>
+		<br><br>
+		<<arousal -5000>>
+		<<trauma 20>>
+		<<pain 20>>
+		<<link [[Go back|Pharmacy]]>><</link>>
+	<<case "tooLate">>
+		A hard pain hits your belly before you have finished waiting. You double over in the chair, one hand pressed against your stomach.
+		<br><br>
+		The nurse rushes over and reaches for your arm, trying to keep you upright while checking you.
+		<br><br>
+		"It's been too long since..."
+		<br><br>
+		Another pain cuts <<him>> off. Your legs slip from under you and you fall from the chair. Your vision blurs as the nurse calls for help.
+		<<lllarousal>><<ggtrauma>><<ggpain>>
+		<br><br>
+		<<set $arousal to 0>><<set $pleasure to 0>>
+		<<trauma 50>>
+		<<pain 200>>
+		<<link [[Everything fades to black...|Pharmacy Morning After pill passout]]>><<pass 60>><<endevent>><</link>>
+	<<default>>
+		There must be an error...
+		<br><br>
+		<<link [[Go back|Pharmacy]]>><</link>>
+<</switch>>
+
+:: Pharmacy Morning After pill passout
+You hear voices nearby as someone lifts your shoulders from the floor.
+<br><br>
+You force your eyes open. The pharmacy nurse is beside you, supporting you while another person in a white coat comes closer.
+<<if $harperSeen isnot undefined>>
+	You recognise Dr Harper.
+<<else>>
+	You read "Dr Harper" on <<nnpc_his "Harper">> name tag.
+<</if>>
+<br><br>
+Harper looks down at you. "You're <span class="red">pregnant</span>. I don't know if you knew, but you should not have taken that pill." <<lllarousal>><<ggstress>>
+<br><br>
+A strong cramp hits your belly before you can answer. You double over and grab your stomach. <<ggtrauma>><<gggpain>>
+<br><br>
+<<run setPlayerLearnedPregnancyFrom("pharmacy")>>
+<<stress 12>>
+<<trauma 50>>
+<<pain 200>>
+<<arousal -5000>>
+<<link [[Next|Passout hospital]]>><<endevent>><<pass 60>><</link>>
+
+:: Pharmacy Buy Condoms in Bulk
+<<set $outside to 0>><<set $location to "hospital">><<effects>>
+<<if $brothelVending.products % 2>>
+	<<if $weekly.brothelVMCondoms>>
+		You have already ordered condoms for the vending machine this week.
+		<br><br>
+		<<link [[Return|Pharmacy]]>><</link>>
+	<<elseif $brothelVending.condomsToRefill lt 10>>
+		The vending machine still has enough condoms for now.
+		<br><br>
+		<<link [[Return|Pharmacy]]>><</link>>
+	<<elseif not setup.inflation.canAfford(60000, "pharmacyCondoms")>>
+		You don't have enough money to refill the vending machine.
+		<br><br>
+		<<link [[Return|Pharmacy]]>><</link>>
+	<<else>>
+		You tell the nurse how many packs you want to order.
+		<br><br>
+		<<link [[Buy 10 packs (<<printprice 60000>>)|Pharmacy Bought Condoms in Bulk]]>><<set $condomsBought to 10>><</link>>
+		<br>
+		<<if $brothelVending.condomsToRefill gte 25>>
+			<<if setup.inflation.canAfford(25 * 6000, "pharmacyCondoms")>>
+				<<link [[Buy 25 packs (<<printprice `25 * 6000`>>)|Pharmacy Bought Condoms in Bulk]]>><<set $condomsBought to 25>><</link>>
+				<br>
+			<<else>>
+				You can't afford 25 packs.
+				<br>
+			<</if>>
+		<</if>>
+		<<if $brothelVending.condomsToRefill gte 50>>
+			<<if setup.inflation.canAfford(50 * 6000, "pharmacyCondoms")>>
+				<<link [[Buy 50 packs (<<printprice `50 * 6000`>>)|Pharmacy Bought Condoms in Bulk]]>><<set $condomsBought to 50>><</link>>
+				<br>
+			<<else>>
+				You can't afford 50 packs.
+				<br>
+			<</if>>
+		<</if>>
+		<<if $brothelVending.condomsToRefill gte 100>>
+			<<condomsPrice 100>>
+			<<set _displayPrice to setup.inflation ? setup.inflation.price(_price) : _price>>
+			<<formatmoney _displayPrice>>
+			<<if setup.inflation.canAfford(_price, "pharmacyCondoms")>>
+				<<link [[`Buy 100 packs (${_printmoney})`|Pharmacy Bought Condoms in Bulk]]>><<set $condomsBought to 100>><</link>>
+				<br>
+			<<else>>
+				You can't afford 100 packs.
+				<br>
+			<</if>>
+		<</if>>
+		<<if $brothelVending.condomsToRefill gte 150>>
+			<<condomsPrice 150>>
+			<<set _displayPrice to setup.inflation ? setup.inflation.price(_price) : _price>>
+			<<formatmoney _displayPrice>>
+			<<if setup.inflation.canAfford(_price, "pharmacyCondoms")>>
+				<<link [[`Buy 150 packs (${_printmoney})`|Pharmacy Bought Condoms in Bulk]]>><<set $condomsBought to 150>><</link>>
+				<br>
+			<<else>>
+				You can't afford 150 packs.
+				<br>
+			<</if>>
+		<</if>>
+		<<if $brothelVending.condomsToRefill gte 11 and ![25, 50, 100, 150].includes($brothelVending.condomsToRefill)>>
+			<<condomsPrice $brothelVending.condomsToRefill>>
+			<<set _displayPrice to setup.inflation ? setup.inflation.price(_price) : _price>>
+			<<formatmoney _displayPrice>>
+			<<if setup.inflation.canAfford(_price, "pharmacyCondoms")>>
+				<<link [[`Buy ${$brothelVending.condomsToRefill} packs (${_printmoney})`|Pharmacy Bought Condoms in Bulk]]>><<set $condomsBought to $brothelVending.condomsToRefill>><</link>>
+				<br>
+			<<else>>
+				You can't afford $brothelVending.condomsToRefill packs.
+				<br>
+			<</if>>
+		<</if>>
+		<<link [["Don't buy"|Pharmacy]]>><</link>>
+	<</if>>
+<<else>>
+	You tell the nurse about the vending machine in the brothel and ask <<him>> for a discount for buying large quantities of condoms.
+	<br><br>
+	<<He>> makes an incredulous face. "What do you consider a large quantity? Hundreds, thousands, millions? Maybe it's better if you look for a wholesaler."
+	<br><br>
+	You answer that the vending machine has room for 200 packs and that you're thinking of buying them in increments of 10.
+	<br><br>
+	"That is not a large quantity, <<girl>>. I can't give you a discount under 50 units. From 51 to 100, I can cut 2%. Above 100, I will give you a 5% discount. No more than that; the margin I work with isn't very high. Condoms are very expensive here. But I will add, as a bonus, delivery of the condoms you buy to the brothel."
+	<br><br>
+	<<set $brothelVending.products += 1>>
+	<<set $brothelVending.condomsToRefill to 200>>
+	<<link [[Buy condoms for the brothel (0:10)|Pharmacy Buy Condoms in Bulk]]>><<pass 10>><</link>>
+	<br>
+	<<link [["Don't buy"|Pharmacy]]>><</link>>
+<</if>>
+
+:: Pharmacy Bought Condoms in Bulk
+<<set $outside to 0>><<set $location to "hospital">><<effects>>
+<<set _partial to Math.min($condomsBought, 50)>>
+<<condomsPrice _partial>>
+<<set _displayPrice to setup.inflation ? setup.inflation.price(_price) : _price>>
+<<formatmoney _displayPrice>>
+The nurse takes a<<if $condomsBought lte 25>> small<</if>> cardboard box from under the counter and starts packing the condoms inside.
+<br><br>
+"$condomsBought packs," <<he>> says, checking the total on <<his>> calculator. "The first _partial are <<printprice 6000>> each. That's _printmoney."
+<<condomsPrice $condomsBought>>
+<<if $condomsBought gt 50>>
+	<<set _partial to Math.min($condomsBought - 50, 50)>>
+	<<set _price2 to _partial * 6000 * .98>>
+	<<set _displayPrice to setup.inflation ? setup.inflation.price(_price2) : _price2>>
+	<<formatmoney _displayPrice>>
+	<br>
+	"The next _partial get the 2% discount. That's another _printmoney."
+	<<if $condomsBought gt 100>>
+		<<set _partial to $condomsBought - 100>>
+		<<set _price2 to _partial * 6000 * .95>>
+		<<set _displayPrice to setup.inflation ? setup.inflation.price(_price2) : _price2>>
+		<<formatmoney _displayPrice>>
+		<br>
+		"The last _partial get 5% off. That's _printmoney."
+	<</if>>
+	<br><br>
+	<<He>> checks the calculator again. "Your total is <<printprice _price>>."
+<</if>>
+<br><br>
+You count out the money and hand it over. The nurse closes the box and writes the brothel's delivery details on the label.
+<br><br>
+"I'll send it out for delivery," <<he>> says.
+<br><br>
+<<money `-_price` "pharmacyCondoms">>
+<<set $brothelVending.condoms += $condomsBought>>
+<<set $brothelVending.condomsToRefill -= $condomsBought>>
+<<set $brothelVending.weeksEmpty to 0>>
+<<set $weekly.brothelVMCondoms to true>>
+<<unset $condomsBought>>
+<<earnFeat "Brothel Provider">>
+<<link [[Next|Pharmacy]]>><</link>>
+
+:: Widgets condomsPrice [widget]
+/* Sets _price to the tiered bulk cost of _args[0] packs of condoms.
+   6000 a pack: full price for the first 50, 2% off the next 50, 5% off the rest. */
+<<widget "condomsPrice">>
+	<<set $_packs to Math.max(0, Number(_args[0]) || 0)>>
+	<<set $_tier1 to Math.min($_packs, 50)>>
+	<<set $_tier2 to Math.min(Math.max($_packs - 50, 0), 50)>>
+	<<set $_tier3 to Math.max($_packs - 100, 0)>>
+	<<set _price to Math.round($_tier1 * 6000 + $_tier2 * 6000 * 0.98 + $_tier3 * 6000 * 0.95)>>
+<</widget>>

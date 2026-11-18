@@ -1,0 +1,647 @@
+:: Science Classroom
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<if $schoolstate is "first">>
+	<<lockerClothesAutoEquip>>
+	<<classRoomEarSlime "science">>
+	<<if $worn.upper.type.includes("naked") and $worn.lower.type.includes("naked")>>
+		<<outfitChecks>>
+		/*Check for when the pc is only wearing an overcoat*/
+		<<if $worn.under_upper.name isnot "naked" and $worn.under_lower.name isnot "naked">>
+			<<set _naked to ($worn.under_upper.type.includes("swim") or $worn.under_lower.type.includes("swim")) ? "only wearing swimwear" : "only wearing underwear">>
+		<<else>>
+			<<set _naked to "not wearing anything">>
+		<</if>>
+		<<if $worn.over_upper.name isnot "naked" and $worn.over_lower.name isnot "naked">>
+			As you go to hang your <<print _middleOutfit ? "$worn.over_upper.name" : "$worn.over_upper.name and $worn.over_lower.name">>, you remember that you're _naked underneath.
+		<</if>>
+		<br><br>
+		<<npc Sirris>><<person1>>
+		Sirris looks at you while you stand there. "What are you staring into space for? You can't just be wearing nothing under that coat, can you?" You don't say anything, and Sirris lowers <<his>> voice. "The head might have a spare uniform if you need one."
+		<br><br>
+		<!--<<link [[Hang up coat|]]>><<endevent>><</link>>
+		<br><br> good starting point for when you can go to class naked-->
+		<<link [[Next|Hallways]]>><<endevent>><</link>>
+		<br><br>
+	<<elseif wearingSchoolOutfit() and !pcAreArmsBound("right")>>
+		<<if $daily.school.attended.science>>
+			You rejoin the science lesson,
+			<<if $worn.over_upper.name isnot "naked" or $worn.over_lower.name isnot "naked" or $worn.over_head.name isnot "naked">>
+				hang your coat at the back of the class
+				<<undressOverClothes "scienceClassroom">>
+			<</if>>
+			and take your seat.
+			<br><br>
+			<<link [[Next|Science Lesson]]>><<endevent>><</link>>
+			<br>
+		<<elseif Time.minute lt 5>>
+
+			<<if $daily.sydney.scienceWalk>>
+				<<run delete $daily.sydney.scienceWalk>>
+				You enter the science classroom with Sydney.
+			<<else>>
+				You enter the science classroom.
+			<</if>>
+			<<npc Sirris>><<person1>>
+			Sirris is preparing at the front of the room while the seats fill.
+			<<if $worn.over_upper.name isnot "naked" or $worn.over_lower.name isnot "naked" or $worn.over_head.name isnot "naked">>
+				<<undressOverClothes "scienceClassroom">>
+				You hang your coat at the back of the class and take your seat.
+			<</if>>
+			<br><br>
+
+			<<link [[Next|Science Lesson]]>><<endevent>><</link>>
+			<br>
+
+		<<else>>
+			<<if $daily.sydney.scienceWalk>>
+				<<run delete $daily.sydney.scienceWalk>>
+				You enter the science classroom with Sydney.
+				<<npc Sirris>><<person1>>
+				<<if $daily.school.scienceExcused is true>>
+					<<run delete $daily.school.scienceExcused>>
+					Sirris cuts off mid-sentence to regard you. "Excused tardiness, for both of you. Please take a seat." <<He>> smiles at you.
+				<<else>>
+					Sirris cuts off mid-sentence to regard you. "I'm sorry, but I'll have to record your tardiness. Both of you." Sydney looks ashamed.
+					<<gdelinquency>><<lspurity>>
+					<br><br>
+					<<detention 1>>
+				<</if>>
+			<<else>>
+				You enter the science classroom.
+				<<npc Sirris>><<person1>>
+				<<if $daily.school.scienceExcused is true>>
+					<<run delete $daily.school.scienceExcused>>
+					Sirris cuts off mid-sentence to regard you. "Excused tardiness, please take a seat." <<He>> smiles at you.
+				<<else>>
+					Sirris cuts off mid-sentence to regard you. "I'm sorry, but I'll have to record your tardiness."
+					<<gdelinquency>>
+					<br><br>
+					<<detention 1>>
+				<</if>>
+			<</if>>
+
+			You
+			<<if $worn.over_upper.name isnot "naked" or $worn.over_lower.name isnot "naked" or $worn.over_head.name isnot "naked">>
+				hang your coat at the back of the class and
+				<<undressOverClothes "scienceClassroom">>
+			<</if>>
+			take a seat as Sirris continues.
+			<br><br>
+
+			<<link [[Next|Science Lesson]]>><<endevent>><</link>>
+			<br>
+		<</if>>
+
+	<<elseif pcAreArmsBound("any") or $feetuse is "bound">>
+		Sirris notices your bound <<if pcAreArmsBound("any")>>arms<<if $feetuse is "bound">> and <</if>><</if>><<if $feetuse is "bound">>legs<</if>>. "Is this some kind of experiment? The results would be really hazardous. I can't let you do science like that. Go see the head."
+		<br><br>
+
+		<<link [[Next|Hallways]]>><<endevent>><</link>>
+		<br><br>
+	<<else>>
+		<<npc Sirris>><<person1>>
+		Sirris looks at your outfit as you enter. "Where's your uniform? I'm not allowed to teach you without one, you know. The head might have some spares."
+		<br><br>
+
+		<<link [[Next|Hallways]]>><<endevent>><</link>>
+		<br><br>
+	<</if>>
+<<elseif $schoolstate is "morning">>
+	<<lockerClothesAutoEquip>>
+	<<classRoomEarSlime "science">>
+	You enter the science classroom. No one else has arrived yet. You could use the extra time to study.
+	<br><br>
+
+	<<classgrades>>
+	<<schoolperiodtext>>
+	<<outfitChecks>>
+	<<if _overNaked and _middleNaked>>
+		<!-- Should be changed once naked classes are a thing -->
+		You don't think you should study while not being properly dressed.
+		<br>
+	<<elseif !$worn.bag.type.includes("bookbag")>>
+		<span class="blue">You can't study without your bookbag.</span>
+		<br>
+		<<daydreamicon>><<link [[Daydream before class|Science Classroom Study]]>><<set $phase to 0>>><</link>><<lstress>><<ltiredness>>
+	<<else>>
+		<<scienceicon>><<link [[Study science|Science Classroom Study]]>><<set $phase to 1>><</link>><<gstress>><<gscience>>
+		<br>
+		<<daydreamicon>><<link [[Daydream before class|Science Classroom Study]]>><<set $phase to 0>><</link>><<lstress>><<ltiredness>>
+	<</if>>
+	<br>
+	<<getouticon>><<link [[Leave|Hallways]]>><</link>>
+	<br>
+<<elseif $schoollesson is 1>>
+	<<if $daily.school.scienceInterrupted is 1>>
+
+		<<npc Sirris>><<person1>>You enter the science classroom. Sirris cuts off mid-sentence as you enter, looking surprised, then annoyed. "You again? You can't just keep interrupting like this, shoo!" <<He>> shuts the door on you.
+		<<gdelinquency>>
+		<br><br>
+		<<detention 1>>
+
+		<<link [[Next|Hallways]]>><<endevent>><</link>>
+	<<else>>
+
+		<<npc Sirris>><<person1>>You open the door to the science classroom. Sirris cuts off mid-sentence as you enter, looking surprised. "Can I help you?" It seems you've interrupted the lesson.
+		<br><br>
+		<<if C.npc.Sydney.init is 1 and $schoolstate is "second" and $sydneyScience isnot 1>>
+			You spot Sydney right at the front of the class. <<nnpc_He "Sydney">> looks to you with confusion.
+			<br><br>
+		<</if>>
+		<<set $daily.school.scienceInterrupted to 1>>
+
+		<<link [[Apologise|Science Classroom Apology]]>><<trauma 1>><<stress 1>><</link>><<gstress>><<gtrauma>>
+		<br>
+		<<if $trauma gte 1>>
+			<<link [[Mock|Science Classroom Mock]]>><<status 1>><<stress -12>><</link>><<lstress>><<gcool>><<gdelinquency>>
+			<br>
+		<</if>>
+	<</if>>
+<<else>>
+	You are in the science classroom. The equipment is kept securely locked away when not in use.
+	<br><br>
+	<<if $pleasure gte $pleasuremax>>
+		<<orgasmLocation "emptyClassroom">>
+	<</if>>
+	<<storeon "scienceClassroom" "check">>
+	<<if _store_check is 1>>
+		<<storeon "scienceClassroom">>
+		You take your coat at the back of the class.
+		<br><br>
+	<</if>>
+
+	<<exhibitionclassroom>>
+
+	<<emptyClassroomMasturbationIntro>>
+
+	<<getouticon>><<link [[Leave the room (0:01)|Hallways]]>><<pass 1>><</link>>
+	<br>
+<</if>>
+
+:: Science Classroom Apology
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+Embarrassed, you apologise and leave.
+<br><br>
+
+<<link [[Next|Hallways]]>><<endevent>><</link>>
+
+:: Science Classroom Mock
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+You mock the teacher. "A white lab coat is a good idea <<sir>>, it'll hide the stains." Laughter erupts among the seated students.
+<<if C.npc.Sydney.init is 1 and $schoolstate is "second" and $sydneyScience isnot 1>>
+	<<run statusCheck("Sydney")>>
+	<<if _sydneyStatus.includes("corrupt")>>
+		Even Sydney struggles to not burst into laughter.
+	<<else>>
+		Sydney's eyes widen in shock.
+	<</if>>
+	<<lspurity>>
+<</if>>
+<br><br>
+
+Sirris looks exasperated. "Right. I'll have to inform the head of your behaviour, you know. Please, just go."
+<<gdelinquency>>
+<br><br>
+<<detention 1>><<npcincr Sirris love -1>>
+<<link [[Next|Hallways]]>><<endevent>><</link>>
+
+:: Science Classroom Study
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<if $phase is 1>>
+	<<wearProp "open science">>
+<</if>>
+<<if $worn.over_upper.name isnot "naked" or $worn.over_lower.name isnot "naked" or $worn.over_head.name isnot "naked">>
+	<<undressOverClothes "scienceClassroom">>
+	You hang your coat at the back of the class<<if $phase is 1>>, take your seat and read a science textbook<<else>> and take your seat<</if>>.
+<<else>>
+	You take your seat<<if $phase is 1>> and read a science textbook<</if>>.
+<</if>>
+<br><br>
+
+<<npc Sirris>><<person1>>The classroom soon fills and Sirris arrives to begin the lesson.
+<br><br>
+
+<<if pcAreArmsBound("any") or $feetuse is "bound">>
+	Sirris notices your bound <<if pcAreArmsBound("any")>>arms<<if $feetuse is "bound">> and <</if>><</if>><<if $feetuse is "bound">>legs<</if>>. "Is this some kind of experiment? The results would be really dangerous. I can't let you do science like that. Go see the head."
+	<br><br>
+
+	<<link [[Next|Hallways]]>><<endevent>><</link>>
+	<br><br>
+<<elseif wearingSchoolOutfit()>>
+	<<link [[Next|Science Lesson]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	Sirris looks at your outfit as <<he>> enters. "Where's your uniform? I'm not allowed to teach you without one, you know. The head might have some spares."
+	<br><br>
+
+	<<link [[Next|Hallways]]>><<endevent>><</link>>
+	<br><br>
+<</if>>
+
+<<schooleffects>>
+<<set _time_to_pass to 60 - Time.minute>>
+<<if Time.hour is 7>>
+<!-- lesson starts at 9 -->
+	<<set _time_to_pass += 60>>
+<</if>>
+<<pass _time_to_pass>>
+<<schooleffects>>
+<!-- add stress every 5 minutes -->
+<<set _stress to Math.trunc(_time_to_pass / 5)>>
+<<if $phase is 1>>
+	<<stress _stress>>
+	<!-- improve science grade with same efficiency as studying in the library -->
+	<<set _science to 3 * _time_to_pass / 20>>
+	<<scienceskill _science>>
+<<else>>
+	<<set _stress to _stress * -1>>
+	<<stress _stress>>
+	<<set _tiredness to _stress * 0.5>>
+	<<tiredness _tiredness>>
+<</if>>
+
+:: Science Lesson
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<set $daily.school.attended.science to true>>
+
+<<if $schoolstate isnot "first" or Time.minute gte 59>>
+	<!-- lesson time is already up, e.g. after an event or encounter that overran the hour -->
+	<<lessonEnd "scienceClassroom">>
+<<elseif Time.weekDay is 6 and Time.minute gte 37>>
+	<<npc Sirris>><<person1>>
+	"It's time for the Friday exam," Sirris says, handing out booklets. "Don't be nervous."<<gstress>><<stress 6>>
+	<br><br>
+	<<if $pleasure gte $pleasuremax>>
+		<<set _teacher to "Sirris">>
+		<<orgasmLocation "classroom">>
+	<</if>>
+
+	<<exam science>>
+	<br><br>
+	There's a shuffle of paper as students open the first page. "No talking during the exam," Sirris adds as <<he>> sits at the front of the room. "Even if you've finished. It won't take long."
+	<br><br>
+	<<endevent>>
+	<<exam_cheat science>>
+
+	<<if !$daily.earSlimeCheatExam and numberOfEarSlime() and earSlimeMakingMundaneRequests() and random(0,200) gte 150 - $earSlime.corruption>>
+		<<set $daily.earSlimeCheatExam to true>>
+		<span @class="$earSlime.startedThreats ? 'lewd' : 'lblue'">You feel the <<slimeWord>> in your head command you to cheat in the exam.</span> It promises rewards if you comply<<if $earSlime.startedThreats>> and threatens consequences if you do not<</if>>.
+		<br><br>
+		<<link [[Obey|Science Exam]]>><<set $phase to 3>><<corruption 1>><<pain -4>><<stress -6>><<trauma -12>><<sub 2>><</link>><<gcorruption>><<lpain>><<lltrauma>><<lstress>>
+		<br>
+		<<if $earSlime.startedThreats>>
+			<<link [[Defy|Science Exam]]>><<set $phase to 5>><<corruption -1>><<pain 8>><<stress 6>><<trauma 6>><<def 1>><</link>><<lcorruption>><<ggpain>><<ggtrauma>><<ggstress>>
+		<<else>>
+			<<link [[Ignore|Science Exam]]>><<set $phase to 4>><</link>>
+		<</if>>
+		<br>
+	<<else>>
+		<<link [[Focus|Science Exam]]>><<stress 6>><<set $phase to 0>><<set $exam_chance += 5>><</link>><<gstress>><<passPercent 5>>
+		<br>
+		<<link [[Try to relax|Science Exam]]>><<set $phase to 1>><</link>>
+		<br>
+		<<link [[Cheat|Science Exam]]>><<set $phase to 2>><</link>><<skulduggerydifficulty>>
+	<</if>>
+	<br>
+<<elseif $leightonCameraSuspicion and Time.weekDay isnot 6 and Time.minute lte 30>>
+	/* Sabotaged changing room cameras: ignores $headnoinspections and the event timer */
+	<<set $schooleventtimer to random(7,22)>>
+	<<if $schoolevent is 2>>
+		<<set $schoolevent to 1>><<set _inspection to "Breast Inspection">>
+	<<elseif $schoolevent is 1>>
+		<<set $schoolevent to 2>><<set _inspection to either("Penis Inspection", "Pussy Inspection")>>
+	<<else>>
+		<<set $schoolevent to 1>><<set _inspection to "Penis Inspection">>
+	<</if>>
+	<<npc Sirris>><<person1>>
+	Sirris stands at the front of the classroom instead of beginning the lesson. <<He>> looks towards the door, then back at the class.
+	<br><br>
+	"The headteacher needs this class this morning," <<he>> says. <<He>> frowns and puts the lesson materials aside. Whatever Leighton wants, Sirris clearly isn't pleased about it.
+	<br><br>
+	<<endevent>><<npc Leighton>><<person1>>
+	Leighton enters a short time later. <<He>> tells Sirris to leave, then waits until the door closes before turning to the class.
+	"Some equipment in the changing rooms was damaged, and someone in this room knows who did it."
+	<br><br>
+	<<if $leightonCameraSuspicion is "exposed">>
+		Leighton turns directly towards you.
+		"One of the cameras recorded your hands before the picture disappeared. That is more than sufficient for detention."
+		<br><br>
+		A few students turn in their seats to look at you while Leighton writes down the punishment.<<detention 3>><<gdelinquency>><<gstress>><<stress 6>>
+	<<elseif $cool lt $coolmax / 5>>
+		The room remains quiet until a student near the back raises a hand and points at you. Another student nods, then a few more begin agreeing with them.
+		<br><br>
+		Leighton looks at the students accusing you, but <<he>> doesn't ask any of them to explain what they saw. Instead, <<he>> turns towards you.
+		"Detention," <<he>> says, already writing it down.<<detention 3>><<gdelinquency>><<gstress>><<stress 6>>
+	<<else>>
+		Leighton looks across the classroom one student at a time. When <<he>> reaches you, <<he>> studies you briefly before continuing to the next desk.
+	<</if>>
+	<br><br>
+	Leighton finishes writing, then places the pen down and looks over the class.
+	"While I'm here, we'll have the inspection as well."
+	<br><br>
+	<<unset $leightonCameraSuspicion>>
+	<<link "Next" _inspection>><<pass 5>><</link>>
+	<br>
+<<elseif $headnoinspections isnot 1 and $schoolevent is 0 and $schooleventtimer lte 0 and Time.weekDay isnot 6 and Time.minute lte 30>><<set $schoolevent += 1>><<set $schooleventtimer to random(7,22)>>
+	<<npc Sirris>><<person1>>"The headteacher has asked to be involved with the lesson today," Sirris says. "I know you'll all be on your best behaviour." The door opens as <<he>> finishes, and Leighton steps in.
+	<br><br>
+
+	<<endevent>><<npc Leighton>><<person1>><<He>> strides to the front of the class. "Thank you, Sirris," <<he>> says. "Why don't you take a break?"
+	<br><br>
+
+	Sirris looks perplexed. "I thought you'd want my help, I've prepared—"
+	<br><br>
+
+	"Don't you worry. I've prepared my own plan for the lesson. Now go relax in that cafe you like."
+	<br><br>
+
+	<<endevent>><<npc Sirris>><<person1>>
+
+	Sirris opens <<his>> mouth to argue, but thinks better of it. "Be good," <<he>> whispers to the class on <<his>> way out.
+	<br><br>
+	<<endevent>><<npc Leighton>><<person1>>
+
+	<<link [[Next|Penis Inspection]]>><<pass 5>><</link>>
+	<br>
+<<elseif $headnoinspections isnot 1 and $schoolevent is 1 and $schooleventtimer lte 0 and Time.weekDay isnot 6 and Time.minute lte 30>>
+	<<set _xchangedEver to ($xchange isnot undefined && $xchange.everConsumed && !xchangePillPurityActive())>>
+	<<set _xchangedNow to (typeof playerIsXChanged === "function" && playerIsXChanged())>>
+
+	<<if _xchangedEver or _xchangedNow>>
+		<<npc Sirris>><<person1>>
+		"The headteacher has once again asked to take charge of the lesson," Sirris says.
+		<br><br>
+		You sit up straighter before you even realize it. Your mind's already spinning, trying to make sense of it but you know what another inspection means another observation. 
+		<span class="red">And another observation means another chance for something else to slip out</span>. 
+		Then you thought, do people know something about you? Did anyone notice you have X-Changed but they stay quiet? If they know, then will it have consequences to you? 
+		<br><br>
+		And... what this inspection for, actually?
+		<br><br>
+
+		<<link [[You know this is bad. Run.|Science Leighton Run]]>><</link>><<athleticsdifficulty 400 1400>>
+		<br>
+		<<link [[You're overthinking. Stay put.|Science Leighton Stay]]>><</link>>
+		<br>
+	<<else>>
+		<<set $schoolevent += 1>><<set $schooleventtimer to random(7,22)>>
+		<<npc Sirris>><<person1>>"The headteacher has once again asked to take charge of the lesson," Sirris says.<<endevent>><<npc Leighton>><<person1>> "I don't know why <<hes>> taken an interest, but <<he>> seemed satisfied last time."
+		<br><br>
+
+		The door swings open and Leighton steps in, a smile on <<his>> face. "Thank you, Sirris," <<he>> says. "I'll take it from here."
+		<br><br>
+
+		"Are you sure I can't assist?" Sirris asks.
+		<br><br>
+
+		"I'll be fine. You have a very cute class."
+		<br><br>
+
+		<<endevent>><<npc Sirris>><<person1>>
+		"O-okay." Sirris turns to the class as <<he>> leaves. "Be good," <<he>> whispers.
+		<br><br>
+
+		<<endevent>><<npc Leighton>><<person1>>
+
+		<<set _inspectRoll to random(1,100)>>
+		<<if _inspectRoll lte 50>>
+			<<link [[Next|Penis Inspection]]>><<pass 5>><</link>>
+		<<else>>
+			<<link [[Next|Pussy Inspection]]>><<pass 5>><</link>>
+		<</if>>
+		<br>
+	<</if>>
+<<elseif $headnoinspections isnot 1 and $schoolevent is 2 and $schooleventtimer lte 0 and Time.weekDay isnot 6 and Time.minute lte 30>>
+	<<set _xchangedEver to ($xchange isnot undefined && $xchange.everConsumed && !xchangePillPurityActive())>>
+	<<set _xchangedNow to (typeof playerIsXChanged === "function" && playerIsXChanged())>>
+
+	<<if _xchangedEver or _xchangedNow>>
+		<<npc Sirris>><<person1>>
+		"The headteacher has asked to take over today's lesson," Sirris says. "For a... health checks?"
+		<br><br>
+
+		Your skin prickles. <span class="red">Health checks</span>. That's what <<he>> called it last time too. 
+		But you can already picture how this ends with too many eyes, too little privacy about your X-Change situation, and Leighton acting like it's all perfectly normal.
+		<br><br>
+
+		<<link [[Nope. Get out now.|Science Leighton Run 2]]>><</link>><<athleticsdifficulty 400 1400>>
+		<br>
+		<<link [[If it's routine, it's routine.|Science Leighton Stay 2]]>><</link>>
+		<br>
+
+	<<else>>
+		"The headteacher has asked to take over today's lesson," Sirris says. "For a... health checks?"
+		<br><br>
+		<<link [[Next|Science Leighton Stay 2]]>><</link>>
+	<</if>>
+<<elseif $stress gte $stressmax and isPregnancyEnding()>>
+	<<pregnancyPassout "schoolScience">>
+<<else>>
+	<<if Time.minute lt 5>>
+		The science lesson begins. How do you want to conduct yourself?
+		<br><br>
+		<<classgrades>>
+	<<else>>
+		The science lesson continues. How do you want to conduct yourself?
+		<br><br>
+	<</if>>
+	<<if $pleasure gte $pleasuremax>>
+		<<set _teacher to "Sirris">>
+		<<orgasmLocation "classroom">>
+	<</if>>
+
+	<<scienceicon>><<link [[Focus on the lesson|Science Lesson Focus]]>><</link>><<gstress>><<gscience>>
+	<br>
+	<<socialiseicon>><<link [[Socialise with classmates|Science Lesson Socialise]]>><</link>><<gcool>><<ltrauma>><<lstress>><<gharass>>
+	<br>
+	<<daydreamicon>><<link [[Daydream|Science Lesson Daydream]]>><</link>><<lstress>><<ltiredness>><<lharass>>
+	<br>
+	<<if $tiredness gte (C.tiredness.max / 5) * 3 or effectiveTransformationLevel("cat") gte 4>>
+		<<bedicon "zzz">><<link [[Sleep at your desk|Science Lesson Sleep]]>><</link>><<lltiredness>>
+		<br>
+	<</if>>
+	<<if Time.minute lte 36 and ($awareness gte 0 or $arousal gte 9000) and hasSexStat("exhibitionism", 4)>>
+		<<skinicon "masturbate">><<link [[Masturbate|Science Lesson Masturbate]]>><<set $masturbationstart to 1>><</link>><<exhibitionist4>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Science Lesson Socialise
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<advancelesson>><<effects>>
+<<if $cool gte ($coolmax / 5 * 2)>>
+	You do the bare minimum of work, focusing instead on trying to endear yourself to your classmates. You soon become the centre of attention.
+<<elseif $cool gte ($coolmax / 5)>>
+	You do the bare minimum of work, focusing instead on trying to endear yourself to your classmates.
+<<else>>
+	You do the bare minimum of work, focusing instead on trying to endear yourself to your classmates. Most avoid interacting with you.
+<</if>>
+<br><br>
+
+<<status 1>>
+<<set _stress to _lesson_progress * -1>><<stress _stress>>
+<<set _trauma to _lesson_progress * -0.5>><<trauma _trauma>>
+
+<<if $phase is 1>>
+	<<lessonEnd "scienceClassroom">>
+<<else>>
+	<<lessonEvents "science" 2>>
+<</if>>
+
+:: Science Lesson Daydream
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<advancelesson>><<effects>>
+<<if $trauma gte (($traumamax / 10) * 7)>>
+	You keep to yourself, afraid that one wrong move will result in the whole class molesting you.
+<<elseif $trauma gte (($traumamax / 10) * 2)>>
+	You focus on your own thoughts, trying to keep the creeping anxiety at bay.
+<<else>>
+	You don't really pay attention to the lesson, instead idly staring out the window and thinking about what you'll do after school.
+<</if>>
+<br><br>
+
+<<set _stress to _lesson_progress * -1>><<stress _stress>>
+<<set _tiredness to _lesson_progress * -0.5>><<tiredness _tiredness>>
+
+<<if $phase is 1>>
+	<<lessonEnd "scienceClassroom">>
+<<else>>
+	<<lessonEvents "science" 0.5>>
+<</if>>
+
+:: Science Lesson Focus
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<advancelesson>><<effects>>
+You focus on listening to the teacher and studying the material. It's hard going, but you think you're making progress.
+<br><br>
+
+<<scienceskill _lesson_gain>>
+<<stress _lesson_progress>>
+
+<<if $phase is 1>>
+	<<lessonEnd "scienceClassroom">>
+<<else>>
+	<<lessonEvents "science">>
+<</if>>
+
+:: Science Lesson Sleep
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<advancelesson>><<effects>>
+You rest your head on the desk while Sirris <<print either("lectures about anatomy", "puts on a video about human reproduction", "enthusiastically talks about nature", "calls a student up to the front of the room")>>. Your eyes soon close, just for a moment, before you open them again. You struggle to stay awake, but the desk is just too comfy.
+<br><br>
+
+<<tiredness `-Math.max(0, Math.min(20, _time_left)) / 5`>>
+
+<<if $phase is 1>>
+	<<lessonEnd "scienceClassroom" "sleep">>
+<<else>>
+	<<eventssciencesleep>>
+<</if>>
+
+:: Science Leighton Run
+<<effects>>
+
+You push your chair back and move with just a quick trip out. Your heart is hammering anyway.
+<br><br>
+
+<<if $athleticsSuccess>>
+	<span class="green">You slip out clean.</span> Down the corridor, around the corner, and you're gone before anyone can call your name. 
+	If the inspection is over, you know you'll have to go back. But for now... you're free.
+	<br><br>
+
+	<<set $schoolevent += 1>>
+	<<set $schooleventtimer to random(7,22)>>
+	<<endevent>>
+	<<link [[Next|Science Lesson]]>><<endevent>><</link>>
+<<else>>
+	<span class="red">"You."</span> Sirris' voice catches you mid-step.
+	<br><br>
+	You freeze with one foot still in the air, right at the edge of escape. The door is just starting to swing open, light spilling through the crack. 
+	For a second, you actually consider making a run for it anyway. 
+	<br><br>
+	But you stand there too long.
+	<br><br>
+	<<link [[Next|Science Leighton Stay]]>><</link>>
+<</if>>
+
+:: Science Leighton Stay
+<<set $schoolevent += 1>><<set $schooleventtimer to random(7,22)>>
+<<endevent>>
+<<npc Sirris>><<person1>>"Everyone, please sit down!" Sirris says.<<endevent>><<npc Leighton>><<person1>> "I don't know why <<hes>> taken an interest, but <<he>> seemed satisfied last time."
+<br><br>
+
+The door swings open and Leighton steps in, a smile on <<his>> face. "Thank you, Sirris," <<he>> says. "I'll take it from here."
+<br><br>
+
+"Are you sure I can't assist?" Sirris asks.
+<br><br>
+
+"I'll be fine." Leighton says it calmly, but <<nnpc_his "Leighton">> eyes linger on you a little too long for your liking and you brace yourself for a follow-up, a question, maybe even a comment. 
+But instead, <<nnpc_he "Leighton">> just blinks, and continued, "You have a very cute class."
+<br><br>
+
+<<endevent>><<npc Sirris>><<person1>>
+"O-okay." Sirris turns to the class as <<he>> leaves. "Be good, everyone," <<he>> whispers.
+<br><br>
+
+<<endevent>><<npc Leighton>><<person1>>
+
+<<set _inspectRoll to random(1,100)>>
+<<if _inspectRoll lte 50>>
+	<<link [[Next|Penis Inspection]]>><<pass 5>><</link>>
+<<else>>
+	<<link [[Next|Pussy Inspection]]>><<pass 5>><</link>>
+<</if>>
+
+:: Science Leighton Run 2
+<<effects>>
+The moment Sirris says it, you're already moving. Slow. Casual. Like you're just heading to the toilet.
+<br><br>
+
+<<if $athleticsSuccess>>
+	<span class="green">You get out.</span> Corridor, corner, then another until your footsteps fade into the school's noise. 
+	You don't know how long you can stay away, but it won't be today inspection. And you going back to class when you know it is done already.
+	<br><br>
+
+	/* Success: skip the inspection but still resolve the event chain like vanilla */
+	<<set $schoolevent to 1>>
+	<<set $schooleventtimer to random(7,22)>>
+	<<endevent>>
+	<<link [[Next|Science Lesson]]>><<endevent>><</link>>
+
+<<else>>
+	<span class="red">"Where are you going?"</span> Sirris' voice snaps you in place.
+	<br><br>
+	You hesitate with body already leaning forward, weight shifting like you're one second from bolting. The door isn't far, maybe ten steps at most. You could make it. You <i>would</i> have made it. 
+	But just as your muscles tense to move—
+	<br><br>
+	"Before we begin," Sirris cuts in, louder this time, "there's something important I need to say. I hope everyone's listening."
+	<br><br>
+	You exhale as you know your moment's gone. You turn back, dragging your feet a little as you head to your seat. No choice now.
+	<br><br>
+
+	<<link [[Next|Science Leighton Stay 2]]>><</link>>
+<</if>>
+
+:: Science Leighton Stay 2
+<<set $schoolevent to 1>><<set $schooleventtimer to random(7,22)>>
+
+<<npc Sirris>><<person1>>"The headteacher's on the way and should be here any minute," Sirris says. "I hope it's not because I'm doing my job improperly."
+<br><br>
+
+<<endevent>><<npc Leighton>><<person1>>
+"You're doing fine," Leighton says as <<he>> enters. "I'm just conducting government-mandated health checks."
+<br><br>
+
+"I can help with that, I have—"
+<br><br>
+
+Leighton raises <<his>> arm and Sirris falls quiet. "Go take a break. Your class will be in one piece when you return."
+<br><br>
+
+<<endevent>><<npc Sirris>><<person1>>
+Sirris looks at the class as <<he>> leaves. "I won't be long," <<he>> whispers.
+<br><br>
+
+<<endevent>><<npc Leighton>><<person1>>
+
+<<link [[Next|Breast Inspection]]>><<pass 5>><</link>>
+<br>

@@ -1,0 +1,3621 @@
+:: Pound
+<<set $outside to 0>><<location "pound">><<effects>>
+
+<<if $pound is undefined>>
+	<<pound_init>>
+<</if>>
+You are in the dog pound on Starfish Street. Stray <<pound_text>> fill the cages.
+<<if $stress gte $stressmax>>
+	<br><br>
+
+	<<passoutshop "dog_pound">>
+<<elseif Time.hour is $closinghour>>
+	It's closing time. The staff are preparing to leave.<<if $exposed gte 1>> Panic swells within you as you realise how exposed you'll be should you be found in this state of dress.<</if>>
+	<br><br>
+	<<starfishicon>><<link [[Leave|Starfish Street]]>><<endevent>><</link>>
+	<br>
+	<<ind>><<link [[Hide (1:00)|Pound]]>><<pass 60>><</link>>
+	<br>
+<<else>>
+	<<if $pleasure gte $pleasuremax>>
+		<<orgasmLocation "pound">>
+	<</if>>
+	<<if !Time.openingHours()>>
+		You are alone in the darkness.
+		<br><br>
+	<<elseif $exposed gte 1>>
+		<<if $uncomfortable.nude is false>>
+			You are hiding in a cupboard. You wouldn't mind others seeing you exposed, but this time you stay put.
+		<<else>>
+			You are hiding in a cupboard to protect your dignity.
+		<</if>>
+		<br><br>
+	<</if>>
+	<<stray_happiness_text>>
+	<<generateBeastVictim 1 dog>>
+	A <<beasttype>> watches you through the bars.
+	<<if !Time.openingHours() and Time.hour isnot $closinghour>>
+		<br>
+		<<if hasSexStat("deviancy", 2) and $pound.sneak is 0 and beastSexEnabledForType("dog", $monster is 1)>>
+			<<prisonicon "cell">><<link [[Tease (0:05)|Pound Tease]]>><<pass 5>><<set $pound.sneak to 1>><<arousal 600>><</link>><<deviant2>><<garousal>>
+			<br>
+		<</if>>
+		<<if $pound.progress is 4>>
+			<<wolfcaveicon "black dog">><<link [[Free the black dog|Pound Free]]>><<set $pound.progress to 5>><</link>><<dangerousText>>
+			<br>
+		<</if>>
+	<</if>>
+	<br>
+
+	<<if Time.openingHours() and $exposed lt 1>>
+		<br>
+		Staff go about their business.
+		<<if Time.hour gte 18>>
+			Some stand around chatting in the rear courtyard, as if they have nothing better to do.
+		<<elseif Time.hour gte 14>>
+			A well-dressed couple examine a line-up of <<pound_text>> in the rear courtyard, considering adoption.
+		<<elseif Time.hour gte 10>>
+			Some <<pound_text>> have been let loose in the rear courtyard.
+		<<else>>
+
+		<</if>>
+		<br>
+		<<if $pound.progress is 0>>
+			<<socialiseicon "ask">><<link [[Ask for work|Pound Ask]]>><<set $pound.progress to 1>><<endevent>><</link>>
+		<<elseif pcAreArmsBound("both")>>
+			<span class="red">Both of your arms are bound</span>, so you are unable to work here.
+		<<else>>
+			<<petshopicon "dog food">><<link [[Work (1:00)|Pound Work]]>><<endevent>><</link>>
+		<</if>>
+		<br><br>
+
+		<<if $pound.progress lte 3>>
+			A low growl can be heard within a shadowed cage.
+			<br>
+			<<if $pound.progress gte 2 and $pound.status gte 100>>
+				<<wolfcaveicon "black dog">><<link [[Approach the brute|Pound Work Brute]]>><<endevent>><</link>><<tendingdifficulty 1 1000>>
+			<<else>>
+				<span class="blue">You wouldn't get close.</span>
+			<</if>>
+			<br><br>
+		<</if>>
+	<</if>>
+
+	<<starfishicon>><<link [[Leave|Starfish Street]]>><<endevent>><</link>>
+	<br><br>
+<</if>>
+
+:: Pound Free
+<<effects>>
+<<wearProp "key">>
+<<endevent>>
+<<loadNPC 0 "black_dog">>
+The key is in its usual place. There's nothing stopping you from unlocking the cage, and holding it wide open for the <<beasttype>> within. <<bHis>> yellow eyes appear in the dark. <<bHe 0>> regards you a moment, before stepping into the light.
+<br><br>
+
+<<bHe>> stops near the doorway, then looks past you towards the exit.
+<br><br>
+
+<<link [[Reassure|Pound Free Reassure]]>><</link>>
+<br>
+<<link [[Lead outside|Pound Free Lead]]>><</link>>
+<br>
+
+:: Pound Free Reassure
+<<effects>>
+
+<<speechresolve>>
+<<if _speechAttitudeResolved is "meek">>
+	"I-I'm here to rescue you," you say. "Please don't be frightened."
+<<elseif _speechAttitudeResolved is "shy">>
+	"I-I'm here to help," you say, stopping just outside <<bhis>> reach. "Can you come with me?"
+<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+	"I'm here to get you out," you say. "Please come with me, and stay close."
+<<elseif _speechAttitudeResolved is "docile">>
+	"I'm here to help," you say. "I'll go slowly. Just come with me."
+<<elseif _speechAttitudeResolved is "confident">>
+	"I'm getting you out," you say. "Stay close."
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+	"I'm getting you out of here," you say. "Come on, before someone notices."
+<<else>>
+	"I'm freeing you," you say. "Come on. We need to hurry."
+<</if>>
+<br><br>
+
+You step back from the cage door and give the <<beasttype 0>> room to move.
+<<if $monster is 1>>
+	"I follow," <<bhe>> says. "Then I run for forest. Never return here."
+<<else>>
+	<<bHe>> gets to <<bhis>> feet, stretches, then moves to your side.
+<</if>>
+There's a new energy about <<bhim>>.
+<br><br>
+
+<<link [[Next|Pound Free Lead]]>><</link>>
+<br>
+
+
+:: Pound Free Lead
+<<effects>>
+<<generate2>><<generate3>><<generate4>><<generate5>><<generate6>><<person2>>
+You walk for the exit, the <<beasttype 0>> by your side. <span class="red">Red lights flicker into life, and an alarm blares out.</span> At the end of the room, opposite the exit, the metal door shudders open. A <<person>> rushes through, a phone in <<his>> hand and a fresh coffee stain on <<his>> shirt.
+<br><br>
+
+"Police? We have a break in. Yes, I see them. Right." <<He>> lets the phone fall to the ground. "Stop right there!" <<he>> says. "The police will be here any minute. Best make this—"
+<br><br>
+
+The <<beasttype 0>> turns towards <<him>>. The <<person>> stops talking, takes one step back, then hurries through the metal door so quickly <<he>> nearly falls. It shuts behind <<him>>.
+<br><br>
+
+<<link [[Next|Pound Free 2]]>><</link>>
+<br>
+
+
+:: Pound Free 2
+<<effects>><<wearProp "key">>
+
+The other <<pound_text>> watch as you pass, awoken by the alarm. The front door has been remotely locked, and you lose precious moments searching for the right key.
+<br><br>
+
+You emerge in the courtyard outside, and rush for the dark road beyond the gate. <span class="red">Blinding lights shine from ahead, and either side.</span> "This is the police," booms a voice. "We have you surrounded."
+<br><br>
+
+The <<beasttype 0>> growls.
+<br><br>
+
+<<link [[Cause a distraction so the black dog can escape|Pound Free Distract]]>><</link>>
+<br>
+<<link [[Run|Pound Free Run]]>><</link>>
+<br>
+
+
+:: Pound Free Distract
+<<effects>>
+
+<<speechresolve>>
+<<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
+	"P-Please run," you whisper, patting the <<beasttype 0>>'s side. "I'll be okay."
+<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+	"Go," you whisper, patting the <<beasttype 0>>'s side. "I'll be all right."
+<<elseif _speechAttitudeResolved is "docile">>
+	"Please go," you whisper. "Don't wait for me."
+<<elseif _speechAttitudeResolved is "confident">>
+	"Run," you whisper. "I've got this."
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+	"Run," you whisper. "I'll keep them busy."
+<<else>>
+	"Run," you whisper. "I'll be safe."
+<</if>>
+You give <<bhim 0>> a gentle push towards the exit. There is no time to check whether <<bhe 0>> understood.
+<br><br>
+
+You turn towards the flashing lights, fill your lungs, then charge with a roar.
+<br><br>
+
+<<link [[Next|Pound Free 3]]>><</link>>
+<br>
+
+
+
+:: Pound Free Run
+<<effects>>
+
+You pull on the <<beasttype 0>>'s collar and run for a gap in the lights.
+<br><br>
+
+<<link [[Next|Pound Free 3]]>><</link>>
+<br>
+
+
+
+:: Pound Free 3
+<<effects>>
+<<bind>>
+There's no chance of victory. You can't even see the blow that sends you to the ground, a weight keeps you there. "Got <<phim stranger>>," says a <<person3>><<personssimple>> voice. "Where'd the mutt go?"
+<br>
+There's a pause. "Where'd it go?"
+<br>
+"Sorry sarge. <span class="green">It's gone.</span>"
+<br>
+"Fuck. Get this <<bitch>> inside."
+<br><br>
+
+<<link [[Next|Pound Free 4]]>><</link>>
+<br>
+
+
+:: Pound Free 4
+<<effects>>
+<<earnFeat "Pound Liberator">>
+The officers handcuff you, and drag you into the pound to await the other staff. The <<person2>><<persons>> first, emerging from behind the metal door with a sheepish look on <<his>> face. <<He>> doesn't mention how thoroughly the <<beasttype 0>> scared <<him>>.
+<br><br>
+
+The staff soon arrive, irritated at their nights being disturbed. That's nothing compared to their anger at hearing what you've done. One <<person5>><<person>> marches to the <<beasttype 0>>'s cage. "No no no," <<he>> says. "We are so fucked." <<He>> looks at you. "You little shit."
+<br><br>
+
+They demand that the police hit you with the fullest extent of the law. The whole book. Until they notice one of their number, a <<person6>><<person>>, grinning at you in silence.
+<br><br>
+"Calm down everyone," <<he>> says. "We have a replacement." The others follow <<his>> gaze, and their anger fades. "Thank you officers. We won't press charges."
+<br><br>
+
+<<link [[Next|Pound Free 5]]>><</link>>
+<br>
+
+
+:: Pound Free 5
+<<effects>>
+
+<<endevent>>
+<<generate1>><<generate2>><<generate3>><<generate4>><<generate5>><<generate6>><<person1>>
+The door slams shut behind the police, and the pound staff get to work. A <<person>> retrieves a muzzle from the store room, another a collar and leash. "Get <<person2>><<pher stranger>> clothes off," says a <<person>>. <span class="red">"Dogs don't wear clothes."</span>
+<br><br>
+
+They surround you. You'd need to fight your way out. There are a lot of them, your hands are tied, and failure would leave you vulnerable.
+<br><br>
+
+<<link [[Fight|Pound Free Fight]]>><<set $fightstart to 1>><<def 1>><</link>>
+<br>
+<<link [[Submit|Pound Free Submit]]>><<sub 1>><<endevent>><</link>>
+<br>
+
+
+:: Pound Free Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[Next|Pound Free Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Pound Free Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Pound Free Fight Finish
+<<effects>>
+<<if $enemypleasure gte $enemypleasuremax>>
+	<<ejaculation "short">>
+	You duck and weave through the groggy staff, and escape into the yard outside. The police left the gate ahead open.
+	<br><br>
+	<<tearful>> you escape into the night.
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[Next|Starfish Street]]>><</link>>
+	<br>
+
+<<elseif $enemyhealth lte 0>>
+	Stunned by your aggression, the staff fall back. You seize the opportunity and escape into the yard outside. The police left the gate ahead open.
+	<br><br>
+	<<tearful>> you escape into the night.
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[Next|Starfish Street]]>><</link>>
+	<br>
+<<else>>
+	<<if $finish is 1>><<encounterEndViolence>><</if>>
+    You can't take it anymore.
+    <br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[Next|Pound Free Submit]]>><<set $phase to "caught">><</link>>
+	<br>
+<</if>>
+
+
+:: Pound Free Submit
+<<effects>>
+
+<<unbind>>
+<<ruined>>
+<<pound_muzzle>>
+<<if $worn.neck.name is "familiar collar" and $worn.neck.cursed is 1>>
+	Hands reach from all around, and rip the clothes from your body. They push you onto your stomach. Someone pushes a boot between your shoulders as they reach down to affix a muzzle around your mouth. Another struggles with your collar, trying to replace it with a leashed one. They remove the handcuffs, at least.
+	<br><br>
+
+	<<generate1>><<generate2>><<person2>>
+	"Get <<phim stranger>> up and get that collar on already," a <<person>> says. A <<person1>><<person>> continues to pull at the familiar collar, until <<his>> hands brush against the heart. <<He>> recoils. "Fucking thing shocked me!"
+	<br><br>
+
+	The <<person2>><<person>> kneels down in front of you. "A built-in shock function could be useful, but it's too identifying." <<He>> looks closer, holding your head still by your muzzle.
+	"Just tie a cord around it for now." The <<person1>><<person>> pushes your head to the side, and starts to tie a leash to your collar. As soon as <<he>> removes <<his>> hands,
+	<span class="green">the leash falls away as if it was never tied.</span> <<He>> ties it again, <span class="green">only for it to fall away once more</span>.
+	<br><br>
+
+	The <<person2>><<person>> groans. "Right, you only know one kind of <i>knot</i>, you useless shit. Drag <<phim stranger>> inside, we'll just cut it off. It's only fabric."
+	The crowd holds you tightly, restraining your arms behind you. "Don't get used to walking, <<bitch>>. You'll be crawling as soon as we get a leash on you. Move."
+	<br><br>
+
+	You're helpless to resist as they push you down the corridor. The <<person1>><<person>> steers you, making sure your exposure is on display for everyone. The staff watch, ogling your body and enjoying your humiliation. They're not the only ones. The <<pound_text>> are well-awake, and observe from their cages.<<lllpound_status>><<pound_status -10>>
+	<br><br>
+
+	<<link [[Next|Pound Abduction Gwylan Rescue]]>><<set $phase to "free">><</link>>
+	<br>
+<<else>>
+	<<leash "spiked collar with leash">>
+	<<set $worn.neck.cursed to 1>>
+	<<if $phase is "caught">>
+		<<badEndTracking "Pound" { reason: "poundCaught" }>>
+	<<else>>
+		<<badEndTracking "Pound" { reason: "poundSubmitted" }>>
+	<</if>>
+	Hands reach from all around, and rip the clothes from your body. They push you onto your stomach. Someone pushes a boot between your shoulders as they reach down to affix a muzzle around your mouth, and a collar and leash around your neck. They remove the handcuffs, at least.
+	<br><br>
+
+	<<generate1>><<person1>>
+	<<if !playerChastity() and random(1, 100) lte npcChastityChance(chastityGenderMismatch() ? 90 : 40)>>
+		<<if chastityGenderMismatch()>>
+			"Hang on," the <<person>> says, crouching to get a look at you. "That's not what I was told to expect." <<He>> snorts. "Whatever. Not like it matters what's actually down there, mutts don't get to use it either way."
+		<<else>>
+			"Mutts don't get to touch themselves," the <<person>> says, already digging through a supply bin.
+		<</if>>
+		<<He>> comes back with a chastity device and fits it to you before you can do anything about it. <<forceChastityFit "Pound">>
+		<br><br>
+	<</if>>
+	"Get <<phim stranger>> up," says a <<person>>. Someone yanks your leash, pulling you to your knees. The <<person>> leans close. "Best be a <<goodgirl>>," <<he>> whispers, taking hold of your leash. "And do as you're told." <<He>> pulls away. "Walk."
+	<br><br>
+
+	<<link [[Crawl|Pound Free Crawl]]>><<sub 1>><<trauma 6>><</link>><<gtrauma>>
+	<br>
+	<<link [[Stand|Pound Free Stand]]>><<pain 4>><<stress 6>><</link>><<gpain>><<gstress>>
+	<br>
+	<<link [[Refuse|Pound Free Refuse]]>><<pain 8>><</link>><<ggpain>>
+	<br>
+<</if>>
+
+
+:: Pound Free Crawl
+<<effects>>
+
+You crawl around the room on all fours, the <<person>> following behind with the leash in <<his>> hand. The staff watch, ogling your body and enjoying your humiliation. They're not the only ones. The <<pound_text>> are well-awake, and observe from their cages.<<lllpound_status>><<pound_status -10>>
+<br><br>
+
+<<link [[Next|Pound Free 6]]>><</link>>
+<br>
+
+
+:: Pound Free Stand
+<<effects>>
+
+You rise to your feet. Or try to. The <<person>> kicks you down. "Dogs don't walk like that," <<he>> says. "Now stay down, or we'll make you."
+<br><br>
+
+You crawl around the room on all fours, the <<person>> following behind with the leash in <<his>> hand. The staff watch, ogling your body and enjoying your humiliation. They're not the only ones. The <<pound_text>> are well-awake, and observe from their cages.<<lllpound_status>><<pound_status -10>>
+<br><br>
+
+<<link [[Next|Pound Free 6]]>><</link>>
+<br>
+
+
+
+:: Pound Free Refuse
+<<effects>>
+
+You refuse to budge, but the <<person>> gives your <<bottom>> a solid kick, jolting you forward. <<He>> delivers another, and another. The staff watch, ogling your body and enjoying your humiliation. They're not the only ones. The <<pound_text>> are well-awake, and observe from their cages.<<lllpound_status>><<pound_status -10>>
+<br><br>
+
+<<link [[Next|Pound Free 6]]>><</link>>
+<br>
+
+:: Pound Free 6
+<<effects>>
+
+<<He>> steers you down the row of cages, giving the occupants a closer look.<<lllpound_status>><<pound_status -10>>
+<br><br>
+
+<<endevent>><<generate1>><<person1>>
+"I can't stand it," a <<person>> says, stepping closer. "I need to fuck <<phim stranger>>."
+<br><br>
+The others laugh. "You want to fuck a dog? Be my guest."
+<br><br>
+The <<person>> receives the leash. <<He>> holds it taut as <<he>> kneels next to you, and pulls your <<bottom>> closer.
+<br><br>
+
+<<link [[Next|Pound Free Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Pound Free Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<audience>>
+The <<pound_text>> watch as well.<<lpound_status>><<pound_status -1>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Pound Free Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Pound Free Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Pound Free Rape Finish
+<<effects>>
+<<if $enemypleasure gte $enemypleasuremax>>
+	<<ejaculation>>
+	The <<person>> staggers away from you, satisfied.<<llpound_status>><<pound_status -5>>
+	<br><br>
+	<<tearful>> you prepare for more abuse.
+<<else>>
+	<<if $finish is 1>><<encounterEndViolence>><</if>>
+    You can't take it anymore.
+    <br><br>
+	The <<person>> backs away from you. The other staff laugh. "I-it's not tame yet."
+	<<tearful>> you prepare for more abuse.
+<</if>>
+<br><br>
+<<clotheson>>
+<<endcombat>>
+<<link [[Next|Pound Free 7]]>><</link>>
+<br>
+
+:: Pound Free 7
+<<effects>>
+
+<<generate1>><<person1>>
+A <<person>> takes your leash and leans in. "They used to respect you," <<he>> says, regarding the <<pound_text>> in their cages. "But now they see you're just a <<bitch>> like them." <<if $worn.handheld.name isnot "naked">>One of them takes your $worn.handheld.name. "And dumb little doggies don't get to walk around carrying things." <<He>> tucks your $worn.handheld.name under <<his>> arm. You doubt you'll get it back. <<handheldruined>><</if>>
+<br><br>
+
+<<endevent>>
+
+<<generateBeastVictim 6 dog>>
+<<if beastSexEnabledForType("dog", $monster is 1)>>
+	"Open the cages!"
+	<br><br>
+	<<bind>>
+	The staff tie the leash around your arms and the bars of a cage, holding you in place. Someone smacks your <<bottom>>. "Come on you mutts. I know you can't resist."
+	<br><br>
+
+	<span class="teal">The <<beastsplural>> look unsure,</span> but that doesn't stop one approaching.
+	<br><br>
+
+	<<link [[Next|Pound Free Beast]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	<<endevent>>
+	<<generate1>><<person1>>
+	The staff continue to abuse you. They make you play fetch, eat from dog bowls, and other degradations. At last, they detach the leash and shove you into one of the cages, locking it behind you. "Sleep well." They laugh as they walk away. <<lllpound_status>><<pound_status -30>><<gggtrauma>><<gggstress>><<trauma 18>><<stress 18>><<detach_leash>>
+	<br><br>
+	<<link [[Next|Pound Cage]]>><<endevent>><</link>>
+	<br>
+<</if>>
+<br><br>
+
+:: Pound Free Beast
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<beastTrainGenerate>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Pound Free Beast End]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Pound Free Beast]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Pound Free Beast End
+<<effects>>
+<<if $enemyhealth lte 0>>
+	<<beastwound>>
+	<<if $combatTrain.length gt 0>>
+		The <<beasttype>> recoils in pain and fear, but another is eager for a go.
+
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[Next|Pound Free Beast]]>><</link>>
+	<<else>>
+		The <<beasttype>> recoils in pain and fear.
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[Next|Pound Free Beast End]]>><<set $finish to 1>><</link>>
+	<</if>>
+<<elseif $enemypleasure gte $enemypleasuremax>>
+	<<beastejaculation>>
+	<<if $combatTrain.length gt 0>>
+		Satisfied, the <<beasttype>> moves and another takes its turn.<<llpound_status>><<pound_status -5>>
+		<br><br>
+
+		<<combatTrainAdvance>>
+
+		<<switch $enemyejaculated>>
+			<<case 6>>
+				A <<beasttype>> approaches,<span class="red"> and looks at you like you're a piece of meat.</span>
+			<<case 5>>
+				A <<beasttype>> approaches,<span class="pink"> and looks at you like you're a runt in need of punishment.</span>
+			<<case 4>>
+				A <<beasttype>> approaches,<span class="purple"> and looks at you like you're a <<bitch>> in heat.</span>
+			<<case 3>>
+				A <<beasttype>> approaches,<span class="blue"> looking eager to ravage you.</span>
+			<<case 2>>
+				A <<beasttype>> approaches,<span class="lblue"> looking eager to fuck you.</span>
+			<<case 1>>
+				A <<beasttype>> approaches,<span class="teal"> looking eager to take advantage of you.</span>
+			<<default>>
+				A <<beasttype>> approaches,<span class="green"> but looks unsure.</span>
+		<</switch>>
+		<br><br>
+		<<link [[Next|Pound Free Beast]]>><</link>>
+	<<else>>
+		Satisfied, the <<beasttype>> moves away from you.<<llpound_status>><<pound_status -5>>
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[Next|Pound Free Beast End]]>><<set $finish to 1>><</link>>
+	<</if>>
+<<else>>
+	<<unbind>>
+	<<endcombat>>
+	<<generate1>><<person1>>
+	<<if $finish is 1>><<encounterEndViolence>><</if>>
+	"That's enough for now," says a <<person>>. "Get the mutts back in their cages."
+	<br><br>
+
+	<<clotheson>>
+	The staff continue to abuse you. They make you play fetch, eat from dog bowls, and other degradations. At last, they detach the leash and shove you into one of the cages, locking it behind you. "Sleep well," the <<person>> says. "Your training begins tomorrow." The staff laugh as they walk away.<<detach_leash>>
+	<<pass 60>>
+	<br><br>
+	<<link [[Next|Pound Cage]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Pound Work
+<<effects>>
+
+<<if $pound.progress is 1>>
+	<<set $pound.progress to 2>>
+	<<generateBeastVictim 1 dog>>
+	<<saveNPC 0 "black_dog">>
+	<<generate2>><<person2>><<generate3>>
+	The pound stretches further back than it looks from outside, with staff moving between rows of cages. A nervous <<person>> approaches one of the cages carrying a collar. The cages on either side are empty. A low growl makes <<him>> stop.
+	<br><br>
+	"The <span class="purple">brute</span> savaged <<bhis 0>> master," says a <<person3>><<person>>, stopping beside you and folding <<his>> arms. "Now the master wants revenge. Needs us to knock some obedience into the mutt first though. No one can even get a collar on."
+	<br><br>
+	The <<person2>><<person>> escapes the cage and slams the door behind <<him>>. <<He>> carries part of the collar. The rest has been torn off. "I ain't going near it," the <<person3>><<person>> laughs.
+	<br><br>
+	<<link [[Next|Pound]]>><<endevent>><</link>>
+	<br>
+<<elseif $pound.progress is 2 and $pound.status gte 10>>
+	<<set $pound.progress to 3>>
+	<<generateBeastVictim 1 dog>>
+	<<generate2>><<person2>>
+	You hear a whimper. A <<person>> stands over a <<beasttype 0>> in one of the cages, whacking <<bhim 0>> with a belt. The <<beasttype 0>> doesn't try to defend <<bhimself 0>>.
+	<br><br>
+
+	<<link [[Intervene|Pound Work Intervene]]>><<pound_status 3>><<stress 6>><</link>><<gstress>><<ggpound_status>><<gstray_happiness>>
+	<br>
+	<<link [[Ignore|Pound Work Intervene Ignore]]>><</link>>
+	<br>
+<<else>>
+	<<if $slimePoundIgnored>>
+		You ignore <<if earSlimeThoughts()>>the voice's<<else>>the ear slime's<</if>> command and choose how you want to work.
+		<<unset $slimePoundIgnored>>
+		<br><br>
+		<<stray_happiness_text>>
+	<<elseif $slimePoundDefy>>
+		<<if $earSlime.corruption gte (currentSkillValue('willpower') / 10)>>
+			<<set $earSlime.defyCooldown += 2>>
+			The <<slimeWord>> tries to assert control. <span class="red">It overpowers your will,</span> forcing you to do what it wants.
+			<<ggwillpower>><<willpower 1>>
+			<br><br>
+			<<earSlimePoundLinks>>
+		<<else>>
+			You try to ignore the command from the <<slimeWord>> and continue on. You feel it try, <span class="green">but fail,</span> to force you to work in a specific way.
+			<br><br>
+			<<stray_happiness_text>>
+			<<unset $slimePoundDefy>>
+			<<unset $slimePoundTask>>
+		<</if>>
+	<<else>>
+		<<generate1>><<person1>>
+		Other staff go about their business. A <<person>> enters a metal door on the other side of the building, locking it behind <<him>>.
+		<<endevent>>
+		<br><br>
+		<<stray_happiness_text>>
+	<</if>>
+	<<if $slimePoundDefy>>
+		<<unset $slimePoundDefy>>
+	<<elseif !$daily.earSlimePoundTask and numberOfEarSlime() and earSlimeMakingMundaneRequests() and random(0,100) gte 75>>
+		<br><br>
+		<<set $daily.earSlimePoundTask to true>>
+		<<set _slimePoundTask to ["Sweep"]>>
+		<<if $pound.status gte 10>><<run _slimePoundTask.push("Feed")>><</if>>
+		<<if $pound.status gte 20>><<run _slimePoundTask.push("Brush")>><</if>>
+		<<if $pound.status gte 40>><<run _slimePoundTask.push("Wash")>><</if>>
+		<<if $pound.status gte 60>><<run _slimePoundTask.push("Walk")>><</if>>
+		<<set $slimePoundTask to _slimePoundTask.random()>>
+		<span @class="$earSlime.startedThreats ? 'lewd' : 'lblue'">You feel the <<slimeWord>> in your head command you to <<print $slimePoundTask.toLowerCase()>>
+		<<if $slimePoundTask is "Sweep">>
+			the floor.
+		<<else>>
+			the dogs.
+		<</if>>
+		</span> It promises rewards if you comply<<if $earSlime.startedThreats>> and threatens consequences if you do not<</if>>.
+		<br><br>
+		<<earSlimePoundLinks "Obey">>
+		<br>
+		<<if $earSlime.startedThreats>>
+			<<link [[Defy|Pound Work]]>><<set $slimePoundDefy to true>><<corruption -1>><<pain 8>><<stress 6>><<trauma 6>><<def 1>><</link>><<lcorruption>><<ggpain>><<ggtrauma>><<ggstress>>
+		<<else>>
+			<<link [[Ignore|Pound Work]]>><<unset $slimePoundTask>><<set $slimePoundIgnored to true>><</link>>
+		<</if>>
+	<<else>>
+		<br><br>
+		<<choreicon "sweep">><<link [[Sweep (£5)|Pound Work Sweep]]>><<if !$pound.tasks.includes("sweep")>><<stray_happiness 1>><<set $pound.tasks.push("sweep")>><</if>><<set $pound.money to 5>><</link>><<if !$pound.tasks.includes("sweep")>><<gstray_happiness>><</if>>
+		<br>
+		<<if $pound.status gte 10>>
+			<<petshopicon "dog food">><<link [[Feed (£8)|Pound Work Feed]]>><<if !$pound.tasks.includes("feed")>><<stray_happiness 1>><<set $pound.tasks.push("feed")>><</if>><<set $pound.money to 8>><</link>><<if !$pound.tasks.includes("feed")>><<gstray_happiness>><</if>>
+		<<else>>
+			<<petshopicon "dog food">><span class="blue">The <<pound_text>> don't respect you enough to let you near them, even with food.</span>
+		<</if>>
+		<br>
+		<<if $pound.status gte 20>>
+			<<petshopicon "brush">><<link [[Brush (£10)|Pound Work Brush]]>><<if !$pound.tasks.includes("brush")>><<stray_happiness 2>><<set $pound.tasks.push("brush")>><</if>><<set $pound.money to 10>><</link>><<if !$pound.tasks.includes("brush")>><<ggstray_happiness>><</if>>
+		<<else>>
+			<<petshopicon "brush">><span class="blue">The <<pound_text>> don't respect you enough to let you near them with a brush.</span>
+		<</if>>
+		<br>
+		<<if $pound.status gte 40>>
+			<<choreicon "wash">><<link [[Wash (£12)|Pound Work Wash]]>><<if !$pound.tasks.includes("wash")>><<stray_happiness 2>><<set $pound.tasks.push("wash")>><</if>><<set $pound.money to 12>><</link>><<if !$pound.tasks.includes("wash")>><<ggstray_happiness>><</if>>
+		<<else>>
+			<<choreicon "wash">><span class="blue">The <<pound_text>> don't respect you enough to let you near them with a bucket of water.</span>
+		<</if>>
+		<br>
+		<<if $pound.status gte 60>>
+			<<petshopicon "dog leash">><<link [[Walk (£15)|Pound Work Walk]]>><<if !$pound.tasks.includes("walk")>><<stray_happiness 3>><<set $pound.tasks.push("walk")>><</if>><<set $pound.money to 15>><</link>><<if !$pound.tasks.includes("walk")>><<gggstray_happiness>><</if>>
+		<<else>>
+			<<petshopicon "dog leash">><span class="blue">The <<pound_text>> don't respect you enough to let you near them with a leash.</span>
+		<</if>>
+	<</if>>
+	<br>
+	<<if !$slimePoundTask>>
+		<<getouticon>><<link [[Leave|Pound]]>><</link>>
+	<</if>>
+	<br>
+<</if>>
+
+:: Pound Work Intervene
+<<effects>>
+
+You hurry to the cage and grab the door. The rattle of metal makes the nearest <<pound_text>> flinch.
+
+<<speechresolve>>
+<<if _speechAttitudeResolved is "meek">>
+	"Stop it," you say. "Y-You're hurting <<bhim 0>>."
+<<elseif _speechAttitudeResolved is "shy">>
+	"P-Please stop," you say. "You've hurt <<bhim 0>> enough."
+<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+	"That's enough," you say. "Put the belt down, please."
+<<elseif _speechAttitudeResolved is "docile">>
+	"Please stop," you say. "You don't need to hit <<bhim 0>> again."
+<<elseif _speechAttitudeResolved is "confident">>
+	"Stop," you say. "Put the belt down."
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+	"Put the belt down," you say. "You've done enough."
+<<else>>
+	"Stop it," you say. "You're hurting <<bhim 0>>."
+<</if>>
+<br><br>
+
+The <<person>> looks at you, then gives the <<beasttype 0>> one last whack before lowering the belt. The other cages have gone quiet. "All right," <<he>> says, breathing hard. <<He>> steps out of the cage, but stops beside you. "<span class="pink">Best watch out, <<lass>>.</span> Don't think we won't make a <<bitch>> of you if you give us a reason."
+<br><br>
+
+<<if Time.hour gte $closinghour>>
+	<<link [[Next|Pound]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<link [[Next|Pound Work]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+
+
+:: Pound Work Intervene Ignore
+<<effects>>
+
+You keep walking, and try your best to ignore the whimpering.
+<br><br>
+
+<<if Time.hour gte $closinghour>>
+	<<link [[Next|Pound]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<link [[Next|Pound Work]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+
+
+:: Pound Work Sweep
+<<effects>>
+<<if $slimePoundTask>>You follow the <<= numberOfEarSlime() gte 2 ? "slimes'" : "slime's">> command to do a specific task.<<unset $slimePoundTask>><</if>>
+
+You take a broom and
+<<switch random(1,2)>>
+	<<case 1>>sweep fur from the cages. Once in a neat pile, you sweep it into a dustpan.
+	<<case 2>>begin to clean the cages. You sweep clumps of fur into neat piles before pushing it into the dustpan.
+<</switch>>
+<br><br>
+
+<<generateBeastVictim 1 dog>>
+<<if random(1, 3) is 3>>
+	The broom snags as a <<beasttype>> grabs it between <<bhis>> teeth.
+	<br><br>
+
+	<<link [[Scold|Pound Work Sweep Scold]]>><</link>><<tendingdifficulty 1 200>>
+	<br>
+	<<link [[Wrestle|Pound Work Sweep Wrestle]]>><</link>><<physiquedifficulty 1 6000>>
+	<br>
+<<elseif random(1, 2) is 2>>
+	While attending to a corner of a cage, you see a <<beasttype>> walk over to the dustpan. <<bHe>> sniffs it and paws at the handle.
+	<br><br>
+
+	<<link [[Keep cleaning|Pound Work Sweep Mess]]>><</link>>
+	<br>
+	<<link [[Tell off|Pound Work Sweep Stop]]>><</link>><<tendingdifficulty 1 200>>
+	<br>
+
+<<else>>
+	<<endevent>><<generate1>><<person1>>
+	A <<person>> grasps the handle as you pass by, stopping you. <<He>> moves in, resting a hand on your <<bottom>>.<<gstress>><<stress 6>>
+	<br><br>
+	"Let me show you how to sweep properly," <<he>> says, stepping closer still.
+	<<if $NPCList[0].penissize gte 3>>
+		You feel <<his>> <<print $NPCList[0].penisdesc>> press against you.
+	<</if>>
+	<br><br>
+
+	<<if $anxiety gte 2>>
+		<span class="red">Panic strikes,</span> and you lash out at the <<person>>. You hear a cry of pain and see a flash of crimson as <<he>> releases <<his>> grip. You flee to a solitary spot in the yard. You wait until your breathing calms. You don't think you hurt <<him>> too badly.<<severe_anxiety_disorder_text>><<crime "assault">><<crimeUp 10 "assault">>
+		<br><br>
+
+		<<poundEndEvent true>>
+	<<elseif $anxiety gte 1>>
+		<span class="red">Panic strikes,</span> and you freeze in fear. The <<person>> takes it for assent.<<anxiety_disorder_text>><<trauma 6>><<gtrauma>>
+		<br><br>
+
+		<<link [[Next|Pound Work Sweep Go]]>><</link>><<if $tending lt 200>><<gtending>><</if>>
+		<br>
+	<<else>>
+		<<link [[Go along with it|Pound Work Sweep Go]]>><<trauma 6>><</link>><<if $tending lt 200>><<gtending>><</if>>
+		<br>
+		<<link [[Shove|Pound Work Sweep Shove]]>><<pound_status 1>><<stress 6>><</link>><<gstress>><<gpound_status>>
+		<br>
+	<</if>>
+<</if>>
+<<wearProp "broom">>
+
+:: Pound Work Sweep Go
+<<effects>>
+
+The <<person>> presses <<his>> body awfully close as <<he>> holds your arms and demonstrates <<his>> sweeping technique. <<He>> also talks about the <<pound_text>>, and how to put them at ease.
+
+<<if $tending lt 200>>
+	You learn a thing or two, despite <<his>> creepiness. "No need to thank me," <<he>> says, giving your <<bottom>> a parting smack.<<tending 2>>
+<<else>>
+	<<Hes>> very sure of <<himself>>, but doesn't teach anything you don't already know. "No need to thank me," <<he>> says, giving your <<bottom>> a parting smack.
+<</if>>
+<br><br>
+
+<<poundEndEvent>>
+
+:: Pound Work Sweep Shove
+<<effects>>
+
+You plant both hands against the <<persons>> chest and shove. <<He>> stumbles back a step, glares at you, then looks towards the supervisor. After a pause, <<he>> backs off instead of coming at you again.
+<br><br>
+
+A few of the <<pound_text>> have stopped what they're doing to watch. When nothing else happens, they turn away.
+<br><br>
+
+<<poundEndEvent>>
+
+:: Pound Work Sweep Scold
+<<effects>>
+
+<<speechresolve>>
+<<if $tendingSuccess>>
+	<<if _speechAttitudeResolved is "meek">>
+		"P-Please let go," you say, keeping both hands on the broom.
+	<<elseif _speechAttitudeResolved is "shy">>
+		"L-Let go, please," you say, pulling the broom towards you.
+	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+		"Let go, please," you say. "I need the broom."
+	<<elseif _speechAttitudeResolved is "docile">>
+		"Please let go," you say. "You can chew something else."
+	<<elseif _speechAttitudeResolved is "confident">>
+		"Drop it," you say, giving the broom a short tug.
+	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+		"Oi. Drop it," you say.
+	<<else>>
+		"Let go," you say.
+	<</if>>
+	<br><br>
+
+	The <<beasttype>> keeps <<bhis>> teeth on the broom for another second, then lets go. <span class="green">You pull it free before <<bhe>> changes <<bhis>> mind.</span> <<bHe>> turns to chew on one of the bars instead.<<gpound_status>><<pound_status 1>>
+<<else>>
+	<<if _speechAttitudeResolved is "meek">>
+		"P-Please let go," you say, tugging carefully at the broom.
+	<<elseif _speechAttitudeResolved is "shy">>
+		"L-Let go," you say, but the next hard pull nearly takes the broom from your hands.
+	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+		"Let go, please," you say, trying to pull the broom back.
+	<<elseif _speechAttitudeResolved is "docile">>
+		"Please," you say. "I need that back."
+	<<elseif _speechAttitudeResolved is "confident">>
+		"Drop it," you say, planting your feet and pulling.
+	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+		"Give it back," you snap, pulling hard.
+	<<else>>
+		"Let go," you say, pulling the broom towards you.
+	<</if>>
+	<br><br>
+
+	<span class="red">The <<beasttype>> jerks <<bhis>> head from side to side until your grip slips.</span> <<bHe>> chews the broom until <<bhe>> gets bored, then drops it with teeth marks along the wood.<<lpound_status>><<pound_status -1>><<if $tending lt 200>><<tending 1>><<gtending>><</if>>
+<</if>>
+<br><br>
+
+<<poundEndEvent>>
+
+:: Pound Work Sweep Wrestle
+<<effects>>
+
+<<if $physiqueSuccess>>
+	You push a foot against the bars for purchase, and twist the shaft <span class="green">as you pull the handle from the <<beasttype>>'s mouth.</span> <<bHe>> lies down, dejected.<<gpound_status>><<pound_status 1>>
+<<else>>
+	You push a foot against the bar for purchase, <span class="red">but the <<beasttype>> pulls you off balance,</span> smacking your shoulder against the metal. <<bHe>> only gives up <<bhis>> grip when satisfied, leaving teeth marks on the wood.<<gpain>><<pain 4>>
+<</if>>
+<br><br>
+
+<<poundEndEvent>>
+
+:: Pound Work Sweep Mess
+<<effects>>
+
+The <<beasttype>> knocks over the dustpan, spilling the contents back onto the floor. <<bHe>> starts playing with the bits of fur before you can stop <<bhim>>, flinging debris everywhere.<<gstress>><<stress 6>>
+<br><br>
+The <<beasttype>> eventually tires and walks away, leaving behind a huge mess. You try to clean it up the best you can, but it takes some effort to clean a second time.<<tiredness 6>><<gtiredness>>
+<br><br>
+
+<<poundEndEvent>>
+
+:: Pound Work Sweep Stop
+<<effects>>
+
+<<speechresolve>>
+<<if $tendingSuccess>>
+	<<if _speechAttitudeResolved is "meek">>
+		"Please leave that alone," you say, stepping between the <<beasttype>> and the dustpan.
+	<<elseif _speechAttitudeResolved is "shy">>
+		"P-Please don't," you say, moving in front of the dustpan.
+	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+		"Leave that alone, please," you say, blocking <<bhis>> path.
+	<<elseif _speechAttitudeResolved is "docile">>
+		"Please don't make another mess," you say, reaching for the dustpan.
+	<<elseif _speechAttitudeResolved is "confident">>
+		"Leave it," you say, stepping in front of <<bhim>>.
+	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+		"Hey. Leave it alone," you say.
+	<<else>>
+		"Don't touch that," you say, stepping between <<bhim>> and the dustpan.
+	<</if>>
+	<br><br>
+
+	<<if $monster is 1>>
+		The <<beasttype>> lowers <<bhis>> head and walks away. "Mean human..." <<bhe>> says. "Just playing..."
+	<<else>>
+		The <<beasttype>> lowers <<bhis>> head and walks away with a quiet whine.
+	<</if>>
+	<<pound_status 1>><<gpound_status>>
+	<br><br>
+
+	You pick up the dustpan before another <<beasttype>> gets interested, then finish cleaning the cage.
+	<br><br>
+
+<<else>>
+	<<if _speechAttitudeResolved is "meek">>
+		"P-Please stop," you say, hurrying towards the dustpan.
+	<<elseif _speechAttitudeResolved is "shy">>
+		"D-Don't," you say, reaching for it.
+	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+		"Leave that alone, please," you say, moving towards <<bhim>>.
+	<<elseif _speechAttitudeResolved is "docile">>
+		"Please don't," you say. "I just cleaned that."
+	<<elseif _speechAttitudeResolved is "confident">>
+		"Leave it," you say, reaching for the dustpan.
+	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+		"Oi, knock it off," you say.
+	<<else>>
+		"Don't do that," you say, reaching for the dustpan.
+	<</if>>
+	<br><br>
+
+	The <<beasttype>> ignores you and knocks the dustpan over before you can grab it. Fur and dirt scatter across the floor, and <<bhe>> bats the mess around while you try to stop <<bhim>>.<<gstress>><<stress 6>>
+	<br><br>
+
+	By the time <<bhe>> loses interest, you have almost as much to clean as before. You gather everything up again, taking care to keep the dustpan out of reach.<<tiredness 6>><<gtiredness>><<pound_status -1>><<lpound_status>>
+	<br><br>
+
+<</if>>
+
+<<poundEndEvent>>
+
+:: Pound Work Feed
+<<effects>><<wearProp "dog bowl">>
+<<if $slimePoundTask>>You follow the <<= numberOfEarSlime() gte 2 ? "slimes'" : "slime's">> command to do a specific task.<<unset $slimePoundTask>><</if>>
+You refill the bowls in the rear courtyard, before a horde of eager <<pound_text>> are released from their cages.
+<br><br>
+
+<<if random(1, 2) is 2>>
+	They swarm towards the bowls, ignoring you and the other staff.
+	<<generateBeastVictim 2 dog>>
+	An emaciated <<beasttype 0>> tries to push <<bhis 0>> way through, but is too weak. Another <<beasttype 1>> jostles <<bhim 0>> aside. <<bHe 0>> lies down, defeated.
+	<br><br>
+
+	<<link [[Make the others play fair|Pound Work Feed Soothe]]>><</link>><<tendingdifficulty 1 400>>
+	<br>
+	<<link [[Comfort|Pound Work Feed Comfort]]>><<stress 6>><<trauma -6>><</link>><<gstress>><<ltrauma>>
+	<br>
+	<<link [[Do nothing|Pound Work Feed Nothing]]>><</link>>
+	<br>
+<<else>>
+	They devour the food in moments, and seem to be grateful to you personally for the feast.<<gpound_status>><<pound_status 1>>
+	<br><br>
+
+	<<poundEndEvent>>
+<</if>>
+
+
+:: Pound Work Feed Soothe
+<<effects>>
+
+<<speechresolve>>
+<<if $tendingSuccess>>
+	You crouch beside the <<beasttype 1>> and scratch gently behind <<bhis 1>> ear.
+	<<if _speechAttitudeResolved is "meek">>
+		"Will you let your friend have some?" you ask. "There's enough."
+	<<elseif _speechAttitudeResolved is "shy">>
+		"C-Could you move over a little?" you ask. "Your friend needs to eat too."
+	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+		"Let your friend eat too, please," you say. "There's enough for both of you."
+	<<elseif _speechAttitudeResolved is "docile">>
+		"Please share," you say, keeping your hand against <<bhis 1>> fur. "Just make a little room."
+	<<elseif _speechAttitudeResolved is "confident">>
+		"Move over," you say. "Let <<bhim 0>> eat."
+	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+		"Come on, move over," you say. "You're not eating all of it."
+	<<else>>
+		"Let your friend have some," you say. "There's enough for both of you."
+	<</if>>
+	<br><br>
+
+	<<if $monster is 1>>
+		<span class="green">The <<beasttype 1>> leans into your hand, then shifts aside.</span> <<bHe 1>> stays beside the bowl while the <<beasttype 0>> eats, keeping the other <<pound_text>> away. When <<bhe 0>> finishes, <<bhe 0>> licks your hand.
+	<<else>>
+		<span class="green">The <<beasttype 1>> is soothed by your touch,</span> and allows the <<beasttype 0>> to feed beside <<bhim 1>>. <<bHe 0>> eats <<bhis 0>> fill, and collapses in satisfaction.
+	<</if>>
+	<<gpound_status>><<pound_status 1>>
+<<else>>
+	You crouch beside the <<beasttype 1>> and reach towards <<bhis 1>> ear, <span class="red">but <<bhe 1>> snaps at your hand.</span> You pull back before <<bhe 1>> can bite you, while the other staff laugh.<<lpound_status>><<pound_status -1>><<if $tending lt 400>><<tending 1>><<gtending>><</if>>
+<</if>>
+<br><br>
+
+<<poundEndEvent>>
+
+:: Pound Work Feed Comfort
+<<effects>>
+
+You wait beside the <<beasttype 0>> until the others move away from the bowls, then crouch and stroke <<bhis 0>> back. <<bHe 0>> stays close to your leg while the last scraps disappear.
+<br><br>
+
+When the other <<pound_text>> are done, <<bhe 0>> steps forward and licks each bowl clean. You keep your hand on <<bhis 0>> back until <<bhes 0>> finished.
+<br><br>
+
+<<poundEndEvent>>
+
+:: Pound Work Feed Nothing
+<<effects>>
+
+You watch the feeding frenzy with the other staff. The <<beasttype 0>> licks the bowls clean.
+<br><br>
+
+<<poundEndEvent>>
+
+:: Pound Work Brush
+<<effects>>
+
+<<generateBeastVictim 1 dog>><<wearProp "brush">>
+<<if $slimePoundTask>>You follow the <<= numberOfEarSlime() gte 2 ? "slimes'" : "slime's">> command to do a specific task.<<unset $slimePoundTask>><</if>>
+Brush in hand, you enter one of the cages.
+<br><br>
+
+<<cleareventpool>>
+<<if beastSexEnabledForType("dog", $monster is 1)>>
+	<<addinlineevent "pound_brush_1">>
+		The <<beasttype>> inside is friendly. Perhaps too friendly.
+		<<if $monster is 1>>
+			<<bHe>> wraps <<bhis>> arms around your waist, and humps your thigh.
+		<<else>>
+			<<bHe>> rears on <<bhis>> hind legs, and humps your thigh.
+		<</if>>
+		<br><br>
+
+		<<link [[Tell off|Pound Work Brush Tell]]>><</link>><<tendingdifficulty 1 600>>
+		<br>
+		<<if hasSexStat("deviancy", 2)>>
+			<<link [[Allow|Pound Work Brush Allow]]>><</link>><<deviant2>>
+			<br>
+		<</if>>
+	<</addinlineevent>>
+<</if>>
+
+<<addinlineevent "pound_brush_2">>
+	The <<beasttype>> inside greets you with a low growl.<<gstress>><<stress 6>>
+	<br><br>
+
+	<<link [[Soothe|Pound Work Brush Soothe]]>><</link>><<tendingdifficulty 1 600>>
+	<br>
+	<<link [[Find a gentler creature to brush|Pound Work Brush Find]]>><<endevent>><</link>>
+	<br>
+	<<if beastSexEnabledForType("dog", $monster is 1)>>
+		<<link [[Act like a dog to put it at ease|Pound Work Brush Act]]>><</link>><<deviant1>>
+		<br>
+	<</if>>
+<</addinlineevent>>
+
+<<addinlineevent "pound_brush_3">>
+	The <<beasttype>> looks at the brush, then at you.
+	<<if $monster is 1>>
+		"Person came before to brush. Clean now." The <<beasttype>> looks at your hair. "Look messy. I brush instead?" <<bHe>> points at the brush.
+	<<else>>
+		<<bHe>> tilts <<bhis>> head as if confused. You try to brush the <<beasttype>>, but <<bhe>> resists and tries to lick your hair.
+	<</if>>
+	<br><br>
+
+	<<link [[Insist on brushing|Pound Work Brush Clean End]]>><<set $phase to 0>><</link>>
+	<br>
+	<<link [[Let it clean you instead|Pound Work Brush Clean]]>><</link>>
+	<br>
+<</addinlineevent>>
+<<runeventpool>>
+
+:: Pound Work Brush Tell
+<<effects>><<wearProp "brush">>
+
+<<speechresolve>>
+<<if $tendingSuccess>>
+	<<if _speechAttitudeResolved is "meek">>
+		"P-Please stop," you say, putting a hand against the <<beasttype>>'s shoulder. "I need to brush you."
+	<<elseif _speechAttitudeResolved is "shy">>
+		"S-Stop that," you say, trying to push <<bhim>> away from your leg.
+	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+		"That's enough," you say. "Move aside, please."
+	<<elseif _speechAttitudeResolved is "docile">>
+		"Please get down," you say. "I'll brush you if you behave."
+	<<elseif _speechAttitudeResolved is "confident">>
+		"Off," you say, pushing <<bhim>> back.
+	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+		"Get off me," you say, pushing at <<bhis>> chest.
+	<<else>>
+		"Clear off," you say. "Shoo!"
+	<</if>>
+	<br><br>
+
+	<<if $monster is 1>>
+		"Yes!" the <<beasttype>> says, dropping back onto all fours. "Brush me now?"
+	<<else>>
+		<span class="green">The <<beasttype>> drops back onto all fours and leaves your leg alone.</span>
+	<</if>>
+	<<gpound_status>><<pound_status 1>>
+	<br><br>
+
+	<<bHe>> lies down, and you start brushing. Before long, one of <<bhis>> back legs kicks at the air whenever the brush reaches a good spot.
+	<br><br>
+
+	<<poundEndEvent>>
+<<else>>
+	<<if _speechAttitudeResolved is "meek">>
+		"P-Please stop," you say, pushing at <<bhis>> shoulder.
+	<<elseif _speechAttitudeResolved is "shy">>
+		"S-Stop," you say, trying to keep the <<beasttype>> away from your leg.
+	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+		"Stop that, please," you say, pushing at <<bhim>>.
+	<<elseif _speechAttitudeResolved is "docile">>
+		"Please get down," you say, trying to move <<bhim>>.
+	<<elseif _speechAttitudeResolved is "confident">>
+		"Get off," you say, bracing a hand against <<bhis>> chest.
+	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+		"Get off me," you snap, shoving at <<bhim>>.
+	<<else>>
+		"Stop," you say, trying to push <<bhim>> away.
+	<</if>>
+	<br><br>
+
+	<span class="red">The <<beasttype>> keeps humping your leg despite your efforts.</span> You're still trying to push <<bhim 0>> off when <<bhe>> reaches orgasm, and wet fluid coats your thigh.<<garousal>><<arousal 600>>
+	<br><br>
+	<<if $NPCList[0].penis isnot "none">>
+		<<bodyliquid "thigh" "semen">>
+	<<else>>
+		<<bodyliquid "thigh" "goo">>
+	<</if>>
+	<<if $pleasure gte $pleasuremax>>
+		It's too much. <<orgasm>>
+
+		You fall to the ground. Either the <<beasttype>> isn't satisfied, or <<bhes>> driven into a new frenzy by this display. <<bHe>> mounts you before the spasms subside.
+		<br><br>
+		<<link [[Next|Pound Work Brush Rape]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<<else>>
+		Once <<bhes>> done, the <<beasttype>> finally settles. You wipe your thigh as best you can, then finish brushing <<bhim>>.
+		<br><br>
+
+		<<poundEndEvent>>
+	<</if>>
+<</if>>
+
+:: Pound Work Brush Allow
+<<effects>><<wearProp "brush">>
+
+You endure the <<beasttype>>'s humping, until <<bhe>> reaches orgasm.
+<<if $NPCList[0].penis isnot "none">>
+	A warm fluid sprays from <<bhis>> genitals, coating your thigh.
+	<<bodyliquid "thigh" "semen">>
+<<else>>
+	Sticky fluid drips from <<bhis>> genitals, clinging to your thigh.
+	<<bodyliquid "thigh" "goo">>
+<</if>>
+<<deviancy2>>
+<<if $pleasure gte $pleasuremax>>
+	It's too much. <<orgasm>>
+
+	You fall to the ground. Either the <<beasttype>> isn't satisfied, or <<bhes>> driven into a new frenzy by this display. <<bHe>> mounts you before the spasms subside.
+	<br><br>
+	<<link [[Next|Pound Work Brush Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	Satisfied, the <<beasttype>> rolls onto <<bhis>> back, and allows you to brush. <<bHis>> leg is kicking the air by the end.
+	<br><br>
+
+	<<poundEndEvent>>
+<</if>>
+
+
+:: Pound Work Brush Soothe
+<<effects>><<wearProp "brush">>
+
+<<speechresolve>>
+<<if $tendingSuccess>>
+	You crouch beside the <<beasttype>> and let <<bhim>> sniff the brush before touching <<bhis>> fur.
+	<<if _speechAttitudeResolved is "meek">>
+	"It's okay," you say. "I won't hurt you."
+	<<elseif _speechAttitudeResolved is "shy">>
+	"I-It's all right," you say. "I'll go slowly."
+	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+	"There we are," you say. "Let me brush you, please."
+	<<elseif _speechAttitudeResolved is "docile">>
+	"It's all right," you say. "I'll stop if you don't like it."
+	<<elseif _speechAttitudeResolved is "confident">>
+	"Easy," you say. "I'm only going to brush you."
+	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+	"Settle down," you say. "I'm trying to help."
+	<<else>>
+	"It's all right," you say. "I'm not going to hurt you."
+	<</if>>
+	<br><br>
+
+	The <<beasttype>> sniffs the brush again, then stays still when you run it through <<bhis>> fur. <span class="green"><<bHe>> lets you finish without snapping.</span> By the end, <<bhes>> on <<bhis>> back with one leg kicking at the air.<<gpound_status>><<lstress>><<pound_status 1>><<stress -6>>
+<<else>>
+	You crouch and hold the brush out for the <<beasttype>> to sniff. <<bHe>> backs away each time you move closer, and <span class="red">snaps when the brush reaches <<bhis>> fur.</span> You leave <<bhim>> alone and find a calmer creature to brush instead.<<lpound_status>><<pound_status -1>><<if $tending lt 600>><<tending 1>><<gtending>><</if>>
+<</if>>
+<br><br>
+
+<<poundEndEvent>>
+:: Pound Work Brush Find
+<<effects>>
+
+<<wearProp "brush">>
+<<generateBeastVictim 1 dog>>
+You find a gentler creature to brush instead. Mostly because <<bhes>> asleep.
+<br><br>
+
+<<poundEndEvent>>
+
+:: Pound Work Brush Act
+<<effects>>
+
+You glance towards the cage door, then lower yourself onto all fours.
+<<speechresolve>>
+<<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
+	"R-Ruff," you say quietly.
+<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+	"Ruff," you say, giving the <<beasttype>> a small nod.
+<<elseif _speechAttitudeResolved is "docile">>
+	"Ruff," you say softly.
+<<elseif _speechAttitudeResolved is "confident">>
+	"Ruff!" you say.
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+	"Ruff," you say, staring back at <<bhim>>.
+<<else>>
+	"Ruff," you say.
+<</if>>
+The <<beasttype>> tilts <<bhis>> head and watches you. You crawl closer and start brushing <<bhis>> side while remaining on your hands and knees.
+<<deviancy1>>
+
+<<if $pleasure gte $pleasuremax>>
+	The position and the way you're acting push you over the edge. <<orgasm>>
+
+	Your arms shake as you come. The <<beasttype>> moves behind you and mounts you before you can get back to your feet.
+	<br><br>
+
+	<<link [[Next|Pound Work Brush Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	By the time you finish brushing, <<bhes>> lying on <<bhis>> back with one leg kicking at the air.
+	<br><br>
+
+	<<poundEndEvent>>
+<</if>>
+
+:: Pound Work Brush Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<set $NPCList[0].stance to "top">>
+	<<set $position to "doggy">>
+	<<enable_rescue>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<beast $enemyno>>
+<br><br>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Pound Work Brush Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Pound Work Brush Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Pound Work Brush Rape Finish
+<<effects>>
+
+<<if $enemypleasure gte $enemypleasuremax>>
+	<<beastejaculation knot>>
+	<<if _knotted>>
+		<<pass 5>>
+		The <<beasttype>> tries to wriggle <<bhis>> <<print $NPCList[0].penisdesc>> free, but to no avail. <<bHe>> instead returns to the corner of <<bhis>> cage, dragging you along on all fours behind <<bhim>>. <<bHe>> lies down to sleep, leaving you to lie on the ground.<<lllpound_status>><<pound_status -10>>
+		<br><br>
+		<<tearful>> you try to work yourself free.
+		<br><br>
+			It takes a while. So long, in fact, that you're still trying when you hear footsteps approach. <span class="red">Someone is coming.</span>
+			<br><br>
+			<<clotheson>>
+			<<endcombat>>
+			<<generate1>><<person1>><<generate2>><<generate3>><<generate4>>
+			You grab hold of the bars of the cage for leverage, but it's no use. A <<person>> walks into view, and stops at the sight of you. "Everyone!" <<he>> shouts. "Come get a look at this!"<<ggtrauma>><<ggstress>><<famebestiality 4>>
+			<br><br>
+
+			<<link [[Next|Pound Assault Caught]]>><<set $phase to 1>><</link>>
+			<br>
+	<<else>>
+		The <<beasttype>> returns to the corner of <<bhis>> cage, and lies down to sleep. <<tearful>> you close the door.
+		<br><br>
+
+		<<clotheson>>
+		<<endcombat>>
+		<<poundEndEvent>>
+	<</if>>
+<<elseif $enemyhealth lte 0>>
+	You shove the <<beasttype>> away from you. <<bHe>> whimpers, and hides in the corner.
+	<br><br>
+
+	<<tearful>> you leave the cage.
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+	<<poundEndEvent>>
+<<else>>
+	<<set $rescued += 1>>
+	<<if $finish is 1>><<encounterEndViolence>><</if>>
+	You hear footsteps approach. <span class="red">Someone is coming,</span> alerted by your cry.
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<generate1>><<person1>><<generate2>><<generate3>><<generate4>>
+	A <<person>> walks into view, and stops at the sight of you. "Everyone!" <<he>> shouts. "Come get a look at this!"<<ggtrauma>><<ggstress>><<famebestiality 4>>
+	<br><br>
+
+	<<link [[Next|Pound Assault Caught]]>><<set $phase to 0>><</link>>
+	<br>
+
+<</if>>
+
+
+:: Pound Exposed
+<<effects>>
+
+You walk down the space between cages, ignoring the watching <<pound_text>>. You arrive at two doors, a walk-in cupboard, and another leading deeper into the building. You see a stack of freshly-cleaned towels on a trolley through the second, but you also hear voices.
+<br><br>
+
+A <<generateSweaterWearer 1>><<person1>><<person>> leans on the wall outside the front corridor. Maybe it's safer to just ask for help.
+<br><br>
+
+<<link [[Search the cupboard|Pound Exposed Search]]>><<endevent>><</link>><<difficulty 50>>
+<br>
+<<set $skulduggerydifficulty to 700>>
+<<link [[Sneak to the trolley|Pound Exposed Sneak]]>><<endevent>><</link>><<skulduggerydifficulty>>
+<br>
+<<link [[Ask for help|Pound Exposed Help]]>><</link>>
+<br>
+
+
+:: Pound Exposed Search
+<<effects>>
+
+The cupboard door squeaks as it opens.
+<<if random(1, 2) is 2>>
+	You feel around the dark interior, <span class="green">and find a stack of towels.</span> You <<if $upperwet gte 1>>dry<<else>>cover<</if>> yourself before leaving the cupboard. <<dry_towel>>
+
+	<<poundEndEvent true>>
+<<else>>
+	You feel around the dark interior, <span class="red">knocking something hard off an unseen shelf.</span> It crashes against another object, causing a noisy cascade.
+	<br><br>
+	<<generate1>><<generate2>><<person1>>
+	You escape the cupboard, only to run into the arms of a <<person>>. "What we got here then?"
+	<br>
+	"Running around dressed like that," says the <<person2>><<person>> flanking <<person1>><<him>>. <<He>> shakes <<his>> head.
+	<br><br>
+	<<link [[Next|Pound Exposed Caught]]>><</link>>
+	<br>
+<</if>>
+
+:: Pound Exposed Sneak
+<<effects>>
+
+<<generate1>><<generate2>><<person1>>
+You drop to your knees and peek around the door. A <<person>> and <<person2>><<person>> stand with their backs to you, chatting.
+<br><br>
+
+It's only a short distance, but your heart thunders regardless.
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+	You grab the towels, and crawl the way you came. You <<if $upperwet gte 1>>dry<<else>>cover<</if>> yourself in a hurry. <<dry_towel>>
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	<<poundEndEvent true>>
+<<else>>
+	You try to grab the towels, but your shaking hand collides with the trolley instead, knocking it further from reach.
+	<br><br>
+
+	You catch up to it again, just as the <<person1>><<person>> turns and spots you. "What we got here then?" <<he>> says, alerting <<his>> friend.
+	<br>
+	"Crawling around dressed like that," says the <<person2>><<person>>. <<He>> shakes <<his>> head.
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	<<link [[Next|Pound Exposed Caught]]>><</link>>
+	<br>
+<</if>>
+
+:: Pound Exposed Caught
+<<effects>>
+<<fameexhibitionism 2>>
+The <<person1>><<person>> circles around you, and grasps your arms from behind.
+
+<<if pcAreArmsBound("both")>>
+
+<<else>>
+	<<He>> holds them either side of your head, preventing you from covering.
+<</if>>
+<br><br>
+
+The <<person2>><<person>> leers at you from the front. "We'll let you cover," <<he>> says. "Once we've had our fun."
+<br><br>
+<<link [[Knee in the groin|Pound Exposed Knee]]>><</link>><<physiquedifficulty 1 15000>>
+<br>
+<<link [[Let it happen|Pound Exposed Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+
+
+:: Pound Exposed Knee
+<<effects>>
+
+<<if $physiqueSuccess>>
+	You raise your knee into the <<person2>><<persons>> groin, <span class="green">and hear a sickening crunch.</span> <<His>> eyes widen, and <<he>> drops to the floor, holding <<his>> crotch.
+	<br><br>
+	The <<person1>><<person>>, meanwhile, breaks into a fit of laughter. You seize the opportunity, and snatch some towels before making your escape. You <<if $upperwet gte 1>>dry<<else>>cover<</if>> yourself in a hurry. <<dry_towel>>
+	<br><br>
+
+	<<poundEndEvent true>>
+<<else>>
+	You raise your knee into the <<person2>><<persons>> crotch, <span class="red">but <<he>> doesn't react.</span> "Bitch!" <<he>> says, before
+	<<if playerBellySize(true) gte 8>>
+		kicking out your legs.
+	<<else>>
+		delivering a punch to your gut.
+	<</if>>
+	"We'll do this the hard way then."<<gpain>><<gstress>><<pain 4>><<stress 6>>
+	<br><br>
+
+	<<link [[Next|Pound Exposed Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Pound Exposed Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate "Someone arrives to investigate your cry, <span class='pink'>but decides to turn a blind eye when they see what's happening.</span>">>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Pound Exposed Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Pound Exposed Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Pound Exposed Rape Finish
+<<effects>>
+<<if $enemypleasure gte $enemypleasuremax>>
+	<<ejaculation>>
+	The <<person>> drops a handful of towels on you, and <<he>> saunters away.
+	<br><br>
+	<<tearful>> you rise to your feet.
+<<elseif $enemyhealth lte 0>>
+	You shove the <<person1>><<person>> into the trolley. <<He>> grasps the <<person2>><<persons>> arm as <<he>> falls, and they both tumble to the ground, with towels landing atop.
+	<br><br>
+	<<tearful>> you snatch some towels. You make your escape.
+<<else>>
+	/* No decisive outcome, such as giving up the encounter. */<<set _noDecisiveOutcome to true>>
+	<<if $finish is 1>><<encounterEndViolence>><</if>>
+    You can't take it anymore.
+    <br><br>
+	<<if $finish is 1>>
+		<<link [[Next|Pound Exposed Rape Finish]]>>
+			<<set $enemypleasure to $enemypleasuremax>>
+			<<set $finish to 0>>
+		<</link>>
+	<</if>>
+<</if>>
+<<if $finish isnot 1 or !_noDecisiveOutcome>>
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+<<dry_towel>>
+<<poundEndEvent true>>
+<</if>>
+
+:: Pound Exposed Help
+<<effects>>
+
+You keep your body hidden around the corner, one hand pressed tight against the wall.
+
+<<speechresolve>>
+<<if _speechAttitudeResolved is "meek">>
+	"E-Excuse me?" you say. "Could you help me?"
+<<elseif _speechAttitudeResolved is "shy">>
+	"E-Excuse me," you say, keeping the rest of your body out of sight. "I need something to cover myself."
+<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+	"Excuse me," you say. "Could you help me, please?"
+<<elseif _speechAttitudeResolved is "docile">>
+	"Please," you say. "I need something to cover myself."
+<<elseif _speechAttitudeResolved is "confident">>
+	"Hey," you say. "Could you lend me something to cover up?"
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+	"Hey," you say. "Give me something to cover up with."
+<<else>>
+	"Hello," you say. "Could you help me?"
+<</if>>
+<br>
+The <<person>> looks towards the corner and frowns. "What you hiding there?" <<he>> asks.
+<br>
+"Could you give me something to cover with?" you continue.
+<br>
+<<His>> frown turns into a grin. "Sure. Just let me see you first. So I know your size."
+<br><br>
+
+<<link [[Step into view|Pound Exposed Step]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+<br>
+<<link [[Refuse|Pound Exposed Refuse]]>><</link>>
+<br>
+
+:: Pound Exposed Step
+<<effects>>
+<<fameexhibitionism 1>>
+<<covered>>
+You step from your hiding place. The <<persons>> eyes flicker over your body. "Give me a twirl."
+<br><br>
+<<exposure>>
+<<dry_full>>
+<<if $exposed gte 1>>
+	You turn on the spot as instructed. The <<person>> seems satisfied. <<He>> tugs <<his>> sweater over <<his>> head, unconcerned about <<his>>
+
+	<<if $pronoun is "f">>
+		exposed bra.<<upperwear "girl's oversized sweater">>
+	<<else>>
+		exposed chest.<<upperwear "oversized sweater">>
+	<</if>>
+	<<He>> holds it out to you. It's a little big, which is probably for the best.
+	<br><br>
+
+	The <<person>> leaves you to dress, and enters the pound proper. Probably on the hunt for a replacement.
+	<br><br>
+<<else>>
+	You turn on the spot as instructed. The <<person>> seems satisfied. <<He>> pulls a large towel from beneath <<his>> sweater, and throws it over your head.
+	<br><br>
+
+	The <<person>> leaves you to dry, and enters the pound proper.
+	<br><br>
+<</if>>
+
+<<poundEndEvent true>>
+
+:: Pound Exposed Refuse
+<<effects>>
+<<fameexhibitionism 2>>
+
+<<speechresolve>>
+<<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
+	"N-No," you say, pulling back behind the corner.
+<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+	"No, thank you," you say, stepping further out of sight.
+<<elseif _speechAttitudeResolved is "docile">>
+	"No," you say quietly. "Please just leave me alone."
+<<elseif _speechAttitudeResolved is "confident">>
+	"No," you say. "Forget it."
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+	"Fuck off," you say, stepping back.
+<<else>>
+	"No," you say, moving away from the corner.
+<</if>>
+<br><br>
+
+"Suit yourself," the <<person>> says. "Hey guys! Look what I've found!"
+<br><br>
+<<endevent>><<generate1>><<generate2>><<person1>>
+You turn to look for somewhere else to hide, but a <<person>> steps into your path and catches you by the arms. "What we got here then?"
+<br>
+"Running around dressed like that," says a <<person2>><<person>> as <<he>> moves beside <<person1>><<him>>. <<He>> shakes <<his>> head.
+<br><br>
+<<link [[Next|Pound Exposed Caught]]>><</link>>
+<br>
+
+
+:: Pound Work Wash
+<<effects>><<wearProp "bucket">>
+
+<<generateBeastVictim 1 dog>>
+<<if $slimePoundTask>>You follow the <<= numberOfEarSlime() gte 2 ? "slimes'" : "slime's">> command to do a specific task.<<unset $slimePoundTask>><</if>>
+
+You enter one of the cages, bucket in hand.
+
+<<cleareventpool>>
+<<if beastSexEnabledForType("dog", $monster is 1)>>
+	<<addinlineevent "wash shake">>
+		The <<beasttype>> within lets you approach. You wash <<bhim>> with soapy water.
+		<br><br>
+
+		<<bHe>> shakes <<bhis>> fur dry before you're done, almost getting you wet.
+		<br><br>
+
+		<<link [[Keep washing|Pound Work Wash Wet]]>><</link>><<dancedifficulty 1 400>>
+		<br>
+		<<link [[Scold|Pound Work Wash Scold]]>><</link>><<tendingdifficulty 1 800>>
+		<br>
+	<</addinlineevent>>
+<</if>>
+
+<<addinlineevent "wash hate">>
+	The <<beasttype>> within recoils into the corner.
+	<<if $monster is 1>>
+		"No," <<bhe>> says. "Hate wet."
+	<<else>>
+		<<bHe>> looks cautiously at the water.
+	<</if>>
+	<br><br>
+
+	<<link [[Soothe|Pound Work Wash Soothe]]>><</link>><<tendingdifficulty 1 800>>
+	<br>
+	<<if hasSexStat("deviancy", 3) and beastSexEnabledForType("dog", $monster is 1)>>
+		<<link [[Use your hand|Pound Work Wash Hand]]>><</link>><<deviant3>>
+	<</if>>
+<</addinlineevent>>
+
+<<addinlineevent "wash excited">>
+	The <<beasttype>> inside is very excited. You set the bucket down and prepare to wash, but the <<beasttype>> can't sit still. <<if $monster is 1>>"So excited for wash! Can I try?" <<bhe>> says.<</if>>
+	<br><br>
+
+	<<link [[Wash|Pound Work Wash Excited]]>><<set $phase to "wash">><<tiredness 6>><</link>><<gtiredness>>
+	<br>
+	<<link [[Calm|Pound Work Wash Excited]]>><<set $phase to "calm">><</link>><<tendingdifficulty 1 800>>
+	<br>
+	<<if beastSexEnabledForType("dog", $monster is 1)>>
+		<<link [[Force <<bhim>> to stay still|Pound Work Wash Excited]]>><<set $phase to "force">><</link>><<physiquedifficulty 1 $physiquemax>>
+	<</if>>
+<</addinlineevent>>
+
+<<runeventpool>>
+
+:: Pound Work Wash Wet
+<<effects>>
+
+<<if $danceSuccess>>
+	You keep washing while watching the <<beasttype>>'s shoulders. Each time <<bhe>> starts to shake, you step back with the sponge and wait. <span class="green">You finish without getting splashed.</span>
+<<else>>
+	You keep washing, but the <<beasttype>> twists away before you can react and shakes water from <<bhis>> fur. <span class="red">The spray drenches you.</span><<gstress>><<stress 6>>
+	<<wetAll>>
+	<br><br>
+	<<exposure>>
+	<<bHe>> looks up at you with <<bhis>> head tilted to one side.
+<</if>>
+<br><br>
+
+<<poundEndEvent>>
+
+:: Pound Work Wash Scold
+<<effects>>
+
+You catch the <<beasttype>> by the collar before <<bhe>> can shake again.
+<<speechresolve>>
+<<if $tendingSuccess>>
+	<<if _speechAttitudeResolved is "meek">>
+		"P-Please wait until I'm done," you say.
+	<<elseif _speechAttitudeResolved is "shy">>
+		"D-Don't shake yet," you say, keeping hold of the collar.
+	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+		"Wait until I've finished, please," you say.
+	<<elseif _speechAttitudeResolved is "docile">>
+		"Please stay still," you say. "I'm nearly done."
+	<<elseif _speechAttitudeResolved is "confident">>
+		"Hold still," you say. "You can shake when I'm finished."
+	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+		"Don't you dare shake again," you say.
+	<<else>>
+		"Wait until I'm done," you say.
+	<</if>>
+	<br><br>
+
+	<span class="green">The <<beasttype>> stays still while you finish washing <<bhim>>.</span> You let go of the collar and step back before <<bhe>> shakes the water from <<bhis>> fur.<<gpound_status>><<pound_status 1>>
+<<else>>
+	<<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
+		"P-Please don't shake," you say, tightening your grip on the collar.
+	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+		"Please wait until I'm finished," you say.
+	<<elseif _speechAttitudeResolved is "docile">>
+		"Please stay still," you say. "Just a little longer."
+	<<elseif _speechAttitudeResolved is "confident">>
+		"Hold still," you say.
+	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+		"Don't shake," you warn.
+	<<else>>
+		"Stay still," you say.
+	<</if>>
+	<br><br>
+
+	The <<beasttype>> twists free and shakes <<bhis>> fur hard enough to <span class="red">drench you in water.</span>
+	<<wetAll>>
+	<br><br>
+	<<exposure>>
+	<<bHe>> looks up at you with <<bhis>> head tilted to one side.
+<</if>>
+<br><br>
+
+<<poundEndEvent>>
+
+:: Pound Work Wash Soothe
+<<effects>>
+
+<<speechresolve>>
+<<if $tendingSuccess>>
+	You set the bucket down and hold the wet sponge where the <<beasttype>> can see it.
+	<<if _speechAttitudeResolved is "meek">>
+		"It's okay," you say. "The water's warm. I won't hurt you."
+	<<elseif _speechAttitudeResolved is "shy">>
+		"I-It's only water," you say. "I'll go slowly."
+	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+		"The water is warm," you say as you step closer. "Let me wash you, please."
+	<<elseif _speechAttitudeResolved is "docile">>
+		"It's all right," you say. "I'll be gentle. I promise."
+	<<elseif _speechAttitudeResolved is "confident">>
+		"Easy," you say. "Come here and let me wash you."
+	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+		"Come on," you say. "It's only water."
+	<<else>>
+		"The water is warm," you say as you step closer. "You'll feel better after."
+	<</if>>
+	<br><br>
+
+	<<if $monster is 1>>
+		<span class="green">"O-okay," <<bhe>> says.</span> <<bHe>> steps closer and lets you touch the sponge to <<bhis>> fur.
+	<<else>>
+		The <<beasttype>> sniffs the sponge, then <span class="green">steps close enough for you to start washing <<bhim>>.</span>
+	<</if>>
+	<<gpound_status>><<pound_status 1>>
+	<br><br>
+
+	You work from <<bhis>> back down to <<bhis>> legs, rinsing the sponge whenever it gets dirty. <<bHe>> tries to pull away from the first splash, but soon stands still. When you're done, you take the bucket outside the cage before <<bhe>> shakes the water from <<bhis>> fur.
+<<else>>
+	You set the bucket down and hold the sponge out.
+	<<if _speechAttitudeResolved is "meek">>
+		"D-Don't be scared," you say. "I won't hurt you."
+	<<elseif _speechAttitudeResolved is "shy">>
+		"I-It's okay," you say, keeping your distance. "See? Just a sponge."
+	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+		"Please, it's only water," you say. "Let me wash you."
+	<<elseif _speechAttitudeResolved is "docile">>
+		"I won't hurt you," you say. "Please come closer."
+	<<elseif _speechAttitudeResolved is "confident">>
+		"Easy," you say. "Come here."
+	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+		"Stop backing away," you say. "It's just water."
+	<<else>>
+		"Don't be scared," you say. "It's only water."
+	<</if>>
+	<br><br>
+
+	<span class="red">The <<beasttype>> backs away whenever you bring the sponge near.</span><<gtending>><<tending 1>>
+	You eventually get <<bhim>> washed, but <<bhe>> whines and squirms the whole time. As soon as you let go, <<bhe>> shakes from head to tail and sprays water across you and the neighbouring cages. <span class="pink">You're drenched.</span>
+	<<wetAll>>
+	<br><br>
+	<<exposure>>
+	<<bHe>> looks up at you with <<bhis>> head tilted to one side.
+<</if>>
+<br><br>
+
+<<poundEndEvent>>
+
+:: Pound Work Wash Hand
+<<effects>>
+
+You put the bucket aside and crouch beside the <<beasttype>>.
+<<speechresolve>>
+<<if _speechAttitudeResolved is "meek">>
+	"I-If you're good," you say, "I'll give you a treat."
+<<elseif _speechAttitudeResolved is "shy">>
+	"B-Be good for me," you say, looking down at your hands. "I'll give you a treat."
+<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+	"Behave for me, please," you say. "I'll give you a treat."
+<<elseif _speechAttitudeResolved is "docile">>
+	"Please be good," you say. "I'll give you a treat."
+<<elseif _speechAttitudeResolved is "confident">>
+	"Be good," you say. "Then you get a treat."
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+	"Behave," you say. "Maybe you'll get a treat."
+<<else>>
+	"If you're good," you say, "I'll give you a treat."
+<</if>>
+<br><br>
+
+<<if $NPCList[0].penis isnot "none">>
+	You reach for <<bhis>> <<print $NPCList[0].penisdesc>> and stroke it until it hardens.
+<<else>>
+	You reach between <<bhis>> legs and run a finger over <<bhis>> pussy.
+<</if>>
+<<deviancy3>>
+
+<<bHe>> leans into your hand, so you rub faster.
+<<if $NPCList[0].penis isnot "none">>
+	<<bHis>> body jerks, and <<bhe>> ejaculates on the floor.
+<<else>>
+	<<bHis>> body jerks as <<bhe>> orgasms.
+<</if>>
+<br><br>
+
+When you pick the bucket up again, <<bhe>> lets you approach without pulling away. You wash <<bhim>> from head to foot. <<bHe>> flinches at the first splash, but soon stands still long enough for you to finish. You take the bucket outside the cage before <<bhe>> shakes the water from <<bhis>> fur.
+<br><br>
+
+<<poundEndEvent>>
+
+:: Pound Work Wash Excited
+<<effects>>
+
+<<switch $phase>>
+	<<case "wash">>
+		You keep one hand on the <<beasttype>> while working the sponge through <<bhis>> fur. <<bHe>> squirms and tries to play with the water, forcing you to follow <<bhim>> around the cage. By the time <<bhes>> clean, you're out of breath.
+	<<case "calm">>
+		You set the bucket down and wait for the <<beasttype>> to look at you.
+		<<speechresolve>>
+		<<if _speechAttitudeResolved is "meek">>
+			"Please calm down so I can wash you," you say.
+		<<elseif _speechAttitudeResolved is "shy">>
+			"P-Please sit still," you say. "I just need to wash you."
+		<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+			"Sit still for me, please," you say. "Then we can get this done."
+		<<elseif _speechAttitudeResolved is "docile">>
+			"Please calm down," you say. "I'll be gentle."
+		<<elseif _speechAttitudeResolved is "confident">>
+			"Sit," you say, pointing beside the bucket.
+		<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+			"Would you stop fidgeting so much? I need to get this done!" you demand.
+		<<else>>
+			"Can you sit still?" you ask.
+		<</if>>
+		<br><br>
+
+		<<if $tendingSuccess>>
+			The <<beasttype>> bounces once more, then sits beside the bucket. <span class="green"><<bHe>> stays there while you wash <<bhim>>.</span><<pound_status 1>><<gpound_status>>
+		<<else>>
+			The <<beasttype>> darts away as soon as you reach for the sponge. <span class="red">You spend most of the wash following <<bhim>> around the cage,</span> and you're out of breath by the time <<bhes>> clean.<<tiredness 6>><<gtiredness>>
+		<</if>>
+	<<case "force">>
+		<<if $physiqueSuccess>>
+			You catch the <<beasttype>> around the body and hold <<bhim>> still long enough to wash <<bhis>> fur. <<bHe>> twists and growls under your arms, but <span class="green">you keep your grip until you're done.</span><<pound_status 1>><<gpound_status>>
+		<<else>>
+			<<set $molestationstart to 1>>
+			You reach for the <<beasttype>>, but <<bhe>> knocks your arms aside and <span class="red">lunges at you.</span>
+		<</if>>
+<</switch>>
+<br><br>
+
+<<if $molestationstart>>
+	<<link [[Next|Pound Work Brush Rape]]>><</link>>
+<<else>>
+	<<poundEndEvent>>
+<</if>>
+
+:: Pound Work Walk
+<<effects>><<wearProp "dog leash">>
+
+<<generateBeastVictim 5 dog>>
+<<if $slimePoundTask>>You follow the <<= numberOfEarSlime() gte 2 ? "slimes'" : "slime's">> command to do a specific task.<<unset $slimePoundTask>><</if>>
+You attach leashes to five <<beastsplural>>. They're eager for the exercise, and don't resist. Tails wagging, they pull you through the front yard and onto the street beyond.
+<br><br>
+<<link [[Wrestle control|Pound Work Walk Wrestle]]>><</link>><<physiquedifficulty 1 18000>>
+<br>
+<<rng 4>>
+<<switch $rng>>
+	<<case 1>>
+		<<link [[Let them choose the destination|Pound Work Walk Beach]]>><</link>>
+		<br>
+	<<case 2>>
+		<<link [[Let them choose the destination|Pound Work Walk Forest]]>><</link>>
+		<br>
+	<<case 3>>
+		<<link [[Let them choose the destination|Pound Work Walk Hills]]>><</link>>
+		<br>
+	<<default>>
+		<<link [[Let them choose the destination|Pound Work Walk Road]]>><</link>>
+		<br>
+<</switch>>
+
+
+:: Pound Work Walk Wrestle
+<<effects>><<wearProp "dog leash">>
+
+<<if $physiqueSuccess>>
+	The <<beastsplural>> tug and pull in multiple directions, but an iron grip and stern word are <span class="green">able to get them under control.</span> Where shall you take them?
+	<br><br>
+	<<set $phase to 1>>
+	<<link [[The beach|Pound Work Walk Beach]]>><</link>>
+	<br>
+	<<link [[The forest|Pound Work Walk Forest]]>><</link>>
+	<br>
+	<<link [[The hills|Pound Work Walk Hills]]>><</link>>
+	<br>
+	<<link [[Road leaving town|Pound Work Walk Road]]>><</link>>
+	<br>
+<<else>>
+	The <<beastsplural>> tug and pull in multiple directions. You try to get them under control, but your tugs go ignored, your words unheeded. <span class="red">They pull you behind them.</span>
+	<br><br>
+	<<rng 4>>
+	<<switch $rng>>
+		<<case 1>>
+			<<link [[Next|Pound Work Walk Beach]]>><</link>>
+			<br>
+		<<case 2>>
+			<<link [[Next|Pound Work Walk Forest]]>><</link>>
+			<br>
+		<<case 3>>
+			<<link [[Next|Pound Work Walk Hills]]>><</link>>
+			<br>
+		<<default>>
+			<<link [[Next|Pound Work Walk Road]]>><</link>>
+			<br>
+	<</switch>>
+<</if>>
+
+
+:: Pound Work Walk Beach
+<<set $outside to 1>><<location "beach">><<effects>>
+<<wearProp "dog leash">>
+<<if $phase is 1>>
+	You lead the
+<<else>>
+	You are led by the
+<</if>>
+<<beastsplural>> down to the beach. It's safe to let them off their leashes here.
+
+<<if Weather.precipitation is "rain">>
+	They bound and frolic, unbothered by the rain.
+<<elseif Weather.precipitation is "snow">>
+	They bound and frolic on the sand.
+<<elseif !Weather.isOvercast>>
+	They bound and frolic in the sun.
+<<else>>
+	They bound and frolic on the sand.
+<</if>>
+<br><br>
+
+<<if random(1, 2) is 2>>
+	<<generate6>><<person6>>A <<person>> approaches you, arms folded. "Cute pups," <<he>> says. "They belong to you?"
+	<br><br>
+	<<link [[Flirt|Pound Work Walk Beach Flirt]]>><</link>><<promiscuous1>>
+	<br>
+	<<link [[Be polite|Pound Work Walk Beach Polite]]>><</link>>
+	<br>
+	<<link [[Be dismissive|Pound Work Walk Beach Dismiss]]>><</link>>
+	<br>
+<<else>>
+	<<link [[Run with them|Pound Work Walk Beach Run]]>><<athletics 1>><<tiredness 6>><<pass 10>><</link>><<gtiredness>><<gathletics>>
+	<br>
+	<<link [[Watch|Pound Work Walk Beach Watch]]>><<stress -6>><</link>><<lstress>>
+	<br>
+<</if>>
+
+:: Pound Work Walk Beach Flirt
+<<effects>>
+
+<<speechresolve>>
+<<if _speechAttitudeResolved is "meek">>
+	"They are," you say, rubbing the back of your neck. "But they're not as cute as you."
+<<elseif _speechAttitudeResolved is "shy">>
+	"They are," you say, looking down at the leashes. "I-I think you're cuter, though."
+<<elseif _speechAttitudeResolved is "polite">>
+	"They are lovely," you say. "Though you're rather cute yourself."
+<<elseif _speechAttitudeResolved is "flamboyant">>
+	"They are," you say with a grin. "But I think you've stolen their spotlight."
+<<elseif _speechAttitudeResolved is "docile">>
+	"They're cute," you say. "I think you are too."
+<<elseif _speechAttitudeResolved is "confident">>
+	"They are," you say. "You're cuter."
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+	"They are," you say. "Still not as cute as you."
+<<else>>
+	"They're cute," you say. "You're not bad yourself."
+<</if>>
+<<promiscuity1>>
+
+<<if random(1, 100) is 100>>
+	<<He>> laughs. "Quite the flirt, aren't you?" <<he>> says, but <<he>> keeps smiling.
+<<elseif random(1, 2) is 2>>
+	<<He>> smiles and thanks you. <<His>> steps are lighter as the conversation continues.
+<<else>>
+	You catch <<him>> off guard. <<He>> looks away, then back at you, shifting <<his>> weight while trying to continue the conversation.
+<</if>>
+<br><br>
+
+Once the <<beastsplural>> have run off most of their energy, you call them back and clip the leashes onto their collars. You lead them back to the pound.
+<br><br>
+
+<<pound_walk_end>>
+
+
+:: Pound Work Walk Beach Polite
+<<effects>>
+
+<<speechresolve>>
+<<if _speechAttitudeResolved is "meek">>
+	"N-No," you say. "I just work at the pound."
+<<elseif _speechAttitudeResolved is "shy">>
+	"N-No," you say, adjusting the leashes in your hands. "I'm only walking them for work."
+<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+	"No," you say. "I work at the pound. I'm taking them out for some exercise."
+<<elseif _speechAttitudeResolved is "docile">>
+	"No," you say. "I'm walking them because I was told to."
+<<elseif _speechAttitudeResolved is "confident">>
+	"No," you say. "I work at the pound."
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+	"No. It's my job," you say.
+<<else>>
+	"No," you say. "I work at the pound."
+<</if>>
+<br><br>
+
+The <<person>> nods, then looks at the leashes in your hands. "I wanted to see the pups once, maybe adopt one, but they stopped me at the gate. I swear I've seen others enter. Maybe they didn't like my face."
+<br><br>
+
+Once the <<beastsplural>> have run off most of their energy, you call them back and clip the leashes onto their collars. You lead them back to the pound.
+<br><br>
+
+<<pound_walk_end>>
+
+:: Pound Work Walk Beach Dismiss
+<<effects>>
+
+<<speechresolve>>
+<<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
+	"S-Sorry," you say. "I need to keep an eye on them."
+<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+	"Sorry, I should get back to work," you say.
+<<elseif _speechAttitudeResolved is "docile">>
+	"I should get them back soon," you say.
+<<elseif _speechAttitudeResolved is "confident">>
+	"I've got work to do," you say, turning back to the <<beastsplural>>.
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+	"Busy," you say, turning away.
+<<else>>
+	"I should get back to work," you say.
+<</if>>
+The <<person>> takes the hint and leaves you alone.
+<br><br>
+
+Once the <<beastsplural>> have run off most of their energy, you call them back and clip the leashes onto their collars. You lead them back to the pound.
+<br><br>
+
+<<pound_walk_end>>
+
+
+:: Pound Work Walk Beach Run
+<<effects>>
+
+You run with <<beastsplural>>, keeping up with them as they cross the sand. The wind is invigorating.
+<br><br>
+
+The <<beastsplural>> run until they're worn down enough to accept the leashes back on their collars. You lead them back to the pound.
+<br><br>
+
+<<pound_walk_end>>
+
+
+:: Pound Work Walk Beach Watch
+<<effects>>
+
+You watch as the <<beastsplural>> run and play on the sand, shouting if they get too bitey with one another. They soon tire out enough to accept the leashes back on their collars. You lead them back to the pound.
+<br><br>
+
+<<pound_walk_end>>
+
+
+
+:: Pound Work Walk Forest
+<<set $outside to 1>><<location "forest">><<effects>>
+<<wearProp "dog leash">>
+<<if $phase is 1>>
+	You lead the
+<<else>>
+	You are led by the
+<</if>>
+<<beastsplural>> through the town's streets. Some pedestrians give your pack a wide berth, but others stop to pet.
+<br><br>
+
+You arrive at the forest. You keep the <<beastsplural>> on their leashes, as getting lost in here could be dangerous, even this close to town.
+<br><br>
+
+<<if random(1, 2) and beastSexEnabledForType("dog", $monster is 1)>>
+	One <<beasttype 0>> sniffs a strange pink flower.
+	<<if $tending gte 600>>
+		<span class="green">You recognise it,</span> <span class="purple">and know it's dangerous.</span>
+		<br><br>
+
+		<<link [[Call the pooch away|Pound Work Walk Forest Call]]>><</link>><<tendingdifficulty 600 1000>>
+		<br>
+		<<link [[Allow|Pound Work Walk Forest Allow]]>><</link>>
+		<br>
+	<<else>>
+		<span class="red">You don't recognise it.</span>
+		<br><br>
+
+		<<link [[Next|Pound Work Walk Forest Allow]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	You stick to a trail that snakes along the forest's edge. They frequently stop to sniff bushes and the bottom of trees. You keep them away from any mushrooms or strange-looking flowers. They are suitably tired by the time the road emerges back on the street.
+	<br><br>
+
+	You lead them back to the pound, and return them to their cages.
+	<br><br>
+
+	<<poundEndEvent>>
+<</if>>
+
+:: Pound Work Walk Forest Call
+<<effects>>
+<<wearProp "dog leash">>
+<<speechresolve>>
+<<if $tendingSuccess>>
+	<<if _speechAttitudeResolved is "meek">>
+		"H-Here, <<bboy 0>>," you say, patting your leg.
+	<<elseif _speechAttitudeResolved is "shy">>
+		"Come here, please," you call, giving the leash a small tug.
+	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+		"Here, <<bboy 0>>," you say, patting your leg. "Leave the flower alone, please."
+	<<elseif _speechAttitudeResolved is "docile">>
+		"Please come back," you say, holding out your hand.
+	<<elseif _speechAttitudeResolved is "confident">>
+		"Here," you call, giving the leash a short tug.
+	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+		"Get back here," you call.
+	<<else>>
+		"Here, <<bboy 0>>," you say, patting your leg.
+	<</if>>
+	<br><br>
+
+	The <<beasttype 0>> lifts <<bhis 0>> head from the flower and <span class="green">comes back to you.</span> You lead the <<beastsplural>> away before any of them can investigate it.
+	<br><br>
+
+	Once they're tired enough to walk quietly, you lead them back through town to the pound.
+	<br><br>
+
+	<<pound_walk_end>>
+<<else>>
+	<<if _speechAttitudeResolved is "meek">>
+		"H-Here, <<bboy 0>>," you call.
+	<<elseif _speechAttitudeResolved is "shy">>
+		"P-Please come back," you say, pulling lightly at the leash.
+	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+		"Come here, please," you call.
+	<<elseif _speechAttitudeResolved is "docile">>
+		"Please leave it alone," you say.
+	<<elseif _speechAttitudeResolved is "confident">>
+		"Here," you call, giving the leash a tug.
+	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+		"Get back here," you say.
+	<<else>>
+		"Here," you call.
+	<</if>>
+	<br><br>
+
+	<span class="red">The <<beasttype 0>> ignores you and pushes <<bhis 0>> nose deeper into the flower.</span> Pollen dusts <<bhis 0>> muzzle and drifts around your legs. The sweet smell catches in your throat, and heat spreads through your body.<<ggarousal>><<arousal 1200>><<drugs 120>>
+	<br><br>
+
+	Your knees weaken. You shorten the leashes as the <<beastsplural>> begin sniffing and licking at you, but the heat makes it hard to keep your balance. You want to lie down in the grass and stop resisting them.
+	<br><br>
+
+	<<link [[Resist|Pound Work Walk Forest Resist]]>><</link>><<willpowerdifficulty 1 1000>>
+	<br>
+	<<link [[Obey|Pound Work Walk Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Pound Work Walk Forest Resist
+<<effects>><<wearProp "dog leash">>
+<<if $willpowerSuccess>>
+	<<willpowersuccess>>
+	You turn your back to the flower and shorten the leashes around your hand. Your knees still shake, so you brace one shoulder against a tree and breathe through your mouth until the heat starts to fade. <span class="green">You stay on your feet.</span>
+	<br><br>
+
+	Once your legs stop trembling, you pull the <<beastsplural>> away from the flowers and lead them back towards town. By the time you reach the pound, the feeling has passed.
+	<br><br>
+
+	<<pound_walk_end>>
+<<else>>
+	<<willpowerfailure>>
+	You drag the <<beastsplural>> away from the flower and manage a few steps before your legs give way. <span class="red">You drop to the grass,</span> gripping the leashes while your body twists with the need to be touched. The <<beastsplural>> crowd around you, just as affected.<<ggwillpower>><<willpower 12>>
+	<br><br>
+	<<link [[Next|Pound Work Walk Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Pound Work Walk Rape
+<<wearProp "dog leash">>
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<beastTrainGenerate>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Pound Work Walk Rape End]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Pound Work Walk Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Pound Work Walk Rape End
+<<effects>>
+<<wearProp "dog leash">>
+<<if $enemyhealth lte 0>>
+	<<beastwound>>
+	<<if $combatTrain.length gt 0>>
+		The <<beasttype>> recoils in pain and fear, but another is eager for a go.<<gpound_status>><<pound_status 1>>
+
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[Next|Pound Work Walk Rape]]>><</link>>
+	<<else>>
+		The <<beasttype>> recoils in pain and fear.
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[Next|Pound Work Walk Rape End]]>><<set $finish to 1>><</link>>
+	<</if>>
+<<elseif $enemypleasure gte $enemypleasuremax>>
+	<<beastejaculation>>
+	<<if $combatTrain.length gt 0>>
+		Satisfied, the <<beasttype>> moves and another takes its turn.<<lpound_status>><<pound_status -1>>
+
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[Next|Pound Work Walk Rape]]>><</link>>
+	<<else>>
+		Satisfied, the <<beasttype>> moves away from you.
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[Next|Pound Work Walk Rape End]]>><<set $finish to 1>><</link>>
+	<</if>>
+<<else>>
+	<<if $finish is 1>><<encounterEndViolence>><</if>>
+	The heat finally fades enough for you to push yourself upright. Your legs feel weak, and the <<beastsplural>> are just as tired, so they follow without fighting when you pull them towards town.
+	<br><br>
+	<<clotheson>>
+	<<wearProp "dog leash">>
+	<<pass 60>>
+	<<exposure>>
+	<<if $exposed gte 1>>
+		You see buildings through the trees ahead. <<tearful>> you look down at your body. <<covered>>
+		<br><br>
+
+		<<link [[Ask for help|Pound Work Walk Ask]]>><</link>><<difficulty 50>>
+		<br>
+		<<if hasSexStat("deviancy", 3)>>
+			<<link [[Hide amongst the pack|Pound Work Walk Hide]]>><</link>><<deviant3>>
+			<br>
+		<</if>>
+		<<if $exposed gte 2 and hasSexStat("exhibitionism", 4)>>
+			<<link [[Walk as you are|Pound Work Walk Exhibitionism]]>><</link>><<exhibitionist5>>
+			<br>
+		<<elseif $exposed gte 1 and hasSexStat("exhibitionism", 4)>>
+			<<link [[Walk as you are|Pound Work Walk Exhibitionism]]>><</link>><<exhibitionist4>>
+			<br>
+		<</if>>
+	<<else>>
+		<<endcombat>>
+		<<set $phase to 2>>
+		<<pound_walk_end>>
+	<</if>>
+<</if>>
+
+:: Pound Work Walk Forest Allow
+<<effects>>
+<<wearProp "dog leash">>
+The <<beasttype 0>> pushes <<bhis 0>> nose into the flower, <span class="lewd">sending pollen over the grass.</span> The sweet smell reaches you a second later, followed by a rush of heat through your body.<<ggarousal>><<arousal 1200>><<drugs 120>>
+<br><br>
+
+Your knees weaken. The <<beastsplural>> begin sniffing and licking at you, just as affected, and you have to shorten the leashes to keep them close. Part of you wants to stop pulling them back and lie down in the grass.
+<br><br>
+
+<<link [[Resist|Pound Work Walk Forest Resist]]>><</link>><<willpowerdifficulty 1 1000>>
+<br>
+<<link [[Obey|Pound Work Walk Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Pound Work Walk Ask
+<<effects>>
+<<wearProp "dog leash">>
+You stay behind a small group of trees near the street, keeping the trunks between yourself and anyone passing. The <<beastsplural>> shift around your legs and pull at their leashes.
+<br><br>
+
+A <<generate6>><<person6>><<person>> walks by.
+<<speechresolve>>
+<<if _speechAttitudeResolved is "meek">>
+	"E-Excuse me," you call. "I've had an accident. Could you give me something to cover with?"
+<<elseif _speechAttitudeResolved is "shy">>
+	"E-Excuse me," you call from behind the trees. "Could you spare something to cover me?"
+<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+	"Excuse me," you call. "I've had an accident. Could you lend me something to cover myself?"
+<<elseif _speechAttitudeResolved is "docile">>
+	"Please," you call. "I need something to cover myself."
+<<elseif _speechAttitudeResolved is "confident">>
+	"Hey," you call. "Could you lend me something to cover up with?"
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+	"Hey," you call. "Had an accident. Got anything I can cover up with?"
+<<else>>
+	"Hello," you call. "I've had an accident. Could you give me something to cover with?"
+<</if>>
+<br><br>
+The <<person>> stops and looks towards the trees. The trunks hide most of your body,
+<<upperwear "overalls">>
+<<if random(1, 2) is 2>>
+	but <<he>> leans to one side, trying to see more. "Sure," <<he>> says. "I live nearby. Give me a few minutes, and I'll bring you something."
+	<br><br>
+
+	<<He>> returns with a set of overalls folded over one arm. "All I have that'll fit you," <<he>> says, holding them out. You reach from behind the tree and snatch them from <<his>> hand. The fabric feels cold against your fingers.
+	<br><br>
+
+	You pull the overalls on behind the trees. They're cold all over, but you have nothing else to wear. The <<persons>> still waiting when you step out, grinning as <<he>> watches you head towards the pound.
+	<br><br>
+
+	<<link [[Next|Pound Work Walk Ask 2]]>><</link>>
+	<br>
+<<else>>
+	but <<he>> blushes and looks away. "S-sure," <<he>> says. "I live nearby. Give me a few minutes, and I'll bring you something."
+	<br><br>
+
+	<<He>> returns as promised, holding a set of overalls. "Sorry it's not more comfortable," <<he>> says, holding it out with eyes averted. "It's all I have in your size. It should get you where you're going."
+	<br><br>
+
+	You thank the <<person>> and dress behind the trees. By the time you step back onto the street, <<he>> has already left.
+	<br><br>
+
+	The journey back to the pound is uneventful, though a few people look twice at the oversized overalls.
+	<br><br>
+
+	<<endcombat>>
+	You make <<wage $pound.money "tending" "bird" 0.45>>.
+	<br><br>
+
+	<<if Time.hour gte $closinghour>>
+		<<link [[Next|Pound]]>><<endevent>><</link>>
+	<<else>>
+		<<link [[Next|Pound Work]]>><<endevent>><</link>>
+	<</if>>
+<</if>>
+<<wearProp "dog leash">>
+
+
+
+:: Pound Work Walk Ask 2
+<<effects>>
+<<wearProp "dog leash">>
+You turn onto another street, this one more crowded. You smell a whiff of raw meat. Odd, as there are no butchers you know of near here. You get another whiff, then another. Soon the smell of meat becomes constant.
+<br><br>
+
+You jump when a nose presses into your groin from behind. The <<beasttype 0>> sniffs at the overalls, and the others crowd closer to do the same. When <<bhe 0>> starts licking your bottom, you pull one of the straps towards your face and sniff it. <span class="pink">The fabric reeks of raw meat.</span>
+<br><br>
+
+The <<beasttype 0>> grasps part of the fabric between <<bhis 0>> teeth, <span class="pink">tearing it.</span> You tighten <<bhis 0>> leash and pull <<bhim 0>> away, but you're attracting glances from other pedestrians.
+<br><br>
+
+<<set $worn.upper.integrity -= 50>>
+<<set $worn.lower.integrity -= 50>>
+
+
+<<link [[Next|Pound Work Walk Ask 3]]>><</link>>
+<br>
+
+
+:: Pound Work Walk Ask 3
+<<effects>>
+<<wearProp "dog leash">>
+You hasten your pace. You're not strong enough to keep them all at bay, not when they're so eager. You're able to chasten the worst of them, but can't stop them all from nipping and biting.
+<br><br>
+
+You glance over your shoulder. A few people follow in amusement, the <<person>> among them.
+<br><br>
+
+<<set $worn.upper.integrity -= 50>>
+<<set $worn.lower.integrity -= 50>>
+
+
+
+<<link [[Move faster|Pound Work Walk Ask 4]]>><<set $phase to 0>><</link>>
+<br>
+<<link [[Take a shortcut|Pound Work Walk Ask 4]]>><<set $phase to 1>><</link>>
+<br>
+
+:: Pound Work Walk Ask 4
+<<effects>>
+<<wearProp "dog leash">>
+<<if $phase is 0>>
+	You start jogging. You feel the overalls split apart further as you move, but it's harder for the <<beastsplural>> to get a grip.
+	<br><br>
+	You round a corner, and see the pound up ahead. You're almost there!
+<<else>>
+	You duck into an alley, out of sight. Your pursuers keep up however, hounding you until you emerge on the street opposite. You see the pound up ahead. You're almost there!
+<</if>>
+<br><br>
+
+It happens so fast. As you step out onto the street, the <<beasttype 0>> grabs the fabric around your ankle, and pulls. The straps dig into your shoulders, <span class="pink">then snap.</span> The fabric covering your chest begins to fall forward.
+<br><br>
+<<if pcAreArmsBound("both")>>
+	With your arms bound, you can't catch the falling fabric, leaving your <<breasts>> bared. The <<beastsplural>> keep tugging the overalls down until the legs bunch around your feet. <span class="pink">You trip,</span> landing partly naked in the middle of the street.
+<<else>>
+	You catch the falling fabric against your chest with one arm, but the <<beastsplural>> keep tugging the overalls down until the legs bunch around your feet. <span class="pink">You trip,</span> landing partly naked in the middle of the street.
+<</if>>
+<br><br>
+<<upperruined>>
+<<exposure>>
+<<set $worn.lower.integrity -= 50>>
+
+People stand around gawking. Several pull out phones.
+<br><br>
+
+
+<<link [[Next|Pound Work Walk Ask 5]]>><</link>>
+<br>
+
+
+:: Pound Work Walk Ask 5
+<<effects>>
+<<wearProp "dog leash">>
+The <<beastsplural>> surround you, each with a mouthful of your overalls. They pull and tug, until the fabric at last yields, <span class="pink">tearing it from your body in all directions.</span><<gstress>><<gtrauma>><<fameexhibitionism 10>><<stress 6>><<trauma 6>>
+<br><br>
+
+<<upperruined>>
+<<lowerruined>>
+<<exposure>>
+<<covered>> The audience stands around gawking and filming. The <<person6>><<person>> stands closest. "Don't worry," the <<person>> laughs. "I didn't expect those clothes back."
+<br><br>
+
+<<link [[Run|Pound Work Walk Ask Run]]>><</link>>
+<br>
+<<link [[Get revenge|Pound Work Walk Ask Revenge]]>><</link>><<tendingdifficulty 600 1000>>
+<br>
+
+
+
+
+:: Pound Work Walk Ask Run
+<<effects>>
+<<wearProp "dog leash">>
+You climb to your feet and dash across the rest of the street. The <<beastsplural>> seem happy to follow, chewing on what remains of your overalls as they run.
+<br><br>
+
+The other staff laugh and leer as you enter the building. You snatch some cleaned towels from a trolley near the entrance. You <<if $upperwet gte 1>>dry<<else>>cover<</if>> yourself in a hurry, then return the <<beastsplural>> to their cages. <<dry_towel>>
+<br><br>
+
+<<endcombat>>
+You make <<wage $pound.money "tending" "bird" 0.45>>.
+<br><br>
+
+<<if Time.hour gte $closinghour>>
+	<<link [[Next|Pound]]>><<endevent>><</link>>
+<<else>>
+	<<link [[Next|Pound Work]]>><<endevent>><</link>>
+<</if>>
+
+:: Pound Work Walk Ask Revenge
+<<effects>>
+<<wearProp "dog leash">>
+You point at the <<person>> and send the <<beastsplural>> towards <<him>>.
+
+<<if $tendingSuccess>>
+	Perhaps the meat-smelling fabric is disappointing. Perhaps they remember where the overalls came from. Regardless of their reasons, <span class="green">they lunge at <<him>>,</span> and drag <<him>> to the ground.<<lltrauma>><<trauma -12>><<gcontrol>><<control 10>>
+	<br><br>
+
+	They make quicker work of <<his>> clothes than they did yours, and soon have <<him>> completely naked. "Y-you stupid mutts!" <<he>> says, covering <<himself>> as the <<beastsplural>> ravage what remains of the fabric, as if searching for any morsel of food.
+	<br><br>
+
+	With the audience's attention now on the <<person>>, you make your escape. The <<beastsplural>> seem happy to follow, chewing on what remains of the <<persons>> clothes as they run.
+	<br><br>
+<<else>>
+	The tattered remains of your meat-smelling overalls prove more interesting, however, <span class="red">and they ignore your command.</span> You're left to struggle to your feet, and hobble across the rest of the street. The <<beastsplural>> seem happy to follow, chewing on what remains of your overalls as they run.
+	<br><br>
+<</if>>
+
+The other staff laugh and leer when you return to the building. You grab a clean towel from a trolley near the entrance, wrap it around yourself, then return the <<beastsplural>> to their cages. <<dry_towel>>
+<br><br>
+
+<<endcombat>>
+You make <<wage $pound.money "tending" "bird" 0.45>>.
+<br><br>
+
+<<if Time.hour gte $closinghour>>
+	<<link [[Next|Pound]]>><<endevent>><</link>>
+<<else>>
+	<<link [[Next|Pound Work]]>><<endevent>><</link>>
+<</if>>
+
+:: Pound Work Walk Hide
+<<effects>>
+<<wearProp "dog leash">>
+You drop to your knees and peer around the edge of the trees. If you keep low and don't get too close to anyone, perhaps you won't be spotted among the pack. It would be even more humiliating if you were, though.
+<br><br>
+
+You take a breath, lower yourself onto your hands and knees, then crawl out with the leashes gathered in one hand.
+<<deviancy3>>
+
+You keep your eyes on shop signs, doorways and the legs of people ahead, using them to work out where you are without lifting your head too high. The <<beastsplural>> move around you as you make your way along the street.
+<br><br>
+
+You reach the pound without anyone stopping you. The staff laugh and leer when you crawl through the entrance, so you get to your feet, grab a clean towel from a nearby trolley, then cover yourself before returning the <<beastsplural>> to their cages.
+<br><br>
+
+<<endcombat>>
+You make <<wage $pound.money "tending" "bird" 0.45>>.
+<br><br>
+
+<<if Time.hour gte $closinghour>>
+	<<link [[Next|Pound]]>><<endevent>><</link>>
+<<else>>
+	<<link [[Next|Pound Work]]>><<endevent>><</link>>
+<</if>>
+
+:: Pound Work Walk Exhibitionism
+<<effects>>
+<<wearProp "dog leash">>
+<<flaunting>> you emerge from your hiding place, and walk down the busy street. Heads turn. Throats gasp. A monocle falls into a glass.
+<<if $exposed gte 2>>
+	<<exhibitionism5>>
+<<else>>
+	<<exhibitionism4>>
+<</if>>
+
+You endure leers and catcalls, but no one harasses you physically. Perhaps the <<beastsplural>> ward them off.
+<br><br>
+
+You arrive at the pound. The other staff laugh and leer as you enter the building. You snatch some cleaned towels from a trolley near the entrance, and cover yourself before returning the <<beastsplural>> to their cages. <<dry_towel>>
+<br><br>
+
+<<endcombat>>
+You make <<wage $pound.money "tending" "bird" 0.45>>.
+<br><br>
+
+<<if Time.hour gte $closinghour>>
+	<<link [[Next|Pound]]>><<endevent>><</link>>
+<<else>>
+	<<link [[Next|Pound Work]]>><<endevent>><</link>>
+<</if>>
+
+:: Pound Work Walk Hills
+<<set $outside to 1>><<location "moor">><<effects>>
+<<wearProp "dog leash">>
+<<if $phase is 1>>
+	You lead the
+<<else>>
+	You are led by the
+<</if>>
+<<beastsplural>> west through town, along the small trails leading through the residential outskirts, into the winding hills beyond. It's colder here, but the wind is brisk and fresh, particularly as you crest the hills.
+<br><br>
+
+<<if random(1, 2) is 2>>
+	The <<beastsplural>> have a lot of energy, and it's a job to keep them from running off in different directions.
+	<<if hasSexStat("deviancy", 5) and beastSexEnabledForType("dog", $monster is 1) and not ($NPCList[0] and $NPCList[0].lewdBlocked)>>
+		<span class="lewd">A lewd thought strikes you.</span> You're alone out here, well-hidden from view. You know one way you could tire the <<beastsplural>> out.
+		<br><br>
+
+		<<link [[Seduce|Pound Work Walk Sex]]>><<set $sexstart to 1>><</link>><<deviant5>>
+		<br>
+		<<link [[Just keep walking|Pound Work Walk Hills 2]]>><</link>>
+		<br>
+	<<else>>
+		<br><br>
+		<<link [[Next|Pound Work Walk Hills 2]]>><</link>>
+		<br>
+	<</if>>
+
+<<else>>
+	You pass beneath a stone archway. There aren't many ruins this close to town, and those that remain have been worn down, their inscriptions faded or wiped entirely.
+	<br><br>
+	<<if currentSkillValue("history") gte 1000>>
+		<<link [[Try to read an inscription|Pound Work Walk Hills Read]]>><</link>><<willpowerdifficulty 600 1000>>
+		<br>
+	<<else>>
+		<<link [[Try to read an inscription|Pound Work Walk Hills Read 2]]>><<historyskill 3 "no_star">><</link>><<ghistory>>
+		<br>
+	<</if>>
+	<<link [[Just enjoy the walk|Pound Work Walk Hills 2]]>><<stress -6>><</link>><<lstress>>
+	<br>
+<</if>>
+
+:: Pound Work Walk Hills Read
+<<effects>>
+<<wearProp "dog leash">>
+You run your fingers over the inscriptions. You recognise the events they mention, but something isn't right. This isn't what they teach at school, and there's something else, some connection forming at the edge of your mind.
+<br><br>
+<<if $willpowerSuccess>>
+	<<willpowersuccess>>
+	<span class="green">You focus,</span> and a rogue musing blossoms. It connects the different stories in a searing web. <span class="pink">Your mind recoils from a forgotten horror,</span> but some parts will remain. <<ggawareness>><<ggtrauma>><<gstress>><<awareness 12>><<trauma 12>><<stress 6>>
+	<br><br>
+	You find yourself lying in the grass. The <<beastsplural>> whine. It's time to move on.
+<<else>>
+	<<willpowerfailure>>
+	<span class="red">The thoughts disappear before you can grasp them,</span> leaving an uneasy sensation in their place.<<ggstress>><<stress 12>><<gwillpower>><<willpower 6>>
+	<br><br>
+	The <<beastsplural>> whine, eager to move on. You continue your walk.
+<</if>>
+<br><br>
+
+<<link [[Next|Pound Work Walk Hills 2]]>><</link>>
+<br>
+
+:: Pound Work Walk Hills Read 2
+<<effects>>
+<<wearProp "dog leash">>
+You run your fingers over the faded inscriptions. They're written in an archaic English, but you can understand it a little.
+
+<<if $rng gte 81>>
+	It mentions a festival that took place in the city here. Or perhaps its destruction, you can't tell which.
+<<elseif $rng gte 61>>
+	It warns of the danger of sea. Of a violent flood, or perhaps a flood of reavers.
+<<elseif $rng gte 41>>
+	It celebrates the triumphs of a local ruler. Or maybe it's mocking the failures of a foreign ruler. Some ruler did something, and it was worth engraving it, apparently.
+<<elseif $rng gte 21>>
+	It's confusing though, mentioning both a great harvest that saved a city from starvation, and a cataclysm that brought the city to ruin, as if they were the same thing. Maybe it's just poetic.
+<<else>>
+	It mentions a departing army that would never be seen again. However, it contradicts this at once, continuing onto the army's return. You must be misunderstanding something.
+<</if>>
+<br><br>
+
+The <<beastsplural>> grow restless, so you continue on your way.
+<br><br>
+
+<<link [[Next|Pound Work Walk Hills 2]]>><</link>>
+<br>
+
+
+:: Pound Work Walk Sex
+<<wearProp "dog leash">>
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<beastCombatInit>>
+	<<beastTrainGenerate>>/* - Delete if there aren't multiple beasts*/
+
+	You drop to the ground, and present yourself to the <<beastsplural>>. They don't need a bigger hint than that.<<deviancy5>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Pound Work Walk Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Pound Work Walk Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Pound Work Walk Sex Finish
+<<effects>>
+<<wearProp "dog leash">>
+<<if $enemyhealth lte 0>>
+	<<beastwound>>
+	<<if $combatTrain.length gt 0>>
+		The <<beasttype>> recoils in pain and fear, but another is eager for a go.
+
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[Next|Pound Work Walk Sex]]>><</link>>
+	<<else>>
+		The <<beasttype>> recoils in pain and fear.
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[Next|Pound Work Walk Sex Finish]]>><<set $finish to 1>><</link>>
+	<</if>>
+<<elseif $enemypleasure gte $enemypleasuremax>>
+	<<beastejaculation>>
+	<<if $combatTrain.length gt 0>>
+		Satisfied, the <<beasttype>> moves and another takes its turn.
+
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[Next|Pound Work Walk Sex]]>><</link>>
+	<<else>>
+		Satisfied, the <<beasttype>> moves away from you.
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[Next|Pound Work Walk Sex Finish]]>><<set $finish to 1>><</link>>
+	<</if>>
+<<else>>
+	<<if $finish is 1>><<encounterEndViolence>><</if>>
+	<<if $enemywounded gte 1 and $enemyejaculated gte 1>>
+		The <<beastsplural>> snap at each other, until you give them a firm word.
+	<<elseif $enemywounded gte 1>>
+		<<tearful>> you stand triumphant before the <<beastsplural>>.
+	<<else>>
+		<<tearful>> you lie for a while atop a satisfied pile of <<beastsplural>>.
+	<</if>>
+
+	<br><br>
+	<<clotheson>>
+	<<pass 60>>
+	<<exposure>>
+	<<if $exposed gte 1>>
+		You walk back through the hills, until you see buildings through the trees ahead. <<tearful>> you look down at your body. <<covered>>
+		<br><br>
+
+		<<link [[Ask for help|Pound Work Walk Ask]]>><</link>><<difficulty 50>>
+		<br>
+		<<if hasSexStat("deviancy", 3)>>
+			<<link [[Hide amongst the pack|Pound Work Walk Hide]]>><</link>><<deviant3>>
+			<br>
+		<</if>>
+		<<if $exposed gte 2 and hasSexStat("exhibitionism", 4)>>
+			<<link [[Walk as you are|Pound Work Walk Exhibitionism]]>><</link>><<exhibitionist5>>
+			<br>
+		<<elseif $exposed gte 1 and hasSexStat("exhibitionism", 4)>>
+			<<link [[Walk as you are|Pound Work Walk Exhibitionism]]>><</link>><<exhibitionist4>>
+			<br>
+		<</if>>
+	<<else>>
+
+		<<set $phase to 2>>
+		<<link [[Next|Pound Work Walk Hills 2]]>><</link>>
+		<br>
+	<</if>>
+
+<</if>>
+
+:: Pound Work Walk Hills 2
+<<effects>>
+
+You walk back through the hills. The town looks closer each time you crest a peak, until at last the trail passes between buildings. You lead the <<beastsplural>> back to the pound.
+<br><br>
+<<endcombat>>
+<<pound_walk_end>>
+
+:: Pound Work Walk Road
+<<set $outside to 1>><<location "moor">><<effects>>
+<<wearProp "dog leash">>
+<<if $phase is 1>>
+	You lead the
+<<else>>
+	You are led by the
+<</if>>
+<<beastsplural>> east through town, through the commercial and industrial areas, until you reach the road connecting to the outside world. Horses are sometimes ridden along here, so drivers are used to slowing for the occasional animal.
+<br><br>
+
+<<if random(1, 2) is 2>>
+	A squirrel emerges from a bush on the other side of the road. A <<beasttype 0>> spots it, and is overcome by an all-consuming urge to chase it. <span class="pink">Heedless of any danger, <<bhe 0>> rushes in front of an oncoming car.</span>
+	<br><br>
+
+	<<link [[Attempt rescue|Pound Work Walk Road Rescue]]>><</link>><<athleticsdifficulty 1 1100>>
+	<br>
+	<<link [[Close your eyes|Pound Work Walk Road Close]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+	<br>
+<<else>>
+	A few drivers leer at you as they pass, but no one stops to harass you. Perhaps the array of <<beastsplural>> dissuades them. You return to town via a different route, a trail leading between fields. You lead the <<beastsplural>> back to the pound.
+	<br><br>
+
+	<<pound_walk_end>>
+<</if>>
+
+:: Pound Work Walk Road Rescue
+<<effects>>
+<<wearProp "dog leash">>
+You drop the other leashes and run into the road, grabbing the <<beasttype 0>> by the collar and hauling <<bhim 0>> towards the verge.
+<<if $athleticsSuccess>>
+	The car passes behind you with a blast of its horn. <span class="green">You make it off the road with the <<beasttype 0>>, while the others stay clear.</span><<gpound_status>><<pound_status 1>>
+	<br><br>
+
+	You gather the loose leashes, check the <<beastsplural>>, then head back towards town. The rest of the walk passes without trouble.
+	<br><br>
+
+	<<pound_walk_end>>
+<<else>>
+	You get the <<beasttype 0>> clear, but the car passes close enough to catch your
+	<<if $rng gte 67 and $worn.upper.name isnot "naked" and $worn.lower.name isnot "naked">>
+		<<print $worn.upper.name>>
+		<<set $worn.upper.integrity -= 25>>
+		<<set $worn.lower.integrity -= 25>>
+	<<elseif $rng gte 33 and $worn.upper.name isnot "naked">>
+		<<print $worn.upper.name>>
+		<<set $worn.upper.integrity -= 25>>
+	<<else>>
+		<<print $worn.lower.name>>
+		<<set $worn.lower.integrity -= 25>>
+	<</if>>
+	as it passes. <<integritycheck>>
+	<br>
+	The fabric tears free and flaps from the side of the car as it speeds away. The driver honks once before disappearing down the road.
+	<br><br>
+
+	<<pass 60>>
+	<<exposure>>
+	You gather the leashes and take the field paths back towards town, keeping away from the main road until you reach the outskirts.
+	<br><br>
+
+	<<if $exposed gte 1>>
+		You hide among a small group of trees at the edge of town and look towards the street. Buildings stand on the other side, but you would have to cross open ground to reach them. <<tearful>> you look down at your body. <<covered>>
+		<br><br>
+
+		<<link [[Ask for help|Pound Work Walk Ask]]>><</link>><<difficulty 50>>
+		<br>
+		<<if hasSexStat("deviancy", 3)>>
+			<<link [[Hide amongst the pack|Pound Work Walk Hide]]>><</link>><<deviant3>>
+			<br>
+		<</if>>
+		<<if $exposed gte 2 and hasSexStat("exhibitionism", 4)>>
+			<<link [[Walk as you are|Pound Work Walk Exhibitionism]]>><</link>><<exhibitionist5>>
+			<br>
+		<<elseif $exposed gte 1 and hasSexStat("exhibitionism", 4)>>
+			<<link [[Walk as you are|Pound Work Walk Exhibitionism]]>><</link>><<exhibitionist4>>
+			<br>
+		<</if>>
+	<<else>>
+		<<pound_walk_end>>
+	<</if>>
+<</if>>
+
+:: Pound Work Walk Road Close
+<<effects>>
+<<wearProp "dog leash">>
+You cover your eyes and pull the remaining <<beastsplural>> to safety. You hear a screech of tyres as the car swerves in your direction. You pull the remaining <<beastsplural>> to safety, but the car catches your
+<<if $rng gte 67 and $worn.upper.name isnot "naked" and $worn.lower.name isnot "naked">>
+	<<print $worn.upper.name>>
+	<<set $worn.upper.integrity -= 25>>
+	<<set $worn.lower.integrity -= 25>>
+<<elseif $rng gte 33 and $worn.upper.name isnot "naked">>
+	<<print $worn.upper.name>>
+	<<set $worn.upper.integrity -= 25>>
+<<else>>
+	<<print $worn.lower.name>>
+	<<set $worn.lower.integrity -= 25>>
+<</if>>
+as it passes. <<integritycheck>>
+<br>
+The fabric tears free and flaps from the side of the car as it speeds away. The driver honks once before disappearing down the road.
+<br><br>
+
+<<pass 60>>
+<<exposure>>
+You take the field paths back towards town, keeping away from the main road until you reach the outskirts.
+<br><br>
+
+<<if $exposed gte 1>>
+	You hide among a small group of trees at the edge of town and look towards the street. Buildings stand on the other side, but you would have to cross open ground to reach them. <<tearful>> you look down at your body. <<covered>>
+	<br><br>
+
+	<<link [[Ask for help|Pound Work Walk Ask]]>><</link>><<difficulty 50>>
+	<br>
+	<<if hasSexStat("deviancy", 3)>>
+		<<link [[Hide amongst the pack|Pound Work Walk Hide]]>><</link>><<deviant3>>
+		<br>
+	<</if>>
+	<<if $exposed gte 2 and hasSexStat("exhibitionism", 4)>>
+		<<link [[Walk as you are|Pound Work Walk Exhibitionism]]>><</link>><<exhibitionist5>>
+		<br>
+	<<elseif $exposed gte 1 and hasSexStat("exhibitionism", 4)>>
+		<<link [[Walk as you are|Pound Work Walk Exhibitionism]]>><</link>><<exhibitionist4>>
+		<br>
+	<</if>>
+<<else>>
+	<<pound_walk_end>>
+<</if>>
+
+:: Pound Work Brute
+<<effects>>
+<<wearProp "key">>
+<<loadNPC 0 "black_dog">>
+<<generate2>><<generate3>>
+A <<person2>><<person>> and <<person3>><<person>> notice you take that particular key from the shelf, and stop to watch as you approach the cage. You unlock the door and step inside.
+<br><br>
+
+A pair of yellow eyes open in the corner, and regard you with suspicion.
+
+<<speechresolve>>
+<<if $tendingSuccess>>
+
+	<<if _speechAttitudeResolved is "meek">>
+		"I-It's okay," you say, keeping your hands where <<bhe 0>> can see them. "I'm just here to check on you."
+	<<elseif _speechAttitudeResolved is "shy">>
+		"I-I won't come any closer," you say. "I only want to make sure you're okay."
+	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+		"It's all right," you say. "I'm only here to check on you."
+	<<elseif _speechAttitudeResolved is "docile">>
+		"I won't hurt you," you say. "I won't touch you unless you let me."
+	<<elseif _speechAttitudeResolved is "confident">>
+		"Easy," you say. "I'm only here to check on you."
+	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+		"Growl at someone else," you say. "I'm not the one who locked you up."
+	<<else>>
+		"You're all right," you say. "I'm just checking on you."
+	<</if>>
+	<br><br>
+
+	A huge black <<beasttype 0>> rises from the corner and steps into the light. <<bHis 0>> fur is matted and dirty, and <<bhes 0>> larger than any dog you're used to seeing. <<bHe 0>> could almost be a wolf.
+	<br><br>
+	<<if $monster is 1>>
+		"Leave," <<bhe 0>> says. "I know your plan. Leave or I eat!"
+	<<else>>
+		<<bHe 0>> growls again.
+	<</if>>
+	<br><br>
+	<span class="green">"That's further than anyone's gotten,"</span> the <<person2>><<person>> says from outside the cage. "See if you can get <<bhis 0>> fur looking presentable." <<He>> throws you a brush.
+	<br><br>
+
+	<<link [[Next|Pound Work Brute Brush]]>><<set $pound.progress to 4>><</link>>
+	<br>
+<<else>>
+	<<if _speechAttitudeResolved is "meek">>
+		"G-Good doggy," you say, taking a careful step forward. "I'm..."
+	<<elseif _speechAttitudeResolved is "shy">>
+		"P-Please stay there," you say, stopping near the door.
+	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
+		"Stay calm," you say. "I'm not here to trouble you."
+	<<elseif _speechAttitudeResolved is "docile">>
+		"Please don't hurt me," you say, keeping your back close to the door.
+	<<elseif _speechAttitudeResolved is "confident">>
+		"Easy," you say, taking another step.
+	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+		"Don't start," you say, standing your ground.
+	<<else>>
+		"Steady," you say. "I'm just here to check on you."
+	<</if>>
+	<br><br>
+
+	The <<beasttype 0>> lunges forward and bares <<bhis 0>> teeth. <span class="red">You stumble back through the cage door,</span> then slam it shut between you. The <<person2>><<person>> and <<person3>><<person>> laugh as you fumble with the key.
+	<br><br>
+
+	Your hands are still shaking when you lock the cage and return the key to its place.
+	<br><br>
+
+	<<link [[Next|Pound]]>><<trauma 6>><<stress 6>><<endevent>><</link>><<gtrauma>><<gstress>>
+	<br>
+<</if>>
+
+
+:: Pound Work Brute Brush
+<<effects>>
+
+You step closer, brush in hand. The <<beasttype 0>> doesn't react as you brush <<bhis 0>> back, trying to loosen the tangle. <<bHe 0>> exhales, then collapses, as if <<bhis 0>> strength has given out.
+<<if $monster is 1>>
+	"Don't care anymore," <<bhe 0>> says. "Just want it over."
+<<else>>
+	It looks defeated.
+<</if>>
+<br><br>
+
+"The <<girl>> did it!" the <<person>> shouts. More staff arrive to observe. "Someone get the hose." They enter the cage, jostling you aside to get close to the creature. One of them carries a collar.
+<br><br>
+
+"Good job," the <<person2>><<person>> says. "Here's a little something." <<He>> hands you a wad of cash. "Now get going. We got lots to do."
+
+You make <<wage 100 "tending" "bird" 0.45>>.
+<br><br>
+
+You turn as you leave the cage, and make contact with the <<beasttype 0>>'s sad eyes for just a moment before a body blocks your vision.
+<br><br>
+
+<span class="gold">If you wanted to help, you'd have to break in at night.</span>
+<br><br>
+
+<<if Time.hour gte $closinghour>>
+	<<link [[Next|Pound]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<link [[Next|Pound Work]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+
+:: Pound Ask
+<<effects>>
+
+<<generate1>><<person1>>
+A <<person>> prowls down the aisle between cages, sweeping fur with a broom. <<He>> stops as you approach <<him>>, and looks you up and down. "What you want?"
+<br><br>
+<<speechresolve>>
+<<if _speechAttitudeResolved is "meek">>
+	"I-I'm looking for work," you say. "Do you need help?"
+<<elseif _speechAttitudeResolved is "shy">>
+	"I-I'm looking for work," you say. "I can help, if you need someone."
+<<elseif _speechAttitudeResolved is "polite">>
+	"I'm looking for work," you say. "Do you need another pair of hands?"
+<<elseif _speechAttitudeResolved is "flamboyant">>
+	"I'm looking for work," you say. "Surely you could use another pair of hands around here?"
+<<elseif _speechAttitudeResolved is "docile">>
+	"I can work," you say. "I'll do whatever needs doing."
+<<elseif _speechAttitudeResolved is "confident">>
+	"I'm looking for work," you say. "Need anyone?"
+<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
+	"Got any work?" you ask.
+	<<if _speechAttitudeResolved is "cruel">>
+		"Nothing stupid."
+	<</if>>
+<<else>>
+	"I'm looking for work," you say. "Are you hiring?"
+<</if>>
+<br><br>
+The <<person>> spits into the drain and nods. "You done anything like this before?" <<he>> asks, then waves away your answer. "Doesn't matter. We need the hands. Brushing, feeding, washing, walking. They're a handful."
+<br><br>
+"We'll pay you <<printmoney 500>> an hour. Not much, but you'll get more if you do a good job. Start whenever."
+<br><br>
+
+<<if Time.hour gte $closinghour>>
+	<<link [[Next|Pound]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<link [[Next|Pound Work]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+
+:: Pound Tease
+<<effects>>
+
+You crouch beside the <<beasttype>>'s cage, and reach through the bars. "Who's a poor pooch?" you coo. "All locked up. I bet you want to fuck me, don't you?"
+<<deviancy2>>
+<<if $monster is 1>>
+	<<bHe>> rattles the bars, eyes alight with lust. "Yes," <<bhe>> woofs. <<bHe>> reaches for you, but you step away.
+<<else>>
+	<<bHe>> pokes <<bhis>> nose through the bars and sniffs, straining for your scent.
+<</if>>
+<br><br>
+
+<<if $pleasure gte $pleasuremax>>
+	<<orgasm>> <span class="red">Driven wild by lust,</span> the <<beasttype>> rams against the cage door.
+	<br><br>
+	<<link [[Next|Pound Assault]]>><</link>>
+	<br>
+<<else>>
+	<<if hasSexStat("deviancy", 3)>>
+		<<if $pound.sneak is 1>>
+			<<if $player.penisExist and !playerChastity("penis")>>
+				<<link [[Press your penis against the bars (0:05)|Pound Penis]]>><<pass 5>><<set $pound.sneak to 2>><<arousal 1200 "genitals">><</link>><<deviant3>><<ggarousal>>
+				<br>
+			<</if>>
+			<<if $player.vaginaExist and !playerChastity("hidden")>>
+				<<link [[Press your pussy against the bars (0:05)|Pound Pussy]]>><<pass 5>><<set $pound.sneak to 2>><<arousal 1200 "genitals">><</link>><<deviant3>><<ggarousal>>
+				<br>
+			<</if>>
+		<</if>>
+	<<else>>
+		<<insufficientStat "deviancy" "to take things further">>
+		<br><br>
+	<</if>>
+	<<link [[Leave|Pound]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Pound Assault
+<<effects>>
+
+<span class="red">The cage swings open,</span> and the <<beasttype>> leaps out, blocking your path.
+<br><br>
+
+<<if $monster is 1>>
+	"You mine," <<bhe>> growls. "Get on ground."
+<<else>>
+	<<bHe>> growls.
+<</if>>
+<br><br>
+
+<<link [[Submit|Pound Assault Rape]]>><<set $molestationstart to 1>><<set $phase to 0>><</link>>
+<br>
+<<link [[Fight|Pound Assault Rape]]>><<set $molestationstart to 1>><<set $phase to 1>><</link>>
+<br>
+
+:: Pound Assault Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<if $phase is 1>>
+		<<set $enemyanger += 100>><<set $enemyhealth -= 20>>
+		You kick the <<beasttype>> away from you.
+	<<else>>
+		You drop to the ground.
+	<</if>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Pound Assault Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Pound Assault Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Pound Assault Rape Finish
+<<effects>>
+<<if $enemypleasure gte $enemypleasuremax>>
+	<<beastejaculation knot>>
+	<<if _knotted>>
+		<<pass 60>>
+		The <<beasttype>> tries to wriggle <<bhis>> <<print $NPCList[0].penisdesc>> free, but to no avail. <<bHe>> instead returns to the corner of <<bhis>> cage, dragging you along on all fours behind <<bhim>>. <<bHe>> lies down to sleep, leaving you to lie on the ground.<<lllpound_status>><<pound_status -10>>
+		<br><br>
+		<<tearful>> you try to work yourself free.
+		<<if Time.openingHours()>>
+			It takes a while. So long, in fact, that you're still trying when you hear the front door open. <span class="red">The staff have arrived for work.</span>
+			<br><br>
+			<<clotheson>>
+			<<endcombat>>
+			<<generate1>><<person1>><<generate2>><<generate3>><<generate4>>
+			You grab hold of the bars of the cage for leverage, but it's no use. A <<person>> walks into view, and stops at the sight of you. "Everyone!" <<he>> shouts. "Come get a look at this!"<<ggtrauma>><<ggstress>><<famebestiality 4>>
+			<br><br>
+
+			<<link [[Next|Pound Assault Caught]]>><<set $phase to 1>><</link>>
+			<br>
+		<<else>>
+			It takes a while, but you at last remove the cock with a plop. You leave the cage, closing the door behind you.
+			<br><br>
+			<<clotheson>>
+			<<endcombat>>
+			<<link [[Next|Pound]]>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		The <<beasttype>> returns to the corner of <<bhis>> cage, and lies down to sleep. <<tearful>> you close the door.
+		<br><br>
+		<<clotheson>>
+		<<endcombat>>
+		<<link [[Next|Pound]]>><</link>>
+		<br>
+	<</if>>
+
+<<else>>
+	<<if $finish is 1>><<encounterEndViolence>><</if>>
+    You can't take it anymore.
+	You kick the <<beasttype>> back into <<bhis>> cage, and lock it before <<bhe>> can recover.
+	<br><br>
+	<<tearful>> you walk away. The <<beasttype>> barks in anger behind you.
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[Next|Pound]]>><</link>>
+	<br>
+
+<</if>>
+
+:: Pound Assault Caught
+<<effects>>
+
+A <<person2>><<person>>, <<person3>><<person>>, and <<person4>><<person>> arrive to gawk. "Well well," a <<person>> says. "A stray mutt snuck in for a bit of slap and tickle."
+<br>
+"Usually we have to go hunting you <<bitch>>es," the <<person3>><<person>> says. "Nice of you to capture yourself."
+<br>
+"I got just the thing," the <<person4>><<person>> adds, producing a collar and leash.
+<br><br>
+
+<<if $phase is 1>>
+	They surround you while you're helpless and grasp you by the shoulders and waist, before giving you a hefty tug. The cock comes free with a plop. You try to stand, but they hold you down while running hands over your body. The <<person1>><<person>> squeezes your <<breasts>>.
+<<else>>
+	They surround you while you're helpless and grasp you by the shoulders and waist. They pull you away from the attacker. You try to stand, but they hold you down while running hands over your body. The <<person1>><<person>> squeezes your <<breasts>>.
+<</if>>
+<br><br>
+
+<<if $exposed lt 2>>
+	The <<person4>><<person>> tries to affix the collar around your neck while the others tear at your clothes.
+<<else>>
+	The <<person4>><<person>> tries to affix the collar around your neck.
+<</if>>
+<br><br>
+
+<<link [[Fight|Pound Assault Caught Fight]]>><<set $fightstart to 1>><</link>>
+<br>
+<<link [[Submit|Pound Assault Caught 2]]>><</link>>
+<br>
+
+:: Pound Assault Caught Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[Next|Pound Assault Caught Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Pound Assault Caught Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Pound Assault Caught Fight Finish
+<<effects>>
+<<if $enemypleasure gte $enemypleasuremax>>
+	<<ejaculation "short">>
+	They're too distracted by their orgasms to stop you running from the cage. You shut the door behind you, locking it in place. You don't wait to see if they can get out.
+	<br><br>
+	<<tearful>> you run from the premises.
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[Next|Starfish Street]]>><</link>>
+<<elseif $enemyhealth lte 0>>
+	They back away from you, giving you enough space to escape the cage. You shut the door behind you, locking it in place. You don't wait to see if they can get out.
+	<br><br>
+	<<tearful>> you run from the premises.
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[Next|Starfish Street]]>><</link>>
+<<else>>
+	<<if $finish is 1>><<encounterEndViolence>><</if>>
+    You can't take it anymore.
+    <br><br>
+	<<link [[Submit|Pound Assault Caught 2]]>><</link>>
+	<br>
+<</if>>
+
+:: Pound Assault Caught 2
+<<effects>>
+
+<<ruined>>
+<<pound_muzzle>>
+<<if $worn.neck.name is "familiar collar" and $worn.neck.cursed is 1>>
+	The <<person4>><<person>> affixes a muzzle, but continues struggling with your familiar collar. <<He>> tugs as the <<person2>><<person>> gives your <<bottom>> a hard smack, pushing you along. "Get moving."
+	<br><br>
+
+	"I can't get this fucking thing off." The <<person4>><<person>> recoils as <<his>> hand brushes against the golden heart. "And it shocked me!"
+	<br><br>
+
+	The <<person2>><<person>> kneels down in front of you. "A built-in shock function could be useful, but it's too identifying." <<He>> looks closer, holding your head still by your muzzle.
+	"Just tie a cord around it for now." The <<person4>><<person>> pushes your head to the side, and starts to tie a leash to your collar. As soon as <<he>> removes <<his>> hands,
+	<span class="green">the leash falls away as if it was never tied.</span> <<He>> ties it again, <span class="green">only for it to fall away once more</span>.
+	<br><br>
+
+	The <<person2>><<person>> groans. "Right, you only know one kind of <i>knot</i>, you useless shit. Drag <<phim stranger>> inside, we'll just cut it off. It's only fabric."
+	The group holds you tightly, restraining your arms behind you. "Don't get used to walking, <<bitch>>. You'll be crawling as soon as we get a leash on you. Move."
+	<br><br>
+
+	You're helpless to resist as they push you down the corridor.
+	<br><br>
+
+	<<saveNPC 1 "pound_rescue_1">><<saveNPC 3 "pound_rescue_2">>
+	<<clotheson>>
+	<<endcombat>>
+	<<loadNPC 0 "pound_rescue_1">><<loadNPC 1 "pound_rescue_2">><<clearNPC "pound_rescue_1">><<clearNPC "pound_rescue_2">>
+
+	<<link [[Next|Pound Abduction Gwylan Rescue]]>><<set $phase to "caught">><</link>>
+	<br>
+<<else>>
+	<<leash "spiked collar with leash">>
+	<<set $worn.neck.cursed to 1>>
+	The <<person4>><<person>> places the collar around your neck, and affixes a muzzle. <<He>> tugs as the <<person1>><<person>> gives your <<bottom>> a hard smack, pushing you along.
+	<br><br>
+
+	You crawl down the corridor. The <<pound_text>> watch you crawl by, towards an empty cage at the end of the room. The <<person4>><<person>> shuts the door behind you, <span class="pink">locking you inside.</span> "Welcome to your new home <<bitch>>," <<he>> says. "The other mutts are gonna love you." The staff laugh as they walk away.
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+	<<badEndTracking "Pound" { reason: "poundCaught" }>>
+	<<link [[Next|Pound Cage]]>><</link>>
+<</if>>
+
+:: Pound Penis
+<<effects>>
+
+You expose your <<penis>>, and push it between the bars. The <<beasttype>> gives you an exploratory sniff before running <<bhis>> tongue up your length, making you shudder.
+<<deviancy3>>
+
+<<if $pleasure gte $pleasuremax>>
+	The sensation is too much. <<orgasm>> <span class="red">Driven wild by lust,</span> the <<beasttype>> rams against the cage door.
+	<br><br>
+
+	<<link [[Next|Pound Assault]]>><</link>>
+	<br>
+<<else>>
+	The <<beasttype>> <<print $monster ? "stands upright" : "rears on <<bhis>> hind legs">>, pressing against the bars of the cage.
+	<br><br>
+
+	<<if hasSexStat("deviancy", 4) and $pound.sneak is 2>>
+		<<if pcAreArmsBound("both")>>
+			You could break into the cage, <span class="blue">if your arms weren't bound.</span>
+		<<else>>
+			<<lockicon "pick">><<link [[Break into the cage|Pound Deviant]]>><<set $pound.sneak to 3>><</link>><<deviant4>>
+		<</if>>
+		<br>
+	<<else>>
+		<<insufficientStat "deviancy" "to take things further">>
+		<br>
+	<</if>>
+	<<link [[Step away|Pound]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Pound Pussy
+<<effects>>
+
+You expose your <<pussy>>, and push it against the bars. The <<beasttype>> gives you an exploratory sniff before running <<bhis>> tongue over your slit, making you shudder.
+<<deviancy3>>
+
+<<if $pleasure gte $pleasuremax>>
+	The sensation is too much. <<orgasm>> <span class="red">Driven wild by lust,</span> the <<beasttype>> rams against the cage door.
+	<br><br>
+
+	<<link [[Next|Pound Assault]]>><</link>>
+	<br>
+<<else>>
+	The <<beasttype>> <<print $monster ? "stands upright" : "rears on <<bhis>> hind legs">>, pressing against the bars of the cage.
+	<br><br>
+
+	<<if hasSexStat("deviancy", 4) and $pound.sneak is 2>>
+		<<if pcAreArmsBound("both")>>
+			You could break into the cage, <span class="blue">if your arms weren't bound.</span>
+		<<else>>
+			<<lockicon "pick">><<link [[Break into the cage|Pound Deviant]]>><<set $pound.sneak to 3>><</link>><<deviant4>>
+		<</if>>
+		<br>
+	<<else>>
+		<<insufficientStat "deviancy" "to take things further">>
+		<br>
+	<</if>>
+	<<link [[Step away|Pound]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Pound Deviant
+<<effects>>
+
+You fiddle with the primitive lock, and manage to open the cage. The <<beasttype>> runs through, and tries to mount you at once.
+<<deviancy4>>
+
+<<link [[Next|Pound Deviant Sex]]>><<set $sexstart to 1>><</link>>
+<br>
+
+:: Pound Deviant Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<beastCombatInit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Pound Deviant Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Pound Deviant Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Pound Deviant Sex Finish
+<<effects>>
+
+<<if $enemypleasure gte $enemypleasuremax>>
+	<<beastejaculation knot>>
+	<<if _knotted>>
+		<<pass 60>>
+		The <<beasttype>> tries to wriggle <<bhis>> <<print $NPCList[0].penisdesc>> free, but to no avail. <<bHe>> instead returns to the corner of <<bhis>> cage, dragging you along on all fours behind <<bhim>>. <<bHe>> lies down to sleep, leaving you to lie on the ground.
+		<br><br>
+		<<tearful>> you try to work yourself free.
+		<<if Time.openingHours()>>
+			It takes a while. So long, in fact, that you're still trying when you hear the front door open. <span class="red">The staff have arrived for work.</span>
+			<br><br>
+			<<clotheson>>
+			<<endcombat>>
+			<<generate1>><<person1>><<generate2>><<generate3>><<generate4>>
+			You grab hold of the bars of the cage for leverage, but it's no use. A <<person>> walks into view, and stops at the sight of you. "Everyone!" <<he>> shouts. "Come get a look at this!"<<ggtrauma>><<ggstress>><<famebestiality 4>>
+			<br><br>
+
+			<<link [[Next|Pound Assault Caught]]>><<set $phase to 1>><</link>>
+			<br>
+		<<else>>
+			It takes a while, but you at last remove the cock with a plop. You leave the cage, closing the door behind you.
+			<br><br>
+			<<clotheson>>
+			<<endcombat>>
+			<<link [[Next|Pound]]>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		<<if $finish is 1>><<encounterEndViolence>><</if>>
+		The <<beasttype>> returns to <<bhis>> cage, and curls up in the corner.
+		<<tearful>> you close and lock the door.
+		<<clotheson>>
+		<<endcombat>>
+		<<link [[Next|Pound]]>><</link>>
+		<br>
+	<</if>>
+
+
+<<elseif $enemyhealth lte 0>>
+
+	The <<beasttype>> runs into <<bhis>> cage, and curls up in the shadowed corner.
+	<br><br>
+
+	<<tearful>> you close and lock the door.
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[Next|Pound]]>><</link>>
+	<br>
+
+<<else>>
+
+	The <<beasttype>> returns to <<bhis>> cage, apparently uninterested in an escape attempt.
+	<br><br>
+
+	<<tearful>> you close and lock the door.
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[Next|Pound]]>><</link>>
+	<br>
+
+<</if>>
+
+:: Pound Lock
+<<set $outside to 1>><<effects>><<set $lock to 200>>
+The pound is closed. <<openinghours>>
+<br><br>
+
+<<if currentSkillValue('skulduggery') gte $lock>>
+	<<if pcAreArmsBound("both")>>
+		You think you'd be able to pick the lock, <span class="blue">if your arms weren't bound.</span>
+		<br><br>
+	<<else>>
+		<<wearProp "lockpick">>
+		<span class="green">The lock looks easy to pick.</span>
+		<br><br>
+		<<lockicon "pick">><<link [[Pick it (0:10)|Pound]]>><<pass 10>><<crimeUp 5 "trespassing">><</link>><<crime "trespassing">>
+		<br>
+	<</if>>
+<<else>>
+	<span class="red">The lock looks beyond your ability to pick.</span><<skulduggeryrequired>>
+	<br><br>
+<</if>>
+<<starfishicon>><<link [[Leave|Starfish Street]]>><</link>>
+
+:: Pound Work Brush Clean
+<<effects>>
+
+<<if $monster is 1>>
+	You let the <<beasttype>> take the brush and lie down on the floor. <<bHe>> brushes your hair roughly, causing you to wince.<<pain 4>><<gpain>>
+	<br><br>
+	"Sorry," the <<beasttype>> apologises, noticing your reaction. <<bHe>> then proceeds to brush you more gently. It feels nice.<<stress -6>><<lstress>>
+	<br><br>
+	After <<bhe>> finishes, <<bhe>> hands the brush back and looks at you expectantly. "Reward?"
+<<else>>
+	You lie down on the floor and let the <<beasttype>> lick your hair. <<bHe>> then moves on to your face. It tickles, but feels nice.<<stress -6>><<lstress>>
+	<br><br>
+	After <<bhe>> finishes, <<bhe>> looks at you expectantly.
+<</if>>
+<br><br>
+
+<<link [[Pet|Pound Work Brush Clean End]]>><<set $phase to 1>><</link>>
+<br>
+<<if hasSexStat("deviancy", 2) and beastSexEnabledForType("dog", $monster is 1)>>
+	<<link [[Present your backside|Pound Work Brush Clean Sex]]>><<set $sexstart to 1>><</link>><<deviant2>>
+	<br>
+<</if>>
+
+:: Pound Work Brush Clean End
+<<effects>>
+
+<<if $phase is 0>> /* Insist on brushing */
+	<<if $monster is 1>>
+		You firmly tell <<bhim>> that you need to brush <<bhim>>. <<bHe>> obliges and lies down.
+	<<else>>
+		With a firm tone, you insist on brushing <<bhim>>. <<bHe>> obliges and lies down on the floor.
+	<</if>>
+	<<pound_status 1>><<gpound_status>>
+<<else>> /* Pet */
+	You pet the <<beasttype>>, and <<bhe>> <<if $monster is 1>>smiles and <</if>>wags <<bhis>> tail.<<stress -6>><<lstress>>
+<</if>>
+<br><br>
+
+<<poundEndEvent>>
+
+:: Pound Work Brush Clean Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<beastCombatInit>>
+	<<set $NPCList[0].stance to "top">>
+	<<deviancy2>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<beast $enemyno>>
+<br><br>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Pound Work Brush Clean Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Pound Work Brush Clean Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Pound Work Brush Clean Sex Finish
+<<effects>>
+
+<<if $enemypleasure gte $enemypleasuremax>>
+	<<beastejaculation>>
+
+	The <<beasttype>> licks your face. <<if $monster is 1>>"Thank you!" <<bhe>> says.<</if>>
+<<elseif $enemyhealth lte 0>>
+	The <<beasttype>> whimpers as you push <<bhim>> away.
+	<<if $monster is 1>>
+		"Not reward. Not friend."
+	<<else>>
+		<<bHe>> goes back to lying down on the floor.
+	<</if>>
+<<else>>
+	<<if $finish is 1>><<encounterEndViolence>><</if>>
+	The <<beasttype>>'s tail droops, but <<bhe>> stops regardless.
+<</if>>
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+<<poundEndEvent>>

@@ -1,0 +1,2251 @@
+:: Widgets modUpdate [widget]
+<<widget "modupdate">>
+	<!-- DoLP: migrate top-level cbchance/dgchance from older saves into $settings -->
+	<<script>>
+		if (V.settings == null) V.settings = {};
+
+		if (V.settings.maleNPCVaginaChance === undefined) {
+			V.settings.maleNPCVaginaChance = V.cbchance ?? 0;
+		}
+		if (V.settings.femaleNPCPenisChance === undefined) {
+			V.settings.femaleNPCPenisChance = V.dgchance ?? 0;
+		}
+
+		delete V.cbchance;
+		delete V.dgchance;
+	<</script>>
+
+	<<if $settings.realisticChildbirthEnabled is undefined>>
+		<<set $settings.realisticChildbirthEnabled to false>>
+	<</if>>
+	<<if $settings.lactationFlatChestEnabled is undefined>>
+		<<set $settings.lactationFlatChestEnabled to false>>
+	<</if>>
+	<<if $settings.arousalMoanEnabled is undefined>>
+		<<set $settings.arousalMoanEnabled to true>>
+	<</if>>
+	<<if $settings.smallPenisSemenVolumeLossDisabled is undefined>>
+		<<set $settings.smallPenisSemenVolumeLossDisabled to false>>
+	<</if>>
+	<<if $settings.clearClimaxEnabled is undefined>>
+		<<set $settings.clearClimaxEnabled to false>>
+	<</if>>
+	<<if $insecurity_clear_climax is undefined>>
+		<<set $insecurity_clear_climax to 0>>
+		<<set $acceptance_clear_climax to 0>>
+	<</if>>
+	<<if $settings.femaleClimaxAlways is undefined>>
+		<<set $settings.femaleClimaxAlways to false>>
+	<</if>>
+	<<if $settings.playerCondomBreakChance is undefined>>
+		<<set $settings.playerCondomBreakChance to 0>>
+	<</if>>
+	<<if $settings.npcCondomBreakChance is undefined>>
+		<<set $settings.npcCondomBreakChance to 0>>
+	<</if>>
+	<<if $settings.npcMakeupLevel is undefined>>
+		<<set $settings.npcMakeupLevel to 2>>
+	<</if>>
+	<<if $settings.npcChastityLevel is undefined>>
+		<<set $settings.npcChastityLevel to 2>>
+	<</if>>
+	<<if $crittermagnettrait is undefined>>
+		<<set $crittermagnettrait to 0>>
+	<</if>>
+	<<if $critterrapestat is undefined>>
+		<<set $critterrapestat to 0>>
+	<</if>>
+
+	<<if $chimera?.bakunawa is undefined or $chimera?.ryuujin is undefined or $chimera?.melusine is undefined or $chimera?.catsith is undefined or $transformationParts?.catsith is undefined>>
+		<<setupTransformationPiecesObject>>
+	<</if>>
+	/* Melusine pieces gained a purple colourway; the toggle now stores "default"/"purple" instead of `true`.
+	   Saves made before that hold the old bool, which no longer matches any mirror listbox option. */
+	<<if $chimera?.melusine>>
+		<<run ["ears", "horns", "halo", "tail"].forEach(part => {
+			if (V.chimera.melusine[part] === true) V.chimera.melusine[part] = "default";
+		})>>
+	<</if>>
+	<<if $angeltf is undefined>>
+		<<set $angeltf to 0>>
+	<</if>>
+	<<if $fallenangeltf is undefined>>
+		<<set $fallenangeltf to 0>>
+	<</if>>
+	<<if $fallenangelplustf is undefined>>
+		<<set $fallenangelplustf to 0>>
+	<</if>>
+	<<if $demontf is undefined>>
+		<<set $demontf to 0>>
+	<</if>>
+	<<if $cattf is undefined>>
+		<<set $cattf to 0>>
+	<</if>>
+	<<if $catStance is undefined>>
+		<<set $catStance to "none">>
+	<</if>>
+	<<if $cowtf is undefined>>
+		<<set $cowtf to 0>>
+	<</if>>
+	<<if $wolftf is undefined>>
+		<<set $wolftf to 0>>
+	<</if>>
+
+	<<if $waterdragon is undefined>>
+		<<set $waterdragon to 0>>
+	<</if>>
+    <<if $waterdragontf is undefined>>
+		<<set $waterdragontf to 0>>
+	<</if>>
+	<<if $TFWaterDragonBuffs is undefined>>
+		<<if $waterdragon gte 7>>
+			<<set $TFWaterDragonBuffs to 1>>
+		<<else>>
+			<<set $TFWaterDragonBuffs to 0>>
+		<</if>>
+	<</if>>
+	<<if $waterdragonbuild is undefined>>
+		<<set $waterdragonbuild to 0>>
+	<</if>>
+	<<if $transformationParts.waterdragon is undefined>>
+		<<set $transformationParts.waterdragon to {horns:"disabled", ears:"disabled", tail:"disabled"}>>
+	<</if>>
+	<<if $player.skin_temp is undefined or $player.skin_temp is $player.skin>>
+		<<set $player.skin_temp to { color: $player.skin.color }>>
+	<</if>>
+	<<if !["auto", "off", "lilac", "purple", "blue", "skyblue", "pink"].includes($waterdragonSkinLock)>>
+		<<if $waterdragonSkinLock is -1>>
+			<<set $waterdragonSkinLock to "off">>
+		<<elseif $waterdragonSkinLock is 1>>
+			<<set $waterdragonSkinLock to (Skin.color.tan gte 66 ? "blue" : Skin.color.tan gte 33 ? "purple" : "lilac")>>
+		<<else>>
+			<<set $waterdragonSkinLock to "auto">>
+		<</if>>
+		<<syncWaterDragonSkin>>
+	<</if>>
+	<<if $demonSkinLock is undefined>>
+		<<syncDemonSkin>>
+	<</if>>
+	<<if $waterdragonCosmeticUnlocked is undefined>>
+		<<set $waterdragonCosmeticUnlocked to 0>>
+	<</if>>
+
+	/* Eden's farm rescue previously left the Underground Farm tracker active, permanently obfuscating time. */
+	<<if $badEndStats?.last()?.source is "Underground Farm" and $badEndStats.last().trackedEnd is undefined and $location isnot "farm">>
+		<<badEndTrackingEnd "Underground Farm" { reason: "uFarmEscapedEden" }>>
+	<</if>>
+
+	/* persistent UI-state vars, folded out of the mirror so they exist before any render */
+	<<if $hairgelBottles is undefined>>
+		<<set $hairgelBottles to 0>>
+	<</if>>
+	<<if $bodywritingSet is undefined>>
+		<<set $bodywritingSet to "General">>
+	<</if>>
+	<<if $makeup.presets is undefined>>
+		<<set $makeup.presets to {}>>
+	<</if>>
+	<<if $tfDesc is undefined>>
+		<<set $tfDesc to {primary: "default"}>>
+	<</if>>
+	<<if $tfDesc.primary is undefined>>
+		<<set $tfDesc.primary to "default">>
+	<</if>>
+	<<if $harpytf is undefined>>
+		<<set $harpytf to 0>>
+	<</if>>
+	<<if $foxtf is undefined>>
+		<<set $foxtf to 0>>
+	<</if>>
+	<<if $fallenangelretribution is undefined>>
+		<<set $fallenangelretribution to 0>>
+	<</if>>
+	<<if $demonseduce is undefined>>
+		<<set $demonseduce to 0>>
+	<</if>>
+	<<if $begoneThot is undefined>>
+		<<set $begoneThot to 0>>
+	<</if>>
+	<!-- green manure is a starter crop for the compost bin; ensure it's always known so it can be planted/composted -->
+	<<if $plants_known isnot undefined and !$plants_known.includes("green_manure")>>
+		<<run $plants_known.pushUnique("green_manure")>>
+	<</if>>
+	<<if $farm isnot undefined>>
+		<<if $farm.tractor is undefined>>
+			<<set $farm.tractor to 0>>
+			<<set $farm.tractorplough to false>>
+			<<set $farm.tractorseeddrill to false>>
+			<<set $farm.tractorharvester to false>>
+			<<set $farm.tractorloader to false>>
+		<</if>>
+		<<if $farm.compostbin is undefined>>
+			<<set $farm.compostbin to 0>>
+		<</if>>
+		<<if $farm.compostToProduce is undefined>>
+			<<set $farm.compostToProduce to 0>>
+		<</if>>
+		<<if $farm.compostWaiting is undefined>>
+			<<set $farm.compostWaiting to 0>>
+		<</if>>
+		<<if $farm.compostProducing is undefined>>
+			<<set $farm.compostProducing to [-1,-1,-1,-1]>>
+		<</if>>
+		<<if $farm.compostProducing[0] is undefined>>
+			<<set $farm.compostProducing[0] to -1>>
+		<</if>>
+		<<if $farm.compostProducing[1] is undefined>>
+			<<set $farm.compostProducing[1] to -1>>
+		<</if>>
+		<<if $farm.compostProducing[2] is undefined>>
+			<<set $farm.compostProducing[2] to -1>>
+		<</if>>
+		<<if $farm.compostProducing[3] is undefined>>
+			<<set $farm.compostProducing[3] to -1>>
+		<</if>>
+		<<if $farm.compostReady is undefined>>
+			<<set $farm.compostReady to 0>>
+		<</if>>
+		<<if $farm.watchtowerDailyAttempt is undefined>>
+			<<set $farm.watchtowerDailyAttempt to 0>>
+		<</if>>
+		<<if $farm.tower_guard and $farm.tower_guard_skill is undefined>>
+			<<set $farm.tower_guard_skill to ($per_npc.farm_tower_guard and $per_npc.farm_tower_guard.skills) ? clone($per_npc.farm_tower_guard.skills.security) : 0>>
+		<</if>>
+		<<if $farm.dailyHelp is undefined>>
+			<<set $farm.dailyHelp to 0>>
+		<</if>>
+		<<if $farm.player_still_timer is undefined>>
+			<<set $farm.player_still_timer to -1>>
+		<</if>>
+		<<if $farm.barn is undefined>>
+			<<set $farm.barn to 0>>
+		<</if>>
+		<<if $farm.coop is undefined>>
+			<<set $farm.coop to 0>>
+		<</if>>
+		<<if $farm.extract is undefined>>
+			<<set $farm.extract to 0>>
+		<</if>>
+		<<if $farm.extractOverdrive is undefined>>
+			<<set $farm.extractOverdrive to 0>>
+		<</if>>
+		<<if $farm.net is undefined>>
+			<<set $farm.net to 0>>
+		<</if>>
+		<<if $farm.cooler is undefined>>
+			<<set $farm.cooler to 0>>
+		<</if>>
+		<<if $farm.waterField is undefined>>
+			<<set $farm.waterField to 0>>
+		<</if>>
+	<</if>>
+
+	<<if $studyBooks is undefined>>
+		<<set $studyBooks to {}>>
+		<<set $studyBooks.rented to {}>>
+		<<set $studyBooks.rented.count to 0>>
+		<<set $studyBooks.rented.science to 0>>
+		<<set $studyBooks.rented.maths to 0>>
+		<<set $studyBooks.rented.english to 0>>
+		<<set $studyBooks.rented.history to 0>>
+		<<set $studyBooks.rented.RaulAndJanet to 0>>
+		<<set $studyBooks.rented.pinch to 0>>
+
+		<<set $studyBooks.stolen to {}>>
+		<<set $studyBooks.stolen.count to 0>>
+		<<set $studyBooks.stolen.science to 0>>
+		<<set $studyBooks.stolen.maths to 0>>
+		<<set $studyBooks.stolen.english to 0>>
+		<<set $studyBooks.stolen.history to 0>>
+		<<set $studyBooks.stolen.RaulAndJanet to 0>>
+		<<set $studyBooks.stolen.pinch to 0>>
+	<</if>>
+
+	<<if $studyBooks.rented is "none" or $studyBooks.rented is "science" or $studyBooks.rented is "maths" or $studyBooks.rented is "English" or $studyBooks.rented is "history" or $studyBooks.rented is "Raul and Janet" or $studyBooks.rented is "Pinch">>
+		<<set _oldRentedBook to $studyBooks.rented>>
+		<<set $studyBooks.rented to {}>>
+		<<set $studyBooks.rented.count to 0>>
+		<<if _oldRentedBook is "science">>
+			<<set $studyBooks.rented.science to 1>>
+			<<set $studyBooks.rented.count += 1>>
+		<<else>>
+			<<set $studyBooks.rented.science to 0>>
+		<</if>>
+		<<if _oldRentedBook is "maths">>
+			<<set $studyBooks.rented.maths to 1>>
+			<<set $studyBooks.rented.count += 1>>
+		<<else>>
+			<<set $studyBooks.rented.maths to 0>>
+		<</if>>
+		<<if _oldRentedBook is "English">>
+			<<set $studyBooks.rented.english to 1>>
+			<<set $studyBooks.rented.count += 1>>
+		<<else>>
+			<<set $studyBooks.rented.english to 0>>
+		<</if>>
+		<<if _oldRentedBook is "history">>
+			<<set $studyBooks.rented.history to 1>>
+			<<set $studyBooks.rented.count += 1>>
+		<<else>>
+			<<set $studyBooks.rented.history to 0>>
+		<</if>>
+		<<if _oldRentedBook is "Raul and Janet">>
+			<<set $studyBooks.rented.RaulAndJanet to 1>>
+			<<set $studyBooks.rented.count += 1>>
+		<<else>>
+			<<set $studyBooks.rented.RaulAndJanet to 0>>
+		<</if>>
+		<<if _oldRentedBook is "Pinch">>
+			<<set $studyBooks.rented.pinch to 1>>
+			<<set $studyBooks.rented.count += 1>>
+		<<else>>
+			<<set $studyBooks.rented.pinch to 0>>
+		<</if>>
+		<<unset _oldRentedBook>>
+	<</if>>
+
+	<<if $studyBooks.stolen is "none" or $studyBooks.stolen is "science" or $studyBooks.stolen is "maths" or $studyBooks.stolen is "English" or $studyBooks.stolen is "history" or $studyBooks.stolen is "Raul and Janet" or $studyBooks.stolen is "Pinch">>
+		<<set _oldStolenBook to $studyBooks.stolen>>
+		<<set $studyBooks.stolen to {}>>
+		<<set $studyBooks.stolen.count to 0>>
+		<<if _oldStolenBook is "science">>
+			<<set $studyBooks.stolen.science to 1>>
+			<<set $studyBooks.stolen.count to 1>>
+		<<else>>
+			<<set $studyBooks.stolen.science to 0>>
+		<</if>>
+		<<if _oldStolenBook is "maths">>
+			<<set $studyBooks.stolen.maths to 1>>
+			<<set $studyBooks.stolen.count to 1>>
+		<<else>>
+			<<set $studyBooks.stolen.maths to 0>>
+		<</if>>
+		<<if _oldStolenBook is "English">>
+			<<set $studyBooks.stolen.english to 1>>
+			<<set $studyBooks.stolen.count to 1>>
+		<<else>>
+			<<set $studyBooks.stolen.english to 0>>
+		<</if>>
+		<<if _oldStolenBook is "history">>
+			<<set $studyBooks.stolen.history to 1>>
+			<<set $studyBooks.stolen.count to 1>>
+		<<else>>
+			<<set $studyBooks.stolen.history to 0>>
+		<</if>>
+		<<if _oldStolenBook is "Raul and Janet">>
+			<<set $studyBooks.stolen.RaulAndJanet to 1>>
+			<<set $studyBooks.stolen.count to 1>>
+		<<else>>
+			<<set $studyBooks.stolen.RaulAndJanet to 0>>
+		<</if>>
+		<<if _oldStolenBook is "Pinch">>
+			<<set $studyBooks.stolen.pinch to 1>>
+			<<set $studyBooks.stolen.count to 1>>
+		<<else>>
+			<<set $studyBooks.stolen.pinch to 0>>
+		<</if>>
+		<<unset _oldStolenBook>>
+	<</if>>
+
+	<<if $book_rent_deposit is undefined>>
+		<<set $book_rent_deposit to 0>>
+	<</if>>
+
+	<<if $lockpickTrainingSet is undefined>>
+		<<set $lockpickTrainingSet to 0>>
+	<</if>>
+	<<if $umbrellaStat is undefined>>
+		<<set $umbrellaStat to 0>>
+	<</if>>
+	<<if $tfearshatposition is undefined>>
+		<<set $tfearshatposition to "under">>
+	<</if>>
+	<<if $tfearsposition is undefined>>
+		<<set $tfearsposition to "front">>
+	<</if>>
+	/* DoLP's achievement title banners are gone; the title screen only shows img/misc/banner.png. */
+	<<if $bannerstyleintro isnot undefined>>
+		<<unset $bannerstyleintro>>
+	<</if>>
+	/* The mines' crystal currency belonged to the old miner loop, which vanilla's mine replaced. */
+	<<if $mines_crystals isnot undefined>>
+		<<unset $mines_crystals>> /* delete later */
+	<</if>>
+	/* The guards' plaything route was merged into vanilla's cleaning job. */
+	<<if $mines_suspicion isnot undefined or $mines_guards_dig isnot undefined or $mines_bed isnot undefined>>
+		<<unset $mines_suspicion>><<unset $mines_guards_dig>><<unset $mines_bed>> /* delete later */
+	<</if>>
+	/* Named-NPC special dialogue IDs were replaced by vanilla's paired speech lines. */
+	<<if $speechspecialdialogue isnot undefined>>
+		<<unset $speechspecialdialogue>>  /* delete later */
+	<</if>>
+	<<if $npcHealthMult is undefined>>
+		<<set $npcHealthMult to 100>>
+	<</if>>
+	<<if $npcArousalMult is undefined>>
+		<<set $npcArousalMult to 100>>
+	<</if>>
+	<<if $beastHealthMult is undefined>>
+		<<set $beastHealthMult to 100>>
+	<</if>>
+	<<if $beastArousalMult is undefined>>
+		<<set $beastArousalMult to 100>>
+	<</if>>
+	<<if $hypnosis_traits.scream is undefined or $hypnosis_traits.scream lt 0>>
+		<<set $hypnosis_traits.scream to -1>>
+	<</if>>
+	<<if $hypnosis_traits.cover is undefined or $hypnosis_traits.cover lt 0>>
+		<<set $hypnosis_traits.cover to -1>>
+	<</if>>
+	<<if $hypnosis_traits.deviancy is undefined or $hypnosis_traits.deviancy lt 0>>
+		<<set $hypnosis_traits.deviancy to -1>>
+	<</if>>
+	<<if $enemystatstyle is undefined>>
+		<<set $enemystatstyle to "default">>
+	<</if>>
+	<<if $postCombatStats is undefined>>
+		<<set $postCombatStats to 0>>
+	<</if>>
+	<<if $uncomfortable.sadoMaso is undefined>>
+		<<set $uncomfortable.sadoMaso to true>>
+	<</if>>
+	/* combatExtended: ensure shape before any subfield reads. */
+	<<if $combatExtended is undefined or $combatExtended is null or typeof $combatExtended isnot "object" or Array.isArray($combatExtended)>>
+		<<set $combatExtended to {}>>
+	<</if>>
+	<<set _combatKeys to ["brawling","footwork","striking","kicking"]>>
+	<<for _k range _combatKeys>>
+		<<if $combatExtended[_k] is undefined>>
+			<<set $combatExtended[_k] to 0>>
+		<</if>>
+	<</for>>
+	<<if $combatExtended.passiveDodging is undefined>>
+		<<set $combatExtended.passiveDodging to 0>>
+	<</if>>
+	<<if $combatExtended.activeDodging is undefined>>
+		<<set $combatExtended.activeDodging to 0>>
+	<</if>>
+	<<if $combatExtended.activeDodgingActive is undefined>>
+		<<set $combatExtended.activeDodgingActive to 0>>
+	<</if>>
+	<<if $combatExtended.activeDodgingTarget is undefined>>
+		<<set $combatExtended.activeDodgingTarget to ($combatExtended.activeDodgingActive is 1 and (typeof $feettarget).isEqual("number") ? $feettarget : 0)>>
+	<</if>>
+	<<if $combatExtended.dodgeSuccess is undefined>>
+		<<set $combatExtended.dodgeSuccess to 0>>
+	<</if>>
+	<<if $combatExtended.standingFights is undefined>>
+		<<set $combatExtended.standingFights to 0>>
+	<</if>>
+	<<if $combatExtended.standingFightStart is undefined or $combat isnot 1>>
+		<<set $combatExtended.standingFightStart to 1>>
+	<</if>>
+	<<if $combatExtended.reverseRape is undefined>>
+		<<set $combatExtended.reverseRape to 0>>
+	<</if>>
+	<<if $combatExtended.reverseRapeEnd is undefined>>
+		<<set $combatExtended.reverseRapeEnd to 0>>
+	<</if>>
+	<<if $combatExtended.reverseRapeStart is undefined>>
+		<<set $combatExtended.reverseRapeStart to 0>>
+	<</if>>
+	<<if $combatExtended.stability is undefined>>
+		<<set $combatExtended.stability to 0>>
+	<</if>>
+	<<if $combatExtended.stabilityLost is undefined>>
+		<<set $combatExtended.stabilityLost to 0>>
+	<</if>>
+	<<if $combatExtended.enemyPassiveDodging is undefined>>
+		<<set $combatExtended.enemyPassiveDodging to 0>>
+	<</if>>
+	<<if $combatExtended.enemyActiveDodging is undefined>>
+		<<set $combatExtended.enemyActiveDodging to 0>>
+	<</if>>
+	<<if $combatExtended.enemyFeinting is undefined>>
+		<<set $combatExtended.enemyFeinting to 0>>
+	<</if>>
+	<<if $combatExtended.enemyBlocking is undefined>>
+		<<set $combatExtended.enemyBlocking to 0>>
+	<</if>>
+	<<if $combatExtended.enemyCountering is undefined>>
+		<<set $combatExtended.enemyCountering to 0>>
+	<</if>>
+	<<if $combatExtended.enemyCounterSuccess is undefined>>
+		<<set $combatExtended.enemyCounterSuccess to 0>>
+	<</if>>
+	<<if $combatExtended.brawlingToggle is undefined>>
+		<<set $combatExtended.brawlingToggle to 0>>
+	<</if>>
+	<<if $combatExtended.uncappedDodgeChance is undefined>>
+		<<set $combatExtended.uncappedDodgeChance to 0>>
+	<</if>>
+	<<if $combatExtended.dodgeChanceCap is undefined>>
+		<<set $combatExtended.dodgeChanceCap to 90>>
+	<</if>>
+	<<if $combatExtended.enemyDamageMult is undefined>>
+		<<set $combatExtended.enemyDamageMult to 100>>
+	<</if>>
+	<<if $combatExtended.blocking is undefined>>
+		<<set $combatExtended.blocking to 0>>
+	<</if>>
+	<<if $combatExtended.blockingActive is undefined>>
+		<<set $combatExtended.blockingActive to 0>>
+	<</if>>
+	<<if $combatExtended.countering is undefined>>
+		<<set $combatExtended.countering to 0>>
+	<</if>>
+	<<if $combatExtended.counteringActive is undefined>>
+		<<set $combatExtended.counteringActive to 0>>
+	<</if>>
+	<<if $combatExtended.counterSuccess is undefined>>
+		<<set $combatExtended.counterSuccess to 0>>
+	<</if>>
+	<<if $combatExtended.counterCharges is undefined>>
+		<<set $combatExtended.counterCharges to 0>>
+	<</if>>
+	<<if $combatExtended.feinting is undefined>>
+		<<set $combatExtended.feinting to 0>>
+	<</if>>
+	<<if $combatExtended.feintingActive is undefined>>
+		<<set $combatExtended.feintingActive to 0>>
+	<</if>>
+	<<if $combatExtended.hookpunching is undefined>>
+		<<set $combatExtended.hookpunching to 0>>
+	<</if>>
+	<<if $combatExtended.hookpunchingActive is undefined>>
+		<<set $combatExtended.hookpunchingActive to 0>>
+	<</if>>
+
+	/* Enemy Day Scaling */
+	<<if $combatExtended.enemyLevelDayScaling is undefined>>
+		<<set $combatExtended.enemyLevelDayScaling to 0>>
+	<</if>>
+	<<if $combatExtended.enemyLevelDayScalingMult is undefined>>
+		<<set $combatExtended.enemyLevelDayScalingMult to 1>>
+	<</if>>
+	<<if $combatExtended.enemyHealthDayScaling is undefined>>
+		<<set $combatExtended.enemyHealthDayScaling to 0>>
+	<</if>>
+	<<if $combatExtended.enemyHealthDayScalingMult is undefined>>
+		<<set $combatExtended.enemyHealthDayScalingMult to 5>>
+	<</if>>
+	<<if $combatExtended.enemyDayScaling is undefined>>
+		<<set $combatExtended.enemyDayScaling to 7>>
+	<</if>>
+	<<if $combatExtended.enemyInfiniteDayScaling is undefined>>
+		<<set $combatExtended.enemyInfiniteDayScaling to 0>>
+	<</if>>
+	<<if $combatExtended.enemyDayScalingLimit is undefined>>
+		<<set $combatExtended.enemyDayScalingLimit to 20>>
+	<</if>>
+
+	/* Enemy Defeat Scaling */
+	<<if $combatExtended.enemyLevelDefeatScaling is undefined>>
+		<<set $combatExtended.enemyLevelDefeatScaling to 0>>
+	<</if>>
+	<<if $combatExtended.enemyLevelDefeatScalingMult is undefined>>
+		<<set $combatExtended.enemyLevelDefeatScalingMult to 1>>
+	<</if>>
+	<<if $combatExtended.enemyHealthDefeatScaling is undefined>>
+		<<set $combatExtended.enemyHealthDefeatScaling to 0>>
+	<</if>>
+	<<if $combatExtended.enemyHealthDefeatScalingMult is undefined>>
+		<<set $combatExtended.enemyHealthDefeatScalingMult to 5>>
+	<</if>>
+	<<if $combatExtended.enemyDefeatScaling is undefined>>
+		<<set $combatExtended.enemyDefeatScaling to 10>>
+	<</if>>
+	<<if $combatExtended.enemyInfiniteDefeatScaling is undefined>>
+		<<set $combatExtended.enemyInfiniteDefeatScaling to 0>>
+	<</if>>
+	<<if $combatExtended.enemyDefeatScalingLimit is undefined>>
+		<<set $combatExtended.enemyDefeatScalingLimit to 20>>
+	<</if>>
+	<<if $combatExtended.reverseRapeInit is undefined>>
+		<<set $combatExtended.reverseRapeInit to 0>>
+	<</if>>
+
+	<<if $dodgeStat is undefined>>
+		<<set $dodgeStat to 0>>
+	<</if>>
+	<<if $partialDodgeStat is undefined>>
+		<<set $partialDodgeStat to 0>>
+	<</if>>
+	<<if $counterStat is undefined>>
+		<<set $counterStat to 0>>
+	<</if>>
+	<<if $partialCounterStat is undefined>>
+		<<set $partialCounterStat to 0>>
+	<</if>>
+	<<if $hookpunchStat is undefined>>
+		<<set $hookpunchStat to 0>>
+	<</if>>
+	<<if $enemiesDefeatedStat is undefined>>
+		<<set $enemiesDefeatedStat to 0>>
+	<</if>>
+	<<if $brothelExclusiveGloryholeIntro is undefined>>
+		<<set $brothelExclusiveGloryholeIntro to 0>>
+	<</if>>
+	<<if $brothelExclusiveGloryholePrice is undefined>>
+		<<set $brothelExclusiveGloryholePrice to 10>>
+	<</if>>
+	<<if ($combat is 0 and $punishmentposition is "gloryhole") or $punishmentposition is undefined>>
+		<<set $punishmentposition to 0>>
+	<</if>>
+
+	<<if $npcStealMoneyToggle is undefined>>
+		<<set $npcStealMoneyToggle to 0>>
+	<</if>>
+	<<if $npcStealMoneyRandomToggle is undefined>>
+		<<set $npcStealMoneyRandomToggle to 0>>
+	<</if>>
+	<<if $npcStealMoneyPercentage is undefined>>
+		<<set $npcStealMoneyPercentage to 10>>
+	<</if>>
+	<<if $npcStealMoneyMin is undefined>><<set $npcStealMoneyMin to 1>><</if>>
+	<<if $npcStealMoneyMax is undefined>><<set $npcStealMoneyMax to 25>><</if>>
+	<<if $npcStealCardChance is undefined>><<set $npcStealCardChance to 5>><</if>>
+	<<if $npcStealCardWeeklyLimit is undefined>><<set $npcStealCardWeeklyLimit to 100>><</if>>
+	<<if $willpowerDecay is undefined>>
+		<<set $willpowerDecay to 1>>
+	<</if>>
+
+	<<if $plants_known.includes("ghost_orchid")>>
+		<<set $plants_known.delete("ghost_orchid")>>
+	<</if>>
+
+	<<if $plants_known.includes("hen_of_the_woods")>>
+		<<set $plants_known.delete("hen_of_the_woods")>>
+	<</if>>
+
+	<<if $plants_known.includes("red_helleborine")>>
+		<<set $plants_known.delete("red_helleborine")>>
+	<</if>>
+
+	<<if $plants_known.includes("lady_orchid")>>
+		<<set $plants_known.delete("lady_orchid")>>
+	<</if>>
+
+	<<if $plants_known.includes("fly_agaric")>>
+		<<set $plants_known.delete("fly_agaric")>>
+	<</if>>
+
+	<<if $plants_known.includes("spiked_rampion")>>
+		<<set $plants_known.delete("spiked_rampion")>>
+	<</if>>
+
+	<<if $plants_known.includes("cloudberry")>>
+		<<set $plants_known.delete("cloudberry")>>
+	<</if>>
+
+	<<if $plants_known.includes("scottish_bog_myrtle")>>
+		<<set $plants_known.delete("scottish_bog_myrtle")>>
+	<</if>>
+
+	<<if $plants_known.includes("bog_orchid")>>
+		<<set $plants_known.delete("bog_orchid")>>
+	<</if>>
+
+	<<if $plants_known.includes("marsh_saxifrage")>>
+		<<set $plants_known.delete("marsh_saxifrage")>>
+	<</if>>
+
+	<<if $multiOrgasmToggle is undefined>>
+		<<set $multiOrgasmToggle to 0>>
+	<</if>>
+
+	<<if $NNPCMultiOrgasmToggle is undefined>>
+		<<set $NNPCMultiOrgasmToggle to 0>>
+	<</if>>
+
+	<<if $multiOrgasmChance is undefined>>
+		<<set $multiOrgasmChance to 20>>
+	<</if>>
+
+	<<if $multiOrgasmLustScaling is undefined>>
+		<<set $multiOrgasmLustScaling to 0>>
+	<</if>>
+
+	<<if $multiOrgasmGroupDisable is undefined>>
+		<<set $multiOrgasmGroupDisable to 0>>
+	<</if>>
+
+	<<for _i to 0; _i lt $NPCName.length; _i++>>
+		<<if $NPCName[_i].maxOrgasms is undefined>>
+			<<set $NPCName[_i].maxOrgasms to 1>>
+		<</if>>
+	<</for>>
+
+	<<if $farm>>
+		<<if $farm.tower>>
+			<<if $farm.tower gte 1 and !$farm.tower_guard>>
+				<<set $farm.tower_guard_can_hire to true>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $tirednessMaxScalingToggle is undefined>>
+		<<set $tirednessMaxScalingToggle to 0>>
+	<</if>>
+
+	<<set $CTAngryLowC to ["snarls", "sneers", "growls", "groans", "yells"]>>
+	<<set $CTAngryMidC to ["mocks you", "sneers", "growls", "groans", "yells"]>>
+	<<set $CTAngryHighC to ["snarls", "sneers", "screams", "shouts", "yells"]>>
+
+	<<set $CTAnnoyedLowC to ["speaks", "snarls", "growl", "jeers"]>>
+	<<set $CTAnnoyedMidC to ["speaks hushedly","snarls","sneers","growls"]>>
+	<<set $CTAnnoyedHighC to ["is lost in the moment","snarls","sneers","growls"]>>
+
+	<<set $CTHappyLowC to ["speaks", "whispers" , "Murmurs" , "breathes"]>>
+	<<set $CTHappyMidC to ["speaks","whispers","moans"]>>
+	<<set $CTHappyHighC to ["is lost in the moment","speaks","coos","whispers", "speaks hushedly"]>>
+
+	<<if $mathsTraitBuffs is undefined>>
+		<<set $mathsTraitBuffs to {}>>
+	<</if>>
+
+	<<if $mathsTraitBuffs.antiques is undefined>>
+		<<set $mathsTraitBuffs.antiques to 0>>
+	<</if>>
+
+	<<if $mathsTraitBuffs.stolen is undefined>>
+		<<set $mathsTraitBuffs.stolen to 0>>
+	<</if>>
+
+	<<if $mathsTraitBuffs.market is undefined>>
+		<<set $mathsTraitBuffs.market to 0>>
+	<</if>>
+
+	<<if $npcDescGenType is undefined>>
+		<<set $npcDescGenType to "vanilla">>
+	<</if>>
+
+	<<if $npcBreastGenType is undefined>>
+		<<set $npcBreastGenType to "vanilla">>
+	<</if>>
+
+	<<if $npcPenisGenType is undefined>>
+		<<set $npcPenisGenType to "vanilla">>
+	<</if>>
+
+	<<if isNaN($stress)>>
+		<<set $stress to 0>>
+	<</if>>
+
+	<<if isNaN($tiredness)>>
+		<<set $tiredness to 0>>
+	<</if>>
+
+	<<if $realisticTransparency is undefined>>
+		<<set $realisticTransparency to 0>>
+	<</if>>
+	<<if $preyTrait is undefined>>
+		<<set $preyTrait to 1>>
+	<</if>>
+	<<if $silkyTrait is undefined>>
+		<<set $silkyTrait to 1>>
+	<</if>>
+
+	<<if $overupperwet is undefined>>
+		<<set $overupperwet to 0>>
+	<</if>>
+
+	<<if $overupperwetstage is undefined>>
+		<<set $overupperwetstage to 0>>
+	<</if>>
+
+	<<if $overlowerwet is undefined>>
+		<<set $overlowerwet to 0>>
+	<</if>>
+
+	<<if $overlowerwetstage is undefined>>
+		<<set $overlowerwetstage to 0>>
+	<</if>>
+
+	<<if $DoLPTFBuffs is undefined>>
+		<<set $DoLPTFBuffs to 0>>
+	<</if>>
+
+	<<if $TFWolfBuffs is undefined>>
+		<<if ($wolfgirl gte 6 or Transformations.partActive("wolf", "tail"))>>
+			<<set $TFWolfBuffs to 1>>
+		<<else>>
+			<<set $TFWolfBuffs to 0>>
+		<</if>>
+	<</if>>
+
+	<<if $TFCatBuffs is undefined>>
+		<<if ($cat gte 6 or Transformations.partActive("cat", "tail"))>>
+			<<set $TFCatBuffs to 1>>
+		<<else>>
+			<<set $TFCatBuffs to 0>>
+		<</if>>
+	<</if>>
+
+	<<if $TFCowBuffs is undefined>>
+		<<if ($cow gte 6 or Transformations.partActive("cow", "tail"))>>
+			<<set $TFCowBuffs to 1>>
+		<<else>>
+			<<set $TFCowBuffs to 0>>
+		<</if>>
+	<</if>>
+
+	/* Preserve legacy behaviour: full cow tf always doubled semen production, so keep it on by default for existing saves. */
+	<<if $cowDoubleProduction is undefined>>
+		<<set $cowDoubleProduction to 1>>
+	<</if>>
+
+	<<if $TFBearBuffs is undefined>>
+		<<if $bear gte 6>>
+			<<set $TFBearBuffs to 1>>
+		<<else>>
+			<<set $TFBearBuffs to 0>>
+		<</if>>
+	<</if>>
+
+	<<if $TFBirdBuffs is undefined>>
+		<<if ($harpy gte 6 or Transformations.partActive("bird", "wings"))>>
+			<<set $TFBirdBuffs to 1>>
+		<<else>>
+			<<set $TFBirdBuffs to 0>>
+		<</if>>
+	<</if>>
+
+	<<if $TFFoxBuffs is undefined>>
+		<<if ($fox gte 6 or Transformations.partActive("fox", "tail"))>>
+			<<set $TFFoxBuffs to 1>>
+		<<else>>
+			<<set $TFFoxBuffs to 0>>
+		<</if>>
+	<</if>>
+
+	/* Bunny TF backfill for saves that predate it. */
+	<<if $bunny is undefined>>
+		<<set $bunny to 0>>
+	<</if>>
+	<<if $bunnybuild is undefined or isNaN($bunnybuild)>>
+		<<set $bunnybuild to 0>>
+	<</if>>
+	<<if $transformationParts.bunny is undefined>>
+		<<set $transformationParts.bunny to {ears:"disabled", tail:"disabled"}>>
+		<<if $bunny gte 4 or $bunnytf is 1>>
+			<<set $transformationParts.bunny.ears to "default">>
+		<</if>>
+		<<if $bunny gte 6 or $bunnytf is 1>>
+			<<set $transformationParts.bunny.tail to "default">>
+		<</if>>
+	<</if>>
+	<<if $TFBunnyBuffs is undefined>>
+		<<if ($bunny gte 6 or Transformations.partActive("bunny", "tail"))>>
+			<<set $TFBunnyBuffs to 1>>
+		<<else>>
+			<<set $TFBunnyBuffs to 0>>
+		<</if>>
+	<</if>>
+	<<if $bunny lt 6 and !Transformations.partActive("bunny", "tail") and $TFBunnyBuffs is 1>>
+		<<set $TFBunnyBuffs to 0>>
+	<</if>>
+
+	/* DoLP/modUpdate owns old $background migration.
+	Keep this here instead of X-Change version-update so legacy string backgrounds can be converted with their matching $backgroundTraits entry. */
+	<<if $backgroundTraits is undefined or !Array.isArray($backgroundTraits)>>
+		<<set $backgroundTraits to []>>
+	<</if>>
+	<<if typeof $background is "string" or $background is undefined or $background is null or typeof $background isnot "object" or Array.isArray($background)>>
+		<<unset _tmp>>
+		<<if $background is "nerd">>
+			<<set _tmp to "nerd">>
+		<</if>>
+		<<if $background is "athlete">>
+			<<set _tmp to "athlete">>
+		<</if>>
+		<<if $background is "delinquent">>
+			<<set _tmp to "delinquent">>
+		<</if>>
+		<<if $background is "promiscuous">>
+			<<set _tmp to "promiscuous">>
+		<</if>>
+		<<if $background is "exhibitionist">>
+			<<set _tmp to "exhibitionist">>
+		<</if>>
+		<<if $background is "deviant">>
+			<<set _tmp to "deviant">>
+		<</if>>
+		<<if $background is "beautiful">>
+			<<set _tmp to "beautiful">>
+		<</if>>
+		<<if $background is "crossdresser">>
+			<<set _tmp to "crossdresser">>
+		<</if>>
+		<<if $background is "lustful">>
+			<<set _tmp to "lustful">>
+		<</if>>
+		<<if $background is "plantlover">>
+			<<set _tmp to "plantlover">>
+		<</if>>
+
+		<<unset $background>>
+		<<set $background to {}>>
+		<<if _tmp isnot undefined>>
+			<<set $background[_tmp] to true>>
+			<<if !$backgroundTraits.includes(_tmp)>>
+				<<set $backgroundTraits.push(_tmp)>>
+			<</if>>
+			<<unset _tmp>>
+		<</if>>
+	<</if>>
+
+	<<if $background.nerd is undefined>>
+		<<set $background.nerd to false>>
+	<</if>>
+
+	<<if $background.athlete is undefined>>
+		<<set $background.athlete to false>>
+	<</if>>
+
+	<<if $background.delinquent is undefined>>
+		<<set $background.delinquent to false>>
+	<</if>>
+
+	<<if $background.promiscuous is undefined>>
+		<<set $background.promiscuous to false>>
+	<</if>>
+
+	<<if $background.exhibitionist is undefined>>
+		<<set $background.exhibitionist to false>>
+	<</if>>
+
+	<<if $background.deviant is undefined>>
+		<<set $background.deviant to false>>
+	<</if>>
+
+	<<if $background.beautiful is undefined>>
+		<<set $background.beautiful to false>>
+	<</if>>
+
+	<<if $background.crossdresser is undefined>>
+		<<set $background.crossdresser to false>>
+	<</if>>
+
+	<<if $background.lustful is undefined>>
+		<<set $background.lustful to false>>
+	<</if>>
+
+	<<if $background.lustful is true and !$backgroundTraits.includes("lustful")>>
+		<<set $backgroundTraits.push("lustful")>>
+	<</if>>
+
+	<<if $background.plantlover is undefined>>
+		<<set $background.plantlover to false>>
+	<</if>>
+
+	<<if $background.insanity is undefined>>
+		<<set $background.insanity to false>>
+	<</if>>
+	<<if $background.autism is undefined>>
+		<<set $background.autism to false>>
+	<</if>>
+	/* $backgroundTraits is the live state; $background.autism is the character-creation input.
+	A save that has the input set but not the trait comes from imported settings or the cheat menu, so seed it here. */
+	<<if $background.autism is true and !$backgroundTraits.includes("autism")>>
+		<<set $backgroundTraits.pushUnique("autism")>>
+		<<run initAutismSpectrumState()>>
+	<</if>>
+	<<if $background.detached is undefined>>
+		<<set $background.detached to false>>
+	<</if>>
+	<<if $background.detached is true and !$backgroundTraits.includes("detached")>>
+		<<set $backgroundTraits.pushUnique("detached")>>
+	<</if>>
+	<<if $insanityPermanent is undefined>>
+		/* Existing saves: infer permanence from whether Insanity was picked at character creation. */
+		<<set $insanityPermanent to ($background.insanity is true)>>
+		<<if $insanityPermanent and !$backgroundTraits.includes("insanity")>>
+			<<set $backgroundTraits.push("insanity")>>
+		<</if>>
+	<</if>>
+	<<if $insanityTraitDays is undefined>>
+		<<set $insanityTraitDays to 0>>
+	<</if>>
+
+	<<if $bear is undefined>>
+		<<set $bear to 0>>
+	<</if>>
+
+	<<if $bearbuild is undefined>>
+		<<set $bearbuild to 0>>
+	<</if>>
+
+	<<if $beartf is undefined>>
+		<<set $beartf to 0>>
+	<</if>>
+
+	<<if $transformationParts.bear is undefined>>
+		<<set $transformationParts.bear to {plumage:"disabled", pubes:"disabled", ears:"disabled", tail:"disabled"}>>
+	<</if>>
+
+	<<if $reverseRapeOptOut is undefined>>
+		<<set $reverseRapeOptOut to 0>>
+	<</if>>
+
+	<<if $skulduggery is undefined or isNaN($skulduggery)>>
+		<<set $skulduggery to 1000>>
+	<</if>>
+
+	<<if $historyTraitBuffs is undefined>>
+		<<set $historyTraitBuffs to {}>>
+	<</if>>
+
+	<<if $historyTraitBuffs.improvedChances is undefined>>
+		<<set $historyTraitBuffs.improvedChances to 0>>
+	<</if>>
+
+	<<if $wardrobeMult is undefined>>
+		<<set $wardrobeMult to 1>>
+	<</if>>
+
+	<<if $substanceRebalance is undefined>>
+		<<set $substanceRebalance to 0>>
+	<</if>>
+
+	<<if $easyHousekeeping is undefined>>
+		<<set $easyHousekeeping to 0>>
+	<</if>>
+
+	<<if $dancingRebalance is undefined>>
+		<<set $dancingRebalance to 0>>
+	<</if>>
+
+	/* Food spoilage is opt-in through Rebalancing settings. */
+	<<if $foodSpoilage is undefined>>
+		<<set $foodSpoilage to 0>>
+	<</if>>
+	<<run pocketEnsure()>>
+
+	<<if $nikiSeen is undefined>>
+		<<set $nikiSeen to []>>
+		<<if $livestock_pig gte 1>>
+			<<set $nikiSeen.pushUnique("farm")>>
+		<</if>>
+		<<if $chef_state gte 5>>
+			<<set $nikiSeen.pushUnique("chef")>>
+		<</if>>
+		<<if $winterLakeTalk gte 3>>
+			<<set $nikiSeen.pushUnique("winter")>>
+		<</if>>
+	<</if>>
+
+	<<if $sydneySeen is undefined>>
+		<<set $sydneySeen to []>>
+	<</if>>
+
+	<<if $willpowerCum is undefined>>
+		<<set $willpowerCum to 0>>
+	<</if>>
+
+	<<if $orgasmCum is undefined>>
+		<<set $orgasmCum to 0>>
+	<</if>>
+
+	<<if $stallDeposit is undefined>>
+		<<set $stallDeposit to 0>>
+	<</if>>
+
+	<<if $traumaeyes is undefined>>
+		<<set $traumaeyes to false>>
+	<</if>>
+
+	<<if $bikeUpdate gte 1>>
+		<<bikeUpdate2>>
+	<<else>>
+		<<if $bikeBroken isnot undefined and $bikeDurability gte 1>>
+			<<unset $bikeBroken>>
+		<</if>>
+		<<if Number.isNaN($bikeDurability)>>
+			<<if $bike is 3>>
+				<<set $bikeDurability to 12000>>
+			<<elseif $bike is 2>>
+				<<set $bikeDurability to 6000>>
+			<<else>>
+				<<set $bikeDurability to 3000>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $combat isnot 1>>
+		<<set $ejaculating to 0>>
+		<<set $ejaculatingMid to false>>
+	<</if>>
+
+	<<if $dailySunscreen isnot undefined>>
+		<<unset $dailySunscreen>>
+	<</if>>
+
+	<<if $statGainMult is undefined>>
+		<<set $statGainMult to 100>>
+	<</if>>
+
+	<<if $statGainReductionMult isnot undefined>>
+		<<set $statGainMult to 100 - Math.min((Math.round((100 - $statGainReductionMult) / 10) * 10), 10)>>
+		<<unset $statGainReductionMult>>
+	<</if>>
+
+	<<if $npcDescDemonDisable is undefined>>
+		<<set $npcDescDemonDisable to 0>>
+	<</if>>
+
+	<<if $stressMaxScalingToggle is undefined>>
+		<<set $stressMaxScalingToggle to 0>>
+	<</if>>
+
+	<<if $athleticsFitnessToggle is undefined>>
+		<<set $athleticsFitnessToggle to 0>>
+	<</if>>
+
+	<<if $fatigueSkillPenaltyToggle is undefined>>
+		<<set $fatigueSkillPenaltyToggle to 0>>
+	<</if>>
+
+	<<if $fatigueSkillPenaltyMax is undefined or isNaN($fatigueSkillPenaltyMax)>>
+		<<set $fatigueSkillPenaltyMax to 50>>
+	<</if>>
+	<<set $fatigueSkillPenaltyMax to Math.clamp(Math.round($fatigueSkillPenaltyMax), 0, 100)>>
+
+	<<if $loveInterest is undefined>>
+		<<set $loveInterest to {
+			primary: "None",
+			secondary: "None",
+			tertiary: "None",
+			quarternary: "None",
+			quinary: "None",
+			senary: "None"
+		}>>
+	<</if>>
+
+	<<if $loveInterest.quarternary is undefined>>
+		<<set $loveInterest.quarternary to "None">>
+	<</if>>
+
+	<<if $loveInterest.quinary is undefined>>
+		<<set $loveInterest.quinary to "None">>
+	<</if>>
+
+	<<if $loveInterest.senary is undefined>>
+		<<set $loveInterest.senary to "None">>
+	<</if>>
+
+	<<if $foodstuff is undefined>>
+		<<set $foodstuff to {}>>
+	<</if>>
+	<<set _food_keys to Object.keys(setup.foodstuff)>>
+	<<for _i to 0; _i lt _food_keys.length; _i++>>
+		<<set $_type to _food_keys[_i]>>
+		<<if $foodstuff[$_type] is undefined>>
+			<<set $foodstuff[$_type] to {"amount": 0}>>
+		<<elseif $foodstuff[$_type].amount is undefined>>
+			<<set $foodstuff[$_type].amount to 0>>
+		<</if>>
+
+		/* Preserve old pre-foodstuff plant inventory amounts without silently resetting them. */
+		<<if $plants isnot undefined and $plants[$_type] isnot undefined and typeof $plants[$_type].amount is "number" and $plants[$_type].amount gt $foodstuff[$_type].amount>>
+			<<set $foodstuff[$_type].amount to $plants[$_type].amount>>
+			<<run console.warn("Migrated old $plants amount into $foodstuff.", { type: $_type, amount: $foodstuff[$_type].amount })>>
+		<</if>>
+	<</for>>
+	/* Drop foodstuff entries other mods baked into the save; unknown keys crash shop/kitchen/tending lookups. */
+	<<run pruneFoodstuff()>>
+
+	<<if $baileyDeposit is undefined>>
+		<<set $baileyDeposit to 0>>
+	<</if>>
+
+	<<if $depositMax is undefined>>
+		<<set $depositMax to 0>>
+	<</if>>
+
+	<<if $depositWithdrawalFee is undefined>>
+		<<set $depositWithdrawalFee to 10>>
+	<</if>>
+
+	<<if $factoryUpgrades is undefined>>
+		<<set $factoryUpgrades to {}>>
+	<</if>>
+
+	<<if $rightArmPosition is undefined>>
+		<<set $rightArmPosition to "below">>
+	<</if>>
+
+	<<set $parasiteCapMult to Math.clamp(Number($parasiteCapMult) || 1, 1, 10)>>
+
+	/* Backfill transformation parts for saves that already had these objects before the keys existed. */
+	<<if $transformationParts.waterdragon.horns is undefined>>
+		<<if $waterdragon gte 3 or $waterdragontf is 1>>
+			<<set $transformationParts.waterdragon.horns to "default">>
+		<<else>>
+			<<set $transformationParts.waterdragon.horns to "disabled">>
+		<</if>>
+	<</if>>
+	<<if $transformationParts.waterdragon.ears is undefined>>
+		<<if $waterdragon gte 4 or $waterdragontf is 1>>
+			<<set $transformationParts.waterdragon.ears to "default">>
+		<<else>>
+			<<set $transformationParts.waterdragon.ears to "disabled">>
+		<</if>>
+	<</if>>
+	<<if $transformationParts.waterdragon.tail is undefined>>
+		<<if $waterdragon gte 7 or $waterdragontf is 1>>
+			<<set $transformationParts.waterdragon.tail to "default">>
+		<<else>>
+			<<set $transformationParts.waterdragon.tail to "disabled">>
+		<</if>>
+	<</if>>
+
+	<<if $stressBeauty isnot undefined>>
+		<<unset $stressBeauty>>
+	<</if>>
+	<<if $beautyMult isnot undefined>>
+		<<unset $beautyMult>>
+	<</if>>
+	<<if $fame.undefined isnot undefined>>
+		<<run delete $fame.undefined>>
+	<</if>>
+
+	<<if $wingslayer is undefined>>
+		<<set $wingslayer to "back">>
+	<</if>>
+
+	<<if $harpytf is 1 or $angeltf is 1 or $fallenangeltf is 1 or $fallenangelplustf is 1 or $demontf is 1>>
+		<<set $birdGlide to 1>>
+	<</if>>
+
+	<<if $harpytf is 1 or $birdFlyUnlocked is 1 or ($bird.syndrome isnot undefined and $bird.lock is undefined)>>
+		<<set $birdFly to 1>>
+	<</if>>
+
+	<<if $combatExtended.standingFightsType is undefined>>
+		<<set $combatExtended.standingFightsType to "normal">>
+	<</if>>
+
+	<<if $orphanageLocked is undefined>>
+		<<set $orphanageLocked to 0>>
+	<</if>>
+
+	<<if $orphanageWindowLocked is undefined>>
+		<<set $orphanageWindowLocked to 0>>
+	<</if>>
+
+	<<if $farmCottageLocked is undefined>>
+		<<set $farmCottageLocked to 0>>
+	<</if>>
+
+	<<if $transformationParts.okami is undefined>>
+		<<set $transformationParts.okami to {ears:"disabled", tail:"disabled", wings:"disabled", misc:"disabled"}>>
+	<</if>>
+
+	<<if $transformationParts.seraphim is undefined>>
+		<<set $transformationParts.seraphim to {wings:"disabled", plumage:"disabled", eyes:"disabled"}>>
+	<</if>>
+
+	<<if $transformationParts.kitsune is undefined>>
+		<<set $transformationParts.kitsune to {ears:"disabled", tail:"disabled", cheeks:"disabled", misc:"disabled"}>>
+	<</if>>
+
+	<<if $produce_yield_factor is undefined>>
+		<<set $produce_yield_factor to 100>>
+	<</if>>
+
+	<<if $combatStressGain is undefined>>
+		<<set $combatStressGain to 100>>
+	<</if>>
+
+	<<if $beastGroupFight is undefined>>
+		<<set $beastGroupFight to 0>>
+	<</if>>
+
+	<<if $beastMultiOrgasmToggle is undefined>>
+		<<set $beastMultiOrgasmToggle to 0>>
+	<</if>>
+
+	<<if $furniture>>
+		<<if $furniture.bedroom.chair is undefined>>
+			<<set $furniture.bedroom.chair to {id: "chair"}>>
+		<</if>>
+	<</if>>
+
+	<<if $combatExtended.footwork is undefined>>
+		<<set $combatExtended.footwork to 0>>
+	<</if>>
+
+	<<if $combatExtended.striking is undefined>>
+		<<set $combatExtended.striking to 0>>
+	<</if>>
+
+	<<if $combatExtended.kicking is undefined>>
+		<<set $combatExtended.kicking to 0>>
+	<</if>>
+
+	<<if $combatExtended.footworkToggle is undefined>>
+		<<set $combatExtended.footworkToggle to 0>>
+	<</if>>
+
+	<<if $combatExtended.strikingToggle is undefined>>
+		<<set $combatExtended.strikingToggle to 0>>
+	<</if>>
+
+	<<if $combatExtended.kickingToggle is undefined>>
+		<<set $combatExtended.kickingToggle to 0>>
+	<</if>>
+
+	<<if $combatExtended.enemyMartialArts is undefined>>
+		<<set $combatExtended.enemyMartialArts to 0>>
+	<</if>>
+
+	<<if $combatExtended.enemyMartialArtsScaling is undefined>>
+		<<set $combatExtended.enemyMartialArtsScaling to "random">>
+	<</if>>
+
+	<<if $combatExtended.enemyMartialArtsBadass is undefined>>
+		<<set $combatExtended.enemyMartialArtsBadass to 0>>
+	<</if>>
+
+	<<if $combatExtended.enemyMartialArtsLevelScalingMult is undefined>>
+		<<set $combatExtended.enemyMartialArtsLevelScalingMult to 50>>
+	<</if>>
+
+	<<if $combatExtended.enemyBaseDodgeChance is undefined>>
+		<<set $combatExtended.enemyBaseDodgeChance to 1>>
+	<</if>>
+
+	<<if $combatExtended.enemyBaseDodgeChanceMult is undefined>>
+		<<set $combatExtended.enemyBaseDodgeChanceMult to 2>>
+	<</if>>
+
+	<<if Object.keys($feats.allSaves).count("Ten in a Row") gte 1>>
+		<<set $feats.allSaves["Nine in a Row"] to $feats.allSaves["Ten in a Row"]>>
+		<<set $feats.allSaves["Seven in a Row"] to $feats.allSaves["Ten in a Row"]>>
+	<</if>>
+
+	<<if $mathsTraitBuffs.aphrodisiacPhials is undefined>>
+		<<set $mathsTraitBuffs.aphrodisiacPhials to 0>>
+	<</if>>
+
+	<<if $DoLPTFTempTolerance is undefined>>
+		<<set $DoLPTFTempTolerance to 0>>
+	<</if>>
+
+	<<if $uncomfortable.underwearPublic is undefined>>
+		<<set $uncomfortable.underwearPublic to true>>
+	<</if>>
+
+	<<if $uncomfortable.nudePublic is undefined>>
+		<<set $uncomfortable.nudePublic to true>>
+	<</if>>
+
+	<<if $furniture isnot undefined>>
+		<<if $furniture.cottage is undefined>>
+			<<set $furniture.cottage = {}>>
+		<</if>>
+
+		<<if $furniture.cottage.bed is undefined>>
+			<<set $furniture.cottage.bed = { id: "singlebed"}>>
+		<</if>>
+
+		<<if $furniture.cottage.wardrobe is undefined>>
+			<<set $furniture.cottage.wardrobe = { id: "organiser"}>>
+		<</if>>
+
+		<<if $furniture.cottage.desk is undefined>>
+			<<set $furniture.cottage.desk = { id: "desk"}>>
+		<</if>>
+
+		<<if $furniture.cottage.chair is undefined>>
+			<<set $furniture.cottage.chair = { id: "chair"}>>
+		<</if>>
+	<</if>>
+
+	<<if $furnitureShopTarget is undefined>>
+		<<set $furnitureShopTarget = "bedroom">>
+	<</if>>
+
+	<<if $furnitureMovePrice isnot undefined>>
+		<<unset $furnitureMovePrice>>
+	<</if>>
+
+	<<if $foodstuff.ghost_orchid.amount gte 1 or ($stall_stats isnot undefined and $stall_stats.ghost_orchid isnot undefined and $stall_stats.ghost_orchid.sold.amount gte 1)>>
+		<<earnFeat "Phantom Bloom">>
+	<</if>>
+	<<if $foodstuff.hen_of_the_woods.amount gte 1 or ($stall_stats isnot undefined and $stall_stats.hen_of_the_woods isnot undefined and $stall_stats.hen_of_the_woods.sold.amount gte 1)>>
+		<<earnFeat "Whispering Fungi">>
+	<</if>>
+	<<if $foodstuff.red_helleborine.amount gte 1 or ($stall_stats isnot undefined and $stall_stats.red_helleborine isnot undefined and $stall_stats.red_helleborine.sold.amount gte 1)>>
+		<<earnFeat "Crimson Veil">>
+	<</if>>
+	<<if $foodstuff.lady_orchid.amount gte 1 or ($stall_stats isnot undefined and $stall_stats.lady_orchid isnot undefined and $stall_stats.lady_orchid.sold.amount gte 1)>>
+		<<earnFeat "Noble Harvest">>
+	<</if>>
+	<<if $foodstuff.fly_agaric.amount gte 1 or ($stall_stats isnot undefined and $stall_stats.fly_agaric isnot undefined and $stall_stats.fly_agaric.sold.amount gte 1)>>
+		<<earnFeat "Fabled Cap">>
+	<</if>>
+	<<if $foodstuff.spiked_rampion.amount gte 1 or ($stall_stats isnot undefined and $stall_stats.spiked_rampion isnot undefined and $stall_stats.spiked_rampion.sold.amount gte 1)>>
+		<<earnFeat "Thorned Crown">>
+	<</if>>
+	<<if $foodstuff.cloudberry.amount gte 1 or ($stall_stats isnot undefined and $stall_stats.cloudberry isnot undefined and $stall_stats.cloudberry.sold.amount gte 1)>>
+		<<earnFeat "Amber Harvest">>
+	<</if>>
+	<<if $foodstuff.scottish_bog_myrtle.amount gte 1 or ($stall_stats isnot undefined and $stall_stats.scottish_bog_myrtle isnot undefined and $stall_stats.scottish_bog_myrtle.sold.amount gte 1)>>
+		<<earnFeat "Scent of the Highlands">>
+	<</if>>
+	<<if $foodstuff.bog_orchid.amount gte 1 or ($stall_stats isnot undefined and $stall_stats.bog_orchid isnot undefined and $stall_stats.bog_orchid.sold.amount gte 1)>>
+		<<earnFeat "Bog Whisperer">>
+	<</if>>
+	<<if $foodstuff.marsh_saxifrage.amount gte 1 or ($stall_stats isnot undefined and $stall_stats.marsh_saxifrage isnot undefined and $stall_stats.marsh_saxifrage.sold.amount gte 1)>>
+		<<earnFeat "Marshlight">>
+	<</if>>
+	/* fly_agaric plural is now static setup.foodstuff metadata. */
+
+	<<if $specialTransform is 1 and ($angel is 0 and $fallenangel is 0 and $demon is 0)>>
+		<<set $specialTransform to 0>>
+	<</if>>
+	
+	<<if $specialClothesEffects isnot undefined and $specialClothesEffects.bimbo.progress is undefined>>
+		<<set $specialClothesEffects to {
+			bimbo: { progress: $specialClothesEffects.bimbo, total: $specialClothesEffects.bimboTotal, message: $specialClothesEffects.bimboMessage },
+			pimp: { progress: 0, total: 0, message: 0 }
+		}>>
+	<</if>>
+
+	<<if $options.showUiBar is undefined>>
+		<<set $options.showUiBar to true>>
+	<</if>>
+
+	<<if $bedroomUI is undefined>>
+		<<set $bedroomUI to {
+			orphanage: {
+				radio: true,
+				console: true,
+				lock: true,
+				project: true,
+				homeStudy: true,
+				christmas: true,
+				largeBearPlushie: true,
+				masturbation: true,
+				lts: true,
+				sexMachine: true,
+				parasiteContainer: true
+			},
+			cottage: {
+				radio: true,
+				console: true,
+				lock: true,
+				project: true,
+				homeStudy: true,
+				largeBearPlushie: true,
+				masturbation: true,
+				lts: true,
+				sexMachine: true,
+			},
+		}>>
+	<</if>>
+
+	/* Back-compat: ensure the console UI flag exists on saves made before it was added. */
+	<<if $bedroomUI isnot undefined and $bedroomUI.orphanage isnot undefined and $bedroomUI.orphanage.console is undefined>>
+		<<set $bedroomUI.orphanage.console to true>>
+	<</if>>
+	<<if $bedroomUI isnot undefined and $bedroomUI.cottage isnot undefined and $bedroomUI.cottage.console is undefined>>
+		<<set $bedroomUI.cottage.console to true>>
+	<</if>>
+
+	<<if $featsBoosts is undefined>>
+		<<set $featsBoosts to {}>>
+	<</if>>
+
+	<<if $featsBoosts.upgrades is undefined>>
+		<<set $featsBoosts.upgrades to {}>>
+	<</if>>
+
+	<<if $featsBoosts.upgrades.transcend is undefined>>
+		<<set $featsBoosts.upgrades.transcend to 0>>
+	<</if>>
+
+	<<if $featsBoosts.upgrades.adaptiveGenes is undefined>>
+		<<set $featsBoosts.upgrades.adaptiveGenes to 0>>
+	<</if>>
+
+	<<if $options.thermometerDisplay is undefined>>
+		<<set $options.thermometerDisplay to "">>
+	<</if>>
+
+	<<if $options.nnpcDisplay is undefined>>
+		<<set $options.nnpcDisplay to 0>>
+	<</if>>
+
+	<<if $options.nnpcDisplayLayer is undefined>>
+		<<set $options.nnpcDisplayLayer to "front">>
+	<</if>>
+
+	<<if $options.nnpcDisplaySlot is undefined>>
+		<<set $options.nnpcDisplaySlot to 1>>
+	<</if>>
+
+	<<if $combat is 1 and $enemytype is "tentacles">>
+		<<for _i to 0; _i lt $tentacles.max; _i++>>
+			<<if $tentacles[_i] isnot undefined and (Number.isNaN($tentacles[_i].tentaclehealth))>>
+				<<set $tentacles[_i].tentaclehealth to $tentacles[_i].tentaclehealthstart>>
+			<</if>>
+		<</for>>
+	<</if>>
+
+	<<if $tentacleHealthMult is undefined>>
+		<<set $tentacleHealthMult to 100>>
+	<</if>>
+
+	<<if $struggleHealthMult is undefined>>
+		<<set $struggleHealthMult to 100>>
+	<</if>>
+
+	<<if $options.lowerHalo is undefined>>
+		<<set $options.lowerHalo to true>>
+	<</if>>
+
+	<<if $options.autoNNPCDisplay is undefined>>
+		<<set $options.autoNNPCDisplay to {
+			enabled: true
+		}>>
+	<</if>>
+
+	/* Repair a bad key created by older settingsExitFunction code. */
+	<<if $options.autoNNPCDisplay["night monster"] isnot undefined>>
+		<<if $options.autoNNPCDisplay.night_monster is undefined>>
+			<<set $options.autoNNPCDisplay.night_monster to clone($options.autoNNPCDisplay["night monster"])>>
+		<<else>>
+			<<run Object.entries(V.options.autoNNPCDisplay["night monster"]).forEach(([key, value]) => {
+				if (V.options.autoNNPCDisplay.night_monster[key] === undefined) {
+					V.options.autoNNPCDisplay.night_monster[key] = value;
+				}
+			})>>
+		<</if>>
+		<<run delete V.options.autoNNPCDisplay["night monster"]>>
+	<</if>>
+
+	/* DoLP NNPC display data belongs here, not in settingsExitFunction.
+	   Build keys consistently so multi-word NNPCs use underscores, e.g. Black Wolf -> black_wolf and Night Monster -> night_monster. */
+	<<for _name range setup.NPCNameList>>
+		<<set _nameReal to _name>>
+		<<set _nnpcKey to _name.toLowerCase().split(" ").join("_")>>
+
+		<<if $options.autoNNPCDisplay[_nnpcKey] is undefined>>
+			<<set $options.autoNNPCDisplay[_nnpcKey] to {
+				slot: 1,
+				layer: "front"
+			}>>
+		<</if>>
+
+		<<if $options.autoNNPCDisplay[_nnpcKey].genderOverride is undefined>>
+			<<set $options.autoNNPCDisplay[_nnpcKey].genderOverride to false>>
+		<</if>>
+
+		<<if $options.autoNNPCDisplay[_nnpcKey].gender is undefined or $options.autoNNPCDisplay[_nnpcKey].gender is "">>
+			<<if C.npc[_nameReal] and C.npc[_nameReal].pronoun is "m">>
+				<<set $options.autoNNPCDisplay[_nnpcKey].gender to "male">>
+			<<else>>
+				<<set $options.autoNNPCDisplay[_nnpcKey].gender to "female">>
+			<</if>>
+		<</if>>
+	<</for>>
+
+	<<if $options.autoNNPCDisplay.others is undefined>>
+		<<set $options.autoNNPCDisplay.others to {
+			genderOverride: false,
+			gender: ""
+		}>>
+	<</if>>
+
+	<<if $options.nnpcDisplayGender is undefined>>
+		<<set $options.nnpcDisplayGender to "male">>
+	<</if>>
+
+	<<if $options.nnpcDisplaySkin is undefined>>
+		<<set $options.nnpcDisplaySkin to "pale">>
+	<</if>>
+
+	<<if $nnpcHealthMult is undefined>>
+		<<set $nnpcHealthMult to 100>>
+	<</if>>
+	<<if $nnpcArousalMult is undefined>>
+		<<set $nnpcArousalMult to 100>>
+	<</if>>
+
+	<<if $school_desk_dolp is undefined>>
+		<<set $school_desk_dolp to -1>>
+	<</if>>
+
+	<<if $book_rent_timer > 0>>
+		<<unset $bookOverdue>>
+	<</if>>
+
+	<<if $combat is 1 and $combatExtended.stabilityLost is 1>>
+		<<reversenpcidlegenitals>>
+	<</if>>
+
+	<<if $releaseBoobs isnot undefined>>
+		<<unset $releaseBoobs>>
+	<</if>>
+
+	<<if $options.bigCanvas is undefined>>
+		<<set $options.bigCanvas to false>>
+	<</if>>
+
+	<<if $pubfameMoney is undefined>>
+		<<set $pubfameMoney to 0>>
+	<</if>>
+
+	<<if $options.statNerf is undefined>>
+		<<set $options.statNerf to 100>>
+	<</if>>
+
+	<<if $options.bodySizeScaling is undefined>>
+		<<set $options.bodySizeScaling to false>>
+	<</if>>
+
+	/* Poppy LI data migration. Use the save's NPC index rather than the static alias index. */
+	<<if $objectVersion.poppyLIData is undefined or $objectVersion.poppyLIData lt 2>>
+		<<if $daily is undefined or $daily is null or typeof $daily isnot "object" or Array.isArray($daily)>><<set $daily to {}>><</if>>
+		<<if $daily.poppy is undefined or $daily.poppy is null or typeof $daily.poppy isnot "object" or Array.isArray($daily.poppy)>><<set $daily.poppy to {}>><</if>>
+		<<if !Array.isArray($poppySeen)>>
+			<<if $poppySeen isnot undefined>><<set $poppySeen_legacy to $poppySeen>><</if>>
+			<<set $poppySeen to []>>
+		<</if>>
+		<<set _poppyIndex to (Array.isArray($NPCNameList) ? $NPCNameList.indexOf("Poppy") : -1)>>
+		<<if _poppyIndex gte 0 and $NPCName[_poppyIndex]>>
+			<<set _poppy to $NPCName[_poppyIndex]>>
+			<<if _poppy.timer is undefined or _poppy.timer is null or typeof _poppy.timer isnot "object" or Array.isArray(_poppy.timer)>><<set _poppy.timer to {}>><</if>>
+			<<if _poppy.timer.lastInteraction is undefined or _poppy.timer.lastInteraction is "">><<set _poppy.timer.lastInteraction to Time.date.timeStamp>><</if>>
+			<<if _poppy.timer.lastPatienceDecay is undefined or _poppy.timer.lastPatienceDecay is "">><<set _poppy.timer.lastPatienceDecay to Time.date.timeStamp>><</if>>
+			<<if typeof _poppy.patience isnot "number" or Number.isNaN(_poppy.patience)>><<set _poppy.patience to 100>><</if>>
+			<<if _poppy.pregnancy is undefined or _poppy.pregnancy is null or typeof _poppy.pregnancy isnot "object" or Array.isArray(_poppy.pregnancy)>>
+				<<set _poppy.pregnancy to { fetus: [], enabled: true, type: null }>>
+			<<else>>
+				<<if !Array.isArray(_poppy.pregnancy.fetus)>><<set _poppy.pregnancy.fetus to []>><</if>>
+				<<if typeof _poppy.pregnancy.enabled isnot "boolean">><<set _poppy.pregnancy.enabled to true>><</if>>
+				<<if _poppy.pregnancy.type is "none" or _poppy.pregnancy.type is undefined>><<set _poppy.pregnancy.type to null>>
+				<<elseif _poppy.pregnancy.type and !_poppy.pregnancy.fetus.length and !_poppy.pregnancy.timerEnd>><<set _poppy.pregnancy.type to null>><</if>>
+			<</if>>
+			<<set $objectVersion.poppyPregnancy to 1>>
+			<<set $objectVersion.poppyLIData to 2>>
+		<</if>>
+	<</if>>
+
+	/* One-time heal for saves corrupted by the old migration that forced Poppy's pregnancy.type to "human".
+	   Runs regardless of the gates above, since corrupted saves already have poppyLIData set to 2. */
+	<<if $objectVersion.poppyPhantomPregnancyFix isnot undefined>>
+		<<unset $objectVersion.poppyPhantomPregnancyFix>> /* delete later */
+	<</if>>
+
+	<<run pruneNPCName()>>
+
+	<<set $robinmoney to Math.round($robinmoney)>>
+
+	<<if $godClothes is undefined>>
+    	<<set $godClothes to 0>>
+	<</if>>
+
+	<!-- Avery saved route: ability to grow your own crops in the mansion garden -->
+	<<if $avery_mansion and $avery_mansion.crops is undefined>>
+		<<set $avery_mansion.crops to 0>>
+	<</if>>
+
+	<<if $whitneyFamiliarCollarKnown is undefined>>
+		<<set $whitneyFamiliarCollarKnown to 0>>
+	<</if>>
+
+	<<if $stat_police is undefined>>
+		<<set $stat_police to { community: 0, pillory: 0, prison: 0 }>>
+	<</if>>
+	<<if $brothelVending is undefined>>
+		<<set $brothelVending to { total: 0 }>>
+	<</if>>
+	<<if $estatePersistent is undefined>>
+		<<set $estatePersistent to {
+			totalGamesPlayed: 0,
+			totalGamesPlayedWithBetting: 0,
+			totalRoundsWon: 0,
+			totalRoundsLost: 0,
+			totalRoundsTied: 0,
+			totalBetRoundsWon: 0,
+			totalBetRoundsLost: 0,
+			totalBetRoundsTied: 0,
+			totalCaughtCheating: 0,
+			winStreakHighScore: 0
+		}>>
+	<</if>>
+
+	<<if $estatePersistent.totalGamesPlayed is undefined>><<set $estatePersistent.totalGamesPlayed to 0>><</if>>
+	<<if $estatePersistent.totalGamesPlayedWithBetting is undefined>><<set $estatePersistent.totalGamesPlayedWithBetting to 0>><</if>>
+	<<if $estatePersistent.totalRoundsWon is undefined>><<set $estatePersistent.totalRoundsWon to 0>><</if>>
+	<<if $estatePersistent.totalRoundsLost is undefined>><<set $estatePersistent.totalRoundsLost to 0>><</if>>
+	<<if $estatePersistent.totalRoundsTied is undefined>><<set $estatePersistent.totalRoundsTied to 0>><</if>>
+	<<if $estatePersistent.totalBetRoundsWon is undefined>><<set $estatePersistent.totalBetRoundsWon to 0>><</if>>
+	<<if $estatePersistent.totalBetRoundsLost is undefined>><<set $estatePersistent.totalBetRoundsLost to 0>><</if>>
+	<<if $estatePersistent.totalBetRoundsTied is undefined>><<set $estatePersistent.totalBetRoundsTied to 0>><</if>>
+	<<if $estatePersistent.totalBetMoneyMade is undefined>><<set $estatePersistent.totalBetMoneyMade to 0>><</if>>
+	<<if $estatePersistent.totalBetMoneyLost is undefined>><<set $estatePersistent.totalBetMoneyLost to 0>><</if>>
+	<<if $estatePersistent.totalMoneyConfiscated is undefined>><<set $estatePersistent.totalMoneyConfiscated to 0>><</if>>
+	<<if $estatePersistent.totalTipMoneyMade is undefined>><<set $estatePersistent.totalTipMoneyMade to 0>><</if>>
+	<<if $estatePersistent.totalCaughtCheating is undefined>><<set $estatePersistent.totalCaughtCheating to 0>><</if>>
+	<<if $estatePersistent.winStreakHighScore is undefined>><<set $estatePersistent.winStreakHighScore to 0>><</if>>
+	<<if $settings.npcColossalPenisChance is undefined>><<set $settings.npcColossalPenisChance to 0>><</if>>
+
+	/* DoLX doesn't have herm */
+	<<set $fhermchance to 0>>
+	<<set $mhermchance to 0>>
+
+	/* Landry's stones deal was reachable before moving in with Avery, and moving in reset $avery_mansion.landry to 0.
+	   The desync hid the wishing stones reminder, and left Landry and the brown fox with nothing to say about the quest. */
+	<<if $avery_mansion and $fake_artefact and !($avery_mansion.landry gte 2)>>
+		<<set $avery_mansion.landry to 2>>
+	<</if>>
+
+	<<modNewNamedNPCs>>
+	<<modNamedNpcSkinRepair>>
+	<<modParasiteCapUpdate>>
+	<<modWardrobeUpdate>>
+	<<amcTraitsUpdate>>
+	<<if !$bikeUpdate>>
+		<<bikeUpdate>>
+	<</if>>
+	<<clamp>>
+<</widget>>
+
+<<widget "amcTraitsUpdate">>
+	<<if $AMCTraits is undefined or $AMCTraits is null or typeof $AMCTraits isnot "object" or Array.isArray($AMCTraits)>>
+		<<set $AMCTraits to {}>>
+	<</if>>
+	<<if $AMCTraits.halfGain is undefined>>
+		<<set $AMCTraits.halfGain to 0>>
+	<</if>>
+	/* X-Change intentionally uses a beauty trait of 2; DoLX owns $AMCTraits.beauty.
+	   Default it here so it is defined on the new-game (Start) path too, since version-update only runs on save load. */
+	<<if $AMCTraits.beauty is undefined>>
+		<<set $AMCTraits.beauty to 2>>
+	<</if>>
+	<<if $AMCTraits.physique is undefined>>
+		<<set $AMCTraits.physique to 1>>
+	<</if>>
+	<<if $AMCTraits.willpower is undefined>>
+		<<set $AMCTraits.willpower to 1>>
+	<</if>>
+	<<if $AMCTraits.skulduggery is undefined>>
+		<<set $AMCTraits.skulduggery to 1>>
+	<</if>>
+	<<if $AMCTraits.dancing is undefined>>
+		<<set $AMCTraits.dancing to 1>>
+	<</if>>
+	<<if $AMCTraits.swimming is undefined>>
+		<<set $AMCTraits.swimming to 1>>
+	<</if>>
+	<<if $AMCTraits.athletics is undefined>>
+		<<set $AMCTraits.athletics to 1>>
+	<</if>>
+	<<if $AMCTraits.tending is undefined>>
+		<<set $AMCTraits.tending to 1>>
+	<</if>>
+	<<if $AMCTraits.housekeeping is undefined>>
+		<<set $AMCTraits.housekeeping to 1>>
+	<</if>>
+	<<if $AMCTraits.brawling is undefined>>
+		<<set $AMCTraits.brawling to 1>>
+	<</if>>
+	<<if $AMCTraits.science is undefined>>
+		<<set $AMCTraits.science to 1>>
+	<</if>>
+	<<if $AMCTraits.maths is undefined>>
+		<<set $AMCTraits.maths to 1>>
+	<</if>>
+	<<if $AMCTraits.english is undefined>>
+		<<set $AMCTraits.english to 1>>
+	<</if>>
+	<<if $AMCTraits.history is undefined>>
+		<<set $AMCTraits.history to 1>>
+	<</if>>
+	<<if $AMCTraits.seductionskill is undefined>>
+		<<set $AMCTraits.seductionskill to 1>>
+	<</if>>
+	<<if $AMCTraits.oralskill is undefined>>
+		<<set $AMCTraits.oralskill to 1>>
+	<</if>>
+	<<if $AMCTraits.chestskill is undefined>>
+		<<set $AMCTraits.chestskill to 1>>
+	<</if>>
+	<<if $AMCTraits.handskill is undefined>>
+		<<set $AMCTraits.handskill to 1>>
+	<</if>>
+	<<if $AMCTraits.bottomskill is undefined>>
+		<<set $AMCTraits.bottomskill to 1>>
+	<</if>>
+	<<if $AMCTraits.penileskill is undefined>>
+		<<set $AMCTraits.penileskill to 1>>
+	<</if>>
+	<<if $AMCTraits.vaginalskill is undefined>>
+		<<set $AMCTraits.vaginalskill to 1>>
+	<</if>>
+	<<if $AMCTraits.analskill is undefined>>
+		<<set $AMCTraits.analskill to 1>>
+	<</if>>
+	<<if $AMCTraits.thighskill is undefined>>
+		<<set $AMCTraits.thighskill to 1>>
+	<</if>>
+	<<if $AMCTraits.feetskill is undefined>>
+		<<set $AMCTraits.feetskill to 1>>
+	<</if>>
+	<<if $AMCTraits.milk is undefined>>
+		<<set $AMCTraits.milk to 1>>
+	<</if>>
+	<<if $AMCTraits.semen is undefined>>
+		<<set $AMCTraits.semen to 1>>
+	<</if>>
+
+	<<set $beautymax to 10000>>
+	<<set $willpowermax to 1000>>
+	<<set $skulduggerymax to 1000>>
+	<<set $dancingmax to 1000>>
+	<<set $swimmingmax to 1000>>
+	<<set $athleticsmax to 1000>>
+	<<set $tendingmax to 1000>>
+	<<set $housekeepingmax to 1000>>
+	<<set $brawlingmax to 1000>>
+	<<set $seductionskillmax to 1000>>
+	<<set $oralskillmax to 1000>>
+	<<set $chestskillmax to 1000>>
+	<<set $handskillmax to 1000>>
+	<<set $bottomskillmax to 1000>>
+	<<set $penileskillmax to 1000>>
+	<<set $vaginalskillmax to 1000>>
+	<<set $analskillmax to 1000>>
+	<<set $thighskillmax to 1000>>
+	<<set $feetskillmax to 1000>>
+
+	/* DoLX does not use AMC fame progression; keep these compatibility flags unlocked. */
+	<<set _amcFames to ["sexFame","prostitutionFame","rapeFame","bestialityFame","exhibitionismFame","pregnancyFame","impregFame","goodFame","businessFame","socialFame","modelFame"]>>
+	<<for _fame range _amcFames>>
+		<<if $AMCTraits[_fame] isnot 1>><<set $AMCTraits[_fame] to 1>><</if>>
+	<</for>>
+	/* Preserve up to 4000 Combat fame; only Colosseum rewards can raise it above the ordinary 2000 cap. */
+	<<if $AMCTraits.scrapFame isnot 2>><<set $AMCTraits.scrapFame to 2>><</if>>
+
+	<<if $AMCTraits.footwork is undefined>>
+		<<set $AMCTraits.footwork to 1>>
+	<</if>>
+
+	<<if $AMCTraits.striking is undefined>>
+		<<set $AMCTraits.striking to 1>>
+	<</if>>
+
+	<<if $AMCTraits.kicking is undefined>>
+		<<set $AMCTraits.kicking to 1>>
+	<</if>>
+
+	/* HBSC gala load compatibility. Keep the sudden invitation separate from the guest it delays. */
+	<<if $avery_mansion>>
+		<<if $avery_mansion.hbsc_gala_seen is undefined>><<set $avery_mansion.hbsc_gala_seen to false>><</if>>
+		<<if $avery_mansion.hbsc_gala_cooldown is undefined>><<set $avery_mansion.hbsc_gala_cooldown to 0>><</if>>
+		<<if $avery_mansion.hbsc_gala_pending is undefined>><<set $avery_mansion.hbsc_gala_pending to false>><</if>>
+		<<if $avery_mansion.guest is "HBSC Gala">>
+			<<run const previousGuest = V.avery_mansion.party_guests_seen && V.avery_mansion.party_guests_seen.last();
+			const rotation = {
+				Bailey: "Quinn",
+				Quinn: "Remy",
+				Remy: "Briar",
+				Briar: "Harper",
+				Harper: V.avery_mansion.jordan_intro ? "Jordan" : "Quinn",
+				Jordan: "Quinn",
+			};
+			V.avery_mansion.guest = rotation[previousGuest] || "Quinn";
+			if (V.avery_mansion.party_state !== "started" && V.avery_mansion.fox?.task === "HBSC Gala") {
+				delete V.avery_mansion.fox.task;
+				delete V.avery_mansion.fox.task_complete;
+				delete V.avery_mansion.fox.task_detail;
+			}
+			V.avery_mansion.hbsc_gala_pending = true;>>
+		<</if>>
+	<</if>>
+
+	<<run if (typeof applyPermanentInsanityTalents === "function") applyPermanentInsanityTalents()>>
+<</widget>>
+
+<<widget "modWardrobeUpdate">>
+	<<if $wardrobes is undefined>><<set $wardrobes to {}>><</if>>
+
+	<<if $dolpRingsEarringsVersion is undefined or $dolpRingsEarringsVersion lt 1>>
+		<<modRingsEarrings>>
+		<<set $dolpRingsEarringsVersion to 1>>
+	<</if>>
+
+	<<if $passage isnot "Start">>
+		<<set _furniture to Furniture.get("wardrobe", "bedroom")>>
+		<<if _furniture and _furniture.type and _furniture.type.includes("organiser")>>
+			<<set $wardrobe.space to 40 * $wardrobeMult>>
+		<<elseif _furniture and _furniture.type and _furniture.type.includes("spacious")>>
+			<<set $wardrobe.space to 30 * $wardrobeMult>>
+		<<else>>
+			<<set $wardrobe.space to 20 * $wardrobeMult>>
+		<</if>>
+	<</if>>
+
+	<<if $wardrobes.alexFarm is undefined>><<set $wardrobes.alexFarm to {}>><</if>>
+	<<if $wardrobes.asylum is undefined>><<set $wardrobes.asylum to {}>><</if>>
+	<<if $wardrobes.avery_mansion is undefined>><<set $wardrobes.avery_mansion to {}>><</if>>
+	<<if $wardrobes.birdTower is undefined>><<set $wardrobes.birdTower to {}>><</if>>
+	<<if $wardrobes.brothel is undefined>><<set $wardrobes.brothel to {}>><</if>>
+	<<if $wardrobes.changingRoom is undefined>><<set $wardrobes.changingRoom to {}>><</if>>
+	<<if $wardrobes.colosseum is undefined>><<set $wardrobes.colosseum to {}>><</if>>
+	<<if $wardrobes.danceStudio is undefined>><<set $wardrobes.danceStudio to {}>><</if>>
+	<<if $wardrobes.edensCabin is undefined>><<set $wardrobes.edensCabin to {}>><</if>>
+	<<if $wardrobes.lakeStash is undefined>><<set $wardrobes.lakeStash to {}>><</if>>
+	<<if $wardrobes.mmaGym is undefined>><<set $wardrobes.mmaGym to {}>><</if>>
+	<<if $wardrobes.officeBuilding is undefined>><<set $wardrobes.officeBuilding to {}>><</if>>
+	<<if $wardrobes.pirate is undefined>><<set $wardrobes.pirate to {}>><</if>>
+	<<if $wardrobes.prison is undefined>><<set $wardrobes.prison to {}>><</if>>
+	<<if $wardrobes.schoolBoys is undefined>><<set $wardrobes.schoolBoys to {}>><</if>>
+	<<if $wardrobes.schoolGirls is undefined>><<set $wardrobes.schoolGirls to {}>><</if>>
+	<<if $wardrobes.stripClub is undefined>><<set $wardrobes.stripClub to {}>><</if>>
+	<<if $wardrobes.temple is undefined>><<set $wardrobes.temple to {}>><</if>>
+	<<if $wardrobes.waterDragonNest is undefined>><<set $wardrobes.waterDragonNest to {}>><</if>>
+
+	<<set $wardrobes.alexFarm.space to 40 * $wardrobeMult>>
+	<<set $wardrobes.asylum.space to 5 * $wardrobeMult>>
+	<<set $wardrobes.avery_mansion.space to 80 * $wardrobeMult>>
+	<<set $wardrobes.birdTower.space to 15 * $wardrobeMult>>
+	<<set $wardrobes.brothel.space to 10 * $wardrobeMult>>
+	<<set $wardrobes.changingRoom.space to 5 * $wardrobeMult>>
+	<<set $wardrobes.colosseum.space to 5 * $wardrobeMult>>
+	<<set $wardrobes.danceStudio.space to 5 * $wardrobeMult>>
+	<<set $wardrobes.edensCabin.space to 10 * $wardrobeMult>>
+	<<set $wardrobes.lakeStash.space to 5 * $wardrobeMult>>
+	<<set $wardrobes.mmaGym.space to 5 * $wardrobeMult>>
+	<<set $wardrobes.officeBuilding.space to 5 * $wardrobeMult>>
+	<<set $wardrobes.pirate.space to 5 * $wardrobeMult>>
+	<<set $wardrobes.prison.space to 5 * $wardrobeMult>>
+	<<set $wardrobes.schoolBoys.space to 5 * $wardrobeMult>>
+	<<set $wardrobes.schoolGirls.space to 5 * $wardrobeMult>>
+	<<set $wardrobes.stripClub.space to 10 * $wardrobeMult>>
+	<<set $wardrobes.temple.space to 20 * $wardrobeMult>>
+	<<set $wardrobes.waterDragonNest.space to 15 * $wardrobeMult>>
+
+	<<if $tryOn is undefined>>
+		<<set $tryOn to {}>>
+	<</if>>
+
+	<<if $tryOn.tryingOn is undefined>>
+		<<set $tryOn.tryingOn to {}>>
+	<</if>>
+
+	<<if $tryOn.tryingOn.rings is undefined>>
+		<<set $tryOn.tryingOn.rings to null>>
+		<<set $tryOn.tryingOn.earrings to null>>
+	<</if>>
+<</widget>>
+
+<<widget "modParasiteCapUpdate">>
+	<<if $container>>
+		<<if $container.home.upgrades.capacity is 0>>
+			<<set $container.home.maxCount to 1 * $parasiteCapMult>>
+		<<elseif $container.home.upgrades.capacity is 1>>
+			<<set $container.home.maxCount to 2 * $parasiteCapMult>>
+		<<elseif $container.home.upgrades.capacity is 2>>
+			<<set $container.home.maxCount to 3 * $parasiteCapMult>>
+		<<elseif $container.home.upgrades.capacity is 3>>
+			<<set $container.home.maxCount to 4 * $parasiteCapMult>>
+		<<elseif $container.home.upgrades.capacity is 4>>
+			<<set $container.home.maxCount to 5 * $parasiteCapMult>>
+		<</if>>
+		<<if $container.farm.upgrades.capacity is 0>>
+			<<set $container.farm.maxCount to 5 * $parasiteCapMult>>
+		<<elseif $container.farm.upgrades.capacity is 1>>
+			<<set $container.farm.maxCount to 7 * $parasiteCapMult>>
+		<<elseif $container.farm.upgrades.capacity is 2>>
+			<<set $container.farm.maxCount to 9 * $parasiteCapMult>>
+		<<elseif $container.farm.upgrades.capacity is 3>>
+			<<set $container.farm.maxCount to 11 * $parasiteCapMult>>
+		<<elseif $container.farm.upgrades.capacity is 4>>
+			<<set $container.farm.maxCount to 14 * $parasiteCapMult>>
+		<<elseif $container.farm.upgrades.capacity is 5>>
+			<<set $container.farm.maxCount to 17 * $parasiteCapMult>>
+		<<elseif $container.farm.upgrades.capacity is 6>>
+			<<set $container.farm.maxCount to 20 * $parasiteCapMult>>
+		<</if>>
+	<</if>>
+
+			<!--DecoMod Stuff -->
+	<<if $foreground_image1 is undefined>>
+		<<set $foreground_image1 to "none">>
+	<</if>>
+
+	<<if $background_image1 is undefined>>
+		<<set $background_image1 to "none">>
+	<</if>>
+
+	<<if $foreground_image2 is undefined>>
+		<<set $foreground_image2 to "none">>
+	<</if>>
+
+	<<if $background_image2 is undefined>>
+		<<set $background_image2 to "none">>
+	<</if>>
+
+<</widget>>
+
+<<widget "modNewNamedNPCs">>
+	<<if $dolpNpcListVersion is undefined>>
+		<<set _newNNPCs to {"riley": {nam : "Riley", title: "MMA coach", insecurity: "skill", adult: 1}}>>
+		<<for _npc range Object.keys(_newNNPCs)>>
+			<<if !$NPCNameList.includes(_newNNPCs[_npc].nam)>>
+				<<newNamedNpc _newNNPCs[_npc]>>
+				<<set _npcsAdded to true>>
+			<</if>>
+		<</for>>
+		<<if _npcsAdded is true>>
+			<<generateNPCNameHairAndEyeColors>>
+		<</if>>
+		<<set $dolpNpcListVersion to 1>>
+	<</if>>
+	<<set _rileyIndex to $NPCNameList.indexOf("Riley")>>
+	<<if _rileyIndex gte 0>>
+		<<if $NPCName[_rileyIndex].description is "Riley" and $NPCName[_rileyIndex].title is undefined>>
+			<<set $NPCName[_rileyIndex].title to "MMA coach">>
+			<<set $NPCName[_rileyIndex].insecurity to "skill">>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "modRingsEarrings">>
+	<<if $wear_earrings is undefined>>
+		<<set $worn.earrings to clone(setup.clothes.earrings[0])>>
+		<<set $carried.earrings to clone(setup.clothes.earrings[0])>>
+		<<set $wardrobe.earrings to []>>
+		<<set $store.earrings to []>>
+		<<set $wear_earrings to "none">>
+		<<set $ears_pierced to 0>>
+	<</if>>
+
+	<<if $wear_rings is undefined>>
+		<<set $worn.rings to clone(setup.clothes.rings[0])>>
+		<<set $carried.rings to clone(setup.clothes.rings[0])>>
+		<<set $wardrobe.rings to []>>
+		<<set $store.rings to []>>
+		<<set $wear_rings to "none">>
+	<</if>>
+
+	<<script>>
+		if (V.wardrobes && typeof V.wardrobes === "object") {
+			for (const i of Object.keys(V.wardrobes)) {
+				if (i === "shopReturn" || i === "wardrobe") continue;
+				if (!V.wardrobes[i] || typeof V.wardrobes[i] !== "object") continue;
+				if (V.wardrobes[i].earrings === undefined) 	{V.wardrobes[i].earrings = [];}
+				if (V.wardrobes[i].rings 	=== undefined)	{V.wardrobes[i].rings = [];}
+			}
+		}
+	<</script>>
+
+	/* Directly unlock antique special clothes if museum is complete */
+	<<if $museumAntiques isnot undefined and $museumAntiques.museumCount gte $museumAntiques.maxCount * 0.8>>
+		<<for _sc range $specialClothes>>
+			<<if (_sc.name.includes("antique") or _sc.name.includes("ancient")) and _sc.unlocked lt 3>>
+				<<set _sc.unlocked to 3>>
+			<</if>>
+		<</for>>
+	<</if>>
+
+	/* Persist unlocked sets to localStorage so feat boosters reflect them */
+	<<if $feats isnot undefined and $feats.allSaves isnot undefined>>
+		<<updateFeats>>
+	<</if>>
+
+	/* Jewellery worn-slots repair */
+	<<script>>window.repairMissingJewelleryWornSlots?.();<</script>>
+<</widget>>
+
+/* Guarantee every transformation-trait key exists.
+Reads across the game test `X isnot "disabled"` (and `!["disabled","hidden"].includes(X)`), which treat a MISSING key as active
+so an undefined key shows phantom traits (Dragon Eyes, Predatory Animal...) and triggers their effects (e.g. the dragonEyes always-hallucinate check).
+Trait keys are added to the schema over time, and the backfills for them live in the version-gated <<modupdate>>,
+so a same-version save that predates a key never gets it.
+
+This runs every load (via xchange-loadinit) to fill only the missing keys with TF-appropriate defaults, leaving any value the player already set untouched. */
+<<widget "ensureTransformationTraits">>
+	<<if $bunnytf is undefined>><<set $bunnytf to ($bunny gte 6 ? 1 : 0)>><</if>>
+	/* Older saves did not distinguish safe dumps from stale zero-point unlocks. Preserve those existing unlocks. */
+	<<script>>
+		if (Array.isArray(V.transformationHistory)) {
+			const transformations = {
+				angel: ["angel", "angelbuild", "angeltf"],
+				demon: ["demon", "demonbuild", "demontf"],
+				wolf: ["wolfgirl", "wolfbuild", "wolftf"],
+				cat: ["cat", "catbuild", "cattf"],
+				cow: ["cow", "cowbuild", "cowtf"],
+				bear: ["bear", "bearbuild", "beartf"],
+				harpy: ["harpy", "birdbuild", "harpytf"],
+				fox: ["fox", "foxbuild", "foxtf"],
+				bunny: ["bunny", "bunnybuild", "bunnytf"],
+			};
+			for (const [name, [level, build, flag]] of Object.entries(transformations)) {
+				if (V[flag] === 1 && V[level] === 0 && V[build] === 0) V.transformationHistory.pushUnique(`genomeDump:${name}`);
+			}
+		}
+	<</script>>
+	<<if $transformationParts is undefined>><<setupTransformationPiecesObject>><</if>>
+	<<if $transformationParts.traits is undefined>><<set $transformationParts.traits to {}>><</if>>
+	<<set _traits to $transformationParts.traits>>
+	<<if _traits.fangs is undefined>><<set _traits.fangs to (($wolfgirl gte 2 or $cat gte 2 or $fox gte 2) ? "default" : "disabled")>><</if>>
+	<<if _traits.sharpEyes is undefined>><<set _traits.sharpEyes to (($cat gte 2 or $harpy gte 2 or $fox gte 2 or $waterdragon gte 2) ? "default" : "disabled")>><</if>>
+	<<if _traits.dragonEyes is undefined>><<set _traits.dragonEyes to (($waterdragon gte 2 or $waterdragontf is 1 or $waterdragonCosmeticUnlocked is 1) ? "default" : "disabled")>><</if>>
+	<<if _traits.dragonTongue is undefined>><<set _traits.dragonTongue to (($waterdragon gte 2 or $waterdragontf is 1 or $waterdragonCosmeticUnlocked is 1) ? "default" : "disabled")>><</if>>
+	<<if _traits.mateForLife is undefined>><<set _traits.mateForLife to (($fox gte 3 or $harpy gte 3) ? "default" : "disabled")>><</if>>
+	<<if _traits.chase is undefined>><<set _traits.chase to "disabled">><</if>>
+	<<if _traits.flaunting is undefined>><<set _traits.flaunting to "disabled">><</if>>
+	<<if _traits.ironWill is undefined>><<set _traits.ironWill to (effectiveTransformationLevel("fallen") gte 4 ? "default" : "disabled")>><</if>>
+	<<if _traits.strongFeet is undefined>><<set _traits.strongFeet to ($bunny gte 2 ? "default" : "disabled")>><</if>>
+	<<if _traits.tempTolerance is undefined>><<set _traits.tempTolerance to "disabled">><</if>>
+	<<if _traits.aquatic is undefined>><<set _traits.aquatic to (($waterdragon gte 7 or $waterdragontf is 1) ? "default" : "disabled")>><</if>>
+	<<if _traits.leviathan is undefined>><<set _traits.leviathan to "disabled">><</if>>
+	/* Part keys share the flaw: isPartEnabled(undefined) is true, so a missing key renders undefined.png layers. */
+	<<script>>window.ensureTransformationParts?.();<</script>>
+	/* predatoryAnimal/preyAnimal are derived from current TF levels, never authored recompute them. */
+	<<recomputePredatorPrey>>
+<</widget>>
+
+<<widget "bikeUpdate">>
+	<<set $bicycle to {}>>
+	<<set $bicycle.quality to ($bike || 0)>>
+	/* Only saves that actually had a bike own one after migration. */
+	<<set $bicycle.own to $bike gte 1>>
+	<<if $location is "town" || $location is "plains" || $location is "forest" || $location is "industrial">>
+		<<set $bicycle.location to $sublocation>>
+	<<else>>
+		<<set $bicycle.location to $location>>
+	<</if>>
+	/* Only real parking spots are valid; a save migrated anywhere else has the bike waiting at home.
+	Region must be set here too: the hourly theft check reads it before the first <<bike>> render, and an unknown region counts as maximum risk. */
+	<<if !["domus", "barb", "danube", "wolf", "connudatus", "cliff", "high", "starfish", "oxford", "nightingale", "mer", "elk", "harvest", "lake", "alex_farm"].includes($bicycle.location)>>
+		<<set $bicycle.location to "domus">>
+	<</if>>
+	<<bikeSetRegion>>
+	<<set $bicycle.durability to {
+		current: 0,
+		max: 0
+	}>>
+	<<switch $bicycle.quality>>
+		<<case 1>>
+			<<set $bicycle.durability.max to 800>>
+		<<case 2>>
+			<<set $bicycle.durability.max to 2400>>
+		<<case 3>>
+			<<set $bicycle.durability.max to 4800>>
+		<<default>>
+			<<set $bicycle.durability.max to 0>>
+	<</switch>>
+	<<if $bikeBroken isnot undefined>>
+		<<set $bicycle.durability.current to 0>>
+	<<else>>
+		<<set $bicycle.durability.current to Math.clamp($bikeDurability || 0, 0, $bicycle.durability.max)>>
+	<</if>>
+	/* DoLX has no off-road upgrade shop; the field stays as an empty array for compatibility. */
+	<<set $bicycle.upgrades to []>>
+	<<switch $bikeSecurityGear>>
+		<<case 5>>
+			<<set $bicycle.security to 0.99>>
+		<<case 4>>
+			<<set $bicycle.security to 0.8>>
+		<<case 3>>
+			<<set $bicycle.security to 0.5>>
+		<<case 2>>
+			<<set $bicycle.security to 0.3>>
+		<<case 1>>
+			<<set $bicycle.security to 0.1>>
+		<<default>>
+			<<set $bicycle.security to 0>>
+	<</switch>>
+	<<if !$bikeStolen>>
+		<<set $bicycle.stolen to false>>
+		<<set $bicycle.securityStolen to false>>
+	<<else>>
+		<<set $bicycle.stolen to true>>
+		<<set $bicycle.own to false>>
+		<<set $bicycle.securityStolen to true>>
+		<<set $bicycle.upgrades to []>>
+	<</if>>
+	<<if $bikeSecurityGearStolen isnot undefined>>
+		<<set $bicycle.securityStolen to true>>
+		<<set $bicycle.security to 0>>
+	<</if>>
+	/* Treat missing legacy toggles as off: saves that never touched the old bike system get the safe defaults. */
+	<<if $bikePersistentLocation is 1>>
+		<<set $bicycle.persistentLocation to true>>
+	<<else>>
+		<<set $bicycle.persistentLocation to false>>
+	<</if>>
+	<<if $bikeSecurity is 1>>
+		<<set $bicycle.theftEnabled to true>>
+	<<else>>
+		<<set $bicycle.theftEnabled to false>>
+	<</if>>
+	<<set $bicycle.travel to {}>>
+	<<set $bicycle.roughTerrain to 0>>
+	<<set $bicycle.gains to {}>>
+	/* Passages the broken-bike walk can strand you at; only the town districts are used. */
+	<<set $bicycle.destinations to {
+		Residential: ["Barb Street", "Domus Street", "Danube Street", "Wolf Street"],
+		Commercial: ["High Street", "Connudatus Street", "Cliff Street", "Nightingale Street", "Oxford Street", "Starfish Street"],
+		Industrial: ["Elk Street", "Harvest Street", "Mer Street"],
+	}>>
+
+	<<unset $bikeBrakes, $bikeGrips, $bikePedals, $bikeSuspension, $bikeTires, $bikeTubeless, $bikeSecurityGear, $bikeSecurityGearStolen, $bikeDestination, $bikeEndCategory, $bikeStartCategory, $bike>>
+
+	/* increment this whenever you need to i guess */
+	<<set $bikeUpdate to 2>>
+<</widget>>
+
+<<widget "bikeUpdate2">>
+	/* One-time fixup for saves migrated by the first bikeUpdate pass:
+	rescale durability to the DoLX 800/2400/4800 balance and clear phantom ownership on bikeless saves. */
+	<<if $bicycle is undefined>>
+		<<bikeUpdate>>
+	<<else>>
+		<<if $bicycle.quality lte 0 or $bicycle.quality is undefined>>
+			<<set $bicycle.own to false>>
+			<<set $bicycle.quality to 0>>
+		<</if>>
+		/* First pass could park the bike at a non-parking spot and left the theft region unset (unknown region = maximum theft risk). */
+		<<if !["domus", "barb", "danube", "wolf", "connudatus", "cliff", "high", "starfish", "oxford", "nightingale", "mer", "elk", "harvest", "lake", "alex_farm"].includes($bicycle.location)>>
+			<<set $bicycle.location to "domus">>
+		<</if>>
+		<<bikeSetRegion>>
+		<<switch $bicycle.quality>>
+			<<case 1>><<set _bikeMax to 800>>
+			<<case 2>><<set _bikeMax to 2400>>
+			<<case 3>><<set _bikeMax to 4800>>
+			<<default>><<set _bikeMax to 0>>
+		<</switch>>
+		<<if $bicycle.durability is undefined>>
+			<<set $bicycle.durability to { current: 0, max: 0 }>>
+		<</if>>
+		/* The first-pass depot repair could corrupt durability into NaN; the player paid for those repairs, so restore a full bar. */
+		<<if !Number.isFinite($bicycle.durability.current)>>
+			<<set $bicycle.durability.current to _bikeMax>>
+			<<set $bicycle.durability.max to _bikeMax>>
+		<<elseif $bicycle.durability.max isnot _bikeMax>>
+			<<set $bicycle.durability.current to Math.round(_bikeMax * ($bicycle.durability.max gt 0 ? Math.clamp($bicycle.durability.current / $bicycle.durability.max, 0, 1) : 0))>>
+			<<set $bicycle.durability.max to _bikeMax>>
+		<</if>>
+		<<set $bikeUpdate to 2>>
+	<</if>>
+<</widget>>
+
+<<widget "modNamedNpcSkinRepair">>
+	<<if $passage isnot "Start">>
+		<<for _i to 0; _i lt $NPCName.length; _i++>>
+			<<if $NPCName[_i].skincolour is "none">>
+				<<set $NPCName[_i].skincolour to randomSkinTone()>>
+			<</if>>
+		<</for>>
+	<</if>>
+<</widget>>

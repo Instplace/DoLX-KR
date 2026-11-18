@@ -1,0 +1,2880 @@
+:: X-Change Widgets [widget]
+
+	<<widget "sissify">>
+		<<wash>>
+		<<set $player.gender_body to "f">>
+		<<xchange-apply-demeanour>>
+		<<set $player.bodyshape to "curvy">>
+		<<set $player.penissize to 0>>
+		<<set $ballssize to 0>>
+		<<if $xchange.sizeOverride is "default">>
+			<<set $bodysize to setup.stepBodySize($bodysize, -1)>>
+		<<else>>
+			<<set _sizeMap to {
+				miniature: -1,
+				tiny: 0,
+				small: 1,
+				normal: 2,
+				tall: 2.5,
+				large: 3,
+				giant: 4
+			}>>
+			<<if _sizeMap[$xchange.sizeOverride] isnot undefined>>
+				<<set $bodysize to _sizeMap[$xchange.sizeOverride]>>
+			<</if>>
+		<</if>>
+		<<run updatePhysique()>>
+		<<clamp>>
+	<</widget>>
+
+	<<widget "become-girl">>
+		<<run setup.xChangeRecordActiveBodyVirginity()>>
+		<<wash>>
+
+		<<set $player.gender_body to "f">>
+		<<set $player.bodyshape to "curvy">>
+		<<if _args[0] isnot "restore">><<xchange-apply-demeanour>><</if>>
+
+		/* Face and hair belong to the body being generated, so they're only rolled when a brand new
+		   female body is built: never when an existing one is loaded back, and never when this widget
+		   is only being used to flip the shape back on the way to <<load-body>> (_args[0] is "restore").
+		   Face style additionally obeys the "Enable face changes for pills" setting. */
+		<<set _xchangeUseCached to ($player.sex !== "f" && setup.xChangeCachedBodyUsable("genderswapped"))>>
+		<<set _xchangeNewBody to (_args[0] isnot "restore") && !_xchangeUseCached>>
+
+		<<if _xchangeNewBody>>
+			<<if $xchange.faceChangesEnabled and $facestyle is "default">>
+				<<set $facevariant to ["sweet","catty","default","foxy"].random()>>
+			<</if>>
+
+			/* Generating a new sides hairstyle if player uses short hair */
+			<<set _currentHairstyle to setup.hairstyles.sides.find(hs => hs.variable === V.hairtype)>>
+			<<set _hairstyles to setup.hairstyles.sides
+				.filter(x => x.type.includes("loose") &&
+					!x.type.includesAny("curly","textured","short","pigtails","braids","buns","ponytail") &&
+					!["swept right","bedhead"].includes(x.variable))
+				.map(x => x.variable)>>
+
+			/* If we can't resolve current hair (or it's short and not a disallowed bob), pick a valid new one */
+			<<if _currentHairstyle is undefined>>
+				<<set $hairtype to _hairstyles.random()>>
+			<<elseif _currentHairstyle.type.includes("short")
+				&& !["french bob","layered bob","straight bob"].includes(_currentHairstyle.variable)>>
+				<<set $hairtype to _hairstyles.random()>>
+			<</if>>
+		<</if>>
+
+		/* Normal Physique reduction */
+		<<set $bodysize to setup.stepBodySize($bodysize, -1)>>
+
+		/* Loading existing values, or generating new ones */
+		<<set _xchangeLoadedBody to false>>
+		<<if _xchangeUseCached>>
+			<<load-body "genderswapped">>
+			<<set _xchangeLoadedBody to true>>
+			<<if $xchange.customisedSkinColour is "random" || $xchange.customisedEyeColour is "random" || $xchange.customisedSkinColour isnot "nochange" || $xchange.customisedEyeColour isnot "nochange">>
+				/* Optional: allow wraith appearance even on loaded bodies */
+				<<set _wraithChance to ($xchange.wraithChance is undefined ? 0.70 : Math.clamp($xchange.wraithChance, 0, 1))>>
+				<<set _doWraith to (Math.random() < _wraithChance)>>
+
+				<<if $xchange.customisedSkinColour is "random">>
+					<<set _skinKeys to Object.keys(setup.colours.skin_options).filter(k => !setup.colours.tf_skin_colors.includes(k))>>
+					<<set _wraithSkinKeys to _skinKeys.filter(k => /ivory|wraith/i.test(k))>>
+					<<set _normalSkinKeys to _skinKeys.filter(k => !/ivory|wraith/i.test(k))>>
+					<<if _doWraith && _wraithSkinKeys.length gt 0>>
+						<<set $player.skin.color to _wraithSkinKeys.random()>>
+					<<elseif _normalSkinKeys.length gt 0>>
+						<<set $player.skin.color to _normalSkinKeys.random()>>
+					<</if>>
+				<<elseif $xchange.customisedSkinColour isnot "nochange">>
+					<<if setup.colours.skin_options[$xchange.customisedSkinColour] isnot undefined>>
+						<<set $player.skin.color to $xchange.customisedSkinColour>>
+					<</if>>
+				<</if>>
+				<<if $xchange.customisedEyeColour is "random">>
+					<<set _eyeKeys to Object.keys(setup.colours.eyes_map).filter(k => k !== "random" && !/^colorWheelTemporary/i.test(k))>>
+					<<set _wraithEyeKeys to _eyeKeys.filter(k => /possessed|wraith|ivory/i.test(k))>>
+					<<set _normalEyeKeys to _eyeKeys.filter(k => !/possessed|wraith|ivory/i.test(k))>>
+					<<if _doWraith && _wraithEyeKeys.length gt 0>>
+						<<set _eyeColour to _wraithEyeKeys.random()>>
+					<<elseif _normalEyeKeys.length gt 0>>
+						<<set _eyeColour to _normalEyeKeys.random()>>
+					<<else>>
+						<<set _eyeColour to _eyeKeys.random()>>
+					<</if>>
+					<<set $leftEyeColour to _eyeColour>>
+					<<set $rightEyeColour to _eyeColour>>
+				<<elseif $xchange.customisedEyeColour isnot "nochange">>
+					<<set $leftEyeColour to $xchange.customisedEyeColour>>
+					<<set $rightEyeColour to $xchange.customisedEyeColour>>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<xchange-apply-body-virginity "xchange">>
+			/* Sizes come from the X-Change body limits when the player has set them, otherwise from their own limits. */
+			<<set $player.breastsize to setup.xChangeRollBodySize("breast")>>
+			<<set $player.bottomsize to setup.xChangeRollBodySize("bottom")>>
+			<<set $player.penissize to 0>>
+			<<set $ballssize to 0>>
+
+			/* --- Ivory Wraith roll (tweak chance here), default is 0.70 (70%) --- */
+			<<set _wraithChance to ($xchange.wraithChance is undefined ? 0.70 : Math.clamp($xchange.wraithChance, 0, 1))>>
+			<<set _doWraith to (Math.random() < _wraithChance)>>
+
+			<<if $xchange.customisedSkinColour is "random">>
+				<<set _skinKeys to Object.keys(setup.colours.skin_options).filter(k => !setup.colours.tf_skin_colors.includes(k))>>
+				/* "Wraith" pool: keys containing ivory/wraith */
+				<<set _wraithSkinKeys to _skinKeys.filter(k => /ivory|wraith/i.test(k))>>
+				/* Normal pool: everything else (prevents wraith unless the roll hits) */
+				<<set _normalSkinKeys to _skinKeys.filter(k => !/ivory|wraith/i.test(k))>>
+				<<if _doWraith && _wraithSkinKeys.length gt 0>>
+					<<set $player.skin.color to _wraithSkinKeys.random()>>
+				<<elseif _normalSkinKeys.length gt 0>>
+					<<set $player.skin.color to _normalSkinKeys.random()>>
+				<<else>>
+					/* safety fallback */
+					<<set $player.skin.color to "medium">>
+				<</if>>
+			<<elseif $xchange.customisedSkinColour isnot "nochange">>
+				<<if setup.colours.skin_options[$xchange.customisedSkinColour] isnot undefined>>
+					<<set $player.skin.color to $xchange.customisedSkinColour>>
+				<<else>>
+					<<set $player.skin.color to "medium">>
+				<</if>>
+			<</if>>
+
+			<<if $xchange.customisedEyeColour is "random">>
+				<<set _eyeKeys to Object.keys(setup.colours.eyes_map)>>
+				/* remove non-choices */
+				<<set _eyeKeys to _eyeKeys.filter(k => k !== "random" && !/^colorWheelTemporary/i.test(k))>>
+				/* Wraith eyes: includes possessed/wraith/ivory */
+				<<set _wraithEyeKeys to _eyeKeys.filter(k => /possessed|wraith|ivory/i.test(k))>>
+				/* Normal eyes: everything else */
+				<<set _normalEyeKeys to _eyeKeys.filter(k => !/possessed|wraith|ivory/i.test(k))>>
+				<<if _doWraith && _wraithEyeKeys.length gt 0>>
+					<<set _eyeColour to _wraithEyeKeys.random()>>
+				<<elseif _normalEyeKeys.length gt 0>>
+					<<set _eyeColour to _normalEyeKeys.random()>>
+				<<else>>
+					/* safety fallback: any remaining key */
+					<<set _eyeColour to _eyeKeys.random()>>
+				<</if>>
+				<<set $leftEyeColour to _eyeColour>>
+				<<set $rightEyeColour to _eyeColour>>
+			<<elseif $xchange.customisedEyeColour isnot "nochange">>
+				<<set $leftEyeColour to $xchange.customisedEyeColour>>
+				<<set $rightEyeColour to $xchange.customisedEyeColour>>
+			<</if>>
+
+			<<if $xchange.customisedHairColour is "random">>
+				<<set _colours to Object.keys(setup.colours.hair_map)>>
+				<<run _colours.deleteWith(function (value) {
+					return value === "random" || value === "tmp0" || value === "tmp1" || /^colorWheelTemporary/i.test(value);
+				})>>
+				<<if _colours.length gt 0>>
+					<<set _hairColour to _colours[Math.floor(Math.random() * _colours.length)]>>
+				<<else>>
+					/* safety fallback: pick any non-random key */
+					<<set _hairColour to Object.keys(setup.colours.hair_map).find(k => k !== "random")>>
+				<</if>>
+				<<set $haircolour to _hairColour>>
+				<<set $hairfringecolour to _hairColour>>
+				<<set $naturalhaircolour to _hairColour>>
+			<<elseif $xchange.customisedHairColour isnot "nochange">>
+				<<set $haircolour to $xchange.customisedHairColour>>
+				<<set $hairfringecolour to $xchange.customisedHairColour>>
+				<<set $naturalhaircolour to $xchange.customisedHairColour>>
+			<</if>>
+			<<if $xchange.customisedHairColour isnot "nochange" and V.dhmod isnot undefined>>
+				<<if V.dhmod.hair isnot undefined>>
+					<<set V.dhmod.hair.is_custom to false>>
+				<</if>>
+				<<if V.dhmod.fringe isnot undefined>>
+					<<set V.dhmod.fringe.is_custom to false>>
+				<</if>>
+			<</if>>
+			<<if $hairlength lt 400>>
+				<<set _hairLengthLevels to [400,400,400,600,600,800,1000]>>
+				<<set $hairlength to _hairLengthLevels[random(0,_hairLengthLevels.length-1)]>>
+			<</if>>
+			<<if $fringelength lt 200>>
+				<<set $fringelength to Math.clamp($hairlength - 200, 200, 600)>>
+			<</if>>
+			<<set $beauty += 10000>>
+			<<set $penisgrowthtimer to 500>>
+			<<set $bottomgrowthtimer to 500>>
+			<<set $breastgrowthtimer to 500>>
+			/* <<if !$xchangeFameMerged>> */
+				<<set $fame to {
+					bestiality: 0,
+					business: 0,
+					exhibitionism: 0,
+					good: 0,
+					impreg: 0,
+					model: 0,
+					pimp: 0,
+					pregnancy: 0,
+					prostitution: 0,
+					rape: 0,
+					scrap: 0,
+					sex: 0,
+					social: 0,
+				}>>
+				<<set $cool to 120>>
+				<<set $crime to {}>>
+				<<for _cr range Object.keys(setup.crimeNames)>>
+					<<set $crime[_cr] to {current: 0, history: 0, daily: 0, count: 0, countHistory: 0}>>
+				<</for>>
+				<<set $crime.events to {}>>
+			/* <</if>> */
+			<<if $xchangeStatSplit>>
+				<<set $promiscuity to 0>>
+				<<set $exhibitionism to 0>>
+				<<set $deviancy to 0>>
+			<</if>>
+			<<clamp>>
+			<<calchairlengthstage>>
+		<</if>>
+
+		/* Physique override */
+		<<if $xchange.sizeOverride isnot "default">>
+			<<set _sizeMap to {
+				miniature: -1,
+				tiny: 0,
+				small: 1,
+				normal: 2,
+				tall: 2.5,
+				large: 3,
+				giant: 4
+			}>>
+			<<if _sizeMap[$xchange.sizeOverride] isnot undefined>>
+				<<set $bodysize to _sizeMap[$xchange.sizeOverride]>>
+			<</if>>
+		<</if>>
+
+		/* Genitalia */
+		<<run setup.xchangeClearNpcGenitalLinks(["vagina","penis"])>>
+		<<set $vaginause to 0>>
+		<<set $vaginastate to 0>>
+		<<set $penisuse to "none">>
+		<<set $penisstate to "none">>
+		<<set $player.sex to "f">>
+		<<set $player.ballsExist to false>>
+		<<set $player.penisExist to false>>
+		<<set $player.vaginaExist to true>>
+
+		/* Adapt chastity device to new body. */
+		<<set _chastityAdapted to setup.xchangeAdaptChastityToBody()>>
+		<<if _chastityAdapted>><<set $xchange.chastityAdaptedMessage to _chastityAdapted>><</if>>
+
+		/* Wild parasites are body-scoped: cached bodies restore theirs in load-body, fresh bodies start clean.
+		   Ear slime is global (lives in your head), so preserve its ear slots across the wipe and leave $earSlime untouched. */
+		<<if !_xchangeLoadedBody>>
+			<<set _xchangeEarKeep to setup.xchangeCaptureEarParasites()>>
+			<<parasiteinit>>
+			<<run setup.xchangeRestoreEarParasites(_xchangeEarKeep)>>
+		<</if>>
+
+		<<if !_xchangeLoadedBody and $tempSavedHairStyles>><<saveTempHairStyle>><</if>>
+		<<run updatePhysique()>>
+		<<updatesidebarimg>>
+	<</widget>>
+
+	<<widget "butchify">>
+		<<wash>>
+		<<set $player.gender_body to "m">>
+		<<xchange-apply-demeanour>>
+		<<set $player.bodyshape to "classic">>
+		<<if $xchange.sizeOverride is "default">>
+			<<set $bodysize to setup.stepBodySize($bodysize, 1)>>
+		<<else>>
+			<<set _sizeMap to {
+				miniature: -1,
+				tiny: 0,
+				small: 1,
+				normal: 2,
+				tall: 2.5,
+				large: 3,
+				giant: 4
+			}>>
+			<<if _sizeMap[$xchange.sizeOverride] isnot undefined>>
+				<<set $bodysize to _sizeMap[$xchange.sizeOverride]>>
+			<</if>>
+		<</if>>
+		<<set $player.breastsize to 0>>
+		<<run updatePhysique()>>
+		<<clamp>>
+	<</widget>>
+
+	<<widget "become-boy">>
+		<<run setup.xChangeRecordActiveBodyVirginity()>>
+		<<wash>>
+		<<set $player.gender_body to "m">>
+		<<set $player.bodyshape to "classic">>
+		<<if _args[0] isnot "restore">><<xchange-apply-demeanour>><</if>>
+
+		/* See <<become-girl>>: face/hair are only rolled for a brand new male body, never on a reload
+		   and never on the shape flip that precedes <<load-body>> during a restore. */
+		<<set _xchangeUseCached to ($player.sex !== "m" && setup.xChangeCachedBodyUsable("genderswapped"))>>
+		<<set _xchangeNewBody to (_args[0] isnot "restore") && !_xchangeUseCached>>
+
+		<<if _xchangeNewBody>>
+			<<if $xchange.faceChangesEnabled and $facestyle is "default">>
+				<<set $facevariant to ["default","aloof","foxy"].random()>>
+			<</if>>
+			<<set _shortStyles to setup.hairstyles.sides
+				.filter(x => x.type.includes("short"))
+				.map(x => x.variable)>>
+			<<if !_shortStyles.includes($hairtype)>>
+				<<set $hairtype to _shortStyles.random()>>
+			<</if>>
+		<</if>>
+		<<set $bodysize to setup.stepBodySize($bodysize, 1)>>
+
+		/* Loading existing values, or generating new ones */
+		<<set _xchangeLoadedBody to false>>
+		<<if _xchangeUseCached>>
+			<<load-body "genderswapped">>
+			<<set _xchangeLoadedBody to true>>
+			<<if $xchange.customisedSkinColour is "random" || $xchange.customisedEyeColour is "random" || $xchange.customisedSkinColour isnot "nochange" || $xchange.customisedEyeColour isnot "nochange">>
+				/* Optional: allow wraith appearance even on loaded bodies */
+				<<set _wraithChance to ($xchange.wraithChance is undefined ? 0.70 : Math.clamp($xchange.wraithChance, 0, 1))>>
+				<<set _doWraith to (Math.random() < _wraithChance)>>
+
+				<<if $xchange.customisedSkinColour is "random">>
+					<<set _skinKeys to Object.keys(setup.colours.skin_options).filter(k => !setup.colours.tf_skin_colors.includes(k))>>
+					<<set _wraithSkinKeys to _skinKeys.filter(k => /ivory|wraith/i.test(k))>>
+					<<set _normalSkinKeys to _skinKeys.filter(k => !/ivory|wraith/i.test(k))>>
+					<<if _doWraith && _wraithSkinKeys.length gt 0>>
+						<<set $player.skin.color to _wraithSkinKeys.random()>>
+					<<elseif _normalSkinKeys.length gt 0>>
+						<<set $player.skin.color to _normalSkinKeys.random()>>
+					<</if>>
+				<<elseif $xchange.customisedSkinColour isnot "nochange">>
+					<<if setup.colours.skin_options[$xchange.customisedSkinColour] isnot undefined>>
+						<<set $player.skin.color to $xchange.customisedSkinColour>>
+					<</if>>
+				<</if>>
+				<<if $xchange.customisedEyeColour is "random">>
+					<<set _eyeKeys to Object.keys(setup.colours.eyes_map).filter(k => k !== "random" && !/^colorWheelTemporary/i.test(k))>>
+					<<set _wraithEyeKeys to _eyeKeys.filter(k => /possessed|wraith|ivory/i.test(k))>>
+					<<set _normalEyeKeys to _eyeKeys.filter(k => !/possessed|wraith|ivory/i.test(k))>>
+					<<if _doWraith && _wraithEyeKeys.length gt 0>>
+						<<set _eyeColour to _wraithEyeKeys.random()>>
+					<<elseif _normalEyeKeys.length gt 0>>
+						<<set _eyeColour to _normalEyeKeys.random()>>
+					<<else>>
+						<<set _eyeColour to _eyeKeys.random()>>
+					<</if>>
+					<<set $leftEyeColour to _eyeColour>>
+					<<set $rightEyeColour to _eyeColour>>
+				<<elseif $xchange.customisedEyeColour isnot "nochange">>
+					<<set $leftEyeColour to $xchange.customisedEyeColour>>
+					<<set $rightEyeColour to $xchange.customisedEyeColour>>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<xchange-apply-body-virginity "xchange">>
+			<<set $player.breastsize to 0>>
+			/* Male X-Change bodies only get a random bottom size when size limits are enabled. Otherwise, they stay flat as before. */
+			<<set $player.bottomsize to (setup.xChangeBodySizeLimitsActive() ? setup.xChangeRollBodySize("bottom") : 0)>>
+			<<set $player.penissize to setup.xChangeRollBodySize("penis")>>
+			<<set $ballssize to random(0,5)>>
+
+			/* --- Ivory Wraith roll (tweak chance here), default is 0.70 (70%) --- */
+			<<set _wraithChance to ($xchange.wraithChance is undefined ? 0.70 : Math.clamp($xchange.wraithChance, 0, 1))>>
+			<<set _doWraith to (Math.random() < _wraithChance)>>
+
+			<<if $xchange.customisedSkinColour is "random">>
+				<<set _skinKeys to Object.keys(setup.colours.skin_options).filter(k => !setup.colours.tf_skin_colors.includes(k))>>
+				/* "Wraith" pool: keys containing ivory/wraith */
+				<<set _wraithSkinKeys to _skinKeys.filter(k => /ivory|wraith/i.test(k))>>
+				/* Normal pool: everything else (prevents wraith unless the roll hits) */
+				<<set _normalSkinKeys to _skinKeys.filter(k => !/ivory|wraith/i.test(k))>>
+				<<if _doWraith && _wraithSkinKeys.length gt 0>>
+					<<set $player.skin.color to _wraithSkinKeys.random()>>
+				<<elseif _normalSkinKeys.length gt 0>>
+					<<set $player.skin.color to _normalSkinKeys.random()>>
+				<<else>>
+					/* safety fallback */
+					<<set $player.skin.color to "medium">>
+				<</if>>
+			<<elseif $xchange.customisedSkinColour isnot "nochange">>
+				<<if setup.colours.skin_options[$xchange.customisedSkinColour] isnot undefined>>
+					<<set $player.skin.color to $xchange.customisedSkinColour>>
+				<<else>>
+					<<set $player.skin.color to "medium">>
+				<</if>>
+			<</if>>
+
+			<<if $xchange.customisedEyeColour is "random">>
+				<<set _eyeKeys to Object.keys(setup.colours.eyes_map)>>
+				/* remove non-choices */
+				<<set _eyeKeys to _eyeKeys.filter(k => k !== "random" && !/^colorWheelTemporary/i.test(k))>>
+				/* Wraith eyes: includes possessed/wraith/ivory */
+				<<set _wraithEyeKeys to _eyeKeys.filter(k => /possessed|wraith|ivory/i.test(k))>>
+				/* Normal eyes: everything else */
+				<<set _normalEyeKeys to _eyeKeys.filter(k => !/possessed|wraith|ivory/i.test(k))>>
+				<<if _doWraith && _wraithEyeKeys.length gt 0>>
+					<<set _eyeColour to _wraithEyeKeys.random()>>
+				<<elseif _normalEyeKeys.length gt 0>>
+					<<set _eyeColour to _normalEyeKeys.random()>>
+				<<else>>
+					/* safety fallback: any remaining key */
+					<<set _eyeColour to _eyeKeys.random()>>
+				<</if>>
+				<<set $leftEyeColour to _eyeColour>>
+				<<set $rightEyeColour to _eyeColour>>
+			<<elseif $xchange.customisedEyeColour isnot "nochange">>
+				<<set $leftEyeColour to $xchange.customisedEyeColour>>
+				<<set $rightEyeColour to $xchange.customisedEyeColour>>
+			<</if>>
+
+			<<if $xchange.customisedHairColour is "random">>
+				<<set _colours to Object.keys(setup.colours.hair_map)>>
+				<<run _colours.deleteWith(function (value) {
+					return value === "random" || value === "tmp0" || value === "tmp1" || /^colorWheelTemporary/i.test(value);
+				})>>
+				<<if _colours.length gt 0>>
+					<<set _hairColour to _colours[Math.floor(Math.random() * _colours.length)]>>
+				<<else>>
+					/* safety fallback: pick any non-random key */
+					<<set _hairColour to Object.keys(setup.colours.hair_map).find(k => k !== "random")>>
+				<</if>>
+				<<set $haircolour to _hairColour>>
+				<<set $hairfringecolour to _hairColour>>
+				<<set $naturalhaircolour to _hairColour>>
+			<<elseif $xchange.customisedHairColour isnot "nochange">>
+				<<set $haircolour to $xchange.customisedHairColour>>
+				<<set $hairfringecolour to $xchange.customisedHairColour>>
+				<<set $naturalhaircolour to $xchange.customisedHairColour>>
+			<</if>>
+			<<if $xchange.customisedHairColour isnot "nochange" and V.dhmod isnot undefined>>
+				<<if V.dhmod.hair isnot undefined>>
+					<<set V.dhmod.hair.is_custom to false>>
+				<</if>>
+				<<if V.dhmod.fringe isnot undefined>>
+					<<set V.dhmod.fringe.is_custom to false>>
+				<</if>>
+			<</if>>
+			<<if $hairlength gte 200>>
+				<<set $hairlength to 0>>
+			<</if>>
+			<<if $fringelength gte 200>>
+				<<set $fringelength to 0>>
+			<</if>>
+			<<set $beauty += 10000>>
+			<<set $penisgrowthtimer to 500>>
+			<<set $bottomgrowthtimer to 500>>
+			<<set $breastgrowthtimer to 500>>
+			/* <<if !$xchangeFameMerged>> */
+				<<set $fame to  {
+					bestiality: 0,
+					business: 0,
+					exhibitionism: 0,
+					good: 0,
+					impreg: 0,
+					model: 0,
+					pimp: 0,
+					pregnancy: 0,
+					prostitution: 0,
+					rape: 0,
+					scrap: 0,
+					sex: 0,
+					social: 0,
+				}>>
+				<<set $cool to 120>>
+				<<set $crime to {}>>
+				<<for _cr range Object.keys(setup.crimeNames)>>
+					<<set $crime[_cr] to {current: 0, history: 0, daily: 0, count: 0, countHistory: 0}>>
+				<</for>>
+				<<set $crime.events to {}>>
+			/* <</if>> */
+			<<if $xchangeStatSplit>>
+				<<set $promiscuity to 0>>
+				<<set $exhibitionism to 0>>
+				<<set $deviancy to 0>>
+			<</if>>
+			<<clamp>>
+			<<calchairlengthstage>>
+		<</if>>
+
+		/* Physique override */
+		<<if $xchange.sizeOverride isnot "default">>
+			<<set _sizeMap to {
+				miniature: -1,
+				tiny: 0,
+				small: 1,
+				normal: 2,
+				tall: 2.5,
+				large: 3,
+				giant: 4
+			}>>
+			<<if _sizeMap[$xchange.sizeOverride] isnot undefined>>
+				<<set $bodysize to _sizeMap[$xchange.sizeOverride]>>
+			<</if>>
+		<</if>>
+
+		/* Genitalia */
+		<<run setup.xchangeClearNpcGenitalLinks(["vagina","penis"])>>
+		<<set $vaginause to "none">>
+		<<set $vaginastate to "none">>
+		<<set $penisuse to 0>>
+		<<set $penisstate to 0>>
+		<<set $player.sex to "m">>
+		<<set $player.ballsExist to true>>
+		<<set $player.penisExist to true>>
+		<<set $player.vaginaExist to false>>
+		<<set $sexStats.vagina.menstruation.running to false>>
+		<<run window.ejectOrphanVaginalDildo?.()>>
+
+		/* Adapt chastity device to new body */
+		<<set _chastityAdapted to setup.xchangeAdaptChastityToBody()>>
+		<<if _chastityAdapted>><<set $xchange.chastityAdaptedMessage to _chastityAdapted>><</if>>
+
+		/* Wild parasites are body-scoped: cached bodies restore theirs in load-body, fresh bodies start clean.
+		   Ear slime is global (lives in your head), so preserve its ear slots across the wipe and leave $earSlime untouched. */
+		<<if !_xchangeLoadedBody>>
+			<<set _xchangeEarKeep to setup.xchangeCaptureEarParasites()>>
+			<<parasiteinit>>
+			<<run setup.xchangeRestoreEarParasites(_xchangeEarKeep)>>
+		<</if>>
+
+		<<if !_xchangeLoadedBody and $tempSavedHairStyles>><<saveTempHairStyle>><</if>>
+		<<run updatePhysique()>>
+		<<updatesidebarimg>>
+	<</widget>>
+
+	<<widget "hermify">>
+		<<run setup.xChangeRecordActiveBodyVirginity()>>
+		<<wash>>
+		<<set $player.gender_body to "a">>
+		<<xchange-apply-demeanour>>
+		<<if $xchange.pill.changedBody is undefined>>
+			<<set $player.bodyshape to "slender">>
+		<</if>>
+
+		<<set _xchangeLoadedBody to false>>
+		<<if setup.xChangeCachedBodyUsable("herm")>>
+			<<load-body "herm">>
+			<<set _xchangeLoadedBody to true>>
+			<<if $xchange.customisedSkinColour is "random" || $xchange.customisedEyeColour is "random" || $xchange.customisedSkinColour isnot "nochange" || $xchange.customisedEyeColour isnot "nochange">>
+				/* Optional: allow wraith appearance even on loaded bodies */
+				<<set _wraithChance to ($xchange.wraithChance is undefined ? 0.70 : Math.clamp($xchange.wraithChance, 0, 1))>>
+				<<set _doWraith to (Math.random() < _wraithChance)>>
+
+				<<if $xchange.customisedSkinColour is "random">>
+					<<set _skinKeys to Object.keys(setup.colours.skin_options).filter(k => !setup.colours.tf_skin_colors.includes(k))>>
+					<<set _wraithSkinKeys to _skinKeys.filter(k => /ivory|wraith/i.test(k))>>
+					<<set _normalSkinKeys to _skinKeys.filter(k => !/ivory|wraith/i.test(k))>>
+					<<if _doWraith && _wraithSkinKeys.length gt 0>>
+						<<set $player.skin.color to _wraithSkinKeys.random()>>
+					<<elseif _normalSkinKeys.length gt 0>>
+						<<set $player.skin.color to _normalSkinKeys.random()>>
+					<</if>>
+				<<elseif $xchange.customisedSkinColour isnot "nochange">>
+					<<if setup.colours.skin_options[$xchange.customisedSkinColour] isnot undefined>>
+						<<set $player.skin.color to $xchange.customisedSkinColour>>
+					<</if>>
+				<</if>>
+				<<if $xchange.customisedEyeColour is "random">>
+					<<set _eyeKeys to Object.keys(setup.colours.eyes_map).filter(k => k !== "random" && !/^colorWheelTemporary/i.test(k))>>
+					<<set _wraithEyeKeys to _eyeKeys.filter(k => /possessed|wraith|ivory/i.test(k))>>
+					<<set _normalEyeKeys to _eyeKeys.filter(k => !/possessed|wraith|ivory/i.test(k))>>
+					<<if _doWraith && _wraithEyeKeys.length gt 0>>
+						<<set _eyeColour to _wraithEyeKeys.random()>>
+					<<elseif _normalEyeKeys.length gt 0>>
+						<<set _eyeColour to _normalEyeKeys.random()>>
+					<<else>>
+						<<set _eyeColour to _eyeKeys.random()>>
+					<</if>>
+					<<set $leftEyeColour to _eyeColour>>
+					<<set $rightEyeColour to _eyeColour>>
+				<<elseif $xchange.customisedEyeColour isnot "nochange">>
+					<<set $leftEyeColour to $xchange.customisedEyeColour>>
+					<<set $rightEyeColour to $xchange.customisedEyeColour>>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<set _body to $xchange.pill.originalBody>>
+			/* Restore whatever the genderflip-first step (become-boy/become-girl) destroyed, keyed on the ORIGINAL body sex NOT $player.gender identity.
+			The two can legitimately disagree (e.g. a female-identifying male: sex "m", gender "f"), and keying on identity used to run the wrong branch, leaving the herm's newly-gained penis stuck at size 0 (Micro). */
+			<<set _origSex to (_body and (_body.sex || _body.gender_body)) || $player.gender>>
+			<<if _origSex is "m">>
+				<<set $player.penissize to _body.penissize>>
+				<<set $ballssize to _body.ballssize>>
+			<<elseif _origSex is "f">>
+				<<set $player.breastsize to _body.breastsize>>
+				<<set $player.bottomsize to _body.bottomsize>>
+			<</if>>
+		<</if>>
+
+		/* Fresh or cached herm body gets its own body-specific virginity. */
+		<<xchange-apply-body-virginity "herm">>
+
+		/* Physique computations */
+		<<if $xchange.sizeOverride is "default">>
+			<<set $bodysize to setup.stepBodySize($bodysize, ($player.gender is "m" ? -1 : 1))>>
+		<<else>>
+			<<set _sizeMap to {
+				miniature: -1,
+				tiny: 0,
+				small: 1,
+				normal: 2,
+				tall: 2.5,
+				large: 3,
+				giant: 4
+			}>>
+			<<if _sizeMap[$xchange.sizeOverride] isnot undefined>>
+				<<set $bodysize to _sizeMap[$xchange.sizeOverride]>>
+			<</if>>
+		<</if>>
+
+		<<run setup.xchangeClearNpcGenitalLinks(["vagina","penis"])>>
+		<<set $vaginause to 0>>
+		<<set $vaginastate to 0>>
+		<<set $penisuse to 0>>
+		<<set $penisstate to 0>>
+		<<set $player.sex to "m">>
+		<<set $player.ballsExist to $xchange.useHermBalls eq 1>>
+		<<set $player.penisExist to true>>
+		<<set $player.vaginaExist to true>>
+		/* Safety net: a herm always has a penis, so never leave it stuck at 0 (Micro) or invalid e.g. from a stale cached body, an odd origin sex, or a low genderflip roll.
+		Give it at least Normal, capped to the configured penis-size range. */
+		<<if $player.penisExist and (!Number.isInteger($player.penissize) or $player.penissize lt 1)>>
+			<<set _xPenisRange to setup.xChangeBodySizeRange("penis")>>
+			<<set $player.penissize to random(Math.clamp(4, _xPenisRange.min, _xPenisRange.max), _xPenisRange.max)>>
+			<<if $player.ballsExist and (!Number.isInteger($ballssize) or $ballssize lt 1)>>
+				<<set $ballssize to random(1,5)>>
+			<</if>>
+		<</if>>
+		/* Herm body has a vagina; preserve menstruation if the original body had one (so pregnancy still works) */
+		<<if $xchange.pill.baseGenitals and $xchange.pill.baseGenitals.vagina>>
+			<<set $sexStats.vagina.menstruation.running = true>>
+		<<else>>
+			<<set $sexStats.vagina.menstruation.running = false>>
+		<</if>>
+		/* Wild parasites are body-scoped: cached bodies restore theirs in load-body, fresh bodies start clean.
+		   Ear slime is global (lives in your head), so preserve its ear slots across the wipe and leave $earSlime untouched. */
+		<<if !_xchangeLoadedBody>>
+			<<set _xchangeEarKeep to setup.xchangeCaptureEarParasites()>>
+			<<parasiteinit>>
+			<<run setup.xchangeRestoreEarParasites(_xchangeEarKeep)>>
+		<</if>>
+		<<set $beauty += 10000>>
+		<<clamp>>
+		<<if !_xchangeLoadedBody and $tempSavedHairStyles>><<saveTempHairStyle>><</if>>
+		<<run updatePhysique()>>
+	<</widget>>
+
+	/* If Alpha is set to grow a cock and the player does not have one, it adds one. This does not change gender or remove anything else.
+	The vagina, breasts, cycle, face, and body history stay the same.
+
+	The resulting body is treated as herm-shaped, so virginity data is moved to that body type without changing its contents. */
+	<<widget "xchange-alpha-grow-penis">>
+		<<if $player.penisExist or !$player.vaginaExist>><<exit>><</if>>
+		<<run setup.xChangeRecordActiveBodyVirginity()>>
+		<<set $xchange.pill.alphaGrewPenis to true>>
+		<<set $xchange.pill.alphaGrewPenisPreviousSex to $player.sex>>
+		<<set $xchange.pill.alphaGrewPenisPreviousBodyGender to $player.gender_body>>
+		<<run setup.xchangeClearNpcGenitalLinks(["penis"])>>
+		<<set $penisuse to 0>>
+		<<set $penisstate to 0>>
+		<<set $player.penisExist to true>>
+		<<set $player.ballsExist to $xchange.useHermBalls eq 1>>
+		<<set $player.gender_body to "a">>
+		<<set $player.sex to "m">>
+		<<set $player.penissize to setup.xChangeRollBodySize("penis")>>
+		<<if $player.ballsExist and (!Number.isInteger($ballssize) or $ballssize lt 1)>>
+			<<set $ballssize to random(1,5)>>
+		<</if>>
+		<<set $penisgrowthtimer to 500>>
+		/* Keep the body's existing virginity history instead of replacing it with a stored herm record.
+		Only the new cock starts virgin. Then save the current history under the herm body type. */
+		<<set $player.virginity.penile to true>>
+		<<if $player.virginityDetails isnot undefined>><<run delete $player.virginityDetails.penile>><</if>>
+		<<run setup.xChangeRecordActiveBodyVirginity()>>
+		<<set _chastityAdapted to setup.xchangeAdaptChastityToBody()>>
+		<<if _chastityAdapted>><<set $xchange.chastityAdaptedMessage to _chastityAdapted>><</if>>
+		<<set $xchangeAlphaGrewPenisMessage to true>>
+		<<set $effectsmessage to 1>>
+		<<run updatePhysique()>>
+		<<updatesidebarimg>>
+	<</widget>>
+
+	/* Restores the body changed by Alpha. This only runs if Alpha's cock is still present.
+	Other body-changing pills or xchange-restore handle their own changes separately. */
+	<<widget "xchange-alpha-remove-penis">>
+		<<if !$xchange.pill.alphaGrewPenis>><<exit>><</if>>
+		<<if $player.penisExist and $player.vaginaExist and $player.gender_body is "a">>
+			<<run setup.xChangeRecordActiveBodyVirginity()>>
+			<<run setup.xchangeClearNpcGenitalLinks(["penis"])>>
+			<<set $penisuse to 0>>
+			<<set $penisstate to 0>>
+			<<set $player.penisExist to false>>
+			<<set $player.ballsExist to false>>
+			<<set $player.penissize to 0>>
+			<<set $ballssize to 0>>
+			<<set $player.gender_body to ($xchange.pill.alphaGrewPenisPreviousBodyGender isnot undefined ? $xchange.pill.alphaGrewPenisPreviousBodyGender : "f")>>
+			<<set $player.sex to ($xchange.pill.alphaGrewPenisPreviousSex isnot undefined ? $xchange.pill.alphaGrewPenisPreviousSex : "f")>>
+			/* Same body again on the way out: keep its history and re-file it under the shape it is back to. */
+			<<run setup.xChangeRecordActiveBodyVirginity()>>
+			<<set _chastityAdapted to setup.xchangeAdaptChastityToBody()>>
+			<<if _chastityAdapted>><<set $xchange.chastityAdaptedMessage to _chastityAdapted>><</if>>
+			<<if $combat is 1>><<xchangeBodyDesyncCheck>><</if>>
+			<<xchangeMasturbationDesyncCheck>>
+			<<set $xchangeAlphaGrewPenisMessage to "end">>
+			<<set $effectsmessage to 1>>
+			<<run updatePhysique()>>
+			<<updatesidebarimg>>
+		<</if>>
+		<<set $xchange.pill.alphaGrewPenis to false>>
+		<<unset $xchange.pill.alphaGrewPenisPreviousSex>>
+		<<unset $xchange.pill.alphaGrewPenisPreviousBodyGender>>
+	<</widget>>
+
+	/* Applies the "Sexflipped Demeanour" setting when a pill puts you in another body.
+	   The demeanour you had in your own body is remembered on the pill and put back by
+	   <<xchange-restore-demeanour>> when you return to it. */
+	<<widget "xchange-apply-demeanour">>
+		<<set _xcDemChoice to $xchange.customisedDemeanour>>
+		<<if _xcDemChoice is undefined or _xcDemChoice is "nochange">><<exit>><</if>>
+		<<set _xcDemPool to ["docile","meek","shy","polite","neutral","confident","bratty","cruel","flamboyant","special","capricious","fickle"]>>
+		<<if _xcDemChoice is "random">><<set _xcDemChoice to _xcDemPool.random()>><</if>>
+		<<if !_xcDemPool.includes(_xcDemChoice)>><<exit>><</if>>
+		/* Only remember it once, so a second pill taken on top of the first doesn't store the pilled demeanour as the original. */
+		<<if $xchange.pill.originalDemeanour is undefined>>
+			<<set $xchange.pill.originalDemeanour to $speech_attitude>>
+		<</if>>
+		<<set $speech_attitude to _xcDemChoice>>
+		<<set $speech_attitude_special to _xcDemChoice>>
+	<</widget>>
+
+	<<widget "xchange-restore-demeanour">>
+		<<if $xchange.pill.originalDemeanour is undefined>><<exit>><</if>>
+		<<set $speech_attitude to $xchange.pill.originalDemeanour>>
+		<<set $speech_attitude_special to $xchange.pill.originalDemeanour>>
+		<<run delete V.xchange.pill.originalDemeanour>>
+	<</widget>>
+
+	<<widget "xchange-store-body-virginity">>
+		<<set _role to _args[0]>>
+		<<if _role isnot undefined and _role isnot "">>
+			<<run setup.xChangeRecordBodyVirginity(_role)>>
+		<</if>>
+	<</widget>>
+
+	<<widget "xchange-apply-body-virginity">>
+		<<set _role to _args[0]>>
+		<<if _role isnot undefined and _role isnot "">>
+			<<run setup.xChangeApplyBodyVirginity(_role)>>
+		<</if>>
+	<</widget>>
+
+	<<widget "xchange-bank-clone-body">>
+		<<if playerIsXChanged() and setup.xChangeCloneVirginityRole($xchange.pill.clone) isnot "">>
+			<<save-body "cloned" $xchange.pill.clone>>
+			<<set $xchange.pill.clone to "none">>
+		<</if>>
+	<</widget>>
+
+	<<widget "xchange-natural-sizes">>
+		<<set _naturalBreastsize to Number($player.breastsize)>>
+		<<set _naturalBottomsize to Number($player.bottomsize)>>
+		<<set _naturalPenissize to Number($player.penissize)>>
+
+		<<if $xchange?.pill?.swellEffect>>
+			<<if $xchange.pill.swellTarget is "penis">>
+				<<if Number.isFinite(Number($xchange.penissize))>><<set _naturalPenissize to Number($xchange.penissize)>><</if>>
+			<<elseif $xchange.pill.swellTarget is "curves">>
+				<<if Number.isFinite(Number($xchange.breastsize))>><<set _naturalBreastsize to Number($xchange.breastsize)>><</if>>
+				<<if Number.isFinite(Number($xchange.bottomsize))>><<set _naturalBottomsize to Number($xchange.bottomsize)>><</if>>
+			<</if>>
+		<</if>>
+
+		<<if $xchange?.pill?.alphaPenisSizeBoost and Number.isFinite(Number($xchange.pill.alphaPenisSizePrevious))>>
+			<<set _naturalPenissize to Number($xchange.pill.alphaPenisSizePrevious)>>
+		<</if>>
+	<</widget>>
+
+	<<widget "save-body">>
+		/* 	args 0: chooses which slot to save the body into.
+				undefined => originalBody
+				"genderswapped" for your xchanged body
+				"herm" for the purple pilled body
+				"cloned" for a cloned npc body
+			args 1: used to specify which npc by name
+		*/
+
+		<<set _slotLabel to "originalBody">>
+		<<if _args[0] isnot undefined>><<set _slotLabel to _args[0]>><</if>>
+
+		/* Snapshot the body at its natural size.
+		Swell and the Alpha boost inflate $player directly and keep the pre-effect value in their own store,
+		   so saving $player raw would bake a temporary size into the body permanently
+		   you would come back to a body that stays swollen after the pill is long gone. */
+		<<xchange-natural-sizes>>
+
+		<<set _sb_bs to Number(_naturalBreastsize)>>
+		<<if isNaN(_sb_bs)>>
+			<<run console.error("[X-Change save-body] Invalid player.breastsize", { slot: _slotLabel, value: V.player && V.player.breastsize })>>
+			<<error { message: "X-Change cannot save this body snapshot because player.breastsize is invalid. Please report this with your save and steps." }>>
+			<<exit>>
+		<</if>>
+
+		<<set _sb_bot to Number(_naturalBottomsize)>>
+		<<if isNaN(_sb_bot)>>
+			<<run console.error("[X-Change save-body] Invalid player.bottomsize", { slot: _slotLabel, value: V.player && V.player.bottomsize })>>
+			<<error { message: "X-Change cannot save this body snapshot because player.bottomsize is invalid. Please report this with your save and steps." }>>
+			<<exit>>
+		<</if>>
+
+		<<set _sb_ps to Number(_naturalPenissize)>>
+		<<if isNaN(_sb_ps)>>
+			<<run console.error("[X-Change save-body] Invalid player.penissize", { slot: _slotLabel, value: V.player && V.player.penissize })>>
+			<<error { message: "X-Change cannot save this body snapshot because player.penissize is invalid. Please report this with your save and steps." }>>
+			<<exit>>
+		<</if>>
+
+		<<set _sb_ball to Number($ballssize)>>
+		<<if isNaN(_sb_ball)>>
+			<<run console.error("[X-Change save-body] Invalid ballssize", { slot: _slotLabel, value: V.ballssize })>>
+			<<error { message: "X-Change cannot save this body snapshot because ballssize is invalid. Please report this with your save and steps." }>>
+			<<exit>>
+		<</if>>
+
+		<<if _sb_bs lt 0 or _sb_bot lt 0 or _sb_ps lt 0 or _sb_ball lt 0>>
+			<<run console.error("[X-Change save-body] Negative body size", { slot: _slotLabel, breastsize: _sb_bs, bottomsize: _sb_bot, penissize: _sb_ps, ballssize: _sb_ball })>>
+			<<error { message: "X-Change cannot save this body snapshot because a body size is below the valid minimum. Please report this with your save and steps." }>>
+			<<exit>>
+		<</if>>
+
+		<<set _sb_size to Number($bodysize)>>
+		<<if isNaN(_sb_size)>>
+			<<run console.error("[X-Change save-body] Invalid bodysize", { slot: _slotLabel, value: V.bodysize })>>
+			<<error { message: "X-Change cannot save this body snapshot because bodysize is invalid. Please report this with your save and steps." }>>
+			<<exit>>
+		<</if>>
+
+		<<set _sb_face to $facestyle>>
+		<<set _sb_facevar to $facevariant>>
+		<<set _sb_gender to $player.gender_body>>
+		<<set _sb_shape to $player.bodyshape>>
+		<<set _sb_sex to $player.sex>>
+
+		<<set _savedbody to {
+			/* Core appearance */
+			bodysize: _sb_size,
+			facestyle: _sb_face,
+			facevariant: _sb_facevar,
+			gender_body: _sb_gender,
+			bodyshape: _sb_shape,
+			breastsize: _sb_bs,
+			bottomsize: _sb_bot,
+			penissize: _sb_ps,
+			ballssize: _sb_ball,
+
+			/* Sex / genital state (IMPORTANT for proper revert) */
+			sex: _sb_sex,
+			penisExist: $player.penisExist,
+			ballsExist: $player.ballsExist,
+			vaginaExist: $player.vaginaExist,
+			penisuse: $penisuse,
+			penisstate: $penisstate,
+			vaginause: $vaginause,
+			vaginastate: $vaginastate,
+
+			/* Colours / hair */
+			leftEyeColour: $leftEyeColour,
+			rightEyeColour: $rightEyeColour,
+			haircolour: $haircolour,
+			hairColourGradient: $hairColourGradient,
+			hairColourStyle: $hairColourStyle,
+			naturalhaircolour: $naturalhaircolour,
+			hairtype: $hairtype,
+			hairlength: $hairlength,
+			hairposition: $hairposition,
+			ruffledisable: $ruffledisable,
+			hairfringecolour: $hairfringecolour,
+			hairFringeColourGradient: $hairFringeColourGradient,
+			hairFringeColourStyle: $hairFringeColourStyle,
+			fringetype: $fringetype,
+			fringelength: $fringelength,
+
+			/* Skin */
+			/* Store the natural colour, not a TF overlay; the TF skin is re-applied on load. */
+			skinColor: (setup.colours.tf_skin_colors.includes($player.skin.color) ? $player.skin_temp.color : $player.skin.color),
+
+			/* Fluids */
+			semen_amount: $semen_amount,
+			milk_amount: $milk_amount,
+			semen_volume: $semen_volume,
+			milk_volume: $milk_volume,
+
+			/* Misc */
+			beauty: $beauty,
+			penisgrowthtimer: $penisgrowthtimer,
+			bottomgrowthtimer: $bottomgrowthtimer,
+			breastgrowthtimer: $breastgrowthtimer,
+
+			/* Fame/stat split */
+			fame: $fame,
+			cool: $cool,
+			crime: $crime,
+			promiscuity: $promiscuity,
+			exhibitionism: $exhibitionism,
+			deviancy: $deviancy,
+		}>>
+
+		<<if !xChangeBodySnapshotUsable(_savedbody)>>
+			<<run console.error("[X-Change save-body] Built invalid body snapshot", { slot: _slotLabel, body: _savedbody })>>
+			<<error { message: "X-Change built an invalid body snapshot. It was not saved. Please report this with your save and steps." }>>
+			<<exit>>
+		<</if>>
+
+		/* Wild parasites are body-scoped (deep clone to avoid reference mutation).
+		Ear slots ride along in the clone but are overwritten with the current global ear slime on load-body, so ear slime stays global regardless of what's stored here. */
+		<<run _savedbody.parasite = (typeof clone === "function") ? clone(V.parasite) : JSON.parse(JSON.stringify(V.parasite)) >>
+
+		/* DHM ("dye HARDER" mod) custom hair / fringe colour state */
+		<<if V.dhmod isnot undefined>>
+			<<if V.dhmod.hair isnot undefined>>
+				<<run _savedbody.dhmHair = (typeof clone === "function") ? clone(V.dhmod.hair) : JSON.parse(JSON.stringify(V.dhmod.hair)) >>
+			<</if>>
+			<<if V.dhmod.fringe isnot undefined>>
+				<<run _savedbody.dhmFringe = (typeof clone === "function") ? clone(V.dhmod.fringe) : JSON.parse(JSON.stringify(V.dhmod.fringe)) >>
+			<</if>>
+		<</if>>
+
+		/* Store this body's virginity outside the expendable appearance snapshot. */
+		<<set _vrole to "">>
+		<<if _slotLabel is "originalBody">><<set _vrole to setup.xChangeActiveBodyVirginityRole()>>
+		<<elseif _slotLabel is "genderswapped">><<set _vrole to "xchange">>
+		<<elseif _slotLabel is "herm">><<set _vrole to "herm">>
+		<<elseif _slotLabel is "cloned" and _args[1] isnot undefined>><<set _vrole to setup.xChangeCloneVirginityRole(_args[1])>>
+		<</if>>
+		<<if _vrole isnot "">><<xchange-store-body-virginity _vrole>><</if>>
+
+		<<if _args[0] is undefined>>
+			<<if _vrole is "herm">>
+				<<set $xchange.pill.hermBody to _savedbody>>
+			<<elseif _vrole is "xchange">>
+				<<set $xchange.pill.changedBody to _savedbody>>
+			<<elseif _vrole.startsWith("clone:")>>
+				<<set $xchange.pill.clonedBody[$xchange.pill.clone] to _savedbody>>
+			<<else>>
+				<<set $xchange.pill.originalBody to _savedbody>>
+			<</if>>
+		<<elseif _args[0] is "genderswapped">>
+			<<set $xchange.pill.changedBody to _savedbody>>
+		<<elseif _args[0] is "herm">>
+			<<set $xchange.pill.hermBody to _savedbody>>
+		<<elseif _args[0] is "cloned" and _args[1] isnot undefined>>
+			<<set _npcName to _args[1]>>
+			<<set $xchange.pill.clonedBody[_npcName] to _savedbody>>
+		<</if>>
+	<</widget>>
+
+	<<widget "load-body">>
+		<<if _args[0] is undefined>>
+			<<set _body to $xchange.pill.originalBody>>
+		<<elseif _args[0] is "genderswapped">>
+			<<set _body to $xchange.pill.changedBody>>
+		<<elseif _args[0] is "herm">>
+			<<set _body to $xchange.pill.hermBody>>
+		<<elseif _args[0] is "cloned" and _args[1] isnot undefined>>
+			<<set _npcName to _args[1]>>
+			<<set _body to $xchange.pill.clonedBody[_npcName]>>
+		<</if>>
+
+		<<if _body is undefined>>
+			<<exit>>
+		<</if>>
+
+		<<set _slotName to (_args[0] ? _args[0] : "originalBody")>>
+		<<if !xChangeBodySnapshotUsable(_body)>>
+			<<run console.error("[X-Change load-body] Invalid body snapshot", { slot: _slotName, body: _body })>>
+			<<error { message: "X-Change cannot load this body snapshot because it is invalid. It was not modified. Please report this with your save and steps." }>>
+			<<exit>>
+		<</if>>
+
+		/* Save the outgoing body before its shape is overwritten. */
+		<<if !$statFreeze>>
+			<<set _outgoingVrole to setup.xChangeActiveBodyVirginityRole()>>
+			<<if _outgoingVrole isnot "">><<xchange-store-body-virginity _outgoingVrole>><</if>>
+		<</if>>
+
+		/* Core appearance */
+		<<set $bodysize to _body.bodysize>>
+		<<set $facestyle to _body.facestyle>>
+		<<set $facevariant to _body.facevariant>>
+		<<set $player.gender_body to _body.gender_body>>
+		<<set $player.bodyshape to _body.bodyshape>>
+		<<set $player.breastsize to _body.breastsize>>
+		<<set $player.bottomsize to _body.bottomsize>>
+		<<set $player.penissize to _body.penissize>>
+		<<set $ballssize to _body.ballssize>>
+
+		/* A cached X-Change body keeps its old shape, but its sizes use your current limits. Missing parts stay at zero. */
+		<<if _slotName is "genderswapped" or _slotName is "herm">>
+			<<if $player.breastsize gt 0>><<set $player.breastsize to setup.xChangeFitBodySize("breast", $player.breastsize)>><</if>>
+			<<if $player.bottomsize gt 0>><<set $player.bottomsize to setup.xChangeFitBodySize("bottom", $player.bottomsize)>><</if>>
+			<<if $player.penissize gt 0>><<set $player.penissize to setup.xChangeFitBodySize("penis", $player.penissize)>><</if>>
+		<</if>>
+
+
+		/* Sex / genital state (IMPORTANT for proper revert) */
+		<<if _body.sex isnot undefined>><<set $player.sex to _body.sex>><</if>>
+		<<if _body.penisExist isnot undefined>><<set $player.penisExist to _body.penisExist>><</if>>
+		<<if _body.ballsExist isnot undefined>><<set $player.ballsExist to _body.ballsExist>><</if>>
+		<<if _body.vaginaExist isnot undefined>><<set $player.vaginaExist to _body.vaginaExist>><</if>>
+		<<if _body.penisuse isnot undefined>><<set $penisuse to _body.penisuse>><</if>>
+		<<if _body.penisstate isnot undefined>><<set $penisstate to _body.penisstate>><</if>>
+		<<if _body.vaginause isnot undefined>><<set $vaginause to _body.vaginause>><</if>>
+		<<if _body.vaginastate isnot undefined>><<set $vaginastate to _body.vaginastate>><</if>>
+
+		/* Colours / hair */
+		<<set $leftEyeColour to _body.leftEyeColour>>
+		<<set $rightEyeColour to _body.rightEyeColour>>
+		<<set $haircolour to _body.haircolour>>
+		<<set $hairColourGradient to _body.hairColourGradient>>
+		<<set $hairColourStyle to _body.hairColourStyle>>
+		<<set $naturalhaircolour to _body.naturalhaircolour>>
+		<<set $hairtype to _body.hairtype>>
+		<<if _body.hairposition isnot undefined>><<set $hairposition to _body.hairposition>><</if>>
+		<<if _body.ruffledisable isnot undefined>><<set $ruffledisable to _body.ruffledisable>><</if>>
+		<<set $hairfringecolour to _body.hairfringecolour>>
+		<<set $hairFringeColourGradient to _body.hairFringeColourGradient>>
+		<<set $hairFringeColourStyle to _body.hairFringeColourStyle>>
+		<<set $fringetype to _body.fringetype>>
+		<<set $hairlength to _body.hairlength>>
+		<<set $fringelength to _body.fringelength>>
+		/* If the body changes while sleeping, replace the before-bed hair snapshot as well. Otherwise
+		   climbing out of bed can put the outgoing X-Changed body's style back onto the restored body. */
+		<<if $tempSavedHairStyles>><<saveTempHairStyle>><</if>>
+		/* Older snapshots may hold a TF colour; fall back to the natural one. Then let the TFs decide what shows. */
+		<<set _loadSkin to (setup.colours.tf_skin_colors.includes(_body.skinColor) ? $player.skin_temp.color : _body.skinColor)>>
+		<<set $player.skin_temp.color to _loadSkin>>
+		<<set $player.skin.color to _loadSkin>>
+		<<syncWaterDragonSkin>>
+		<<syncDemonSkin>>
+
+		/* DHM ("dye HARDER" mod) state restore */
+		<<if V.dhmod isnot undefined>>
+			<<if _body.dhmHair isnot undefined>>
+				<<run V.dhmod.hair = (typeof clone === "function") ? clone(_body.dhmHair) : JSON.parse(JSON.stringify(_body.dhmHair)) >>
+			<<elseif V.dhmod.hair isnot undefined and V.dhmod.hair.is_custom>>
+				<<set V.dhmod.hair.is_custom to false>>
+			<</if>>
+			<<if _body.dhmFringe isnot undefined>>
+				<<run V.dhmod.fringe = (typeof clone === "function") ? clone(_body.dhmFringe) : JSON.parse(JSON.stringify(_body.dhmFringe)) >>
+			<<elseif V.dhmod.fringe isnot undefined and V.dhmod.fringe.is_custom>>
+				<<set V.dhmod.fringe.is_custom to false>>
+			<</if>>
+			<<run if (typeof dhmUtils !== "undefined" && typeof dhmUtils.colorCache === "function") dhmUtils.colorCache(); >>
+		<</if>>
+
+		/* Fluids */
+		<<set $semen_amount to (_body.semen_amount ?? 0)>>
+		<<set $milk_amount to (_body.milk_amount ?? 0)>>
+		<<set $semen_volume to (_body.semen_volume ?? 0)>>
+		<<set $milk_volume to (_body.milk_volume ?? 0)>>
+
+		/* Misc */
+		<<set $beauty to _body.beauty>>
+		<<set $penisgrowthtimer to _body.penisgrowthtimer>>
+		<<set $bottomgrowthtimer to _body.bottomgrowthtimer>>
+		<<set $breastgrowthtimer to _body.breastgrowthtimer>>
+
+		/* Wild parasites are body-scoped; ear slime (both $earSlime state and its ear slots) is global and rides along with the player.
+		   Capture the current ear slots before the whole-object replacement below wipes them, then re-apply. $earSlime is left untouched. */
+		<<set _xchangeEarKeep to setup.xchangeCaptureEarParasites()>>
+		<<if _body.parasite isnot undefined and _body.parasite isnot null and typeof _body.parasite is "object">>
+			<<run V.parasite = (typeof clone === "function") ? clone(_body.parasite) : JSON.parse(JSON.stringify(_body.parasite)) >>
+		<<else>>
+			<<parasiteinit>>
+		<</if>>
+		<<run setup.xchangeRestoreEarParasites(_xchangeEarKeep)>>
+		<<run if (setup.xchangeRepairParasiteDisplayCache) setup.xchangeRepairParasiteDisplayCache() >>
+
+		<<run window.ejectOrphanVaginalDildo?.()>>
+		<<if _args[0] is undefined>><<set $sexStats.vagina.menstruation.running to !!$player.vaginaExist>><</if>>
+
+		/* Apply this body's stored virginity from the stable store.
+		   Entering a body restores its own record; a body that has never existed before is seeded (X-Change/herm => virgin, real => keeps current). */
+		<<set _vrole to "">>
+		<<if _args[0] is undefined>><<set _vrole to "real">>
+			<<xchange-restore-demeanour>>
+		<<elseif _args[0] is "genderswapped">><<set _vrole to "xchange">>
+		<<elseif _args[0] is "herm">><<set _vrole to "herm">>
+		<<elseif _args[0] is "cloned" and _args[1] isnot undefined>><<set _vrole to setup.xChangeCloneVirginityRole(_args[1])>>
+		<</if>>
+		<<if _vrole isnot "">><<xchange-apply-body-virginity _vrole>><</if>>
+
+		/* Adapt chastity device to restored body. */
+		<<set _chastityAdapted to setup.xchangeAdaptChastityToBody()>>
+		<<if _chastityAdapted>><<set $xchange.chastityAdaptedMessage to _chastityAdapted>><</if>>
+
+		/* <<if !$xchangeFameMerged>> */
+			<<set $fame to _body.fame>>
+			<<if _body.cool isnot undefined>>
+				<<set $cool to _body.cool>>
+			<<elseif _body isnot $xchange.pill.originalBody>>
+				<<set $cool to 120>>
+			<</if>>
+			<<if _body.crime isnot undefined>>
+				<<set $crime to _body.crime>>
+			<<else>>
+				<<set $crime to {}>>
+				<<for _cr range Object.keys(setup.crimeNames)>>
+					<<set $crime[_cr] to {current: 0, history: 0, daily: 0, count: 0, countHistory: 0}>>
+				<</for>>
+				<<set $crime.events to {}>>
+			<</if>>
+		/* <</if>> */
+		<<if $penisgrowthtimer is undefined or $bottomgrowthtimer is undefined or $breastgrowthtimer is undefined>>
+			<<set $penisgrowthtimer to 500>>
+			<<set $bottomgrowthtimer to 500>>
+			<<set $breastgrowthtimer to 500>>
+		<</if>>
+		<<if $xchangeStatSplit>>
+			<<set $promiscuity to _body.promiscuity>>
+			<<set $exhibitionism to _body.exhibitionism>>
+			<<set $deviancy to _body.deviancy>>
+		<</if>>
+
+		/* Innocence effect sync */
+		<<if _args[0] is undefined and $xchange.pill.innocenceEffect and ($innocencestate isnot 1 or $awareness gte 0)>>
+			<<set $xchange.pill.innocenceEffect to false>>
+			<<if $xchange.pill.innocenceWasNatural is true>>
+				<<if $awareness gte 0 and $innocencestate is 1>>
+					<<set $innocencestate to 0>>
+					<<set $trauma to $innocencetrauma>>
+					<<set $innocencetrauma to 0>>
+					<<set $innocencemessage to "end">>
+				<</if>>
+				<<set $innocenceawareness to 0>>
+			<<elseif $awareness gte 0 and $innocencestate is 1>>
+				<<set $innocencestate to 0>>
+				<<set $awareness to (typeof $innocenceawareness === "number" ? $innocenceawareness : 0)>>
+				<<set $trauma to $innocencetrauma>>
+				<<set $innocencetrauma to 0>>
+				<<set $innocenceawareness to 0>>
+				<<set $innocencemessage to "end">>
+			<</if>>
+			<<set $xchange.pill.innocenceWasNatural to false>>
+		<</if>>
+
+		/* Swell effect.
+		   The body we just loaded carries its natural sizes, so a still-running Swell has to be re-applied to it:
+		   stash this body's natural size as the value to give back when the effect ends, then inflate.
+		   Without this, swapping bodies mid-Swell either drops the effect or leaves the old body's size behind.
+		   Older saves may still hold a snapshot taken while swollen, so keep repairing changedBody too. */
+		<<if $xchange.pill.swellEffect>>
+			<<if _args[0] is undefined and xChangeBodySnapshotUsable($xchange.pill.changedBody)>>
+				<<if $xchange.pill.swellTarget is "penis">>
+					<<set $xchange.pill.changedBody.penissize to $xchange.penissize>>
+				<<elseif $xchange.pill.swellTarget is "curves">>
+					<<set $xchange.pill.changedBody.breastsize to $xchange.breastsize>>
+					<<set $xchange.pill.changedBody.bottomsize to $xchange.bottomsize>>
+				<</if>>
+			<</if>>
+			/* The swell is a boost on top of this body's own size, so it is recomputed from the size the body came with. */
+			<<if $xchange.pill.swellTarget is "penis" and $player.penisExist>>
+				<<if Number.isFinite(Number($player.penissize))>>
+					<<set $xchange.penissize to Number($player.penissize)>>
+					<<set $player.penissize to setup.xChangeSwellBodySize("penis", $xchange.penissize)>>
+				<</if>>
+			<<elseif $xchange.pill.swellTarget is "curves">>
+				<<if Number.isFinite(Number($player.breastsize))>>
+					<<set $xchange.breastsize to Number($player.breastsize)>>
+					<<set $player.breastsize to setup.xChangeSwellBodySize("breast", $xchange.breastsize)>>
+				<</if>>
+				<<if Number.isFinite(Number($player.bottomsize))>>
+					<<set $xchange.bottomsize to Number($player.bottomsize)>>
+					<<set $player.bottomsize to setup.xChangeSwellBodySize("bottom", $xchange.bottomsize)>>
+				<</if>>
+			<</if>>
+		<</if>>
+
+		/* <<if $xchange_fame gte 1000>>
+			<<set _ogFame to $xchange.pill.originalBody.fame>>
+			<<set _newFame to $xchange.pill.changedBody.fame>>
+			<<set _hermFame to $xchange.pill.hermBody?.fame>>
+			<<set $fame to {
+				bestiality: 	Math.max(_ogFame.bestiality, _newFame.bestiality, _hermFame.bestiality ?? 0),
+				business: 		Math.max(_ogFame.business, _newFame.business, _hermFame.business ?? 0),
+				exhibitionism: 	Math.max(_ogFame.exhibitionism, _newFame.exhibitionism, _hermFame.exhibitionism ?? 0),
+				good: 			Math.max(_ogFame.good, _newFame.good, _hermFame.good ?? 0),
+				impreg: 		Math.max(_ogFame.impreg, _newFame.impreg, _hermFame.impreg ?? 0),
+				model: 			Math.max(_ogFame.model, _newFame.model, _hermFame.model ?? 0),
+				pimp: 			Math.max(_ogFame.pimp, _newFame.pimp, _hermFame.pimp ?? 0),
+				pregnancy: 		Math.max(_ogFame.pregnancy, _newFame.pregnancy, _hermFame.pregnancy ?? 0),
+				prostitution: 	Math.max(_ogFame.prostitution, _newFame.prostitution, _hermFame.prostitution ?? 0),
+				rape: 			Math.max(_ogFame.rape, _newFame.rape, _hermFame.rape ?? 0),
+				scrap: 			Math.max(_ogFame.scrap, _newFame.scrap, _hermFame.scrap ?? 0),
+				sex: 			Math.max(_ogFame.sex, _newFame.sex, _hermFame.sex ?? 0),
+				social: 		Math.max(_ogFame.social, _newFame.social, _hermFame.social ?? 0),
+			}>>
+			<<set $xchange.pill.originalBody.fame to $fame>>
+			<<set $xchange.pill.changedBody.fame to $fame>>
+			<<set $xchange.pill.hermBody.fame to $fame>>
+
+			<<set _ogCool to $xchange.pill.originalBody.cool>>
+			<<set _newCool to $xchange.pill.changedBody.cool>>
+			<<set _hermCool to $xchange.pill.hermBody?.cool ?? 120>>
+			<<set $cool to (_ogCool + _newCool + _hermCool) / 3>>
+			<<set $xchange.pill.originalBody.cool to $cool>>
+			<<set $xchange.pill.changedBody.cool to $cool>>
+			<<set $xchange.pill.hermBody.cool to $cool>>
+
+			<<set _ogCrime = $xchange.pill.originalBody.crime>>
+			<<set _newCrime = $xchange.pill.changedBody.crime>>
+			<<set _hermCrime = $xchange.pill.hermBody.crime>>
+			<<set $crime to {}>>
+			<<for _cr range Object.keys(setup.crimeNames)>>
+				<<if !$xchangeFameMerged>>
+					<<set $crime[_cr] to {
+						current: 		_ogCrime[_cr].current + _newCrime[_cr].current + (_hermCrime[_cr]?.current ?? 0), 
+						history: 		_ogCrime[_cr].history + _newCrime[_cr].history + (_hermCrime[_cr]?.history ?? 0), 
+						daily: 			_ogCrime[_cr].daily + _newCrime[_cr].daily + (_hermCrime[_cr]?.daily ?? 0), 
+						count: 			_ogCrime[_cr].count + _newCrime[_cr].count + (_hermCrime[_cr]?.count ?? 0), 
+						countHistory: 	_ogCrime[_cr].countHistory + _newCrime[_cr].countHistory + (_hermCrime[_cr]?.countHistory ?? 0)}>>
+				<<else>>
+					<<set $crime[_cr] to {
+						current: 		Math.max(_ogCrime[_cr].current, _newCrime[_cr].current, _hermCrime[_cr].current ?? 0), 
+						history: 		Math.max(_ogCrime[_cr].history, _newCrime[_cr].history, _hermCrime[_cr].history ?? 0), 
+						daily: 			Math.max(_ogCrime[_cr].daily, _newCrime[_cr].daily, _hermCrime[_cr].daily ?? 0), 
+						count: 			Math.max(_ogCrime[_cr].count, _newCrime[_cr].count, _hermCrime[_cr].count ?? 0), 
+						countHistory: 	Math.max(_ogCrime[_cr].countHistory, _newCrime[_cr].countHistory, _hermCrime[_cr].countHistory ?? 0)}>>
+				<</if>>
+			<</for>>
+			<<if !$xchangeFameMerged>>
+				<<set $crime.events to {...(_ogCrime.events), ...(_newCrime.events), ...(_hermCrime.events)}>>
+			<</if>>
+			<<set $xchange.pill.originalBody.crime to $crime>>
+			<<set $xchange.pill.changedBody.crime to $crime>>
+			<<set $xchange.pill.hermBody.crime to $crime>>
+
+			<<set $xchangeFameMerged to true>>
+		<</if>> */
+
+		<<calchairlengthstage>>
+		<<run updatePhysique()>>
+		<<updatesidebarimg>>
+	<</widget>>
+
+	<<widget "xchange-effects">>
+		<<run xchangeSpikeBodyMark()>>
+		<<set $xchange.everConsumed to true>>
+		<<if xchangePillProtectionActive()>>
+			/* X-Change protection is active. The pill is still consumed, but it's neutralised, no session starts and the body is left untouched. */
+		<<if xchangePillPurityActive()>>
+			Your permanent purity blocks the X-Change dose. <span class="blue">Your body does not change</span>.
+		<<else>>
+			Your cleansing treatment blocks the X-Change dose. <span class="blue">Your body does not change</span>.
+		<</if>>
+			<br><br>
+		<<else>>
+		<<set _days to _args[0]>>
+		<<set _effectsList to _args[1]>>
+
+		<<set $sexStats.vagina.menstruation.running = false>>
+		<<set _xchangeRestack to playerIsXChanged()>>
+		<<if _xchangeRestack and $xchange.pill.bimboEffect>>
+			/* Replacing an active Bimbo pill must restore its temporary school-stat and promiscuity changes before the new effects are applied. */
+			<<xchange-removeeffect "bimbo">>
+		<</if>>
+		<<if _xchangeRestack and $xchange.pill.swellEffect>>
+			/* Reset Swell body sizes before the new pill saves them. Otherwise, they can get stuck at maximum size. */
+			<<xchange-removeeffect "swell">>
+		<</if>>
+		/* Remove a cock grown by the old Alpha before clearing its effect. If the new pill also has Alpha, keep the existing cock instead of growing a new one. */
+		<<if _xchangeRestack and $xchange.pill.alphaGrewPenis and !(Array.isArray(_effectsList) and _effectsList.includes("alpha"))>>
+			<<xchange-alpha-remove-penis>>
+		<</if>>
+
+		<<set $xchange.pill.active to true>>
+		/* A second pill taken while already transformed must not re-baseline: baseSex/baseGenitals describe the body the session started from, and clone names which body is worn.
+		   Re-reading them from the live (already transformed) player is what used to misfile the new body's virginity onto the real body. */
+		<<if !_xchangeRestack>>
+			<<set $xchange.pill.baseSex to $player.sex>>
+			<<set $xchange.pill.baseGenitals to {penis: !!$player.penisExist, vagina: !!$player.vaginaExist}>>
+			<<set $xchange.pill.clone to "none">>
+		<</if>>
+		<<set $xchange.pill.duration to _days * 24 - 1>> <!-- duration now in hours instead of days -->
+		<<set $xchange.pill.countdown to $xchange.pill.duration>>
+		<<set $xchange.pill.fertile to false>>
+		<<set $xchange.pill.effectsKnown to true>>
+		<<set $xchange.pill.spikeAnnounced to false>>
+		<<set $xchange.pill.durationDetailRoll to 0>>
+		<<if !_xchangeRestack>>
+			<<set $xchange.pill.genderflipEffect to false>>
+			<<set $xchange.pill.genderificationEffect to false>>
+			<<set $xchange.pill.hermEffect to false>>
+		<</if>>
+		<<set $xchange.pill.breederEffect to false>>
+		<<set $xchange.pill.omegaEffect to false>>
+		<<set $xchange.breederDenial to 0>>
+		<<set $xchange.pill.bullEffect to false>>
+		<<set $xchange.pill.alphaEffect to false>>
+		<<set $xchange.pill.betaEffect to false>>
+		<<set $xchange.pill.alphaPenisSizeBoost to false>>
+		<<unset $xchange.pill.alphaPenisSizePrevious>>
+		<<if !_xchangeRestack>><<set $xchange.pill.alphaGrewPenis to false>><</if>>
+		<<set $xchange.pill.xtendEffect to false>>
+		<<unset $xchange.pill.xtendTracker>>
+		<<set $xchange.pill.resistanceEffect to false>>
+		<<set $xchange.pill.continueEffect to false>>
+		<<set $xchange.pill.passionEffect to false>>
+		<<set $xchange.pill.dumbBitchEffect to false>>
+		<<set $xchange.pill.portalEffect to false>>
+		<<set $xchange.pill.portalEffectTimer to 0>>
+		<<set $xchange.pill.innocenceEffect to false>>
+		<<set $xchange.pill.innocenceWasNatural to false>>
+		<<set $xchange.pill.feartoxinEffect to false>>
+		<<set $xchange.pill.swellEffect to false>>
+		<<unset $xchange.pill.swellTarget>>
+		<<set $xchange.pill.bimboEffect to false>>
+		<<set $xchange.pill.cumcureEffect to false>>
+		<<set $xchange.pill.hyperFertilityEffect to false>>
+
+		<<for _effect range _effectsList>>
+			/* Add each effect */
+			<<xchange-addeffect _effect _days>>
+		<</for>>
+
+		<<xchange-fertility-override>>
+		<</if>>
+	<</widget>>
+
+	/* Central fertility resolution, applied after all X-Change effects for a body are in place.
+	   - Always fertile / Hyper Fertility: with a womb/vagina, force a running fertile cycle.
+	   - Fake Breeder: remove the Breeder pill's vaginal fertility unless either override is present. Omega keeps its separate anal route.
+	   Always-fertile and Hyper Fertility take precedence over Fake Breeder. Safe to call every load. */
+	<<widget "xchange-fertility-override">>
+		<<if $xchange.pill and $xchange.pill.active>>
+			<<if $player.vaginaExist and ($xchange.alwaysFertile or $xchange.pill.hyperFertilityEffect)>>
+				<<set $xchange.pill.fertile to true>>
+				<<set $sexStats.vagina.menstruation.running = true>>
+			<<elseif $xchange.breederInfertile and $xchange.pill.breederEffect and !$xchange.pill.hyperFertilityEffect>>
+				<<set $xchange.pill.fertile to false>>
+				<<set $sexStats.vagina.menstruation.running = false>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+<<widget "xchange-addeffect">>
+	/* IMPORTANT: For purple effect, PC's sex should be set to male, and balls should be removed */
+	<<if xchangePillProtectionActive()>>
+		/* No new pill effect can take hold while temporary therapy or permanent X-Change purity is active. */
+	<<elseif xchangeGrayAgentBlocks(_args[0])>>
+		/* X-Change Gray Agent: forced pills act as gray pills, blocking body swaps while keeping all other effects. */
+	<<else>>
+	<<set _xchangeNeedsRefresh to false>>
+	<<switch _args[0]>>
+
+	<<case "genderflip">>
+		<<if !$xchange.pill.genderflipEffect>>
+			<<xchange-bank-clone-body>>
+			<<set $xchange.pill.genderflipEffect to true>>
+			<<if $player.sex is "m">>
+				<<become-girl>>
+			<<else>>
+				<<become-boy>>
+			<</if>>
+			/* ADDED */
+			<<set _xchangeNeedsRefresh to true>>
+			<<if !$player.vaginaExist>>
+				<<set $xchange.pill.breederEffect to false>>
+				<<set $xchange.pill.fertile to false>>
+				<<set $sexStats.vagina.menstruation.running = false>>
+			<<elseif $xchange.pill.hyperFertilityEffect>>
+				/* Gained a vagina via the flip; honour a Hyper Fertility effect applied before the body change (Premium runs "fertility" before "genderflip"). */
+				<<set $xchange.pill.fertile to true>>
+				<<set $sexStats.vagina.menstruation.running = true>>
+			<</if>>
+			<<if !$player.penisExist>><<set $xchange.pill.bullEffect to false>><<set $xchange.pill.alphaEffect to false>><</if>>
+			/* The flip rebuilt the body, so whatever cock it has now is the new body's, not one Alpha grew. */
+			<<set $xchange.pill.alphaGrewPenis to false>>
+			<<if $combat is 1>><<xchangeBodyDesyncCheck>><</if>>
+			<<xchangeMasturbationDesyncCheck>>
+			<<run xchangeBodyChanged()>>
+		<</if>>
+
+	<<case "crossdress">>
+		<<if !$xchange.pill.genderificationEffect>>
+			<<set $xchange.pill.genderificationEffect to true>>
+			<<if !$xchange.pill.genderflipEffect && !$xchange.pill.hermEffect>>
+				<<set _gdir to xchangeGenderificationDirection()>>
+				<<if _gdir is "sissy">>
+					<<sissify>>
+				<<elseif _gdir is "butch">>
+					<<butchify>>
+				<</if>>
+				<<set _xchangeNeedsRefresh to true>>
+			<</if>>
+		<</if>>
+
+	<<case "herm">>
+		<<if !$xchange.pill.genderflipEffect>>
+			<<xchange-bank-clone-body>>
+			<<set $xchange.pill.genderflipEffect to true>>
+			<<if $player.sex is "m">>
+				<<become-girl>>
+			<<else>>
+				<<become-boy>>
+			<</if>>
+			<<set _xchangeNeedsRefresh to true>>
+		<</if>>
+		<<if !$xchange.pill.hermEffect>>
+			/* A different-gender clone already has genderflipEffect set, so the branch above is skipped
+			   and hermify is what takes the player out of the clone. Bank it here instead, and only fall
+			   through to the xchange slot when no clone is worn: filing a clone's record under "xchange"
+			   would overwrite the player's own X-Change body.
+			   The body only keeps its own record if it is already herm-shaped, which means BOTH sets of genitals:
+			   gender_body "a" on its own also covers a merely androgynous body (the bimbo/pimp outfit drift parks
+			   one there), and skipping the bank for that would lose the outgoing body's virginity record. */
+			<<if setup.xChangeCloneVirginityRole($xchange.pill.clone) isnot "">>
+				<<xchange-bank-clone-body>>
+			<<elseif !($player.penisExist and $player.vaginaExist)>>
+				<<xchange-store-body-virginity "xchange">>
+			<</if>>
+			<<set $xchange.pill.hermEffect to true>>
+			/* Same as the flip: hermify builds the body's own cock, so Alpha stops owning one. */
+			<<set $xchange.pill.alphaGrewPenis to false>>
+			<<hermify>>
+			<<run xchangeBodyChanged()>>
+			/* Herm body has a vagina; allow fertility/pregnancy if the original body did too, or if a Hyper Fertility effect was selected. */
+			<<if ($xchange.pill.baseGenitals and $xchange.pill.baseGenitals.vagina) or $xchange.pill.hyperFertilityEffect>>
+				<<set $xchange.pill.fertile to true>>
+				<<set $sexStats.vagina.menstruation.running = true>>
+			<</if>>
+			<<set _xchangeNeedsRefresh to true>>
+		<</if>>
+
+	<<case "xtend">>
+		<<set $xchange.pill.xtendEffect to true>>
+		<<set $xchange.pill.xtendTracker to {
+			orgasmed: 0,
+			penisSizeGains: 0,
+		}>>
+
+	<<case "resistance">>
+		<<if !$xchange.pill.resistanceEffect>>
+			<<set $xchange.pill.resistanceEffect to true>>
+			<<set $xchange.pill.resistanceChance to 100>>
+			<<set $xchange.pill.resistanceOrgasmsStat to 0>>
+		<</if>>
+
+	<<case "continue">>
+		<<set $xchange.pill.continueEffect to true>>
+
+	<<case "fertile">>
+		<<set $xchange.pill.fertile to true>>
+		<<set $sexStats.vagina.menstruation.running = true>>
+
+	<<case "breeder">>
+		<<set $xchange.pill.breederEffect to true>>
+		<<set $xchange.breederEdgingCount to 0>>
+		<<set $xchange.breederEdgingStress to 100>>
+		<<set $xchange.breederDenial to 0>>
+
+	<<case "bull">>
+		<<set $xchange.pill.bullEffect to true>>
+
+	<<case "omega">>
+		<<set $xchange.pill.omegaEffect to true>>
+		<<set $xchange.breederEdgingCount to 0>>
+		<<set $xchange.breederEdgingStress to 100>>
+		<<set $xchange.breederDenial to 0>>
+
+	<<case "alpha">>
+		<<set $xchange.pill.alphaEffect to true>>
+		/* Grow the cock first, so the size floor below treats it like any other Alpha cock. */
+		<<if $xchange.alphaGrowsPenis and !$player.penisExist and $player.vaginaExist>>
+			<<xchange-alpha-grow-penis>>
+			<<set _xchangeNeedsRefresh to true>>
+		<</if>>
+		<<if $player.penisExist and $player.penissize lt 2>>
+			<<if $xchange.pill.alphaPenisSizeBoost isnot true>>
+				<<set $xchange.pill.alphaPenisSizeBoost to true>>
+				<<set $xchange.pill.alphaPenisSizePrevious to $player.penissize>>
+			<</if>>
+			<<set $player.penissize to 2>>
+		<</if>>
+
+	<<case "beta">>
+		<<if $player.vaginaExist>><<set $xchange.pill.betaEffect to true>><</if>>
+
+	<<case "portal">>
+		<<if $portalPantiesEnabled>>
+			<<set _duration to _args[1] ?? 1>>
+			<<set $xchange.pill.portalEffect to true>>
+			<<set $xchange.pill.portalEffectTimer to _duration * 24 - 1>>
+		<</if>>
+
+	<<case "passion">>
+		<<set $xchange.pill.passionEffect to true>>
+
+	<<case "dumb-bitch">>
+		<<set $xchange.pill.dumbBitchEffect to true>>
+		<<xchange-addsideeffect "dumbbitch">>
+
+	<<case "innocence">>
+		<<set _innocenceEffectAlreadyActive to $xchange.pill.innocenceEffect is true>>
+		<<if !_innocenceEffectAlreadyActive>>
+			<<set $xchange.pill.innocenceWasNatural to ($innocencestate is 1)>>
+		<</if>>
+		<<set $xchange.pill.innocenceEffect to true>>
+			<<if !_innocenceEffectAlreadyActive and $xchange.pill.innocenceWasNatural isnot true>>
+				<<set $innocencetrauma to $trauma>>
+				<<set $innocenceawareness to $awareness>>
+				<<set $trauma to 0>>
+				<<set $innocencemessage to "start">>
+			<</if>>
+		<<set $awareness to -200>>
+		<<set $innocencestate to 1>>
+
+	<<case "feartoxin">>
+		<<if !$xchange.pill.feartoxinEffect>>
+			<<set $xchange.pill.feartoxinEffect to true>>
+			<<set $effectsmessage to 1>>
+			<<set $xchange_feartoxin_message to "start">>
+		<</if>>
+		<<xchange-feartoxin-pin>>
+
+	<<case "swell">>
+		/* Bimbo pills include Swell. This also makes sure random Bimbo effects apply Swell without overwriting the original body size. */
+		<<if !$xchange.pill.swellEffect>>
+			<<set $xchange.pill.swellEffect to true>>
+			<<if $player.penisExist and !$player.vaginaExist>>
+				<<set $xchange.pill.swellTarget to "penis">>
+				<<set _ps to Number($player.penissize)>>
+				<<if isNaN(_ps)>>
+					<<run console.error("[X-Change swell] Invalid player.penissize", { value: V.player && V.player.penissize })>>
+					<<error { message: "X-Change cannot apply the Swell effect because player.penissize is invalid. Please report this with your save and steps." }>>
+					<<exit>>
+				<</if>>
+				<<set $xchange.penissize to _ps>>
+				<<set $player.penissize to setup.xChangeSwellBodySize("penis", _ps)>>
+			<<else>>
+				<<set $xchange.pill.swellTarget to "curves">>
+				<<set _bs to Number($player.breastsize)>>
+				<<if isNaN(_bs)>>
+					<<run console.error("[X-Change swell] Invalid player.breastsize", { value: V.player && V.player.breastsize })>>
+					<<error { message: "X-Change cannot apply the Swell effect because player.breastsize is invalid. Please report this with your save and steps." }>>
+					<<exit>>
+				<</if>>
+				<<set $xchange.breastsize to _bs>>
+				<<set $player.breastsize to setup.xChangeSwellBodySize("breast", _bs)>>
+
+				<<set _bot to Number($player.bottomsize)>>
+				<<if isNaN(_bot)>>
+					<<run console.error("[X-Change swell] Invalid player.bottomsize", { value: V.player && V.player.bottomsize })>>
+					<<error { message: "X-Change cannot apply the Swell effect because player.bottomsize is invalid. Please report this with your save and steps." }>>
+					<<exit>>
+				<</if>>
+				<<set $xchange.bottomsize to _bot>>
+				<<set $player.bottomsize to setup.xChangeSwellBodySize("bottom", _bot)>>
+			<</if>>
+		<</if>>
+
+	<<case "bimbo">>
+		/* Random spikes can select the Bimbo agent by itself; its advertised built-in Swell must still apply. */
+		<<if !$xchange.pill.swellEffect>><<xchange-addeffect "swell">><</if>>
+		<<if !$xchange.pill.bimboEffect>>
+			<<set $xchange.pill.bimboEffect to true>>
+			<<set $promiscuityIgnore to 1>>
+			<<set $xchange.science to $sciencetrait>>
+			<<set $xchange.math to $mathstrait>>
+			<<set $xchange.english to $englishtrait>>
+			<<set $xchange.history to $historytrait>>
+			<<set $sciencetrait to -1>>
+			<<set $mathstrait to -1>>
+			<<set $englishtrait to -1>>
+			<<set $historytrait to -1>>
+			<<if $xchange.science gt $sciencetrait>>
+				<<school_skill_change "science" 0>>
+				<<set $effectsmessage = 1>>
+				<<set $science_down_message = 1>>
+			<</if>>
+			<<if $xchange.math gt $mathstrait>>
+				<<school_skill_change "maths" 0>>
+				<<set $effectsmessage = 1>>
+				<<set $maths_down_message = 1>>
+			<</if>>
+			<<if $xchange.english gt $englishtrait>>
+				<<school_skill_change "english" 0>>
+				<<set $effectsmessage = 1>>
+				<<set $english_down_message = 1>>
+			<</if>>
+			<<if $xchange.history gt $historytrait>>
+				<<school_skill_change "history" 0>>
+				<<set $effectsmessage = 1>>
+				<<set $history_down_message = 1>>
+			<</if>>
+		<</if>>
+
+	<<case "cumcure">>
+		<<set $xchange.pill.cumcureEffect to true>>
+
+	<<case "fertility">>
+		<<set $xchange.pill.hyperFertilityEffect to true>>
+		<<if $player.vaginaExist>>
+			<<set $xchange.pill.fertile to true>>
+			<<set $sexStats.vagina.menstruation.running to true>>
+		<</if>>
+
+	<<case "choice">>
+		<<xchange-setpermanent "choice">>
+		<<set $xchangePermanenceMessage to 0>>
+		<<set $xchange.pill.choiceEffect to true>>
+		<<set $xchange.pill.choiceSource to passage()>>
+
+	<<case "spike" "unknown">>
+		<<set $xchange.pill.effectsKnown to false>>
+		/* "unknown" callers (xchange-random-spike) count the spike themselves. */
+		<<if _args[0] is "spike">><<set $xchange.timesSpiked to ($xchange.timesSpiked || 0) + 1>><</if>>
+		/* Safety net: guarantee the player is told they've been dosed with something unidentified */
+		<<if !$xchange.pill.spikeAnnounced>>
+			<<set $xchange.pill.spikeAnnounced to true>>
+			<<set $xchangeSpikedMessage to true>>
+			<<set $effectsmessage to 1>>
+		<</if>>
+
+	<<case "random">>
+		<<xchange-get-spikepool>>
+		<<xchange-addeffect _effectPool.random()>>
+	<<default>>
+	<</switch>>
+
+	<<if _xchangeNeedsRefresh and ($enemyanger isnot undefined or $enemytrust isnot undefined)>>
+		<<updatesidebarimg>>
+		<<set $xchange._combatRecalcPending to true>>
+	<</if>>
+	<</if>>
+<</widget>>
+
+	<<widget "xchange-removeeffect">>
+		<<switch _args[0]>><<wash>>
+		<<case "genderflip">>
+			<<run setup.xChangeRecordActiveBodyVirginity()>>
+			<<set _xchangeNeedsBodyRevert to ($player.gender_body is "a" and $player.penisExist and $player.vaginaExist) or ($xchange.pill.clone isnot undefined and $xchange.pill.clone isnot "none") or !$xchange.pill.originalBody or ($player.gender_body isnot $xchange.pill.originalBody.gender_body) or ($player.sex isnot $xchange.pill.originalBody.sex)>>
+			<<if setup.xChangeCloneVirginityRole($xchange.pill.clone) isnot "">>
+				<<save-body "cloned" $xchange.pill.clone>>
+			<<elseif $player.gender_body is "a" and $player.penisExist and $player.vaginaExist>>
+				<<save-body "herm">>
+			<<elseif $xchange.pill.hermEffect or $xchange.pill.genderflipEffect or setup.xChangeActiveBodyVirginityRole() is "xchange">>
+				<<save-body "genderswapped">>
+			<</if>>
+			<<set $xchange.pill.genderflipEffect to false>>
+			<<if _xchangeNeedsBodyRevert>>
+				<<load-body>>
+				<<xchangeMasturbationDesyncCheck>>
+				<<run xchangeBodyChanged()>>
+			<</if>>
+		<<case "crossdress">>
+			<<set $xchange.pill.genderificationEffect to false>>
+		<<case "resistance">>
+			<<set $xchange.pill.resistanceEffect to false>>
+		<<case "continue">>
+			<<set $xchange.pill.continueEffect to false>>
+		<<case "fertile">>
+			<<set $xchange.pill.fertile to false>>
+			<<set $sexStats.vagina.menstruation.running = false>>
+		<<case "breeder">>
+			<<set $xchange.pill.breederEffect to false>>
+			<<set $xchange.breederDenial to 0>>
+			<<set $xchange.breederOrgasm to false>>
+			<<set $breederOrgasm to 0>>
+			<<unset $breederCreampied>>
+			<<set $xchange.breederEdgingCount to 0>>
+			<<set $xchange.breederEdgingStress to 0>>
+		<<case "omega">>
+			<<set $xchange.pill.omegaEffect to false>>
+			<<set $xchange.breederDenial to 0>>
+			<<set $xchange.breederOrgasm to false>>
+			<<set $breederOrgasm to 0>>
+			<<unset $breederCreampied>>
+			<<set $xchange.breederEdgingCount to 0>>
+			<<set $xchange.breederEdgingStress to 0>>
+		<<case "bull">>
+			<<set $xchange.pill.bullEffect to false>>
+		<<case "alpha">>
+			<<set $xchange.pill.alphaEffect to false>>
+			<<if $xchange.pill.alphaPenisSizeBoost>>
+				<<if $player.penisExist and $player.penissize lte 2 and $xchange.pill.alphaPenisSizePrevious isnot undefined>>
+					<<set $player.penissize to $xchange.pill.alphaPenisSizePrevious>>
+				<</if>>
+				<<set $xchange.pill.alphaPenisSizeBoost to false>>
+				<<unset $xchange.pill.alphaPenisSizePrevious>>
+			<</if>>
+			/* Runs after the size restore above, which would otherwise write a size onto an organ that is about to go. */
+			<<xchange-alpha-remove-penis>>
+		<<case "beta">>
+			<<set $xchange.pill.betaEffect to false>>
+			<<run ensurePendingPregnancySlots()>><<set $pendingPregnancies.vagina2 to null>>
+		<<case "portal">>
+			<<if $portalPantiesEnabled>>
+				<<set $xchange.pill.portalEffect to false>>
+				<<set $xchange.pill.portalEffectTimer to 0>>
+			<</if>>
+		<<case "passion">>
+			<<set $xchange.pill.passionEffect to false>>
+		<<case "dumb-bitch">>
+			<<set $xchange.pill.dumbBitchEffect to false>>		
+		<<case "feartoxin">>
+			<<if $xchange.pill.feartoxinEffect>>
+				<<set $effectsmessage to 1>>
+				<<set $xchange_feartoxin_message to "end">>
+			<</if>>
+			<<set $xchange.pill.feartoxinEffect to false>>
+		<<case "innocence">>
+			<<if $xchange.pill.innocenceWasNatural is true>>
+				<<if $awareness gte 0 and $innocencestate is 1>>
+					<<set $innocencestate to 0>>
+					<<set $trauma to $innocencetrauma>>
+					<<set $innocencetrauma to 0>>
+					<<set $innocencemessage to "end">>
+				<</if>>
+			<<else>>
+				<<set $awareness to (typeof $innocenceawareness === "number" ? $innocenceawareness : 0)>>
+				<<set $innocencestate to 0>>
+				<<set $trauma to $innocencetrauma>>
+				<<set $innocencetrauma to 0>>
+				<<set $innocencemessage to "end">>
+			<</if>>
+			<<set $innocenceawareness to 0>>
+			<<set $xchange.pill.innocenceWasNatural to false>>
+			<<set $xchange.pill.innocenceEffect to false>>
+		<<case "swell">>
+			<<if $xchange.pill.swellTarget is "penis">>
+				<<set _psRestore to Number($xchange.penissize)>>
+				<<if isNaN(_psRestore)>>
+					<<run setup.xChangeRepairNoticeOnce("repair_xchange_penissize_restore_nan", "<b>Save repair notice</b><br>X-Change could not read the stored pre-Swell <b>penis size</b>. The current visible size was kept so the stuck Swell effect could end.<br><br><b>Please report this with your save and steps.</b>")>>
+				<<else>>
+					<<set $player.penissize to _psRestore>>
+				<</if>>
+			<<elseif $xchange.pill.swellTarget is "curves">>
+				<<set _bsRestore to Number($xchange.breastsize)>>
+				<<if isNaN(_bsRestore)>>
+					<<run setup.xChangeRepairNoticeOnce("repair_xchange_breastsize_restore_nan", "<b>Save repair notice</b><br>X-Change could not read the stored pre-Swell <b>breast size</b>. The current visible size was kept so the stuck Swell effect could end.<br><br><b>Please report this with your save and steps.</b>")>>
+				<<else>>
+					<<set $player.breastsize to _bsRestore>>
+				<</if>>
+				<<set _botRestore to Number($xchange.bottomsize)>>
+				<<if isNaN(_botRestore)>>
+					<<run setup.xChangeRepairNoticeOnce("repair_xchange_bottomsize_restore_nan", "<b>Save repair notice</b><br>X-Change could not read the stored pre-Swell <b>bottom size</b>. The current visible size was kept so the stuck Swell effect could end.<br><br><b>Please report this with your save and steps.</b>")>>
+				<<else>>
+					<<set $player.bottomsize to _botRestore>>
+				<</if>>
+			<</if>>
+			<<set $xchange.pill.swellEffect to false>>
+			<<unset $xchange.pill.swellTarget>>
+		<<case "bimbo">>
+			<<set $xchange.pill.bimboEffect to false>>
+			<<if $xchange.science gt $sciencetrait>>
+				<<set $sciencetrait to $xchange.science>>
+				<<school_skill_change "science" 0>>
+				<<set $effectsmessage = 1>>
+				<<set $science_up_message = 1>>
+			<</if>>
+			<<if $xchange.math gt $mathstrait>>
+				<<set $mathstrait to $xchange.math>>
+				<<school_skill_change "maths" 0>>
+				<<set $effectsmessage = 1>>
+				<<set $maths_up_message = 1>>
+			<</if>>
+			<<if $xchange.english gt $englishtrait>>
+				<<set $englishtrait to $xchange.english>>
+				<<school_skill_change "english" 0>>
+				<<set $effectsmessage = 1>>
+				<<set $english_up_message = 1>>
+			<</if>>
+			<<if $xchange.history gt $historytrait>>
+				<<set $historytrait to $xchange.history>>
+				<<school_skill_change "history" 0>>
+				<<set $effectsmessage = 1>>
+				<<set $history_up_message = 1>>
+			<</if>>
+			<<unset $promiscuityIgnore>>
+		<<case "cumcure">>
+			<<set $xchange.pill.cumcureEffect to false>>
+		<<case "fertility">>
+			<<set $xchange.pill.hyperFertilityEffect to false>>
+		<<case "spike" "unknown">>
+			<<set $xchange.pill.effectsKnown to true>>
+		<<default>>
+		<</switch>>
+		<<if ["bull", "alpha"].includes(_args[0])>><<semenvolume 0>><</if>>
+	<</widget>>
+
+<<widget "xchange-addsideeffect">>
+	<<set _silent to _args.includes("silent") or _args.includes("quiet")>>
+
+	/* Identify which pill caused this side-effect so the notices don't blend together.
+	   Pass one of: "suspicious" (bar/spike), "antipill", "dumbbitch".
+	   Anything unrecognised falls back to a neutral "generic" notice. */
+	<<set _validSources to ["suspicious", "antipill", "dumbbitch"]>>
+	<<set _source to _args.find((a) => _validSources.includes(a)) || "generic">>
+
+	<<set _hoursAdded to 12>>
+	<<set _maxHours to 36>>
+	<<set _bonus to 2>>
+	<<set _sensitivityNulled to typeof activeInsanityTrait === "function" and activeInsanityTrait()>>
+
+	<<if !_sensitivityNulled>>
+		<<set $xchange.antiPillSensitivity to $xchange.antiPillSensitivity || {}>>
+		<<set $xchange.antiPillSensitivity.globalBonus to _bonus>>
+		<<set $xchange.antiPillSensitivity.hours to Math.clamp(($xchange.antiPillSensitivity.hours || 0) + _hoursAdded, _hoursAdded, _maxHours)>>
+		/* Remember the most recent cause so the fade notice (fired later, on sleep/time pass) matches. */
+		<<set $xchange.antiPillSensitivity.source to _source>>
+	<</if>>
+
+	/* Use the game's own pain macro, not raw $pain edits */
+	<<pain 65>>
+
+	<<if !_silent>>
+		<<set $effectsmessage to 1>>
+		<<set $antiPillSensitivityMessage to _sensitivityNulled ? _source + "-insanity" : _source>>
+	<</if>>
+<</widget>>
+
+	/* Drops masturbation actions whose target genital was removed by a pill applying or wearing off
+	   mid-scene. Without this the scene keeps working a penis (or vagina) the body no longer has,
+	   until the hand or mouth lets go of it on its own. */
+	<<widget "xchangeMasturbationDesyncCheck">>
+		<<if $masturbating isnot 1>><<exit>><</if>>
+
+		/* The "default" vars are checked too: they hold the action that re-engages next turn, so a stale
+		   one would reach for the missing part again even after the live action is cleared. */
+		<<set _xcCleared to false>>
+		<<if setup.xchangeStaleMasturbationAction($leftarm) or setup.xchangeStaleMasturbationAction($leftaction) or setup.xchangeStaleMasturbationAction($leftactiondefault)>>
+			<<if $leftarm isnot "bound">><<set $leftarm to 0>><<set $leftaction to 0>><</if>>
+			<<set $leftactiondefault to "mrest">>
+			<<set _xcCleared to true>>
+		<</if>>
+		<<if setup.xchangeStaleMasturbationAction($rightarm) or setup.xchangeStaleMasturbationAction($rightaction) or setup.xchangeStaleMasturbationAction($rightactiondefault)>>
+			<<if $rightarm isnot "bound">><<set $rightarm to 0>><<set $rightaction to 0>><</if>>
+			<<set $rightactiondefault to "mrest">>
+			<<set _xcCleared to true>>
+		<</if>>
+		<<if setup.xchangeStaleMasturbationAction($mouth) or setup.xchangeStaleMasturbationAction($mouthaction) or setup.xchangeStaleMasturbationAction($mouthactiondefault)>>
+			<<set $mouth to 0>>
+			<<set $mouthaction to 0>>
+			<<set $mouthactiondefault to "mrest">>
+			<<set _xcCleared to true>>
+		<</if>>
+		<<if setup.xchangeStaleMasturbationAction($vaginaactiondefault)>>
+			<<set $vaginaactiondefault to "mrest">>
+			<<set _xcCleared to true>>
+		<</if>>
+
+		/* Keep the use markers in step with the body, matching <<masturbationstart>>. */
+		<<if $player.penisExist>>
+			<<if $penisuse is "none">><<set $penisuse to 0>><</if>>
+		<<else>>
+			<<set $penisuse to "none">>
+		<</if>>
+		<<if $player.vaginaExist>>
+			<<if $vaginause is "none">><<set $vaginause to 0>><</if>>
+		<<else>>
+			<<set $vaginause to "none">>
+		<</if>>
+
+		<<if _xcCleared>>
+			There's <span class="blue">nothing left to hold</span>, so you stop.
+		<</if>>
+	<</widget>>
+
+	<<widget "xchange-dose-deliberate">>
+		<<run xchangeVoluntaryDoseBegin()>>
+	<</widget>>
+
+	<<widget "xchange-dose-deliberate-end">>
+		<<run xchangeVoluntaryDoseEnd()>>
+	<</widget>>
+
+	<<widget "take-xchange">>
+		<<set _duration to _args[0]>>
+		<<set _effects to _args.slice(1)>>
+
+		/* Final pregnancy check: blocks any new dose while carrying, regardless of how the pill was taken.
+		Scenes handle their own refusal text. Cheats can bypass this with $xchange._cheatDose. */
+		<<if !playerIsXChanged() and (!xchangePregnancyBlocksPill() or $xchange._cheatDose)>>
+			<<save-body>>
+			<<xchange-effects _duration _effects>>
+			<<exposedcheck>>
+			<<if $xchange.pill.genderflipEffect>>
+				<<if $xchange.blackmail.intro>><<set $xchange.blackmail.hasGenderswapped to true>><</if>>
+				<<if $xchange.blackmail.activeQuest>><<set $xchange.blackmail.hasGenderswappedRecently to true>><</if>>
+			<</if>>
+			<<set $xchange.timesTaken.player++>>
+		<</if>>
+	<</widget>>
+
+	<<widget "xchange-choice">>
+		/* Optional args: effect list for the body change, defaulting to ["genderflip"].
+		   e.g. xchange-choice "herm" for a Choice pill that grants both sets of genitals. */
+
+		<<if !playerIsXChanged() and !xchangePregnancyBlocksPill()>>
+			<<save-body>>
+			<<set _effects to (_args.length gt 0 ? Array.from(_args) : ["genderflip"])>>
+			<<xchange-effects 1 _effects>>
+			<<exposedcheck>>
+			<<set $xchange.timesTaken.player++>>
+		<</if>>
+
+		<<xchange-addeffect "choice">>
+
+	<</widget>>
+
+	<<widget "xchange-pink">>
+		<<set $xchange.pill.continueEffect to false>>
+		/* 	args[0]: duration of the pill
+			args onwards: "fertile" enables the normal fertility cycle
+						"fertility" enables Hyper Fertility
+						"resistance" enables resistance effect
+						"continue" enables continue effect 
+		*/	
+		<<set _duration to _args[0]>>
+		<<set _effects to _args.slice(1)>>
+		<<run _effects.unshift("genderflip")>>
+
+		<<if !playerIsXChanged() and !xchangePregnancyBlocksPill()>>
+			<<save-body>>
+			<<xchange-effects _duration _effects>>
+			<<exposedcheck>>
+			<<if $xchange.pill.genderflipEffect>>
+				<<if $xchange.blackmail.intro>><<set $xchange.blackmail.hasGenderswapped to true>><</if>>
+				<<if $xchange.blackmail.activeQuest>><<set $xchange.blackmail.hasGenderswappedRecently to true>><</if>>
+			<</if>>
+			<<set $xchange.timesTaken.player++>>
+		<</if>>
+	<</widget>>
+
+	<<widget "xchange-blue">>
+		<<set $xchange.pill.continueEffect to false>>
+		/* 	args[0]: duration of the pill
+			args onwards: "fertile" enables the normal fertility cycle
+					"fertility" enables Hyper Fertility
+					"resistance" enables resistance effect
+					"continue" enables continue effect 
+		*/
+		<<set _duration to _args[0]>>
+		<<set _effects to _args.slice(1)>>
+		<<run _effects.unshift("genderflip")>>
+
+		<<if !playerIsXChanged() and !xchangePregnancyBlocksPill()>>
+
+			<<save-body>>
+			<<xchange-effects _duration _effects>>
+			<<exposedcheck>>
+
+			<<if $xchange.pill.genderflipEffect>>
+				<<if $xchange.blackmail.intro>><<set $xchange.blackmail.hasGenderswapped to true>><</if>>
+				<<if $xchange.blackmail.activeQuest>><<set $xchange.blackmail.hasGenderswappedRecently to true>><</if>>
+			<</if>>
+			<<set $xchange.timesTaken.player++>>
+		<</if>>
+	<</widget>>
+
+	<<widget "xchange-restore">>
+		<<if xchangePregnancyBlocksRevert() and _args[0] isnot "force">><<exit>><</if>>
+		<<set _xchangeNeedsBodyRevert to ($player.gender_body is "a" and $player.penisExist and $player.vaginaExist) or ($xchange.pill.clone isnot undefined and $xchange.pill.clone isnot "none") or !$xchange.pill.originalBody or ($player.gender_body isnot $xchange.pill.originalBody.gender_body) or ($player.sex isnot $xchange.pill.originalBody.sex)>>
+
+		<<if _args[0] isnot "nosave">>
+			/* Save whatever the CURRENT body actually is before overwriting it */
+			<<run setup.xChangeRecordActiveBodyVirginity()>>
+			<<if setup.xChangeCloneVirginityRole($xchange.pill.clone) isnot "">>
+				<<save-body "cloned" $xchange.pill.clone>>
+			<<elseif $player.gender_body is "a" and $player.penisExist and $player.vaginaExist>>
+				<<save-body "herm">>
+			<<elseif $xchange.pill.hermEffect or $xchange.pill.genderflipEffect or setup.xChangeActiveBodyVirginityRole() is "xchange">>
+				<<save-body "genderswapped">>
+			<</if>>
+
+			/* Load the original snapshot directly; generating a body here would apply
+			   the transformed history before load-body banks the outgoing history. */
+			<<if _xchangeNeedsBodyRevert>><<wash>><</if>>
+		<</if>>
+
+		<<if _xchangeNeedsBodyRevert>>
+			<<load-body>>
+			<<xchangeMasturbationDesyncCheck>>
+			<<run xchangeBodyChanged()>>
+		<</if>>
+
+		/* Safety net for pill effects that end without a body revert. */
+		<<xchange-restore-demeanour>>
+
+		/* Queue up pill messages */
+		<<set $effectsmessage to 1>>
+		/* <<if $xchange_fame gte 1000 && !$xchangeFameMerged>>
+			<<set $xchangeFameMessage to 1>>
+		<</if>> */
+
+		<<if $xchange.pill.resistanceEffect && $xchange.pill.resistanceChance lt 100>>
+			<<set $xchangeRestoreMessage to 2>>
+		<<elseif $xchange.pill.genderflipEffect>>
+			<<set $xchangeRestoreMessage to 1>>
+		<<elseif $xchange.pill.effectsKnown>>
+			<<set $xchangeRestoreMessage to 3>>
+		<</if>>
+
+		<<if $xchange.pill.xtendEffect and $xchange.pill.xtendTracker>>
+			/* Pill size changes build on the body's starting size, up to the physical maximum. */
+			<<set _xPenisAbs to setup.xChangeBodySizeAbsolute("penis")>>
+			<<set _xPenisNow to (Number.isFinite(Number($player.penissize)) ? Number($player.penissize) : setup.xChangeRollBodySize("penis"))>>
+			<<if $xchange.pill.xtendTracker.orgasmed>>
+				<<set _loss to $xchange.pill.xtendTracker.orgasmed>>
+				<<set $player.penissize to Math.clamp(_xPenisNow - _loss, _xPenisAbs.min, _xPenisAbs.max)>>
+				<<set $xtendMessage to 4>>
+				<<set $xtendMessageValue to (_loss * 3).toFixed(2)>>
+			<<else>>
+				<<set _xGains to (Number.isFinite(Number($xchange.pill.xtendTracker.penisSizeGains)) ? Number($xchange.pill.xtendTracker.penisSizeGains) : 0)>>
+				<<set _increase to Math.trunc(_xGains / 1000)>>
+				<<set _remainder to _xGains % 1000>>
+				<<set $player.penissize to Math.clamp(_xPenisNow + _increase, _xPenisAbs.min, _xPenisAbs.max)>>
+				<<set $penisgrowthtimer to Math.max(0, $penisgrowthtimer - _remainder)>>
+				<<set $xtendMessage to 5>>
+				<<set $xtendMessageValue to (_increase * 3 + _remainder / 500).toFixed(2)>>
+			<</if>>
+		<</if>>
+
+		/* Forced-end cleanup before clearing pill effects */
+		<<if $xchange.pill.innocenceEffect and $innocencestate is 1>>
+			<<if $xchange.pill.innocenceWasNatural is true>>
+				<<if $awareness gte 0>>
+					<<set $innocencestate to 0>>
+					<<set $trauma to $innocencetrauma>>
+					<<set $innocencetrauma to 0>>
+					<<set $innocencemessage to "end">>
+				<</if>>
+			<<else>>
+				<<set $awareness to (typeof $innocenceawareness === "number" ? $innocenceawareness : 0)>>
+				<<set $innocencestate to 0>>
+				<<set $trauma to $innocencetrauma>>
+				<<set $innocencetrauma to 0>>
+				<<set $innocencemessage to "end">>
+			<</if>>
+			<<set $innocenceawareness to 0>>
+		<</if>>
+
+		<<if $xchange.pill.passionEffect>><<set $drugged to 0>><</if>>
+
+		<<if $xchange.pill.feartoxinEffect>>
+			<<set $effectsmessage to 1>>
+			<<set $xchange_feartoxin_message to "end">>
+		<</if>>
+
+		/* Clear pill effects */
+		<<set $xchange.pill.active to false>>
+		<<set $xchange.pill.duration to 0>>
+		<<set $xchange.pill.countdown to 0>>
+		<<set $xchange.pill.durationDetailRoll to 0>>
+		<<set $xchange.pill.baseSex to undefined>>
+		<<set $xchange.pill.baseGenitals to undefined>>
+		<<set $xchange.pill.clone to "none">>
+		<<set $xchange.pill.genderflipEffect to false>>
+		<<set $xchange.pill.genderificationEffect to false>>
+		<<set $xchange.pill.hermEffect to false>>
+		<<set $xchange.pill.portalEffect to false>>
+		<<set $xchange.pill.portalEffectTimer to 0>>
+		<<set $xchange.pill.resistanceEffect to false>>
+		<<set $xchange.pill.resistanceChance to 100>>
+		<<set $xchange.pill.resistanceOrgasmsStat to 0>>
+		<<unset $xchange.pill.resistanceFakeout>>
+		<<set $xchange.pill.continueEffect to false>>
+		<<set $xchange.pill.passionEffect to false>>
+		<<set $xchange.pill.dumbBitchEffect to false>>
+		<<set $xchange.pill.choiceEffect to false>>
+		<<unset $xchange.pill.choiceSource>>
+		<<unset $xchange.pill.permanentCause>>
+		<<set $xchange.pill.xtendEffect to false>>
+		<<unset $xchange.pill.xtendTracker>>
+		<<set $xchange.pill.innocenceEffect to false>>
+		<<set $xchange.pill.innocenceWasNatural to false>>
+		/* Fear Toxin leaves its damage behind on purpose: trauma and control are not restored when it ends. */
+		<<set $xchange.pill.feartoxinEffect to false>>
+		/* Swell and the Alpha penis-size boost change $player size directly. */
+		<<if $xchange.pill.swellEffect>>
+			<<if $xchange.pill.swellTarget is "penis">>
+				<<set _psRestore to Number($xchange.penissize)>>
+				<<if !isNaN(_psRestore)>><<set $player.penissize to _psRestore>><</if>>
+			<<elseif $xchange.pill.swellTarget is "curves">>
+				<<set _bsRestore to Number($xchange.breastsize)>>
+				<<if !isNaN(_bsRestore)>><<set $player.breastsize to _bsRestore>><</if>>
+				<<set _botRestore to Number($xchange.bottomsize)>>
+				<<if !isNaN(_botRestore)>><<set $player.bottomsize to _botRestore>><</if>>
+			<</if>>
+		<</if>>
+		<<set $xchange.pill.swellEffect to false>>
+		<<unset $xchange.pill.swellTarget>>
+		/* Restore Bimbo's removed school traits after every Bimbo session, including grey-only sessions.
+		Removing Bimbo early is handled by xchange-removeeffect "bimbo" macro. */
+		<<if $xchange.pill.bimboEffect>>
+			<<if $xchange.science gt $sciencetrait>>
+				<<set $sciencetrait to $xchange.science>>
+				<<school_skill_change "science" 0>>
+				<<set $effectsmessage to 1>>
+				<<set $science_up_message to 1>>
+			<</if>>
+			<<if $xchange.math gt $mathstrait>>
+				<<set $mathstrait to $xchange.math>>
+				<<school_skill_change "maths" 0>>
+				<<set $effectsmessage to 1>>
+				<<set $maths_up_message to 1>>
+			<</if>>
+			<<if $xchange.english gt $englishtrait>>
+				<<set $englishtrait to $xchange.english>>
+				<<school_skill_change "english" 0>>
+				<<set $effectsmessage to 1>>
+				<<set $english_up_message to 1>>
+			<</if>>
+			<<if $xchange.history gt $historytrait>>
+				<<set $historytrait to $xchange.history>>
+				<<school_skill_change "history" 0>>
+				<<set $effectsmessage to 1>>
+				<<set $history_up_message to 1>>
+			<</if>>
+			<<unset $promiscuityIgnore>>
+		<</if>>
+		<<set $xchange.pill.bimboEffect to false>>
+		<<set $xchange.pill.cumcureEffect to false>>
+		<<set $xchange.pill.hyperFertilityEffect to false>>
+		<<set $xchange.pill.breederEffect to false>>
+		<<set $xchange.pill.omegaEffect to false>>
+		<<set $xchange.pill.bullEffect to false>>
+		<<set $xchange.pill.alphaEffect to false>>
+		<<set $xchange.pill.betaEffect to false>>
+		<<semenvolume 0>>
+		<<if $xchange.pill.alphaPenisSizeBoost and $player.penisExist and $player.penissize lte 2 and $xchange.pill.alphaPenisSizePrevious isnot undefined>>
+			<<set $player.penissize to $xchange.pill.alphaPenisSizePrevious>>
+		<</if>>
+		<<set $xchange.pill.alphaPenisSizeBoost to false>>
+		<<unset $xchange.pill.alphaPenisSizePrevious>>
+		<<set $xchange.pill.alphaGrewPenis to false>>
+		<<unset $xchange.pill.alphaGrewPenisPreviousSex>>
+		<<unset $xchange.pill.alphaGrewPenisPreviousBodyGender>>
+		<<set $xchange.pill.fertile to false>>
+		<<set $xchange.breederDenial to 0>>
+		<<set $xchange.breederOrgasm to false>>
+		<<set $xchange.breederEdgingCount to 0>>
+		<<set $xchange.breederEdgingStress to 0>>
+		<<set $breederOrgasm to 0>>
+		<<unset $breederCreampied>>
+		<<unset $xchange.pill.shouldHaveEnded>>
+		/* The pill has ended, so clear its test result and known effects after the restore message uses them. */
+		<<set $xchange.pill.testPending to false>>
+		<<set $xchange.pill.effectsKnown to false>>
+		/* Premium leaves some settings on the pill after it ends. Clear them with the rest when the pill is no longer active. */
+		<<xchange-premium-clear-pill-temp>>
+		<<perma-reflection-clear>>
+	<</widget>>
+
+	<<widget "xchange-setpermanent">>
+		<<set $xchange.pill.duration to -1>>
+		<<set $xchange.pill.permanentCause to _args[0] || "">>
+		<<if $player.sex is "f" or ($xchange.pill.hermEffect and $player.vaginaExist)>>
+			<<set $sexStats.vagina.menstruation.running = true>>
+			<<set $xchange.pill.fertile to true>>
+		<</if>>
+		/* Keep Fake Breeder infertile / Always fertile honoured even once the transformation locks in. */
+		<<xchange-fertility-override>>
+		<<set $xchange.pill.continueEffect to false>>
+		<<set $xchange.pill.resistanceEffect to false>>
+		<<if $background.transgender>>
+			<<set $xchange.permaReflection to $xchange.permaReflection || {pending: false, lastShownDay: -1, answer: null}>>
+			<<set $xchange.permaReflection.pending to true>>
+			<<set $xchange.permaReflection.answer to null>>
+			<<set $xchange.permaReflection.lastShownDay to (typeof Time !== "undefined" && Time && typeof Time.days === "number" ? Time.days : 0)>>
+		<</if>>
+		<<set $effectsmessage to 1>>
+		/* <<set $xchangePermanenceMessage to 1>> */
+	<</widget>>
+
+	<<widget "xchange-orgasm">>
+		<<set _pill to $xchange.pill>>
+
+		/* The dream text assumes a full sex swap, so herm and same-sex bodies don't queue it. */
+		<<if !($xchange.dreamsSeen and $xchange.dreamsSeen.includes("firstOrgasm")) and $player.sex isnot $player.gender and !($player.penisExist and $player.vaginaExist)>>
+			<<xchangeDreamEvent "first xchanged orgasm">>
+		<</if>>
+
+		<<if _pill and (_pill.breederEffect or _pill.omegaEffect)>>
+			/* Any completed orgasm clears the buildup toward the next denial message. */
+			<<set $xchange.breederEdgingCount to 0>>
+			<<if !playerIsBreederCreampied()>>
+				<<set $xchange.breederOrgasm to false>>
+				<<unset $breederCreampied>>
+			<</if>>
+		<</if>>
+		<<if _pill.xtendEffect and _pill.xtendTracker>>
+			<<set _pill.xtendTracker.orgasmed++>>
+			<<set $xtendMessage to _pill.xtendTracker.orgasmed gt 1? 3 : 2>>
+			<<set $effectsmessage to 1>>
+		<</if>>
+		<<if _pill.resistanceEffect>>
+			<<set _pill.resistanceChance to (_pill.resistanceChance * $xchange.resistanceOrgasmPenalty)>>
+			<<set _pill.resistanceOrgasmsStat++>>
+		<</if>>
+		<<set _continueBurnout to false>>
+		<<if _pill.continueEffect and $xchange.continueDurationCapEnabled and pillIsPermanent()>>
+			/* A cap cannot undo an already-permanent transformation, but it can retire the now-inert Continue agent. */
+			<<set _continueBurnout to true>>
+		<<elseif _pill.continueEffect and !pillIsPermanent()>>
+			<<if $xchange.continueDurationCapEnabled>>
+				/* Continue already has a hard 30-day ceiling, so a larger Resistance penalty cannot be a reachable cap. */
+				<<set _continueDurationCap to Math.min(30, Math.max(1, $xchange.resistanceDaysPenalty)) * 24>>
+				<<if _pill.duration lt _continueDurationCap>>
+					<<set _pill.duration to Math.min(_pill.duration + 16, _continueDurationCap)>>
+				<</if>>
+				<<if _pill.duration gte _continueDurationCap>>
+					<<set _continueBurnout to true>>
+				<</if>>
+			<<else>>
+				<<set _pill.duration += 1 * 16>>
+			<</if>>
+		<</if>>
+		<<if _continueBurnout>>
+			<<set _pill.continueEffect to false>>
+			<<if $player.vaginaExist>>
+				<<set _pill.fertile to true>>
+				<<set $sexStats.vagina.menstruation.running to true>>
+			<<else>>
+				<<set _pill.fertile to false>>
+				<<set $sexStats.vagina.menstruation.running to false>>
+			<</if>>
+			<<xchange-fertility-override>>
+			<<if pillIsPermanent()>>
+				<br>The Continue agent <span class="teal">burns itself out</span>, but your transformation is already permanent and cannot resume counting down.<<if _pill.fertile>> The pill leaves behind its Fertile effect.<</if>>
+			<<elseif _pill.fertile>>
+				<br>The Continue agent has reached its limit and <span class="teal">burns itself out</span>. Your remaining duration will now tick down normally, but the pill leaves behind its Fertile effect.
+			<<else>>
+				<br>The Continue agent has reached its limit and <span class="teal">burns itself out</span>. Your remaining duration will now tick down normally.
+			<</if>>
+		<</if>>
+		<<if _pill.dumbBitchEffect>>
+			<<stress -10>><<trauma -50>>
+			<<set $effectsmessage to 1>>
+			<<set $dumbBitchOrgasmMessage to 1>>
+
+			<<set $science_exam = Math.clamp($science_exam - 20, -120, 200)>>
+			<<set $maths_exam = Math.clamp($maths_exam - 20, -120, 200)>>
+			<<set $english_exam = Math.clamp($english_exam - 20, -120, 200)>>
+			<<set $history_exam = Math.clamp($history_exam - 20, -120, 200)>>
+
+			<<if $science_exam lte -100 and $sciencetrait gte 0>>
+				<<set $effectsmessage = 1>>
+				<<set $science_down_message = 1>>
+				<<school_skill_down "science">>
+			<</if>>
+			<<if ($maths_exam <= -100 && $mathstrait >= 0)>>
+				<<set $effectsmessage = 1>>
+				<<set $maths_down_message = 1>>
+				<<school_skill_down "maths">>
+			<</if>>
+			<<if ($english_exam <= -100 && $englishtrait >= 0)>>
+				<<set $effectsmessage = 1>>
+				<<set $english_down_message = 1>>
+				<<school_skill_down "english">>
+			<</if>>
+			<<if ($history_exam <= -100 && $historytrait >= 0)>>
+				<<set $effectsmessage = 1>>
+				<<set $history_down_message = 1>>
+				<<school_skill_down "history">>
+			<</if>>
+
+			<<set _isDumb = $sciencetrait is -1 and $mathstrait is -1 and $englishtrait is -1 and $historytrait is -1>>
+			<<if _isDumb>>
+				<<set $dumbBitchOrgasmMessage to 2>>
+				<<set $skulduggery to amcClamp($skulduggery * 0.9, 1000, $AMCTraits.skulduggery)>>
+				<<if $skulduggery lt 200>>
+					<<set $willpower = amcClamp($willpower - 20, $willpowermax, $AMCTraits.willpower)>>
+					<<if $willpower lt 100>>
+						<<set $dumbBitchOrgasmMessage to 3>>
+						<<earnFeat "Dumb Bitch">>
+						<<set $exhibitionism to Math.clamp($exhibitionism + 2, 0, 100)>>
+						<<set $promiscuity to Math.clamp($promiscuity + 2, 0, 100)>>
+						<<set $deviancy to Math.clamp($deviancy + 2, 0, 100)>>
+
+						<<rng>>
+						<<if $rng gt 60>>
+							<<set $hypnosis to 1>>
+							<<rng 1 3>>
+							<<if $rng is 1 and $hypnosis_traits.scream isnot -1>>
+								<<set $hypnosis_traits.scream to Math.min(($hypnosis_traits.scream ?? 0) + 1, 5)>>
+							<<elseif $rng lte 2 and $hypnosis_traits.cover isnot -1>>
+								<<set $hypnosis_traits.cover to Math.min(($hypnosis_traits.cover ?? 0) + 1, 5)>>
+							<<elseif $rng lte 3 and $hypnosis_traits.deviancy isnot -1>>
+								<<set $hypnosis_traits.deviancy to Math.min(($hypnosis_traits.deviancy ?? 0) + 1, 5)>>
+							<</if>>
+						<</if>>
+					<</if>>
+				<</if>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "xchange-random-spike">>
+		<<run xchangeSpikeBodyMark()>>
+		<<if !playerMayBeSpiked() and xchangeTherapyActive()>>
+			/* Anti X-Change therapy: the dose is administered but the treatment neutralises it. Body stays unchanged. */
+			<<if _args[0] isnot "suppress">>
+				Your X-Change cleansing treatment neutralises the dose. <span class="blue">Your body remains unchanged</span>.
+				<br>
+			<</if>>
+		<</if>>
+		<<if playerMayBeSpiked()>>
+			<<if !playerIsXChanged()>>
+				/* Compute pill duration likelihoods */
+				<<set _durations to []>>
+				<<for _i to 0; _i lt 10; _i++>><<run _durations.push(1)>><</for>>
+				<<for _i to 0; _i lt 5; _i++>><<run _durations.push(3)>><</for>>
+				<<for _i to 0; _i lt 1; _i++>><<run _durations.push(7)>><</for>>
+				<<set _duration to _durations.random()>>
+				<<take-xchange _duration>>
+				/* Build spike pool */
+				<<xchange-get-spikepool>>
+
+				/* Extra safety: if dumb bitch is disabled, purge all possible ids */
+				<<if $xchange.spikepool.dumbbitch is 0 or $xchange.spikepool["dumb-bitch"] is 0 or $xchange.spikepool.dumbBitch is 0 or $xchange.spikepool.dumbbitch is false or $xchange.spikepool["dumb-bitch"] is false or $xchange.spikepool.dumbBitch is false>>
+					<<run _effectPool.deleteWith((val)=>val==="dumb-bitch" || val==="dumbbitch" || val==="dumbBitch")>>
+				<</if>>
+				/* Safe threshold calc (avoid divide-by-zero) */
+				<<set _poolLen to _effectPool.length>>
+				<<if _poolLen lte 0>><<set _poolLen to 1>><</if>>
+				<<set _crossdressThreshold to 100 - $xchange.spikerates.crossdress * 100 / _poolLen>>
+
+				<<if $player.sex is "m">>
+
+					<<rng>>
+					/* Gray Agent filters the body swap out entirely, so send the roll to crossdress instead of wasting it on an effect that can't apply. */
+					<<if ($rng gt _crossdressThreshold or xchangeGrayAgentBlocks("genderflip")) and $xchange.spikepool.crossdresser>>
+						<<xchange-addeffect "crossdress">>
+					<<else>>
+						<<xchange-addeffect "genderflip">>
+					<</if>>
+
+					<<xchange-get-spikepool>>
+					<<if $xchange.spikepool.dumbbitch is 0 or $xchange.spikepool["dumb-bitch"] is 0 or $xchange.spikepool.dumbBitch is 0 or $xchange.spikepool.dumbbitch is false or $xchange.spikepool["dumb-bitch"] is false or $xchange.spikepool.dumbBitch is false>> 
+						<<run _effectPool.deleteWith((val)=>val==="dumb-bitch" || val==="dumbbitch" || val==="dumbBitch")>>
+					<</if>>
+					<<if _effectPool.length gt 0>>
+						<<xchange-addeffect _effectPool.random()>>
+					<</if>>
+
+					<<if $xchange.pill.genderflipEffect>>
+						<<rng>><<if ($rng gt 85) or ($xchange.pill.breederEffect and $rng gt 33)>><<xchange-addeffect "fertile">><</if>>
+						<<rng>><<if $rng gt 66 and $xchange.spikepool.crossdresser>><<xchange-addeffect "crossdress">><</if>>
+					<</if>>
+					<<rng>><<if $rng gt 95 and $xchange.spikepool.passion>><<xchange-addeffect "passion">><</if>>
+					<<rng>><<if $rng gt 50 and $portalPantiesEnabled>><<xchange-addeffect "portal" 1>><</if>>
+
+				<<elseif $player.sex is "f">>
+
+					<<rng>>
+					/* Gray Agent filters the body swap out entirely, so send the roll to crossdress instead of wasting it on an effect that can't apply. */
+					<<if ($rng gt _crossdressThreshold or xchangeGrayAgentBlocks("genderflip")) and $xchange.spikepool.crossdresser>>
+						<<xchange-addeffect "crossdress">>
+					<<else>>
+						<<xchange-addeffect "genderflip">>
+					<</if>>
+
+					<<xchange-get-spikepool>>
+					<<if $xchange.spikepool.dumbbitch is 0 or $xchange.spikepool["dumb-bitch"] is 0 or $xchange.spikepool.dumbBitch is 0 or $xchange.spikepool.dumbbitch is false or $xchange.spikepool["dumb-bitch"] is false or $xchange.spikepool.dumbBitch is false>> 
+						<<run _effectPool.deleteWith((val)=>val==="dumb-bitch" || val==="dumbbitch" || val==="dumbBitch")>>
+					<</if>>
+					<<if _effectPool.length gt 0>>
+						<<xchange-addeffect _effectPool.random()>>
+					<</if>>
+
+					<<if $xchange.pill.genderflipEffect and $xchange.spikepool.crossdresser>>
+						<<rng>><<if $rng gt 66>><<xchange-addeffect "crossdress">><</if>>
+					<</if>>
+					<<rng>><<if $rng gt 95 and $xchange.spikepool.passion>><<xchange-addeffect "passion">><</if>>
+					<<rng>><<if $rng gt 50 and $portalPantiesEnabled>><<xchange-addeffect "portal" 1>><</if>>
+				<</if>>
+			<<else>>
+				<<xchange-get-spikepool>>
+				<<if $xchange.spikepool.dumbbitch is 0 or $xchange.spikepool["dumb-bitch"] is 0 or $xchange.spikepool.dumbBitch is 0 or $xchange.spikepool.dumbbitch is false or $xchange.spikepool["dumb-bitch"] is false or $xchange.spikepool.dumbBitch is false>> 
+					<<run _effectPool.deleteWith((val)=>val==="dumb-bitch" || val==="dumbbitch" || val==="dumbBitch")>>
+				<</if>>
+				<<if _effectPool.length gt 0>>
+					<<xchange-addeffect _effectPool.random()>>
+				<</if>>
+				<<set $xchange.timesTaken.player++>>
+			<</if>>
+			<<xchange-fertility-override>>
+			<<xchange-addeffect "unknown">>
+			<<set $xchange.timesSpiked to ($xchange.timesSpiked || 0) + 1>>
+			<<xchange-fame 1>>
+			/* A Suspicious pill inflicts the side-effect kick (pain + hypersensitivity) when the player has enabled this in settings.
+			Default behaviour (toggle on) treats every spike as Suspicious. Toggle off restores the legacy effects-only behaviour. */
+			<<if $xchange.spikeSideEffectsEnabled !== undefined ? $xchange.spikeSideEffectsEnabled : 1>>
+				<<xchange-addsideeffect "suspicious">>
+			<</if>>
+			<<if _args[0] isnot "suppress">>
+				<span class="pink">You got spiked with an unknown pill.</span>
+				<<if xchangeGrayAgentActive()>>
+					Whatever was in it, the gray agent in your blood <span class="teal">strips the body swap out of it</span>.
+				<</if>>
+				<br><br>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	/* args[0] "npc": building an NPC pill pool.
+	Gray Agent only affects the player, so it should not filter NPC effects. All other filters are shared. */
+	<<widget "xchange-get-spikepool">>
+		<<set _spikepoolForNpc to _args[0] is "npc">>
+		/* An NPC roll filters on the NPC being pilled (its body and the pill being built in _pill), not on the player. */
+		<<if _spikepoolForNpc>>
+			<<set _spikeNpc to (_targetNo isnot undefined ? $NPCList[_targetNo] : $NPCName[_targetNameIndex])>>
+			<<set _spikePill to _pill ?? {}>>
+			<<set _spikeHasVagina to !!_spikeNpc and _spikeNpc.vagina isnot "none">>
+			<<set _spikeHasPenis to !!_spikeNpc and _spikeNpc.penis isnot "none">>
+		<<else>>
+			<<set _spikePill to $xchange.pill>>
+			<<set _spikeHasVagina to $player.vaginaExist>>
+			<<set _spikeHasPenis to $player.penisExist>>
+		<</if>>
+		<<set _effectPool to []>>
+		<<for _pillType range Object.keys($xchange.spikerates)>>
+			<<for _i to 0; _i lt $xchange.spikerates[_pillType]; _i++>>
+				<<set _effectPool.push(_pillType)>>
+			<</for>>
+		<</for>>
+
+		/* Only apply genital effects if the player has the required anatomy.
+		Breeder and Fertile require a vagina; Bull requires a penis. Genderflip has already updated the body, and herms can use both. */
+		<<if !_spikeHasVagina>>
+			<<run _effectPool.deleteWith((val)=>val==="breeder")>>
+			<<run _effectPool.deleteWith((val)=>val==="fertile")>>
+		<</if>>
+
+		<<if !_spikeHasPenis>>
+			<<run _effectPool.deleteWith((val)=>val==="bull")>>
+		<</if>>
+
+		<<if _spikePill.genderflipEffect or (!_spikepoolForNpc and xchangeGrayAgentBlocks("genderflip"))>>
+			/* Gray Agent filters genderflip out of a spike, so drop it from the pool too and let the roll land on an effect that can actually apply. */
+			<<run _effectPool.deleteWith((val)=>val==="genderflip")>>
+		<</if>>
+
+		<<if _spikePill.genderificationEffect or !$xchange.spikepool.crossdresser>>
+			<<run _effectPool.deleteWith((val)=>val==="crossdress")>>
+		<</if>>
+
+		<<if _spikePill.hermEffect or !$xchange.spikepool.herm or (!_spikepoolForNpc and xchangeGrayAgentBlocks("herm"))>>
+			<<run _effectPool.deleteWith((val)=>val==="herm")>>
+		<</if>>
+
+		<<if _spikePill.breederEffect or !$xchange.spikepool.breeder>>
+			<<run _effectPool.deleteWith((val)=>val==="breeder")>>
+		<</if>>
+
+		<<if _spikePill.bullEffect or !$xchange.spikepool.bull>>
+			<<run _effectPool.deleteWith((val)=>val==="bull")>>
+		<</if>>
+
+		<<if _spikePill.continueEffect or _spikePill.resistanceEffect or !$xchange.spikepool.continue or (!_spikepoolForNpc and pillIsPermanent())>>
+			<<run _effectPool.deleteWith((val)=>val==="continue")>>
+		<</if>>
+
+		<<if _spikePill.resistanceEffect or _spikePill.continueEffect or !$xchange.spikepool.resistance or (!_spikepoolForNpc and pillIsPermanent())>>
+			<<run _effectPool.deleteWith((val)=>val==="resistance")>>
+		<</if>>
+
+		<<if _spikePill.passionEffect or !$xchange.spikepool.passion>>
+			<<run _effectPool.deleteWith((val)=>val==="passion")>>
+		<</if>>
+
+		<<if _spikePill.portalEffect or !$portalPantiesEnabled>>
+			<<run _effectPool.deleteWith((val)=>val==="portal")>>
+		<</if>>
+
+		/* FIX: if ANY variant key is explicitly disabled, treat as disabled */
+		<<if _spikePill.dumbBitchEffect
+			or _spikePill.bimboEffect
+			or $xchange.spikepool.dumbbitch is 0
+			or $xchange.spikepool["dumb-bitch"] is 0
+			or $xchange.spikepool.dumbBitch is 0
+			or $xchange.spikepool.dumbbitch is false
+			or $xchange.spikepool["dumb-bitch"] is false
+			or $xchange.spikepool.dumbBitch is false>>
+			<<run _effectPool.deleteWith((val)=>val==="dumb-bitch" || val==="dumbbitch" || val==="dumbBitch")>>
+		<</if>>
+
+		<<if _spikePill.innocenceEffect or !$xchange.spikepool.innocence or _spikePill.feartoxinEffect>>
+			<<run _effectPool.deleteWith((val)=>val==="innocence")>>
+		<</if>>
+
+		/* Fear Toxin and Innocence pull trauma in opposite directions, so they never share a session. */
+		<<if _spikePill.feartoxinEffect or !$xchange.spikepool.feartoxin or _spikePill.innocenceEffect or (!_spikepoolForNpc and $innocencestate is 1)>>
+			<<run _effectPool.deleteWith((val)=>val==="feartoxin")>>
+		<</if>>
+
+		<<if _spikePill.swellEffect or !$xchange.spikepool.swell>>
+			<<run _effectPool.deleteWith((val)=>val==="swell")>>
+		<</if>>
+
+		<<if _spikePill.bimboEffect or _spikePill.dumbBitchEffect or !$xchange.spikepool.bimbo>>
+			<<run _effectPool.deleteWith((val)=>val==="bimbo")>>
+		<</if>>
+
+		<<if _spikePill.cumcureEffect or !$xchange.spikepool.cumcure>>
+			<<run _effectPool.deleteWith((val)=>val==="cumcure")>>
+		<</if>>
+
+		<<if !$xchange.spikepool.fertility>>
+			<<run _effectPool.deleteWith((val)=>val==="fertility")>>
+		<</if>>
+
+		/* Omega (anal pregnancy + anal insemination pleasure) works on any body, so no sex gate. */
+		<<if _spikePill.omegaEffect or !$xchange.spikepool.omega>>
+			<<run _effectPool.deleteWith((val)=>val==="omega")>>
+		<</if>>
+
+		/* Alpha (knotted penis + orgasm demands penetration) only makes sense with a penis. */
+		<<if _spikePill.alphaEffect or !$xchange.spikepool.alpha or !_spikeHasPenis>>
+			<<run _effectPool.deleteWith((val)=>val==="alpha")>>
+		<</if>>
+
+		/* Beta forms a second womb and only makes sense on a body with a vagina. */
+		<<if _spikePill.betaEffect or !$xchange.spikepool.beta or !_spikeHasVagina>>
+			<<run _effectPool.deleteWith((val)=>val==="beta")>>
+		<</if>>
+	<</widget>>
+
+	/* Fear Toxin holds trauma at maximum and control at zero for as long as the pill runs.
+	   Skipped while the Innocence state is active, since that state owns $trauma (it parks the real value in $innocencetrauma). */
+	<<widget "xchange-feartoxin-pin">>
+		<<if !$statFreeze and $xchange.pill.feartoxinEffect and $innocencestate isnot 1>>
+			<<set $trauma to $traumamax>>
+			<<set $control to 0>>
+		<</if>>
+	<</widget>>
+
+	<<widget "xchange-antidote">>
+		<<if !isNaN(_args[0])>>
+			<<set $xchangeAntidoteFizzle to false>>
+			<<if playerIsXChanged()>>
+				<<if pillIsPermanent() or pillTimerPaused()>>
+					<<set $xchangeAntidoteFizzle to true>>
+				<<else>>
+					<<set _decrease to _args[0] * 24>>
+					<<set $xchange.pill.duration to Math.max($xchange.pill.duration - _decrease, 0)>>
+					<<pain 150>><<set $stress += Math.max($stressmax * (_args[0] / 8), $stressmax * 0.66)>>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<error {
+				message	: `Received either no argument or a NaN value in the xchange-antidote widget.`,
+				source	: `Previous passage: ${$passagePrev} | phase: ${$phase} | rng: ${$rng}.`
+			}>>
+		<</if>>
+	<</widget>>
+
+	<<widget "xchange-test">> 
+		/* The kit can be used with no active pill, so show a blank result instead of an empty report. */
+		<<if !$xchange.pill.active>>
+			<<set $xchange.pill.testPending to false>>
+			The display stays blank. There's <span class="green">nothing in you for it to find</span>.
+			<<exit>>
+		<</if>>
+		<<set $xchange.pill.effectsKnown to true>>
+		/* One stable roll keeps the tester's 8-13 day wording from changing whenever the Traits panel redraws. */
+		<<set $xchange.pill.durationDetailRoll to random(1, 420)>>
+		<<set $xchange.pill.testPending to false>>
+		The display indicates that you're under the following effects:
+		<ul>
+			<<if $xchange.pill.choiceEffect>><li>Choice.
+				<mouse class="tooltip linkBlue">(?)<span>The effect of this pill remains indefinitely until its companion pill is ingested.</span></mouse></li><</if>>
+			<<if $xchange.pill.genderflipEffect>><li>Sexflip.
+				<mouse class="tooltip linkBlue">(?)<span>Switches your body's sexual characteristics to those of the opposite genital.</span></mouse></li><</if>>
+			<<if $xchange.pill.hermEffect>><li>Herm.
+				<mouse class="tooltip linkBlue">(?)<span>Mixes up your body's sexual characteristics to those of your original genital and those of the opposite.</span></mouse></li><</if>>
+			<<if $xchange.pill.genderificationEffect>><li><<= xchangeGenderificationDirection() === "sissy" ? "Sissification" : (xchangeGenderificationDirection() === "butch" ? "Butchification" : "Genderification")>>.
+				<mouse class="tooltip linkBlue">(?)<span>Partially changes your body's characteristics. Rewards crossdressing (relative to your original sex).</span></mouse></li><</if>>
+			<<if $xchange.pill.continueEffect>><li>Continue Effect.
+				<mouse class="tooltip linkBlue">(?)<span>Extends its duration every time you climax. If the duration cap is enabled, Continue burns out at the configured Resistance Pill-End Failure Penalty and adds Fertile if your current body can become pregnant. If the transformation is already permanent, Continue burns out on your next climax but the transformation remains permanent.</span></mouse></li><</if>>
+			<<if $xchange.pill.resistanceEffect>><li>Resistance Effect.
+				<mouse class="tooltip linkBlue">(?)<span>Less likely to expire after its full lapse with each orgasm.</span></mouse></li><</if>>
+			<<if $xchange.pill.resistanceEffect>><li>X-Tend Effect.
+				<mouse class="tooltip linkBlue">(?)<span>Let's you grow your original penis size with every creampie from a bigger dick that yours, at the risk of forfeiting your gains and shrinking your size if you orgasm.</span></mouse></li><</if>>
+			<<if $xchange.pill.breederEffect>><li>Breeder Effect.
+				<mouse class="tooltip linkBlue">(?)<span>Enhances your fertility. Triggers orgasms upon insemination. And dimishes stress while sperm remains inside the vagina.</span></mouse>
+			</li><</if>>
+			<<if $xchange.pill.omegaEffect>><li>Omega Effect.
+				<mouse class="tooltip linkBlue">(?)<span>Allows anal pregnancy while active. Keeps your ass a little slick with natural lubrication. Triggers orgasms upon anal insemination and diminishes stress while sperm remains in the anus.</span></mouse>
+			</li><</if>>
+			<<if $xchange.pill.bullEffect>><li>Bull Effect.
+				<mouse class="tooltip linkBlue">(?)<span>Enhances your fertility, almost guarantees successful impregnation of partners, and raises base maximum semen volume.</span></mouse>
+			</li><</if>>
+			<<if $xchange.pill.alphaEffect>><li>Alpha Effect.
+				<mouse class="tooltip linkBlue">(?)<span>Gives your penis a knot in encounter views, makes orgasm demand that your cock be inside something, and raises base maximum semen volume.</span></mouse>
+			</li><</if>>
+			<<if $xchange.pill.betaEffect>><li>Beta Effect.
+				<mouse class="tooltip linkBlue">(?)<span>Forms a second womb. Each womb can conceive and carry its own pregnancy on an independent schedule.</span></mouse>
+			</li><</if>>
+			<<if $xchange.pill.hyperFertilityEffect>><li>Hyper Fertility Effect.
+				<mouse class="tooltip linkBlue">(?)<span>Strengthens conception, speeds up pregnancies, and greatly raises the odds of twins, triplets or quadruplets. It applies to vaginal pregnancy, Omega-enabled anal pregnancy, and pregnancies you sire. Lasts as long as this pill.</span></mouse>
+			</li><</if>>
+			<<if $xchange.pill.passionEffect>><li>Passion Effect.
+				<mouse class="tooltip linkBlue">(?)<span>Steadily dissolves aphrodisiacs into your bloodstream at an hourly rate.</span></mouse></li><</if>>
+			<<if $xchange.pill.dumbBitchEffect>><li>Dumb Bitch Effect.
+				<mouse class="tooltip linkBlue">(?)<span>Each orgasm fries your brain a little bit each time, making you dumber and less able to resist pleasure. Diminishes stress while active.</span></mouse></li><</if>>
+			<<if $xchange.pill.portalEffect>><li>Portal Effect: <span class="teal"><<print-portalduration>></span> remaining.
+				<mouse class="tooltip linkBlue">(?)<span>Allows random NPCs to fuck you remotely, regardless of your consent.</span></mouse></li><</if>>
+			<<if $xchange.pill.clone isnot "none">><li>Clone '<<print $xchange.pill.clone>>' Effect.</li><</if>>
+			<<if $xchange.pill.fertile>><li>You can become pregnant.</li><</if>>
+			<<if $xchange.pill.innocenceEffect>><li>Innocence Effect.
+				<mouse class="tooltip linkBlue">(?)<span>While under this pill, all sexual awareness is wiped from your mind.</span></mouse></li><</if>>
+			<<if $xchange.pill.feartoxinEffect>><li>Fear Toxin Effect.
+				<mouse class="tooltip linkBlue">(?)<span>Holds your trauma at its maximum and keeps your self-control at nothing. Your trauma cannot start falling until this effect ends. What it does to your mind is not undone when it ends.</span></mouse></li><</if>>
+			<<if $xchange.pill.swellEffect>><li>Swell Effect.
+				<mouse class="tooltip linkBlue">(?)<span>Increases the size of your <<print $xchange.pill.swellTarget is "penis" ? "penis" : "breasts and ass">> for the duration.</span></mouse></li><</if>>
+			<<if $xchange.pill.bimboEffect>><li>Bimbo Effect.
+				<mouse class="tooltip linkBlue">(?)<span>Reduces your intelligence and increases your lewdness. Diminishes stress while active.</span></mouse></li><</if>>
+			<<if $xchange.pill.cumcureEffect>><li>CumCure Effect.
+				<mouse class="tooltip linkBlue">(?)<span>Reduces the duration of your transformation every time cum is deposited inside you.</span></mouse></li><</if>>
+			<li>Duration: 
+				<<set _pregnancyPauseKnown to
+					playerAwareTheyArePregnant() or xchangeParasitesBlockPill()>>
+				<<set _visibleTimerPause to pillTimerPaused() and (_pregnancyPauseKnown or (!earSlimeThoughts() and V.earSlime.growth > 50))>>
+				<<if _visibleTimerPause or pillIsPermanent() or V.xchange.pill.choiceEffect>>
+					<<set _duration = `<mouse class="tooltip">Indefinite<span class="lblue">`>>
+
+					<<if V.xchange.pillPermanence === 1 && !V.xchange.pill.choiceEffect>>
+						<<set _duration += `Your transformation is now permanent.`>>
+					<<else>>
+						<<if _pregnancyPauseKnown>>
+							<<set _duration += `Your transformation cannot end while your pregnancy runs its course. `>>
+						<</if>>
+						<<if !earSlimeThoughts() and V.earSlime.growth > 50>>
+							<<set _duration += `A slime is interfering with your genitals. The pill cannot revert itself until the parasite is removed. `>>
+						<</if>>
+						<<if (V.xchange.pill.choiceEffect)>>
+							<<set _duration += `You're under a Choice pill. The effect will last until a Choice Reversal pill is taken.`>>
+						<</if>>
+					<</if>>
+					<<set _duration += `</span></mouse>.`>>
+					<<print _duration>>
+				<<else>><span class="teal"><<print-pillduration>></span> remaining.
+				<</if>>
+			</li>
+		</ul>
+	<</widget>>
+
+	<<widget "print-pillduration">>
+		<<set _duration to $xchange.pill.duration>>
+		<<if wondersAboutPillEnd()>>
+			A couple hours?
+		<<elseif ($xchange.pill.durationDetailRoll || 0) gt 0>>
+			<<set _hours to Math.max(1, Math.ceil(_duration))>>
+			<<set _days to Math.ceil(_duration / 24)>>
+			<<if _hours lt 24>>
+				<<print _hours>> <<= _hours is 1 ? "Hour" : "Hours">>
+			<<elseif _days lt 7>>
+				<<print _days>> <<= _days is 1 ? "Day" : "Days">>
+			<<elseif _days lt 14>>
+				<!-- From day 8 to 13, the chance of a "Less Than 2 Weeks" reading rises from 1/7 to 1/2. -->
+				<<set _weekReadingChance to 15 - _days>>
+				<<if _days gt 7 and $xchange.pill.durationDetailRoll % _weekReadingChance is 0>>
+					Less Than 2 Weeks
+				<<else>>
+					<<print _days>> Days
+				<</if>>
+			<<elseif _days lt 31>>
+				<<set _weeks to Math.ceil(_days / 7)>>
+				<<if _days % 7 is 0>>
+					<<print _weeks>> <<= _weeks is 1 ? "Week" : "Weeks">>
+				<<else>>
+					Less Than <<print _weeks>> Weeks
+				<</if>>
+			<<else>>
+				Over a month <mouse class="tooltip">(?)<span>The measuring device does not have enough precision to determine how much over a month. It could be 3 months. It could be a year.</span></mouse>
+			<</if>>
+		<<elseif _duration gte 31 * 24>>
+			Over a month <mouse class="tooltip">(?)<span>The measuring device does not have enough precision to determine how much over a month. It could be 3 months. It could be a year.</span></mouse>
+		<<elseif _duration gte 24 * 24>>
+			About a month
+		<<elseif _duration gte 9 * 24>>
+			Several weeks
+		<<elseif _duration gte 7 * 24>>
+			About a week
+		<<elseif _duration gte 3 * 24>>
+			Less than a week
+		<<elseif _duration gte 36>>
+			A couple days
+		<<elseif _duration gte 18>>
+			About a day
+		<<elseif _duration gte 5>>
+			Several hours
+		<<elseif _duration gte 2>>
+			A couple hours
+		<<else>>
+			A couple hours?
+		<</if>>
+	<</widget>>
+
+	<<widget "print-portalduration">>
+		<<set _duration to Math.min($xchange.pill.duration, $xchange.pill.portalEffectTimer)>>
+		<<if _duration gte 31 * 24>>
+			Over a month <mouse class="tooltip">(?)<span>The measuring device does not have enough precision to determine how much over a month. It could be 3 months. It could be a year.</span></mouse>
+		<<elseif _duration gte 24 * 24>>
+			About a month
+		<<elseif _duration gte 9 * 24>>
+			Several weeks
+		<<elseif _duration gte 7 * 24>>
+			About a week
+		<<elseif _duration gte 3 * 24>>
+			Less than a week
+		<<elseif _duration gte 36>>
+			A couple days
+		<<elseif _duration gte 18>>
+			About a day
+		<<elseif _duration gte 5>>
+			Several hours
+		<<else>>
+			A couple hours
+		<</if>>
+	<</widget>>
+
+	<<widget "breeder-orgasm">>
+		<<set _bodyparts to _args[0]>>
+		<<set _liquids to _args[1]>>
+		<<set _amount to _args[2]>>
+		<<set _hasVaginaTarget to (_bodyparts is "vagina") or (_bodyparts is "vaginaoutside") or (Array.isArray(_bodyparts) and (_bodyparts.includes("vagina") or _bodyparts.includes("vaginaoutside")))>>
+		<<set _hasAnusTarget to (_bodyparts is "anus") or (Array.isArray(_bodyparts) and _bodyparts.includes("anus"))>>
+		<<set _hasBreederLiquid to (_liquids is "cum") or (_liquids is "semen") or (_liquids is "nectar") or (Array.isArray(_liquids) and (_liquids.includes("cum") or _liquids.includes("semen") or _liquids.includes("nectar")))>>
+
+		/* Apply the effect to the hole Omega currently targets. If Omega is set to use the womb without a vagina, a creampie can trigger it directly. */
+		<<if !$statFreeze and playerIsXChanged() and (($xchange.pill.breederEffect and _hasVaginaTarget) or (omegaTargetsAnus() and _hasAnusTarget) or (omegaTargetsVagina() and _hasVaginaTarget)) and _hasBreederLiquid and _amount gte 1>>
+			<<set $pleasure to $pleasuremax>>
+			<<set $breederOrgasm to 1>>
+			<<set $breederCreampied to true>>
+			<<set $breederEdgingMessage to 0>>
+			<<set $xchange.breederOrgasm to true>>
+			<<set $xchange.breederEdgingStress to 100>>
+		<</if>>
+	<</widget>>
+
+	<<widget "cumcure-ejac">>
+		<<set _bodyparts to _args[0]>>
+		<<set _liquids to _args[1]>>
+		<<set _amount to _args[2]>>
+		<<set _hasCumcureTarget to (_bodyparts is "vagina") or (_bodyparts is "anus") or (_bodyparts is "mouth") or (Array.isArray(_bodyparts) and (_bodyparts.includes("vagina") or _bodyparts.includes("anus") or _bodyparts.includes("mouth")))>>
+		<<set _hasCumcureLiquid to (_liquids is "cum") or (_liquids is "semen") or (_liquids is "nectar") or (Array.isArray(_liquids) and (_liquids.includes("cum") or _liquids.includes("semen") or _liquids.includes("nectar")))>>
+		<<if !$statFreeze and playerIsXChanged() and $xchange.pill.cumcureEffect and _hasCumcureTarget and _hasCumcureLiquid and _amount gte 1 and !(pillIsPermanent() or pillTimerPaused())>>
+			<<set $xchange.pill.duration to Math.max($xchange.pill.duration - $xchange.cumcureTime, 0)>>
+		<</if>>
+	<</widget>>
+
+<<widget "xchange-suspicious-pill">>
+	<<set _dur to random(1,3)>>
+	<<set _alreadyXChanged to playerIsXChanged()>>
+	<<set $xchange.everConsumed to true>>
+
+	/* Start a new session with a flip. An active session keeps its current sex. */
+	<<set _effects to _alreadyXChanged ? [] : ["genderflip"]>>
+
+	/* Add a random extra effect (NOT using spikepool). An active session only receives effects it does not already have. */
+	<<set _pool to ["genderflip","crossdress","herm","breeder","passion","innocence","swell","bimbo","cumcure","bull","xtend"]>>
+	<<if $portalPantiesEnabled>><<run _pool.push("portal")>><</if>>
+	<<run _pool.delete("genderflip")>>
+	<<if _alreadyXChanged>>
+		<<set _availablePool to []>>
+		<<for _candidate range _pool>>
+			<<xchange-effect-flag _candidate>>
+			<<if _effectFlag is "" or !$xchange.pill[_effectFlag]>>
+				<<run _availablePool.push(_candidate)>>
+			<</if>>
+		<</for>>
+		<<set _pool to _availablePool>>
+	<</if>>
+
+	<<if _pool.length gt 0>>
+		<<set _pickedEffect to _pool.random()>>
+		<<run _effects.push(_pickedEffect)>><<run _pool.delete(_pickedEffect)>>
+	<</if>>
+
+	/* Optional: 25% chance of a second extra effect */
+	<<if _pool.length gt 0 and random(1,100) lte 25>>
+		<<set _pickedEffect to _pool.random()>>
+		<<run _effects.push(_pickedEffect)>><<run _pool.delete(_pickedEffect)>>
+	<</if>>
+
+	/* Suspicious pills do not reveal their effects until the player uses an X-Change test. */
+	<<run _effects.push("unknown")>>
+
+	<<if !_alreadyXChanged>>
+		<<save-body>>
+		<<xchange-effects _dur _effects>>
+		<<exposedcheck>>
+
+		<<if $xchange.pill.genderflipEffect>>
+			<<if $xchange.blackmail.intro>><<set $xchange.blackmail.hasGenderswapped to true>><</if>>
+			<<if $xchange.blackmail.activeQuest>><<set $xchange.blackmail.hasGenderswappedRecently to true>><</if>>
+		<</if>>
+
+	<<elseif !xchangePillProtectionActive()>>
+		/* Add the non-flip effects to the active session without replacing its body. */
+		<<xchange-stackeffects _dur _effects>><<exposedcheck>>
+	<</if>>
+
+	/* A protected pill is still administered and recognised by events, it just does no harm, so the dose is recorded either way. */
+	<<set $xchange.timesTaken.player++>>
+
+	<<if !xchangePillProtectionActive()>>
+		<<if $xchange.spikeSideEffectsEnabled !== undefined ? $xchange.spikeSideEffectsEnabled : 1>>
+			<<xchange-addsideeffect "suspicious">>
+		<</if>>
+
+		/* Suspicious pill skill debuff: 20-35% chance. */
+			<<set _debuffChance to random(20,35)>>
+			<<if random(1,100) lte _debuffChance>>
+			<<set _skillPool to [
+				{ key: "physique", name: "Physique" },
+				{ key: "willpower", name: "Willpower" },
+				{ key: "skulduggery", name: "Skulduggery" },
+				{ key: "danceskill", name: "Dancing" },
+				{ key: "swimmingskill", name: "Swimming" },
+				{ key: "athletics", name: "Athletics" },
+				{ key: "tending", name: "Tending" },
+				{ key: "housekeeping", name: "Housekeeping" }
+			]>>
+			<<set _combatPool to [
+				{ key: "brawling", name: "Brawling", combat: true },
+				{ key: "footwork", name: "Footwork", combat: true },
+				{ key: "striking", name: "Striking", combat: true },
+				{ key: "kicking", name: "Kicking", combat: true }
+			]>>
+			/* Pick 1-3 skills to debuff */
+			<<set _allSkills to _skillPool.concat(_combatPool)>>
+			<<set _count to random(1,3)>>
+			<<set _hitNames to []>>
+			<<for _s to 0; _s lt _count && _allSkills.length gt 0; _s++>>
+				<<set _pick to random(0, _allSkills.length - 1)>>
+				<<set _chosen to _allSkills.splice(_pick, 1)[0]>>
+				<<if _chosen.combat>>
+					<<if $combatExtended && $combatExtended[_chosen.key] isnot undefined>>
+						<<set $combatExtended[_chosen.key] to Math.max(0, $combatExtended[_chosen.key] - 300)>>
+						<<run _hitNames.push(_chosen.name)>>
+					<</if>>
+				<<else>>
+					<<if State.variables[_chosen.key] isnot undefined>>
+						<<set State.variables[_chosen.key] to Math.max(0, State.variables[_chosen.key] - 300)>>
+						<<run _hitNames.push(_chosen.name)>>
+					<</if>>
+				<</if>>
+			<</for>>
+			<<if _hitNames.length gt 0>>
+				<<set $suspiciousPillDebuffMessage to _hitNames>>
+			<</if>>
+			<</if>>
+	<</if>>
+<</widget>>

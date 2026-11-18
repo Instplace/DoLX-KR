@@ -1,0 +1,102 @@
+:: NNPC Follower Widgets [widget]
+
+<<widget "update-nnpc-follower">>
+    <<if $statFreeze>>
+        <<if $nnpcFollowerDisplayEnabled>>
+            <<unset $nnpcFollowerDisplayEnabled $follower>>
+        <</if>>
+        <<exit>>
+    <</if>>
+    
+    /* Named NPCs with no vanilla follower art at all. Drawing them would ask for files that don't exist and show as broken images. */
+    <<set _noVanillaFollowerArt to ["Night Monster"]>>
+
+    <<if $options.NnpcDisplaySystem is "vanilla" && $NPCList?.[0]?.clothes && $NPCNameList.includes($NPCList[0].fullDescription) && !_noVanillaFollowerArt.includes($NPCList[0].fullDescription)>>
+        <<set _followerName to $NPCList[0].fullDescription.toLowerCase()>>
+        <<set _followerName to _followerName.replace(" ","_")>>
+
+        /* Use the same gender value for the body, hair and clothes so the sprite stays consistent.
+        Shared with the DoLP display to prevent the two systems from showing different genders. */
+        <<set _displaySex to nnpcSpriteGender($NPCList[0])>>
+
+        /* Ivory Wraith sprites have no skin-colour variants, so their filename does not include one. Luchifen has one androgynous set with no skin or sex variants. */
+        <<set $follower to {
+            name: _followerName,
+            base: (_followerName is "ivory_wraith" ? "base_" + _displaySex : _followerName is "luchifen" ? "base" : "base_" + ($NPCList[0].skincolour gt 50 ? "black" : "white") + "_" + _displaySex),
+            clothes: "upper_default",
+            under_clothes: "lower_default",
+        }>>
+
+        <!-- Special Cases -->
+        <<if _followerName is "sydney" && ["glasses", "playerbought"].includes($sydney.glasses)>>
+            <<set $follower.base to $follower.base + "_glasses">>
+        <<elseif _followerName is "robin" && C.npc.Robin.trauma gt 40>>
+            <<set $follower.base to $follower.base + "_trauma">>
+        <</if>>
+
+        <<select-nnpc-follower-outfit _followerName _displaySex>>
+
+        <!-- Hair Selection -->
+        <<if _followerName is "sydney">>
+            /* Only a limited set of colour/style hair sprites exist for Sydney.
+            Guard against any unsupported combination (out-of-set dye colours, or a style without that colour) by falling back to her natural strawberryblond, so the hair never renders missing. */
+            <<set _sydHairValid to ["strawberryblond_loose", "strawberryblond_ponytail", "black_loose", "black_ponytail", "purple_loose", "mediumpurple_ponytail"]>>
+            <<set _sydHairColour to (_sydHairValid.includes(C.npc.Sydney.hairColour + "_" + $sydney.hair) ? C.npc.Sydney.hairColour : "strawberryblond")>>
+            <<set $follower.hair to "hair_" + _sydHairColour + "_" + $sydney.hair>>
+
+        <<elseif _followerName is "luchifen">>
+            <<set $follower.hair to "hair">>
+
+        <<elseif _followerName is "kylar">>
+            <<set $follower.hair to
+                "hair_" +
+                (["goth","formal"].includes($kylar_clothes)? $kylar_clothes+"_": "") +
+                _displaySex
+            >>
+        <</if>>
+
+        <<set $nnpcFollowerDisplayEnabled to 1>>
+
+    <<else>>
+        <<unset $nnpcFollowerDisplayEnabled>>
+        <<unset $follower>>
+    <</if>>
+
+<</widget>>
+
+<<widget "select-nnpc-follower-outfit">>
+    <<set _followerName to _args[0]>>
+    /* Same presentation value the body and hair use, so clothing never desyncs from them. */
+    <<set _displaySex to _args[1] || $NPCList[0].pronoun>>
+
+    <!-- Clothing Selection -->
+    <<if _followerName is "bailey">>
+        <<if $bailey_clothing is "averydate">>
+            <<set $follower.clothes to "upper_averydate">>
+            <<set $follower.under_clothes to "lower_averydate">>
+        <<elseif $bailey_clothing is "cafe">>
+            <<set $follower.clothes to "upper_cafe">>
+            <<set $follower.under_clothes to "lower_cafe">>
+        <</if>>
+
+    <<elseif _followerName is "kylar" and $kylar_clothes>>
+        <<set $follower.clothes to "upper_" + $kylar_clothes>>
+        <<set $follower.under_clothes to "lower_" + $kylar_clothes>>
+
+    <<elseif ["sydney","kylar","whitney","robin"].includes(_followerName) && Time.schoolDay>>
+        <<set $follower.clothes to "upper_school">>
+        <<set $follower.under_clothes to "lower_school">>
+
+    <</if>>
+
+    <!-- Clothing Gender Selection -->
+    <<if _followerName isnot "luchifen">>
+        <<set $follower.clothes += "_" + _displaySex>>
+        <<set $follower.under_clothes += "_" + _displaySex>>
+    <</if>>
+
+    <!-- Remove clothing if naked -->
+    <<if !$NPCList[0].clothes.upper or $NPCList[0].clothes.upper.name is "naked" or $NPCList[0].chest isnot "clothed">><<unset $follower.clothes>><</if>>
+    <<if !$NPCList[0].clothes.lower or $NPCList[0].clothes.lower.name is "naked" or ($NPCList[0].penis isnot "clothed" and $NPCList[0].vagina isnot "clothed")>><<unset $follower.under_clothes>><</if>>
+    
+<</widget>>

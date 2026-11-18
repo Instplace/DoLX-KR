@@ -1,0 +1,353 @@
+:: Cosmetics Lock
+
+<<set $outside to 0>><<effects>><<set $lock to 400>>
+
+<<if currentSkillValue('skulduggery') gte $lock>>
+	<<if pcAreArmsBound("both")>>
+		You think you'd be able to pick the lock, <span class="blue">if your arms weren't bound.</span>
+		<br><br>
+	<<else>>
+		<<wearProp "lockpick">>
+		<span class="green">The lock looks easy to pick.</span>
+		<br><br>
+
+		<<lockicon "pick">><<link [[Pick it (0:10)|Cosmetics Store]]>><<pass 10>><<crimeUp 10 "trespassing">><</link>><<crime "trespassing">>
+		<br>
+	<</if>>
+<<else>>
+	<span class="red">The lock looks beyond your ability to pick.</span>
+	<<skulduggeryrequired>>
+	<br><br>
+<</if>>
+
+<<getouticon>><<link [[Leave|Shopping Centre Top]]>><</link>>
+
+:: Cosmetics Store
+<<set $outside to 0>><<set $location to "shopping_centre">><<effects>>
+
+You are in the cosmetics store. Several shelvings stand before you, filled with all kinds of colourful tubes, jars and boxes.
+<br><br>
+
+<<if Time.dayState is "night" and Time.hour isnot $closinghour>>
+	You are alone in the darkness.
+	<br><br>
+<<elseif $exposed gte 1>>
+	You hide behind a shelf to protect your dignity.
+	<br><br>
+<</if>>
+
+<<if $stress gte $stressmax>>
+	<<passoutshop "shop">>
+<<elseif Time.hour is $closinghour>>
+	It's closing time. Security is herding everyone outside.
+	<<if $exposed gte 1>>
+		Panic swells within you as you realise how embarrassed you'll be should security find you exposed like this.
+	<</if>>
+	<br><br>
+	<<if $exposed lte 0>>
+		<<highicon>><<link [[Go outside|High Street]]>><</link>>
+		<br>
+	<<else>>
+		<<ind>><<link [["Hide until it's over (1:00)"|Cosmetics Store]]>><<pass 1 hour>><</link>>
+	<</if>>
+<<else>>
+	<<if Time.dayState is "night" and !$weekly.theft.cosmeticsShop>>
+		<<shopicon "register">><<link [[Examine the cash register|Cosmetics Store Register]]>><</link>>
+		<br><br>
+	<</if>>
+	<<if Time.dayState is "night" or $exposed lte 0>>
+		<<cosmeticsicon>><<link [[Look at lipsticks|Cosmetics Lipstick]]>><</link>>
+		<br>
+		<<cosmeticsicon "eyeshadow">><<link [[Look at eyeshadows|Cosmetics Eyeshadow]]>><</link>>
+		<br>
+		<<cosmeticsicon "mascara">><<link [[Look at mascaras|Cosmetics Mascara]]>><</link>>
+		<br>
+		<<cosmeticsicon "blusher">><<link [[Look at blushers|Cosmetics Blusher]]>><</link>>
+		<br>
+		<<cosmeticsicon "dyes">><<link [[Look at hair dyes|Cosmetics Dyes]]>><</link>>
+		<br>
+		<<cosmeticsicon "sunscreen">><<link [[Look at sunscreen|Cosmetics Sunscreen]]>><</link>>
+		<br>
+		<<if $settings.pubicHairEnabled>>
+			<<cosmeticsicon "wax">><<link [[Look at waxing kits|Cosmetics Waxing]]>><</link>>
+			<br>
+		<</if>>
+		<<if setup.perfumery.enabled() and ($perfumery?.learned or !modLISelected("Poppy"))>>
+			<<perfumeryicon>><<link [[Perfumery|Perfumery Supplies]]>><</link>>
+			<br>
+		<</if>>
+		<<run pocketEnsure()>>
+		<<if $pocket.mirror>>
+			/* Empty because already being bought */
+		<<elseif $money gte (setup.inflation ? setup.inflation.spendPrice(1500, "cosmetics") : 1500)>>
+			<<mirroricon>><<link [[Buy a hand mirror (<<printprice 1500>>)|Cosmetics Hand Mirror]]>><<money -1500 "cosmetics">><<set $pocket.mirror to true>><</link>><br>
+		<<else>>
+			<<mirroricon>><span class="grey">A rack of hand mirrors. You can't afford one.</span><br>
+		<</if>>
+		<br>
+	<</if>>
+	<<getouticon>><<link [[Leave|Shopping Centre Top]]>><</link>>
+<</if>>
+
+:: Cosmetics Waxing
+<<set $outside to 0>><<set $location to "shopping_centre">><<effects>>
+A shelf is stocked with home waxing kits. Each kit contains wax for one pubic hair removal session, together with strips, a spatula, and instructions. The packaging says the hair can take several weeks to grow back after treatment.
+<br><br>
+<span class="gold">You own <<print $waxKits ?? 0>> kit<<print ($waxKits ?? 0) is 1 ? "" : "s">>.</span> You can use a kit in any bathroom once your pubic hair has grown out. If the hair is still very short, the wax cannot stick to it properly.
+<br><br>
+<<set _waxPrice to 1500>>
+<<if Time.dayState is "night">>
+	<<cosmeticsicon "wax">><<link [[Take a pot of hot wax|Cosmetics Waxing]]>><<set $waxKits to ($waxKits ?? 0) + 1>><<crimeUp `_waxPrice / 100` "petty">><</link>><<crime "petty">>
+	<br>
+<<elseif $money gte (setup.inflation ? setup.inflation.spendPrice(_waxPrice, "cosmetics") : _waxPrice)>>
+	<<cosmeticsicon "wax">><<link [[Buy a waxing kit (<<printprice _waxPrice>>)|Cosmetics Waxing]]>><<money `-_waxPrice` "cosmetics">><<set $waxKits to ($waxKits ?? 0) + 1>><</link>>
+	<br>
+<<else>>
+	<span class="blue">You can't afford a kit. <<printprice _waxPrice>> each.</span>
+	<br>
+<</if>>
+<br>
+<<link [[Go back|Cosmetics Store]]>><</link>>
+
+:: Cosmetics Hand Mirror
+<<set $outside to 0>><<set $location to "shopping_centre">><<effects>>
+You pick out a small hand mirror and pay for it. It slips easily into a pocket.
+<br><br>
+<span class="green">You can use it from the POCKET menu almost anywhere.</span>
+<br><br>
+<<link [[Back|Cosmetics Store]]>><</link>>
+
+:: Cosmetics Lipstick
+<<CosmeticsGenericDepartment "lipstick" "lipstick" "lipsticks" "lipstick" "" "#FF0000" 1000 "Cosmetics Lipstick" "A bunch of colourful lipsticks stand on a shelf." true true 20 `setup.colours.lipstick.map(c=>c.variable)`>>
+
+:: Cosmetics Eyeshadow
+<<CosmeticsGenericDepartment "eyeshadow" "eyeshadow" "eyeshadows" "eyeshadow" "" "#FF0000" 1500 "Cosmetics Eyeshadow" "Small boxes of sparkly eyeshadow lie before you." true true 20 `setup.colours.eyeshadow.map(c=>c.variable)`>>
+
+:: Cosmetics Mascara
+<<CosmeticsGenericDepartment "mascara" "mascara" "mascaras" "mascara" "" "#FF0000" 1500 "Cosmetics Mascara" "There's a dozen mascaras lying before you." true true 20 `setup.colours.mascara.map(c=>c.variable)`>>
+
+:: Cosmetics Blusher
+<<CosmeticsGenericDepartment "blusher" "blusher" "blushers" "blusher" "" "#FF0000" 1500 "Cosmetics Blusher" "Several blusher compacts lie before you. One of them looks like it would go well with your skin tone." true true 20 `setup.colours.blusher.map(c=>c.variable)`>>
+
+:: Cosmetics Dyes
+<<CosmeticsGenericDepartment "hairdye" "hair dye" "hair dyes" "hair" "colour-hair" "#FD6064" 4000 "Cosmetics Dyes" "You come to the shelf with hair dyes." false true 1 `setup.colours.hair.filter(c=>c.dye).map(c=>c.variable)`>>
+
+
+:: Cosmetics Sunscreen
+<<set _sunscreen to Skin.Sunscreen.bottle>>
+<<set _sunscreen.durationHours to Math.floor(Skin.Sunscreen.duration / TimeConstants.secondsPerHour)>>
+
+You come to a shelf with many bottles of sunscreen.
+<<if Skin.Sunscreen.usesLeft gt 0>>
+	<<set _ownedBottles to Math.ceil(Skin.Sunscreen.usesLeft / _sunscreen.uses)>>
+	<br>
+	You already own <<print _ownedBottles>> <<pluralise _ownedBottles "bottle">>, with <<print Skin.Sunscreen.usesLeft>> <<pluralise Skin.Sunscreen.usesLeft "use">> left.
+<</if>>
+
+<br><br>
+Each bottle costs <<printprice _sunscreen.price>> and has <<print _sunscreen.uses>> uses. Each use lasts around <<print _sunscreen.durationHours>> <<pluralise _sunscreen.durationHours "hour">>.
+<br>
+<<if Time.dayState is "night">>
+	<<link [[Steal a bottle|Cosmetics Sunscreen]]>>
+		<<crimeUp `_sunscreen.price / 100` "petty">>
+		<<run Skin.Sunscreen.addUses(_sunscreen.uses)>>
+	<</link>><<crime "petty">>
+	<br>
+	<<link [[Steal a bottle and apply right now|Cosmetics Sunscreen]]>>
+		<<crimeUp `_sunscreen.price / 100` "petty">>
+		<<run Skin.Sunscreen.addUses(_sunscreen.uses)>>
+		<<run Skin.Sunscreen.apply()>>
+	<</link>><<crime "petty">>
+	<br>
+	<<set _sunscreenPayCost to (setup.inflation ? setup.inflation.price(_sunscreen.price) : _sunscreen.price)>>
+	<<set _sunscreenPayExtraBase to Math.ceil(_sunscreen.price * 1.25)>>
+	<<set _sunscreenPayExtraCost to (setup.inflation ? setup.inflation.price(_sunscreenPayExtraBase) : _sunscreenPayExtraBase)>>
+	<<if $money gte _sunscreenPayCost>>
+		<<link [[Leave exact change for a bottle|Shop Trespass Payment Result]]>>
+			<<run Skin.Sunscreen.addUses(_sunscreen.uses)>>
+			<<shopTrespassPayment _sunscreen.price "cosmetics" false "Cosmetics Sunscreen" "the sunscreen">>
+		<</link>><<crime "trespassing">>
+		<br>
+	<</if>>
+	<<if $money gte _sunscreenPayExtraCost>>
+		<<link [[Leave extra for a bottle (<<printprice _sunscreenPayExtraBase>>)|Shop Trespass Payment Result]]>>
+			<<run Skin.Sunscreen.addUses(_sunscreen.uses)>>
+			<<shopTrespassPayment _sunscreen.price "cosmetics" true "Cosmetics Sunscreen" "the sunscreen">>
+		<</link>><<crime "trespassing">>
+	<</if>>
+<<elseif $money gte (setup.inflation ? setup.inflation.spendPrice(_sunscreen.price, "cosmetics") : _sunscreen.price)>>
+	<<link [[Buy a bottle (<<printprice _sunscreen.price>>)|Cosmetics Sunscreen]]>>
+		<<money `-_sunscreen.price` "cosmetics">>
+		<<run Skin.Sunscreen.addUses(_sunscreen.uses)>>
+	<</link>>
+	<br>
+	<<link [[Buy a bottle and apply right now (<<printprice _sunscreen.price>>)|Cosmetics Sunscreen]]>>
+		<<money `-_sunscreen.price` "cosmetics">>
+		<<run Skin.Sunscreen.addUses(_sunscreen.uses)>>
+		<<run Skin.Sunscreen.apply()>>
+	<</link>>
+<<else>>
+	<span class="purple">You can't afford the purchase.</span>
+<</if>>
+<br><br>
+<<link [[Go back|Cosmetics Store]]>><</link>>
+
+
+:: Cosmetics Store Widgets [widget]
+<<widget "CosmeticsGenericDepartment">>
+	<<if _args.length < 13>>
+		<div class="red">Error in passage "Cosmetics Generic Department". Missing arguments.<br><<print _args>></div>
+	<</if>>
+
+	<<set _itemType = _args[0]>>
+	<<set _itemSingular = _args[1]>>
+	<<set _itemPlural = _args[2]>>
+	<<set _cssClassOuter = _args[3]>>
+	<<set _cssClassInner = _args[4]>>
+	<<set _baseColour = _args[5]>>
+	<<set _price = _args[6]>>
+	<<set _passageCurrent = _args[7]>>
+	<<set _textIntro = _args[8]>>
+	<<set _canUseNow = _args[9]>>
+	<<set _isConsumable = _args[10]>>
+	<<set _usesPerBuy = _args[11]>>
+	<<set _availableColours = _args.slice(12)>>
+	<<if _availableColours.length === 1 && Array.isArray(_availableColours)>>
+		<<set _availableColours = _availableColours[0]>>
+	<</if>>
+
+	<<if setup.ccmod.categories.includes(_itemType)>>
+		<<ccmodMannequin _itemType $cosmeticsChoice>>
+	<</if>>
+
+	<div>
+		_textIntro
+	</div>
+	<<if _isConsumable isnot true>>
+		<<if $makeup.owned[_itemType].length > 0>>
+			<br>
+			You already own _itemPlural of the following colours:
+			<<for _i, _colour range $makeup.owned[_itemType]>>
+				<span class="grey-shadow"><span @class="_cssClassOuter + '-' + _colour.replace(/ /g, '-')"><span @class="_cssClassInner"><span @style="'color:' + _baseColour + ';'"><<print setup.colourName(_colour)>></span></span></span></span>
+				<<if _i < $makeup.owned[_itemType].length - 1>>, <</if>>
+			<</for>>.
+		<</if>>
+	<<else>>
+		<<set _owned = $makeup.owned[_itemType].filter(x => x.count > 0)>>
+		<<if _owned.length > 0>>
+			<br>
+			You already own _itemPlural of the following colours:
+			<<for _i, _item range _owned>>
+				<<if _item.count > 0>>
+					<span class="grey-shadow"><span @class="_cssClassOuter + '-' + _item.colour.replace(/ /g, '-')"><span @class="_cssClassInner"><span @style="'color:' + _baseColour + ';'"><<print setup.colourName(_item.colour)>></span></span></span></span>
+					&nbsp;×&nbsp;_item.count
+					<<if _i < _owned.length - 1>>, <</if>>
+				<</if>>
+			<</for>>.
+		<</if>>
+	<</if>>
+
+	<br><br>
+
+	<<if _isConsumable == false>>
+		<<set _availableColours = _availableColours.filter(x => !$makeup.owned[_itemType].includes(x))>>
+	<</if>>
+	<<if _availableColours.length == 0>>
+		You have collected all available colours of _itemPlural. There's nothing left for you to buy.
+		<br><br>
+	<<else>>
+		Each _itemSingular costs <<printprice _price>><<if _usesPerBuy > 1>> and has _usesPerBuy uses<</if>>.
+		<br>
+		<<if $cosmeticsChoice is undefined>>
+			<<set $cosmeticsChoice = _availableColours[0]>>
+		<</if>>
+		<<for _i, _colour range _availableColours>>
+			<label><span class="grey-shadow"><span @class="_cssClassOuter + '-' + _colour.replace(/ /g, '-')"><span @class="_cssClassInner"><span @style="'color:' + _baseColour + ';'"><<print setup.colourName(_colour)>></span></span></span></span>&nbsp;<<print '<<radiobutton "$cosmeticsChoice" "'+_colour+'" ' + ($cosmeticsChoice is _colour ? "checked" : "") + '>>'>></label> |
+		<</for>>
+
+		<br><br>
+		<<if $money gte _price or Time.dayState is "night">>
+			<<set _buy = Time.dayState == "night" ? "Steal" : "Buy">>
+			<<if _isConsumable == true>>
+				<<set _usesText = _usesPerBuy > 1 ? " ("+_usesPerBuy+" uses)" : "">>
+				<<link [[_buy+_usesText|_passageCurrent]]>><<addConsumableCosmetics _itemType $cosmeticsChoice _usesPerBuy>><<if Time.dayState is "night">><<crimeUp `_price / 100` "petty">><<else>><<money `-_price `"cosmetics">><</if>><</link>><<if Time.dayState is "night">><<crime "petty">><</if>>
+				<br>
+				<<if _canUseNow == true>>
+					<<link [[_buy+_usesText+" and apply"+(_usesPerBuy > 1 ? " one" : "")+" right now"|_passageCurrent]]>><<addConsumableCosmetics _itemType $cosmeticsChoice _usesPerBuy-1>><<set $makeup[_itemType] = $cosmeticsChoice>><<if Time.dayState is "night">><<crimeUp `_price / 100` "petty">><<else>><<money `-_price` "cosmetics">><</if>><</link>><<if Time.dayState is "night">><<crime "petty">><</if>>
+					<br>
+				<</if>>
+			<<else>>
+				<<link [[_buy+" and send home"|_passageCurrent]]>><<set $makeup.owned[_itemType].push($cosmeticsChoice)>><<if Time.dayState is "night">><<crimeUp `_price / 100` "petty">><<else>><<money `-_price` "cosmetics">><</if>><</link>><<if Time.dayState is "night">><<crime "petty">><</if>>
+				<br>
+				<<if _canUseNow == true>>
+					<<link [[_buy+" and use right now"|_passageCurrent]]>><<set $makeup.owned[_itemType].push($cosmeticsChoice)>><<set $makeup[_itemType] = $cosmeticsChoice>><<if Time.dayState is "night">><<crimeUp `_price / 100` "petty">><<else>><<money `-_price` "cosmetics">><</if>><</link>><<if Time.dayState is "night">><<crime "petty">><</if>>
+					<br>
+				<</if>>
+			<</if>>
+			<<if Time.dayState is "night">>
+				<<set _payCost to (setup.inflation ? setup.inflation.price(_price) : _price)>>
+				<<set _payExtraBase to Math.ceil(_price * 1.25)>>
+				<<set _payExtraCost to (setup.inflation ? setup.inflation.price(_payExtraBase) : _payExtraBase)>>
+				<<if $money gte _payCost>>
+					<<link [[Leave exact change|Shop Trespass Payment Result]]>>
+						<<if _isConsumable == true>>
+							<<addConsumableCosmetics _itemType $cosmeticsChoice _usesPerBuy>>
+						<<else>>
+							<<set $makeup.owned[_itemType].push($cosmeticsChoice)>>
+						<</if>>
+						<<shopTrespassPayment _price "cosmetics" false _passageCurrent _itemPlural>>
+					<</link>><<crime "trespassing">>
+					<br>
+				<</if>>
+				<<if $money gte _payExtraCost>>
+					<<link [[Leave extra (<<printprice _payExtraBase>>)|Shop Trespass Payment Result]]>>
+						<<if _isConsumable == true>>
+							<<addConsumableCosmetics _itemType $cosmeticsChoice _usesPerBuy>>
+						<<else>>
+							<<set $makeup.owned[_itemType].push($cosmeticsChoice)>>
+						<</if>>
+						<<shopTrespassPayment _price "cosmetics" true _passageCurrent _itemPlural>>
+					<</link>><<crime "trespassing">>
+					<br>
+				<</if>>
+			<</if>>
+		<<else>>
+			<span class="purple">You can't afford the purchase.</span>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<if setup.ccmod.categories.includes(T.itemType)>>
+		<<link [[Buy Custom|Custom Makeup Store]]>>
+			<<run ccmShop.newSession(T.itemType)>>
+		<</link>>
+		<br>
+		<<run $(() => {
+			$("input[name='radiobutton-cosmeticschoice']").on("change", () => {
+				Wikifier.wikifyEval('<<ccmodMannequinUpdate _itemType $cosmeticsChoice>>');
+			});
+			Wikifier.wikifyEval('<<ccmodMannequinUpdate _itemType $cosmeticsChoice>>');
+		});>>
+	<</if>>
+	<<link [[Go back|Cosmetics Store]]>><<unset $cosmeticsChoice>><</link>>
+<</widget>>
+
+<!-- for buying consumable makeup stuff. Usage <<addConsumableCosmetics "lipstick" "red" 20>> -->
+<<widget "addConsumableCosmetics">><<script>>
+	let _args = T.args;
+	let $makeup = V.makeup;
+	let _itemType = _args[0];
+	let _colour = _args[1];
+	let _count = _args[2];
+
+	let done = false;
+	for (let i = 0; i < $makeup.owned[_itemType].length; i++) {
+		if ($makeup.owned[_itemType][i].colour == _colour) {
+			$makeup.owned[_itemType][i].count += _count;
+			done = true;
+			break;
+		}
+	}
+	if (!done) {
+		$makeup.owned[_itemType].push({"colour": _colour, "count": _count});
+	}
+<</script>><</widget>>

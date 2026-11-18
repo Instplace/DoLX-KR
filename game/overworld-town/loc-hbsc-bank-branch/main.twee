@@ -1,0 +1,1441 @@
+:: HBSC Bank Branch
+<<effects>><<if $avery_fate is "ascended">><<location "avery_skyscraper">><<else>><<location "office">><</if>>
+You approach HBSC bank, a tall building in the middle of the commercial district. It stands between a busy shopping centre and an office block. Security watches the front of the building carefully.
+<br><br>
+<<generate1>><<person1>><<generate2>>
+Inside, the waiting hall is all polished wood, soft carpet, and closed office doors. A <<person1>><<person>> sits behind the front desk while the queue moves forward slowly.
+<br><br>
+<<if setup.hbsc.isBanned()>>
+	<<set _banDays to setup.hbsc.getBanRemainingDays()>>
+	A uniformed security guard steps in before you can reach the desk. "Not today.
+	Your account has been flagged because you tried to sneak around the branch. Counter service is suspended for <span class = "red"><<print _banDays>> more day<<print _banDays is 1 ? "" : "s">></span>."
+	<br><br>
+	<<if $hbsc.lastPenaltyAmount > 0>>
+		The teller adds, "The security penalty has already been taken from your savings. It was <<printmoney $hbsc.lastPenaltyAmount>>."
+		<br><br>
+	<</if>>
+	<<set $hbsc.penaltyWarningPending to false>>
+<<elseif $xchange.bankHeist and $xchange.bankHeist.landryReported and crimeSumCurrent() gte 5000 and !$weekly.bankHeistSecurity and random(1,100) lte 40>>
+	<<set $weekly.bankHeistSecurity to true>>
+	<<bankHeistSecurityEncounter>>
+	<<if $xchange.bankHeist.alertLevel gte 2>>
+		<<exit>>
+	<</if>>
+<<elseif $hbsc.account.level >= 3>>
+	<i>Your account tier gives you priority service.</i>
+	<br><br>
+	<<schoolicon "library desk">><<link [[Go straight to the priority desk (0:01)|HBSC Bank Priority]]>><<pass 1>><</link>>
+	<br>
+<<else>>
+	<i>You can wait your turn, or leave for now.</i>
+	<br><br>
+	<<loitericon>><<link [[Wait in line (0:20)|HBSC Bank Wait]]>><<pass 20>><</link>>
+	<br>
+<</if>>
+<<if $xchange.bankHeist.wrenRecruited and $xchange.bankHeist.observationDays lt 7 and !setup.hbsc.isBanned()>>
+	<<crimeicon "mark">><<link [[Observe the security (1:00)|Heist Bank Observation]]>><<pass 60>><</link>>
+	<br>
+<</if>>
+<<if $hbsc.card and $hbsc.card.status is "stolen">>
+	<<link [[Report your stolen card (0:05)|HBSC Bank Branch]]>><<run setup.hbsc.reportCard()>><<pass 5>><</link>>
+	<br>
+<</if>>
+<<getouticon>><<link [[Leave|High Street]]>><<endevent>><</link>>
+<br>
+
+:: HBSC Bank Wait
+<<effects>>
+You wait in line behind a <<person2>><<person>>.
+<<if $rng gte 91>>
+	<<He>> carries a locked briefcase and holds the handle tightly. When <<his>> turn comes, <<he>> places it on the counter and speaks quietly to the teller.
+	<br><br>
+	The teller looks over the briefcase, then nods. "You'll need to sign for a secure transfer. I'll get the paperwork."
+	<br><br>
+	<<He>> relaxes a little and steps aside to wait.
+	<br><br>
+<<elseif $rng gte 81>>
+	<<He>> shifts from foot to foot. When <<his>> turn comes, <<he>> clears <<his>> throat. "Do you have any safety deposit boxes available?"
+	<br><br>
+	The teller checks the system. "A few. What size do you need?"
+	<br>
+	"Small. Just for documents."
+	<br>
+	The teller nods and reaches for the forms. "You'll need to sign here and provide identification."
+	<br><br>
+<<elseif $rng gte 71>>
+	<<He>> adjusts the cuff of <<his>> jacket and places a document on the counter. "There was a problem with my last withdrawal."
+	<br><br>
+	The teller reads the page, types for a few seconds, then nods. "I can see the issue. It was delayed, not lost. The money should arrive by the end of the day."
+	<br><br>
+	<<He>> lets out a quiet breath. "Appreciate it."
+	<br><br>
+<<elseif $rng gte 61>>
+	<<He>> carries a thick ledger under <<his>> arm. When <<his>> turn comes, <<he>> lays it on the counter. "I need to confirm an account transfer."
+	<br><br>
+	The teller opens the ledger, checks the figures against the system, then nods. "We received the request. I can process it now."
+	<br><br>
+	"Please do."
+	<br><br>
+	The teller finishes the transfer and hands over a confirmation slip.
+	<br><br>
+<<elseif $rng gte 51>>
+	<<He>> rubs <<his>> forehead as <<he>> reaches the counter. "I lost my debit card. Can I get a replacement?"
+	<br><br>
+	The teller checks the account. "I can block the old card now. A replacement costs ten pounds and takes two weeks. You can withdraw cash at the counter while you wait."
+	<br><br>
+	"Yes, please."
+	<br><br>
+<<elseif $rng gte 41>>
+	<<He>> lays a stack of documents on the counter. "I need to report a charge I didn't authorise."
+	<br><br>
+	The teller reads the forms. "We can block the card today to stop any further payments. Charges made before you report it are not refunded."
+	<br><br>
+	<<He>> nods, looking satisfied.
+	<br><br>
+<<elseif $rng gte 31>>
+	<<He>> empties a pouch of coins onto the counter. "Can I exchange these for notes?"
+	<br><br>
+	The teller sorts through the pile. "Most of them, yes. A few are out of circulation, but I can separate those for you."
+	<br><br>
+<<elseif $rng gte 21>>
+	<<He>> steps up with a nervous smile. "I'd like to open an account."
+	<br><br>
+	The teller smiles back. "Of course. Do you have identification?"
+	<br><br>
+	<<He>> slides a card across the counter.
+	<br><br>
+<<elseif $rng gte 11>>
+	<<He>> places an envelope on the counter. "I need to send a bank transfer."
+	<br><br>
+	The teller enters the details. "External account, or another HBSC account?"
+	<br><br>
+	"External."
+	<br><br>
+	"It should go through within 24 hours."
+	<br><br>
+<<else>>
+	<<He>> arrives with a stack of papers. "Loan application. Fully filled out."
+	<br><br>
+	The teller looks through the forms and nods. "Everything seems to be in order. A loan officer will review it within the week."
+	<br><br>
+<</if>>
+<<person1>>It's your turn. The teller looks up at you. "How can I help you, <<psir>>?"
+<br><br>
+<<hbscOptions>>
+
+:: HBSC Bank Priority
+<<effects>><<person2>>
+You sit in a padded swivel chair at the quieter priority desk, away from the slow queue. The <<person>> greets you with a professional smile.
+<<if Time.dayState is "day" or Time.dayState is "dawn">>
+	"Good morning, <<psir>>. How can I help you today?"
+<<else>>
+	"Good evening, <<psir>>. How can I help you today?"
+<</if>>
+<br><br>
+<<hbscOptions>>
+
+:: HBSC Bank Ask Savings Accounts
+<<effects>>
+<<set _hasAccount to ($hbsc.account.level gte 1)>>
+<<set _tierLevel to (_hasAccount ? $hbsc.account.level : 1)>>
+<<set _tier to setup.hbsc.getSavingsTier(_tierLevel)>>
+<<set _savingsBalance to $hbsc.account.deposit>>
+<<set _qualifyingBalance to setup.hbsc.getSavingsMinimumBalance(_tierLevel)>>
+<<set _qualifiesNow to (_qualifyingBalance lte 0 or _savingsBalance gte _qualifyingBalance)>>
+<<set _neededForTier to Math.max(0, _qualifyingBalance - _savingsBalance)>>
+
+<<speechresolve>>
+<<if ((_speechAttitudeResolved is "meek") or (_speechAttitudeResolved is "shy") or (_speechAttitudeResolved is "docile"))>>
+	"Could you explain your savings accounts to me, please?" you ask.
+<<elseif ((_speechAttitudeResolved is "polite") or (_speechAttitudeResolved is "flamboyant"))>>
+	"Could you talk me through your savings accounts, please?" you ask.
+<<elseif (_speechAttitudeResolved is "confident")>>
+	"Talk me through your savings accounts," you say.
+<<elseif ((_speechAttitudeResolved is "bratty") or (_speechAttitudeResolved is "cruel"))>>
+	"Right. How do the savings accounts here work, then?" you ask.
+<<else>>
+	"How do your savings accounts work?" you ask.
+<</if>>
+<br><br>
+The teller slides a brochure over to you. "This is your normal HBSC savings balance. Your account tier sets how much you can keep in savings, how much interest it earns each year, and which extra services you can use."
+<br><br>
+
+<div class="hbsc-brochure">
+	<span class="gold">How to read this</span><br>
+	• Deposit limit is the maximum savings balance for that tier.<br>
+	• Qualifying balance is the balance you need in savings to qualify for that tier's monthly savings interest.<br>
+	• The interest rate shown is yearly. Each month it adds about a twelfth of that rate to your savings balance.<br>
+	• Savings interest is paid into your HBSC savings balance, not the cash you carry.
+	<br><br>
+
+	<span class="gold">Basic</span><br>
+	• Deposit Limit: <<printmoney 500000000>><br>
+	• Savings Interest: 2.50% per year<br>
+	• Qualifying Balance: None
+	<br><br>
+
+	<span class="gold">Silver</span><br>
+	• Deposit Limit: <<printmoney 2500000000>><br>
+	• Savings Interest: 2.00% per year<br>
+	• Qualifying Balance: <<printmoney 100000000>>
+	<br><br>
+
+	<span class="gold">Gold</span><br>
+	• Deposit Limit: <<printmoney 10000000000>><br>
+	• Savings Interest: 1.25% per year<br>
+	• Qualifying Balance: <<printmoney 1000000000>><br>
+	• Perks: Priority service at the branch
+	<br><br>
+
+	<span class="gold">Platinum</span><br>
+	• Deposit Limit: <<printmoney 50000000000>><br>
+	• Savings Interest: 0.75% per year<br>
+	• Qualifying Balance: <<printmoney 5000000000>><br>
+	• Perks: 5% lower fixed-term early-withdrawal fee
+	<br><br>
+
+	<span class="gold">Black</span><br>
+	• Deposit Limit: Unlimited<br>
+	• Savings Interest: 0.25% per year<br>
+	• Standard Qualifying Balance: <<printmoney 25000000000>><br>
+	• Perks: 10% lower fixed-term early-withdrawal fee
+	<<if _tierLevel is 5 and $xchange.bankHeist and $xchange.bankHeist.landryReported>><br>
+	• Your heist-granted Black account has no qualifying balance.
+	<</if>>
+</div>
+<br>
+<div class="hbsc-brochure">
+	<span class="gold">Your current savings status</span><br>
+	• Current Tier: <<print _tier.name>><br>
+	• Current Savings Balance: <<printmoney _savingsBalance>><br>
+	• Qualifying Balance For This Tier:
+	<<if _qualifyingBalance gt 0>>
+		<<printmoney _qualifyingBalance>>
+	<<else>>
+		None
+	<</if>><br>
+	• Savings Interest Status:
+	<<if _qualifiesNow and _savingsBalance gt 0>>
+		Eligible when the month rolls over
+	<<elseif _qualifiesNow>>
+		Eligible once you put money into savings
+	<<else>>
+		Not yet eligible at this tier
+	<</if>>
+	<<if _neededForTier gt 0>><br>
+	• Additional Savings Needed To Qualify: <<printmoney _neededForTier>>
+	<</if>>
+</div>
+<br>
+<<if not _hasAccount>>
+	The teller taps the brochure. "If you open an account today, you start on Basic. Higher tiers are upgrades. The qualifying balance only decides whether your monthly savings interest applies. It is not a one-time bonus."
+<<elseif _tierLevel is 1>>
+	The teller taps the brochure. "Your account is currently Basic. Basic has no qualifying balance, so any savings balance above zero can earn Basic's monthly savings interest when the month rolls over."
+<<elseif _tierLevel is 5 and $xchange.bankHeist and $xchange.bankHeist.landryReported>>
+	The teller taps the brochure. "Your Black account has no qualifying balance. Any savings balance above zero earns Black's monthly savings interest when the month rolls over."
+<<elseif _qualifiesNow>>
+	The teller taps the brochure. "Your account is currently <<print _tier.name>>. Your savings already meet the <<print _tier.name>> qualifying balance, so the <<print _tier.name>> interest rate will be used when the month rolls over. This is checked each month."
+<<else>>
+	The teller taps the brochure. "Your account is currently <<print _tier.name>>, but your savings are still below the <<print _tier.name>> qualifying balance. Until your savings reach <<printmoney _qualifyingBalance>>, this tier's monthly savings interest will not be added. Once your balance reaches that amount at the end of a month, the <<print _tier.name>> rate applies for that month."
+<</if>>
+<br><br>
+<<hbscOptions>>
+
+:: HBSC Bank Ask Fixed-Term Deposits
+<<effects>>
+<<speechresolve>>
+<<if ((_speechAttitudeResolved is "meek") or (_speechAttitudeResolved is "shy") or (_speechAttitudeResolved is "docile"))>>
+	"Could you explain your fixed-term deposits to me, please?" you ask.
+<<elseif ((_speechAttitudeResolved is "polite") or (_speechAttitudeResolved is "flamboyant"))>>
+	"Could you talk me through your fixed-term deposits, please?" you ask.
+<<elseif (_speechAttitudeResolved is "confident")>>
+	"Talk me through your fixed-term deposits," you say.
+<<elseif ((_speechAttitudeResolved is "bratty") or (_speechAttitudeResolved is "cruel"))>>
+	"Right. How do your fixed-term deposits actually work?" you ask.
+<<else>>
+	"How do your fixed-term deposits work?" you ask.
+<</if>>
+<br><br>
+The teller places a second brochure in front of you. "A fixed-term deposit locks away an amount you choose for a set time. It earns a fixed rate until the term ends. If you take the money out early, the fee only reduces the interest you earned. It never takes away the original amount you locked in."
+<br><br>
+
+<div class="hbsc-brochure">
+	<span class="gold">How to read this</span><br>
+	• Funds can be opened from carried cash or from your HBSC savings balance.<br>
+	• Rates are yearly. A term shorter than a year earns the matching share &mdash; one month earns about a twelfth of the yearly rate, three months about a quarter, and so on.<br>
+	• Interest is calculated from the amount you lock in and paid when you collect the term.<br>
+	• Early full withdrawal closes the term. Early half withdrawal keeps the remaining half invested when the product allows it.
+	<br><br>
+
+	<span class="gold">1 Month</span><br>
+	• Interest Rate: 2.50% per year<br>
+	• Early Full Withdrawal Fee: 20% of earned interest
+	<br><br>
+
+	<span class="gold">3 Month</span><br>
+	• Interest Rate: 3.25% per year<br>
+	• Early Full Withdrawal Fee: 30% of earned interest
+	<br><br>
+
+	<span class="gold">6 Month</span><br>
+	• <<printmoney setup.hbsc.MIN_FIXED_TERM_OPEN>> – <<printmoney 999999900>>: 3.75% per year<br>
+	• <<printmoney 1000000000>> – <<printmoney 4999999900>>: 4.25% per year<br>
+	• <<printmoney 5000000000>> – <<printmoney 9999999900>>: 5.00% per year<br>
+	• <<printmoney 10000000000>>+: 6.00% per year<br>
+	• Early Half Withdrawal Fee: 25% of earned interest<br>
+	• Early Full Withdrawal Fee: 40% of earned interest
+	<br><br>
+
+	<span class="gold">12 Month</span><br>
+	• <<printmoney setup.hbsc.MIN_FIXED_TERM_OPEN>> – <<printmoney 999999900>>: 5.50% per year<br>
+	• <<printmoney 1000000000>> – <<printmoney 4999999900>>: 6.25% per year<br>
+	• <<printmoney 5000000000>> – <<printmoney 9999999900>>: 7.25% per year<br>
+	• <<printmoney 10000000000>>+: 8.50% per year<br>
+	• Early Half Withdrawal Fee: 30% of earned interest<br>
+	• Early Full Withdrawal Fee: 50% of earned interest
+</div>
+<br>
+<div class="black">
+	<i>Platinum accounts make fixed-term early-withdrawal fees 5% lower. Black accounts make them 10% lower.</i>
+</div>
+<br>
+<<hbscOptions>>
+
+:: HBSC Bank Account
+<<effects>>
+<<set _level to $hbsc.account.level>><<set _deposit to $hbsc.account.deposit>>
+<<if _level is 5>><<wearProp "keycard" "black">>
+<<elseif _level is 4>><<wearProp "keycard" "tangerine">>
+<<elseif _level is 3>><<wearProp "keycard" "gold">>
+<<elseif _level is 2>><<wearProp "keycard" "silver">>
+<<elseif _level is 1>><<wearProp "keycard" "green">><</if>>
+<<set _cash to $money>><<set _total to _cash + _deposit>><<set _hasId to !!$id>>
+
+<<if _level < 1>>
+	<<speechresolve>>
+	<<if ((_speechAttitudeResolved is "meek") or (_speechAttitudeResolved is "shy") or (_speechAttitudeResolved is "docile"))>>
+		"I'd like to open an account, please," you say.
+	<<elseif ((_speechAttitudeResolved is "polite") or (_speechAttitudeResolved is "flamboyant"))>>
+		"I'd like to open an account with HBSC bank, please," you say.
+	<<elseif (_speechAttitudeResolved is "confident")>>
+		"I want to open an account," you say.
+	<<elseif ((_speechAttitudeResolved is "bratty") or (_speechAttitudeResolved is "cruel"))>>
+		"Open an account for me," you say.
+	<<else>>
+		"I'd like to open an account," you say.
+	<</if>>
+	<br><br>
+
+	<<if !_hasId>>
+		The teller gives you an apologetic smile. "I can explain the account tiers, but I can't open an account for you without valid identification."
+		<br><br>
+
+		<div class="hbsc-brochure">
+			<span class="gold">Opening requirements</span><br>
+			• Valid identification: Required<br>
+			• Starting Tier: Basic<br>
+			• Deposit Limit: <<printmoney 500000000>><br>
+			• Savings Interest: 2.50% per year<br>
+			• Cost to open: Free
+		</div>
+		<br>
+
+		"Come back once you have ID. Until then, I can still explain the savings and fixed-term options."
+		<br><br>
+		<<getouticon>><<link [[Leave|High Street]]>><<endevent>><</link>>
+	<<else>>
+		The teller nods and pulls a fresh card from the tray. "Certainly. A Basic account is your starting tier. Once it's open, you can deposit cash, withdraw savings, or upgrade when your savings balance is high enough."
+		<br><br>
+
+		<div class="hbsc-brochure">
+			<span class="gold">Opening a Basic account</span><br>
+			• Tier: Basic<br>
+			• Deposit Limit: <<printmoney 500000000>><br>
+			• Savings Interest: 2.50% per year<br>
+			• Cost to open: Free
+		</div>
+		<br>
+
+		<<icon "access-card.png">><<link [[Open a Basic account now|HBSC Bank Account Upgrade]]>><<set $hbsc.targetTier to 1>><</link>>
+	<</if>>
+<<else>>
+	<<set _tier to setup.hbsc.getSavingsTier(_level)>>
+	<<set _room to setup.hbsc.getDepositRoom(_level, _deposit)>>
+	<<set _qualifyingBalance to setup.hbsc.getSavingsMinimumBalance(_level)>>
+	<<set _monthlyPreview to setup.hbsc.calcSavingsMonthInterest(_deposit, _level)>>
+
+	<<speechresolve>>
+	<<if ((_speechAttitudeResolved is "meek") or (_speechAttitudeResolved is "shy") or (_speechAttitudeResolved is "docile"))>>
+		"I'd like to go over my account, please," you say.
+	<<elseif ((_speechAttitudeResolved is "polite") or (_speechAttitudeResolved is "flamboyant"))>>
+		"Could I go over my account details, please?" you ask.
+	<<elseif (_speechAttitudeResolved is "confident")>>
+		"Let me see my account details," you say.
+	<<elseif ((_speechAttitudeResolved is "bratty") or (_speechAttitudeResolved is "cruel"))>>
+		"Show me my account details," you say.
+	<<else>>
+		"I'd like to go over my account," you say.
+	<</if>>
+	<br><br>
+	The teller turns the monitor towards you and taps the first line on the screen.
+	<br><br>
+
+	<div class="hbsc-brochure">
+		<span class="gold">Current savings account</span><br>
+		• Tier: <<print _tier.name>><br>
+		• Savings Balance: <<printmoney _deposit>><br>
+		• Cash On Hand: <<printmoney _cash>><br>
+		• Deposit Limit:
+		<<if Number.isFinite(_tier.depositLimit)>>
+			<<printmoney _tier.depositLimit>>
+		<<else>>
+			Unlimited
+		<</if>>
+		<br>
+		• Space Left For Savings:
+		<<if Number.isFinite(_room)>>
+			<<printmoney _room>>
+		<<else>>
+			Unlimited
+		<</if>>
+		<br>
+		• Savings Interest: <<print _tier.interestAER>>% per year<br>
+		• Qualifying Balance:
+		<<if _qualifyingBalance > 0>>
+			<<printmoney _qualifyingBalance>>
+		<<else>>
+			None
+		<</if>>
+		<br>
+		• Estimated Next Monthly Interest:
+		<<if _monthlyPreview > 0>>
+			<<printmoney _monthlyPreview>>
+		<<else>>
+			None at your current balance
+		<</if>>
+	</div>
+	<br>
+
+	<<if _level < 5>>
+		<span class="gold">Available upgrades</span><br>
+
+		<<if _level < 2>>
+			<<set _req to setup.hbsc.getUpgradeRequirement(2)>>
+			<<if _total >= _req>>
+				<<link [[Upgrade to Silver|HBSC Bank Account Upgrade]]>><<set $hbsc.targetTier to 2>><</link>> | needs <<printmoney _req>> in savings
+			<<else>>
+				<span class="black">Silver (Not Available)</span> | needs <<printmoney _req>> in savings
+			<</if>>
+			<br>
+		<</if>>
+
+		<<if _level < 3>>
+			<<set _req to setup.hbsc.getUpgradeRequirement(3)>>
+			<<if _total >= _req>>
+				<<link [[Upgrade to Gold|HBSC Bank Account Upgrade]]>><<set $hbsc.targetTier to 3>><</link>> | needs <<printmoney _req>> in savings
+			<<else>>
+				<span class="black">Gold (Not Available)</span> | needs <<printmoney _req>> in savings
+			<</if>>
+			<br>
+		<</if>>
+
+		<<if _level < 4>>
+			<<set _req to setup.hbsc.getUpgradeRequirement(4)>>
+			<<if _total >= _req>>
+				<<link [[Upgrade to Platinum|HBSC Bank Account Upgrade]]>><<set $hbsc.targetTier to 4>><</link>> | needs <<printmoney _req>> in savings
+			<<else>>
+				<span class="black">Platinum (Not Available)</span> | needs <<printmoney _req>> in savings
+			<</if>>
+			<br>
+		<</if>>
+
+		<<if _level < 5>>
+			<<set _req to setup.hbsc.getUpgradeRequirement(5)>>
+			<<if _total >= _req>>
+				<<link [[Upgrade to Black|HBSC Bank Account Upgrade]]>><<set $hbsc.targetTier to 5>><</link>> | needs <<printmoney _req>> in savings
+			<<else>>
+				<span class="black">Black (Not Available)</span> | needs <<printmoney _req>> in savings
+			<</if>>
+			<br>
+		<</if>>
+		<br>
+	<</if>>
+	The teller taps the screen. "Savings interest is added to your HBSC savings balance. It will not appear in the cash you carry unless you withdraw it."
+	<br><br>
+	<<hbscOptions>>
+<</if>>
+
+:: HBSC Bank Account Upgrade
+<<effects>>
+<<set _target to $hbsc.targetTier>>
+<<if _target is 5>><<wearProp "keycard" "black">>
+<<elseif _target is 4>><<wearProp "keycard" "tangerine">>
+<<elseif _target is 3>><<wearProp "keycard" "gold">>
+<<elseif _target is 2>><<wearProp "keycard" "silver">>
+<<elseif _target is 1 and $hbsc.account.level >= 1>><<wearProp "keycard" "green">><</if>>
+<<if _target is undefined or _target < 1 or _target > 5>>
+	The teller looks at the screen and frowns. "There isn't a valid upgrade request right now. Let's go back to your account overview."
+	<br><br>
+	<<icon "access-card.png">><<link [[Review your HBSC account (0:02)|HBSC Bank Account]]>><<pass 2>><</link>>
+<<elseif _target is 1>>
+	<<if $hbsc.account.level >= 1>>
+		The teller smiles politely. "Your account is already open."
+		<br><br>
+		<<hbscOptions>>
+	<<elseif !$id>>
+		The teller checks the blank form, then looks back up. "I still need valid identification before I can open the account."
+		<br><br>
+		<<hbscOptions>>
+	<<else>>
+		The teller enters your details, prints a short stack of forms, and guides you through the signatures. A few minutes later, <<he>> returns with a green card and sets it in front of you.
+		<br><br>
+		"You're all set. This is your Basic account. You can deposit cash, withdraw savings, and open fixed-term deposits from the bank menu."
+		<br><br>
+		<<set $hbsc.account.level to 1>>
+		<<hbscOptions>>
+	<</if>>
+<<elseif $hbsc.account.level < 1>>
+	The teller folds <<his>> hands. "You'll need to open a Basic account before I can process an upgrade."
+	<br><br>
+	<<icon "access-card.png">><<link [[Open an HBSC account (0:02)|HBSC Bank Account]]>><<pass 2>><</link>>
+<<elseif _target <= $hbsc.account.level>>
+	The teller gives you an apologetic look. "That tier is not higher than your current account tier. Let's review your real options instead."
+	<br><br>
+	<<icon "access-card.png">><<link [[Next|HBSC Bank Ask Savings Accounts]]>><</link>>
+<<else>>
+	<<set _targetTier to setup.hbsc.getSavingsTier(_target)>>
+	<<set _required to setup.hbsc.getUpgradeRequirement(_target)>>
+	<<set _needed to Math.max(0, _required - $hbsc.account.deposit)>>
+
+	"The <<print _targetTier.name>> tier needs a savings balance of <<printmoney _required>>," the teller explains.
+	<br><br>
+	<<if _needed <= 0>>
+		"You already have enough in savings, so I can upgrade you now."
+		<br><br>
+		<<link [[Process the upgrade now|HBSC Bank Account Upgrade Confirm]]>><<set $hbsc.upgradeTopUp to 0>><</link>>
+	<<elseif $money >= _needed>>
+		"You're short by <<printmoney _needed>>. I can move that amount from the cash you're carrying into your savings, then complete the upgrade."
+		<br><br>
+		<<link [[Deposit the difference and upgrade now|HBSC Bank Account Upgrade Confirm]]>><<set $hbsc.upgradeTopUp to _needed>><</link>>
+	<<else>>
+		"You're short by <<printmoney _needed>>, and you don't have enough cash on hand to cover the difference yet."
+		<br><br>
+		<<hbscOptions>>
+	<</if>>
+<</if>>
+
+:: HBSC Bank Account Upgrade Confirm
+<<effects>>
+<<set _target to $hbsc.targetTier>>
+<<set _topUp to Math.max(0, setup.hbsc.roundMoney($hbsc.upgradeTopUp))>>
+<<if _target is 5>><<wearProp "keycard" "black">>
+<<elseif _target is 4>><<wearProp "keycard" "tangerine">>
+<<elseif _target is 3>><<wearProp "keycard" "gold">>
+<<elseif _target is 2>><<wearProp "keycard" "silver">>
+<<elseif _target is 1>><<wearProp "keycard" "green">><</if>>
+
+<<if _target is undefined or _target < 1 or _target > 5 or (_target > 1 and $hbsc.account.level < 1)>>
+	The teller frowns at the terminal. "That upgrade request is no longer valid. Let's go back to the account menu."
+	<br><br>
+	<<icon "access-card.png">><<link [[Review your HBSC account (0:02)|HBSC Bank Account]]>><<pass 2>><</link>>
+<<elseif _target > 1 and $money < _topUp>>
+	The teller checks the cash on hand and shakes <<his>> head. "You no longer have enough cash to finish that upgrade."
+	<br><br>
+	<<hbscOptions>>
+<<else>>
+	<<if _topUp > 0>>
+		<<set $money -= _topUp>>
+		<<set $hbsc.account.deposit += _topUp>>
+	<</if>>
+	<<set $hbsc.account.level to _target>>
+
+	<<if _target is 2>>
+		The teller swaps your card for a silver one. "Done. Your account is now Silver tier."
+	<<elseif _target is 3>>
+		The teller returns with a gold card and gives you a nod. "Done. Your account is now Gold tier, so you can use priority service at the branch."
+	<<elseif _target is 4>>
+		The teller returns with a platinum card. "Done. Your account is now Platinum tier. Your fixed-term early-withdrawal fees are now 5% lower."
+	<<elseif _target is 5>>
+		The teller returns with a black card and sets it down with care. "Done. Your account is now Black tier. Your savings limit is unlimited, and your fixed-term early-withdrawal fees are 10% lower."
+	<<else>>
+		The teller smiles. "Done. Your Basic account is ready."
+	<</if>>
+	<br><br>
+
+	Your savings balance is now <<printmoney $hbsc.account.deposit>>.
+	<br><br>
+	<<set $hbsc.upgradeTopUp to 0>><<set $hbsc.targetTier to 0>>
+	<<hbscOptions>>
+<</if>>
+
+:: HBSC Bank Deposit
+<<effects>>
+<<if $hbsc.account.level < 1>>
+	The teller folds <<his>> hands. "You'll need an HBSC account before I can accept a savings deposit."
+	<br><br>
+	<<icon "access-card.png">><<link [[Open an HBSC account (0:02)|HBSC Bank Account]]>><<pass 2>><</link>>
+<<else>>
+	<<set _tier to setup.hbsc.getSavingsTier($hbsc.account.level)>>
+	<<set _room to setup.hbsc.getDepositRoom($hbsc.account.level, $hbsc.account.deposit)>>
+	<<set _maxDeposit to Math.floor(Math.min($money, Number.isFinite(_room) ? _room : $money))>>
+
+	The teller taps a few keys and opens the deposit screen. "You want to move cash into your HBSC savings balance."
+	<br><br>
+
+	<div class="hbsc-brochure">
+		<span class="gold">Deposit summary</span><br>
+		• Cash On Hand: <<printmoney $money>><br>
+		• Current Savings Balance: <<printmoney $hbsc.account.deposit>><br>
+		• Deposit Limit:
+		<<if Number.isFinite(_tier.depositLimit)>>
+			<<printmoney _tier.depositLimit>>
+		<<else>>
+			Unlimited
+		<</if>>
+		<br>
+		• Space Left For Savings:
+		<<if Number.isFinite(_room)>>
+			<<printmoney _room>>
+		<<else>>
+			Unlimited
+		<</if>>
+		<br>
+		• Maximum You Can Deposit Right Now: <<printmoney _maxDeposit>>
+	</div>
+	<br>
+
+	<<if _maxDeposit < 1>>
+		The teller gives you an apologetic look. "Sorry, I can't accept a deposit right now."
+		<br><br>
+		<<hbscOptions>>
+	<<else>>
+		Type the amount you want to move from your cash into savings.
+		<br>
+		<span class="black"><i>Enter a whole number. Commas and the £ sign are fine.</i></span>
+		<br><br>
+		<<set _depositFieldId to setup.hbsc.newFieldId("hbsc-deposit-amount")>>
+		Amount: <<print setup.hbsc.makeTextInput(_depositFieldId, $hbsc.transactionInput)>>
+		<br><br>
+		<<link "Review this amount">><<run setup.hbsc.submitAmountFromField(_depositFieldId, "transaction", "HBSC Bank Deposit Confirm")>><</link>>
+		<br>
+		<<link [[Deposit the maximum possible right now|HBSC Bank Deposit Confirm]]>><<set $hbsc.transactionInput to setup.hbsc.formatInputAmount(_maxDeposit)>><<set $hbsc.transactionAmount to _maxDeposit>><</link>>
+		<br><br>
+	<</if>>
+<</if>>
+
+
+:: HBSC Bank Deposit Confirm
+<<effects>>
+<<set _amount to setup.hbsc.roundMoney($hbsc.transactionAmount)>>
+<<set _tier to setup.hbsc.getSavingsTier($hbsc.account.level)>>
+<<set _room to setup.hbsc.getDepositRoom($hbsc.account.level, $hbsc.account.deposit)>>
+<<set _cashAfter to setup.hbsc.roundMoney($money - _amount)>>
+<<set _depositAfter to setup.hbsc.roundMoney($hbsc.account.deposit + _amount)>>
+<<set _roomAfter to (Number.isFinite(_room) ? Math.max(0, setup.hbsc.roundMoney(_room - _amount)) : Infinity)>>
+
+<<if $hbsc.account.level < 1>>
+	The teller folds <<his>> hands. "You'll need an HBSC account before I can accept a savings deposit."
+	<br><br>
+	<<icon "access-card.png">><<link [[Open an HBSC account|HBSC Bank Account]]>><</link>>
+<<elseif setup.hbsc.isBanned()>>
+	<<set _remaining to setup.hbsc.getBanRemainingDays()>>
+	The teller checks the account notes. "Sorry. Because you tried to sneak around inside the branch, counter service is suspended for <span class = "red"><<print _remaining>> more day<<print _remaining is 1 ? "" : "s">></span>."
+	<br><br>
+	<<getouticon>><<link [[Leave|High Street]]>><<endevent>><</link>>
+<<elseif _amount < 1>>
+	The teller tilts <<his>> head. "Sorry, I need a valid whole amount before I can check that deposit."
+	<br><br>
+	<<schoolicon "library desk">><<link [[Next|HBSC Bank Deposit]]>><</link>>
+<<elseif _amount > $money>>
+	The teller looks at the screen and gives you an apologetic look. "Sorry, I can't move <<printmoney _amount>> right now. You only have <<printmoney $money>> in cash."
+	<br><br>
+	<<schoolicon "library desk">><<link [[Next|HBSC Bank Deposit]]>><</link>>
+<<elseif Number.isFinite(_room) and _amount > _room>>
+	The teller taps the display. "Sorry, I can't move <<printmoney _amount>> into savings. That would go over your current tier's deposit limit."
+	<br><br>
+	<<schoolicon "library desk">><<link [[Next|HBSC Bank Deposit]]>><</link>>
+<<else>>
+	The teller checks the amount, then looks back up. "Do you want to deposit this amount into your HBSC savings?"
+	<br><br>
+
+	<div class="hbsc-brochure">
+		<span class="gold">Overview</span><br>
+		• Amount to deposit: <<printmoney _amount>><br>
+		• Cash after deposit: <<printmoney _cashAfter>><br>
+		• Savings balance after deposit: <<printmoney _depositAfter>><br>
+		• Remaining room after deposit:
+		<<if Number.isFinite(_roomAfter)>>
+			<<printmoney _roomAfter>>
+		<<else>>
+			Unlimited
+		<</if>>
+	</div>
+	<br>
+
+	<<link [[Yes, deposit this amount|HBSC Bank Deposit Result]]>><</link>>
+	<br>
+	<<link [[No, let me change the amount|HBSC Bank Deposit]]>><</link>>
+	<br><br>
+<</if>>
+
+:: HBSC Bank Deposit Result
+<<effects>>
+<<set _requested to setup.hbsc.roundMoney($hbsc.transactionAmount)>>
+<<set _result to setup.hbsc.makeSavingsDeposit($hbsc.transactionAmount)>>
+<<set $hbsc.transactionAmount to 0>><<set $hbsc.transactionInput to "">>
+
+<<if _result.ok>>
+	The teller counts the cash, runs it through the machine, then nods. "Done. I've moved <<printmoney _result.amount>> into your HBSC savings balance."
+	<br><br>
+	Your new savings balance is <<printmoney $hbsc.account.deposit>>.
+	<br><br>
+	<<hbscOptions>>
+<<elseif _result.reason is "noAccount">>
+	The teller folds <<his>> hands. "Sorry, I can't accept a savings deposit without an HBSC account."
+	<br><br>
+	<<icon "access-card.png">><<link [[Open an HBSC account|HBSC Bank Account]]>><</link>>
+<<elseif _result.reason is "invalidAmount">>
+	The teller tilts <<his>> head. "Sorry, I need a valid whole amount before I can process that deposit."
+	<br><br>
+	<<schoolicon "library desk">><<link [[Next|HBSC Bank Deposit]]>><</link>>
+<<elseif _result.reason is "banned">>
+	The teller checks the account notes. "Sorry. Because you tried to sneak around inside the branch, counter service is suspended for <span class = "red"><<print _result.remaining>> more day<<print _result.remaining is 1 ? "" : "s">></span>."
+	<br><br>
+	<<if $hbsc.lastPenaltyAmount > 0>>The teller adds, "The security penalty already taken from your savings was <<printmoney $hbsc.lastPenaltyAmount>>."<br><br><<set $hbsc.penaltyWarningPending to false>><</if>>
+	<br><br>
+	<<getouticon>><<link [[Leave|High Street]]>><<endevent>><</link>>
+<<elseif _result.reason is "insufficientMoney">>
+	The teller looks at the screen and gives you an apologetic look. "Sorry, I can't move <<printmoney _requested>> right now. You only have <<printmoney $money>> in cash."
+	<br><br>
+	<<schoolicon "library desk">><<link [[Next|HBSC Bank Deposit]]>><</link>>
+<<elseif _result.reason is "depositLimit">>
+	The teller taps the display. "Sorry, I can't move <<printmoney _requested>> into savings. That would go over your current tier's deposit limit."
+	<br><br>
+	<<schoolicon "library desk">><<link [[Next|HBSC Bank Deposit]]>><</link>>
+<<else>>
+	The teller shakes <<his>> head. "Sorry, I can't process that deposit right now."
+	<br><br>
+	<<hbscOptions>>
+<</if>>
+
+:: HBSC Bank Withdraw
+<<effects>>
+
+<<if $hbsc.account.level < 1>>
+	The teller folds <<his>> hands. "You'll need an HBSC account before I can process a withdrawal."
+	<br><br>
+	<<icon "access-card.png">><<link [[Open an HBSC account|HBSC Bank Account]]>><</link>>
+<<else>>
+	The teller opens the withdrawal screen and looks back up at you. "You want to take money out of your HBSC savings balance."
+	<br><br>
+
+	<div class="hbsc-brochure">
+		<span class="gold">Withdrawal summary</span><br>
+		• Savings Balance: <<printmoney $hbsc.account.deposit>><br>
+		• Cash On Hand: <<printmoney $money>><br>
+		• Maximum You Can Withdraw Right Now: <<printmoney $hbsc.account.deposit>>
+	</div>
+	<br>
+
+	<<if $hbsc.account.deposit < 1>>
+		The teller gives you an apologetic look. "There's nothing in your savings balance to withdraw right now."
+		<br><br>
+		<<hbscOptions>>
+	<<else>>
+		Type the amount you want to withdraw into your cash.
+		<br>
+		<span class="black"><i>Enter a whole number. Commas and the £ sign are fine.</i></span>
+		<br><br>
+		<<set _withdrawFieldId to setup.hbsc.newFieldId("hbsc-withdraw-amount")>>
+		Amount: <<print setup.hbsc.makeTextInput(_withdrawFieldId, $hbsc.transactionInput)>>
+		<br><br>
+		<<link "Review this amount">><<run setup.hbsc.submitAmountFromField(_withdrawFieldId, "transaction", "HBSC Bank Withdraw Confirm")>><</link>>
+		<br>
+		<<link [[Withdraw everything currently available|HBSC Bank Withdraw Confirm]]>><<set $hbsc.transactionInput to setup.hbsc.formatInputAmount($hbsc.account.deposit)>><<set $hbsc.transactionAmount to $hbsc.account.deposit>><</link>>
+	<</if>>
+<</if>>
+
+:: HBSC Bank Withdraw Confirm
+<<effects>>
+<<set _amount to setup.hbsc.roundMoney($hbsc.transactionAmount)>>
+<<set _cashAfter to setup.hbsc.roundMoney($money + _amount)>>
+<<set _depositAfter to setup.hbsc.roundMoney($hbsc.account.deposit - _amount)>>
+
+<<if $hbsc.account.level < 1>>
+	The teller folds <<his>> hands. "You'll need an HBSC account before I can process a withdrawal."
+	<br><br>
+	<<icon "access-card.png">><<link [[Open an HBSC account|HBSC Bank Account]]>><</link>>
+<<elseif setup.hbsc.isBanned()>>
+	<<set _remaining to setup.hbsc.getBanRemainingDays()>>
+	The teller checks the account notes. "Sorry. Because you tried to sneak around inside the branch, counter service is suspended for <span class = "red"><<print _remaining>> more day<<print _remaining is 1 ? "" : "s">></span>."
+	<br><br>
+	<<getouticon>><<link [[Leave|High Street]]>><<endevent>><</link>>
+<<elseif _amount < 1>>
+	The teller tilts <<his>> head. "Sorry, I need a valid whole amount before I can check that withdrawal."
+	<br><br>
+	<<schoolicon "library desk">><<link [[Next|HBSC Bank Withdraw]]>><</link>>
+<<elseif _amount > $hbsc.account.deposit>>
+	The teller looks at the screen and gives you an apologetic look. "Sorry, I can't withdraw <<printmoney _amount>> right now. You only have <<printmoney $hbsc.account.deposit>> in savings."
+	<br><br>
+	<<schoolicon "library desk">><<link [[Next|HBSC Bank Withdraw]]>><</link>>
+<<else>>
+	The teller checks the amount, then looks back up. "Do you want to withdraw this amount from your HBSC savings?"
+	<br><br>
+
+	<div class="hbsc-brochure">
+		<span class="gold">Overview</span><br>
+		• Amount to withdraw: <<printmoney _amount>><br>
+		• Carried Cash after withdrawal: <<printmoney _cashAfter>><br>
+		• Savings balance after withdrawal: <<printmoney _depositAfter>>
+	</div>
+	<br>
+
+	<<link [[Yes, withdraw this amount|HBSC Bank Withdraw Result]]>><</link>>
+	<br>
+	<<link [[No, let me change the amount|HBSC Bank Withdraw]]>><</link>>
+<</if>>
+
+:: HBSC Bank Withdraw Result
+<<effects>>
+<<set _requested to setup.hbsc.roundMoney($hbsc.transactionAmount)>>
+<<set _result to setup.hbsc.makeSavingsWithdrawal($hbsc.transactionAmount)>>
+<<set $hbsc.transactionAmount to 0>><<set $hbsc.transactionInput to "">>
+
+<<if _result.ok>>
+	The teller counts out the notes and slides them across the counter. "Done. I've withdrawn <<printmoney _result.amount>> from your HBSC savings balance."
+	<br><br>
+	Your new savings balance is <<printmoney $hbsc.account.deposit>>.
+	<br><br>
+	<<hbscOptions>>
+<<elseif _result.reason is "noAccount">>
+	The teller folds <<his>> hands. "Sorry, I can't process a withdrawal without an HBSC account."
+	<br><br>
+	<<icon "access-card.png">><<link [[Review your HBSC account (0:02)|HBSC Bank Account]]>><<pass 2>><</link>>
+<<elseif _result.reason is "invalidAmount">>
+	The teller tilts <<his>> head. "Sorry, I need a valid whole amount before I can process that withdrawal."
+	<br><br>
+	<<schoolicon "library desk">><<link [[Next|HBSC Bank Withdraw]]>><</link>>
+<<elseif _result.reason is "banned">>
+	The teller checks the account notes. "Sorry. Because you tried to sneak around inside the branch, counter service is suspended for <span class = "red"><<print _result.remaining>> more day<<print _result.remaining is 1 ? "" : "s">></span>."
+	<br><br>
+	<<if $hbsc.lastPenaltyAmount > 0>>The teller adds, "The cut already taken from your savings was <<printmoney $hbsc.lastPenaltyAmount>>."<br><br><<set $hbsc.penaltyWarningPending to false>><</if>>
+	<br><br>
+	<<getouticon>><<link [[Leave|High Street]]>><<endevent>><</link>>
+<<elseif _result.reason is "insufficientDeposit">>
+	The teller looks at the screen and gives you an apologetic look. "Sorry, I can't withdraw <<printmoney _requested>> right now. You only have <<printmoney $hbsc.account.deposit>> in savings."
+	<br><br>
+	<<schoolicon "library desk">><<link [[Next|HBSC Bank Withdraw]]>><</link>>
+<<else>>
+	The teller shakes <<his>> head. "Sorry, I can't process that withdrawal right now."
+	<br><br>
+	<<hbscOptions>>
+<</if>>
+
+:: HBSC Bank Fixed-Term Deposit
+<<effects>>
+<<if $hbsc.account.level < 1>>
+	The teller folds <<his>> hands. "You'll need an HBSC account before I can open or manage fixed-term deposits."
+	<br><br>
+	<<icon "access-card.png">><<link [[Review your HBSC account (0:02)|HBSC Bank Account]]>><<pass 2>><</link>>
+<<else>>
+	<<set _activeCount to 0>>
+	<<set _maturedCount to 0>>
+	<<for _i = 0; _i < $hbsc.fixedTerms.length; _i++>>
+		<<set _term to $hbsc.fixedTerms[_i]>>
+		<<if _term>>
+			<<if _term.status is "matured">>
+				<<set _maturedCount += 1>>
+			<<else>>
+				<<set _activeCount += 1>>
+			<</if>>
+		<</if>>
+	<</for>>
+
+	The teller opens the fixed-term menu and turns the screen so you can read it. "From here, I can open a new fixed-term deposit for you, or manage one you already have."
+	<br><br>
+
+	<div class="hbsc-brochure">
+		<span class="gold">Fixed-term overview</span><br>
+		• Open one using cash you carry or money from your HBSC savings balance.<br>
+		• Active fixed terms: <<print _activeCount>><br>
+		• Matured fixed terms waiting to be collected: <<print _maturedCount>><br>
+		• Platinum and Black account tiers lower early-withdrawal fees.
+	</div>
+	<br>
+
+	<<link [[Open a new fixed-term deposit|HBSC Bank Fixed-Term Open]]>><<set $hbsc.ftMonths to 0>><<set $hbsc.ftSource to "">><<set $hbsc.ftAmount to 0>><</link>>
+	<br>
+	<<if $hbsc.fixedTerms.length > 0>>
+		<<link [[Manage your existing fixed-term deposits|HBSC Bank Fixed-Term Manage]]>><</link>>
+		<br>
+	<</if>>
+	<<link [[Review the fixed-term rate brochure|HBSC Bank Ask Fixed-Term Deposits]]>><</link>>
+<</if>>
+
+:: HBSC Bank Fixed-Term Open
+<<effects>>
+
+<<if $hbsc.account.level < 1>>
+	The teller folds <<his>> hands. "You'll need an HBSC account before I can open a fixed-term deposit."
+	<br><br>
+	<<icon "access-card.png">><<link [[Review your HBSC account (0:02)|HBSC Bank Account]]>><<pass 2>><</link>>
+<<else>>
+	The teller waits with one hand on the mouse. Choose the term length you want.
+	<br><br>
+	<<link [[Open a 1-month fixed-term deposit|HBSC Bank Fixed-Term Source]]>><<set $hbsc.ftMonths to 1>><</link>>
+	<br>
+	<<link [[Open a 3-month fixed-term deposit|HBSC Bank Fixed-Term Source]]>><<set $hbsc.ftMonths to 3>><</link>>
+	<br>
+	<<link [[Open a 6-month fixed-term deposit|HBSC Bank Fixed-Term Source]]>><<set $hbsc.ftMonths to 6>><</link>>
+	<br>
+	<<link [[Open a 12-month fixed-term deposit|HBSC Bank Fixed-Term Source]]>><<set $hbsc.ftMonths to 12>><</link>>
+<</if>>
+
+:: HBSC Bank Fixed-Term Source
+<<effects>>
+<<set _months to $hbsc.ftMonths>>
+<<if _months is undefined or setup.hbsc.getFixedTermPlan(_months) is null>>
+	The teller looks at the terminal. "Let's choose the term length first."
+	<br><br>
+	<<link [[Open a new fixed-term deposit|HBSC Bank Fixed-Term Open]]>><<set $hbsc.ftMonths to 0>><<set $hbsc.ftSource to "">><<set $hbsc.ftAmount to 0>><</link>>
+<<else>>
+	"You've chosen a <<print _months>>-month term," the teller says. "Where should the locked money come from?"
+	<br><br>
+
+	<div class="hbsc-brochure">
+		<span class="gold">Available sources</span><br>
+		• Cash On Hand: <<printmoney $money>><br>
+		• HBSC Savings Balance: <<printmoney $hbsc.account.deposit>>
+	</div>
+	<br>
+
+	<<if $money >= setup.hbsc.MIN_FIXED_TERM_OPEN>>
+		<<link [[Use cash on hand|HBSC Bank Fixed-Term Amount]]>><<set $hbsc.ftSource to "money">><</link>>
+		<br>
+	<</if>>
+	<<if $hbsc.account.deposit >= setup.hbsc.MIN_FIXED_TERM_OPEN>>
+		<<link [[Use your HBSC savings balance|HBSC Bank Fixed-Term Amount]]>><<set $hbsc.ftSource to "deposit">><</link>>
+		<br>
+	<</if>>
+	<<if $money < setup.hbsc.MIN_FIXED_TERM_OPEN and $hbsc.account.deposit < setup.hbsc.MIN_FIXED_TERM_OPEN>>
+		The teller gives you an apologetic look. "You need at least <<printmoney setup.hbsc.MIN_FIXED_TERM_OPEN>> in cash or savings to open one."
+		<br><br>
+		<<hbscOptions>>
+	<</if>>
+<</if>>
+
+:: HBSC Bank Fixed-Term Amount
+<<effects>>
+<<set _months to $hbsc.ftMonths>><<set _source to $hbsc.ftSource>>
+<<set _available to (_source === "deposit" ? $hbsc.account.deposit : $money)>>
+<<set _sourceLabel to (_source is "deposit" ? "HBSC savings balance" : "cash on hand")>>
+
+<<if _months is undefined or setup.hbsc.getFixedTermPlan(_months) is null or (_source !== "money" && _source !== "deposit")>>
+	The teller looks at the terminal. "Let's do that in order. Choose the term and where the money will come from first."
+	<br><br>
+	<<link [[Next|HBSC Bank Fixed-Term Source]]>><</link>>
+<<elseif _available < setup.hbsc.MIN_FIXED_TERM_OPEN>>
+	The teller gives you an apologetic look. "Sorry, I can't open a fixed-term deposit from that source right now. There isn't enough money there."
+	<br><br>
+	<<hbscOptions>>
+<<else>>
+	The teller points to the empty field on the screen. Choose how much to lock away for the <<print _months>>-month term.
+	<br><br>
+
+	<div class="hbsc-brochure">
+		<span class="gold">Opening summary</span><br>
+		• Money Source: <<print _sourceLabel>><br>
+		• Available Amount: <<printmoney _available>><br>
+		• Minimum Opening Amount: <<printmoney setup.hbsc.MIN_FIXED_TERM_OPEN>><br>
+		• The final AER depends on the exact amount you enter.
+	</div>
+	<br>
+
+	Type the amount you want to lock away.
+	<br>
+	<span class="black"><i>Enter a whole number. Commas and the £ sign are fine.</i></span>
+	<br><br>
+	<<set _ftFieldId to setup.hbsc.newFieldId("hbsc-ft-amount")>>
+	Amount: <<print setup.hbsc.makeTextInput(_ftFieldId, $hbsc.ftAmountInput)>>
+	<br><br>
+	<<link "Review this fixed-term deposit">><<run setup.hbsc.submitAmountFromField(_ftFieldId, "fixedTerm", "HBSC Bank Fixed-Term Confirm")>><</link>>
+	<br>
+	<<link [[Lock the full available amount|HBSC Bank Fixed-Term Confirm]]>><<set $hbsc.ftAmountInput to setup.hbsc.formatInputAmount(_available)>><<set $hbsc.ftAmount to _available>><</link>>
+	<br><br>
+<</if>>
+
+:: HBSC Bank Fixed-Term Confirm
+<<effects>>
+<<set _months to $hbsc.ftMonths>><<set _source to $hbsc.ftSource>>
+<<set _available to (_source === "deposit" ? $hbsc.account.deposit : $money)>>
+<<set _sourceLabel to (_source is "deposit" ? "HBSC savings balance" : "cash on hand")>>
+<<set _amount to setup.hbsc.roundMoney($hbsc.ftAmount)>>
+<<set _aer to setup.hbsc.getFixedTermAER(_months, _amount)>>
+<<set _maturity to (_amount >= setup.hbsc.MIN_FIXED_TERM_OPEN and _aer > 0 ? setup.hbsc.calcFixedTermMaturity(_amount, _months) : 0)>>
+
+<<if _months is undefined or setup.hbsc.getFixedTermPlan(_months) is null or (_source !== "money" && _source !== "deposit")>>
+	The teller looks at the terminal. "Let's do that in order. Choose the term and where the money will come from first."
+	<br><br>
+	<<link [[Next|HBSC Bank Fixed-Term Amount]]>><</link>>
+<<elseif _amount < setup.hbsc.MIN_FIXED_TERM_OPEN>>
+	The teller gives you an apologetic look. "Sorry, I can't lock away that amount. Fixed-term deposits need at least <<printmoney setup.hbsc.MIN_FIXED_TERM_OPEN>>."
+	<br><br>
+	<<link [[Next|HBSC Bank Fixed-Term Amount]]>><</link>>
+<<elseif _amount > _available>>
+	The teller checks the screen and shakes <<his>> head. "Sorry, I can't lock away <<printmoney _amount>> from <<print _sourceLabel>> right now. You only have <<printmoney _available>> available there."
+	<br><br>
+	<<link [[Next|HBSC Bank Fixed-Term Amount]]>><</link>>
+<<elseif not (_aer > 0)>>
+	The teller taps the brochure. "Sorry, that amount doesn't fit one of our available rate bands. Try a different amount."
+	<br><br>
+	<<link [[Next|HBSC Bank Fixed-Term Amount]]>><</link>>
+<<else>>
+	The teller turns the screen towards you and taps the summary box. "Please check these details before I book it in."
+	<br><br>
+
+	<div class="hbsc-brochure">
+		<span class="gold">Overview</span><br>
+		• You are locking away exactly <<printmoney _amount>><br>
+		• This will be taken now from: <<print _sourceLabel>><br>
+		• Term: <<print _months>> month(s)<br>
+		• Rate: <<print _aer>>% per year<br>
+		<<set _interestEarned to setup.hbsc.roundMoney(_maturity.total - _amount)>>
+		• Interest earned over <<print _months>> month(s): <<printmoney _interestEarned>><br>
+		• Estimated total at maturity: <<printmoney _maturity.total>>
+	</div>
+	<br>
+	<span class="gold">Note:</span> <i>This money is locked away until the term ends.</i>
+	<br><br>
+
+	<<link [[Yes, lock this away|HBSC Bank Fixed-Term Open Result]]>><</link>>
+	<br>
+	<<link [[No, let me change the amount|HBSC Bank Fixed-Term Amount]]>><</link>>
+<</if>>
+
+:: HBSC Bank Fixed-Term Open Result
+<<effects>>
+<<set _requested to setup.hbsc.roundMoney($hbsc.ftAmount)>>
+<<set _result to setup.hbsc.openFixedTerm($hbsc.ftAmount, $hbsc.ftMonths, $hbsc.ftSource)>>
+<<set $hbsc.ftAmount to 0>><<set $hbsc.ftAmountInput to "">>
+
+<<if _result.ok>>
+	The teller takes the slip, books it in, and slides a receipt across the counter. "Done. That's locked away now until it matures, earning the rate we agreed."
+	<br><br>
+
+	<div class="hbsc-brochure">
+		<span class="gold">Fixed-term deposit opened</span><br>
+		• Amount locked away: <<printmoney _result.amount>><br>
+		• Taken from:
+		<<if _result.source is "deposit">>
+			your HBSC savings
+		<<else>>
+			cash on hand
+		<</if>>
+		<br>
+		• Term: <<print _result.months>> month(s)<br>
+		• Rate: <<print _result.aer>>% per year<br>
+		• Matures in: <<print Math.max(0, (_result.term.matureOnDay - Time.days))>> days
+	</div>
+	<br>
+	<<set $hbsc.ftMonths to 0>><<set $hbsc.ftSource to "">>
+	<<hbscOptions>>
+<<elseif _result.reason is "noAccount">>
+	The teller folds <<his>> hands. "You'll need an HBSC account before I can open a fixed-term deposit."
+	<br><br>
+	<<icon "access-card.png">><<link [[Open an HBSC account|HBSC Bank Account]]>><</link>>
+<<elseif _result.reason is "invalidAmount">>
+	The teller tilts <<his>> head. "Sorry, I need a valid amount of at least <<printmoney setup.hbsc.MIN_FIXED_TERM_OPEN>> before I can open that fixed-term deposit."
+	<br><br>
+	<<link [[Next|HBSC Bank Fixed-Term Amount]]>><</link>>
+<<elseif _result.reason is "banned">>
+	The teller checks the account notes. "Sorry. Because you tried to sneak around inside the branch, counter service is suspended for <span class = "red"><<print _result.remaining>> more day<<print _result.remaining is 1 ? "" : "s">></span>."
+	<br><br>
+	<<if $hbsc.lastPenaltyAmount > 0>>The teller adds, "The security penalty already taken from your savings was <<printmoney $hbsc.lastPenaltyAmount>>."<br><br><<set $hbsc.penaltyWarningPending to false>><</if>>
+	<br><br>
+	<<getouticon>><<link [[Leave|High Street]]>><<endevent>><</link>>
+<<elseif _result.reason is "invalidBand">>
+	The teller taps the brochure. "Sorry, that amount doesn't fit one of our fixed-term rate bands. Try a different amount."
+	<br><br>
+	<<link [[Next|HBSC Bank Fixed-Term Amount]]>><</link>>
+<<elseif _result.reason is "insufficientMoney">>
+	The teller looks at the screen and gives you an apologetic look. "Sorry, I can't lock away <<printmoney _requested>> from your cash any more. Choose a smaller amount or use another source."
+	<br><br>
+	<<link [[Next|HBSC Bank Fixed-Term Amount]]>><</link>>
+<<elseif _result.reason is "insufficientDeposit">>
+	The teller looks at the screen and gives you an apologetic look. "Sorry, I can't lock away <<printmoney _requested>> from your HBSC savings balance any more. Choose a smaller amount or use another source."
+	<br><br>
+	<<link [[Next|HBSC Bank Fixed-Term Amount]]>><</link>>
+<<else>>
+	The teller shakes <<his>> head. "I can't open that fixed-term deposit right now."
+	<br><br>
+	<<hbscOptions>>
+<</if>>
+
+:: HBSC Bank Fixed-Term Manage
+<<effects>>
+<<if $hbsc.fixedTerms.length <= 0>>
+	The teller looks at the screen. "You don't have any fixed-term deposits to manage right now."
+	<br><br>
+	<<hbscOptions>>
+<<else>>
+	"Here are your fixed-term deposits," the teller says, turning the screen towards you and scrolling through the list.
+	<br><br>
+
+	<<for _i = 0; _i < $hbsc.fixedTerms.length; _i++>>
+		<<set _term to $hbsc.fixedTerms[_i]>>
+		<<if _term>>
+			<<capture _term, _i>>
+				<div class="hbsc-brochure">
+					<span class="gold">Deposit <<print _i + 1>></span><br>
+					• Amount Locked Away: <<printmoney _term.principal>><br>
+					• Term: <<print _term.months>> month(s)<br>
+					• Rate: <<print _term.aer>>% per year<br>
+					• Status:
+					<<if _term.status is "matured">>
+						Matured
+					<<else>>
+						Active
+					<</if>>
+					<br>
+					<<if _term.status is "matured">>
+						• Total Ready to Collect: <<printmoney _term.maturityTotal>>
+					<<else>>
+						• Days Remaining: <<print Math.max(0, (_term.matureOnDay - Time.days))>>
+					<</if>>
+					<br>
+					<<link [[View this deposit|HBSC Bank Fixed-Term Detail]]>><<set $hbsc.selectedFixedTermId to _term.id>><</link>>
+				</div>
+			<</capture>>
+		<</if>>
+	<</for>>
+<</if>>
+
+:: HBSC Bank Fixed-Term Detail
+<<effects>>
+<<set _term to setup.hbsc.getFixedTermById($hbsc.selectedFixedTermId)>>
+<<if _term is null>>
+	The teller looks at the screen. "I can't find that fixed-term deposit any more. It may already have been collected."
+	<br><br>
+	<<hbscOptions>>
+<<else>>
+	<div class="hbsc-brochure">
+		<span class="gold">Fixed-term deposit details</span><br>
+		• Amount Locked Away: <<printmoney _term.principal>><br>
+		• Term: <<print _term.months>> month(s)<br>
+		• Rate: <<print _term.aer>>% per year<br>
+		• Status:
+		<<if _term.status is "matured">>
+			Matured
+		<<else>>
+			Active
+		<</if>>
+		<br>
+		<<if _term.status is "matured">>
+			• Total Ready to Collect: <<printmoney _term.maturityTotal>>
+		<<else>>
+			<<set _heldToTerm to setup.hbsc.calcFixedTermMaturity(_term.principal, _term.months)>>
+			• Days Passed: <<print _term.elapsedDays>><br>
+			• Days Remaining: <<print Math.max(0, (_term.matureOnDay - Time.days))>><br>
+			• Total if held to maturity: <<printmoney _heldToTerm.total>>
+		<</if>>
+	</div>
+	<br>
+
+	<<if _term.status is "matured">>
+		Choose where to send the matured money.
+		<br><br>
+		<<link [[Collect into your HBSC savings balance|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to "full">><<set $hbsc.ftCloseTarget to "deposit">><</link>>
+		<br>
+		<<link [[Collect as cash|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to "full">><<set $hbsc.ftCloseTarget to "money">><</link>>
+		<br>
+	<<else>>
+		<<set _earned to setup.hbsc.calcFixedTermEarnedInterest(_term.principal, _term.months, _term.elapsedDays)>>
+		<<set _fullPreview to setup.hbsc.calcFixedTermEarlyWithdrawal(_term.principal, _term.months, _term.elapsedDays, $hbsc.account.level, "full")>>
+
+		<div class="black">
+			<i>If you close it now, the bank estimates you would receive <<printmoney _fullPreview.totalReturned>> after the early-withdrawal fee.</i>
+		</div>
+		<br>
+
+		<<link [[Close it now and return the money to HBSC savings|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to "full">><<set $hbsc.ftCloseTarget to "deposit">><</link>>
+		<br>
+		<<link [[Close it now and take the money as cash|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to "full">><<set $hbsc.ftCloseTarget to "money">><</link>>
+		<br>
+
+		<<if setup.hbsc.canHalfWithdraw(_term)>>
+			<<set _halfPreview to setup.hbsc.calcFixedTermEarlyWithdrawal(_term.principal, _term.months, _term.elapsedDays, $hbsc.account.level, "half")>>
+			<<link [[Withdraw half into HBSC savings and keep the rest invested|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to "half">><<set $hbsc.ftCloseTarget to "deposit">><</link>>
+			<br>
+			<<link [[Take an early half withdrawal as cash|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to "half">><<set $hbsc.ftCloseTarget to "money">><</link>>
+			<br>
+		<</if>>
+		<br>
+	<</if>>
+<<icon "email.png">><<link [[Back|HBSC Bank Fixed-Term Deposit]]>><</link>>
+<</if>>
+
+:: HBSC Bank Fixed-Term Close Result
+<<effects>>
+<<set _kind to $hbsc.ftCloseKind>><<set _target to $hbsc.ftCloseTarget>>
+<<set _result to setup.hbsc.closeFixedTerm($hbsc.selectedFixedTermId, _kind, _target)>>
+<<set $hbsc.ftCloseKind to "">><<set $hbsc.ftCloseTarget to "">>
+<<if _result.ok>>
+	<<if _result.term.status is "active">>
+		The teller confirms the early half withdrawal and updates the fixed-term deposit that remains.
+	<<else>>
+		The teller processes the payout, stamps the closure slip, and closes the fixed-term deposit.
+	<</if>>
+	<br><br>
+
+	<div class="hbsc-brochure">
+		<span class="gold">Payout summary</span><br>
+		• Original Amount Returned: <<printmoney _result.payout.principalReturned>><br>
+		• Interest Earned: <<printmoney _result.payout.earnedInterest>><br>
+		• Early-Withdrawal Fee:
+		<<if _result.payout.penaltyRate > 0>>
+			<<print _result.payout.penaltyRate>>% of earned interest (<<printmoney _result.payout.penalty>>)
+		<<else>>
+			None
+		<</if>>
+		<br>
+		• Total Paid Out: <<printmoney _result.payout.totalReturned>>
+	</div>
+	<br>
+
+	<<if _target is "money">>
+		You tuck the money away.
+	<<else>>
+		The money has been sent to your HBSC savings balance.
+	<</if>>
+	<br><br>
+	<<hbscOptions>>
+<<elseif _result.reason is "depositCapExceeded">>
+	The teller taps the screen. "Your current savings tier doesn't have enough space to receive that payout. You can collect it as cash instead, or upgrade your account first."
+	<br><br>
+	<<link [[Collect it as cash instead|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to _kind>><<set $hbsc.ftCloseTarget to "money">><</link>>
+<<elseif _result.reason is "banned">>
+	The teller checks the account notes. "Sorry. Because you tried to sneak around inside the branch, counter service is suspended for <span class = "red"><<print _result.remaining>> more day<<print _result.remaining is 1 ? "" : "s">></span>."
+	<br><br>
+	<<if $hbsc.lastPenaltyAmount > 0>>The teller adds, "The security penalty already taken from your savings was <<printmoney $hbsc.lastPenaltyAmount>>."<br><br><<set $hbsc.penaltyWarningPending to false>><</if>>
+	<br><br>
+	<<getouticon>><<link [[Leave|High Street]]>><<endevent>><</link>>
+<<else>>
+	The teller frowns at the terminal. "I can't process that collection right now."
+	<br><br>
+	<<hbscOptions>>
+<</if>>
+
+:: HBSC Bank Loan
+<<effects>><<run setup.hbsc.ensureState()>>
+<<set _owed to $hbsc.loan.owed>>
+<<set _principal to setup.hbsc.loanPrincipalOutstanding()>>
+<<set _borrowable to setup.hbsc.loanBorrowable()>>
+<<set _repayChunk to Math.min(_owed, $money, setup.hbsc.LOAN_CHUNK)>>
+<<set _repayAll to Math.min(_owed, $money)>>
+
+<<if setup.hbsc.isBanned()>>
+	<<set _remaining to setup.hbsc.getBanRemainingDays()>>
+	The teller checks the account notes. "Sorry. Because you tried to sneak around inside the branch, counter service is suspended for <span class="red"><<print _remaining>> more day<<print _remaining is 1 ? "" : "s">></span>."
+	<br><br>
+	<<getouticon>><<link [[Leave|High Street]]>><<endevent>><</link>>
+<<else>>
+	The teller pulls up the personal lending screen. "We can advance you cash in small amounts. The terms are simple: you repay one and a half times whatever you borrow. Miss it for a month and we'll arrange collection through your landlord."
+	<br><br>
+
+	<div class="hbsc-brochure">
+		<span class="gold">Loan summary</span><br>
+		&bull; Cash on hand: <<printmoney $money>><br>
+		&bull; Outstanding balance to repay: <<printmoney _owed>><br>
+		&bull; Borrowed principal: <<printmoney _principal>> of <<printmoney setup.hbsc.LOAN_PRINCIPAL_MAX>><br>
+		&bull; Available to borrow now: <<printmoney _borrowable>><br>
+		<<if $hbsc.loan.autoRepay and _owed gt 0>>
+			&bull; <span class="red">Overdue:</span> Bailey is collecting <<printmoney `setup.hbsc.loanRentSurchargeAmount ? setup.hbsc.loanRentSurchargeAmount() : setup.hbsc.LOAN_RENT_SURCHARGE`>> a week from your rent.<br>
+		<</if>>
+	</div>
+	<br>
+
+	<<if _borrowable gt 0>>
+		<<schoolicon "library desk">><<link [[Borrow|HBSC Bank Loan Result]]>><<set $hbsc.loan.action to "borrow">><</link>> (<span class="gold"><<printmoney _borrowable>></span>)
+		<br>
+	<<else>>
+		<i>You've reached the lending limit. Repay some of your balance to borrow more.</i>
+		<br>
+	<</if>>
+
+	<<if _repayChunk gt 0>>
+		<<schoolicon "library desk">><<link [[Repay a little|HBSC Bank Loan Result]]>><<set $hbsc.loan.action to "repayChunk">><</link>> (<span class="gold"><<printmoney _repayChunk>></span>)
+		<br>
+		<<if _repayAll gt _repayChunk>>
+			<<schoolicon "library desk">><<link [[Repay everything|HBSC Bank Loan Result]]>><<set $hbsc.loan.action to "repayAll">><</link>> (<span class="gold"><<printmoney _repayAll>></span>)
+			<br>
+		<</if>>
+	<<elseif _owed gt 0>>
+		<i>You don't have the cash to repay anything right now.</i>
+		<br>
+	<</if>>
+	<br>
+	<<hbscOptions>>
+<</if>>
+
+:: HBSC Bank Loan Result
+<<effects>><<run setup.hbsc.ensureState()>>
+<<set _action to $hbsc.loan.action>>
+<<set $hbsc.loan.action to "">>
+
+<<if _action is "borrow">>
+	<<set _result to setup.hbsc.borrowLoan()>>
+	<<if _result.ok>>
+		The teller counts out <<printmoney _result.amount>> and slides it across the counter. "There you go. That's added to what you owe us."
+		<br><br>
+		Your outstanding balance is now <<printmoney _result.owed>>.
+		<br><br>
+	<<elseif _result.reason is "banned">>
+		The teller shakes <<his>> head. "Counter service is suspended right now."
+		<br><br>
+	<<else>>
+		The teller shakes <<his>> head. "You've hit your lending limit. Pay some back first."
+		<br><br>
+	<</if>>
+<<elseif _action is "repayChunk" or _action is "repayAll">>
+	<<set _target to (_action is "repayAll" ? Math.min($hbsc.loan.owed, $money) : Math.min($hbsc.loan.owed, $money, setup.hbsc.LOAN_CHUNK))>>
+	<<set _result to setup.hbsc.repayLoan(_target)>>
+	<<if _result.ok>>
+		The teller takes <<printmoney _result.paid>> and updates your account.
+		<<if _result.owed gt 0>>
+			"You've still got <<printmoney _result.owed>> to go."
+		<<else>>
+			<span class="green">"That clears your loan in full. Pleasure doing business."</span>
+		<</if>>
+		<br><br>
+	<<else>>
+		The teller checks the screen. "There's nothing to repay, or you're short on cash."
+		<br><br>
+	<</if>>
+<<else>>
+	The teller waits for you to decide.
+	<br><br>
+<</if>>
+<<hbscOptions>>
+
+:: HBSC Bank Card
+<<effects>>
+<<run setup.hbsc.ensureState()>>
+<<if $hbsc.account.level lt 1>>
+	You need an HBSC account before you can request a debit card.
+<<elseif setup.hbsc.isBanned()>>
+	Counter service is suspended. You can still report a stolen card at the entrance.
+<<elseif !$hbsc.card>>
+	"Your first debit card is free," the teller says. "Payments come out of your savings. You can still withdraw cash when you need it."
+	<br><br>
+	<<link [[Request a debit card (0:05)|HBSC Bank Card]]>><<run setup.hbsc.issueCard()>><<pass 5>><</link>>
+<<else>>
+	Savings available: <<printmoney $hbsc.account.deposit>>.
+	<br><br>
+	<<hbscCardStatus>>
+	<br><br>
+	<<switch $hbsc.card.status>>
+		<<case "active">>
+			<label><<checkbox "$hbsc.card.preferred" false true autocheck>> Pay by card where accepted.</label>
+			<br>
+			Clothes, groceries, furniture, toys, haircuts, tattoos, cafe and pub orders, arcade games, bus fares, lessons, and hospital and pharmacy services accept your card. Your card pays the full bill when savings cover it; otherwise you pay cash. Cash left in closed shops, gifts, bribes, bets, and bank deposits still need carried money.
+		<<case "stolen">>
+			<<link [[Report your stolen card (0:05)|HBSC Bank Card]]>><<run setup.hbsc.reportCard()>><<pass 5>><</link>>
+			<br>Reporting is free and blocks further charges immediately.
+		<<case "blocked">>
+			A replacement costs <<printmoney setup.hbsc.CARD_REPLACEMENT_FEE>> and takes <<print setup.hbsc.CARD_REPLACEMENT_DAYS>> days. You can withdraw cash while you wait. Past unauthorised charges are not refunded.
+			<br>
+			<<if Math.max($money, $hbsc.account.deposit) gte setup.hbsc.CARD_REPLACEMENT_FEE>>
+				<<link [[Order a replacement card (0:10)|HBSC Bank Card]]>><<run setup.hbsc.orderReplacementCard()>><<pass 10>><</link>>
+			<<else>>
+				You cannot afford the replacement fee yet. Your stolen card remains blocked.
+			<</if>>
+		<<case "replacement">>
+			<<if Time.days gte $hbsc.card.readyDay>>
+				<<link [[Collect your replacement card (0:05)|HBSC Bank Card]]>><<run setup.hbsc.collectReplacementCard()>><<pass 5>><</link>>
+			<</if>>
+	<</switch>>
+<</if>>
+<br><br>
+<<hbscOptions>>
+
+:: HBSC Bank Standing Orders
+<<effects>>
+<<set _level to $hbsc.account.level>><<set _deposit to $hbsc.account.deposit>>
+<<if _level < 1>>
+	<<speechresolve>>
+	"Can you set up automatic payments for me? Something that handles my regular bills?" you ask.
+	<br><br>
+	The teller gives an apologetic smile. "Standing orders are tied to a savings account, I'm afraid. Open one with us first and we can route your recurring payments straight from your balance."
+	<br><br>
+	<<hbscOptions>>
+<<else>>
+	<<speechresolve>>
+	<<if ((_speechAttitudeResolved is "meek") or (_speechAttitudeResolved is "shy") or (_speechAttitudeResolved is "docile"))>>
+		"Could you help me with regular weekly payments, please?" you ask quietly.
+	<<elseif ((_speechAttitudeResolved is "polite") or (_speechAttitudeResolved is "flamboyant"))>>
+		"I was wondering if you could help me set up some recurring payments?" you ask.
+	<<elseif (_speechAttitudeResolved is "confident")>>
+		"I want to set up automatic payments for my regular bills," you say.
+	<<elseif ((_speechAttitudeResolved is "bratty") or (_speechAttitudeResolved is "cruel"))>>
+		"Set up my regular payments so I don't have to deal with them," you say.
+	<<else>>
+		"Can you help me with weekly payments? The ones that keep coming back?" you ask.
+	<</if>>
+	<br><br>
+	"Of course," the teller says brightly. "We call those <i>standing orders</i>. 
+    You tell me which regular payments to cover, and whenever one falls due we draw it straight from your savings balance. No need to carry the cash or be there in person."
+	<br><br>
+	<<set _hbscCancelled to $hbsc.notices.filter(n => n and n.type is "autoPayCancelled")>>
+	<<if _hbscCancelled.length > 0>>
+		<div class="hbsc-brochure">
+			<span class="red">Recently cancelled, due to insufficient savings:</span><br>
+			<<for _i, _c range _hbscCancelled>>
+				&bull; <<print _c.label>><br>
+			<</for>>
+		</div>
+		<br>
+		<<run $hbsc.notices = $hbsc.notices.filter(n => !(n and n.type is "autoPayCancelled"))>>
+	<</if>>
+	<div class="hbsc-brochure">
+		<span class="gold">How a standing order works</span><br>
+		&bull; The payment is taken from your savings balance.<br>
+		&bull; It only goes through if your balance covers the full amount when it falls due.<br>
+		&bull; If your savings can't cover it when it's due, the order is cancelled automatically.<br>
+		&bull; You can switch any order on or off, free of charge.
+	</div>
+	<br>
+	<span class="gold">Your savings balance:</span> <<printmoney _deposit>>
+	<br><br>
+	<<set _apAvail to {
+		bailey:       (def $rentMoney and $rentMoney gt 0 and $tutorial isnot 0),
+		farmGuard:    (def $farm and $farm.tower_guard),
+		wrenSabotage: (def $farm and def $farm.wrenSabotage),
+		gamblingRing: (def $xchange and $xchange.pubGamblingEnabled),
+		hotelRent:    (def $hotelRent)
+	}>>
+	<<set _anyShown to false>>
+	<<for _i, _bill range setup.hbsc.AUTOPAY_BILLS>>
+		<<if _apAvail[_bill.id]>>
+			<<set _anyShown to true>>
+			<<set _on to setup.hbsc.isAutoPayEnabled(_bill.id)>>
+			<span class="teal"><<print _bill.label>></span>:
+			<<if _on>><span class="green">On</span><<else>><span class="red">Off</span><</if>>
+			<br>
+			<i><<print _bill.blurb>></i>
+			<br>
+			<<capture _bill>>
+				<<if _on>>
+					<<link "Cancel this standing order" "HBSC Bank Standing Orders">><<run setup.hbsc.setAutoPay(_bill.id, false)>><</link>>
+				<<else>>
+					<<link "Set up this standing order" "HBSC Bank Standing Orders">><<run setup.hbsc.setAutoPay(_bill.id, true)>><</link>>
+				<</if>>
+			<</capture>>
+			<br><br>
+		<</if>>
+	<</for>>
+	<<if not _anyShown>>
+		The teller checks the system. "It doesn't look like you have any regular payments we can take on right now. Come back if that changes."
+		<br><br>
+	<</if>>
+	<<hbscOptions>>
+<</if>>

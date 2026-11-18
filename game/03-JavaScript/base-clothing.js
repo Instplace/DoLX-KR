@@ -1,0 +1,773 @@
+/* globals fameSum fameMax crimeSumCurrent playerHasXChangeBody */
+function getClothingCost(item, slot) {
+	let cost = setup.clothes[slot][clothesIndex(slot, item)].cost * V.settings.clothingCostModifier;
+
+	if (
+		setup.clothes.under_lower.findIndex(x => x.name === item.name && x.modder === item.modder) >= 0 ||
+		setup.clothes.under_upper.findIndex(x => x.name === item.name && x.modder === item.modder) >= 0
+	)
+		cost *= V.settings.underwearCostModifier;
+	else if (item.type.includes("school")) cost *= V.settings.schoolClothingCostModifier;
+
+	// the lewder item is, the more affected by the multiplier it is
+	const lewdness = Math.clamp((item.reveal - 400) / 500, 0, 1);
+	const lewdCoef = 1 + (V.settings.lewdClothingCostModifier - 1) * lewdness;
+	cost *= lewdCoef;
+
+	if (V.passage === "School Library Shop") {
+		cost *= 1.4 + ((V.delinquency - 500) / 5000 + (C.npc.Sydney.love - 50) / -500);
+	}
+
+	return Math.round(cost);
+}
+window.getClothingCost = getClothingCost;
+
+// Returns the price of the clothing item passed.
+// If it's part of an outfit the price is 80% of the full outfit for the primary half
+// and 20% for the other halves.
+function tailorClothingCost(item, slot) {
+	let cost = 0;
+	if (setup.clothes[slot][clothesIndex(slot, item)].outfitSecondary) {
+		const upperSlot = setup.clothes[slot][clothesIndex(slot, item)].outfitSecondary[0];
+		const upperItem = setup.clothes[upperSlot].findIndex(x => x.name === setup.clothes[slot][clothesIndex(slot, item)].outfitSecondary[1]);
+		if (upperItem >= 0) cost = setup.clothes[upperSlot][upperItem].cost * V.settings.clothingCostModifier * 0.2;
+	} else if (setup.clothes[slot][clothesIndex(slot, item)].outfitPrimary) {
+		cost = setup.clothes[slot][clothesIndex(slot, item)].cost * V.settings.clothingCostModifier * 0.8;
+	} else {
+		cost = setup.clothes[slot][clothesIndex(slot, item)].cost * V.settings.clothingCostModifier;
+	}
+
+	if (
+		setup.clothes.under_lower.findIndex(x => x.name === item.name && x.modder === item.modder) >= 0 ||
+		setup.clothes.under_upper.findIndex(x => x.name === item.name && x.modder === item.modder) >= 0
+	)
+		cost *= V.settings.underwearCostModifier;
+	else if (item.type.includes("school")) cost *= V.settings.schoolClothingCostModifier;
+
+	// the lewder item is, the more affected by the multiplier it is
+	const lewdness = Math.clamp((item.reveal - 400) / 500, 0, 1);
+	const lewdCoef = 1 + (V.settings.lewdClothingCostModifier - 1) * lewdness;
+	cost *= lewdCoef;
+
+	return Math.round(cost);
+}
+window.tailorClothingCost = tailorClothingCost;
+
+// makes all existing specified upper/lower clothes to be over_upper/over_lower
+// it assumes that over_xxx equipment slots are empty, otherwise it will overwrite anything in those slots
+// use this function in version update widget when over clothes will be ready
+function convertNormalToOver(names) {
+	const clothesToConvert = names ?? [
+		"bathrobe",
+		"bathrobe bottom",
+		"peacoat",
+		"shadbelly coat",
+		"puffer jacket",
+		"leather jacket",
+		"punk leather jacket",
+		"vampire jacket",
+	];
+
+	// function that converts a clothing item
+	const convertItem = item => {
+		console.log("converting " + item.name);
+
+		if (item.outfitPrimary) {
+			Object.keys(item.outfitPrimary).forEach(slot => {
+				if (slot === "upper" || slot === "lower") {
+					item.outfitPrimary["over_" + slot] = item.outfitPrimary[slot];
+					delete item.outfitPrimary[slot];
+				}
+			});
+		} else if (item.outfitSecondary) {
+			for (let i = 0; i < item.outfitSecondary.length; i += 2) {
+				if (item.outfitSecondary[i] === "upper" || item.outfitSecondary[i] === "lower") {
+					item.outfitSecondary[i] = "over_" + item.outfitSecondary[i];
+				}
+			}
+		}
+		if (item.set === "upper" || item.set === "lower") item.set = "over_" + item.set;
+
+		return item;
+	};
+
+	for (const index in clothesToConvert) {
+		const itemName = clothesToConvert[index];
+
+		// convert clothing sets
+		V.outfit.forEach(outf => {
+			if (outf.upper === itemName) {
+				outf.upper = "naked";
+				outf.over_upper = itemName;
+				if (outf.colors) {
+					outf.colors.over_upper = outf.colors.upper;
+					outf.colors.upper = [0, 0];
+				}
+			}
+			if (outf.lower === itemName) {
+				outf.lower = "naked";
+				outf.over_lower = itemName;
+				if (outf.colors) {
+					outf.colors.over_lower = outf.colors.lower;
+					outf.colors.lower = [0, 0];
+				}
+			}
+		});
+
+		// every wardrobe, because pruneClothes deletes whatever is left in the old slot
+		for (const wardrobe of [V.wardrobe, ...Object.values(V.wardrobes || {})]) {
+			if (!wardrobe || typeof wardrobe !== "object") continue;
+			for (const slot of ["upper", "lower"]) {
+				if (!Array.isArray(wardrobe[slot])) continue;
+				if (!Array.isArray(wardrobe["over_" + slot])) wardrobe["over_" + slot] = [];
+				for (let i = wardrobe[slot].length - 1; i >= 0; i--) {
+					if (wardrobe[slot][i]?.name !== itemName) continue;
+					wardrobe["over_" + slot].push(convertItem(wardrobe[slot][i]));
+					wardrobe[slot].splice(i, 1);
+				}
+			}
+		}
+
+		// convert worn clothes
+		if (V.worn.upper.name === itemName) {
+			V.worn.over_upper = convertItem(V.worn.upper);
+			V.worn.upper = clone(setup.clothes.upper[0]);
+		}
+		if (V.worn.lower.name === itemName) {
+			V.worn.over_lower = convertItem(V.worn.lower);
+			V.worn.lower = clone(setup.clothes.lower[0]);
+		}
+
+		// convert carried clothes
+		if (V.carried.upper.name === itemName) {
+			V.carried.over_upper = convertItem(V.carried.upper);
+			V.carried.upper = clone(setup.clothes.upper[0]);
+		}
+		if (V.carried.lower.name === itemName) {
+			V.carried.over_lower = convertItem(V.carried.lower);
+			V.carried.lower = clone(setup.clothes.lower[0]);
+		}
+
+		// convert stripped stored clothes
+		for (let i = V.store.upper.length - 1; i >= 0; i--) {
+			if (V.store.upper[i].name === itemName) {
+				V.store.over_upper.push(convertItem(V.store.upper[i]));
+				V.store.upper.splice(i, 1);
+			}
+		}
+		for (let i = V.store.lower.length - 1; i >= 0; i--) {
+			if (V.store.lower[i].name === itemName) {
+				V.store.over_lower.push(convertItem(V.store.lower[i]));
+				V.store.lower.splice(i, 1);
+			}
+		}
+
+		// convert try on stored, which only exists while the player is trying clothes on in a shop
+		if (V.tryOn?.ownedStored) {
+			if (V.tryOn.ownedStored.upper.name === itemName) {
+				V.tryOn.ownedStored.over_upper = convertItem(V.tryOn.ownedStored.upper);
+				V.tryOn.ownedStored.upper = clone(setup.clothes.upper[0]);
+			}
+			if (V.tryOn.ownedStored.lower.name === itemName) {
+				V.tryOn.ownedStored.over_lower = convertItem(V.tryOn.ownedStored.lower);
+				V.tryOn.ownedStored.lower = clone(setup.clothes.lower[0]);
+			}
+		}
+
+		// convert what Bailey confiscated, which records the slot each item came from
+		if (V.bailey_confiscation && Array.isArray(V.bailey_confiscation.items)) {
+			for (const held of V.bailey_confiscation.items) {
+				if (held.source !== "clothing" || held.item?.name !== itemName) continue;
+				if (held.slot !== "upper" && held.slot !== "lower") continue;
+				held.slot = "over_" + held.slot;
+				convertItem(held.item);
+			}
+		}
+
+		// convert try on equipped
+		if (V.tryOn?.tryingOn) {
+			if (V.tryOn.tryingOn.upper && V.tryOn.tryingOn.upper.name === itemName) {
+				V.tryOn.tryingOn.over_upper = convertItem(V.tryOn.tryingOn.upper);
+				V.tryOn.tryingOn.upper = null;
+			}
+			if (V.tryOn.tryingOn.lower && V.tryOn.tryingOn.lower.name === itemName) {
+				V.tryOn.tryingOn.over_lower = convertItem(V.tryOn.tryingOn.lower);
+				V.tryOn.tryingOn.lower = null;
+			}
+		}
+	}
+}
+window.convertNormalToOver = convertNormalToOver;
+
+/* Re-files garments that changed slot before pruneClothes() deletes them from the old slot. */
+function moveClothingSlot(fromSlot, toSlot, isMatch) {
+	const refs = setup.clothes[toSlot].slice(1);
+	const variables = new Set(refs.map(item => item.variable));
+	const names = new Set(refs.map(item => item.name));
+	const matches = item => !!item && (variables.has(item.variable) || names.has(item.name) || (isMatch ? isMatch(item) : false));
+	const reslot = item => {
+		item.slot = toSlot;
+		if (item.set === fromSlot) item.set = toSlot;
+		return item;
+	};
+
+	for (const holder of [V.worn, V.carried]) {
+		/* Another init may have reserved the key with an empty object, which prunes as invalid. */
+		if (holder && !holder[toSlot]?.variable) holder[toSlot] = clone(setup.clothes[toSlot][0]);
+	}
+	if (V.store && !Array.isArray(V.store[toSlot])) V.store[toSlot] = [];
+
+	const holders = [V.worn, V.carried, V.tryOn && V.tryOn.ownedStored, V.tryOn && V.tryOn.tryingOn];
+	for (const holder of holders) {
+		if (!holder || !matches(holder[fromSlot])) continue;
+		holder[toSlot] = reslot(holder[fromSlot]);
+		holder[fromSlot] = holder === V.tryOn?.tryingOn ? null : clone(setup.clothes[fromSlot][0]);
+	}
+
+	/* V.store is what the player stripped off and left somewhere. */
+	const lists = [V.wardrobe, ...Object.values(V.wardrobes || {}), V.store].filter(w => w && typeof w === "object" && Array.isArray(w[fromSlot]));
+	for (const list of lists) {
+		if (!Array.isArray(list[toSlot])) list[toSlot] = [];
+		for (let i = list[fromSlot].length - 1; i >= 0; i--) {
+			if (!matches(list[fromSlot][i])) continue;
+			list[toSlot].push(reslot(list[fromSlot][i]));
+			list[fromSlot].splice(i, 1);
+		}
+	}
+
+	/* Saved outfits name their garments, so the name moves to the new field. */
+	for (const outfit of V.outfit || []) {
+		if (!names.has(outfit[fromSlot])) {
+			if (outfit[toSlot] === undefined) {
+				outfit[toSlot] = "naked";
+				if (outfit.colors) outfit.colors[toSlot] = [0, 0];
+			}
+			continue;
+		}
+		outfit[toSlot] = outfit[fromSlot];
+		outfit[fromSlot] = "naked";
+		if (outfit.colors) {
+			outfit.colors[toSlot] = outfit.colors[fromSlot];
+			outfit.colors[fromSlot] = [0, 0];
+		}
+	}
+
+	/* Bailey's confiscated pile records the slot it took each item from. */
+	if (V.bailey_confiscation && Array.isArray(V.bailey_confiscation.items)) {
+		for (const held of V.bailey_confiscation.items) {
+			if (held.source === "clothing" && held.slot === fromSlot && matches(held.item)) {
+				held.slot = toSlot;
+				reslot(held.item);
+			}
+		}
+	}
+}
+window.moveClothingSlot = moveClothingSlot;
+
+/* Bags moved out of the handheld slot so they can be carried alongside an umbrella. */
+function convertHandheldToBag() {
+	moveClothingSlot("handheld", "bag", item => Array.isArray(item.type) && item.type.includes("bookbag"));
+}
+window.convertHandheldToBag = convertHandheldToBag;
+
+/* Scarves and other draped neckwear moved off the neck so they can be worn with a collar. */
+function convertNeckToScarf() {
+	moveClothingSlot("neck", "scarf");
+}
+window.convertNeckToScarf = convertNeckToScarf;
+
+function getVisibleClothesList() {
+	const visibleClothes = [
+		V.worn.over_upper,
+		V.worn.over_lower,
+		V.worn.over_head,
+		V.worn.face,
+		V.worn.neck,
+		V.worn.scarf,
+		V.worn.hands,
+		V.worn.handheld,
+		V.worn.bag,
+		V.worn.earrings,
+		V.worn.rings,
+		V.worn.legs,
+		V.worn.feet,
+	];
+	// over_head doesn't have 'exposed' parameter, but maybe it will some day (in which case remove check for 'naked')
+	if (V.worn.over_head.name === "naked" || V.worn.over_head.exposed >= 2) visibleClothes.push(V.worn.head);
+	if (V.worn.over_upper.exposed >= 2 || V.overupperwetstage >= 3) visibleClothes.push(V.worn.upper);
+	if (V.worn.over_lower.exposed >= 2 || V.overlowerwetstage >= 3) visibleClothes.push(V.worn.lower);
+	if (V.worn.upper.exposed >= 2 || V.upperwetstage >= 3) visibleClothes.push(V.worn.under_upper);
+	if (V.worn.lower.exposed >= 2 || V.lowerwetstage >= 3) visibleClothes.push(V.worn.under_lower);
+	if (V.worn.under_lower.exposed >= 1 || V.underlowerwetstage >= 3) visibleClothes.push(V.worn.genitals);
+	/* A save from before a slot existed has nothing in it until the load-time conversion runs. */
+	return visibleClothes.filter(Boolean);
+}
+window.getVisibleClothesList = getVisibleClothesList;
+
+/* Visible items with the "prey" trait. Reads the catalogue, not the worn copy, so items bought before the trait existed count too. */
+function preyClothesCount() {
+	if (V.preyTrait === 0) return 0;
+	return getVisibleClothesList().filter(item => setup.clothes[item.slot]?.find(c => c.name === item.name)?.type.includes("prey")).length;
+}
+window.preyClothesCount = preyClothesCount;
+
+// True when the genitals a bystander can actually see don't match the player's outward gender presentation (e.g. a penis while presenting female). Used to bias forced-chastity encounters toward "wrong body, so we're locking it away" framing.
+function chastityGenderMismatch() {
+	const visibleSex = V.player.penisExist && V.player.vaginaExist ? "h" : V.player.vaginaExist ? "f" : V.player.penisExist ? "m" : null;
+	if (!visibleSex || visibleSex === "h") return false;
+	return visibleSex !== V.player.gender_appearance;
+}
+window.chastityGenderMismatch = chastityGenderMismatch;
+
+// How many acts of penance it takes before Jordan personally decides a given failing no longer disqualifies the wearer
+const TEMPLE_CHASTITY_TRUST_GOAL = 3;
+
+function templeChastityTrusted(reason) {
+	return (V.templeChastityTrust?.[reason] || 0) >= TEMPLE_CHASTITY_TRUST_GOAL;
+}
+window.templeChastityTrusted = templeChastityTrusted;
+
+function templeChastityGainTrust(reason) {
+	V.templeChastityTrust ??= { stats: 0, reputation: 0, crime: 0 };
+	V.templeChastityTrust[reason] = Math.min(TEMPLE_CHASTITY_TRUST_GOAL, (V.templeChastityTrust[reason] || 0) + 1);
+}
+window.templeChastityGainTrust = templeChastityGainTrust;
+
+// How well known the wearer's lewd behaviour is around town. Jordan judges public reputation, not private preferences.
+// The highest fame score counts double, so one notorious habit can matter as much as several smaller ones.
+function templeChastityLewdFame() {
+	// Rape fame is ignored because the temple doesn't blame the wearer for what happened to them.
+	const lewd = ["exhibitionism", "prostitution", "bestiality", "sex", "pimp"];
+	return fameSum(...lewd) + fameMax(...lewd);
+}
+window.templeChastityLewdFame = templeChastityLewdFame;
+
+// Why the temple refuses to remove the worn chastity device, ignoring X-Change disguises:
+// "origin" = not from the temple, "stats" = soul requirements not met, "crime" = wanted by police, "reputation" = too lewd.
+// Returns null if removal is allowed. These restrictions only apply to Jordan's monks and priests, not visitors.
+function templeChastityUnderlyingRefusalReason() {
+	if (!playerChastity()) return null;
+	if (V.temple_rank !== "monk" && V.temple_rank !== "priest") return null;
+
+	const origin = V.worn.genitals.origin;
+	if (origin && origin !== "temple") return "origin";
+
+	if (V.purity < 400 && !templeChastityTrusted("stats")) return "stats";
+
+	// Only active crimes. Cleared crimes have no warrant, and 1000 evidence is enough for an arrest.
+	if (crimeSumCurrent() >= 1000 && !templeChastityTrusted("crime")) return "crime";
+	if (templeChastityLewdFame() >= 3000 && !templeChastityTrusted("reputation")) return "reputation";
+
+	return null;
+}
+window.templeChastityUnderlyingRefusalReason = templeChastityUnderlyingRefusalReason;
+
+// Same as templeChastityUnderlyingRefusalReason, but an X-Changed face doesn't register as that monk/priest unless fame's made the new look just as recognisable.
+function templeChastityRefusalReason() {
+	if (!V.statFreeze && playerHasXChangeBody() && V.xchange_fame < 700) return null;
+	return templeChastityUnderlyingRefusalReason();
+}
+window.templeChastityRefusalReason = templeChastityRefusalReason;
+
+// Old saves may already own adult-shop chastity from before keys were tracked on the item.
+// Cover every place owned clothing can live while leaving cursed, NPC-fitted devices under their original holder's control.
+function backfillChastityKeys() {
+	const items = [];
+	if (V.worn?.genitals) items.push(V.worn.genitals);
+	if (V.carried?.genitals) items.push(V.carried.genitals);
+	if (Array.isArray(V.wardrobe?.genitals)) items.push(...V.wardrobe.genitals);
+	if (Array.isArray(V.store?.genitals)) items.push(...V.store.genitals);
+	if (V.tryOn?.ownedStored?.genitals) items.push(V.tryOn.ownedStored.genitals);
+	if (V.tryOn?.tryingOn?.genitals) items.push(V.tryOn.tryingOn.genitals);
+	if (V.wardrobes && typeof V.wardrobes === "object") {
+		for (const wardrobe of Object.values(V.wardrobes)) {
+			if (Array.isArray(wardrobe?.genitals)) items.push(...wardrobe.genitals);
+		}
+	}
+
+	for (const item of new Set(items)) {
+		if (!Array.isArray(item?.type) || !item.type.includes("chastity")) continue;
+		// An earlier version of this backfill filed the temple's keyless devices as though the temple were holding the player's key. Correct those in place.
+		if (item.chastityKey === "holder" && item.chastityKeyholder === "temple") {
+			item.chastityKey = "vow";
+			delete item.chastityKeyholder;
+			continue;
+		}
+		if (item.chastityKey !== undefined) continue;
+		if (item.cursed !== 1) {
+			item.chastityKey = "player";
+			delete item.chastityKeyholder;
+		} else if (item.origin === "temple") {
+			// The temple's devices have no key at all, but the player asked to be fitted with one. Nobody is holding them hostage.
+			item.chastityKey = "vow";
+			delete item.chastityKeyholder;
+		} else {
+			item.chastityKey = item.origin ? "holder" : "lost";
+			if (item.origin) item.chastityKeyholder = item.origin;
+		}
+	}
+}
+window.backfillChastityKeys = backfillChastityKeys;
+
+function playerChastity(slots, inAllSlots = false) {
+	let chastity = false;
+	const chastityCovered = [];
+	if (!slots && V.worn.genitals.type.includes("chastity")) {
+		// Used for general cases of chastity
+		chastity = true;
+	}
+	if (typeof slots === "string" || slots instanceof String || Array.isArray(slots)) {
+		// Genital Strings
+		if (slots.includes("penis") && V.player.penisExist && V.worn.genitals.type.includesAny("cage", "hidden")) {
+			chastity = true;
+			if (!chastityCovered.includes("penis")) chastityCovered.push("penis");
+		}
+		if (slots.includes("vagina") && V.player.vaginaExist && V.worn.genitals.type.includes("hidden")) {
+			chastity = true;
+			if (!chastityCovered.includes("vagina")) chastityCovered.push("vagina");
+		}
+		if (slots.includes("anus") && V.worn.genitals.type.includes("chastity") && V.worn.genitals.anal_shield === 1) {
+			chastity = true;
+			if (!chastityCovered.includes("anus")) chastityCovered.push("anus");
+		}
+
+		// Type Strings
+		if (slots.includes("hidden") && V.worn.genitals.type.includes("hidden")) {
+			chastity = true;
+			if (!chastityCovered.includes("penis")) chastityCovered.push("penis");
+			if (!chastityCovered.includes("vagina")) chastityCovered.push("vagina");
+		}
+		if (slots.includes("cage") && V.worn.genitals.type.includes("cage")) {
+			chastity = true;
+			if (!chastityCovered.includes("penis")) chastityCovered.push("penis");
+		}
+	}
+	if (inAllSlots && Array.isArray(slots) && ["penis", "vagina", "anus"].includes(slots)) {
+		const slotsToInclude = slots.filter(e => ["penis", "vagina", "anus"].includes(e));
+		if (slotsToInclude.count < chastityCovered.length) {
+			return false;
+		}
+	}
+	return chastity;
+}
+window.playerChastity = playerChastity;
+
+/**
+ * True when the player is locked up by their own choice, rather than against their will.
+ * Covers both cases: a device they hold the key to, and a keyless device they asked to be fitted with, like the temple's.
+ * Devices stamped before chastityKey existed fall back to the same rule backfillChastityKeys() uses,
+ * so a device behaves identically before and after the save is reloaded.
+ */
+function chastityConsensual() {
+	const item = V.worn?.genitals;
+	if (!item) return false;
+	if (item.chastityKey === undefined) return item.cursed !== 1 || item.origin === "temple";
+	return item.chastityKey === "player" || item.chastityKey === "vow";
+}
+window.chastityConsensual = chastityConsensual;
+
+// Chastity only causes passive frustration if the wearer desires what it prevents.
+// Pure, angelic, or innocent characters are unaffected. Toys, parasites, and other stimulation still work normally.
+function chastityFrustrationImmune() {
+	// Innocence means not knowing there's anything to resist, so there's nothing to miss or crave.
+	if (V.innocencestate === 1) return true;
+	if (V.purity >= 900) return true;
+	return typeof Transformations !== "undefined" && Transformations.effectiveLevel("angel") >= 1;
+}
+window.chastityFrustrationImmune = chastityFrustrationImmune;
+
+/**
+ * True for a garment the player is only wearing on loan (Niki's kaiju costume, and anything else marked the same way).
+ * Borrowed garments must never reach the wardrobe or the clothing-loss rebuy:
+ * the player doesn't own them, so filing one away or buying a replacement hands them a costume they never earned.
+ *
+ * @param {object} garment The item of clothing to test.
+ * @returns {boolean}
+ */
+function clothingIsBorrowed(garment) {
+	return !!garment?.borrowed;
+}
+window.clothingIsBorrowed = clothingIsBorrowed;
+
+/**
+ * @description Takes in a passed item of clothing and returns its corresponding pair if it's an outfit part.
+ * @param {object} garment The item of clothing that we want the second half of.
+ * @param {string} layer The layer the garment in being worn on.
+ * @returns {object} If found, it will return the item of clothing that is the other half. If not, it returns null.
+ */
+function findOutfitPair(garment, layer) {
+	const findLayer = layer.includes("upper") ? layer.replace("upper", "lower") : layer.replace("lower", "upper");
+	let pair = null;
+
+	// Makes sure that the clothing slot is not naked and contains the outfitPrimary or outfitSecondary value.
+	if (garment.name !== "naked" && (garment.outfitPrimary || garment.outfitSecondary)) {
+		// Resolve the item's true position in setup.clothes rather than trusting the stored .index,
+		// which can drift out of range on updated/modded saves and crash the lookups below.
+		const garmentIndex = clothesIndex(layer, garment);
+		const tempSet = setup.clothes[layer][garmentIndex].set;
+		let costMod;
+		if (layer.includes("under")) costMod = V.settings.underwearCostModifier;
+		else costMod = V.settings.clothingCostModifier;
+
+		if (layer.includes("upper")) {
+			// We are looking for lower items in this section
+			// Does a quick check of the closest match indexes
+			if (garmentIndex + 7 < setup.clothes[findLayer].length) {
+				for (let i = 0; i <= 7; i++) {
+					if (tempSet === setup.clothes[findLayer][garmentIndex + i].set) {
+						pair = { ...setup.clothes[findLayer][garmentIndex + i] };
+						break;
+					}
+					if (i >= 3) i++;
+				}
+			}
+			// Searches the entire setup.clothing list for corresponding pair in ascending order as upper items are typically lower indexed than their lower counterpart.
+			if (!pair) {
+				for (let i = 1; i < setup.clothes[findLayer].length; i++) {
+					if (tempSet === setup.clothes[findLayer][i].set) {
+						pair = { ...setup.clothes[findLayer][i] };
+						break;
+					}
+				}
+			}
+
+			if (pair) pair.cost = setup.clothes[layer][garmentIndex].cost * costMod;
+		} else if (layer.includes("lower")) {
+			// We are looking for upper items in this section
+			// Does a quick check of the closest match indexes
+			if (garmentIndex - 7 < setup.clothes[findLayer].length) {
+				for (let i = 0; i <= 7; i++) {
+					if (garmentIndex - i < 0) break;
+					if (tempSet === setup.clothes[findLayer][garmentIndex - i]?.set) {
+						pair = { ...setup.clothes[findLayer][garmentIndex - i] };
+						break;
+					}
+					if (i >= 3) i++;
+				}
+			}
+			// Searches the entire setup.clothing list for corresponding pair in descending order as upper items are typically lower indexed than their lower counterpart.
+			if (!pair) {
+				for (let i = setup.clothes[findLayer].length - 1; i >= 0; i--) {
+					if (tempSet === setup.clothes[findLayer][i].set) {
+						pair = { ...setup.clothes[findLayer][i] };
+						break;
+					}
+				}
+			}
+
+			if (pair) pair.cost *= costMod;
+		}
+
+		if (!pair)
+			console.log(
+				`No pair was found for ${garment.name} using the set name of ${tempSet} from the setup.clothes value. The passed item has set name ${garment.set}`
+			);
+	}
+
+	return pair;
+}
+window.findOutfitPair = findOutfitPair;
+
+/**
+ * @description Looks over the clothing the player is wearing and returns any outfits halves that are missing. If no halves are missing, it returns an empty array.
+ * @returns {object} An object that contains any missing halves of an outfit the player is wearing. Each outfit will have the values: wornHalf, brokenHalf, outfitSet, outfitName, outfitCost, and the index of the broken item
+ */
+function getOutfitPair() {
+	const garmentLayers = ["upper", "under_upper", "over_upper", "lower", "under_lower", "over_lower"];
+	const foundPairs = [];
+
+	for (let i = 0; i < 6; i++) {
+		const item = V.worn[garmentLayers[i]];
+		if (item.name === "naked") continue;
+		const brokenHalf = i < 3 ? garmentLayers[i].replace("upper", "lower") : garmentLayers[i].replace("lower", "upper");
+		if (item.set === V.worn[brokenHalf].set) continue;
+		const check = findOutfitPair(item, garmentLayers[i]);
+		if (check) {
+			check.wornHalf = garmentLayers[i];
+			check.brokenHalf = brokenHalf;
+			check.colour = item.colour;
+			check.colourCustom = item.colourCustom;
+			check.colour_sidebar = item.colour_sidebar;
+			check.colour_combat = item.colour_combat;
+			check.accessory = item.accessory;
+			check.accessory_colour = item.accessory_colour;
+			check.accessory_colourCustom = item.accessory_colourCustom;
+			check.pattern = item.pattern;
+			check.pattern_colour = item.pattern_colour;
+			check.location = item.location;
+			if (item.inherited_attributes) {
+				Object.entries(item.inherited_attributes).forEach(([key, value]) => (check[key] = value));
+			}
+			foundPairs.push(check);
+		}
+	}
+
+	return foundPairs;
+}
+window.getOutfitPair = getOutfitPair;
+
+/**
+ * @description Takes in an article of clothing that has been modified to contain the values brokenHalf and wornHalf that have the V.worn location of the outfit part that is broken or worn.
+ * @param {object} brokenOutfit The clothing object. Currently it takes in a slightly modified setup.clothes values.
+ */
+function makeMissingOutfit(brokenOutfit) {
+	const brokenHalf = brokenOutfit.brokenHalf;
+
+	// Resets the remaining part. For lower items, make sure to change the set
+	if (brokenOutfit.wornHalf.includes("upper")) {
+		V.worn[brokenOutfit.wornHalf].outfitPrimary[brokenHalf] = brokenOutfit.name;
+		brokenOutfit.cost = 0;
+	} else {
+		V.worn[brokenOutfit.wornHalf].outfitSecondary[1] = brokenOutfit.name;
+	}
+
+	// Resets the one_piece value and set values
+	V.worn[brokenOutfit.wornHalf].one_piece = 1;
+	V.worn[brokenOutfit.wornHalf].set = brokenOutfit.set;
+	delete V.worn[brokenOutfit.wornHalf].inherited_attributes;
+
+	// Checks for any item worn in that place then puts it in the wardrobe
+	if (V.worn[brokenHalf].name !== "naked") {
+		$.wiki('<<generalUndress "wardrobe" ' + brokenHalf + ">>");
+	}
+
+	// Remove temporary values
+	delete brokenOutfit.brokenHalf;
+	delete brokenOutfit.wornHalf;
+
+	// Equips the new piece into the now empty slot
+	V.worn[brokenHalf] = brokenOutfit;
+}
+window.makeMissingOutfit = makeMissingOutfit;
+
+/* Moved out of canvasmodel-img.twee */
+function getClothingOptionsItem(slot, item, stage) {
+	const itemOptions = {};
+
+	const index = clothesIndex(slot, item);
+	itemOptions[slot] = {
+		index,
+		setup: setup.clothes[slot][index],
+		integrity: integrityKeyword(item, slot),
+		colour: item.colour,
+		alt: item.altposition,
+		pattern: item.pattern,
+		pattern_layer: item.pattern_layer,
+		type: item.type,
+	};
+	itemOptions[slot].alpha = { 1: 0.9, 2: 0.7, 3: 0.5 }[stage] ?? 1.0;
+	itemOptions[slot].accColour = item.accessory_colour;
+	return itemOptions;
+}
+window.getClothingOptionsItem = getClothingOptionsItem;
+
+/* Moved out of canvasmodel-img.twee */
+function getClothingOptions() {
+	const modelOptions = { worn: {}, filters: {} };
+	const slots = [
+		["upper", V.upperwetstage],
+		["over_upper", V.overupperwetstage],
+		["genitals"],
+		["lower", V.lowerwetstage],
+		["over_lower", V.overlowerwetstage],
+		["under_lower", V.underlowerwetstage],
+		["under_upper", V.underupperwetstage],
+		["hands"],
+		["handheld"],
+		["bag"],
+		["earrings"],
+		["rings"],
+		["head"],
+		["over_head"],
+		["face"],
+		["neck"],
+		["scarf"],
+		["legs"],
+		["feet"],
+	];
+
+	for (const slotobj of slots) {
+		const item = V.worn[slotobj[0]];
+		modelOptions.worn = { ...modelOptions.worn, ...getClothingOptionsItem(slotobj[0], item, slotobj[1]) };
+
+		if (item.accessory_layer_under) {
+			modelOptions.acc_layer_under = item.accessory_layer_under;
+		}
+		if (item.colour === "custom") {
+			/* TODO @aimozg We recalculate custom colour RGB here; in future versions, we should store custom colours in canvasfilter-friendly way */
+			modelOptions.filters["worn_" + slotobj[0] + "_custom"] = item.colourCanvasFilter || getCustomClothesColourCanvasFilter(item.colourCustom);
+		}
+		if (item.accessory_colour === "custom") {
+			modelOptions.filters["worn_" + slotobj[0] + "_acc_custom"] =
+				item.accessory_colourCanvasFilter || getCustomClothesColourCanvasFilter(item.accessory_colourCustom);
+		}
+	}
+	return modelOptions;
+}
+window.getClothingOptions = getClothingOptions;
+
+function exportOutfit(outfitIndex) {
+	const outfit = { ...V.outfit[outfitIndex] };
+
+	for (const property in outfit) {
+		if (["index", "location", "hairStyle"].includes(property) || outfit[property] === "naked") {
+			Reflect.deleteProperty(outfit, property);
+		}
+	}
+
+	if (outfit.colors) {
+		for (const property in outfit.colors) {
+			if (outfit.colors[property][0] === 0) {
+				Reflect.deleteProperty(outfit.colors, property);
+			}
+		}
+	}
+
+	navigator.clipboard.writeText(JSON.stringify(outfit));
+
+	document.querySelector("#outfitItemExport-" + outfitIndex + " > a").text = "Copied!";
+	window.setTimeout(() => {
+		const element = document.querySelector("#outfitItemExport-" + outfitIndex + " > a");
+		if (element) element.text = "Export";
+	}, 2000);
+}
+
+window.exportOutfit = exportOutfit;
+
+function importOutfit() {
+	try {
+		const outfitText = document.querySelector("#outfitEditorImportText").value;
+		const outfit = JSON.parse(outfitText);
+		document.querySelector("#outfitEditorImportText").value = "";
+
+		for (const slot of setup.clothingLayer.all) {
+			if (!(slot in outfit)) {
+				outfit[slot] = "naked";
+			}
+
+			if (outfit.colors && !(slot in outfit.colors)) {
+				outfit.colors[slot] = [0, 0];
+			}
+		}
+
+		outfit.index = V.outfit.length;
+		outfit.location = undefined;
+		V.outfit.push(outfit);
+	} catch (error) {
+		alert(error + "\n\nSubmitted string is likely malformed");
+	}
+}
+
+window.importOutfit = importOutfit;
+
+function wearingFullOutfitOfType(type) {
+	return (V.worn.upper.type.includes(type) && V.worn.lower.type.includes(type)) || V.worn.lower.type.includesAll(type, "overalls");
+}
+
+window.wearingFullOutfitOfType = wearingFullOutfitOfType;
+
+function wearingSchoolOutfit() {
+	return wearingFullOutfitOfType("school");
+}
+
+window.wearingSchoolOutfit = wearingSchoolOutfit;

@@ -1,0 +1,145 @@
+:: WLI widgets [widget]
+<<widget "wliCheckCriteria">>
+	<<if $wraith.state isnot "" and !$wli.criteria>>
+		<<if ($wraithPrison and $wraithPrison.vision) or ($wraith.offspring is "alive") or (W.countPaleBabies() gte 1)>>
+			<<set $wli.criteria to true>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "wliRngBoost">>
+	<<set _wliRngBonus to 0>>
+
+	<<if _args[0]>><<set _wliRngBonus += _args[0]>><</if>>
+
+	<<set _wliRngBonus += W.countSpecialTattoos()>>
+<</widget>>
+
+<<widget "wliSettings">>
+	<div class="solidBorderContainer settings-container">
+		<div class="settingsGrid">
+			<div class="settingsHeader">Wraith Mods</div>
+			
+			<div class="settingsToggleItem">
+				<span class="gold">Supernatural bodywriting:</span><br>
+
+				<<numberslider "$wli.cfg.bodywritinglvl" $wli.cfg.bodywritinglvl 0 2 1 {
+					value: v => {
+						switch(v) {
+							case 0:
+								return "Disabled.";
+							case 1:
+								return "The Wraith may <span class='red inline-colour'>tattoo</span> you.";
+							case 2:
+								return "The Wraith may <span class='tentacle inline-colour'>magically brand</span> you.<br><span class='red'>Note: magical brands are currently permanent</span>";
+						}
+					},
+					onInputChange: (value) => {
+						value > 0 ?
+							$("#checkbox-wlicfgtattoobypass, #checkbox-wlicfgtattoodream").prop('disabled', false)
+							: $("#checkbox-wlicfgtattoobypass, #checkbox-wlicfgtattoodream").prop('disabled', true)
+					}
+				}>>
+				<label>
+					<<checkbox "$wli.cfg.tattoodream" false true autocheck>> Even during nightmares
+				</label><mouse class="tooltip linkBlue">(?)<span>If checked, there's a chance of being tattooed by the Wraith when you dream of 'being hunted by something pale and terrible'.</span></mouse><br>
+				<label>
+					<<checkbox "$wli.cfg.tattoobypass" false true autocheck>> Can overwrite existing tattoos
+				</label><mouse class="tooltip linkBlue">(?)<span>If checked, once your body is fully tattooed, the Wraith will be able to erase one of your existing tattoos to mark you.</span></mouse><br>
+				<<script>>
+				setTimeout(function () {
+					const cfg = State.variables.wli && State.variables.wli.cfg;
+					$("#checkbox-wlicfgtattoobypass, #checkbox-wlicfgtattoodream").prop("disabled", !(cfg && cfg.bodywritinglvl > 0));
+				}, 0);
+				<</script>>
+			</div>
+			
+			<div class="settingsToggleItem">
+				<span class="gold">Additions</span><br>
+
+				<label>
+					<<checkbox "$wli.cfg.nosocialrng" false true autocheck>> Disable social tab RNG
+				</label><mouse class="tooltip linkBlue">(?)<span>Makes the Wraith always show up on your social tab after being introduced to it.</span></mouse><br>
+				<label>
+					<<checkbox "$wli.cfg.notentacles" false true autocheck>> Disable Wraith tentacles
+				</label><mouse class="tooltip linkBlue">(?)<span>Stops the Wraith using tentacles even when tentacles are enabled. Its tentacle forms become extra arms instead. Other tentacle creatures are unaffected.</span></mouse>
+			</div>
+		</div>
+	</div>
+<</widget>>
+
+/* DoLX custom event */
+<<widget "wraithBadEndEscape">>
+	/* $wli already exists: W.badEndPossessionCheck() creates it when it arms pendingEscapeBadEnd. */
+	<<set $wli.lastEscapeBadEnd to $wli.pendingEscapeBadEnd>>
+	/* Save the current sleep passage so the aftermath returns here instead of the orphanage bedroom.
+	Check that the passage exists before and after to avoid broken return links. */
+	<<set $wli.escapeReturn to (Story.has($passage) ? $passage : "Bed")>>
+	<<unset $wli.pendingEscapeBadEnd>>
+	<<storeon "bed" "return">>
+	<<effects>>
+	<<sleepeffects>>
+	You can still see the red light with your eyes closed. Then something starts affecting your mind.
+	<br><br>
+	<span class="wraith">"Up."</span>
+	<br><br>
+	You are awake, but your body moves without you telling it to. You sit when it wants to sit and stand when it wants to stand.
+	Your legs carry your weight without any effort from you.
+	Everything still hurts. You can feel the pain, but your body keeps moving as if it does not matter.<<gpain>><<pain 4>>
+	<br><br>
+	<<wraithPossess>>
+	<span class="wraith"><<link [[Walk|WLI Wraith Bad End Escape]]>><</link>></span>
+	<br>
+<</widget>>
+
+<<widget "wraithDissociationGrip">>
+	<<if $wraithGrip>>
+		/* Possession overrides trance and dissociation so the Wraith can act in combat. */
+		<<if typeof $wraithGrip is "number">>
+			/* Compatibility with a save made mid-grip by the first implementation. */
+			<<set $wraithGrip -= 1>>
+		<<else>>
+			<<set $dissociation to 0>><<set $trance to 0>>
+			<<set $wraithGrip.turns -= 1>>
+		<</if>>
+		<<if (typeof $wraithGrip is "number" and $wraithGrip lte 0) or (typeof $wraithGrip isnot "number" and $wraithGrip.turns lte 0)>>
+			<<wraithExorcise true true>>
+			The cold feeling fades. You suddenly feel the weight of your body, along with every ache you had been ignoring.
+			<<gtrauma>><<trauma 6>>
+			<<if typeof $wraithGrip isnot "number">>
+				<<set $dissociation to $wraithGrip.dissociation>><<set $trance to $wraithGrip.trance>>
+			<</if>>
+			<<unset $wraithGrip>>
+			<br><br>
+		<</if>>
+	<<elseif W.combatGripCheck()>>
+		<<set $wraithGrip to {
+			turns: random(2, 4),
+			dissociation: $dissociation,
+			trance: $trance
+		}>>
+		<<set $dissociation to 0>><<set $trance to 0>>
+		<<wraithPossess>>
+		<<if $wraithGrip.trance gte 1>>
+			You stop controlling your body. Something else takes over.
+		<<else>>
+			You feel far away from your own body, leaving it to move without you.
+		<</if>>
+		<br>
+		A cold feeling runs through your head. Your hands lift again, even though you did not move them yourself.
+		<span class="wraith">"Mine."</span><<gobsession 1>>
+		<br><br>
+	<</if>>
+<</widget>>
+
+<<widget "wliBrandFocus">>
+	<<wliInit>>
+	<<set _brandParts to W.wraithBrandParts()>>
+	<<if _brandParts.includes($wli.brandFocus)>>
+		<<set _brandPart to $wli.brandFocus>>
+	<<else>>
+		<<set _brandPart to _brandParts.random() ?? "chest">>
+		<<set $wli.brandFocus to _brandPart>>
+	<</if>>
+	<<set _brandWeight to W.wraithBrandWeight()>>
+<</widget>>

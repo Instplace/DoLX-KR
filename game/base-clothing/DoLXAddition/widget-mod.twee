@@ -1,0 +1,291 @@
+:: Widgets Outfits Makeup [widget]
+<<widget "outfitMakeupSaveCurrent">>
+	<<set _outfitIndex to _args[0]>>
+	<<if $outfit[_outfitIndex] and $makeup>>
+		<<set $outfit[_outfitIndex].makeup to {
+			lipstick: clone($makeup.lipstick),
+			eyeshadow: clone($makeup.eyeshadow),
+			mascara: clone($makeup.mascara),
+			blusher: clone($makeup.blusher),
+			browscolour: clone($makeup.browscolour),
+			eyelenses: clone($makeup.eyelenses || { left: 0, right: 0 })
+		}>>
+	<</if>>
+<</widget>>
+
+<<widget "outfitMakeupSummary">>
+	<<set _outfitMakeup to _args[0]>>
+	<<if !_outfitMakeup>>
+		Not set
+		<<exit>>
+	<</if>>
+	<<set _parts to []>>
+	<<if _outfitMakeup.lipstick>><<run _parts.push(_outfitMakeup.lipstick + " lipstick")>><</if>>
+	<<if _outfitMakeup.eyeshadow>><<run _parts.push(_outfitMakeup.eyeshadow + " eyeshadow")>><</if>>
+	<<if _outfitMakeup.mascara>><<run _parts.push(_outfitMakeup.mascara + " mascara")>><</if>>
+	<<if _outfitMakeup.blusher>><<run _parts.push(_outfitMakeup.blusher + " blusher")>><</if>>
+	<<if _outfitMakeup.browscolour>><<run _parts.push(_outfitMakeup.browscolour + " brows")>><</if>>
+	<<if _outfitMakeup.eyelenses and (_outfitMakeup.eyelenses.left or _outfitMakeup.eyelenses.right)>>
+		<<if _outfitMakeup.eyelenses.left is _outfitMakeup.eyelenses.right>>
+			<<run _parts.push(_outfitMakeup.eyelenses.left + " contacts")>>
+		<<else>>
+			<<run _parts.push((_outfitMakeup.eyelenses.left || "no") + " L / " + (_outfitMakeup.eyelenses.right || "no") + " R contacts")>>
+		<</if>>
+	<</if>>
+	<<if _parts.length gt 0>>
+		<<= _parts.join(", ")>>
+	<<else>>
+		Remove makeup
+	<</if>>
+<</widget>>
+
+<<widget "outfitApplyMakeup">>
+	<<set _outfitMakeup to _args[0]>>
+	<<if !_outfitMakeup or !$makeup>><<exit>><</if>>
+	<<set _names to ["lipstick", "eyeshadow", "mascara", "blusher", "browscolour"]>>
+	<<for _name range _names>>
+		<<set _target to _outfitMakeup[_name]>>
+		<<if _target is undefined>><<continue>><</if>>
+		<<if _target is 0>>
+			<<set $makeup[_name] to 0>>
+			<<if _name is "mascara">><<set $makeup.mascara_running to 0>><</if>>
+		<<else>>
+			<<set _ownedKey to _name is "browscolour" ? "hairdye" : _name>>
+			<<set _owned to $makeup.owned ? ($makeup.owned[_ownedKey] || []) : []>>
+			<<set _found to _owned.find(o => o.colour is _target and (o.colour is $makeup[_name] or o.count gt 0))>>
+			<<if _found and $makeup[_name] isnot _found.colour>>
+				<<set $makeup[_name] to clone(_found.colour)>>
+				<<set _found.count-->>
+				<<if _name is "mascara">><<set $makeup.mascara_running to 0>><</if>>
+			<</if>>
+		<</if>>
+	<</for>>
+	<<if _outfitMakeup.eyelenses isnot undefined>>
+		<<set _lens to _outfitMakeup.eyelenses>>
+		<<set _ownedL to $makeup.owned ? ($makeup.owned.eyelenses || []) : []>>
+		<<set _ownedC to $makeup.owned ? ($makeup.owned.custom_eyelenses || []) : []>>
+		<<set _okL to _lens.left is 0 or _ownedL.includes(_lens.left) or _ownedC.includes(_lens.left) or $makeup.eyelenses.left is _lens.left>>
+		<<set _okR to _lens.right is 0 or _ownedL.includes(_lens.right) or _ownedC.includes(_lens.right) or $makeup.eyelenses.right is _lens.right>>
+		<<if _okL and _okR>>
+			<<set $makeup.eyelenses to { left: clone(_lens.left), right: clone(_lens.right) }>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "outfitEditorMakeupColour">>
+	<<set _outfitIndex to _args[0]>>
+	<<set _name to _args[1]>>
+	<<set _label to _args[2]>>
+	<<set _ownedKey to _args[3] || _name>>
+	<<set _options to { None: 0 }>>
+	<<set _owned to ($makeup and $makeup.owned and $makeup.owned[_ownedKey]) ? $makeup.owned[_ownedKey] : []>>
+	<<for _item range _owned>>
+		<<set _options[_item.colour + " (×" + _item.count + ")"] to _item.colour>>
+	<</for>>
+	<<set _saved to $outfit[_outfitIndex].makeup[_name]>>
+	<<if _saved and !_owned.some(o => o.colour is _saved)>>
+		<<set _options[_saved + " (saved)"] to _saved>>
+	<</if>>
+	<<set _var to "$outfit[" + _outfitIndex + "].makeup['" + _name + "']">>
+	_label:
+	<<listbox `_var` autoselect>>
+		<<optionsfrom _options>>
+	<</listbox>>
+	<br>
+<</widget>>
+
+<<widget "outfitEditorMakeupLenses">>
+	<<set _outfitIndex to _args[0]>>
+	<<set _options to { None: 0 }>>
+	<<if $makeup and $makeup.owned>>
+		<<for _c range ($makeup.owned.eyelenses || [])>>
+			<<set _options[_c] to _c>>
+		<</for>>
+		<<for _c range ($makeup.owned.custom_eyelenses || [])>>
+			<<set _options[_c + " [C]"] to _c>>
+		<</for>>
+	<</if>>
+	<<set _l to $outfit[_outfitIndex].makeup.eyelenses.left>>
+	<<set _r to $outfit[_outfitIndex].makeup.eyelenses.right>>
+	<<if _l and !Object.values(_options).includes(_l)>><<set _options[_l + " (saved)"] to _l>><</if>>
+	<<if _r and !Object.values(_options).includes(_r)>><<set _options[_r + " (saved)"] to _r>><</if>>
+	<<set _lVar to "$outfit[" + _outfitIndex + "].makeup.eyelenses.left">>
+	<<set _rVar to "$outfit[" + _outfitIndex + "].makeup.eyelenses.right">>
+	Contacts: Left
+	<<listbox `_lVar` autoselect>><<optionsfrom _options>><</listbox>>
+	Right
+	<<listbox `_rVar` autoselect>><<optionsfrom _options>><</listbox>>
+	<br>
+<</widget>>
+
+<<widget "outfitEditorItemMakeup">>
+	<<capture _args[0]>>
+		<<if !$outfit[_args[0]].makeup>>
+			<<outfitMakeupSaveCurrent _args[0]>>
+		<</if>>
+		<<if !$outfit[_args[0]].makeup.eyelenses>>
+			<<set $outfit[_args[0]].makeup.eyelenses to { left: 0, right: 0 }>>
+		<</if>>
+		<<outfitEditorMakeupColour _args[0] "lipstick" "Lipstick">>
+		<<outfitEditorMakeupColour _args[0] "eyeshadow" "Eyeshadow">>
+		<<outfitEditorMakeupColour _args[0] "mascara" "Mascara">>
+		<<outfitEditorMakeupColour _args[0] "blusher" "Blusher">>
+		<<outfitEditorMakeupColour _args[0] "browscolour" "Eyebrow Dye" "hairdye">>
+		<<outfitEditorMakeupLenses _args[0]>>
+		<<link "Use current makeup">>
+			<<outfitMakeupSaveCurrent _args[0]>>
+			<<set _id to "#outfitItem-" + _args[0]>>
+			<<replace `_id`>><<outfitEditorItem _args[0]>><</replace>>
+		<</link>> |
+		<<link "Clear">>
+			<<run delete $outfit[_args[0]].makeup>>
+			<<set _id to "#outfitItem-" + _args[0]>>
+			<<replace `_id`>><<outfitEditorItem _args[0]>><</replace>>
+		<</link>>
+	<</capture>>
+<</widget>>
+
+:: Widgets Wardrobe Favorite [widget]
+<<widget "wardrobeFavoriteLink">>
+	<<set _favoriteSlot to _args[0]>>
+	<<set _favoriteItem to _args[1]>>
+	<<set _favoriteId to _args[2]>>
+	<<capture _favoriteSlot _favoriteItem _favoriteId>>
+		<<if isWardrobeFavorite(_favoriteSlot, _favoriteItem)>>
+			<span class="wardrobe-favorite-on noDivider"><<link "Unfavorite">>
+				<<run toggleWardrobeFavorite(_favoriteSlot, _favoriteItem, _favoriteId)>>
+				<<updatewardrobe "noflash">>
+			<</link>></span>
+		<<else>>
+			<<link "Favorite">>
+				<<run toggleWardrobeFavorite(_favoriteSlot, _favoriteItem)>>
+				<<updatewardrobe "noflash">>
+			<</link>>
+		<</if>>
+	<</capture>>
+<</widget>>
+
+<<widget "wardrobeFavoriteWearLink">>
+	<<set _favoriteLabel to _args[0]>>
+	<<set _favoriteIndex to _args[1]>>
+	<<set _favoriteWear to _args[2]>>
+	<<set _favoriteSource to _args[3]>>
+	<<capture _favoriteLabel _favoriteIndex _favoriteWear _favoriteSource>>
+		<<link _favoriteLabel>>
+			<<set V[_favoriteWear] = _favoriteIndex>>
+			<<set $wardrobeFavoriteRestoreOption to $wardrobeOption>>
+			<<set $wardrobeOption to "wear">>
+			<<if _favoriteSource is "inventory">>
+				<<set $equipFromInventory to _favoriteWear.slice(5)>>
+			<</if>>
+			<<updatewardrobe undefined _favoriteWear>>
+		<</link>>
+	<</capture>>
+<</widget>>
+
+<<widget "wardrobeFavoritesList">>
+	<<set _hasHandbag to $settings.multipleWardrobes and $worn.bag.type.includes("bookbag")>>
+	<<set _favoriteItems to wardrobeFavoriteItems(_selectedWardrobe, _hasHandbag).filter(favorite => wardrobeItemMatches(favorite.item))>>
+	__Favorites__ <i>_favoriteItems.length item<<if _favoriteItems.length isnot 1>>s<</if>></i>
+	<br><br>
+	__Strip__
+	<div class="wardrobe-favorite-strip-actions">
+		<<set _stripLinks to 0>>
+		<<for _slot range setup.clothingLayer.all>>
+			<<if $worn[_slot].name isnot "naked">>
+				<<set _stripLinks++>>
+				<<capture _slot>>
+					<div class="wardrobe-action no-numberify"><<wearlink_norefresh `wardrobeSlotName(_slot)` "strip" `"wear_" + _slot`>></div>
+				<</capture>>
+			<</if>>
+		<</for>>
+		<<if _stripLinks is 0>>
+			nothing equipped
+		<</if>>
+	</div>
+	<br>
+
+	<<if _favoriteItems.length is 0>>
+		<<if wardrobeFilterActive()>>Nothing here matches your search or filters.<<else>>No favorite clothing has been marked in this wardrobe.<</if>>
+	<<else>>
+		<<wardrobePageControls "favorites" _favoriteItems.length>>
+		<div class="wardrobe-grid">
+		<<for _favorite range _favoriteItems.slice(_wardrobePageStart, _wardrobePageStart + wardrobePageSize)>>
+			<<set _wardrobe_list to _favorite.slot>>
+			<<set _item to _favorite.item>>
+			<<set _i to _favorite.index>>
+			<<set _wear to "wear_"+_wardrobe_list>>
+			<<set _itemData to setup.clothes[_wardrobe_list][clothesIndex(_wardrobe_list,_item)]>>
+
+			<div class="wardrobeItem wardrobe-action no-numberify">
+				<div>
+					<<clothingicon _item _wardrobe_list>>
+					<<if _favorite.source is "inventory">>
+						<<wardrobeFavoriteWearLink _itemData.name_cap _i _wear "inventory">>
+						<span class="gold">(In Handbag)</span>
+					<<elseif _favorite.source is "worn">>
+						<<print _itemData.name_cap>>
+						<span class="gold">(Equipped)</span>
+					<<else>>
+						<<wardrobeFavoriteWearLink _itemData.name_cap _i _wear>>
+					<</if>>
+					<span><<print wardrobeSlotName(_wardrobe_list)>></span>
+				</div>
+
+				<div class="small-description">
+					<<if _item.colour and _item.colour isnot 0>>
+						<span @class="_item.colour?.replace(' ','-') + ' noDivider'">
+							<<if _item.pattern and ![0, "plain"].includes(_item.pattern) and _itemData.pattern_options?.length gt 1>>
+								(_item.colour _item.pattern)
+							<<else>>
+								(_item.colour)
+							<</if>>
+						</span>
+					<<elseif _item.pattern and _item.pattern isnot 0 and _itemData.pattern_options?.length gt 1>>
+						<span @class="_item.pattern?.replace(' ','-') + ' noDivider'">(_item.pattern)</span>
+					<</if>>
+					<<if _item.outfitPrimary isnot undefined>>
+						<<set _keys to Object.keys(_item.outfitPrimary)>>
+						<<set _broken to 0>>
+						<<for _j to 0; _j lt _keys.length; _j++>>
+							<<if _item.outfitPrimary[_keys[_j]] is "broken">>
+								<<set _broken++>>
+							<</if>>
+						<</for>>
+						<<if _broken is 0>>
+							<span @class="(!_item.colour || _item.colour === 0? ' noDivider': '')">(Outfit)</span>
+						<<elseif _broken lt _keys.length>>
+							<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Partly Broken)</span>
+						<<else>>
+							<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Broken)</span>
+						<</if>>
+						<<if _item.one_piece is "split">>
+							<span @class="'separated-indicator' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Separated)</span>
+						<</if>>
+					<</if>>
+					<<if _item.outfitSecondary isnot undefined>>
+						<<if _item.one_piece is "split">>
+							<span @class="'separated-indicator' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Separated)</span>
+						<<else>>
+							<span @class="'red' + (!_item.colour || _item.colour === 0? ' noDivider': '')">(Broken)</span>
+						<</if>>
+					<</if>>
+					<<wardrobeintegrity _item _wardrobe_list>>
+					<<reveal _item.reveal>>
+
+					<<if _item.gender is "m">><span class="blue noDivider">&#9794;</span><<elseif _item.gender is "f">><span class="pink noDivider">&#9792;</span><</if>>
+
+					| <span class="cold-resist-icon noDivider"><<print getTrueWarmth(_item)>></span>
+					<<if $wardrobeDefaults.showTraits>>
+						| <span class="wardrobe-traits noDivider"><<for _n, _trait range _item.type>>
+							<<clothingtrait _trait>>
+						<</for>></span>
+					<</if>>
+					| <<wardrobeFavoriteLink _wardrobe_list _item _favorite.favorite.id>>
+				</div>
+			</div>
+		<</for>>
+		</div>
+		<div style="clear:both;"></div>
+	<</if>>
+<</widget>>

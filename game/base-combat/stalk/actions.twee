@@ -1,0 +1,139 @@
+:: Widgets Stalk Actions [widget]
+
+/*Hands */
+
+<<widget "left_pursuit_grab">>
+	<<if ($NPCList[0].state is "pursuit" or $NPCList[0].state is "chased") and $NPCList[0].distance lte 0>>
+		<<set _leftaction["Grab"] to "pursuit_grab">>
+	<</if>>
+<</widget>>
+
+<<widget "right_pursuit_grab">>
+	<<if ($NPCList[0].state is "pursuit" or $NPCList[0].state is "chased") and $NPCList[0].distance lte 0>>
+		<<set _rightaction["Grab"] to "pursuit_grab">>
+	<</if>>
+<</widget>>
+
+/*Feet */
+<<widget "feet_walk">>
+	<<if $leftleg isnot "bound" and $rightleg isnot "bound" and $dissociation lt 2 and $NPCList[0].state isnot "pursuit" and $NPCList[0].state isnot "chased" and $feetuse isnot "run" and (currentSkillValue("feetskill") gte 200 or !$worn.feet.type.includes("heels"))>>
+		<<set _feetaction["Walk"] to "walk">>
+	<</if>>
+<</widget>>
+
+<<widget "feet_strut">>
+	<<if $leftleg isnot "bound" and $rightleg isnot "bound" and $dissociation lt 2 and $NPCList[0].state isnot "pursuit" and $NPCList[0].state isnot "chased" and $feetuse isnot "run" and hasSexStat("exhibitionism", 2)>>
+		<<set _feetaction["Strut"] to "strut">>
+	<</if>>
+<</widget>>
+
+<<widget "feet_run">>
+	<<if $leftleg isnot "bound" and $rightleg isnot "bound" and $dissociation lt 2 and (currentSkillValue("feetskill") gte 200 or !$worn.feet.type.includes("heels"))>>
+		<<if $NPCList[0].state is "pursuit" or $NPCList[0].state is "chased">>
+			<<set _feetaction["Chase"] to "run">>
+		<<else>>
+			<<set _feetaction["Run"] to "run">>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "feet_stand">>
+	<<if $dissociation lt 2 and $NPCList[0].state isnot "pursuit" and $NPCList[0].state isnot "chased" and $feetuse isnot "run">>
+		<<set _feetaction["Stand still"] to "stand">>
+	<</if>>
+<</widget>>
+
+<<widget "feet_hobble">>
+	<<if $dissociation lt 2 and ($leftleg is "bound" or $rightleg is "bound") or (currentSkillValue("feetskill") lt 200 and $worn.feet.type.includes("heels"))>>
+		<<set _feetaction["Hobble"] to "hobble">>
+	<</if>>
+<</widget>>
+
+<<widget "feet_hide">>
+	<<if $dissociation lt 2 and $panicviolence lte 0 and $NPCList[0].state isnot "chased">>
+		<<set _feetaction["Hide"] to "hide">>
+	<</if>>
+<</widget>>
+
+<<widget "feet_discard">>
+	<<if !$stalk_end and $NPCList[0].state is "stalk" and $dissociation lt 2 and $panicviolence lte 0 and $leftarm isnot "bound" and $rightarm isnot "bound" and $leftleg isnot "bound" and $rightleg isnot "bound">>
+		<<set _stalkDiscardLayers to {
+			over_head: [], head: ["over_head"], face: [], neck: [], hands: [],
+			over_upper: [], over_lower: [], upper: ["over_upper"], lower: ["over_lower"],
+			under_upper: ["over_upper", "upper"], under_lower: ["over_lower", "lower"],
+			legs: ["over_lower", "lower"], feet: []
+		}>>
+		<<set _stalkDiscardValues to {
+			over_head: 1, head: 1, face: 1, neck: 1, hands: 1,
+			feet: 2, legs: 2, under_upper: 2, under_lower: 2,
+			over_upper: 3, over_lower: 3, upper: 3, lower: 3
+		}>>
+		<<for _stalkDiscardSlot, _stalkDiscardCover range _stalkDiscardLayers>>
+			<<set _stalkDiscardItem to $worn[_stalkDiscardSlot]>>
+			<<if _stalkDiscardItem.name isnot "naked" and _stalkDiscardItem.cursed isnot 1 and !_stalkDiscardItem.type.includesAny("heavy", "binding", "strap-on", "mask") and (!_stalkDiscardItem.outfitSecondary or $worn[_stalkDiscardItem.outfitSecondary[0]].name isnot _stalkDiscardItem.outfitSecondary[1])>>
+				<<set _stalkDiscardAllowed to _stalkDiscardCover.every(slot => $worn[slot].name === "naked")>>
+				<<for _stalkDiscardPart, _stalkDiscardName range (_stalkDiscardItem.outfitPrimary || {})>>
+					<<if $worn[_stalkDiscardPart].name is _stalkDiscardName and ($worn[_stalkDiscardPart].cursed is 1 or $worn[_stalkDiscardPart].type.includesAny("heavy", "binding") or (_stalkDiscardLayers[_stalkDiscardPart] || []).some(slot => $worn[slot].name !== "naked"))>>
+						<<set _stalkDiscardAllowed to false>>
+					<</if>>
+				<</for>>
+				<<if _stalkDiscardAllowed>>
+					<<set _stalkDiscardWorth to _stalkDiscardValues[_stalkDiscardSlot] || 1>>
+					<<if _stalkDiscardWorth gte 3>>
+						<<set _stalkDiscardNote to " (good)">>
+					<<elseif _stalkDiscardWorth lte 1>>
+						<<set _stalkDiscardNote to " (weak)">>
+					<<else>>
+						<<set _stalkDiscardNote to "">>
+					<</if>>
+					<<set _feetaction["Drop your " + _stalkDiscardItem.name + _stalkDiscardNote] to "stalk_discard_" + _stalkDiscardSlot>>
+				<</if>>
+			<</if>>
+		<</for>>
+	<</if>>
+<</widget>>
+
+<<widget "feet_ambush">>
+	<<if $NPCList[0].state isnot "pursuit" and $NPCList[0].state isnot "chased" and $transformationParts.traits.chase isnot "disabled">>
+		<<set _feetaction["Ambush"] to "ambush">>
+	<</if>>
+<</widget>>
+
+<<widget "feet_confront">>
+	<<if $dissociation lt 2 and $panicviolence lte 0 and $NPCList[0].legs isnot "run" and $NPCList[0].state isnot "pursuit" and $NPCList[0].state isnot "chased">>
+		<<set _feetaction["Confront"] to "confront">>
+	<</if>>
+<</widget>>
+
+<<widget "head_turn">>
+	<<if $dissociation lt 2 and $panicviolence lte 0 and $NPCList[0].legs isnot "run" and $NPCList[0].state isnot "pursuit" and $NPCList[0].state isnot "chased">>
+		<<set _mouthaction["Look behind you"] to "turn">>
+	<</if>>
+<</widget>>
+
+<<widget "head_down">>
+	<<if $dissociation lt 2 and $panicviolence lte 0 and $NPCList[0].legs isnot "run" and $NPCList[0].state isnot "pursuit" and $NPCList[0].state isnot "chased">>
+		<<set _mouthaction["Look at the ground"] to "down">>
+	<</if>>
+<</widget>>
+
+<<widget "head_up">>
+	<<if $dissociation lt 2 and $panicviolence lte 0 and $NPCList[0].legs isnot "run" and $NPCList[0].state isnot "pursuit" and $NPCList[0].state isnot "chased">>
+		<<set _mouthaction["Keep your chin up"] to "up">>
+	<</if>>
+<</widget>>
+
+<<widget "stalk_taunt">>
+	<<if $leftleg isnot "bound" and $rightleg isnot "bound" and
+	(currentSkillValue("feetskill") gte 200 or !$worn.feet.type.includes("heels")) and
+	hasSexStat("promiscuity", 2) and $dissociation lt 2 and $panicviolence lte 0
+	and $NPCList[0].legs isnot "run" and $NPCList[0].state isnot "pursuit" and $NPCList[0].state isnot "chased" and !$worn.face.type.includes("gag")>>
+		<<set _mouthaction["Taunt"] to "taunt">>
+	<</if>>
+<</widget>>
+
+<<widget "bottom_wiggle">>
+	<<if $dissociation lt 2 and $panicviolence lte 0 and $NPCList[0].legs isnot "run" and $NPCList[0].state isnot "pursuit" and $NPCList[0].state isnot "chased">>
+		<<set _anusaction["Wiggle"] to "wiggle">>
+	<</if>>
+<</widget>>

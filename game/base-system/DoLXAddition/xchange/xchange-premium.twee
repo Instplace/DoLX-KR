@@ -1,0 +1,321 @@
+:: X-Change Premium Widgets [widget]
+<<widget "xchange-premium-ensure">>
+	<<if $xchange is undefined or $xchange is null or typeof $xchange isnot "object" or Array.isArray($xchange)>>
+		<<xchange-init>>
+	<<elseif $xchange.pill is undefined or $xchange.breastsize is undefined or $xchange.bottomsize is undefined or $xchange.penissize is undefined>>
+		<<xchange-init>>
+	<</if>>
+	<<if $xchange is undefined or $xchange is null or typeof $xchange isnot "object" or Array.isArray($xchange)>><<set $xchange to {}>><</if>>
+	<<if $xchange.pill is undefined or $xchange.pill is null or typeof $xchange.pill isnot "object" or Array.isArray($xchange.pill)>>
+		<<set $xchange.pill to {
+			active: false,
+			duration: 0,
+			originalBody: {},
+			changedBody: {},
+			hermBody: {},
+			clone: "none",
+			clonedBody: {},
+		}>>
+	<</if>>
+	<<if $xchange.pill.originalBody is undefined>><<set $xchange.pill.originalBody to {}>><</if>>
+	<<if $xchange.pill.changedBody is undefined>><<set $xchange.pill.changedBody to {}>><</if>>
+	<<if $xchange.pill.hermBody is undefined>><<set $xchange.pill.hermBody to {}>><</if>>
+	<<if $xchange.pill.clonedBody is undefined>><<set $xchange.pill.clonedBody to {}>><</if>>
+	<<if $xchange.pill.clone is undefined>><<set $xchange.pill.clone to "none">><</if>>
+	<<if $xchange.premium is undefined or $xchange.premium is null or typeof $xchange.premium isnot "object" or Array.isArray($xchange.premium)>><<set $xchange.premium to {}>><</if>>
+	<<if $xchange.premium.sideSelected is undefined or !Array.isArray($xchange.premium.sideSelected)>><<set $xchange.premium.sideSelected to []>><</if>>
+	<<if $xchange.premium.mode is undefined>><<set $xchange.premium.mode to "side">><</if>>
+	<<if $xchange.premium.screenPassage is undefined>><<set $xchange.premium.screenPassage to "X-Change Premium Menu">><</if>>
+<</widget>>
+
+<<widget "xchange-premium-screen">>
+	<<set _screen to _args[0]>>
+	<<set _mode to _args[1]>>
+	<<if _mode isnot undefined>><<set $xchange.premium.mode to _mode>><</if>>
+	<<set $xchange.premium.screenPassage to _screen>>
+	<<run window.renderXChangePremiumMenu && window.renderXChangePremiumMenu(_screen)>>
+<</widget>>
+
+<<widget "xchange-premium-reset-ui">>
+	<<set $xchange.premium.sideSelected to []>>
+	<<set $xchange.premium.mode to "side">>
+	<<set $xchange.premium.screenPassage to "X-Change Premium Menu">>
+	<<unset $xchange.premium.duration>>
+	<<unset $xchange.premium.originPassage>>
+<</widget>>
+
+<<widget "xchange-premium-clear-pill-temp">>
+	<<set $xchange.pill.isPremium to false>>
+	<<set $xchange.pill.premiumActive to false>>
+	<<set $xchange.pill.presentationGenderOverride to null>>
+	<<unset $xchange.pill.returnPassage>>
+<</widget>>
+
+<<widget "xchange-premium">>
+	<<if xchangePillProtectionActive()>>
+		/* The dose still happened, but protection neutralises it before customisation or side effects can begin. */
+		<<set $xchange.everConsumed to true>>
+	<<else>>
+		/* duration in days */
+		<<set _duration to _args[0]>>
+		<<if _duration is undefined or _duration <= 0>><<set _duration to 7>><</if>>
+
+		<<xchange-premium-ensure>>
+
+		/* Where we came from */
+		<<set $xchange.premium.duration to _duration>>
+		<<set $xchange.premium.originPassage to passage().title>>
+		<<set $xchange.pill.returnPassage to passage().title>>
+
+		/* Start fresh each dose */
+		<<set $xchange.premium.sideSelected to []>>
+		<<set $xchange.premium.mode to "side">>
+		<<set $xchange.premium.screenPassage to "X-Change Premium Menu">>
+
+		<<script>>
+		if (typeof window.openXChangePremiumMenu === "function") {window.openXChangePremiumMenu();} else {console.error("[X-Change Premium] openXChangePremiumMenu helper missing");}
+		<</script>>
+	<</if>>
+<</widget>>
+
+<<widget "xchange-premium-apply">>
+	<<xchange-premium-ensure>>
+	<<set $xchange.pill.isPremium to false>>
+	<<set $xchange.pill.premiumActive to false>>
+
+	<<set _duration to $xchange.premium.duration>>
+	<<if _duration is undefined or _duration <= 0>><<set _duration to 7>><</if>>
+
+	<<set _effects to $xchange.premium.sideSelected.slice()>>
+	<<set _mode to $xchange.premium.mode>>
+	<<if xchangePregnancyBlocksPill() and ["male", "female", "flip", "herm"].includes(_mode)>>
+		<<set _mode to "side">>
+	<</if>>
+
+	/* Normalize some common aliases */
+	<<run _effects = _effects.map(e => {
+		if (e === "dumbbitch") return "dumb-bitch";
+		if (e === "portal panties") return "portal";
+		if (e === "preg") return "fertile";
+		return e;
+	})>>
+
+	/* Body/genitals options */
+	<<if _mode is "male">>
+		<<if $player isnot undefined and $player.vaginaExist>><<run _effects.push("genderflip")>><</if>>
+		<<set $xchange.pill.presentationGenderOverride to "m">>
+	<<elseif _mode is "female">>
+		<<if $player isnot undefined and $player.penisExist>><<run _effects.push("genderflip")>><</if>>
+		<<set $xchange.pill.presentationGenderOverride to "f">>
+	<<elseif _mode is "flip">>
+		<<run _effects.push("genderflip")>>
+		/* keep identity/pronouns as-is */
+		<<set $xchange.pill.presentationGenderOverride to null>>
+	<<elseif _mode is "herm">>
+		<<run _effects.push("herm")>>
+		/* herm body is androgynous; keep identity/pronouns as-is */
+		<<set $xchange.pill.presentationGenderOverride to null>>
+	<<elseif _mode is "present_m">>
+		<<set $xchange.pill.presentationGenderOverride to "m">>
+	<<elseif _mode is "present_f">>
+		<<set $xchange.pill.presentationGenderOverride to "f">>
+	<<else>>
+		<<set $xchange.pill.presentationGenderOverride to null>>
+	<</if>>
+
+	/* Apply X-Change effects */
+	<<set _wasAlreadyXChanged to playerIsXChanged()>>
+	<<if !_wasAlreadyXChanged>>
+		<<save-body>>
+	<</if>>
+	/* The player built and swallowed this pill themselves, so it is exempt from the Gray Agent trait. */
+	<<xchange-dose-deliberate>><<xchange-effects _duration _effects>><<xchange-dose-deliberate-end>>
+	<<set $xchange.timesTaken.player++>>
+	<<if $xchange.pill.active is true and _effects.includes("beta") and !$xchange.pill.betaEffect and $player.vaginaExist>>
+		<<xchange-dose-deliberate>><<xchange-addeffect "beta" _duration>><<xchange-dose-deliberate-end>>
+	<</if>>
+	<<if $xchange.pill.active is true>>
+		<<set $xchange.pill.isPremium to true>>
+		<<set $xchange.pill.premiumActive to true>>
+	<<else>>
+		<<xchange-premium-clear-pill-temp>>
+	<</if>>
+
+	/* Clean UI state so next dose is fresh */
+	<<xchange-premium-reset-ui>>
+<</widget>>
+
+<<widget "xchange-premium-cancel">>
+	<<xchange-premium-ensure>>
+	<<xchange-premium-clear-pill-temp>>
+	<<xchange-premium-reset-ui>>
+<</widget>>
+
+<<widget "xchange-premium-close">>
+	<<xchange-premium-ensure>>
+	<<if $xchange.pill.active isnot true>>
+		<<xchange-premium-clear-pill-temp>>
+	<</if>>
+	<<xchange-premium-reset-ui>>
+	<<run if (window.closeXChangePremiumMenu) { window.closeXChangePremiumMenu(); }>>
+	<<run if (typeof Engine !== "undefined" && Engine.show) { Engine.show(); }>>
+<</widget>>
+
+
+:: X-Change Premium Menu
+<<xchange-premium-ensure>>
+Choose what you want this dose to do:
+<br>
+<<link "Side effects only">>
+	<<xchange-premium-screen "X-Change Premium Side Effects" "side">>
+<</link>>
+<br>
+<<if xchangePregnancyBlocksPill()>>
+	<span class="grey">Body changes unavailable. <<= xchangePregnancyBlockedReason()>></span>
+<<else>>
+<<link "Total body change">>
+	<<xchange-premium-screen "X-Change Premium Body Options" "body">>
+<</link>>
+<</if>>
+<br>
+<<link "Gender override">>
+	<<xchange-premium-screen "X-Change Premium Presentation Options" "present">>
+<</link>>
+<br><br>
+<<link "Cancel">>
+	<<xchange-premium-cancel>>
+	<<xchange-premium-close>>
+<</link>>
+
+
+:: X-Change Premium Side Effects
+<<xchange-premium-ensure>>
+Pick the side effects you want:
+<br>
+<<set _labels to {
+	"crossdress": "Genderification (sissify/butchify)",
+	"innocence": "Innocence",
+	"passion": "Passion",
+	"dumb-bitch": "Dumb bitch",
+	"swell": "Swell",
+	"cumcure": "CumCure",
+	"bimbo": "Bimbo",
+	"bull": "Bull",
+	"alpha": "Alpha",
+	"beta": "Beta",
+	"breeder": "Breeder",
+	"omega": "Omega",
+	"fertility": "Hyper Fertility",
+	"xtend": "X-Tend",
+	"portal": "Portal panties"
+}>>
+
+<<set _available to [
+	"crossdress",
+	"dumb-bitch",
+	"innocence",
+	"passion",
+	"swell",
+	"cumcure",
+	"bimbo",
+	"bull",
+	"alpha",
+	"beta",
+	"breeder",
+	"omega",
+	"fertility",
+	"xtend",
+	"portal"
+]>>
+
+<<set _chosen to $xchange.premium.sideSelected>>
+
+<<for _i = 0; _i < _available.length; _i++>>
+	<<set _e to _available[_i]>>
+	<<set _on to _chosen.includes(_e)>>
+	<<set _txt to (_on ? "☑ " : "☐ ") + (_labels[_e] || _e)>>
+	<<capture _e _txt>>
+		<<link _txt>>
+			<<if _chosen.includes(_e)>>
+				<<run _chosen.splice(_chosen.indexOf(_e), 1)>>
+			<<else>>
+				<<run _chosen.push(_e)>>
+			<</if>>
+			<<set $xchange.premium.sideSelected to _chosen>>
+			<<xchange-premium-screen "X-Change Premium Side Effects">>
+		<</link>>
+	<</capture>>
+	<br>
+<</for>>
+
+<br>
+<<link "Clear selection">>
+	<<set $xchange.premium.sideSelected to []>>
+	<<xchange-premium-screen "X-Change Premium Side Effects">>
+<</link>>
+<br>
+<<link "Apply selected">>
+	<<set $xchange.premium.mode to "side">>
+	<<xchange-premium-apply>>
+	<<xchange-premium-close>>
+<</link>>
+<br>
+<<if xchangePregnancyBlocksPill()>>
+	<span class="grey">Body changes unavailable. <<= xchangePregnancyBlockedReason()>></span>
+<<else>>
+<<link "More options (total body change) →">>
+	<<xchange-premium-screen "X-Change Premium Body Options" "body">>
+<</link>>
+<</if>>
+<br>
+<<link "Cancel">>
+	<<xchange-premium-cancel>>
+	<<xchange-premium-close>>
+<</link>>
+
+
+:: X-Change Premium Body Options
+<<xchange-premium-ensure>>
+<<if xchangePregnancyBlocksPill()>>
+	<span class="grey">Body changes unavailable. <<= xchangePregnancyBlockedReason()>></span>
+<<else>>
+Total body with genital and gender change options:
+<br>
+<<link "Make body male">><<set $xchange.premium.mode to "male">><<xchange-premium-apply>><<xchange-premium-close>><</link>>
+<br>
+<<link "Make body female">><<set $xchange.premium.mode to "female">><<xchange-premium-apply>><<xchange-premium-close>><</link>>
+<br>
+<<link "Flip sex only">><<set $xchange.premium.mode to "flip">><<xchange-premium-apply>><<xchange-premium-close>><</link>>
+<br>
+<<link "Make body herm (both genitals)">><<set $xchange.premium.mode to "herm">><<xchange-premium-apply>><<xchange-premium-close>><</link>>
+<</if>>
+<br><br>
+
+<<link "← Back to side effects">>
+	<<xchange-premium-screen "X-Change Premium Side Effects" "side">>
+<</link>>
+<br>
+<<link "Cancel">>
+	<<xchange-premium-cancel>>
+	<<xchange-premium-close>>
+<</link>>
+
+
+:: X-Change Premium Presentation Options
+<<xchange-premium-ensure>>
+Gender presentation-only override, no sex/genitals change:
+<br>
+<<link "Present as male">><<set $xchange.premium.mode to "present_m">><<xchange-premium-apply>><<xchange-premium-close>><</link>>
+<br>
+<<link "Present as female">><<set $xchange.premium.mode to "present_f">><<xchange-premium-apply>><<xchange-premium-close>><</link>>
+
+<br><br>
+
+<<link "← Back to side effects">>
+	<<xchange-premium-screen "X-Change Premium Side Effects" "side">>
+<</link>>
+<br>
+<<link "Cancel">>
+	<<xchange-premium-cancel>>
+	<<xchange-premium-close>>
+<</link>>

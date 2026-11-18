@@ -1,0 +1,284 @@
+:: Blackmail Widgets [widget]
+
+<<widget "blackmail-init">>
+	<<set $xchange.blackmail to {
+		intro: 0,
+		activeQuest: undefined,
+		hasMaterial: false,
+		hasReadLetter: false,
+		cooldown: 1, /* counted in days */
+		penaltyThreat: {
+			sex: 0,
+			prostitution: 0,
+			rape: 0,
+			bestiality: 0,
+			exhibitionism: 0,
+			pregnancy: 0,
+			impreg: 0
+		},
+		historicFame: {
+			sex: 0,
+			prostitution: 0,
+			rape: 0,
+			bestiality: 0,
+			exhibitionism: 0,
+			pregnancy: 0,
+			impreg: 0
+		},
+		conclusionPending: false,
+		courier: undefined,
+		courierAfk: false,
+		courierReady: 0,
+	}>>
+<</widget>>
+
+<<widget "blackmail-pickcourier">>
+	/* Eligibility keys off each location actually being reachable on the map, not just having met the NPC once
+	meeting them (.init) can happen mid-encounter well before their home location unlocks (e.g. an abduction that's fought off before ever joining the pack). */
+	<<set _blackmailCouriers to ["home"]>>
+	<<if $moor gte 100>><<run _blackmailCouriers.push("greathawk")>><</if>>
+	<<if $syndromewolves gte 1>><<run _blackmailCouriers.push("wolves")>><</if>>
+	<<if $edenfreedom gte 1 or $syndromeeden gte 1>><<run _blackmailCouriers.push("eden")>><</if>>
+	<<if C.npc.Jordan.init is 1 and ($temple_rank is "monk" or $temple_rank is "priest")>><<run _blackmailCouriers.push("jordan")>><</if>>
+	<<if modLISelected("Poppy") and $poppyFlat?.bedroomUnlocked and !($poppyFlat.dismissed is true or $poppyDismissalFired is 1)>><<run _blackmailCouriers.push("poppy")>><</if>>
+	<<rng 0 `_blackmailCouriers.length-1`>>
+	<<set $xchange.blackmail.courier to _blackmailCouriers[$rng]>>
+	<<set $xchange.blackmail.courierAfk to false>>
+	<<set $xchange.blackmail.courierReady to 7>>
+<</widget>>
+
+<<widget "blackmail-resetcourier">>
+	<<set $xchange.blackmail.courier to undefined>>
+	<<set $xchange.blackmail.courierAfk to false>>
+	<<set $xchange.blackmail.courierReady to 0>>
+	<<unset $xchange.blackmail.courierDestroyed>>
+<</widget>>
+
+<<widget "blackmail-courier-destroyroll">>
+	<<rng 1 100>>
+	<<set _blackmailCourierDestroyed to $rng lte 25>>
+<</widget>>
+
+<<widget "blackmail-newmaterial">>
+	<<if $xchange.blackmailHalt lte 0>>
+		<<if !$xchange.blackmail.hasMaterial>>
+			<<set $xchange.blackmail.hasNewMaterial to true>>
+			<<set $xchange.blackmail.hasMaterial to true>>
+			<<blackmail-pickcourier>>
+		<</if>>
+		<<set $_fameTypes to _args>>
+		<<run $_fameTypes.forEach(fameType =>
+			$xchange.blackmail.penaltyThreat[fameType] += $xchange.blackmail.penaltyThreat[fameType] <= 0? 100 : 0)
+		>>
+	<</if>>
+<</widget>>
+
+<<widget "blackmail-newquest">>
+	<<set $xchange.blackmail.questsCompleted to $xchange.blackmail.questsCompleted ?? 0>>
+	<<if !$xchange.blackmail.activeQuest>>
+		<<set _availableQuests to []>>
+
+		<<if hasSexStat("exhibitionism", 5, false)>>
+			<<for _quest range blackmailQuests.high>>
+				<<if _quest.prerequisites()>><<set _availableQuests.pushUnique(_quest)>><</if>>
+			<</for>>
+			<<for _quest range blackmailQuests.mid>>
+				<<if _quest.prerequisites()>><<set _availableQuests.pushUnique(_quest)>><</if>>
+			<</for>>
+
+		<<elseif hasSexStat("exhibitionism", 3, false)>>
+			<<for _quest range blackmailQuests.mid>>
+				<<if _quest.prerequisites()>><<set _availableQuests.pushUnique(_quest)>><</if>>
+			<</for>>
+			<<for _quest range blackmailQuests.low>>
+				<<if _quest.prerequisites()>><<set _availableQuests.pushUnique(_quest)>><</if>>
+			<</for>>
+
+		<<else>>
+			<<for _quest range blackmailQuests.low>>
+				<<if _quest.prerequisites()>><<set _availableQuests.pushUnique(_quest)>><</if>>
+			<</for>>
+
+		<</if>>
+
+		<<rng 0 `_availableQuests.length-1`>>
+		<<set _index to $rng>>
+		<<set $xchange.blackmail.activeQuest to clone(_availableQuests[_index])>>
+	<</if>>
+
+	<<blackmail-checkquest>>
+
+<</widget>>
+
+<<widget "blackmail-checkquest">>
+	<<run restoreActiveBlackmailQuest()>>
+	<<for _instruction range $xchange.blackmail.activeQuest.instructions>>
+		<li><span class="teal"><<print _instruction>></span></li>
+	<</for>>
+<</widget>>
+
+<<widget "blackmail-endquest">>
+	<<unset $xchange.blackmail.activeQuest>>
+	<<unset $xchange.blackmail.conclusionDays>>
+	<<unset $xchange.blackmail.passedOutRecently>>
+	<<unset $xchange.blackmail.hasGenderswappedRecently>>
+	<<unset $xchange.blackmail.gracePeriod>>
+	<<set $xchange.blackmail.hasReadLetter to false>>
+	<<set $xchange.blackmail.conclusionPending to false>>
+	<<set $xchange.blackmail.questsCompleted += 1>>
+	<<blackmail-resetcourier>>
+<</widget>>
+
+<<widget "blackmail-timepassed">>
+	<<run restoreActiveBlackmailQuest()>>
+	<<set _activeQuest to $xchange.blackmail.activeQuest>>
+
+	/* Once the day's window has closed (daypassed already locked in an outcome). */
+	<<if !$xchange.blackmail.conclusionPending>>
+		<<if !_activeQuest?.cleared>>
+			<<run _activeQuest?.clearCheck()>>
+			<<if _activeQuest?.cleared>><<set $xchange.blackmail.effectmessage to 2>><</if>>
+		<</if>>
+
+		<<if !_activeQuest?.failed>>
+			<<run _activeQuest?.failCheck()>>
+			<<if _activeQuest?.failed>><<set $xchange.blackmail.effectmessage to 3>><</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "blackmail-daypassed">>
+	<<run restoreActiveBlackmailQuest()>>
+	<<set _activeQuest to $xchange.blackmail.activeQuest>>
+	<<set _blackmailDaysPassed to Math.max(Number(_args[0]) || 1, 1)>>
+	<<set _blackmailWasPending to $xchange.blackmail.conclusionPending>>
+
+	<<if !$xchange.blackmail.conclusionPending>>
+		<<if _activeQuest?.cleared and !_activeQuest?.failed>>
+			<<set $xchange.blackmail.conclusionPending to true>>
+			<<run _activeQuest?.onDayCleared()>>
+
+		<<elseif _activeQuest and (!_activeQuest?.cleared or _activeQuest?.failed)>>
+			<<set $xchange.blackmail.conclusionPending to true>>
+			<<set $xchange.blackmail.effectmessage to 1>>
+			<<set $xchange.blackmail.hasMaterial to false>>
+			<<run delete V.xchange.blackmail.paymentsRemoved>>
+			<<run _activeQuest?.onDayFailed()>>
+
+			<<set $_fameTypes to ["sex","prostitution","rape","exhibitionism","bestiality"]>>
+			<<for _fameType range $_fameTypes>>
+				<<fame $xchange.blackmail.penaltyThreat[_fameType] _fameType>>
+				<<fame-propagate $xchange.blackmail.penaltyThreat[_fameType] _fameType>>
+				<<set $xchange.blackmail.penaltyThreat[_fameType] to 0>>
+			<</for>>
+
+			<<if $xchange.blackmail.hasGenderswapped>>
+				<<xchange-seen 40>>
+			<</if>>
+
+		<!-- TODO: handle if you should apply the penalty hit even if PC didn't read the letter -->
+
+		<</if>>
+	<</if>>
+
+	/* The conclusion letter only ever appears in the player's bedroom, and every future delivery is gated behind
+	   reading it, so a player who stops sleeping at home used to lock the whole arc up permanently.
+	   After a week the club stops waiting and settles the task without them. */
+	<<if _blackmailWasPending and $xchange.blackmail.conclusionPending>>
+		<<set $xchange.blackmail.conclusionDays to (Number($xchange.blackmail.conclusionDays) || 0) + _blackmailDaysPassed>>
+		<<if $xchange.blackmail.conclusionDays gte 7>>
+			<<set _blackmailLateReward to 0>>
+			<<if _activeQuest?.cleared and !_activeQuest?.failed and !$xchange.blackmail.paymentsRemoved>>
+				<<set _blackmailLateReward to Math.floor(Number(getStaticQuestData(_activeQuest)?.reward()) || 0)>>
+			<</if>>
+			<<if _blackmailLateReward gt 0>>
+				<<money _blackmailLateReward "blackmail">>
+				<<set $xchange.blackmail.effectmessage to 4>>
+			<<else>>
+				<<set $xchange.blackmail.effectmessage to 5>>
+			<</if>>
+			<<blackmail-endquest>>
+		<</if>>
+	<</if>>
+
+	/* An untouched letter stays with its assigned courier for one week, then gets forwarded to the orphanage. */
+	<<if $xchange.blackmail.hasMaterial and !$xchange.blackmail.activeQuest and $xchange.blackmail.courier and $xchange.blackmail.courier isnot "orphanage">>
+		<<set _blackmailCourierDaysPassed to Math.max(_blackmailDaysPassed-Math.max($xchange.blackmail.cooldown, 0), 0)>>
+		<<if !Number.isFinite($xchange.blackmail.courierReady) or $xchange.blackmail.courierReady lt 1>>
+			<<set $xchange.blackmail.courierReady to 7>>
+		<</if>>
+		<<set $xchange.blackmail.courierReady to Math.max($xchange.blackmail.courierReady-_blackmailCourierDaysPassed, 0)>>
+		<<if $xchange.blackmail.courierReady lte 0>>
+			<<set $xchange.blackmail.courier to "orphanage">>
+			<<set $xchange.blackmail.courierAfk to true>>
+		<</if>>
+	<</if>>
+
+	<<if $xchange.blackmail.hasMaterial>>
+		<<set $xchange.blackmail.cooldown to Math.max($xchange.blackmail.cooldown-_blackmailDaysPassed, 0)>>
+	<<else>>
+		<<set $xchange.blackmail.cooldown to Math.max($xchange.blackmail.cooldown-_blackmailDaysPassed, 1)>>
+	<</if>>
+
+<</widget>>
+
+<<widget "blackmail-marker">>
+	<<set _markerSummary to getStaticQuestData($xchange.blackmail.activeQuest)?.summary>>
+	<<if _markerSummary>>
+		The Gentleman's Club expects you to <span class="teal"><<print _markerSummary.charAt(0).toLowerCase() + _markerSummary.slice(1)>></span>
+	<<else>>
+		The Gentleman's Club expects you to complete their task before midnight.
+	<</if>>
+<</widget>>
+
+<<widget "blackmail-cancelquest">>
+	<<unset $xchange.blackmail.activeQuest>>
+	<<unset $xchange.blackmail.conclusionDays>>
+	<<unset $xchange.blackmail.passedOutRecently>>
+	<<unset $xchange.blackmail.hasGenderswappedRecently>>
+	<<unset $xchange.blackmail.gracePeriod>>
+	<<set $xchange.blackmail.hasReadLetter to false>>
+	<<set $xchange.blackmail.conclusionPending to false>>
+	<<set $xchange.blackmail.hasNewMaterial to false>>
+	<<set $xchange.blackmail.hasMaterial to false>>
+	<<set $xchange.blackmail.cooldown to Math.max($xchange.blackmail.cooldown, 3)>>
+	<<blackmail-resetcourier>>
+<</widget>>
+
+<<widget "blackmail-exportprompt">>
+	<<if !tags().includes("nosave") and !$ironmanmode and $replayScene is undefined>>
+		<span class="gold">This task can't be retried once the day is over. Consider backing up your save.</span><br>
+		<<if !Browser.isMobile.any()>>
+			<<link "Export save">>
+				<<run Save.export("degrees-of-lewdity" + ($saveName ? '-' + $saveName : ''))>>
+			<</link>> |
+		<</if>>
+		<<link "Help me export">>
+			<<overlayReplace "export">>
+		<</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "blackmail-effects">>
+	<<run restoreActiveBlackmailQuest()>>
+	<<set _activeQuest to $xchange.blackmail.activeQuest>>
+	<<if !$xchange.blackmail.conclusionPending && $xchange.blackmail.hasReadLetter && _activeQuest?.failCondition() && !_activeQuest?.failed>>
+		<span class="gold"><b>Warning:</b></span> <span class="red"><<print _activeQuest.alertMessage>></span><br><br>
+	<</if>>
+	<<if $xchange.blackmail.effectmessage is 1>>
+		<span class="purple">Compromising material displaying your lewdness is now circulating around town.</span><br>
+		<span class="red">Your reputation has worsened.</span><br><br>
+	<<elseif $xchange.blackmail.effectmessage is 2>>
+		<span class="green"><b>You are compliant with your clear conditions.</b> Keep it up until midnight and you'll succeed your task.</span><br><br>
+	<<elseif $xchange.blackmail.effectmessage is 3>>
+		<span class="red"><b>You have failed your task.</b> Your blackmailer won't be happy.</span><br><br>
+	<<elseif $xchange.blackmail.effectmessage is 4>>
+		<span class="purple">You never collected the Gentleman's Club's last letter. Your payment arrives folded into a new envelope instead, with a note reminding you they know where you sleep.</span><br><br>
+	<<elseif $xchange.blackmail.effectmessage is 5>>
+		<span class="purple">You never collected the Gentleman's Club's last letter. They've stopped waiting on your answer, and consider the matter closed.</span><br><br>
+	<<elseif $xchange.blackmail.effectmessage is 6>>
+		<span class="purple">You were in no position to carry out the Gentleman's Club's task, and they know it. The matter is dropped for now.</span><br><br>
+	<</if>>
+	<<unset $xchange.blackmail.effectmessage>>
+<</widget>>

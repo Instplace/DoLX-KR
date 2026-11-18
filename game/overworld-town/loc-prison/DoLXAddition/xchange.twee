@@ -1,0 +1,103 @@
+:: Prison Pill Storage
+    <<effects>><<generate_anxious_guard 0>>
+
+    As <<anxious_guard 0>><<person1>> turns <<his>> attention to the monitors, you take that chance and slip into the storage room.
+    <br><br>
+
+    Inside, the cabinets present what looks like hundreds and hundreds of tiny numbered drawers, that seem to correspond to prisoner numbers. Awfully aware of the brief window afforded to you in this restricted room, you peek inside one of the drawers, to discover a tiny box containing a pill.
+    <br><br>
+
+    Some quick thinking leads you to believe these might be each prisoner's Choice Reversal pill.
+    <br><br>
+
+    <<set $skulduggerydifficulty to 500>>
+    <<link [[Search for your pill|Prison Pill Storage Search]]>><</link>><<skulduggerydifficulty 500>>
+    <br>
+    <<link [[Leave|Prison Spire]]>><</link>>
+    <br>
+
+:: Prison Pill Storage Search
+    <<effects>>
+
+    You try your best to search both quickly and stealthily while you still have some time remaining.
+
+    <<skulduggerycheck>>
+    <<if $skulduggerysuccess>>
+        <<set _variant to (($xchange.pill.originalBody?.sex || $player.sex) is "m") ? "(F)" : "(M)">>
+
+        And in a daring strike of luck, you manage to find your cabinet; and with it, the box housing your pill. 
+        | <span class="blue">+1 Choice Reversal pill</span>
+        <<set $sexStats.pills["pills"]["X-Change Choice Reversal "+_variant].owned++>>
+        <<set $sexStats.pills.boughtOnce to true>>
+        <<set $xchange.prisonPill to 0>>
+        <br><br>
+
+        You pocket the pill in one swift motion, and quickly head out before you're found out.
+        <br><br>
+
+        <<link [[Leave|Prison Spire]]>><</link>>
+    <<else>>
+        However, as you look through row after row of cabinets, seeking that which would contain your pill, <<anxious_guard 0>> comes into the room searching for you.
+        <br><br>
+
+        You're caught redhanded in your frantic quest. "You just couldn't keep your nose clean, huh?" <<he>> says as <<he>> grabs you forcefully. "Looks like you'll be coming with me."
+        <br><br>
+
+        <<link [[Next|Prison Punishment]]>><</link>>
+    <</if>>
+
+:: Prison Wren Pills
+
+    <<set _pills to [
+        "SWP Anti-crossdress Pill",
+        "SWP Anti-breeder Pill",
+        "SWP Anti-bull Pill",
+        "SWP Anti-continue Pill",
+        "SWP Anti-resistance Pill",
+        "SWP Anti-portal Pill",
+        "SWP Anti-fertile Pill",
+        "SWP Anti-passion Pill",
+        "SWP Anti-dumb-bitch Pill",
+        "SWP Anti-fertility Pill",
+    ]>>
+
+    "Looking for anti-pills to make your stay here more comfortable?" Wren offers. "Each one will cost you <span class="gold">20</span> teeth, but the tester will only cost you <span class="gold">10</span>".
+    <br><br>
+
+    <span class="gold">You have <<icon "tending/sharks-teeth.png">><<number $prison.teeth>> shark's <<= $prison.teeth gt 1 ? "teeth" : "tooth">>.</span>
+    <br><br>
+
+    <<if $prison.teeth gte 20>>
+        <<for _pill range _pills>>
+            <<capture _pill>>
+                <<pillicon "pillcure">><<link [[`Buy _pill`|Prison Wren Pills]]>>
+                    <<prison_teeth -20>>
+                    <<set $sexStats.pills.pills[_pill].owned += 1>>
+                    <<boughtOnce>>
+                <</link>>
+            <</capture>>
+            <br>
+        <</for>>
+        <<pregnancytesticon>><<link [[Buy Pill Tester|Prison Wren Pills]]>>
+            <<prison_teeth -10>>
+            <<set $sexStats.pills.pills["X-Change Test"].owned += 1>>
+            <<boughtOnce>>
+        <</link>>
+        <br>
+    <<elseif $prison.teeth gte 10>>
+        <span class="blue">You need more teeth to buy anti-pills.</span>
+        <br>
+        <<pregnancytesticon>><<link [[Buy Pill Tester|Prison Wren Pills]]>>
+            <<prison_teeth -10>>
+            <<set $sexStats.pills.pills["X-Change Test"].owned += 1>>
+            <<boughtOnce>>
+        <</link>>
+        <br>
+    <<else>>
+        <span class="blue">You need more teeth.</span>
+        <br>
+    <</if>>
+    <br>
+
+    <<getouticon>><<link [[Leave|Prison Wren]]>><<endevent>><</link>>
+    <br>

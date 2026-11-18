@@ -1,0 +1,1117 @@
+/* eslint-disable no-undef */
+/* eslint-disable eqeqeq */
+DefineMacro("modelprepare-player-body", function () {
+	T.disabled = ["disabled", "hidden"];
+	T.modeloptions.skin_type = Skin.color.natural;
+	T.modeloptions.skin_tone = Skin.color.tan;
+
+	ccmUtils.rendererSetup();
+	if (V.makeup.eyeshadow != 0) {
+		T.modeloptions.eyeshadow_colour = V.makeup.eyeshadow;
+	}
+	if (V.makeup.mascara != 0) {
+		T.modeloptions.mascara_colour = V.makeup.mascara;
+	}
+	if (V.makeup.mascara_running != 0) {
+		T.modeloptions.mascara_running = V.makeup.mascara_running;
+	}
+	if (V.makeup.lipstick != 0) {
+		T.modeloptions.lipstick_colour = V.makeup.lipstick;
+	}
+	if (V.makeup.blusher != 0) {
+		T.modeloptions.blusher_colour = V.makeup.blusher;
+	}
+
+	if (V.possessed) {
+		T.modeloptions.left_eye = ["haunt", "despair"].includes(V.wraith.state) ? "red possessed" : "blue possessed";
+		T.modeloptions.right_eye = ["haunt", "despair"].includes(V.wraith.state) ? "red possessed" : "blue possessed";
+	} else {
+		T.modeloptions.left_eye = V.makeup.eyelenses.left != 0 ? V.makeup.eyelenses.left : V.leftEyeColour;
+		T.modeloptions.right_eye = V.makeup.eyelenses.right != 0 ? V.makeup.eyelenses.right : V.rightEyeColour;
+	}
+
+	dhmUtils.canvasSetup();
+	T.modeloptions.hair_colour_style = V.hairColourStyle;
+	T.modeloptions.hair_fringe_colour_style = V.hairFringeColourStyle;
+
+	T.modeloptions.brows_colour = (V.makeup.browscolour != 0 ? V.makeup.browscolour : V.naturalhaircolour).replace(" ", "");
+	T.modeloptions.pbhair_colour = (V.makeup.pbcolour != 0 ? V.makeup.pbcolour : V.naturalhaircolour).replace(" ", "");
+
+	/*
+			██████   █████  ███████ ███████
+			██   ██ ██   ██ ██      ██
+			██████  ███████ ███████ █████
+			██   ██ ██   ██      ██ ██
+			██████  ██   ██ ███████ ███████
+		*/
+
+	T.modeloptions.body_type = V.player.bodyshape || { a: "slender", f: "curvy" }[V.player.gender_body] || "classic";
+
+	apparentbreastsizecheck();
+	const breastSizeMap = {
+		12: 6,
+		8: 5,
+		9: 5,
+		10: 5,
+		11: 5,
+		6: 4,
+		7: 4,
+		4: 3,
+		5: 3,
+		3: 2,
+		1: 1,
+		2: 1,
+	};
+
+	T.modeloptions.breast_size = breastSizeMap[V.player.perceived_breastsize] || 0;
+	T.modeloptions.breasts = "default";
+
+	if (V.sexStats) {
+		const bellySize = playerBellySize();
+		T.modeloptions.belly = bellySize;
+		if (V.worn.upper.type.includes("bellyHide") || V.worn.lower.type.includes("bellyHide") || !V.worn.over_upper.type.includes("naked")) {
+			T.modeloptions.belly = Math.max(0, bellySize - 3);
+		}
+	}
+
+	if (V.wraithSkin) {
+		T.modeloptions.skin_type = "wraith";
+		T.modeloptions.filters = {
+			tan: {
+				blend: "#ffffff",
+				blendMode: "multiply",
+				desaturate: true,
+			},
+		};
+		T.modeloptions.tanningEnabled = false;
+	}
+
+	T.modeloptions.tummy_parasite = V.parasite.tummy.name;
+
+	/* Magical Menagerie */
+	T.modeloptions.pet = "";
+	const carriedPetRender = typeof Menagerie !== "undefined" ? Menagerie.renderInfo() : null;
+	if (carriedPetRender) T.modeloptions.pet = carriedPetRender.sprite;
+
+	/*
+			██   ██  █████  ██ ██████
+			██   ██ ██   ██ ██ ██   ██
+			███████ ███████ ██ ██████
+			██   ██ ██   ██ ██ ██   ██
+			██   ██ ██   ██ ██ ██   ██
+		*/
+
+	T.modeloptions.hair_sides_length = V.hairlengthstage;
+	const hairstyle = setup.hairstyles.sides.find(hs => hs.variable === V.hairtype);
+
+	if (hairstyle.alt_head_type && hairstyle.alt_head_type.includes(setup.clothes.head[clothesIndex("head", V.worn.head)].head_type)) {
+		T.modeloptions.hair_sides_type = hairstyle.alt;
+	} else {
+		T.modeloptions.hair_sides_type = V.hairtype;
+	}
+
+	T.modeloptions.hair_sides_position = V.hairposition;
+	T.modeloptions.hair_fringe_length = V.fringelengthstage;
+	T.modeloptions.hair_fringe_type = V.fringetype;
+
+	/*
+			█████  ██████  ███    ███ ███████
+			██   ██ ██   ██ ████  ████ ██
+			███████ ██████  ██ ████ ██ ███████
+			██   ██ ██   ██ ██  ██  ██      ██
+			██   ██ ██   ██ ██      ██ ███████
+			*/
+	const wings = ["demon", "angel", "fallenAngel", "bird"].some(tf => !["hidden", "disabled"].includes(V.transformationParts[tf].wings));
+	const melusineWingsActive = !!(
+		V.chimera?.melusine?.wings &&
+		Transformations.partActive("bird", "wings") &&
+		(Transformations.partActive("angel", "halo") || Transformations.partActive("angel", "wings")) &&
+		(Transformations.partActive("waterdragon", "horns") ||
+			Transformations.partActive("waterdragon", "ears") ||
+			Transformations.partActive("waterdragon", "tail"))
+	);
+	const demonTail = !T.disabled.includes(V.transformationParts.demon.tail);
+	const catSithTail = V.chimera?.catsith?.tail && Transformations.chimeraActive("catsith") && !T.disabled.includes(V.transformationParts.cat.tail);
+	const crotchCoveringTf = wings || demonTail || catSithTail;
+	const flauntingWhenExposed = !V.dontHide && V.libertine !== 2 && V.transformationParts.traits.flaunting === "default";
+	const coverBreasts = !V.dontHide && ((V.uncomfortable.nude && T.exposedUpper >= 2) || (V.uncomfortable.underwear && T.exposedUpper >= 1));
+	const coverCrotch = !V.dontHide && ((V.uncomfortable.nude && T.exposedLower >= 2) || (V.uncomfortable.underwear && T.exposedLower >= 1));
+
+	T.modeloptions.arm_left = armPosition("left");
+	T.modeloptions.arm_right = armPosition("right");
+	const leftArm = T.modeloptions.arm_left;
+	const rightArm = T.modeloptions.arm_right;
+
+	if (V.leftarm !== "bound" && V.leftarm !== "grappled") {
+		if (coverBreasts) {
+			if (["home", "alex_cottage"].includes(V.location) || (V.combat === 1 && V.consensual === 1)) {
+				T.coverBreasts = false;
+				T.modeloptions.arm_left = leftArm;
+			} else {
+				T.coverBreasts = true;
+				T.modeloptions.arm_left = wings ? "cover" : leftArm;
+			}
+		} else {
+			T.coverBreasts = false;
+			T.modeloptions.arm_left = leftArm;
+		}
+	} else {
+		T.modeloptions.arm_left = "none";
+	}
+
+	if (V.rightarm !== "bound" && V.rightarm !== "grappled") {
+		if (
+			!V.dontHide &&
+			V.libertine !== 2 &&
+			V.worn.over_lower.exposed >= 1 &&
+			(V.worn.lower.exposed >= 1 || V.lowerwetstage >= 3) &&
+			((V.uncomfortable.underwear && !V.worn.under_lower.type.includes("naked")) ||
+				(V.uncomfortable.nude && (V.worn.under_lower.exposed >= 1 || V.underlowerwetstage >= 3)))
+		) {
+			if (
+				(["beach", "pool", "sea", "lake", "lake_ruin"].includes(V.location) && V.worn.under_lower.exposed < 1 && V.underlowerwetstage < 3) ||
+				V.worn.under_lower.type.includes("lower_covering") ||
+				["home", "alex_cottage"].includes(V.location) ||
+				(V.combat === 1 && V.consensual === 1)
+			) {
+				T.coverCrotch = false;
+				// "left_cover" checks included intentionally; parameter is meant to be used should there ever be a handheld item that should only use the left_cover hand position
+				T.modeloptions.arm_right = rightArm;
+			} else {
+				T.coverCrotch = true;
+				T.modeloptions.arm_right = "cover"; // might be changed back to rightArm if covering with wings/tail
+			}
+		} else {
+			T.coverCrotch = false;
+			T.modeloptions.arm_right = rightArm;
+		}
+	} else {
+		T.modeloptions.arm_right = "none";
+	}
+
+	if (V.leftarm !== "bound" && V.leftarm !== "grappled") {
+		if (!T.coverBreasts) {
+			if (V.exposed >= 2 && flauntingWhenExposed) {
+				T.modeloptions.demon_wings_state = "flaunt";
+			} else {
+				T.modeloptions.demon_wings_state = "idle";
+			}
+			T.modeloptions.angel_wing_right = "idle";
+			T.modeloptions.fallen_wing_right = "idle";
+			T.modeloptions.bird_wing_right = "idle";
+			T.modeloptions.melusine_wing_right = "idle";
+		} else if (T.coverBreasts && wings) {
+			if (melusineWingsActive) {
+				T.modeloptions.melusine_wing_right = "cover";
+				T.modeloptions.arm_left = leftArm;
+			} else if (
+				!T.disabled.includes(V.transformationParts.demon.wings) &&
+				!(isChimeraEnabled("demonharpy", "wings") && isPartEnabled(T.modeloptions.bird_wings_type))
+			) {
+				T.modeloptions.demon_wings_state = flauntingWhenExposed ? "flaunt" : "cover";
+				T.modeloptions.arm_left = leftArm;
+			} else if (!T.disabled.includes(V.transformationParts.angel.wings)) {
+				T.modeloptions.angel_wing_right = "cover";
+				T.modeloptions.bird_wing_right = "cover";
+				T.modeloptions.arm_left = leftArm;
+			} else if (!T.disabled.includes(V.transformationParts.fallenAngel.wings)) {
+				T.modeloptions.fallen_wing_right = "cover";
+				T.modeloptions.bird_wing_right = "cover";
+				T.modeloptions.arm_left = leftArm;
+			} else if (!T.disabled.includes(V.transformationParts.bird.wings)) {
+				T.modeloptions.bird_wing_right = "cover";
+				T.modeloptions.arm_left = leftArm;
+			} else {
+				T.coverBreastsWithArm = true;
+			}
+		} else if (T.coverBreasts) {
+			T.coverBreastsWithArm = true;
+		}
+	}
+
+	if (coverCrotch && crotchCoveringTf) {
+		if (demonTail) {
+			T.modeloptions.demon_tail_state = flauntingWhenExposed ? "flaunt" : "cover";
+			T.modeloptions.arm_right = rightArm;
+			if (!T.disabled.includes(V.transformationParts.cat.tail)) T.modeloptions.cat_tail_state = "cover";
+		} else if (catSithTail) {
+			T.modeloptions.cat_tail_state = flauntingWhenExposed ? "flaunt" : "cover";
+			T.modeloptions.arm_right = rightArm;
+		} else if (melusineWingsActive) {
+			T.modeloptions.melusine_wing_left = "cover";
+		} else if (!T.disabled.includes(V.transformationParts.angel.wings)) {
+			T.modeloptions.angel_wing_left = "cover";
+			T.modeloptions.bird_wing_left = "cover";
+		} else if (!T.disabled.includes(V.transformationParts.fallenAngel.wings)) {
+			T.modeloptions.fallen_wing_left = "cover";
+			T.modeloptions.bird_wing_left = "cover";
+		} else if (!T.disabled.includes(V.transformationParts.bird.wings)) {
+			T.modeloptions.bird_wing_left = "cover";
+		}
+	} else if (demonTail && V.exposed >= 2 && flauntingWhenExposed) {
+		T.modeloptions.demon_tail_state = "flaunt";
+	} else if (catSithTail && V.exposed >= 2 && flauntingWhenExposed) {
+		T.modeloptions.cat_tail_state = "flaunt";
+	}
+
+	if (T.prop) {
+		T.modeloptions.prop = {};
+		T.modeloptions.prop = Object.assign({}, T.prop);
+		T.modeloptions.prop.show = (T.modeloptions.arm_left !== "none" && T.modeloptions.arm_right !== "none") || T.modeloptions.prop.armPosition === "handsfree";
+		if (coverCrotch && T.prop.hasCoverImg && !crotchCoveringTf) T.modeloptions.prop.name += "-cover";
+	}
+
+	function armPosition(arm) {
+		if (["grappled", "bound"].includes(V[arm + "arm"])) return "none";
+
+		if (T.prop) {
+			if (propCoversNudity(arm)) return "cover";
+
+			if (T.prop.armPosition === "clutch") return arm === "right" ? "hold" : "cover";
+			if (T.prop.armPosition === `${arm}_cover` || T.prop.armPosition === "cover_both") return "cover";
+			if (T.prop.armPosition === `${arm}_hold`) return "hold";
+		}
+
+		if (useCover(arm)) return "cover";
+		if (useHold(arm)) return "hold";
+
+		return "idle";
+	}
+
+	function propCoversNudity(arm) {
+		if (wings || !T.prop.hasCoverImg) return false;
+		if (arm === "right" && demonTail) return false;
+
+		if (arm === "right" && coverCrotch && !T.prop.armPosition.includes("left")) return true;
+		if (arm === "left" && coverBreasts && (T.prop.armPosition.includes("left") || T.prop.armPosition === "idle_both")) return true;
+		return false;
+	}
+
+	function useCover(arm) {
+		const leftCoverClothes = setup.clothes_all_slots.some(slot => ["left_cover", "clutch", "cover_both"].includes(V.worn[slot]?.holdPosition));
+		const rightCoverClothes = setup.clothes_all_slots.some(slot => ["right_cover", "cover_both"].includes(V.worn[slot]?.holdPosition));
+
+		if ((arm === "left" && leftCoverClothes) || (arm === "right" && rightCoverClothes)) return true;
+		if (arm === "right" && setup.clothes.handheld[V.worn.handheld.index]?.holdingPreventsRightCover) return false;
+		if (arm === "left" && setup.clothes.handheld[V.worn.handheld.index]?.holdingPreventsLeftCover) return false;
+		// DoLX: a transformation that already covers the crotch stops the right arm doing it too.
+		if (arm === "left" && !wings && coverBreasts) return true;
+		if (arm === "right" && !wings && !crotchCoveringTf && coverCrotch) return true;
+		return false;
+	}
+
+	function useHold(arm) {
+		const rightHoldClothes =
+			setup.clothes_all_slots.some(slot => ["right_hold", "clutch"].includes(V.worn[slot]?.holdPosition)) ||
+			(V.worn.handheld.name !== "naked" && !["left_cover", "left_idle", "idle_both"].includes(V.worn.handheld?.holdPosition)) ||
+			(V.worn.bag?.name !== undefined && V.worn.bag.name !== "naked" && !["left_cover", "left_idle", "idle_both"].includes(V.worn.bag?.holdPosition));
+		const leftHoldClothes = setup.clothes_all_slots.some(slot => V.worn[slot]?.holdPosition === "left_hold");
+
+		if ((arm === "right" && rightHoldClothes) || (arm === "left" && leftHoldClothes)) return true;
+		return false;
+	}
+
+	/*
+			██     ██ ██████  ██ ████████ ██ ███    ██  ██████  ███████
+			██     ██ ██   ██ ██    ██    ██ ████   ██ ██       ██
+			██  █  ██ ██████  ██    ██    ██ ██ ██  ██ ██   ███ ███████
+			██ ███ ██ ██   ██ ██    ██    ██ ██  ██ ██ ██    ██      ██
+			 ███ ███  ██   ██ ██    ██    ██ ██   ████  ██████  ███████
+		*/
+
+	if (V.options.bodywritingImages === true) {
+		for (const [label, value] of Object.entries(V.skin)) {
+			if (value.writing) {
+				T.modeloptions["writing_" + label] = setup.bodywriting_namebyindex[value.index];
+			}
+		}
+	}
+
+	/*
+			███████ ██████  ███████  ██████ ██   ██ ██      ███████ ███████
+			██      ██   ██ ██      ██      ██  ██  ██      ██      ██
+			█████   ██████  █████   ██      █████   ██      █████   ███████
+			██      ██   ██ ██      ██      ██  ██  ██      ██           ██
+			██      ██   ██ ███████  ██████ ██   ██ ███████ ███████ ███████
+		*/
+	T.modeloptions.bodyFreckles = V.player.skin.bodyFreckles;
+
+	/*
+			███████  █████   ██████ ███████
+			██      ██   ██ ██      ██
+			█████   ███████ ██      █████
+			██      ██   ██ ██      ██
+			██      ██   ██  ██████ ███████
+		*/
+
+	T.modeloptions.facestyle = V.facestyle || "default";
+	T.modeloptions.facevariant = V.facevariant || "default";
+	T.modeloptions.freckles = V.player.skin.faceFreckles === true && !V.makeup.concealer;
+	T.modeloptions.ears_position = V.earsposition;
+	T.modeloptions.toast = T.toast === true;
+	T.modeloptions.scars = false;
+
+	// Eyes
+	if (V.possessed) {
+		T.modeloptions.trauma = V.possessed;
+	} else {
+		T.modeloptions.trauma = V.trauma >= V.traumamax * 0.9;
+	}
+	T.modeloptions.blink = V.options.blinkingEnabled;
+	/* Detached: arousal and embarrassment stay off the face. Pain still shows. */
+	const detachedFace = typeof detachedFaceMasked === "function" && detachedFaceMasked();
+	T.modeloptions.eyes_bloodshot = (V.pain >= 100 && V.willpowerpain === 0) || V.tiredness >= C.tiredness.max;
+	T.modeloptions.eyes_half =
+		(V.options.halfClosedEnabled &&
+			(V.arousal >= (V.arousalmax / 5) * 4 || V.orgasmdown >= 1) &&
+			!detachedFace &&
+			V.trauma < V.traumamax * 0.9 &&
+			V.pain < 60 &&
+			V.eyelidTEST === true) ||
+		V.possessed ||
+		V.tiredness >= C.tiredness.max * 0.75;
+
+	// Brows
+	if (V.trauma >= V.traumamax || V.possessed) {
+		T.modeloptions.brows = "top";
+	} else if (V.pain >= 60) {
+		T.modeloptions.brows = "low";
+	} else if ((V.arousal >= (V.arousalmax / 5) * 4 || V.orgasmdown >= 1) && !detachedFace) {
+		T.modeloptions.brows = "orgasm";
+	} else if (V.pain >= 20) {
+		T.modeloptions.brows = "mid";
+	} else {
+		T.modeloptions.brows = "top";
+	}
+	T.modeloptions.brows_position = V.browsposition;
+
+	// Mouth
+	if (V.underwater === 1 || (T.tempEffects?.underwater && T.tempEffects.underwater !== "noMouth")) {
+		T.modeloptions.mouth = "chew";
+	} else if (V.trauma >= V.traumamax) {
+		T.modeloptions.mouth = "neutral";
+	} else if (V.pain >= 60 || V.orgasmdown >= 1 || V.possessed) {
+		T.modeloptions.mouth = "cry";
+	} else if ((V.exposed === 2 && V.uncomfortable.nude === true && V.dontHide === false && V.libertine !== 2 && !detachedFace) || V.pain >= 20) {
+		T.modeloptions.mouth = "frown";
+	} else if (V.pain >= 1 || (V.exposed === 1 && V.uncomfortable.underwear === true) || (V.combat === 1 && V.consensual !== 1)) {
+		T.modeloptions.mouth = "neutral";
+	} else if (V.stress >= (V.stressmax / 5) * 3 || !(V.control >= (V.controlmax / 5) * 1) || detachedFace) {
+		T.modeloptions.mouth = "neutral";
+	} else {
+		T.modeloptions.mouth = V.defaultSidebarMouth;
+	}
+	if (T.prop?.folder === "food" && !T.prop.name.includes("gift")) {
+		const foodKey = T.prop.name
+			.replace(/-/g, "_")
+			.normalize("NFKD")
+			.replace(/[\u0300-\u036f]/g, "");
+		const category = setup.foodstuff[foodKey]?.category;
+		const shouldChew = (category ? category !== "dish" : true) && !T.prop.name.includes("inedible");
+		if (shouldChew) T.modeloptions.mouth = "chew";
+	}
+
+	// Blush
+	T.modeloptions.blush = Math.min(5, Math.floor(V.arousal / 2000) + 1);
+	if (T.modeloptions.blush < 2 && V.exposed >= 2) {
+		T.modeloptions.blush = 2;
+	} else if (V.arousal < 100 && V.exposed < 1) {
+		T.modeloptions.blush = 0;
+	}
+	if (
+		T.modeloptions.blush < 2 &&
+		!V.worn.over_upper.type.includes("naked") &&
+		!V.worn.over_lower.type.includes("naked") &&
+		V.worn.upper.type.includes("naked") &&
+		V.worn.lower.type.includes("naked") &&
+		V.worn.under_upper.type.includes("naked") &&
+		V.worn.under_lower.type.includes("naked")
+	) {
+		T.modeloptions.blush = 2;
+	}
+	if (detachedFace) T.modeloptions.blush = 0;
+
+	// Tears
+	T.modeloptions.tears = painToTearsLvl(V.pain);
+
+	/*
+		 ████████ ███████ ███████
+			██    ██      ██
+			██    █████   ███████
+			██    ██           ██
+			██    ██      ███████
+		*/
+
+	// Wing and tail idle/cover/flaunt state is configured in the arms section above
+
+	T.modeloptions.angel_wings_type = V.transformationParts.angel.wings;
+	T.modeloptions.angel_wings_layer = V.wingslayer;
+	T.modeloptions.angel_halo_type = V.transformationParts.angel.halo;
+
+	T.modeloptions.fallen_wings_type = V.transformationParts.fallenAngel.wings;
+	T.modeloptions.fallen_wings_layer = V.wingslayer;
+	T.modeloptions.fallen_halo_type = V.transformationParts.fallenAngel.halo;
+
+	T.modeloptions.demon_wings_type = V.transformationParts.demon.wings;
+	T.modeloptions.demon_wings_layer = V.wingslayer;
+	T.modeloptions.demon_tail_type = V.transformationParts.demon.tail;
+	T.modeloptions.demon_tail_layer = V.taillayer;
+	T.modeloptions.demon_horns_type = V.transformationParts.demon.horns;
+	T.modeloptions.demon_horns_layer = V.hornslayer;
+
+	T.modeloptions.wolf_tail_type = V.transformationParts.wolf.tail;
+	T.modeloptions.wolf_tail_layer = V.taillayer;
+	T.modeloptions.wolf_ears_type = V.transformationParts.wolf.ears;
+	T.modeloptions.wolf_pits_type = V.transformationParts.wolf.pits;
+	T.modeloptions.wolf_pubes_type = V.transformationParts.wolf.pubes;
+	T.modeloptions.wolf_cheeks_type = V.transformationParts.wolf.cheeks;
+
+	T.modeloptions.cat_tail_type = V.transformationParts.cat.tail;
+	T.modeloptions.cat_tail_layer = V.taillayer;
+	T.modeloptions.cat_ears_type = V.transformationParts.cat.ears;
+
+	T.modeloptions.cow_horns_type = V.transformationParts.cow.horns;
+	T.modeloptions.cow_horns_layer = V.hornslayer;
+	T.modeloptions.cow_tail_type = V.transformationParts.cow.tail.replace(/ /g, "-");
+	T.modeloptions.cow_tail_layer = V.taillayer;
+	T.modeloptions.cow_ears_type = V.transformationParts.cow.ears.replace(/ /g, "-");
+	T.modeloptions.waterdragon_horns_type = V.transformationParts.waterdragon.horns;
+	T.modeloptions.waterdragon_horns_layer = V.hornslayer;
+	T.modeloptions.waterdragon_tail_type = V.transformationParts.waterdragon.tail;
+	T.modeloptions.waterdragon_tail_layer = V.taillayer;
+	T.modeloptions.waterdragon_ears_type = V.transformationParts.waterdragon.ears;
+
+	T.modeloptions.bird_wings_type = V.transformationParts.bird.wings;
+	T.modeloptions.bird_wings_layer = V.wingslayer;
+	T.modeloptions.bird_tail_type = V.transformationParts.bird.tail;
+	T.modeloptions.bird_tail_layer = V.taillayer;
+	T.modeloptions.bird_eyes_type = V.transformationParts.bird.eyes;
+	T.modeloptions.bird_malar_type = V.transformationParts.bird.malar;
+	T.modeloptions.bird_plumage_type = V.transformationParts.bird.plumage;
+	T.modeloptions.bird_pubes_type = V.transformationParts.bird.pubes;
+
+	T.modeloptions.fox_tail_type = V.transformationParts.fox.tail;
+	T.modeloptions.fox_tail_layer = V.taillayer;
+	T.modeloptions.fox_ears_type = V.transformationParts.fox.ears;
+	T.modeloptions.fox_cheeks_type = V.transformationParts.fox.cheeks;
+
+	T.modeloptions.bunny_tail_type = V.transformationParts.bunny.tail;
+	T.modeloptions.bunny_tail_layer = V.taillayer;
+	T.modeloptions.bunny_ears_type = V.transformationParts.bunny.ears;
+
+	T.modeloptions.bear_plumage_type = V.transformationParts.bear.plumage;
+	T.modeloptions.bear_pubes_type = V.transformationParts.bear.pubes;
+	T.modeloptions.bear_tail_type = V.transformationParts.bear.tail;
+	T.modeloptions.bear_tail_layer = V.taillayer;
+	T.modeloptions.bear_ears_type = V.transformationParts.bear.ears;
+
+	T.modeloptions.okami_tail_type = V.transformationParts.okami.tail;
+	T.modeloptions.okami_tail_layer = V.taillayer;
+	T.modeloptions.okami_ears_type = V.transformationParts.okami.ears;
+	T.modeloptions.okami_wings_type = V.transformationParts.okami.wings;
+	T.modeloptions.okami_wings_layer = V.wingslayer;
+	T.modeloptions.okami_misc_type = V.transformationParts.okami.misc;
+
+	T.modeloptions.seraphim_wings_type = V.transformationParts.seraphim.wings;
+	T.modeloptions.seraphim_wings_layer = V.wingslayer;
+	T.modeloptions.seraphim_plumage_type = V.transformationParts.seraphim.plumage;
+	T.modeloptions.seraphim_eyes_type = V.transformationParts.seraphim.eyes;
+
+	T.modeloptions.kitsune_tail_type = V.transformationParts.kitsune.tail;
+	T.modeloptions.kitsune_tail_layer = V.taillayer;
+	T.modeloptions.kitsune_ears_type = V.transformationParts.kitsune.ears;
+	T.modeloptions.kitsune_cheeks_type = V.transformationParts.kitsune.cheeks;
+	T.modeloptions.kitsune_misc_type = V.transformationParts.kitsune.misc;
+
+	/*
+
+		██████╗ ███████╗ ██████╗ ██████╗ ██████╗  █████╗ ████████╗██╗ ██████╗ ███╗   ██╗███████╗
+		██╔══██╗██╔════╝██╔════╝██╔═══██╗██╔══██╗██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
+		██║  ██║█████╗  ██║     ██║   ██║██████╔╝███████║   ██║   ██║██║   ██║██╔██╗ ██║███████╗
+		██║  ██║██╔══╝  ██║     ██║   ██║██╔══██╗██╔══██║   ██║   ██║██║   ██║██║╚██╗██║╚════██║
+		██████╔╝███████╗╚██████╗╚██████╔╝██║  ██║██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║███████║
+		╚═════╝ ╚══════╝ ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
+
+
+	*/
+
+	T.modeloptions.background_image_type1 = V.background_image1;
+	T.modeloptions.foreground_image_type1 = V.foreground_image1;
+	T.modeloptions.background_image_type2 = V.background_image2;
+	T.modeloptions.foreground_image_type2 = V.foreground_image2;
+
+	/*
+			██████ ██   ██ ██ ███    ███ ███████ ██████   █████
+			██      ██   ██ ██ ████  ████ ██      ██   ██ ██   ██
+			██      ███████ ██ ██ ████ ██ █████   ██████  ███████
+			██      ██   ██ ██ ██  ██  ██ ██      ██   ██ ██   ██
+			██████ ██   ██ ██ ██      ██ ███████ ██   ██ ██   ██
+		*/
+
+	const fallenPresent = [T.modeloptions.fallen_halo_type, T.modeloptions.fallen_wings_type].some(isPartEnabled);
+
+	// Kasha (cat + demon) tail
+	if (isPartEnabled(T.modeloptions.cat_tail_type) && isPartEnabled(T.modeloptions.demon_tail_type) && isChimeraEnabled("demoncat", "tail")) {
+		T.modeloptions.demon_tail_type = "default-cat";
+		T.modeloptions.demon_tail_layer = "cover";
+	}
+	// Cat sith (cat + fallen angel)
+	T.modeloptions.catsith_ears_type = "disabled";
+	if (isPartEnabled(T.modeloptions.cat_ears_type) && fallenPresent && isChimeraEnabled("catsith", "ears")) {
+		T.modeloptions.catsith_ears_type = "default";
+		T.modeloptions.cat_ears_type = "hidden";
+	}
+	T.modeloptions.catsith_tail_type = "disabled";
+	if (isPartEnabled(T.modeloptions.cat_tail_type) && fallenPresent && isChimeraEnabled("catsith", "tail")) {
+		T.modeloptions.catsith_tail_type = "default";
+		T.modeloptions.catsith_tail_layer = T.modeloptions.cat_tail_layer;
+		T.modeloptions.cat_tail_type = "hidden";
+	}
+	// Demon-harpy wings
+	if (isPartEnabled(T.modeloptions.demon_wings_type) && isPartEnabled(T.modeloptions.bird_wings_type) && isChimeraEnabled("demonharpy", "wings")) {
+		T.modeloptions.bird_wings_type = "default-demon";
+		T.modeloptions.demon_wings_type = "hidden";
+	}
+	// Angel-harpy wings
+	if (isPartEnabled(T.modeloptions.angel_wings_type) && isPartEnabled(T.modeloptions.bird_wings_type) && isChimeraEnabled("angelharpy", "wings")) {
+		T.modeloptions.bird_wings_type = "default-angel";
+		T.modeloptions.angel_wings_type = "harpy-default";
+	}
+	// Fallen angel-harpy wings
+	if (isPartEnabled(T.modeloptions.fallen_wings_type) && isPartEnabled(T.modeloptions.bird_wings_type) && isChimeraEnabled("fallenharpy", "wings")) {
+		T.modeloptions.bird_wings_type = V.transformationParts.fallenAngel.wings.includes("fallenplus") ? "default-angel" : "default-fallen";
+		T.modeloptions.fallen_wings_type = T.modeloptions.fallen_wings_type.includes("fallenplus") ? "harpy-fallenplus" : "harpy-default";
+	}
+	// Demon-cow horns
+	if (isPartEnabled(T.modeloptions.cow_horns_type) && isPartEnabled(T.modeloptions.demon_horns_type) && isChimeraEnabled("demoncow", "horns")) {
+		if (["default"].includes(T.modeloptions.demon_horns_type)) {
+			// Force default horns if the PC has unsupported horn styles (e.g. Classic)
+			T.modeloptions.cow_horns_type = "default-demon";
+		} else if (["succubus"].includes(T.modeloptions.demon_horns_type)) {
+			// Force default horns if the PC has unsupported horn styles (e.g. Classic)
+			T.modeloptions.cow_horns_type = "succubus-demon";
+		} else {
+			T.modeloptions.cow_horns_type = "classic-demon";
+		}
+	}
+	// Demon-cow tail
+	if (isPartEnabled(T.modeloptions.cow_tail_type) && isPartEnabled(T.modeloptions.demon_tail_type) && isChimeraEnabled("demoncow", "tail")) {
+		T.modeloptions.demon_tail_type = "default-cow";
+		T.modeloptions.cow_tail_type = T.modeloptions.cow_tail_type + "-demon";
+	}
+	// Demon-wolf tail
+	if (isPartEnabled(T.modeloptions.wolf_tail_type) && isPartEnabled(T.modeloptions.demon_tail_type) && isChimeraEnabled("demonwolf", "tail")) {
+		T.modeloptions.demon_tail_type = T.modeloptions.wolf_tail_type === "feral" ? "default-feral" : "default-wolf";
+		T.modeloptions.wolf_tail_type = T.modeloptions.wolf_tail_type === "feral" ? "demon-feral" : "demon-default";
+	}
+	// Demon-fox tail
+	if (isPartEnabled(T.modeloptions.fox_tail_type) && isPartEnabled(T.modeloptions.demon_tail_type) && isChimeraEnabled("demonfox", "tail")) {
+		T.modeloptions.fox_tail_type = "default-demon";
+		T.modeloptions.demon_tail_type = "hidden";
+	}
+	// Demon-fox ears
+	if (isPartEnabled(T.modeloptions.fox_ears_type) && Transformations.effectiveLevel("demon") >= 6 && isChimeraEnabled("demonfox", "ears")) {
+		T.modeloptions.fox_ears_type = "default-demon";
+	}
+
+	const demonPresent = [T.modeloptions.demon_horns_type, T.modeloptions.demon_tail_type, T.modeloptions.demon_wings_type].some(isPartEnabled);
+	const angelPresent = [T.modeloptions.angel_halo_type, T.modeloptions.angel_wings_type].some(isPartEnabled);
+	const waterDragonPresent = [T.modeloptions.waterdragon_horns_type, T.modeloptions.waterdragon_ears_type, T.modeloptions.waterdragon_tail_type].some(
+		isPartEnabled
+	);
+	const birdPresent = isPartEnabled(T.modeloptions.bird_wings_type);
+	const purpleWaterDragon = ["purple", "short"].includes(T.modeloptions.waterdragon_tail_type);
+
+	// Bakunawa tail
+	if (isPartEnabled(T.modeloptions.waterdragon_tail_type) && isPartEnabled(T.modeloptions.demon_tail_type) && isChimeraEnabled("bakunawa", "tail")) {
+		T.modeloptions.demon_tail_type = "default-wd";
+		T.modeloptions.demon_tail_layer = "cover";
+		T.modeloptions.waterdragon_tail_type = "hidden";
+	}
+	// Bakunawa horns
+	if (isPartEnabled(T.modeloptions.waterdragon_horns_type) && isPartEnabled(T.modeloptions.demon_horns_type) && isChimeraEnabled("bakunawa", "horns")) {
+		T.modeloptions.waterdragon_horns_type = "default-demon";
+		T.modeloptions.demon_horns_type = "hidden";
+	}
+	// Bakunawa ears
+	if (isPartEnabled(T.modeloptions.waterdragon_ears_type) && demonPresent && isChimeraEnabled("bakunawa", "ears")) {
+		T.modeloptions.waterdragon_ears_type = "default-demon";
+	}
+
+	// Ryuujin tail
+	if (isPartEnabled(T.modeloptions.waterdragon_tail_type) && angelPresent && isChimeraEnabled("ryuujin", "tail")) {
+		T.modeloptions.waterdragon_tail_type = purpleWaterDragon ? "purple-angel" : "default-angel";
+	}
+	// Ryuujin horns
+	if (isPartEnabled(T.modeloptions.waterdragon_horns_type) && angelPresent && isChimeraEnabled("ryuujin", "horns")) {
+		T.modeloptions.waterdragon_horns_type = "default-angel";
+	}
+	// Ryuujin halo
+	if (isPartEnabled(T.modeloptions.angel_halo_type) && waterDragonPresent && isChimeraEnabled("ryuujin", "halo")) {
+		T.modeloptions.angel_halo_type = purpleWaterDragon ? "wdPurple" : "wdDefault";
+	}
+
+	// Melusine (water dragon + angel + harpy): dedicated art fully replaces the base sprite each piece draws from, so the base layer is hidden here rather than filename-swapped like the composites above.
+	// Each piece is independently configurable, same as Bakunawa/Ryuujin.
+	// The per-piece toggle doubles as a colourway picker: it holds "default" or "purple" (legacy saves hold `true`, which reads as "default"), and false when hidden. Wings have no purple art yet, so they stay on "default".
+	const melusineColour = part => (V.chimera?.melusine?.[part] === "purple" ? "purple" : "default");
+
+	T.modeloptions.melusine_ears_type = "disabled";
+	if (isPartEnabled(T.modeloptions.waterdragon_ears_type) && angelPresent && birdPresent && isChimeraEnabled("melusine", "ears")) {
+		T.modeloptions.melusine_ears_type = melusineColour("ears");
+		T.modeloptions.waterdragon_ears_type = "hidden";
+	}
+	T.modeloptions.melusine_horns_type = "disabled";
+	if (isPartEnabled(T.modeloptions.waterdragon_horns_type) && angelPresent && birdPresent && isChimeraEnabled("melusine", "horns")) {
+		T.modeloptions.melusine_horns_type = melusineColour("horns");
+		T.modeloptions.melusine_horns_layer = V.hornslayer;
+		T.modeloptions.waterdragon_horns_type = "hidden";
+	}
+	T.modeloptions.melusine_tail_type = "disabled";
+	if (isPartEnabled(T.modeloptions.waterdragon_tail_type) && angelPresent && birdPresent && isChimeraEnabled("melusine", "tail")) {
+		T.modeloptions.melusine_tail_type = melusineColour("tail");
+		T.modeloptions.melusine_tail_layer = V.taillayer;
+		T.modeloptions.waterdragon_tail_type = "hidden";
+	}
+	T.modeloptions.melusine_halo_type = "disabled";
+	if (isPartEnabled(T.modeloptions.angel_halo_type) && waterDragonPresent && birdPresent && isChimeraEnabled("melusine", "halo")) {
+		T.modeloptions.melusine_halo_type = melusineColour("halo");
+		T.modeloptions.angel_halo_type = "hidden";
+	}
+	T.modeloptions.melusine_wings_type = "disabled";
+	if (isPartEnabled(T.modeloptions.bird_wings_type) && angelPresent && waterDragonPresent && isChimeraEnabled("melusine", "wings")) {
+		T.modeloptions.melusine_wings_type = "default";
+		T.modeloptions.melusine_wings_layer = V.wingslayer;
+		T.modeloptions.bird_wings_type = "hidden";
+	}
+
+	// The "Divine Wings" mirror section (Angel/Fallen/Okami/Seraphim) and the "Wings" section (Bird only) are
+	// independent selections and can both be non-"None" at once, which would otherwise render two overlapping
+	// wing pairs. A Divine Wings pick is the more deliberate, specific choice, so it wins over the default Bird
+	// sprite. (Demon keeps its own pre-existing opposite rule below, unchanged: Bird already wins over Demon's
+	// separate wings there.) Angel/Fallen are excluded here when their own angelharpy/fallenharpy blend toggle is
+	// enabled, since that composite intentionally renders both layers together as one matched pair.
+	const divineWingsWinsOverBird =
+		(isPartEnabled(T.modeloptions.angel_wings_type) && !isChimeraEnabled("angelharpy", "wings")) ||
+		(isPartEnabled(T.modeloptions.fallen_wings_type) && !isChimeraEnabled("fallenharpy", "wings")) ||
+		isPartEnabled(T.modeloptions.okami_wings_type) ||
+		isPartEnabled(T.modeloptions.seraphim_wings_type);
+	if (isPartEnabled(T.modeloptions.bird_wings_type) && divineWingsWinsOverBird) {
+		T.modeloptions.bird_wings_type = "hidden";
+	}
+
+	// Melusine's dedicated wings sprite already consumed Bird's wings as one of its three preconditions;
+	// if it's showing, it should be the only wing pair visible, overriding any independently-selected Divine Wings pick too.
+	if (isPartEnabled(T.modeloptions.melusine_wings_type)) {
+		T.modeloptions.angel_wings_type = "hidden";
+		T.modeloptions.fallen_wings_type = "hidden";
+		T.modeloptions.okami_wings_type = "hidden";
+		T.modeloptions.seraphim_wings_type = "hidden";
+		T.modeloptions.demon_wings_type = "hidden";
+	}
+
+	/*
+			██████ ██████   ██████  ████████  ██████ ██   ██
+			██      ██   ██ ██    ██    ██    ██      ██   ██
+			██      ██████  ██    ██    ██    ██      ███████
+			██      ██   ██ ██    ██    ██    ██      ██   ██
+			██████ ██   ██  ██████     ██     ██████ ██   ██
+		*/
+
+	T.modeloptions.crotch_visible = true;
+
+	if (V.settings.pubicHairEnabled === true) {
+		T.modeloptions.pbhair_level = V.pblevel;
+		T.modeloptions.pbhair_strip = V.pbstrip;
+		T.modeloptions.pbhair_balls = V.pblevelballs;
+	}
+
+	if (V.player.penisExist) {
+		T.modeloptions.penis_size = Math.clamp(V.player.penissize, 0, 6);
+		T.modeloptions.balls = V.player.ballsExist;
+		T.modeloptions.penis_condom = V.player.condom.type;
+		T.modeloptions.condom_colour = V.player.condom.colour;
+		const flaccid = V.arousal < 6000 ? "soft" : "hard";
+		const virgin = V.player.virginity.penile === true ? "-virgin-" : "-";
+		T.modeloptions.penis = flaccid + virgin + T.modeloptions.penis_size;
+
+		if (V.parasite.penis.name || V.parasite.clit.name === "parasite") {
+			/* ear-slime */
+			if (V.parasite.penis.name === "parasite" || V.parasite.clit.name === "parasite") {
+				T.modeloptions.ear_slime_size = V.player.penissize;
+				if (V.worn.genitals.name === "chastity parasite") {
+					switch (V.player.penissize) {
+						case 2:
+							T.modeloptions.ear_slime_size = 1;
+							break;
+						case 3:
+						case 4:
+							T.modeloptions.ear_slime_size = 2;
+							break;
+						case 5:
+						case 6:
+							T.modeloptions.ear_slime_size = 3;
+							break;
+						default:
+							T.modeloptions.ear_slime_size = 0;
+							break;
+					}
+				}
+				T.modeloptions.penis_parasite = `ear-slime-${T.modeloptions.ear_slime_size}`;
+			} else {
+				/* slime, urchin */
+				T.modeloptions.penis_parasite = V.parasite.penis.name;
+				if (playerChastity("cage")) {
+					/* slime-cage.png, urchin-cage.png */
+					T.modeloptions.penis_parasite += "-cage";
+					/* A belt that X-Change reshaped into a cage has no cage art of its own, so it uses the plain cage. */
+					const cageName = setup.clothes.genitals[clothesIndex("genitals", V.worn.genitals)]?.type.includes("cage") ? V.worn.genitals.name : "chastity cage";
+					if (cageName !== "chastity cage") {
+						/* slime-cage-fetish.png, slime-cage-small.png, slime-cage-flat.png, etc. */
+						const cageType = cageName === "fetish flat chastity cage" ? "flat" : cageName.replace(" chastity cage", "");
+						T.modeloptions.penis_parasite += `-${cageType}`;
+					}
+				} else {
+					/* slime-hard-3.png, urchin-hard-2.png, etc. */
+					T.modeloptions.penis_parasite += `-${flaccid}-${V.player.penissize}`;
+				}
+			}
+		}
+	}
+
+	if (V.player.vaginaExist && V.parasite.clit.name && V.parasite.clit.name !== "parasite") {
+		/* slime-clit.png, urchin-clit.png */
+		T.modeloptions.clit_parasite = V.parasite.clit.name;
+	}
+
+	/* ear slime parasite */
+	if (V.parasite.penis.name === "parasite" || V.parasite.clit.name === "parasite") {
+		if (V.earSlime.focus === "impregnation") {
+			T.modeloptions.ear_slime_panties = "ear-slime-shorts";
+		} else {
+			T.modeloptions.ear_slime_panties = "ear-slime-panties";
+		}
+
+		// Ensure it's always displayed
+		if (V.worn.genitals.name === "chastity parasite") {
+			T.modeloptions.worn = T.modeloptions.worn || {};
+			T.modeloptions.worn.genitals = {
+				index: clothesIndex("genitals", V.worn.genitals),
+				integrity: integrityKeyword(V.worn.genitals, "genitals"),
+				colour: V.worn.genitals.colour,
+			};
+		}
+	}
+
+	// Dripping Speeds
+	const dripspeeds = ["", "start", "very-slow", "slow", "fast", "very-fast"];
+
+	// Vagina
+	let _liquidamt = Math.clamp(setup.bodyliquid.combined("vagina"), 0, 5);
+	T.modeloptions.drip_vaginal = typeof playerGenitalFluidLeakBlocked === "function" && playerGenitalFluidLeakBlocked("vagina") ? "" : dripspeeds[_liquidamt];
+
+	// Anus
+	_liquidamt = Math.clamp(setup.bodyliquid.combined("anus"), 0, 5);
+	T.modeloptions.drip_anal = typeof playerGenitalFluidLeakBlocked === "function" && playerGenitalFluidLeakBlocked("anus") ? "" : dripspeeds[_liquidamt];
+
+	// Mouth
+	_liquidamt = Math.clamp(setup.bodyliquid.combined("mouth"), 0, 5);
+	T.modeloptions.drip_mouth = dripspeeds[_liquidamt];
+
+	let _chestVisible = false;
+	if (V.worn.upper.exposed >= 2 && V.worn.under_upper.exposed >= 1) {
+		_chestVisible = true;
+	} else if ((V.upperwetstage > 0 || V.worn.upper.type.includes("naked")) && (V.underupperwetstage > 0 || V.worn.under_upper.type.includes("naked"))) {
+		_chestVisible = true;
+	}
+
+	if (_chestVisible) {
+		T.modeloptions.nipples_parasite = V.parasite.nipples.name;
+		T.modeloptions.breasts_parasite = V.parasite.breasts.name;
+	}
+
+	/*
+			███████ ██      ██    ██ ██ ██████  ███████
+			██      ██      ██    ██ ██ ██   ██ ██
+			█████   ██      ██    ██ ██ ██   ██ ███████
+			██      ██      ██    ██ ██ ██   ██      ██
+			██      ███████  ██████  ██ ██████  ███████
+		*/
+
+	const cumsprite = {
+		chest: [null, "1", "2", "3", "4", "4"],
+		face: [null, "1", "1", "2", "2", "3"],
+		feet: [null, null, "1", "1", "2", "2"],
+		leftarm: [null, "1", "1", "1", "2", "2"],
+		rightarm: [null, "1", "1", "1", "2", "2"],
+		neck: [null, "1", "1", "2", "2", "3"],
+		thigh: [null, "1", "2", "3", "4", "5"],
+		tummy: [null, "1", "2", "3", "4", "5"],
+	};
+	const bodyparts = ["chest", "face", "feet", "leftarm", "rightarm", "neck", "thigh", "tummy"];
+	bodyparts.forEach(bodypart => {
+		const liquidamt = Math.clamp(setup.bodyliquid.combined(bodypart), 0, 5);
+		T.modeloptions["cum_" + bodypart] = cumsprite[bodypart].select(liquidamt);
+	});
+
+	/***
+	 *    ███████  ██████  ██      ██       ██████  ██     ██ ███████ ██████
+	 *    ██      ██    ██ ██      ██      ██    ██ ██     ██ ██      ██   ██
+	 *    █████   ██    ██ ██      ██      ██    ██ ██  █  ██ █████   ██████
+	 *    ██      ██    ██ ██      ██      ██    ██ ██ ███ ██ ██      ██   ██
+	 *    ██       ██████  ███████ ███████  ██████   ███ ███  ███████ ██   ██
+	 */
+
+	T.modeloptions.follower = !V.nnpcFollowerDisplayEnabled || (V.options.NnpcDisplaySystem === "vanilla" && !V.statFreeze) ? V.follower || false : false;
+	T.modeloptions.show_nnpc = V.options.NnpcDisplaySystem === "dolp";
+
+	/**
+	 *     ██████  █████  ███    ██ ██    ██  █████  ███████
+	 *    ██      ██   ██ ████   ██ ██    ██ ██   ██ ██
+	 *    ██      ███████ ██ ██  ██ ██    ██ ███████ ███████
+	 *    ██      ██   ██ ██  ██ ██  ██  ██  ██   ██      ██
+	 *     ██████ ██   ██ ██   ████   ████   ██   ██ ███████
+	 *
+	 *    ███████ ███████ ███████ ███████  ██████ ████████ ███████
+	 *    ██      ██      ██      ██      ██         ██    ██
+	 *    █████   █████   █████   █████   ██         ██    ███████
+	 *    ██      ██      ██      ██      ██         ██         ██
+	 *    ███████ ██      ██      ███████  ██████    ██    ███████
+	 */
+
+	T.modeloptions.precipitation =
+		V.options.showSidebarEffects && Weather.precipitation !== "none" && Weather.overcast > 0.25 && V.outside === 1 && !V.underwater;
+	T.modeloptions.wraithFlash = V.options.showSidebarEffects;
+	T.modeloptions.water = V.options.showSidebarEffects && (V.underwater === 1 || T.tempEffects?.underwater);
+	T.modeloptions.waterBreath = V.options.showSidebarEffects && T.modeloptions.water && T.tempEffects?.underwater !== "noMouth";
+	T.modeloptions.fire = V.options.showSidebarEffects && (V.fire || T.tempEffects?.fire || (V.farm_assault && V.fields_damaged.includes(V.bus)));
+	T.modeloptions.fireFront = V.options.showSidebarEffects && (T.tempEffects?.fireFront || (V.farm_assault && V.fields_damaged.length >= 1));
+	T.modeloptions.temperature = V.options.showSidebarEffects && !T.modeloptions.fire && !T.modeloptions.water && V.outside === 1 && Weather.temperature <= 5;
+	T.modeloptions.temperature = V.options.showSidebarEffects && !T.modeloptions.fire && !T.modeloptions.water && V.outside === 1 && Weather.temperature <= 5;
+	T.modeloptions.petals = V.options.showSidebarEffects && T.tempEffects?.petals;
+	if (T.modeloptions.petals) T.modeloptions.petalColour = V.sexRitual && V.gwylanSeen?.includes("romance") ? "pink" : "red-white";
+	T.modeloptions.vines = T.tempEffects?.vines;
+});
+
+DefineMacro("modelprepare-player-clothes", function () {
+	T.modeloptions.breasts = !V.worn.upper.type.includes("naked") || !V.worn.under_upper.type.includes("naked") || T.coverBreastsWithArm ? "cleavage" : "default";
+
+	apparentbreastsizecheck();
+	T.modeloptions.breast_size = Math.floor(V.player.perceived_breastsize / 2);
+
+	// if (V.worn.under_upper.type.includes("chest_bind")) {
+	// 	T.modeloptions.breast_size = 1;
+	// }
+
+	if (V.worn.lower.exposed >= 2 && V.worn.under_lower.exposed >= 1 && !V.worn.legs.name.includes("tights")) {
+		T.modeloptions.crotch_visible = true;
+		T.modeloptions.crotch_exposed = true;
+	} else if ((V.lowerwetstage > 0 || V.worn.lower.type.includes("naked")) && (V.underlowerwetstage > 0 || V.worn.under_lower.type.includes("naked"))) {
+		T.modeloptions.crotch_visible = true;
+		T.modeloptions.crotch_exposed = false;
+	} else {
+		T.modeloptions.crotch_visible = false;
+	}
+
+	T.modeloptions.hood_down = V.worn.upper.hoodposition === "down";
+
+	if (
+		((V.worn.over_head.hood === 1 && V.worn.over_head.mask_img !== 1) || (V.worn.head.hood === 1 && V.worn.head.mask_img !== 1)) &&
+		V.worn.upper.hoodposition === "down"
+	) {
+		T.modeloptions.hair_sides_length = "short";
+		T.modeloptions.hair_fringe_length = "short";
+	}
+
+	T.modeloptions.facewear_layer = V.facelayer;
+	T.modeloptions.neck_tucked = V.neckTucked;
+	T.modeloptions.upper_tucked = V.upperTucked && !setup.clothes.upper[clothesIndex("upper", V.worn.upper)].notuck && V.worn.upper.outfitPrimary === undefined;
+	T.modeloptions.lower_tucked = !V.worn.feet.notuck && !V.worn.lower.notuck && V.lowerTucked;
+	T.modeloptions.belly_tucked =
+		V.bellyTucked === 1 &&
+		V.player.bodyshape === "soft" &&
+		V.worn.lower.name !== "naked" &&
+		(!setup.clothes.lower[clothesIndex("lower", V.worn.lower)].outfitSecondary ||
+			setup.clothes.lower[clothesIndex("lower", V.worn.lower)]?.outfitSecondary[1] !== V.worn.upper.name);
+
+	Object.assign(T.modeloptions, getClothingOptions());
+	const overrides = V.modeloptionsOverride;
+	if (Object.keys(overrides).length > 0) {
+		for (const [key, value] of Object.entries(overrides)) {
+			T.modeloptions[key] = value;
+		}
+	}
+});
+
+/*
+ * Checks whether the doll uses artwork larger than the standard 256px size.
+ *
+ * High-resolution image packs should scale smoothly to keep their extra detail,
+ * while standard pixel art still uses whole-number scaling.
+ * With no argument, this checks whether a high-resolution pack was detected.
+ */
+const STOCK_DOLL_CANVAS_HEIGHT = 256;
+function dollArtIsHighRes(canvas) {
+	if (canvas) return canvas.height > STOCK_DOLL_CANVAS_HEIGHT;
+	return (Renderer.artScale || 1) > 1;
+}
+window.dollArtIsHighRes = dollArtIsHighRes;
+
+/*
+ * Choose how the browser scales a doll canvas.
+ *
+ * Use `pixelated` for normal pixel art shown at its original size or larger.
+ * This keeps the sprite sharp by preserving its pixel grid.
+ *
+ * Do not use it when:
+ * - the canvas is being displayed smaller than its rendered size, as detail can be lost;
+ * - the doll is rendered at a high-resolution image pack's native size, where `pixelated`
+ *   can make edges look jagged.
+ *
+ * The size check uses device pixels, so high-DPI screens are handled correctly.
+ * The lighting layer stays at stock resolution. When the doll and lighting are drawn
+ * together, callers should use the same scaling mode for both so they stay visually consistent.
+ *
+ * @param {HTMLCanvasElement} canvas
+ * @param {number} [cssWidth] Display width in CSS pixels. Uses the element width if omitted.
+ * @param {number} [ratio] Rendered pixels per CSS pixel. Defaults to devicePixelRatio.
+ * @param {boolean} [highRes] Override the canvas resolution check.
+ */
+function setCanvasScalingMode(canvas, cssWidth, ratio, highRes) {
+	if (!canvas) return;
+	if (highRes ?? dollArtIsHighRes(canvas)) {
+		canvas.style.imageRendering = "auto";
+		return;
+	}
+	const displayed = cssWidth ?? canvas.getBoundingClientRect().width;
+	const native = canvas.width || displayed;
+	if (!displayed || !native) return;
+	const devicePixels = displayed * (ratio || window.devicePixelRatio || 1);
+	/* The tolerance stops rounding noise from flipping the mode on a canvas that is really 1:1. */
+	canvas.style.imageRendering = devicePixels < native - 0.5 ? "auto" : "pixelated";
+}
+window.setCanvasScalingMode = setCanvasScalingMode;
+
+/*
+ * Keep sidebar doll canvases at their normal display size.
+ *
+ * Image mods may use larger sprites, but the sidebar itself should not grow.
+ * Only the image scaling changes to match the sprite resolution.
+ * Scoped to `#img` so the popup lighting layer is not resized out of alignment.
+ *
+ * @param {number} cssSize Display size in CSS pixels.
+ */
+function sizeSidebarDollCanvases(cssSize) {
+	const highRes = dollArtIsHighRes();
+	const rayArt = window.modUtils?.getAnyModByNameNoAlias("Ray Art Mod(for DoLP)");
+	for (const canvas of document.querySelectorAll("#img canvas.mainCanvas, #img canvas.mainCanvasnobonder, #img canvas.lighting")) {
+		if (rayArt) {
+			// Ray fills the whole square frame; the stock doll's cropped viewport cuts off its feet and portrait.
+			const container = canvas.parentElement;
+			cssSize = Math.min(container.clientWidth, container.clientHeight);
+			canvas.style.margin = "0";
+			canvas.style.left = `${(container.clientWidth - cssSize) / 2}px`;
+			canvas.style.top = "0";
+		}
+		// Art mods may force their source resolution with !important; the sidebar still owns its display size.
+		canvas.style.setProperty("width", `${cssSize}px`, "important");
+		canvas.style.setProperty("height", `${cssSize}px`, "important");
+		setCanvasScalingMode(canvas, cssSize, undefined, highRes || undefined);
+	}
+}
+window.sizeSidebarDollCanvases = sizeSidebarDollCanvases;
+
+/*
+ * Check how much the zoom option enlarges the doll popup.
+ *
+ * The result is used to correct canvas sizes.
+ * Browsers that ignore CSS `zoom` return 1, so no correction is needed.
+ */
+function dollOverlayZoom(wrapper) {
+	const probe = document.createElement("div");
+	probe.style.cssText = "position:absolute;left:0;top:0;width:100px;height:0;visibility:hidden;pointer-events:none;";
+	wrapper.appendChild(probe);
+	const measured = probe.getBoundingClientRect().width;
+	probe.remove();
+	return measured > 0 ? measured / 100 : 1;
+}
+
+/*
+ * Keep the doll popup scaled to whole-number sizes.
+ *
+ * Fractional scaling can make pixel art look uneven or slightly stretched.
+ * Use the largest whole-number scale that fits, then place the canvas on whole pixels.
+ * This is calculated in rendered pixels so it also works with browser zoom, the zoom option and HiDPI screens.
+ * Browser zoom changes devicePixelRatio, the zoom option changes the CSS zoom.
+ *
+ * Apply the same scale to every canvas layer so they stay aligned.
+ */
+function sizeDollOverlayCanvases() {
+	const wrapper = document.querySelector(".doll-overlay-canvas");
+	if (!wrapper) return;
+	const canvases = Array.from(wrapper.querySelectorAll("canvas"));
+	if (!canvases.length) return;
+
+	const box = wrapper.getBoundingClientRect();
+	if (!box.width || !box.height) return;
+
+	const cssZoom = dollOverlayZoom(wrapper);
+	const dpr = window.devicePixelRatio || 1;
+	/* Rendered pixels covered by one CSS pixel of the lengths set below. */
+	const ratio = dpr * cssZoom;
+	/* The wrapper measurements, converted to those same CSS pixels. */
+	const boxWidth = box.width / cssZoom;
+	const boxHeight = box.height / cssZoom;
+	const boxLeft = box.left / cssZoom;
+	const boxTop = box.top / cssZoom;
+
+	const nativeWidth = Math.max(...canvases.map(canvas => canvas.width || 256));
+	const nativeHeight = Math.max(...canvases.map(canvas => canvas.height || 256));
+	/*
+	 * Whole-number scaling keeps enlarged pixel art sharp.
+	 * Don't use it when:
+	 * - rendering a high-resolution image pack at its native resolution;
+	 * - the image is larger than the popup and needs to scale down to fit.
+	 */
+	const highRes = dollArtIsHighRes();
+	const fit = Math.min((boxWidth * ratio) / nativeWidth, (boxHeight * ratio) / nativeHeight);
+	const scale = highRes || fit < 1 ? fit : Math.floor(fit);
+	/* Snap a CSS length to a whole rendered pixel. */
+	const snap = value => Math.round(value * ratio) / ratio;
+
+	for (const canvas of canvases) {
+		/*
+		 * All layers use the same size so lighting stays aligned with
+		 * higher-resolution image pack sprites.
+		 */
+		const width = (nativeWidth * scale) / ratio;
+		const height = (nativeHeight * scale) / ratio;
+		/*
+		 * Snap the sprite's absolute position to whole pixels.
+		 * The wrapper may sit on fractional pixels, which can still blur the sprite even at a whole-number scale.
+		 */
+		canvas.style.width = `${width}px`;
+		canvas.style.height = `${height}px`;
+		setCanvasScalingMode(canvas, width, ratio, highRes || undefined);
+		canvas.style.left = `${snap(boxLeft + (boxWidth - width) / 2) - boxLeft}px`;
+		canvas.style.top = `${snap(boxTop + (boxHeight - height) / 2) - boxTop}px`;
+		canvas.style.right = "auto";
+		canvas.style.bottom = "auto";
+		canvas.style.margin = "0";
+		canvas.style.maxWidth = "none";
+		canvas.style.maxHeight = "none";
+	}
+}
+window.sizeDollOverlayCanvases = sizeDollOverlayCanvases;
+
+/* No-ops unless the popup is open, so one listener for the whole game is enough. */
+window.addEventListener("resize", sizeDollOverlayCanvases);
+
+/*
+ * Closing the overlay only hides it, so the doll keeps animating in the background.
+ * Remove the canvases to stop the animation. They will render again when the popup opens.
+ */
+$(document).on(":oncloseoverlay", (event, overlay) => {
+	if (overlay !== "dollCanvas") return;
+	document.querySelector(".doll-overlay-canvas")?.replaceChildren();
+});

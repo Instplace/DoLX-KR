@@ -1,0 +1,411 @@
+:: Bathroom Scoop Out Vagina
+<<effects>><<set _exit to $bathroomExit or "Bathroom">>
+<<if wornSetupClothes("lower").skirt>>
+	Raising your $worn.lower.name,
+<<elseif $worn.lower.name isnot "naked">>
+	Lowering your $worn.lower.name,
+	<<lowerstrip>>
+<<else>>
+	Reaching to your nethers,
+<</if>>
+<<if $worn.under_lower.name isnot "naked">>
+	you drop your $worn.under_lower.name in one swift motion. The stickiness on your <<print $worn.under_lower.name_simple or $worn.under_lower.name>> leaves a strand of fluid leading back to your <<pussy>> as it parts away.
+	<<underlowerstrip>>
+<<else>>
+	you brush your hand along your <<pussy>>, noticing a strand of fluid sticking to your hand.
+<</if>>
+<<if playerHasWornVaginalDildo()>>
+	<<set _toyName to $worn.vaginal_dildo.name>><<set $worn.vaginal_dildo.state to "removed">>
+	You carefully pull your _toyName from your vagina and set it aside.
+<</if>>
+<br><br>
+<<arousal 200 "vagina">>
+With some effort, you spread your vagina, digging into its depths, and manage to scoop out the gunk inside you.<<wash_vagina>>
+<<if _toyName>>
+	You then slide your _toyName back into your vagina.<<vaginaldildoon>>
+<</if>>
+<br><br>
+<<if $pleasure gte $pleasuremax>>
+	However, the stimulation from digging between your folds proves too intense, pushing you over the edge.
+	<<orgasm>>
+	<<set $orgasmcurrent to 0>>
+	<br><br>
+<</if>>
+<<link [[Next|_exit]]>><<clotheson>><<run delete $bathroomExit>><</link>>
+<br>
+
+:: Bathroom Scoop Out Anus
+<<effects>><<set _exit to $bathroomExit or "Bathroom">>
+<<if wornSetupClothes("lower").skirt>>
+	Raising your $worn.lower.name,
+<<elseif $worn.lower.name isnot "naked">>
+	Lowering your $worn.lower.name,
+	<<lowerstrip>>
+<<else>>
+	Reaching behind yourself,
+<</if>>
+<<if $worn.under_lower.name isnot "naked">>
+	you drop your $worn.under_lower.name in one swift motion. The stickiness on your <<print $worn.under_lower.name_simple or $worn.under_lower.name>> leaves a strand of fluid leading back to your <<bottom>> as it parts away.
+	<<underlowerstrip>>
+<<else>>
+	you brush your hand along your <<bottom>>, noticing a strand of fluid sticking to your hand.
+<</if>>
+<<if playerHasButtPlug()>>
+	<<set _toyName to $worn.butt_plug.name>><<set $worn.butt_plug.state to "removed">>
+	You carefully pull your _toyName from your anus and set it aside.
+<</if>>
+<br><br>
+<<arousal 200 "anus">>
+With some effort, you spread your cheeks, digging into their depths, and manage to scoop out the gunk inside you.<<wash_anus>>
+<<if _toyName>>
+	You then slide your _toyName back into your anus.<<buttplugon>>
+<</if>>
+<br><br>
+<<if $pleasure gte $pleasuremax>>
+	However, the stimulation from digging inside proves too intense, pushing you over the edge.
+	<<orgasm>>
+	<<set $orgasmcurrent to 0>>
+	<br><br>
+<</if>>
+<<link [[Next|_exit]]>><<clotheson>><<run delete $bathroomExit>><</link>>
+<br>
+
+:: Melusine Rain Dance
+<<effects>>
+<<set _rainDanceReturn to ($lastPassage and Story.has($lastPassage)) ? $lastPassage : "Garden">>
+<<if $daily.melusineRainDance is 1>>
+	You have already called to the weather today. Your Melusine nature needs time to recover.
+	<br><br>
+	<<link [[Return|_rainDanceReturn]]>><<unset $phase>><<unset $lastPassage>><</link>>
+<<elseif $feetuse is "bound" or $worn.feet.type.includes("shackle")>>
+	You cannot perform a rain dance while your legs are bound.
+	<br><br>
+	<<link [[Return|_rainDanceReturn]]>><<unset $phase>><<unset $lastPassage>><</link>>
+<<elseif !Transformations.chimeraActive("melusine") or ($sciencetrait lt 5 and $danceskill lt 1000)>>
+	You can no longer reach the weather through your Melusine nature.
+	<br><br>
+	<<link [[Return|_rainDanceReturn]]>><<unset $phase>><<unset $lastPassage>><</link>>
+<<else>>
+	You turn your attention skyward and let your Melusine nature guide you into a rain dance.
+	You watch the clouds, judge the wind and feel the moisture in the air, searching for the best way
+	to draw the weather closer.
+	<br><br>
+	<<link [[Call for light rain or snow (0:15)|Melusine Rain Dance Result]]>><<set $phase to "lightPrecipitation">><</link>>
+	<br>
+	<<link [[Call for heavy rain or snow (0:15)|Melusine Rain Dance Result]]>><<set $phase to "heavyPrecipitation">><</link>>
+<</if>>
+<br>
+
+:: Melusine Rain Dance Result
+<<effects>>
+<<set _rainDanceReturn to ($lastPassage and Story.has($lastPassage)) ? $lastPassage : "Garden">>
+<<if $daily.melusineRainDance is 1>>
+	You have already called to the weather today. Your Melusine nature needs time to recover.
+<<elseif $feetuse is "bound" or $worn.feet.type.includes("shackle")>>
+	You cannot complete a rain dance while your legs are bound.
+<<elseif !Transformations.chimeraActive("melusine") or ($sciencetrait lt 5 and $danceskill lt 1000) or !["lightPrecipitation", "heavyPrecipitation"].includes($phase)>>
+	You can no longer reach the weather through your Melusine nature.
+<<else>>
+	<<set $daily.melusineRainDance to 1>>
+	<<set _rainDanceChance to Math.round((45 * Math.clamp($sciencetrait / 8, 0, 1)) + (45 * Math.clamp($danceskill / 2000, 0, 1)))>>
+	You keep dancing, raising your arms towards the sky as the clouds begin to move with you.
+	<<pass 15>><<tiredness 3>><<gtiredness>>
+	<br><br>
+	<<if random(1, 100) lte _rainDanceChance>>
+		<<run Weather.set($phase, true, 6 * 60)>>
+		The sky answers. <<= $phase is "lightPrecipitation" ? "Light" : "Heavy">> <<= Weather.precipitation>> <span class="green">begins to fall, and should continue for at least six hours</span>.
+	<<else>>
+		You keep dancing, but the clouds do not gather and <span class="purple">no rain falls</span>.
+	<</if>>
+<</if>>
+<br><br>
+<<link [[Check the plots|_rainDanceReturn]]>><<unset $phase>><<unset $lastPassage>><</link>>
+<br>
+
+:: Seed List Settings
+Choose which seeds appear when planting. These settings apply to every field, garden plot, and planter.
+<br><br>
+<label>Hide out-of-season seeds <<checkbox "$tendingUI.hideOutOfSeason" false true autocheck>></label>
+<br>
+<label>Hide seeds that do not fit the current bed type <<checkbox "$tendingUI.hideIncompatible" false true autocheck>></label>
+<br><br>
+You can also hide individual seeds:
+<br>
+<div id="tending-seed-visibility"><<tendingSeedVisibilitySettings>></div>
+<br>
+<<link [[Back|$tendingUIExitPassage]]>><<unset $tendingUIExitPassage>><</link>>
+<br>
+
+:: Wigdet Mod Misc Overlay [widget]
+<<widget "cheats-alex">>
+	<div class="settingsGrid">
+		<div class="settingsHeader options">Animal Respect</div>
+		<<numberStepper "🐎 Steeds' Respect" $farm.beasts.horses {callback: value => V.farm.beasts.horses = value, min: -30, max: 30, step: 1, percentage: false}>>
+		<<numberStepper "🐖 Pigs' Respect" $farm.beasts.pigs {callback: value => V.farm.beasts.pigs = value, min: -30, max: 30, step: 1, percentage: false}>>
+		<<numberStepper "🐄 Cattle Respect" $farm.beasts.cattle {callback: value => V.farm.beasts.cattle = value, min: -30, max: 30, step: 1, percentage: false}>>
+		<<numberStepper "🐕 Dogs' Respect" $farm.beasts.dogs {callback: value => V.farm.beasts.dogs = value, min: -30, max: 30, step: 1, percentage: false}>>
+	</div>
+
+	<<if $farm_stage gte 6 and $farm_countdown is undefined and $wardrobes.alexFarm.unlocked is false>>
+		<<set $farm_countdown to 7>>
+		<<set $alex_countdown to 3>>
+		<<set $wardrobes.alexFarm.unlocked to true>>
+	<</if>>
+	<<farmcheatsync>>
+
+	<div class="settingsGrid">
+		<div class="settingsHeader options">Farm Progress</div>
+		<div class="settingsToggleItemWide description">Farm plots can only be advanced because each new plot also initialises its gameplay data. As before, forcing progress may disrupt an unfinished farm quest.</div>
+		<<numberStepper "🌱 Farm Plots" $farm_stage_cheat {
+			callback: value => {
+				if (value > V.farm_stage_cheat) Wikifier.wikifyEval("<<farmincrcheat>>");
+			},
+			min: $farm_stage_cheat, max: 9, step: 1, activeButtons: ["single"], percentage: false
+		}>>
+		<<set $farm.clearing ||= 0>>
+		<<numberStepper "🪓 Farm Clearing" $farm.clearing {callback: value => V.farm.clearing = value, min: 0, max: 100, step: 1, percentage: false}>>
+	</div>
+
+	<<if $farm_stage gte 8>>
+		<<set $farm.wall ||= 0>>
+		<<set $farm.tower ||= 0>>
+		<<set $farm.woodland ||= 0>>
+		<<set $farm.kennel ||= 0>>
+		<<set $farm.barn ||= 0>>
+		<<set $farm.stable ||= 0>>
+		<<set $farm.coop ||= 0>>
+		<<set $farm.tractor ||= 0>>
+		<<set $farm.tractorplough = $farm.tractorplough is true>>
+		<<set $farm.tractorseeddrill = $farm.tractorseeddrill is true>>
+		<<set $farm.tractorharvester = $farm.tractorharvester is true>>
+		<<set $farm.tractorloader = $farm.tractorloader is true>>
+		<<set $farm.compostbin ||= 0>>
+		<<set $farm.compostToProduce ||= 0>>
+		<<set $farm.compostWaiting ||= 0>>
+		<<set $farm.compostProducing ||= [-1, -1, -1, -1]>>
+		<<set $farm.compostReady ||= 0>>
+		<<set $farm.extract ||= 0>>
+		<<set $farm.net ||= 0>>
+		<<set $farm.cooler ||= 0>>
+		<<set $farm.waterField ||= 0>>
+		<<set $farm.irrigation ||= 0>>
+		<<set $farm.parasitebarn ||= 0>>
+		<<set $farm.greenhouse ||= 0>>
+		<<set $alex_greenhouse ||= 0>>
+
+		<div class="settingsGrid">
+			<div class="settingsHeader options">Buildings & Land</div>
+			<<numberStepper "🧱 Farm Wall" $farm.wall {callback: value => V.farm.wall = value, min: 0, max: 4, step: 1, percentage: false}>>
+			<<numberStepper "🗼 Farm Tower" $farm.tower {callback: value => {
+				V.farm.tower = value;
+				V.farm.tower_guard_can_hire = value > 0 && !V.farm.tower_guard;
+				if (value <= 0) delete V.farm.tower_guard;
+			}, min: 0, max: 2, step: 1, percentage: false}>>
+			<<numberStepper "🌳 Farm Woodland" $farm.woodland {callback: value => V.farm.woodland = value, min: 0, max: 7, step: 1, percentage: false}>>
+			<<numberStepper "🐕 Farm Kennel" $farm.kennel {callback: value => V.farm.kennel = value, min: 0, max: 1, step: 1, percentage: false}>>
+			<<numberStepper "🏚️ Farm Barn" $farm.barn {callback: value => V.farm.barn = value, min: 0, max: 7, step: 1, percentage: false}>>
+			<<numberStepper "🐎 Farm Stable" $farm.stable {callback: value => V.farm.stable = value, min: 0, max: 1, step: 1, percentage: false}>>
+			<<numberStepper "🐔 Farm Coop" $farm.coop {callback: value => V.farm.coop = value, min: 0, max: 7, step: 1, percentage: false}>>
+			<<numberStepper "🌿 Farm Greenhouse" $farm.greenhouse {callback: value => V.farm.greenhouse = value, min: 0, max: 2, step: 1, percentage: false}>>
+			<<numberStepper "🏡 Orphanage Greenhouse" $alex_greenhouse {callback: value => V.alex_greenhouse = value, min: 0, max: 3, step: 1, percentage: false}>>
+		</div>
+
+		<div class="settingsGrid">
+			<div class="settingsHeader options">Equipment & Upgrades</div>
+			<<numberStepper "🚜 Farm Tractor" $farm.tractor {callback: value => V.farm.tractor = value, min: 0, max: 3, step: 1, percentage: false}>>
+			<<numberStepper "⚙️ Tractor Plough" `$farm.tractorplough ? 1 : 0` {callback: value => V.farm.tractorplough = value === 1, min: 0, max: 1, step: 1, percentage: false, valueFormat: value => value ? "On" : "Off"}>>
+			<<numberStepper "🌾 Tractor Seed Drill" `$farm.tractorseeddrill ? 1 : 0` {callback: value => V.farm.tractorseeddrill = value === 1, min: 0, max: 1, step: 1, percentage: false, valueFormat: value => value ? "On" : "Off"}>>
+			<<numberStepper "🌽 Tractor Harvester" `$farm.tractorharvester ? 1 : 0` {callback: value => V.farm.tractorharvester = value === 1, min: 0, max: 1, step: 1, percentage: false, valueFormat: value => value ? "On" : "Off"}>>
+			<<numberStepper "📦 Tractor Loader" `$farm.tractorloader ? 1 : 0` {callback: value => V.farm.tractorloader = value === 1, min: 0, max: 1, step: 1, percentage: false, valueFormat: value => value ? "On" : "Off"}>>
+			<<numberStepper "♻️ Compost Bin" $farm.compostbin {callback: value => V.farm.compostbin = value, min: 0, max: 3, step: 1, percentage: false}>>
+			<<numberStepper "🧪 Aphrodisiac Extraction" $farm.extract {callback: value => V.farm.extract = value, min: 0, max: 2, step: 1, percentage: false}>>
+			<<numberStepper "🥅 Farm Net" $farm.net {callback: value => V.farm.net = value, min: 0, max: 4, step: 1, percentage: false}>>
+			<<numberStepper "❄️ Farm Cooler" $farm.cooler {callback: value => V.farm.cooler = value, min: 0, max: 3, step: 1, percentage: false}>>
+			<<numberStepper "💧 Water Field" $farm.waterField {callback: value => V.farm.waterField = value, min: 0, max: 4, step: 1, percentage: false}>>
+			<<numberStepper "🚿 Farm Irrigation" $farm.irrigation {callback: value => V.farm.irrigation = value, min: 0, max: 9, step: 1, percentage: false}>>
+			<<numberStepper "🪱 Parasite Barn" $farm.parasitebarn {callback: value => V.farm.parasitebarn = value, min: 0, max: 2, step: 1, percentage: false}>>
+		</div>
+	<</if>>
+<</widget>>
+
+/* X-Change: pick which Hopeless Cycle endings to buy.
+Like any feat boost, these can be purchased outright with VrelCoins. */
+<<widget "hopelessEndingsFeatUI">>
+	<br>
+	<div class="settingsHeader" style="margin-bottom: 0.5em">Endings To Read</div>
+	<<for _hcEndKey range ["S","A","B","C","D","E","F"]>>
+		<<set _hcEndData to setup.hopelessCycleEndingCosts[_hcEndKey]>>
+		<<set _hcEndCost to _hcEndData.cost>>
+		<<capture _hcEndKey, _hcEndData, _hcEndCost>>
+			<<set _hcEndAfford to ($feats.allSaves.points - $featsBoosts.pointsUsed) - _hcEndCost gte 0>>
+			<div class="settingsToggleItem">
+				<<if $featsBoosts.hopelessEndings[_hcEndKey]>>
+					<<link "[✓] Ending _hcEndKey">>
+						<<set $featsBoosts.hopelessEndings[_hcEndKey] to false>>
+						<<updateFeatsPointsMenu "hopelessEndings" _hcEndCost "subtract">>
+					<</link>>
+					<span @class="_hcEndData.colour"><<print _hcEndData.name>></span>
+					<span class="gold">(<<print _hcEndCost>> <<pluralise _hcEndCost "VrelCoin">>)</span>
+				<<elseif _hcEndAfford>>
+					<<link "[ ] Ending _hcEndKey">>
+						<<set $featsBoosts.hopelessEndings[_hcEndKey] to true>>
+						<<updateFeatsPointsMenu "hopelessEndings" _hcEndCost>>
+					<</link>>
+					<span @class="_hcEndData.colour"><<print _hcEndData.name>></span>
+					<span class="gold">(<<print _hcEndCost>> <<pluralise _hcEndCost "VrelCoin">>)</span>
+				<<else>>
+					<span class="black">[ ] Ending _hcEndKey <span @class="_hcEndData.colour"><<print _hcEndData.name>></span></span>
+					<span class="red">Not enough VrelCoins (<<print _hcEndCost>>)</span>
+				<</if>>
+			</div>
+		<</capture>>
+	<</for>>
+<</widget>>
+
+/* X-Change: links to read endings bought via the "Hopeless Cycle Endings" feat boost, skipping the full sequence.
+Each sets up the gaoler context (freeze/morph), then jumps straight to that ending's narrative, which funnels into "Hopeless Cycle End" and awards the prize. */
+<<widget "hopelessCycleQuickReadLinks">>
+	<<set $hcBoughtEndings ||= []>>
+	<<set _quickReadList to ["S","A","B","C","D","E","F"].filter(e => $hcBoughtEndings.includes(e))>>
+	<<if _quickReadList.length>>
+		Some of these tales feel as though you've already lived them. <span class="gold">You could recount one straight to its conclusion</span>:
+		<br>
+		<<for _qrEnd range _quickReadList>>
+			<<capture _qrEnd>>
+				<<set _qrData to setup.hopelessCycleEndingCosts[_qrEnd]>>
+				<<link `"Read the ending of " + _qrData.name + " (" + _qrEnd + ")"` `"Hopeless Cycle Ending " + _qrEnd`>>
+					<<hopelessCycleStart>>
+				<</link>>
+				<br>
+			<</capture>>
+		<</for>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "reclaimWhitney">>
+    <<loveInterestAdd "Whitney">>
+    <<npcset Whitney state "active">>
+<</widget>>
+
+<<widget "reclaimKylar">>
+    <<npcset Kylar state "active">>
+    <<if $englishPlay is "ongoing">>
+            <<set $englishPlayKylarReplace to false>>
+    <</if>>
+    <<loveInterestAdd "Kylar">>
+    <br><br>
+<</widget>>
+
+<<widget "godClothe">>
+    <<if $godClothes is undefined>>
+        <<set $godClothes to 0>>
+    <</if>>
+    <<if $godClothes is 0>>
+        <<set $godClothes to 0>>
+    <<elseif $godClothes is 1>>
+        <<set $godClothes to 1>>
+    <</if>>
+<</widget>>
+
+<<widget "tendingSeedVisibilitySettings">>
+	<<if $plants_known.length is 0>>
+		You have not discovered any seeds yet.
+	<<else>>
+		<<for _plantType range $plants_known>>
+			<<set _plant to setup.foodstuff[_plantType]>>
+			<<if _plant>>
+				<<set _seedName to (_plant.tending?.seed_name || _plant.plural || _plant.name || _plantType).replace(/_/g, " ").toLocaleUpperFirst()>>
+				<<capture _plantType>>
+					<<if $options.images is 1>><<foodstufficon _plantType>><</if>>
+					_seedName:
+					<<if $tendingUI.hiddenSeeds.includes(_plantType)>>
+						<span class="red">Hidden</span> - <<link "Show">><<run $tendingUI.hiddenSeeds.delete(_plantType)>><<replace "#tending-seed-visibility">><<tendingSeedVisibilitySettings>><</replace>><<numberify "#passages > .passage">><</link>>
+					<<else>>
+						<span class="green">Shown</span> - <<link "Hide">><<run $tendingUI.hiddenSeeds.pushUnique(_plantType)>><<replace "#tending-seed-visibility">><<tendingSeedVisibilitySettings>><</replace>><<numberify "#passages > .passage">><</link>>
+					<</if>>
+					<br>
+				<</capture>>
+			<</if>>
+		<</for>>
+		<<if $tendingUI.hiddenSeeds.length gt 0>>
+			<br>
+			<<link "Show all seeds">><<set $tendingUI.hiddenSeeds to []>><<replace "#tending-seed-visibility">><<tendingSeedVisibilitySettings>><</replace>><<numberify "#passages > .passage">><</link>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+/* Add gender presentation meter in mirror */
+<<widget "genderAppearanceMeter">>
+	<<if Number.isFinite($player.femininity)>>
+		<<set _appearanceGender to perceivedGender()>>
+		<<set _appearanceScore to $player.femininity>>
+
+		/* Visual meter range. Scores beyond this are simply pinned to the edge. */
+		<<set _appearanceLimit to 2000>>
+
+		<<set _appearancePosition to Math.clamp(
+			((_appearanceScore + _appearanceLimit) / (_appearanceLimit * 2)) * 100,
+			0,
+			100
+		)>>
+
+		<<set _appearanceDeadzoneSize to
+			(ANDROGYNOUS_FEMININITY_DEADZONE / (_appearanceLimit * 2)) * 100
+		>>
+		<<set _appearanceDeadzoneStart to 50 - _appearanceDeadzoneSize>>
+		<<set _appearanceDeadzoneEnd to 50 + _appearanceDeadzoneSize>>
+
+		<<set _appearanceName to
+			_appearanceGender is "m"
+				? "Masculine"
+				: _appearanceGender is "f"
+					? "Feminine"
+					: "Androgynous"
+		>>
+
+		<<set _appearanceTitle to
+			"Gender appearance: " + _appearanceName
+			+ " (" + (_appearanceScore gt 0 ? "+" : "") + _appearanceScore + "). "
+			+ "Androgynous range: -" + ANDROGYNOUS_FEMININITY_DEADZONE
+			+ " to +" + ANDROGYNOUS_FEMININITY_DEADZONE + "."
+		>>
+
+		<div class="genderAppearance">
+			<div class="genderAppearanceHeader">
+				<span class="genderAppearanceLabel">Appearance</span>
+
+				<<settextcolorfromgender _appearanceGender>>
+				<span @class="'genderAppearanceValue ' + _text_color">
+					<<print _appearanceName>>
+					<span class="genderAppearanceScore">
+						(<<if _appearanceScore gt 0>>+<</if>><<print _appearanceScore>>)
+					</span>
+				</span>
+			</div>
+
+			<div
+				class="genderAppearanceBar"
+				@title="_appearanceTitle"
+				@style="'background: linear-gradient(to right, '
+					+ 'var(--lblue) 0%, '
+					+ 'var(--lblue) ' + _appearanceDeadzoneStart + '%, '
+					+ 'var(--purple) ' + _appearanceDeadzoneStart + '%, '
+					+ 'var(--purple) ' + _appearanceDeadzoneEnd + '%, '
+					+ 'var(--pink) ' + _appearanceDeadzoneEnd + '%, '
+					+ 'var(--pink) 100%);'"
+			>
+				<div
+					class="genderAppearancePin"
+					@style="'left:' + _appearancePosition + '%;'"
+				></div>
+			</div>
+
+			<div class="genderAppearanceScale">
+				<span>Masculine</span>
+				<span>Androgynous</span>
+				<span>Feminine</span>
+			</div>
+		</div>
+	<</if>>
+<</widget>>

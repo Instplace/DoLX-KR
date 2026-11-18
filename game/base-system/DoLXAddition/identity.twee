@@ -1,0 +1,1953 @@
+:: X-Change Gender Identity Widgets [widget]
+
+<!-- LEGACY -->
+	<<widget "genderidentity-orgasm">>
+		<<if $player.vaginaExist>>
+			<<identitySelector "Vagina">>
+			<<if $identityOption>>
+				<<if !$identityOption.acceptance or $identityOption.reject>>
+					<<dysphoria 10>>
+				<<elseif $identityPreference>>
+					<<stress -2 1>><<trauma -2>>
+				<</if>>
+			<</if>>
+		<</if>>
+		<<set _manlyUse to ["othervagina", "otheranus", "othermouth", "tentacle"]>>
+		<<if $player.penisExist and _manlyUse.includes($penisuse)>>
+			<<set _penis to identityCharacteristicCategory("Penis")>>
+			<<identitySelector _penis>>
+			<<if $identityOption>>
+				<<if !$identityOption.acceptance or $identityOption.reject>>
+					<<dysphoria 10>>
+				<<elseif $identityPreference>>
+					<<stress -2 1>><<trauma -2>>
+				<</if>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "genderidentity">>
+		<<if _args[0] and $xchange.genderIdentityEnabled is true and $xchange.giAutoEnabled is true>>
+			/* If it's a dream, reduce change to 10% */
+			<<set _multiplier to $statFreeze isnot true ? 2 : 0.2>> 
+			<<set _range to ($xchange.giRange is undefined ? 1500 : $xchange.giRange)>>
+			<<set _identityCapFloor to Math.round(_range * 0.625)>>
+
+			/* These traits use the player's original sex and should not flip after X-Change. Positive values move identity towards feminine, negative towards masculine. */
+			<<set _origSex to playerOriginalSex()>>
+			<<set _towardsOppositeSex to (_origSex is "m" ? _args[0] > 0 : _args[0] < 0)>>
+			<<if $backgroundTraits.includes("crossdresser") and !$background.transgender>><<set _multiplier *= _towardsOppositeSex ? 1.25 : 0.50 >><</if>>
+			<<if $backgroundTraits.includes("genderAnxious")>><<set _multiplier *= _towardsOppositeSex ? 0.50 : 1.25 >><</if>>
+
+			<<set $genderidentity += _args[0] * _multiplier>>
+			<<set $genderidentity to Math.clamp($genderidentity,0, _range)>>
+			<<if $identityCap>>
+				<<if ($genderidentity < _identityCapFloor)>>
+					<<set $identityCapMessage to true>><<set $effectsmessage to 1>>
+					<<stress 10>><<trauma 10>>
+				<</if>>
+				<<set $genderidentity to Math.clamp($genderidentity,_identityCapFloor, _range)>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	/* Yesterday's outfit line in the daily report, printed by xchange.js from $genderIdentityMessage. */
+	<<widget "genderidentity-text">>
+		<<if $xchange.genderIdentityEnabled>>
+			<<if _args[0] is "f">>
+				<span class="pink">Yesterday, you dressed feminine.</span>
+			<<elseif _args[0] is "m">>
+				<span class="blue">Yesterday, you dressed masculine.</span>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+
+<!-- AELXER'S IDENTITY -->
+	<<widget "identitySettings">>
+		/* Imports and the Random start set reject/accepted/preferred independently, which can leave impossible combinations on screen. */
+		<<run identityNormalisePresentation()>>
+
+		<div class="settingsGrid">
+			<div class="settingsToggleItemWide">
+				<span class="gold bold">Identity Mechanics:</span><br>
+				<ul class="small-description">
+					<li><b>Accepted:</b> Accepted characteristics do not cause negative effects. You can also choose one accepted characteristic in each category as Preferred. Having your Preferred characteristic slightly lowers Stress and Trauma.</li>
+					<li><b>Dysphoria:</b> Having a characteristic you have not accepted causes Dysphoria, which increases Stress and Trauma.</li>
+					<li><b>Tolerance:</b> You slowly gain Tolerance each day towards characteristics you have but have not accepted. Hearing unaccepted pronouns also builds Tolerance unless they are Rejected. At maximum Tolerance, that characteristic becomes Accepted.</li>
+					<li><b>Rejected:</b> Rejected characteristics do not give you Trauma, but you also cannot gain Tolerance towards them. Letting Dysphoria from a Rejected characteristic reach its maximum is dangerous.</li>
+					<li><b>Begrudged:</b> If Dysphoria from a Rejected characteristic reaches its maximum and your Willpower runs out, you are forced to put up with it. It can then cause Trauma, but repeated Dysphoria will no longer drain your current Willpower. You cannot Reject or Accept it while it is Begrudged. To remove Begrudged, stop having that characteristic, remove it as Preferred if needed, then wait for its Tolerance to fall. After that, you can Reject it again if you want.</li>
+				</ul>
+			</div>
+		</div>
+		<hr>
+		<div class="settingsGrid">
+			<div class="settingsHeader">
+				Gender Presentation
+			</div>
+
+			<div class="settingsToggleItem">
+				<span class="gold">Pronouns </span> <mouse class="tooltip linkBlue">(?)<span>These preferences control the pronouns and gendered words used for your character in game text. Unaccepted characteristics will cause dysphoria. You can prefer multiple pronoun types. When all three are preferred, dynamic pronoun modes become available.</span></mouse>
+				<br><span class="small-description">Currently used: <span id="pronoun-current-label"><<= pronounSummaryLabel()>></span></span>
+				<br>
+				Masculine:
+				<br> 
+				<label data-target='["identity.presentation.pronouns.masculine.acceptance", "identity.presentation.pronouns.masculine.reject"]' data-disabledif="V.identity.presentation.pronouns.masculine.acceptance && !V.identity.presentation.pronouns.masculine.reject" class="red">Reject <<checkbox "$identity.presentation.pronouns.masculine.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender>>
+					<label data-target='["identity.presentation.pronouns.preferredMasculine", "identity.init"]' data-disabledif="V.identity.presentation.pronouns.preferredMasculine || V.identity.init">Unaccepted <<radiobutton "$identity.presentation.pronouns.masculine.acceptance" false autocheck>></label> |
+					<label data-target='["identity.presentation.pronouns.masculine.reject", "identity.init"]' data-disabledif="V.identity.presentation.pronouns.masculine.reject || V.identity.init">Accepted <<radiobutton "$identity.presentation.pronouns.masculine.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.presentation.pronouns.masculine.acceptance"]' data-disabledif="!V.identity.presentation.pronouns.masculine.acceptance" class="green">Preferred <<checkbox "$identity.presentation.pronouns.preferredMasculine" false true autocheck>></label>
+				<br>
+				Feminine:
+				<br>
+				<label data-target='["identity.presentation.pronouns.feminine.acceptance", "identity.presentation.pronouns.feminine.reject"]' data-disabledif="V.identity.presentation.pronouns.feminine.acceptance && !V.identity.presentation.pronouns.feminine.reject" class="red">Reject <<checkbox "$identity.presentation.pronouns.feminine.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender>>
+					<label data-target='["identity.presentation.pronouns.preferredFeminine", "identity.init"]' data-disabledif="V.identity.presentation.pronouns.preferredFeminine || V.identity.init">Unaccepted <<radiobutton "$identity.presentation.pronouns.feminine.acceptance" false autocheck>></label> |
+					<label data-target='["identity.presentation.pronouns.feminine.reject", "identity.init"]' data-disabledif="V.identity.presentation.pronouns.feminine.reject || V.identity.init">Accepted <<radiobutton "$identity.presentation.pronouns.feminine.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.presentation.pronouns.feminine.acceptance"]' data-disabledif="!V.identity.presentation.pronouns.feminine.acceptance" class="green">Preferred <<checkbox "$identity.presentation.pronouns.preferredFeminine" false true autocheck>></label>
+				<br>
+				Neutral:
+				<br> 
+				<label data-target='["identity.presentation.pronouns.neutral.acceptance", "identity.presentation.pronouns.neutral.reject"]' data-disabledif="V.identity.presentation.pronouns.neutral.acceptance && !V.identity.presentation.pronouns.neutral.reject" class="red">Reject <<checkbox "$identity.presentation.pronouns.neutral.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender>>
+					<label data-target='["identity.presentation.pronouns.preferredNeutral", "identity.init"]' data-disabledif="V.identity.presentation.pronouns.preferredNeutral || V.identity.init">Unaccepted <<radiobutton "$identity.presentation.pronouns.neutral.acceptance" false autocheck>></label> |
+					<label data-target='["identity.presentation.pronouns.neutral.reject", "identity.init"]' data-disabledif="V.identity.presentation.pronouns.neutral.reject || V.identity.init">Accepted <<radiobutton "$identity.presentation.pronouns.neutral.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.presentation.pronouns.neutral.acceptance"]' data-disabledif="!V.identity.presentation.pronouns.neutral.acceptance" class="green">Preferred <<checkbox "$identity.presentation.pronouns.preferredNeutral" false true autocheck>></label>
+				<br>
+
+				<<run updatePronounSummary()>>
+
+				<div data-target='["identity.presentation.pronouns.preferredMasculine", "identity.presentation.pronouns.preferredFeminine", "identity.presentation.pronouns.preferredNeutral"]' data-disabledif="!(V.identity.presentation.pronouns.preferredMasculine && V.identity.presentation.pronouns.preferredFeminine && V.identity.presentation.pronouns.preferredNeutral)">
+					<span class="gold">Preferred pronouns based on: </span>
+					<br> 
+					<label>Current Sex <<radiobutton "$identity.presentation.pronouns.pronounDynamicMode" "body" autocheck>></label> |
+					<label>Clothing <<radiobutton "$identity.presentation.pronouns.pronounDynamicMode" "clothing" autocheck>></label> |
+					<label>Appearance <<radiobutton "$identity.presentation.pronouns.pronounDynamicMode" "appearance" autocheck>></label> |
+					<label>Posture <<radiobutton "$identity.presentation.pronouns.pronounDynamicMode" "posture" autocheck>></label>
+				</div>
+			</div>
+			<div class="settingsToggleItem">
+				<span class="gold">Gender Appearance </span> <mouse class="tooltip linkBlue">(?)<span>Unaccepted characteristics will cause dysphoria. Your overall appearance includes your body, hair, clothes and posture. Androgynous means neither clearly masculine nor feminine.</span></mouse>
+				<br>
+				Masculine: 
+				<br> 
+				<label data-target='["identity.presentation.appearance.masculine.acceptance", "identity.presentation.appearance.masculine.reject"]' data-disabledif="V.identity.presentation.appearance.masculine.acceptance && !V.identity.presentation.appearance.masculine.reject" class="red">Reject <<checkbox "$identity.presentation.appearance.masculine.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender>>
+					<label data-target='["identity.presentation.appearance.preferred", "identity.init"]' data-disabledif="V.identity.presentation.appearance.preferred === 'm' || V.identity.init">Unaccepted <<radiobutton "$identity.presentation.appearance.masculine.acceptance" false autocheck>></label> |
+					<label data-target='["identity.presentation.appearance.masculine.reject", "identity.init"]' data-disabledif="V.identity.presentation.appearance.masculine.reject || V.identity.init">Accepted <<radiobutton "$identity.presentation.appearance.masculine.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.presentation.appearance.masculine.acceptance"]' data-disabledif="!V.identity.presentation.appearance.masculine.acceptance" class="green">Preferred <<radiobutton "$identity.presentation.appearance.preferred" "m" autocheck>></label>
+				<br>
+				Feminine:
+				<br> 
+				<label data-target='["identity.presentation.appearance.feminine.acceptance", "identity.presentation.appearance.feminine.reject"]' data-disabledif="V.identity.presentation.appearance.feminine.acceptance && !V.identity.presentation.appearance.feminine.reject" class="red">Reject <<checkbox "$identity.presentation.appearance.feminine.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender>>
+					<label data-target='["identity.presentation.appearance.preferred", "identity.init"]' data-disabledif="V.identity.presentation.appearance.preferred === 'f' || V.identity.init">Unaccepted <<radiobutton "$identity.presentation.appearance.feminine.acceptance" false autocheck>></label> |
+					<label data-target='["identity.presentation.appearance.feminine.reject", "identity.init"]' data-disabledif="V.identity.presentation.appearance.feminine.reject || V.identity.init">Accepted <<radiobutton "$identity.presentation.appearance.feminine.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.presentation.appearance.feminine.acceptance"]' data-disabledif="!V.identity.presentation.appearance.feminine.acceptance" class="green">Preferred <<radiobutton "$identity.presentation.appearance.preferred" "f" autocheck>></label>
+				<br>
+				Androgynous:
+				<br>
+				<label data-target='["identity.presentation.appearance.neutral.acceptance", "identity.presentation.appearance.neutral.reject"]' data-disabledif="V.identity.presentation.appearance.neutral.acceptance && !V.identity.presentation.appearance.neutral.reject" class="red">Reject <<checkbox "$identity.presentation.appearance.neutral.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender>>
+					<label data-target='["identity.presentation.appearance.preferred", "identity.init"]' data-disabledif="V.identity.presentation.appearance.preferred === 'n' || V.identity.init">Unaccepted <<radiobutton "$identity.presentation.appearance.neutral.acceptance" false autocheck>></label> |
+					<label data-target='["identity.presentation.appearance.neutral.reject", "identity.init"]' data-disabledif="V.identity.presentation.appearance.neutral.reject || V.identity.init">Accepted <<radiobutton "$identity.presentation.appearance.neutral.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.presentation.appearance.neutral.acceptance"]' data-disabledif="!V.identity.presentation.appearance.neutral.acceptance" class="green">Preferred <<radiobutton "$identity.presentation.appearance.preferred" "n" autocheck>></label>
+				<br>
+			</div>
+			<div class="settingsToggleItem identity-clothing-settings">
+				<span class="gold">Clothing Preference </span> <mouse class="tooltip linkBlue">(?)<span>Unaccepted outfit styles cause dysphoria when you change clothes and while worn. Preferred styles provide comfort while worn. Neutral prefers clothing that looks neither masculine nor feminine. "Don't Care" disables clothing dysphoria and comfort.</span></mouse>
+				<br>
+				Masculine:
+				<br>
+				<label data-target='["identity.presentation.clothing.masculine.acceptance", "identity.presentation.clothing.masculine.reject", "identity.presentation.clothing.preferred"]' data-disabledif="V.identity.presentation.clothing.preferred === 'n' || (V.identity.presentation.clothing.masculine.acceptance && !V.identity.presentation.clothing.masculine.reject)" class="red">Reject <<checkbox "$identity.presentation.clothing.masculine.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender>>
+					<label data-target='["identity.presentation.clothing.preferred", "identity.init"]' data-disabledif="V.identity.presentation.clothing.preferred === 'm' || V.identity.presentation.clothing.preferred === 'n' || V.identity.init">Unaccepted <<radiobutton "$identity.presentation.clothing.masculine.acceptance" false autocheck>></label> |
+					<label data-target='["identity.presentation.clothing.masculine.reject", "identity.presentation.clothing.preferred", "identity.init"]' data-disabledif="V.identity.presentation.clothing.preferred === 'n' || V.identity.presentation.clothing.masculine.reject || V.identity.init">Accepted <<radiobutton "$identity.presentation.clothing.masculine.acceptance" true autocheck>></label> |
+				<</if>>
+				/* Deliberately still clickable while Neutral: these two are the only way back out of it. */
+				<label data-target='["identity.presentation.clothing.masculine.acceptance", "identity.presentation.clothing.preferred"]' data-disabledif="V.identity.presentation.clothing.preferred !== 'n' && !V.identity.presentation.clothing.masculine.acceptance" class="green">Preferred <<radiobutton "$identity.presentation.clothing.preferred" "m" autocheck>></label>
+				<br>
+				Feminine:
+				<br>
+				<label data-target='["identity.presentation.clothing.feminine.acceptance", "identity.presentation.clothing.feminine.reject", "identity.presentation.clothing.preferred"]' data-disabledif="V.identity.presentation.clothing.preferred === 'n' || (V.identity.presentation.clothing.feminine.acceptance && !V.identity.presentation.clothing.feminine.reject)" class="red">Reject <<checkbox "$identity.presentation.clothing.feminine.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender>>
+					<label data-target='["identity.presentation.clothing.preferred", "identity.init"]' data-disabledif="V.identity.presentation.clothing.preferred === 'f' || V.identity.presentation.clothing.preferred === 'n' || V.identity.init">Unaccepted <<radiobutton "$identity.presentation.clothing.feminine.acceptance" false autocheck>></label> |
+					<label data-target='["identity.presentation.clothing.feminine.reject", "identity.presentation.clothing.preferred", "identity.init"]' data-disabledif="V.identity.presentation.clothing.preferred === 'n' || V.identity.presentation.clothing.feminine.reject || V.identity.init">Accepted <<radiobutton "$identity.presentation.clothing.feminine.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.presentation.clothing.feminine.acceptance", "identity.presentation.clothing.preferred"]' data-disabledif="V.identity.presentation.clothing.preferred !== 'n' && !V.identity.presentation.clothing.feminine.acceptance" class="green">Preferred <<radiobutton "$identity.presentation.clothing.preferred" "f" autocheck>></label>
+				<br>
+				Androgynous:
+				<br>
+				<label data-target='["identity.presentation.clothing.neutral.acceptance", "identity.presentation.clothing.neutral.reject", "identity.presentation.clothing.preferred"]' data-disabledif="V.identity.presentation.clothing.preferred === 'n' || (V.identity.presentation.clothing.neutral.acceptance && !V.identity.presentation.clothing.neutral.reject)" class="red">Reject <<checkbox "$identity.presentation.clothing.neutral.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender>>
+					<label data-target='["identity.presentation.clothing.preferred", "identity.init"]' data-disabledif="V.identity.presentation.clothing.preferred === 'u' || V.identity.presentation.clothing.preferred === 'n' || V.identity.init">Unaccepted <<radiobutton "$identity.presentation.clothing.neutral.acceptance" false autocheck>></label> |
+					<label data-target='["identity.presentation.clothing.neutral.reject", "identity.presentation.clothing.preferred", "identity.init"]' data-disabledif="V.identity.presentation.clothing.preferred === 'n' || V.identity.presentation.clothing.neutral.reject || V.identity.init">Accepted <<radiobutton "$identity.presentation.clothing.neutral.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.presentation.clothing.neutral.acceptance", "identity.presentation.clothing.preferred"]' data-disabledif="V.identity.presentation.clothing.preferred !== 'n' && !V.identity.presentation.clothing.neutral.acceptance" class="green">Preferred <<radiobutton "$identity.presentation.clothing.preferred" "u" autocheck>></label>
+				<br>
+				<label class="teal">Don't care <<radiobutton "$identity.presentation.clothing.preferred" "n" autocheck>></label> <mouse class="tooltip linkBlue">(?)<span>Clothes are just clothes to you.</span></mouse>
+				<br>
+
+				/* Clothing controls have side effects that a click alone wouldn't produce, since clicking only repaints the setting rather than re-rendering the passage:
+				  - switching to Neutral has to park both options as accepted right away, so the masculine/feminine "Preferred" radios stay a valid way back out instead of leaving the player stuck on Neutral;
+				  - character creation previews the starting outfit, which is chosen from this preference;
+				  - rejecting the style already being worn has to land immediately. */
+				<<run (function () {
+					if (setup.clothingPreferenceChangeInstalled) return;
+					setup.clothingPreferenceChangeInstalled = true;
+					const preferenceInput = Util.slugify("identity.presentation.clothing.preferred");
+					$(document).on("change", ".identity-clothing-settings input", function () {
+						if ((this.name || "").endsWith(preferenceInput)) {
+							Wikifier.wikifyEval("<<normaliseNeutralClothing>><<startingPlayerImageUpdate>>");
+						}
+						clothingIdentityChangeCheck();
+					});
+				})();>>
+			</div>
+			<div class="settingsToggleItem identity-makeup-settings">
+				<span class="gold">Makeup Preference </span> <mouse class="tooltip linkBlue">(?)<span>Choose how you feel about wearing makeup or having a bare face. The makeup currently on your face determines which characteristic is active. Depending on the NPC makeup interference setting, human NPCs may force makeup onto male characters or remove it from female characters during non-consensual encounters once they can reach an uncovered face.</span></mouse>
+				<br>
+				Wearing makeup:
+				<br>
+				<label data-target='["identity.presentation.makeup.wearing.acceptance", "identity.presentation.makeup.wearing.reject", "identity.presentation.makeup.preferred"]' data-disabledif="V.identity.presentation.makeup.preferred === 'n' || (V.identity.presentation.makeup.wearing.acceptance && !V.identity.presentation.makeup.wearing.reject)" class="red">Reject <<checkbox "$identity.presentation.makeup.wearing.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender>>
+					<label data-target='["identity.presentation.makeup.preferred", "identity.init"]' data-disabledif="V.identity.presentation.makeup.preferred === 'wearing' || V.identity.presentation.makeup.preferred === 'n' || V.identity.init">Unaccepted <<radiobutton "$identity.presentation.makeup.wearing.acceptance" false autocheck>></label> |
+					<label data-target='["identity.presentation.makeup.wearing.reject", "identity.presentation.makeup.preferred", "identity.init"]' data-disabledif="V.identity.presentation.makeup.preferred === 'n' || V.identity.presentation.makeup.wearing.reject || V.identity.init">Accepted <<radiobutton "$identity.presentation.makeup.wearing.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.presentation.makeup.wearing.acceptance", "identity.presentation.makeup.preferred"]' data-disabledif="V.identity.presentation.makeup.preferred !== 'n' && !V.identity.presentation.makeup.wearing.acceptance" class="green">Preferred <<radiobutton "$identity.presentation.makeup.preferred" "wearing" autocheck>></label>
+				<br>
+				Bare face:
+				<br>
+				<label data-target='["identity.presentation.makeup.bare.acceptance", "identity.presentation.makeup.bare.reject", "identity.presentation.makeup.preferred"]' data-disabledif="V.identity.presentation.makeup.preferred === 'n' || (V.identity.presentation.makeup.bare.acceptance && !V.identity.presentation.makeup.bare.reject)" class="red">Reject <<checkbox "$identity.presentation.makeup.bare.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender>>
+					<label data-target='["identity.presentation.makeup.preferred", "identity.init"]' data-disabledif="V.identity.presentation.makeup.preferred === 'bare' || V.identity.presentation.makeup.preferred === 'n' || V.identity.init">Unaccepted <<radiobutton "$identity.presentation.makeup.bare.acceptance" false autocheck>></label> |
+					<label data-target='["identity.presentation.makeup.bare.reject", "identity.presentation.makeup.preferred", "identity.init"]' data-disabledif="V.identity.presentation.makeup.preferred === 'n' || V.identity.presentation.makeup.bare.reject || V.identity.init">Accepted <<radiobutton "$identity.presentation.makeup.bare.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.presentation.makeup.bare.acceptance", "identity.presentation.makeup.preferred"]' data-disabledif="V.identity.presentation.makeup.preferred !== 'n' && !V.identity.presentation.makeup.bare.acceptance" class="green">Preferred <<radiobutton "$identity.presentation.makeup.preferred" "bare" autocheck>></label>
+				<br>
+				<label class="teal">Don't care <<radiobutton "$identity.presentation.makeup.preferred" "n" autocheck>></label> <mouse class="tooltip linkBlue">(?)<span>Makeup and bare faces do not affect your identity. NPCs can still apply or remove makeup.</span></mouse>
+				<<run (function () {
+					if (setup.makeupPreferenceChangeInstalled) return;
+					setup.makeupPreferenceChangeInstalled = true;
+					const preferenceInput = Util.slugify("identity.presentation.makeup.preferred");
+					$(document).on("change", ".identity-makeup-settings input", function () {
+						if ((this.name || "").endsWith(preferenceInput)) Wikifier.wikifyEval("<<normaliseMakeupPreference>>");
+					});
+				})();>>
+			</div>
+		</div>
+		<hr>
+		<div class="settingsGrid">
+			<div class="settingsHeader">
+				Body
+			</div>
+
+		<div class="settingsToggleItemWide">
+			<span class="gold bold">Body identity toggles:</span><br>
+				<label class="gi-body-toggle" data-gi-key="giBreastSizeEnabled" data-gi-box="gi-box-breasts" data-target='["xchange.giBreastSizeEnabled"]'>Breast Size <<checkbox "$xchange.giBreastSizeEnabled" false true autocheck>></label> |
+				<label class="gi-body-toggle" data-gi-key="giAssSizeEnabled" data-gi-box="gi-box-ass" data-target='["xchange.giAssSizeEnabled"]'>Ass Size <<checkbox "$xchange.giAssSizeEnabled" false true autocheck>></label> |
+				<label class="gi-body-toggle" data-gi-key="giGenitalsEnabled" data-gi-box="gi-box-genitals" data-target='["xchange.giGenitalsEnabled"]'>Genitals <<checkbox "$xchange.giGenitalsEnabled" false true autocheck>></label> |
+				<label class="gi-body-toggle" data-gi-key="giHairLengthEnabled" data-gi-box="gi-box-hair" data-target='["xchange.giHairLengthEnabled"]'>Hair Length <<checkbox "$xchange.giHairLengthEnabled" false true autocheck>></label> |
+				<label class="gi-body-toggle" data-gi-key="giBodySizeEnabled" data-gi-box="gi-box-bodysize" data-target='["xchange.giBodySizeEnabled"]'>Body Size <<checkbox "$xchange.giBodySizeEnabled" false true autocheck>></label> |
+				<label class="gi-body-toggle" data-gi-key="giFecundityEnabled" data-gi-box="gi-box-fecundity" data-target='["xchange.giFecundityEnabled"]'>Fecundity <<checkbox "$xchange.giFecundityEnabled" false true autocheck>></label>
+				<mouse class="tooltip linkBlue">(?)<span>Enable which Body topics are active for dysphoria/tolerance. Disabled categories are hidden and have no effect.</span></mouse>
+		</div>
+
+		<<run (function () {
+			function syncFromState() {
+				$(".gi-body-toggle").each(function () {
+					var key = this.getAttribute("data-gi-key");
+					var boxId = this.getAttribute("data-gi-box");
+					var enabled = State.variables.xchange && State.variables.xchange[key];
+					var box = document.getElementById(boxId);
+					if (box) box.style.display = enabled ? "" : "none";
+				});
+			}
+
+			if (setup.giBodyToggleInstalled) {
+				setTimeout(syncFromState, 0);
+				return;
+			}
+			setup.giBodyToggleInstalled = true;
+
+			$(document).on("change", ".gi-body-toggle input[type=checkbox]", function () {
+				var label = this.closest(".gi-body-toggle");
+				if (!label) return;
+				var boxId = label.getAttribute("data-gi-box");
+				var box = document.getElementById(boxId);
+				if (box) box.style.display = this.checked ? "" : "none";
+			});
+
+		/* Mark category as configured once the player interacts with anything inside it.
+		Use click for inputs so selecting "Unaccepted" (false->false) still counts as chosen. */
+		function markGiConfigured(el) {
+			var box = el.closest(".settingsToggleItem[data-gi-config]");
+			if (!box) return;
+			var ckey = box.getAttribute("data-gi-config");
+			if (!ckey) return;
+			if (!State.variables.xchange) State.variables.xchange = {};
+			State.variables.xchange[ckey] = true;
+		}
+
+		/* inputs (checkbox/radio) */
+		$(document).on("click", ".settingsToggleItem[data-gi-config] input", function () {
+			markGiConfigured(this);
+		});
+
+		/* selects */
+		$(document).on("change", ".settingsToggleItem[data-gi-config] select", function () {
+			markGiConfigured(this);
+		});
+			setTimeout(syncFromState, 0);
+		})();>>
+
+			<div class="settingsToggleItem" id="gi-box-breasts" data-gi-config="giBreastSizeConfigured" style="display:none;">
+				<span class="gold">Breast Size </span> <mouse class="tooltip linkBlue">(?)<span>Unaccepted chest sizes cause dysphoria. Intact binders and other bust-shaping clothes affect how your chest is perceived while they cover it.</span></mouse>
+				<br>
+				Flat: 
+				<br> 
+				<label data-target='["identity.body.chest.flat.acceptance", "identity.body.chest.flat.reject"]' data-disabledif="V.identity.body.chest.flat.acceptance && !V.identity.body.chest.flat.reject" class="red">Reject <<checkbox "$identity.body.chest.flat.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giBreastSizeConfigured>>
+					<label data-target='["identity.body.chest.preferred", "identity.init"]' data-disabledif="V.identity.body.chest.preferred === 'flat'">Unaccepted <<radiobutton "$identity.body.chest.flat.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.chest.flat.reject", "identity.init"]' data-disabledif="V.identity.body.chest.flat.reject">Accepted <<radiobutton "$identity.body.chest.flat.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.chest.flat.acceptance"]' data-disabledif="!V.identity.body.chest.flat.acceptance" class="green">Preferred <<radiobutton "$identity.body.chest.preferred" "flat" autocheck>></label>
+				<br>
+				Small: 
+				<br> 
+				<label data-target='["identity.body.chest.small.acceptance", "identity.body.chest.small.reject"]' data-disabledif="V.identity.body.chest.small.acceptance && !V.identity.body.chest.small.reject" class="red">Reject <<checkbox "$identity.body.chest.small.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giBreastSizeConfigured>>
+					<label data-target='["identity.body.chest.preferred", "identity.init"]' data-disabledif="V.identity.body.chest.preferred === 'small'">Unaccepted <<radiobutton "$identity.body.chest.small.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.chest.small.reject", "identity.init"]' data-disabledif="V.identity.body.chest.small.reject">Accepted <<radiobutton "$identity.body.chest.small.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.chest.small.acceptance"]' data-disabledif="!V.identity.body.chest.small.acceptance" class="green">Preferred <<radiobutton "$identity.body.chest.preferred" "small" autocheck>></label>
+				<br>
+				Medium: 
+				<br> 
+				<label data-target='["identity.body.chest.medium.acceptance", "identity.body.chest.medium.reject"]' data-disabledif="V.identity.body.chest.medium.acceptance && !V.identity.body.chest.medium.reject" class="red">Reject <<checkbox "$identity.body.chest.medium.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giBreastSizeConfigured>>
+					<label data-target='["identity.body.chest.preferred", "identity.init"]' data-disabledif="V.identity.body.chest.preferred === 'medium'">Unaccepted <<radiobutton "$identity.body.chest.medium.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.chest.medium.reject", "identity.init"]' data-disabledif="V.identity.body.chest.medium.reject">Accepted <<radiobutton "$identity.body.chest.medium.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.chest.medium.acceptance"]' data-disabledif="!V.identity.body.chest.medium.acceptance" class="green">Preferred <<radiobutton "$identity.body.chest.preferred" "medium" autocheck>></label>
+				<br>
+				Big: 
+				<br> 
+				<label data-target='["identity.body.chest.big.acceptance", "identity.body.chest.big.reject"]' data-disabledif="V.identity.body.chest.big.acceptance && !V.identity.body.chest.big.reject" class="red">Reject <<checkbox "$identity.body.chest.big.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giBreastSizeConfigured>>
+					<label data-target='["identity.body.chest.preferred", "identity.init"]' data-disabledif="V.identity.body.chest.preferred === 'big'">Unaccepted <<radiobutton "$identity.body.chest.big.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.chest.big.reject", "identity.init"]' data-disabledif="V.identity.body.chest.big.reject">Accepted <<radiobutton "$identity.body.chest.big.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.chest.big.acceptance"]' data-disabledif="!V.identity.body.chest.big.acceptance" class="green">Preferred <<radiobutton "$identity.body.chest.preferred" "big" autocheck>></label>
+				<br>
+			</div>
+			<div class="settingsToggleItem" id="gi-box-ass" data-gi-config="giAssSizeConfigured" style="display:none;">
+				<span class="gold">Ass Size </span> <mouse class="tooltip linkBlue">(?)<span>Unaccepted characteristics will cause dysphoria.</span></mouse>
+				<br>
+				Small: 
+				<br> 
+				<label data-target='["identity.body.bottom.small.acceptance", "identity.body.bottom.small.reject"]' data-disabledif="V.identity.body.bottom.small.acceptance && !V.identity.body.bottom.small.reject" class="red">Reject <<checkbox "$identity.body.bottom.small.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giAssSizeConfigured>>
+					<label data-target='["identity.body.bottom.preferred", "identity.init"]' data-disabledif="V.identity.body.bottom.preferred === 'small'">Unaccepted <<radiobutton "$identity.body.bottom.small.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.bottom.small.reject", "identity.init"]' data-disabledif="V.identity.body.bottom.small.reject">Accepted <<radiobutton "$identity.body.bottom.small.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.bottom.small.acceptance"]' data-disabledif="!V.identity.body.bottom.small.acceptance" class="green">Preferred <<radiobutton "$identity.body.bottom.preferred" "small" autocheck>></label>
+				<br>
+				Medium: 
+				<br> 
+				<label data-target='["identity.body.bottom.medium.acceptance", "identity.body.bottom.medium.reject"]' data-disabledif="V.identity.body.bottom.medium.acceptance && !V.identity.body.bottom.medium.reject" class="red">Reject <<checkbox "$identity.body.bottom.medium.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giAssSizeConfigured>>
+					<label data-target='["identity.body.bottom.preferred", "identity.init"]' data-disabledif="V.identity.body.bottom.preferred === 'medium'">Unaccepted <<radiobutton "$identity.body.bottom.medium.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.bottom.medium.reject", "identity.init"]' data-disabledif="V.identity.body.bottom.medium.reject">Accepted <<radiobutton "$identity.body.bottom.medium.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.bottom.medium.acceptance"]' data-disabledif="!V.identity.body.bottom.medium.acceptance" class="green">Preferred <<radiobutton "$identity.body.bottom.preferred" "medium" autocheck>></label>
+				<br>
+				Big: 
+				<br> 
+				<label data-target='["identity.body.bottom.big.acceptance", "identity.body.bottom.big.reject"]' data-disabledif="V.identity.body.bottom.big.acceptance && !V.identity.body.bottom.big.reject" class="red">Reject <<checkbox "$identity.body.bottom.big.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giAssSizeConfigured>>
+					<label data-target='["identity.body.bottom.preferred", "identity.init"]' data-disabledif="V.identity.body.bottom.preferred === 'big'">Unaccepted <<radiobutton "$identity.body.bottom.big.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.bottom.big.reject", "identity.init"]' data-disabledif="V.identity.body.bottom.big.reject">Accepted <<radiobutton "$identity.body.bottom.big.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.bottom.big.acceptance"]' data-disabledif="!V.identity.body.bottom.big.acceptance" class="green">Preferred <<radiobutton "$identity.body.bottom.preferred" "big" autocheck>></label>
+				<br>
+			</div>
+			<div class="settingsToggleItem" id="gi-box-genitals" data-gi-config="giGenitalsConfigured" style="display:none;">
+				<span class="gold">Genitals </span> <mouse class="tooltip linkBlue">(?)<span>Unaccepted characteristics will cause dysphoria. You may prefer both a vagina and a penis size simultaneously (for herm characters).</span></mouse>
+				<br>
+				Vagina: 
+				<br> 
+				<label data-target='["identity.body.genitals.vagina.acceptance", "identity.body.genitals.vagina.reject"]' data-disabledif="V.identity.body.genitals.vagina.acceptance && !V.identity.body.genitals.vagina.reject" class="red">Reject <<checkbox "$identity.body.genitals.vagina.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giGenitalsConfigured>>
+					<label data-target='["identity.body.genitals.preferredVagina", "identity.init"]' data-disabledif="V.identity.body.genitals.preferredVagina">Unaccepted <<radiobutton "$identity.body.genitals.vagina.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.genitals.vagina.reject", "identity.init"]' data-disabledif="V.identity.body.genitals.vagina.reject">Accepted <<radiobutton "$identity.body.genitals.vagina.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.genitals.vagina.acceptance"]' data-disabledif="!V.identity.body.genitals.vagina.acceptance" class="green">Preferred <<checkbox "$identity.body.genitals.preferredVagina" false true autocheck>></label>
+				<br>
+				Tiny Penis:
+				<br>
+				<label data-target='["identity.body.genitals.tinypenis.acceptance", "identity.body.genitals.tinypenis.reject"]' data-disabledif="V.identity.body.genitals.tinypenis.acceptance && !V.identity.body.genitals.tinypenis.reject" class="red">Reject <<checkbox "$identity.body.genitals.tinypenis.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giGenitalsConfigured>>
+					<label data-target='["identity.body.genitals.preferredPenis", "identity.init"]' data-disabledif="V.identity.body.genitals.preferredPenis === 'tinypenis'">Unaccepted <<radiobutton "$identity.body.genitals.tinypenis.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.genitals.tinypenis.reject", "identity.init"]' data-disabledif="V.identity.body.genitals.tinypenis.reject">Accepted <<radiobutton "$identity.body.genitals.tinypenis.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.genitals.tinypenis.acceptance"]' data-disabledif="!V.identity.body.genitals.tinypenis.acceptance" class="green">Preferred <<radiobutton "$identity.body.genitals.preferredPenis" "tinypenis" autocheck>></label>
+				<br>
+				Small Penis:
+				<br> 
+				<label data-target='["identity.body.genitals.smallpenis.acceptance", "identity.body.genitals.smallpenis.reject"]' data-disabledif="V.identity.body.genitals.smallpenis.acceptance && !V.identity.body.genitals.smallpenis.reject" class="red">Reject <<checkbox "$identity.body.genitals.smallpenis.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giGenitalsConfigured>>
+					<label data-target='["identity.body.genitals.preferredPenis", "identity.init"]' data-disabledif="V.identity.body.genitals.preferredPenis === 'smallpenis'">Unaccepted <<radiobutton "$identity.body.genitals.smallpenis.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.genitals.smallpenis.reject", "identity.init"]' data-disabledif="V.identity.body.genitals.smallpenis.reject">Accepted <<radiobutton "$identity.body.genitals.smallpenis.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.genitals.smallpenis.acceptance"]' data-disabledif="!V.identity.body.genitals.smallpenis.acceptance" class="green">Preferred <<radiobutton "$identity.body.genitals.preferredPenis" "smallpenis" autocheck>></label>
+				<br>
+				Medium Penis: 
+				<br> 
+				<label data-target='["identity.body.genitals.mediumpenis.acceptance", "identity.body.genitals.mediumpenis.reject"]' data-disabledif="V.identity.body.genitals.mediumpenis.acceptance && !V.identity.body.genitals.mediumpenis.reject" class="red">Reject <<checkbox "$identity.body.genitals.mediumpenis.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giGenitalsConfigured>>
+					<label data-target='["identity.body.genitals.preferredPenis", "identity.init"]' data-disabledif="V.identity.body.genitals.preferredPenis === 'mediumpenis'">Unaccepted <<radiobutton "$identity.body.genitals.mediumpenis.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.genitals.mediumpenis.reject", "identity.init"]' data-disabledif="V.identity.body.genitals.mediumpenis.reject">Accepted <<radiobutton "$identity.body.genitals.mediumpenis.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.genitals.mediumpenis.acceptance"]' data-disabledif="!V.identity.body.genitals.mediumpenis.acceptance" class="green">Preferred <<radiobutton "$identity.body.genitals.preferredPenis" "mediumpenis" autocheck>></label>
+				<br>
+				Big Penis: 
+				<br> 
+				<label data-target='["identity.body.genitals.bigpenis.acceptance", "identity.body.genitals.bigpenis.reject"]' data-disabledif="V.identity.body.genitals.bigpenis.acceptance && !V.identity.body.genitals.bigpenis.reject" class="red">Reject <<checkbox "$identity.body.genitals.bigpenis.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giGenitalsConfigured>>
+					<label data-target='["identity.body.genitals.preferredPenis", "identity.init"]' data-disabledif="V.identity.body.genitals.preferredPenis === 'bigpenis'">Unaccepted <<radiobutton "$identity.body.genitals.bigpenis.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.genitals.bigpenis.reject", "identity.init"]' data-disabledif="V.identity.body.genitals.bigpenis.reject">Accepted <<radiobutton "$identity.body.genitals.bigpenis.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.genitals.bigpenis.acceptance"]' data-disabledif="!V.identity.body.genitals.bigpenis.acceptance" class="green">Preferred <<radiobutton "$identity.body.genitals.preferredPenis" "bigpenis" autocheck>></label>
+				<br>
+				/* Penis sizes use radio buttons, so this option lets the player switch back to having no preferred penis size. The vagina option above can already be unticked. */
+				<label class="teal">No preferred penis size <<radiobutton "$identity.body.genitals.preferredPenis" false autocheck>></label> <mouse class="tooltip linkBlue">(?)<span>None of the penis sizes counts as your ideal. This is how you start out; pick it to clear a size you chose earlier.</span></mouse>
+				<br>
+
+				/* Sync dual preferences back to legacy preferred field for backward compat */
+				<<silently>>
+					<<if $identity.body.genitals.preferredVagina and $identity.body.genitals.preferredPenis>>
+						/* Herm: both selected. Legacy field gets vagina (arbitrary tie-break; dual fields are authoritative) */
+						<<set $identity.body.genitals.preferred to "vagina">>
+					<<elseif $identity.body.genitals.preferredVagina>>
+						<<set $identity.body.genitals.preferred to "vagina">>
+					<<elseif $identity.body.genitals.preferredPenis>>
+						<<set $identity.body.genitals.preferred to $identity.body.genitals.preferredPenis>>
+					<<else>>
+						<<set $identity.body.genitals.preferred to false>>
+					<</if>>
+				<</silently>>
+			</div>
+			<div class="settingsToggleItem" id="gi-box-hair" data-gi-config="giHairLengthConfigured" style="display:none;">
+				<span class="gold">Hair Length </span> <mouse class="tooltip linkBlue">(?)<span>Unaccepted characteristics will cause dysphoria.</span></mouse>
+				<br>
+				Short: 
+				<br> 
+				<label data-target='["identity.body.hairlength.short.acceptance", "identity.body.hairlength.short.reject"]' data-disabledif="V.identity.body.hairlength.short.acceptance && !V.identity.body.hairlength.short.reject" class="red">Reject <<checkbox "$identity.body.hairlength.short.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giHairLengthConfigured>>
+					<label data-target='["identity.body.hairlength.preferred", "identity.init"]' data-disabledif="V.identity.body.hairlength.preferred === 'short'">Unaccepted <<radiobutton "$identity.body.hairlength.short.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.hairlength.short.reject", "identity.init"]' data-disabledif="V.identity.body.hairlength.short.reject">Accepted <<radiobutton "$identity.body.hairlength.short.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.hairlength.short.acceptance"]' data-disabledif="!V.identity.body.hairlength.short.acceptance" class="green">Preferred <<radiobutton "$identity.body.hairlength.preferred" "short" autocheck>></label>
+				<br>
+				Medium: 
+				<br> 
+				<label data-target='["identity.body.hairlength.medium.acceptance", "identity.body.hairlength.medium.reject"]' data-disabledif="V.identity.body.hairlength.medium.acceptance && !V.identity.body.hairlength.medium.reject" class="red">Reject <<checkbox "$identity.body.hairlength.medium.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giHairLengthConfigured>>
+					<label data-target='["identity.body.hairlength.preferred", "identity.init"]' data-disabledif="V.identity.body.hairlength.preferred === 'medium'">Unaccepted <<radiobutton "$identity.body.hairlength.medium.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.hairlength.medium.reject", "identity.init"]' data-disabledif="V.identity.body.hairlength.medium.reject">Accepted <<radiobutton "$identity.body.hairlength.medium.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.hairlength.medium.acceptance"]' data-disabledif="!V.identity.body.hairlength.medium.acceptance" class="green">Preferred <<radiobutton "$identity.body.hairlength.preferred" "medium" autocheck>></label>
+				<br>
+				Long: 
+				<br> 
+				<label data-target='["identity.body.hairlength.long.acceptance", "identity.body.hairlength.long.reject"]' data-disabledif="V.identity.body.hairlength.long.acceptance && !V.identity.body.hairlength.long.reject" class="red">Reject <<checkbox "$identity.body.hairlength.long.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giHairLengthConfigured>>
+					<label data-target='["identity.body.hairlength.preferred", "identity.init"]' data-disabledif="V.identity.body.hairlength.preferred === 'long'">Unaccepted <<radiobutton "$identity.body.hairlength.long.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.hairlength.long.reject", "identity.init"]' data-disabledif="V.identity.body.hairlength.long.reject">Accepted <<radiobutton "$identity.body.hairlength.long.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.hairlength.long.acceptance"]' data-disabledif="!V.identity.body.hairlength.long.acceptance" class="green">Preferred <<radiobutton "$identity.body.hairlength.preferred" "long" autocheck>></label>
+				<br>
+			</div>
+			<div class="settingsToggleItem" id="gi-box-bodysize" data-gi-config="giBodySizeConfigured" style="display:none;">
+				<span class="gold">Body Size </span> <mouse class = "tooltip linkBlue">(?)<span>Unaccepted characteristics will cause dysphoria.</span></mouse>
+				<br>
+				Miniature:
+				<br>
+				<label data-target='["identity.body.bodysize.miniature.acceptance", "identity.body.bodysize.miniature.reject"]' data-disabledif="V.identity.body.bodysize.miniature.acceptance && !V.identity.body.bodysize.miniature.reject" class="red">Reject <<checkbox "$identity.body.bodysize.miniature.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giBodySizeConfigured>>
+					<label data-target='["identity.body.bodysize.preferred", "identity.init"]' data-disabledif="V.identity.body.bodysize.preferred === 'miniature'">
+						Unaccepted <<radiobutton "$identity.body.bodysize.miniature.acceptance" false autocheck>>
+					</label> |
+					<label data-target='["identity.body.bodysize.miniature.reject", "identity.init"]' data-disabledif="V.identity.body.bodysize.miniature.reject">
+						Accepted <<radiobutton "$identity.body.bodysize.miniature.acceptance" true autocheck>>
+					</label> |
+				<</if>>
+				<label data-target='["identity.body.bodysize.miniature.acceptance"]' data-disabledif="!V.identity.body.bodysize.miniature.acceptance" class="green">
+					Preferred <<radiobutton "$identity.body.bodysize.preferred" "miniature" autocheck>>
+				</label>
+				<br>
+				Tiny: 
+				<br> 
+				<label data-target='["identity.body.bodysize.tiny.acceptance", "identity.body.bodysize.tiny.reject"]' data-disabledif="V.identity.body.bodysize.tiny.acceptance && !V.identity.body.bodysize.tiny.reject" class="red">Reject <<checkbox "$identity.body.bodysize.tiny.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giBodySizeConfigured>>
+					<label data-target='["identity.body.bodysize.preferred", "identity.init"]' data-disabledif="V.identity.body.bodysize.preferred === 'tiny'">Unaccepted <<radiobutton "$identity.body.bodysize.tiny.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.bodysize.tiny.reject", "identity.init"]' data-disabledif="V.identity.body.bodysize.tiny.reject">Accepted <<radiobutton "$identity.body.bodysize.tiny.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.bodysize.tiny.acceptance"]' data-disabledif="!V.identity.body.bodysize.tiny.acceptance" class="green">Preferred <<radiobutton "$identity.body.bodysize.preferred" "tiny" autocheck>></label>
+				<br>
+				Small: 
+				<br> 
+				<label data-target='["identity.body.bodysize.small.acceptance", "identity.body.bodysize.small.reject"]' data-disabledif="V.identity.body.bodysize.small.acceptance && !V.identity.body.bodysize.small.reject" class="red">Reject <<checkbox "$identity.body.bodysize.small.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giBodySizeConfigured>>
+					<label data-target='["identity.body.bodysize.preferred", "identity.init"]' data-disabledif="V.identity.body.bodysize.preferred === 'small'">Unaccepted <<radiobutton "$identity.body.bodysize.small.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.bodysize.small.reject", "identity.init"]' data-disabledif="V.identity.body.bodysize.small.reject">Accepted <<radiobutton "$identity.body.bodysize.small.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.bodysize.small.acceptance"]' data-disabledif="!V.identity.body.bodysize.small.acceptance" class="green">Preferred <<radiobutton "$identity.body.bodysize.preferred" "small" autocheck>></label>
+				<br>
+				Normal: 
+				<br> 
+				<label data-target='["identity.body.bodysize.normal.acceptance", "identity.body.bodysize.normal.reject"]' data-disabledif="V.identity.body.bodysize.normal.acceptance && !V.identity.body.bodysize.normal.reject" class="red">Reject <<checkbox "$identity.body.bodysize.normal.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giBodySizeConfigured>>
+					<label data-target='["identity.body.bodysize.preferred", "identity.init"]' data-disabledif="V.identity.body.bodysize.preferred === 'normal'">Unaccepted <<radiobutton "$identity.body.bodysize.normal.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.bodysize.normal.reject", "identity.init"]' data-disabledif="V.identity.body.bodysize.normal.reject">Accepted <<radiobutton "$identity.body.bodysize.normal.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.bodysize.normal.acceptance"]' data-disabledif="!V.identity.body.bodysize.normal.acceptance" class="green">Preferred <<radiobutton "$identity.body.bodysize.preferred" "normal" autocheck>></label>
+				<br>
+				Tall: 
+				<br> 
+				<label data-target='["identity.body.bodysize.tall.acceptance", "identity.body.bodysize.tall.reject"]' data-disabledif="V.identity.body.bodysize.tall.acceptance && !V.identity.body.bodysize.tall.reject" class="red">Reject <<checkbox "$identity.body.bodysize.tall.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giBodySizeConfigured>>
+					<label data-target='["identity.body.bodysize.preferred", "identity.init"]' data-disabledif="V.identity.body.bodysize.preferred === 'tall'">Unaccepted <<radiobutton "$identity.body.bodysize.tall.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.bodysize.tall.reject", "identity.init"]' data-disabledif="V.identity.body.bodysize.tall.reject">Accepted <<radiobutton "$identity.body.bodysize.tall.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.bodysize.tall.acceptance"]' data-disabledif="!V.identity.body.bodysize.tall.acceptance" class="green">Preferred <<radiobutton "$identity.body.bodysize.preferred" "tall" autocheck>></label>
+				<br>
+				Large: 
+				<br> 
+				<label data-target='["identity.body.bodysize.large.acceptance", "identity.body.bodysize.large.reject"]' data-disabledif="V.identity.body.bodysize.large.acceptance && !V.identity.body.bodysize.large.reject" class="red">Reject <<checkbox "$identity.body.bodysize.large.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giBodySizeConfigured>>
+					<label data-target='["identity.body.bodysize.preferred", "identity.init"]' data-disabledif="V.identity.body.bodysize.preferred === 'large'">Unaccepted <<radiobutton "$identity.body.bodysize.large.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.bodysize.large.reject", "identity.init"]' data-disabledif="V.identity.body.bodysize.large.reject">Accepted <<radiobutton "$identity.body.bodysize.large.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.bodysize.large.acceptance"]' data-disabledif="!V.identity.body.bodysize.large.acceptance" class="green">Preferred <<radiobutton "$identity.body.bodysize.preferred" "large" autocheck>></label>
+				<br>
+				Giant: 
+				<br> 
+				<label data-target='["identity.body.bodysize.giant.acceptance", "identity.body.bodysize.giant.reject"]' data-disabledif="V.identity.body.bodysize.giant.acceptance && !V.identity.body.bodysize.giant.reject" class="red">Reject <<checkbox "$identity.body.bodysize.giant.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giBodySizeConfigured>>
+					<label data-target='["identity.body.bodysize.preferred", "identity.init"]' data-disabledif="V.identity.body.bodysize.preferred === 'giant'">Unaccepted <<radiobutton "$identity.body.bodysize.giant.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.bodysize.giant.reject", "identity.init"]' data-disabledif="V.identity.body.bodysize.giant.reject">Accepted <<radiobutton "$identity.body.bodysize.giant.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.bodysize.giant.acceptance"]' data-disabledif="!V.identity.body.bodysize.giant.acceptance" class="green">Preferred <<radiobutton "$identity.body.bodysize.preferred" "giant" autocheck>></label>
+				<br>
+			</div>
+			<div class="settingsToggleItem" id="gi-box-fecundity" data-gi-config="giFecundityConfigured" style="display:none;">
+				<span class="gold">Fecundity </span> <mouse class = "tooltip linkBlue">(?)<span>Unaccepted characteristics will cause dysphoria.</span></mouse>
+				<br>
+				Lactation: 
+				<br> 
+				<label data-target='["identity.body.lactation.acceptance", "identity.body.lactation.reject"]' data-disabledif="V.identity.body.lactation.acceptance && !V.identity.body.lactation.reject" class="red">Reject <<checkbox "$identity.body.lactation.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giFecundityConfigured>>
+					<label data-target='["identity.body.lactation.preferred", "identity.init"]' data-disabledif="V.identity.body.lactation.preferred === 'lactation'">Unaccepted <<radiobutton "$identity.body.lactation.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.lactation.reject", "identity.init"]' data-disabledif="V.identity.body.lactation.reject">Accepted <<radiobutton "$identity.body.lactation.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.lactation.acceptance"]' data-disabledif="!V.identity.body.lactation.acceptance" class="green">Preferred <<checkbox "$identity.body.lactation.preferred" "none" "lactation" autocheck>></label>
+				<br>
+				Pregnancy: 
+				<br> 
+				<label data-target='["identity.body.pregnancy.acceptance", "identity.body.pregnancy.reject"]' data-disabledif="V.identity.body.pregnancy.acceptance && !V.identity.body.pregnancy.reject" class="red">Reject <<checkbox "$identity.body.pregnancy.reject" false true autocheck>></label> |
+				<<if $identity.init isnot 2 or $background.transgender or !$xchange.giFecundityConfigured>>
+					<label data-target='["identity.body.pregnancy.preferred", "identity.init"]' data-disabledif="V.identity.body.pregnancy.preferred === 'pregnancy'">Unaccepted <<radiobutton "$identity.body.pregnancy.acceptance" false autocheck>></label> |
+					<label data-target='["identity.body.pregnancy.reject", "identity.init"]' data-disabledif="V.identity.body.pregnancy.reject">Accepted <<radiobutton "$identity.body.pregnancy.acceptance" true autocheck>></label> |
+				<</if>>
+				<label data-target='["identity.body.pregnancy.acceptance"]' data-disabledif="!V.identity.body.pregnancy.acceptance" class="green">Preferred <<checkbox "$identity.body.pregnancy.preferred" "none" "pregnancy" autocheck>></label>
+				<br>
+			</div>
+		</div>
+	<</widget>>
+
+	<<widget "lockInIdentitySetting">>
+		<<if $background.transgender>>
+		<div class="settingsGrid">
+			<div class="settingsToggleItem">
+				You can <span class="green">change your identity settings at any time</span>.
+			</div>
+		</div>
+		<<else>>
+		<div class="settingsGrid">
+			<div class="settingsToggleItem">
+				<label data-target="['identity.init']" data-disabledif="V.identity.init > 1">Lock Choices <<if $identity.init lt 2>><<checkbox "$identity.init" $identity.init 1 autocheck>><<else>><<checkbox "$identity.init" $identity.init 2 autocheck>><</if>></label>
+			</div>
+		</div>
+		<</if>>
+	<</widget>>
+	
+	<<widget "identity-box-simple">>
+		<<set _boxConfig = _args[0]>>
+		<div class="relation-box" @style="(_boxConfig.style || '')">
+			<<if _boxConfig.name>>
+				<div class="relation-top-line">
+					_boxConfig.icon
+					<span class="relation-name">_boxConfig.name: _boxConfig.status</span>		
+				</div>
+			<</if>>
+			<div class="identity-description">
+				Tolerance
+				_boxConfig.tolerance
+			</div>
+			<div class="identity-description">
+				<<if _boxConfig.active>>
+					<span @class="'red ' + basicJitterCss()">Dysphoria</span>
+				<<else>>
+					Dysphoria
+				<</if>>
+				_boxConfig.dysphoria
+			</div>
+		</div>
+	<</widget>>
+
+	<<widget "identityStatus">>
+		/* Reject (and the "Begrudged" forced-surrender state it can carry alongside acceptance, see rejectionBreakdown) reflects how the character actually feels right now, so it takes priority over which option they've merely marked as their ideal. Otherwise a trait that's both Preferred and Begrudged displayed as plain "Preferred", hiding the ongoing dysphoria. */
+		<<if _args[0].reject>>
+			<<if _args[0].acceptance>>
+				<span @class="'red ' + basicJitterCss()">Begrudged</span>
+			<<else>>
+				<span class="red">Rejected</span>
+			<</if>>
+		<<elseif _args[1]>>
+			<span class="green">Preferred</span>
+		<<elseif _args[0].acceptance>>
+			<span class="blue">Accepted</span>
+		<<else>>
+			<span class="purple">Not accepted</span>
+		<</if>>
+	<</widget>>
+
+	<<widget "identityScreen">>
+
+		<div class="identity-box-list">
+			<div class="settingsGrid">
+				<div class="settingsToggleItemWide">
+					<ul class="small-description">
+						<li><b>Accepted:</b> Accepted characteristics do not cause negative effects. You can also choose one accepted characteristic in each category as Preferred. Having your Preferred characteristic slightly lowers Stress and Trauma.</li>
+						<li><b>Dysphoria:</b> Having a characteristic you have not accepted causes Dysphoria, which increases Stress and Trauma.</li>
+						<li><b>Tolerance:</b> You slowly gain Tolerance each day towards characteristics you have but have not accepted. At maximum Tolerance, that characteristic becomes Accepted.</li>
+						<li><b>Rejected:</b> Rejected characteristics do not give you Trauma, but you also cannot gain Tolerance towards them. Letting Dysphoria from a Rejected characteristic reach its maximum is dangerous.</li>
+						<li><b>Begrudged:</b> If Dysphoria from a Rejected characteristic reaches its maximum and your Willpower runs out, you are forced to put up with it. It can then cause Trauma, but repeated Dysphoria will no longer drain your current Willpower. You cannot Reject or Accept it while it is Begrudged. To remove Begrudged, stop having that characteristic, remove it as Preferred if needed, then wait for its Tolerance to fall. After that, you can Reject it again if you want.</li>
+					</ul>
+				</div>
+
+				<<for _categoryName, _category range setup.identityIndex>>
+					<<set _hasAny to false>>
+					<<for _char, _icon range _category>>
+						<<identitySelector _char>>
+						<<if $identityOption>>
+							<<set _hasAny to true>>
+						<</if>>
+					<</for>>
+
+					<<if _hasAny>>
+						<div class="settingsHeader">
+							<span class="gold bold">_categoryName</span><br>
+						</div>
+
+						<<for _char, _icon range _category>>
+							<<identitySelector _char>>
+							<<if $identityOption>>
+								<<silently>>
+									<<set _active to (playerHasCharacteristic(_char) and (!$identityOption.acceptance or $identityOption.reject))>>
+									<<set _identityConfig = { 
+										name: _char, 
+										icon: _icon,
+										status: "<<identityStatus $identityOption $identityPreference>>", 
+										tolerance: "<<statbarinverted $identityOption.tolerance 100>>", 
+										dysphoria: "<<statbar 0 $identityOption.dysphoria 100>>", 
+										active: _active
+									}>>
+								<</silently>>
+								<<identity-box-simple _identityConfig>>
+							<</if>>
+						<</for>>
+					<</if>>
+				<</for>>
+			</div>
+		</div>
+	<</widget>>
+
+	<<widget "titleIdentity">>
+		<<setupTabs>>
+		<div id="overlayTabs" class="tab">
+			<<closeButtonMobile>>
+			<<button "Characteristics">>
+				<<toggleTab>>
+				<<replace #customOverlayContent>><<characteristics>><</replace>>
+			<</button>>
+			<<button "Identity">>
+				<<toggleTab>>
+				<<set $tempDisable to true>>
+				<<replace #customOverlayContent>><<identityScreen>><</replace>>
+			<</button>>
+			<<colourCodes>>
+		</div>
+		<<closeButton>>
+	<</widget>>
+
+	<<widget "identitySelector">>
+		/* The characteristic table lives in identity.js (IDENTITY_CHARACTERISTICS); a disabled topic, or "Don't care" clothing/makeup, leaves $identityOption undefined. */
+		<<set $identityTopic to _args[0]>>
+		<<set _identitySelected to selectIdentityCharacteristic(_args[0])>>
+		<<set $identityOption to _identitySelected.option>>
+		<<set $identityPreference to _identitySelected.preferred>>
+	<</widget>>
+
+	<<widget "dysphoria">>
+		<<if _args[0] isnot undefined>>
+			<<set _mod to _args[0]>>
+		<<if !$statFreeze and $background.transgender and $identityOption and ["Vagina", "Tiny Penis", "Small Penis", "Medium Penis", "Big Penis"].includes($identityTopic) and $xchange and $xchange.permaReflection and $xchange.permaReflection.answer and (typeof pillIsPermanent === "function" ? pillIsPermanent() : ($xchange.pill and $xchange.pill.active and $xchange.pill.duration <= -1))>>
+				<<if $xchange.permaReflection.answer is "yes">>
+					<<set $identityOption.dysphoria to 0>>
+				<<elseif $xchange.permaReflection.answer is "no">>
+					<<set $identityOption.dysphoria to 100>>
+					<<set $identityOption.acceptance to false>>
+					<<set $identityOption.reject to true>>
+					<<set $identityOption.tolerance to 0>>
+					/* Apply the normal stress/trauma penalty for max dysphoria, matching what the original logic would do at 100/100. */
+					<<if _mod gt 0>>
+						<<set $effectsmessage to 1>>
+						<<set $dysphoriaMessage to true>>
+						<<trauma _mod>>
+					<</if>>
+				<</if>>
+			<<else>>
+
+			<<if $identityOption>>
+				<<if (!$identityOption.acceptance or $identityOption.reject) and _mod gt 0>>
+
+				/* Reason message (optional override via _args[1]) */
+				<<set _reason to (typeof _args[1] is "string") ? _args[1].trim() : "">>
+				/* Default reasons (only if no custom string was passed) */
+				<<if _reason is "">>
+					<<switch $identityTopic>>
+						<<case "Pregnancy">>
+							<<set _reason to "The possibility of pregnancy does not match how you need your body to function.">>
+						<<case "Lactation">>
+							<<set _reason to "The possibility of lactating does not match how you need your body to function.">>
+						<<case "Masculine Appearance">>
+							<<set _reason to "Seeing yourself look masculine does not match how you need to appear.">>
+						<<case "Feminine Appearance">>
+							<<set _reason to "Seeing yourself look feminine does not match how you need to appear.">>
+						<<case "Androgynous Appearance">>
+							<<set _reason to "Seeing yourself look androgynous does not match how you need to appear.">>
+						<<case "Vagina">>
+							<<set _reason to "Having a vagina does not match how you need your body to be.">>
+						<<case "Tiny Penis">>
+							<<set _reason to "Having a tiny penis does not match how you need your body to be.">>
+						<<case "Small Penis">>
+							<<set _reason to "Having a small penis does not match how you need your body to be.">>
+						<<case "Medium Penis">>
+							<<set _reason to "Having an average-sized penis does not match how you need your body to be.">>
+						<<case "Big Penis">>
+							<<set _reason to "Having a large penis does not match how you need your body to be.">>
+						<<case "Masculine Pronouns">>
+							<<set _reason to "Hearing someone use masculine pronouns for you does not match how you understand your gender.">>
+						<<case "Feminine Pronouns">>
+							<<set _reason to "Hearing someone use feminine pronouns for you does not match how you understand your gender.">>
+						<<case "Neutral Pronouns">>
+							<<set _reason to "Hearing someone use neutral pronouns for you does not match how you understand your gender.">>
+						/* Clothing reactions apply both when getting changed and while wearing the outfit. */
+						<<case "Masculine Clothing">>
+							<<set _reason to $identityOption.reject ? "This outfit makes you look masculine, and wearing it feels unbearable." : "This outfit makes you look masculine, which does not match how you want to present.">>
+						<<case "Feminine Clothing">>
+							<<set _reason to $identityOption.reject ? "This outfit makes you look feminine, and wearing it feels unbearable." : "This outfit makes you look feminine, which does not match how you want to present.">>
+						<<case "Neutral Clothing">>
+							<<set _reason to $identityOption.reject ? "This outfit makes you look neither masculine nor feminine, and wearing it feels unbearable." : "This outfit makes you look neither masculine nor feminine, which does not match how you want to present.">>
+						<<case "Wearing Makeup">>
+							<<set _reason to "Wearing makeup does not match how you need to present yourself.">>
+						<<case "Bare Face">>
+							<<set _reason to "Having a bare face does not match how you need to present yourself.">>
+						<<case "Flat Chest">>
+							<<set _reason to "Having a flat chest does not match how you need your body to be.">>
+						<<case "Small Breasts">>
+							<<set _reason to "Having a small chest does not match how you need your body to be.">>
+						<<case "Medium Breasts">>
+							<<set _reason to "Having a medium-sized chest does not match how you need your body to be.">>
+						<<case "Big Breasts">>
+							<<set _reason to "Having a large chest does not match how you need your body to be.">>
+						<<case "Short Hair">>
+							<<set _reason to "Having short hair does not match how you need to look.">>
+						<<case "Medium Hair">>
+							<<set _reason to "Having medium-length hair does not match how you need to look.">>
+						<<case "Long Hair">>
+							<<set _reason to "Having long hair does not match how you need to look.">>
+						<<case "Miniature Body">>
+							<<set _reason to "Your miniature stature does not match the body size you need.">>
+						<<case "Tiny Body">>
+							<<set _reason to "Your tiny stature does not match the body size you need.">>
+						<<case "Small Body">>
+							<<set _reason to "Your small stature does not match the body size you need.">>
+						<<case "Normal Body">>
+							<<set _reason to "Your average stature does not match the body size you need.">>
+						<<case "Tall Body">>
+							<<set _reason to "Your tall stature does not match the body size you need.">>
+						<<case "Large Body">>
+							<<set _reason to "Your large stature does not match the body size you need.">>
+						<<case "Giant Body">>
+							<<set _reason to "Your gigantic stature does not match the body size you need.">>
+						<<case "Small Ass">>
+							<<set _reason to "Having a small ass does not match how you need your body to be.">>
+						<<case "Medium Ass">>
+							<<set _reason to "Having a medium-sized ass does not match how you need your body to be.">>
+						<<case "Big Ass">>
+							<<set _reason to "Having a large ass does not match how you need your body to be.">>
+					<</switch>>
+				<</if>>
+				/* Store it for the UI (works for both custom and default) */
+				<<if _reason isnot "">>
+					<<set $dysphoriaReasonMessage to _reason>>
+				<</if>>
+				
+					<<set $effectsmessage to 1>>
+					<<set $dysphoriaMessage to true>>
+					<<set $identityOption.dysphoria to $identityOption.dysphoria + _mod>>
+					<<set _overflow to 0>>
+					<<if $identityOption.dysphoria gt 100>>
+						<<set _shift to _mod>>
+						/* Dysphoria pushed past its cap bleeds into tolerance instead of being thrown away, so being overloaded in the new body (e.g. repeated arousal/pleasure) gradually builds fondness toward acceptance. */
+						<<set _overflow to $identityOption.dysphoria - 100>>
+					<<else>>
+						<<set _shift to Math.ceil(_mod / 2)>>
+					<</if>>
+					/* Every active dysphoria flare raises Stress. Begrudged traits also raise Trauma, while plain Rejected traits do not. */
+					<<stress _shift>>
+					<<if !$identityOption.reject or $identityOption.acceptance>>
+						<<trauma _shift>>
+					<</if>>
+					<<set $identityOption.dysphoria to Math.clamp($identityOption.dysphoria, 0, 100)>>
+					/* Rejected characteristics never gain tolerance, matching the rest of the system. */
+					<<if _overflow gt 0 and !$identityOption.reject>>
+						<<tolerance _overflow>>
+					<</if>>
+					<<if (!$identityOption.acceptance and $identityOption.reject)>>
+						<<if $xchange.willpowerSystemEnabled is 1>><<willpower-spending 1>><</if>>
+						<<rejectionBreakdown>>
+					<</if>>
+				<<elseif _mod lt 0 and $identityOption.dysphoria gt 0>>
+					<<set $identityOption.dysphoria to Math.clamp($identityOption.dysphoria + _mod, 0, 100)>>
+					<<if $identityOption.reject>>
+						<<set _shift to 0 - _mod>>
+						<<stress _mod 1>><<trauma _mod>><<control _shift>>
+					<</if>>
+				<</if>>
+			<</if>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "rejectionBreakdown">>
+		<<if $identityOption.dysphoria gte 100>>
+			<<willpowercheck 500>>
+			<<if !$willpowerSuccess>>
+				<<set $identityOption.dysphoria to 0>>
+				<<set $identityOption.tolerance to 100>>
+				<<set $identityOption.acceptance to true>>
+				<<willpower -25>>
+				<<set $effectsmessage to 1>>
+				<<set $breakdownMessage to true>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "normaliseNeutralClothing">>
+		<<if $identity?.presentation?.clothing?.preferred is "n">>
+			<<for _clothingSide range ["masculine", "feminine", "neutral"]>>
+				<<if $identity.presentation.clothing[_clothingSide]>>
+					<<set $identity.presentation.clothing[_clothingSide].acceptance to true>>
+					<<set $identity.presentation.clothing[_clothingSide].reject to false>>
+					<<set $identity.presentation.clothing[_clothingSide].dysphoria to 0>>
+					<<set $identity.presentation.clothing[_clothingSide].tolerance to Math.max(Number($identity.presentation.clothing[_clothingSide].tolerance) || 0, 100)>>
+				<</if>>
+			<</for>>
+		<</if>>
+	<</widget>>
+
+	<<widget "normaliseMakeupPreference">>
+		<<if $identity?.presentation?.makeup?.preferred is "n">>
+			<<for _makeupState range ["wearing", "bare"]>>
+				/* This runs on the hourly tick, where a throw would freeze every timed flag in the game. */
+				<<if $identity.presentation.makeup[_makeupState]>>
+					<<set $identity.presentation.makeup[_makeupState].acceptance to true>>
+					<<set $identity.presentation.makeup[_makeupState].reject to false>>
+					<<set $identity.presentation.makeup[_makeupState].dysphoria to 0>>
+					<<set $identity.presentation.makeup[_makeupState].tolerance to Math.max(Number($identity.presentation.makeup[_makeupState].tolerance) || 0, 100)>>
+				<</if>>
+			<</for>>
+		<</if>>
+	<</widget>>
+
+	<<widget "repairPronounPreferenceFallback">>
+		<<if !$identity.presentation.pronouns.preferredMasculine and !$identity.presentation.pronouns.preferredFeminine and !$identity.presentation.pronouns.preferredNeutral>>
+			<<set _fallbackPronoun to (!!$player.penisExist is !!$player.vaginaExist) ? "n" : ($player.penisExist ? "m" : "f")>>
+			<<set $identity.presentation.pronouns.preferredMasculine to (_fallbackPronoun is "m")>>
+			<<set $identity.presentation.pronouns.preferredFeminine to (_fallbackPronoun is "f")>>
+			<<set $identity.presentation.pronouns.preferredNeutral to (_fallbackPronoun is "n")>>
+			<<set $identity.presentation.pronouns.masculine.acceptance to (_fallbackPronoun is "m")>>
+			<<set $identity.presentation.pronouns.feminine.acceptance to (_fallbackPronoun is "f")>>
+			<<set $identity.presentation.pronouns.neutral.acceptance to (_fallbackPronoun is "n")>>
+			<<set $identity.presentation.pronouns.preferred to _fallbackPronoun>>
+		<</if>>
+	<</widget>>
+
+	<<widget "seedTransgenderIdentity">>
+		<<set _bodySide to (!!$player.penisExist is !!$player.vaginaExist) ? "n" : ($player.penisExist ? "m" : "f")>>
+		<<if _bodySide isnot "n">>
+			<<set _identitySide to (_bodySide is "m" ? "f" : "m")>>
+			<<set _bodyPronounPreferred to (_bodySide is "m" ? !!$identity.presentation.pronouns.preferredMasculine : !!$identity.presentation.pronouns.preferredFeminine)>>
+			<<set _otherPronounPreferred to (_bodySide is "m" ? !!$identity.presentation.pronouns.preferredFeminine : !!$identity.presentation.pronouns.preferredMasculine)>>
+			<<set _untouched to $identity.presentation.appearance.preferred is "f" and $identity.presentation.clothing.preferred is "f" and _bodyPronounPreferred and !_otherPronounPreferred and !$identity.presentation.pronouns.preferredNeutral>>
+			<<if _untouched>>
+				<<set $identity.presentation.appearance.preferred to _identitySide>>
+				<<set $identity.presentation.clothing.preferred to _identitySide>>
+				<<set $identity.presentation.pronouns.preferred to _identitySide>>
+				<<set $identity.presentation.pronouns.preferredMasculine to (_identitySide is "m")>>
+				<<set $identity.presentation.pronouns.preferredFeminine to (_identitySide is "f")>>
+				<<set $identity.presentation.pronouns.preferredNeutral to false>>
+				<<set _bodyKey to (_bodySide is "m" ? "masculine" : "feminine")>>
+				<<set $identity.presentation.appearance[_bodyKey].acceptance to false>>
+				<<set $identity.presentation.clothing[_bodyKey].acceptance to false>>
+				<<set $identity.presentation.pronouns[_bodyKey].acceptance to false>>
+				<<set $identity.body.genitals.preferredVagina to (_identitySide is "f")>>
+				<<set $identity.body.genitals.preferredPenis to (_identitySide is "m" ? "mediumpenis" : false)>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "lockInIdentity">>
+		<<if $background.transgender and $identity.init isnot 2 and !$xchange.transIdentitySeeded>>
+			<<set $xchange.transIdentitySeeded to true>>
+			<<seedTransgenderIdentity>>
+		<</if>>
+		<<repairPronounPreferenceFallback>>
+		<<normaliseNeutralClothing>>
+		<<normaliseMakeupPreference>>
+
+		<<for _categoryName, _category range setup.identityIndex>>
+			<<for _char, _icon range _category>>
+				<<identitySelector _char>>
+				<<if $identityPreference>>
+					<<set $identityOption.tolerance to 200>>
+				<<elseif $identityOption?.acceptance>>
+					<<set $identityOption.tolerance to 100>>
+				<</if>>
+			<</for>>
+		<</for>>
+
+		<<if $background.transgender>>
+			/* Transgender: tolerance is set above but identity stays unlocked */
+			<<set $identity.init to 0>>
+		<<else>>
+			/* When identity is locked, mark enabled body categories as configured so the UI actually locks them. */
+			<<if $xchange.giBreastSizeEnabled>><<set $xchange.giBreastSizeConfigured to true>><</if>>
+			<<if $xchange.giAssSizeEnabled>><<set $xchange.giAssSizeConfigured to true>><</if>>
+			<<if $xchange.giGenitalsEnabled>><<set $xchange.giGenitalsConfigured to true>><</if>>
+			<<if $xchange.giHairLengthEnabled>><<set $xchange.giHairLengthConfigured to true>><</if>>
+			<<if $xchange.giBodySizeEnabled>><<set $xchange.giBodySizeConfigured to true>><</if>>
+			<<if $xchange.giFecundityEnabled>><<set $xchange.giFecundityConfigured to true>><</if>>
+
+			<<set $identity.init to 2>>
+		<</if>>
+	<</widget>>
+
+	<<run (function () {
+		if (setup.giAutoCommitIdentityLockInstalled) return; setup.giAutoCommitIdentityLockInstalled = true;
+
+		function ensureConfiguredFlags(V) {
+			if (!V.xchange) V.xchange = {};
+			/* Transgender trait bypasses locking, don't force configured flags */
+			if (V.background && V.background.transgender) return;
+			if (V.identity && V.identity.init >= 2) {
+				if (V.xchange.giBreastSizeEnabled)   V.xchange.giBreastSizeConfigured   = true;
+				if (V.xchange.giAssSizeEnabled)      V.xchange.giAssSizeConfigured      = true;
+				if (V.xchange.giGenitalsEnabled)     V.xchange.giGenitalsConfigured     = true;
+				if (V.xchange.giHairLengthEnabled)   V.xchange.giHairLengthConfigured   = true;
+				if (V.xchange.giBodySizeEnabled)     V.xchange.giBodySizeConfigured     = true;
+				if (V.xchange.giFecundityEnabled)    V.xchange.giFecundityConfigured    = true;
+			}
+		}
+
+		function autoCommitIdentityLock() {
+			var V = State && State.variables;
+			if (!V || !V.identity) return;
+
+			/* If we are already locked, just make sure config flags didn't get wiped. */
+			if (V.identity.init >= 2) {
+				/* Transgender trait: unlock if previously locked */
+				if (V.background && V.background.transgender) {
+					V.identity.init = 0;
+					return;
+				}
+				ensureConfiguredFlags(V);
+				return;
+			}
+
+			/* Pending lock: wait until identity index exists (defined by base game / other mod files). */
+			if (V.identity.init !== 1) return;
+			if (!setup.identityIndex) return;
+
+			if (setup.giAutoCommitIdentityLockInProgress) return;
+			setup.giAutoCommitIdentityLockInProgress = true;
+
+			try {
+				new Wikifier(null, "<<lockInIdentity>>"); /* sets init=2 */
+				ensureConfiguredFlags(V);
+			} catch (e) {
+				console.error("[X-Change GI] auto-commit identity lock failed", e);
+			} finally {
+				setup.giAutoCommitIdentityLockInProgress = false;
+			}
+		}
+
+		$(document).on(":passagedisplay", autoCommitIdentityLock);
+		setTimeout(autoCommitIdentityLock, 0);
+	})();>>
+
+	<<widget "tolerance">>
+		<<if _args[0] isnot undefined>>
+			<<set _mod to _args[0]>>
+			<<if $identityOption>>
+				<<set $identityOption.tolerance to Math.clamp($identityOption.tolerance + _mod, 0, 200)>>
+				<<if $identityOption.tolerance gte 100 and !$identityOption.acceptance>>
+					<<set $identityOption.acceptance to true>>
+					<<set $effectsmessage to 1>>
+					<<set $identityAcceptanceMessage to true>>
+				<<elseif $identityOption.tolerance is 0 and $identityOption.acceptance>>
+					<<set $identityOption.acceptance to false>>
+					<<set $effectsmessage to 1>>
+					<<set $breakdownEndMessage to true>>
+				<</if>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "identityRememberAcceptance">>
+		<<if $identityOption.acceptance and !$identityOption.reject and !$identityOption.everAccepted>>
+			<<set $identityOption.everAccepted to true>>
+		<</if>>
+	<</widget>>
+
+	<<widget "identityTickCharacteristic">>
+		<<set _weight to _args[0] isnot undefined ? _args[0] : 1>>
+		/* An optional reason line, for callers whose situation the topic's default text wouldn't describe. */
+		<<set _tickReason to (typeof _args[1] is "string") ? _args[1] : "">>
+		<<if $identityOption.acceptance and !$identityOption.reject>>
+			<<tolerance `2 * _weight`>>
+		<<elseif $identityOption.everAccepted and !$identityOption.reject and $identityOption.tolerance lt 50>>
+			/* Savings: your body remembers being at peace with a trait you once accepted.
+			Coming back to it, comfort resumes from halfway rather than a full re-grind from scratch. */
+			<<set $identityOption.tolerance to 50>>
+			<<set $effectsmessage to 1>>
+			<<set $identityFamiliarityMessage to true>>
+		<</if>>
+		<<set _shift to ($identityOption.tolerance/50).toFixed(2)>>
+		<<set _shift to Math.clamp(3-_shift, 1, 3) * _weight>>
+		<<dysphoria _shift _tickReason>>
+		<<identityCleanup>>
+	<</widget>>
+
+	<<widget "identityPreferredComfort">>
+		<<set _weight to _args[0] isnot undefined ? _args[0] : 1>>
+		<<if $identityPreference and $identityOption.acceptance and !$identityOption.reject>>
+			/* Euphoria acclimation: after a week of the same comfort, it only takes off a tenth of the trauma it used to. Stress relief is unchanged. */
+			<<set _traumaMod to 1>>
+			<<if $xchange.euphoriaAcclimationEnabled isnot false>>
+				<<set $identityOption.comfortHours to Math.min((Number($identityOption.comfortHours) || 0) + 1, 168)>>
+				<<set _traumaMod to Math.clamp(1 - $identityOption.comfortHours / 168, 0.1, 1)>>
+			<</if>>
+			<<stress `-1 * _weight` 1>><<trauma `-1 * _weight * _traumaMod`>>
+		<</if>>
+	<</widget>>
+
+	/* Clothing dysphoria and tolerance also progress while the outfit is worn.
+	Preferred clothing comfort stays hourly, so repeatedly changing outfits cannot farm comfort.
+	Dysphoria recovery remains hourly when the related characteristic is no longer present. */
+	<<widget "hourlyIdentityEffects">>
+		<<normaliseNeutralClothing>>
+		<<normaliseMakeupPreference>>
+		<<for _categoryName, _category range setup.identityIndex>>
+			<<for _char,_icon range _category>>
+				<<identitySelector _char>>
+				<<if $identityOption>>
+					<<identityRememberAcceptance>>
+					<<if playerHasCharacteristic(_char)>>
+						<<if isClothingCharacteristic(_char)>>
+							<<identityTickCharacteristic>>
+							<<identityPreferredComfort `CLOTHING_COMFORT_WEIGHT`>>
+						<<else>>
+							<<identityTickCharacteristic>>
+							<<identityPreferredComfort>>
+						<</if>>
+					<<else>>
+						/* Time away from a characteristic lets its comfort feel new again, at the same rate it wore off. */
+						<<if $identityOption.comfortHours gt 0>>
+							<<set $identityOption.comfortHours to Math.max($identityOption.comfortHours - 1, 0)>>
+						<</if>>
+						<<if $identityOption.dysphoria gt 0>>
+							<<dysphoria -5>>
+						<</if>>
+					<</if>>
+				<</if>>
+			<</for>>
+		<</for>>
+	<</widget>>
+
+	<<widget "clothingChangeIdentityEffects">>
+		<<identitySelector `clothingCharacteristicForBand(_args[0])`>>
+		<<if $identityOption>>
+			<<identityRememberAcceptance>>
+			<<identityTickCharacteristic `CLOTHING_CHANGE_WEIGHT`>>
+			<<if (!$identityOption.acceptance or $identityOption.reject) and playerCaresForGender() and !clothingCompulsionActive()>>
+				<<stress `$identityOption.reject ? 9 : 5`>>
+				<<set $effectsmessage to 1>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	/* Audience identity: the room's gender affects how the player is read.
+	Androgynous players are treated as one of two genders in single-gender groups. Runs when the situation changes, not on a timer. */
+	<<widget "audienceIdentityEffects">>
+		/* _args[0] is the passage being entered, which $passage doesn't name yet while this fires. */
+		<<set _audience to audienceIdentityContext(_args[0])>>
+		<<if _audience.gender and _audience.characteristic>>
+			<<set _audienceCharged to false>>
+			<<set _crowdWord to _audience.gender is "m" ? "men" : "women">>
+			<<set _seenWord to _audience.seen is "m" ? "a man" : "a woman">>
+			<<set _oddWord to _audience.seen is "m" ? "man" : "woman">>
+
+			<<if _audience.erased>>
+				<<set _audienceReason to "Everyone here is " + (_audience.gender is "m" ? "a man" : "a woman") + ". Something about your appearance seems off to them, but they've settled on " + _seenWord + ".">>
+			<<elseif _audience.contrast>>
+				<<set _audienceReason to "You're the only " + _oddWord + " in a room of " + _crowdWord + ", and it's the first thing anyone sees.">>
+			<<else>>
+				<<set _audienceReason to "They count you as one of the " + _crowdWord + " without a second thought.">>
+			<</if>>
+			<<if _audience.exposed>>
+				<<set _audienceReason to _audienceReason + " With your clothes off there's nothing to argue with.">>
+			<</if>>
+
+			/* The check that fires this makes the store, but the widget is callable on its own. */
+			<<if !$identity.audience>><<set $identity.audience to {}>><</if>>
+			<<set _lastComfort to Number($identity.audience.lastComfort)>>
+			<<set _audienceComfortDue to !Number.isFinite(_lastComfort) or Time.date.timeStamp - _lastComfort gte 3600>>
+
+			<<identitySelector _audience.characteristic>>
+			<<if $identityOption>>
+				<<identityRememberAcceptance>>
+				<<if !$identityOption.acceptance or $identityOption.reject>>
+					<<set _audienceCharged to true>>
+					<<identityTickCharacteristic _audience.weight _audienceReason>>
+				<<elseif $identityPreference and _audience.contrast and _audienceComfortDue>>
+					/* Being the only one of your gender can feel reassuring when you're read correctly. This can only happen once per hour. */
+					<<set $identity.audience.lastComfort to Time.date.timeStamp>>
+					<<stress `-2 * _audience.weight` 1>><<trauma `-1 * _audience.weight`>>
+					<<set $effectsmessage to 1>>
+					<<set $audienceAffirmationMessage to "In a room of " + _crowdWord + ", every one of them takes you for " + _seenWord + ". It settles something.">>
+				<</if>>
+			<</if>>
+
+			/* Erasure stands on its own: if you'd rather be read as neither gender, being forced into a binary still causes stress. */
+			<<if _audience.erased and !_audienceCharged>>
+				<<identitySelector "Androgynous Appearance">>
+				<<if $identityOption and $identityPreference>>
+					<<stress _audience.weight>>
+					<<set $effectsmessage to 1>>
+					<<set $audienceErasureMessage to _audienceReason>>
+				<</if>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "dailyIdentityEffects">>
+		<<for _categoryName, _category range setup.identityIndex>>
+			<<for _char,_icon range _category>>
+				<<identitySelector _char>>
+				<<if $identityOption>>
+					<<if $identityOption.dysphoria is 0>>
+						<<if !playerHasCharacteristic(_char) and !$identityPreference>>
+							<<tolerance -3>>
+						<</if>>
+					<<elseif !$identityOption.reject>>
+						<<set _shift to Math.min(Math.ceil(0 - ($identityOption.dysphoria / 2)), -1)>>
+						/* Acceptance is habituation, not a switch. */
+						<<set _accept to Math.clamp(Math.round(18 - ($identityOption.dysphoria / 8)), 5, 15)>>
+						<<tolerance _accept>>
+						<<dysphoria _shift>>
+						<<sub `_shift * -0.1`>>
+						<<willpower `_shift * 0.1`>>
+						<<set $effectsmessage to 1>>
+						<<set $dysphoriaProcessingMessage to 1>>
+					<</if>>
+				<</if>>
+			<</for>>
+		<</for>>
+		<<gi-auto-update>>
+	<</widget>>
+
+	<<widget "misgender">>
+		<<set _usedPronoun to _args[0] || perceivedGender()>>
+		/* One remark counts once. Repeats of the same pronoun in the same turn are just wording, but still marked. */
+		<<set _misgenderCounts to misgenderShouldCount(_usedPronoun)>>
+		<<set _pronounTopic to {m: "Masculine Pronouns", f: "Feminine Pronouns", n: "Neutral Pronouns"}[_usedPronoun]>>
+		<<if _pronounTopic>>
+			<<identitySelector _pronounTopic>>
+			/* Begrudged (rejected but accepted) still hurts, the same as for every other topic. */
+			<<if !$identityOption.acceptance or $identityOption.reject>>
+				/* Every caller has the word in _text_output by now and prints it afterwards. */
+				<<if _text_output and !$statFreeze>><<set _text_output to '<span class="dysphoria-text">' + _text_output + '</span>'>><</if>>
+				<<if _misgenderCounts>>
+					<<if !$statFreeze>><<set $identityOption.misgendered to 2>><</if>>
+					<<dysphoria 10>>
+					/* A spoken pronoun is brief exposure; it can recover before daily processing ever grants tolerance. */
+					<<if !$statFreeze and !$identityOption.reject>><<tolerance 2>><</if>>
+				<</if>>
+			<<elseif _misgenderCounts>>
+				<<if !$statFreeze>><<set $identityOption.misgendered to 2>><</if>>
+				<<dysphoria -1>>
+				<<if $identityPreference>>
+					<<stress -1 1>><<trauma -1>>
+				<</if>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "encounterIdentityEffects">>
+		<<if $player.vaginaExist and $vaginastate>>
+			<<identitySelector "Vagina">>
+			<<if $identityOption>>
+				<<if !$identityOption.acceptance or $identityOption.reject>>
+					<<dysphoria 1>>
+				<<elseif $identityPreference>>
+					<<stress -1 1>><<trauma -1>>
+				<</if>>
+			<</if>>
+		<</if>>
+		<<if $player.penisExist and $penisstate>>
+			<<set _penis to identityCharacteristicCategory("Penis")>>
+			<<identitySelector _penis>>
+			<<if $identityOption>>
+				<<if !$identityOption.acceptance or $identityOption.reject>>
+					<<dysphoria 1>>
+				<<elseif $identityPreference>>
+					<<stress -1 1>><<trauma -1>>
+				<</if>>
+			<</if>>
+		<</if>>
+		<<if $chestuse>>
+			<<set _chest to identityCharacteristicCategory("Breasts")>>
+			<<identitySelector _chest>>
+			<<if $identityOption>>
+				<<if !$identityOption.acceptance or $identityOption.reject>>
+					<<dysphoria 1>>
+				<<elseif $identityPreference>>
+					<<stress -1 1>><<trauma -1>>
+				<</if>>
+			<</if>>
+		<</if>>
+		<<if $bottomuse>>
+			<<set _bottom to identityCharacteristicCategory("Ass")>>
+			<<identitySelector _bottom>>
+			<<if $identityOption>>
+				<<if !$identityOption.acceptance or $identityOption.reject>>
+					<<dysphoria 1>>
+				<<elseif $identityPreference>>
+					<<stress -1 1>><<trauma -1>>
+				<</if>>
+			<</if>>
+		<</if>>
+		<<if $speechHair>>
+			<<set _hair to identityCharacteristicCategory("Hair")>>
+			<<identitySelector _hair>>
+			<<if $identityOption>>
+				<<if !$identityOption.acceptance or $identityOption.reject>>
+					<<dysphoria 1>>
+				<<elseif $identityPreference>>
+					<<stress -1 1>><<trauma -1>>
+				<</if>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "identityBodyCheck">>
+		<<set _body to identityCharacteristicCategory("Size")>>
+			<<identitySelector _body>>
+			<<if $identityOption>>
+				<<if !$identityOption.acceptance or $identityOption.reject>>
+					<<dysphoria 1>>
+				<<elseif $identityPreference>>
+					<<stress -1 1>><<trauma -1>>
+				<</if>>
+			<</if>>
+	<</widget>>
+
+	<<widget "identityCreampie">>
+		<<set _bodyparts to _args[0]>>
+		<<set _liquids to _args[1]>>
+		<<set _amount to _args[2]>>
+		<<identitySelector "Pregnancy">>
+		<<if $identityOption and playerAwareTheyCanBePregnant()  and _bodyparts.includes("vagina") and _liquids.includesAny("cum", "semen") and _amount gte 1>>
+			<<if (!$identityOption.acceptance or $identityOption.reject)>>
+				<<dysphoria 10>>
+			<</if>>
+			<<if $identityPreference and $identityOption.acceptance and !$identityOption.reject>>
+				<<stress -2 1>><<trauma -2>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "identityCleanup">>
+		<<if $identityOption?.misgendered>>
+			<<set $identityOption.misgendered to 0>>
+		<</if>>
+	<</widget>>
+
+
+<!-- DNA'S TWEAK -->
+/* X-Change: repair notice helper (warn once, queue via window.xChangeQueueNotice) */
+<<run (function(){if (setup.xChangeRepairNoticeOnce) return;setup.xChangeRepairNoticeOnce = function(id, html){
+		try {var V = State.variables;V.xchange = V.xchange || {};V.xchange._repairNotices = V.xchange._repairNotices || {};
+			if (V.xchange._repairNotices[id]) return;V.xchange._repairNotices[id] = true;
+			if (window.xChangeQueueNotice) window.xChangeQueueNotice(id, html);
+			console.warn("[X-Change: Save repair notice]", id);
+		} catch(e) {
+			try { console.warn("[X-Change: Save repair notice] failed", id, e); } catch(_) {}}};})(
+	);>>
+
+	<<widget "gi-disarm">>
+		<<set $xchange.giDrift to 0>><<set $xchange.giShiftStage to 0>><<set $xchange.giShiftMode to "">>
+	<</widget>>
+	
+	<<widget "gi-note">>
+		<<if _args[0]>>
+			<<set $giBodyChangeMessages to $giBodyChangeMessages || []>><<run V.giBodyChangeMessages.push(String(_args[0]))>><<set $effectsmessage to 1>>
+		<</if>>
+	<</widget>>
+
+	<<widget "gi-compute-target">>
+		<<run mapToLegacyGenderIdentity()>>
+	<</widget>>
+
+	<<widget "gi-auto-update">>
+		<<if $attitudesControl and $attitudesControl.unlockGender>>
+			<<if $xchange.genderIdentityEnabled isnot true>>
+				<<gi-disarm>>
+			<<else>>
+				<<gi-compute-target>>
+
+				<<set _range to ($xchange.giRange is undefined ? 1500 : $xchange.giRange)>>
+				<<set _step to Math.max(1, Number($xchange.giStepPerDay) || 30)>>
+
+				<<if $xchange.giAutoEnabled isnot true>>
+					/* Auto-update is off. The target still shows in statistics, but nothing moves the meter. */
+					<<gi-disarm>>
+				<<elseif !Number.isFinite(Number($xchange.giTarget)) or !Number.isFinite(Number($genderidentity))>>
+					<<gi-disarm>>
+				<<else>>
+					<<set _delta to Math.clamp($xchange.giTarget - $genderidentity, 0 - _step, _step)>>
+
+					<<if _delta isnot 0>>
+						/* Identity meter bands, highest first. Uses the same ranges as the Statistics screen so notifications stay in sync. */
+						<<set _giBands to [_range,
+							Math.round(_range * (13 / 15)),
+							Math.round(_range * (11 / 15)),
+							Math.round(_range * (9 / 15)),
+							Math.round(_range * (6 / 15)),
+							Math.round(_range * (4 / 15)),
+							Math.round(_range * (2 / 15)),
+							1]>>
+
+						/* Track stage before drift for threshold-crossing notification */
+						<<set _stageBefore to 0>>
+						<<for _giB to 0; _giB lt _giBands.length; _giB++>>
+							<<if $genderidentity gte _giBands[_giB]>><<set _stageBefore to 8 - _giB>><<break>><</if>>
+						<</for>>
+
+						<<set $genderidentity += _delta>>
+						<<set $genderidentity to Math.clamp($genderidentity, 0, _range)>>
+
+						/* Check if stage changed */
+						<<set _stageAfter to 0>>
+						<<for _giB to 0; _giB lt _giBands.length; _giB++>>
+							<<if $genderidentity gte _giBands[_giB]>><<set _stageAfter to 8 - _giB>><<break>><</if>>
+						<</for>>
+
+						<<if _stageAfter isnot _stageBefore>>
+							<<set _driftDir to (_delta gt 0) ? "feminine" : "masculine">>
+							<<set $effectsmessage to 1>>
+							<<if _stageAfter is 4>>
+								<<set $giDriftMessage to "Your sense of self feels balanced between masculine and feminine.">>
+							<<else>>
+								<<set $giDriftMessage to "You feel your sense of self drifting in a more " + _driftDir + " direction.">>
+							<</if>>
+						<</if>>
+					<</if>>
+
+					<<if !$statFreeze>>
+						<<if $xchange.giAutoEnabled is true and $xchange.giTransformEnabled is true>>
+							<<set _pillActive to ($xchange.pill and $xchange.pill.active is true)>>
+							<<if not _pillActive>>
+								<<set _neutralLow to Math.round(_range * (6 / 15))>>
+								<<set _neutralHigh to Math.round(_range * (9 / 15))>>
+								<<if $genderidentity lt _neutralLow or $genderidentity gte _neutralHigh>>
+									/* The current meter band owns the body's direction.
+									While crossing from one side to the other, the old body is retained until the meter leaves non-binary. */
+									<<set _signed to ($genderidentity gte _neutralHigh) ? _step : (0 - _step)>>
+									<<gi-transform-from-drift _signed>>
+								<<else>>
+									/* Keep accumulated progress, but clear the stale direction/stage while the non-binary band is retaining the current body. */
+									<<set $xchange.giShiftMode to "">>
+									<<set $xchange.giShiftStage to 0>>
+								<</if>>
+							<</if>>
+						<<else>>
+							<<gi-disarm>>
+						<</if>>
+					<</if>>
+				<</if>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "gi-transform-from-drift">>
+		<<if $attitudesControl and $attitudesControl.unlockGender>>
+			<<if $xchange.genderIdentityEnabled isnot true
+				or $xchange.giAutoEnabled isnot true
+				or $xchange.giTransformEnabled isnot true>>
+				<<gi-disarm>>
+			<<else>>
+				<<set _delta to _args[0]>>
+				<<if _delta isnot 0>>
+					<<set _range to ($xchange.giRange is undefined ? 1500 : $xchange.giRange)>>
+					<<set _th to Math.max(1, Number($xchange.giTransformThreshold) || 120)>>
+
+					<<if $xchange.giDrift is undefined>><<set $xchange.giDrift to 0>><</if>>
+					<<if $xchange.giShiftMode is undefined>><<set $xchange.giShiftMode to "">><</if>>
+					<<if $xchange.giShiftStage is undefined>><<set $xchange.giShiftStage to 0>><</if>>
+
+					/* Direction: universal axis, positive = feminising, negative = masculinising */
+					<<set _feminising to (_delta gt 0)>>
+
+					<<set _neutralLow to Math.round(_range * (6 / 15))>>
+					<<set _neutralHigh to Math.round(_range * (9 / 15))>>
+					<<set _currentOnFeminineSide to ($genderidentity gte _neutralHigh)>>
+					<<set _currentOnMasculineSide to ($genderidentity lt _neutralLow)>>
+
+					/* Like the X-Change pill (pillTimerPaused), the shift halts while a pregnancy runs its course or an ear slime occupies the genitals.
+					Otherwise masculinising could remove a pregnant or slime-filled vagina. Feminising never removes a vagina, so a pregnancy doesn't hold it. */
+					<<set _giShiftBlocked to ((xchangePregnancyBlocksPill() and not _feminising) or (!earSlimeThoughts() and $earSlime and $earSlime.growth gt 50))>>
+
+					<<if _giShiftBlocked or (_feminising and not _currentOnFeminineSide) or ((not _feminising) and not _currentOnMasculineSide)>>
+						/* Hold, don't erase. A pregnancy or an ear slime pauses the shift until it resolves, and a single day drifting away from your target is ordinary noise
+						   neither is a reason to throw away weeks of accumulated progress. The drift simply doesn't grow today. */
+					<<else>>
+						/* Reset stage machine when direction flips */
+						<<if _feminising and $xchange.giShiftMode isnot "f">>
+							<<set $xchange.giShiftMode to "f">>
+							<<set $xchange.giShiftStage to 0>>
+						<<elseif (not _feminising) and $xchange.giShiftMode isnot "m">>
+							<<set $xchange.giShiftMode to "m">>
+							<<set $xchange.giShiftStage to 0>>
+						<</if>>
+
+						<<set $xchange.giDrift += Math.abs(_delta)>>
+
+						<<for _iter = 0; _iter < 200 && $xchange.giDrift >= _th; _iter++>>
+							<<set _giStepResult to {done:false}>>
+							<<if _feminising>>
+								<<gi-feminise-step _giStepResult>>
+							<<else>>
+								<<gi-masculinise-step _giStepResult>>
+							<</if>>
+							<<if _giStepResult.done>>
+								/* Spend a full meter only when the step actually changed the body. */
+								<<set $xchange.giDrift -= _th>>
+							<<else>>
+								/* No eligible change currently exists. Keep one full meter ready instead of
+								   silently resetting it, and avoid accumulating an unbounded backlog. */
+								<<set $xchange.giDrift to _th>>
+								<<break>>
+							<</if>>
+						<</for>>
+					<</if>>
+				<</if>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "gi-feminise-step">>
+		<<set _giStepDone to false>>
+		<<set _giRange to Math.max(1, Number($xchange.giRange) || 1500)>>
+		<<set _giCurrent to Math.clamp(Number($genderidentity) || 0, 0, _giRange)>>
+		<<set _giProgress to _giCurrent / _giRange>>
+		/* Treat the last few percent as complete, since some traits can prevent the meter from reaching exactly 100%. */
+		<<set _giCompleteBand to Math.max(1, Math.round(_giRange * 0.03))>>
+		<<set _giComplete to _giCurrent gte (_giRange - _giCompleteBand)>>
+		/* Body size has no feminine option, and chest/ass/size neutrals dilute their groups, so the meter can plateau below the band even with every genital stance fully feminine. A settled genitals group finishes the change once the meter is well into the feminine range. */
+		<<if not _giComplete and _giCurrent gte Math.round(_giRange * 13 / 15) and ($xchange.giGroupAxis?.genitals ?? 0) gte 0.999>><<set _giComplete to true>><</if>>
+
+		/* Stage machine init */
+		<<if $xchange.giShiftMode isnot "f">>
+			<<set $xchange.giShiftMode to "f">>
+			<<set $xchange.giShiftStage to 0>>
+		<</if>>
+
+		/* Targets scale with the meter: the chest and hips fill in as it rises, the penis recedes. */
+		<<set _giBreastScale to _giProgress>><<set _giPenisScale to 1 - _giProgress>>
+		<<gi-step-targets>>
+
+		/* Stage 0: setup */
+		<<if $xchange.giShiftStage is 0>>
+			<<set $xchange.giShiftStage to 1>>
+		<</if>>
+
+		/* Stage 1: move toward the explicit genital preference, allowing a stable dual-genital target. */
+		<<if not _giStepDone and $xchange.giShiftStage is 1>>
+			/* The vagina is grown before the penis goes, so a completing body is never left with no genitals at all. */
+			<<if _giComplete and $xchange.giGenitalsEnabled and !$player.vaginaExist>>
+				<<set $player.vaginaExist to true>>
+				<<if $sexStats.vagina and $sexStats.vagina.menstruation>>
+					<<set $sexStats.vagina.menstruation.running to true>>
+				<</if>>
+				<<gi-note "A new warmth gathers between your legs as your body opens into a vagina.">>
+				<<set _giStepDone to true>>
+			/* Completion never takes away an organ the player explicitly asked for. A penis preference drags the
+			   genitals group far enough negative that the meter can't reach this band anyway, but the guard keeps
+			   the two rules from ever contradicting each other. */
+			<<elseif _giComplete and $xchange.giGenitalsEnabled and not _preferPenis and $player.penisExist>>
+				<<if $player.penissize gt 2>>
+					<<set $player.penissize -= 1>>
+					<<set $penisgrowthtimer to 300>>
+					<<gi-note "Your penis feels a little smaller.">>
+					<<set _giStepDone to true>>
+				<<else>>
+					<<set $player.penisExist to false>>
+					<<set $player.ballsExist to false>>
+					<<set $player.penissize to 0>>
+					<<set $ballssize to 0>>
+					<<set $penisgrowthtimer to 500>>
+					<<gi-note "The shape between your legs recedes and disappears.">>
+					<<set _giStepDone to true>>
+				<</if>>
+			<<elseif !_preferVagina and !_preferPenis>>
+				<<set $xchange.giShiftStage to 2>>
+			<<elseif _preferVagina and !$player.vaginaExist>>
+				<<set $player.vaginaExist to true>>
+				<<if $sexStats.vagina and $sexStats.vagina.menstruation>>
+					<<set $sexStats.vagina.menstruation.running to true>>
+				<</if>>
+				<<gi-note "A new warmth gathers between your legs as your body opens into a vagina.">>
+				<<set _giStepDone to true>>
+			<<elseif _preferPenis and !$player.penisExist>>
+				<<set $player.penisExist to true>>
+				<<set $player.ballsExist to true>>
+				<<set $player.penissize to _newPenisSize>>
+				<<set $ballssize to 0>>
+				<<set $penisgrowthtimer to 500>>
+				<<gi-note "A tight, unfamiliar weight forms between your legs.">>
+				<<set _giStepDone to true>>
+			<<elseif _preferPenis and $player.penissize lt _penisTarget>>
+				<<set $player.penissize += 1>>
+				<<set $penisgrowthtimer to 700>>
+				<<gi-note "The shape between your legs grows a little larger.">>
+				<<set _giStepDone to true>>
+			<<elseif _preferPenis and $player.penissize gt _penisTarget>>
+				<<set $player.penissize -= 1>>
+				<<set $penisgrowthtimer to 300>>
+				<<gi-note "Your penis feels a little smaller.">>
+				<<set _giStepDone to true>>
+			<<else>>
+				<<set $xchange.giShiftStage to 2>>
+			<</if>>
+		<</if>>
+
+		<<gi-sync-anatomy>>
+
+		/* Stage 2: secondary characteristics; grow toward preferred targets */
+		<<if not _giStepDone and $xchange.giShiftStage is 2>>
+			<<gi-step-secondary>>
+		<</if>>
+
+		<<if _args[0] isnot undefined>><<set _args[0].done to _giStepDone>><</if>>
+	<</widget>>
+
+	<<widget "gi-masculinise-step">>
+		<<set _giStepDone to false>>
+		<<set _giRange to Math.max(1, Number($xchange.giRange) || 1500)>>
+		<<set _giCurrent to Math.clamp(Number($genderidentity) || 0, 0, _giRange)>>
+		<<set _giProgress to (_giRange - _giCurrent) / _giRange>>
+		/* A single diluted trait can stop the meter reaching the exact endpoint, so the last few percent still counts as complete. */
+		<<set _giCompleteBand to Math.max(1, Math.round(_giRange * 0.03))>>
+		<<set _giComplete to _giCurrent lte _giCompleteBand>>
+		<<if not _giComplete and _giCurrent lte Math.round(_giRange * 2 / 15) and ($xchange.giGroupAxis?.genitals ?? 0) lte -0.999>><<set _giComplete to true>><</if>>
+
+		/* Stage machine init */
+		<<if $xchange.giShiftMode isnot "m">>
+			<<set $xchange.giShiftMode to "m">>
+			<<set $xchange.giShiftStage to 0>>
+		<</if>>
+
+		/* Targets scale with the meter: the chest and hips recede as it falls, the penis grows. */
+		<<set _giBreastScale to 1 - _giProgress>><<set _giPenisScale to _giProgress>>
+		<<gi-step-targets>>
+		/* A finished male body needs a penis even with no size preference recorded (the meter reads -1 outright when
+		   no identity topics are active). Normal is the same no-information default the herm repair uses, not the cap. */
+		<<if _giComplete and $xchange.giGenitalsEnabled and _penisTarget is null>>
+			<<set _penisTarget to Math.clamp(4, _penisMin, _penisMax)>>
+		<</if>>
+
+		/* Stage 0: setup */
+		<<if $xchange.giShiftStage is 0>>
+			<<set $xchange.giShiftStage to 1>>
+		<</if>>
+
+		/* Stage 1: move toward the explicit genital preference, allowing a stable dual-genital target. */
+		<<if not _giStepDone and $xchange.giShiftStage is 1>>
+			/* The penis is grown before the vagina goes, so a completing body is never left with no genitals at all. */
+			<<if _giComplete and $xchange.giGenitalsEnabled and !$player.penisExist>>
+				<<set $player.penisExist to true>>
+				<<set $player.ballsExist to true>>
+				<<set $player.penissize to _newPenisSize>>
+				<<set $ballssize to 0>>
+				<<set $penisgrowthtimer to 500>>
+				<<gi-note "A tight, unfamiliar weight forms between your legs.">>
+				<<set _giStepDone to true>>
+			<<elseif _giComplete and $xchange.giGenitalsEnabled and $player.penissize lt _penisTarget>>
+				<<set $player.penissize += 1>>
+				<<set $penisgrowthtimer to 700>>
+				<<gi-note "The shape between your legs grows a little larger.">>
+				<<set _giStepDone to true>>
+			<<elseif _giComplete and $xchange.giGenitalsEnabled and $player.penissize gt _penisTarget>>
+				<<set $player.penissize -= 1>>
+				<<set $penisgrowthtimer to 300>>
+				<<gi-note "Your penis feels a little smaller.">>
+				<<set _giStepDone to true>>
+			/* Completion never takes away an organ the player explicitly asked for. A vagina preference drags the
+			   genitals group far enough positive that the meter can't reach this band anyway, but the guard keeps
+			   the two rules from ever contradicting each other. */
+			<<elseif _giComplete and $xchange.giGenitalsEnabled and not _preferVagina and $player.vaginaExist>>
+				<<set $player.vaginaExist to false>>
+				<<if $sexStats.vagina and $sexStats.vagina.menstruation>>
+					<<set $sexStats.vagina.menstruation.running to false>>
+				<</if>>
+				<<run window.ejectOrphanVaginalDildo?.()>>
+				<<gi-note "The softness between your legs closes up and disappears.">>
+				<<set _giStepDone to true>>
+			<<elseif !_preferVagina and !_preferPenis>>
+				<<set $xchange.giShiftStage to 2>>
+			<<elseif _preferVagina and !$player.vaginaExist>>
+				<<set $player.vaginaExist to true>>
+				<<if $sexStats.vagina and $sexStats.vagina.menstruation>>
+					<<set $sexStats.vagina.menstruation.running to true>>
+				<</if>>
+				<<gi-note "A new warmth gathers between your legs as your body opens into a vagina.">>
+				<<set _giStepDone to true>>
+			<<elseif _preferPenis and !$player.penisExist>>
+				<<set $player.penisExist to true>>
+				<<set $player.ballsExist to true>>
+				<<set $player.penissize to _newPenisSize>>
+				<<set $ballssize to 0>>
+				<<set $penisgrowthtimer to 500>>
+				<<gi-note "A tight, unfamiliar weight forms between your legs.">>
+				<<set _giStepDone to true>>
+			<<elseif _preferPenis and $player.penissize lt _penisTarget>>
+				<<set $player.penissize += 1>>
+				<<set $penisgrowthtimer to 700>>
+				<<gi-note "The shape between your legs grows a little larger.">>
+				<<set _giStepDone to true>>
+			<<elseif _preferPenis and $player.penissize gt _penisTarget>>
+				<<set $player.penissize -= 1>>
+				<<set $penisgrowthtimer to 300>>
+				<<gi-note "Your penis feels a little smaller.">>
+				<<set _giStepDone to true>>
+			<<else>>
+				<<set $xchange.giShiftStage to 2>>
+			<</if>>
+		<</if>>
+
+		<<gi-sync-anatomy>>
+
+		/* Stage 2: move secondary characteristics toward the meter-scaled preferred targets. */
+		<<if not _giStepDone and $xchange.giShiftStage is 2>>
+			<<gi-step-secondary>>
+		<</if>>
+
+		<<if _args[0] isnot undefined>><<set _args[0].done to _giStepDone>><</if>>
+	<</widget>>
+
+	/* Shared by gi-feminise-step and gi-masculinise-step. The caller sets _giBreastScale (chest and hips) and _giPenisScale for its direction. */
+	<<widget "gi-step-targets">>
+		/* Size limits for the body being changed. The helper keeps the values valid and prevents NaN. Bodies created by X-Change pills use the X-Change size limits. */
+		<<set _giBreastRange to setup.xChangeCurrentBodySizeRange("breast")>>
+		<<set _giBottomRange to setup.xChangeCurrentBodySizeRange("bottom")>>
+		<<set _giPenisRange to setup.xChangeCurrentBodySizeRange("penis")>>
+		<<set _breastMin to _giBreastRange.min>><<set _breastMax to _giBreastRange.max>>
+		<<set _bottomMin to _giBottomRange.min>><<set _bottomMax to _giBottomRange.max>>
+		<<set _penisMin to _giPenisRange.min>><<set _penisMax to _giPenisRange.max>>
+		/* A newly grown penis starts at Mini, unless the configured range puts it elsewhere. */
+		<<set _newPenisSize to Math.clamp(1, _penisMin, _penisMax)>>
+
+		<<set _breastTarget to null>>
+		<<if $xchange.giBreastSizeEnabled and $identity.body.chest.preferred>>
+			<<if $identity.body.chest.preferred is "flat">><<set _breastTarget to 0>>
+			<<elseif $identity.body.chest.preferred is "small">><<set _breastTarget to 3>>
+			<<elseif $identity.body.chest.preferred is "medium">><<set _breastTarget to 6>>
+			<<elseif $identity.body.chest.preferred is "big">><<set _breastTarget to 8>>
+			<</if>>
+			<<set _breastTarget to Math.round(_breastTarget * _giBreastScale)>>
+			<<set _breastTarget to Math.clamp(_breastTarget, _breastMin, _breastMax)>>
+		<</if>>
+		<<set _bottomTarget to null>>
+		<<if $xchange.giAssSizeEnabled and $identity.body.bottom.preferred>>
+			<<if $identity.body.bottom.preferred is "small">><<set _bottomTarget to 2>>
+			<<elseif $identity.body.bottom.preferred is "medium">><<set _bottomTarget to 5>>
+			<<elseif $identity.body.bottom.preferred is "big">><<set _bottomTarget to 7>>
+			<</if>>
+			<<set _bottomTarget to Math.round(_bottomTarget * _giBreastScale)>>
+			<<set _bottomTarget to Math.clamp(_bottomTarget, _bottomMin, _bottomMax)>>
+		<</if>>
+		<<set _penisPreference to $identity.body.genitals.preferredPenis>>
+		/* Only use the old field for saves made before the split. Otherwise, it could restore a size the player intentionally cleared. */
+		<<if _penisPreference is undefined and ["tinypenis", "smallpenis", "mediumpenis", "bigpenis"].includes($identity.body.genitals.preferred)>>
+			<<set _penisPreference to $identity.body.genitals.preferred>>
+		<</if>>
+		<<set _preferVagina to $xchange.giGenitalsEnabled and ($identity.body.genitals.preferredVagina is true or ($identity.body.genitals.preferredVagina is undefined and $identity.body.genitals.preferred is "vagina"))>>
+		<<set _preferPenis to $xchange.giGenitalsEnabled and ["tinypenis", "smallpenis", "mediumpenis", "bigpenis"].includes(_penisPreference)>>
+		<<set _penisTarget to null>>
+		<<if _preferPenis>>
+			<<if _penisPreference is "tinypenis">><<set _penisTarget to 2>>
+			<<elseif _penisPreference is "smallpenis">><<set _penisTarget to 3>>
+			<<elseif _penisPreference is "mediumpenis">><<set _penisTarget to 4>>
+			<<elseif _penisPreference is "bigpenis">><<set _penisTarget to 6>>
+			<</if>>
+			/* Floor at Mini while the body still keeps both sets: a size-0 penis on a two-genital body is the
+			   Micro state the herm repair in version-update exists to undo. The configured cap still wins. */
+			<<set _penisTarget to Math.max(1, Math.round(_penisTarget * _giPenisScale))>>
+			<<set _penisTarget to Math.clamp(_penisTarget, _penisMin, _penisMax)>>
+		<</if>>
+		<<set _bodySizeTarget to null>>
+		<<if $xchange.giBodySizeEnabled>>
+			<<set _bodySizeMap to {miniature:-1, tiny:0, small:1, normal:2, tall:2.5, large:3, giant:4}>>
+			<<if _bodySizeMap[$identity.body.bodysize.preferred] isnot undefined>>
+				<<set _bodySizeTarget to _bodySizeMap[$identity.body.bodysize.preferred]>>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	/* Stage 2 of both shifts: hair, body size, chest and hips move one step toward the preferred targets. */
+	<<widget "gi-step-secondary">>
+		<<if $xchange.giHairLengthEnabled and $identity.body.hairlength.preferred is "short" and $hairlength gt 100>>
+			<<set $hairlength to Math.max($hairlength - 60, 100)>>
+			<<gi-note "Your hair has shortened a little.">>
+			<<set _giStepDone to true>>
+		<<elseif $xchange.giHairLengthEnabled and $identity.body.hairlength.preferred is "medium" and $hairlength lte 100>>
+			/* 100 itself is Short Hair, the same way 600 is the last Medium length. */
+			<<set $hairlength to Math.min($hairlength + 60, 101)>>
+			<<gi-note "Your hair has grown a little longer.">>
+			<<set _giStepDone to true>>
+		<<elseif $xchange.giHairLengthEnabled and $identity.body.hairlength.preferred is "medium" and $hairlength gt 600>>
+			<<set $hairlength to Math.max($hairlength - 60, 600)>>
+			<<gi-note "Your hair has shortened a little.">>
+			<<set _giStepDone to true>>
+		<<elseif $xchange.giHairLengthEnabled and $identity.body.hairlength.preferred is "long" and $hairlength lte 600>>
+			<<set $hairlength to Math.min($hairlength + 60, 601)>>
+			<<gi-note "Your hair has grown a little longer.">>
+			<<set _giStepDone to true>>
+		<<elseif _bodySizeTarget isnot null and $bodysize isnot _bodySizeTarget>>
+			<<set _bodySizeCurrent to setup.snapBodySize($bodysize)>>
+			<<set _bodySizeGrowing to _bodySizeCurrent lt _bodySizeTarget>>
+			<<set $bodysize to setup.stepBodySize(_bodySizeCurrent, _bodySizeGrowing ? 1 : -1)>>
+			<<run updatePhysique()>>
+			<<updatesidebarimg>>
+			<<gi-note `_bodySizeGrowing ? "Your body stretches a little taller." : "Your body settles into a slightly shorter frame."`>>
+			<<set _giStepDone to true>>
+		<<elseif _breastTarget isnot null and $player.breastsize isnot _breastTarget>>
+			<<set _breastsGrowing to $player.breastsize lt _breastTarget>>
+			<<set $player.breastsize += _breastsGrowing ? 1 : -1>>
+			<<set $breastgrowthtimer to (_breastsGrowing ? 700 : 300)>>
+			<<gi-note `_breastsGrowing ? "Your chest feels a little fuller." : "Your chest feels a little flatter."`>>
+			<<set _giStepDone to true>>
+		<<elseif _bottomTarget isnot null and $player.bottomsize isnot _bottomTarget>>
+			<<set _bottomGrowing to $player.bottomsize lt _bottomTarget>>
+			<<set $player.bottomsize += _bottomGrowing ? 1 : -1>>
+			<<set $bottomgrowthtimer to (_bottomGrowing ? 700 : 300)>>
+			<<gi-note `_bottomGrowing ? "Your hips and ass feel a little softer and fuller." : "Your hips and ass feel a little leaner."`>>
+			<<set _giStepDone to true>>
+		<<else>>
+			/* Back to stage 1, not a dead end */
+			<<set $xchange.giShiftStage to 1>>
+		<</if>>
+	<</widget>>
+
+	<<widget "gi-sync-anatomy">>
+		<<if $player.vaginaExist and !$player.penisExist>>
+			<<set $player.gender_body to "f">>
+			<<if $player.sex is "m">>
+				<<set $player.sex to "f">>
+				<<gi-note "Your body now reads as female.">>
+			<</if>>
+		<<elseif $player.penisExist and !$player.vaginaExist>>
+			<<set $player.gender_body to "m">>
+			<<if $player.sex is "f">>
+				<<set $player.sex to "m">>
+				<<gi-note "Your body now reads as male.">>
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "perma-reflection-prompt">>
+		<<set $xchange.permaReflection to $xchange.permaReflection || {pending: false, lastShownDay: -1, answer: null, snapshot: null}>>
+		<<set _reflId to "perma-reflection-" + (typeof Time !== "undefined" && Time && typeof Time.days === "number" ? Time.days : random(0,99999)) + "-" + random(0,99999)>>
+
+		<div @id="_reflId" class="perma-reflection-box">
+			<p>You wake, and a hand drifts across your crotch before your eyes are even open. The shape under your fingers isn't the one you grew up with; it's the one the pill left you with, and it isn't going to leave. You spend a long moment muttering to yourself about this sex flip.</p>
+			<p><strong>Is this body something you want to keep?</strong></p>
+
+			<div class="perma-reflection-choices">
+				<span class="perma-reflection-choice">
+					<<link "Yes, this is what I want">>
+						<<perma-reflection-snapshot>>
+						<<set $xchange.permaReflection.answer to "yes">>
+						<<set $xchange.permaReflection.pending to false>>
+						<<for _i, _slot range ["vagina", "tinypenis", "smallpenis", "mediumpenis", "bigpenis"]>>
+							<<if $identity and $identity.body and $identity.body.genitals and $identity.body.genitals[_slot]>>
+								<<set $identity.body.genitals[_slot].acceptance to true>>
+								<<set $identity.body.genitals[_slot].reject to false>>
+								<<set $identity.body.genitals[_slot].dysphoria to 0>>
+								<<set $identity.body.genitals[_slot].tolerance to Math.max($identity.body.genitals[_slot].tolerance || 0, 100)>>
+							<</if>>
+						<</for>>
+						<<replace `"#" + _reflId`>>
+							<div class="perma-reflection-box perma-reflection-result">
+								<span class="green"><strong>This is yours now</strong></span>, and the unease eases.
+							</div>
+						<</replace>>
+					<</link>>
+				</span>
+
+				<span class="perma-reflection-choice">
+					<<link "No, this is wrong for me">>
+						<<perma-reflection-snapshot>>
+						<<set $xchange.permaReflection.answer to "no">>
+						<<set $xchange.permaReflection.pending to false>>
+						<<for _i, _slot range ["vagina", "tinypenis", "smallpenis", "mediumpenis", "bigpenis"]>>
+							<<if $identity and $identity.body and $identity.body.genitals and $identity.body.genitals[_slot]>>
+								<<set $identity.body.genitals[_slot].acceptance to false>>
+								<<set $identity.body.genitals[_slot].reject to true>>
+								<<set $identity.body.genitals[_slot].dysphoria to 100>>
+								<<set $identity.body.genitals[_slot].tolerance to 0>>
+							<</if>>
+						<</for>>
+						<<replace `"#" + _reflId`>>
+							<div class="perma-reflection-box perma-reflection-result">
+								<span class="red"><strong>This isn't who you are</strong></span>, and your body knows it.
+							</div>
+						<</replace>>
+					<</link>>
+				</span>
+
+				<span class="perma-reflection-choice">
+					<<link "I need time to decide">>
+						<<set $xchange.permaReflection.lastShownDay to (typeof Time !== "undefined" && Time && typeof Time.days === "number" ? Time.days : 0)>>
+						<<replace `"#" + _reflId`>>
+							<div class="perma-reflection-box perma-reflection-result">
+								<span class="teal"><strong>You set the question aside for now</strong></span>. The thought will return.
+							</div>
+						<</replace>>
+					<</link>>
+				</span>
+			</div>
+		</div>
+	<</widget>>
+
+	<<widget "perma-reflection-snapshot">>
+		<<set $xchange.permaReflection to $xchange.permaReflection || {pending: false, lastShownDay: -1, answer: null, snapshot: null}>>
+		<<if $xchange.permaReflection.snapshot is null or $xchange.permaReflection.snapshot is undefined>>
+			<<set _snap to {}>>
+			<<for _i, _slot range ["vagina", "tinypenis", "smallpenis", "mediumpenis", "bigpenis"]>>
+				<<if $identity and $identity.body and $identity.body.genitals and $identity.body.genitals[_slot]>>
+					<<set _snap[_slot] to {
+						acceptance: $identity.body.genitals[_slot].acceptance,
+						reject: $identity.body.genitals[_slot].reject,
+						dysphoria: $identity.body.genitals[_slot].dysphoria,
+						tolerance: $identity.body.genitals[_slot].tolerance
+					}>>
+				<</if>>
+			<</for>>
+			<<set $xchange.permaReflection.snapshot to _snap>>
+		<</if>>
+	<</widget>>
+
+	<<widget "perma-reflection-clear">>
+		<<if $xchange and $xchange.permaReflection>>
+			<<if $xchange.permaReflection.snapshot>>
+				<<for _slot, _saved range $xchange.permaReflection.snapshot>>
+					<<if $identity and $identity.body and $identity.body.genitals and $identity.body.genitals[_slot] and _saved>>
+						<<set $identity.body.genitals[_slot].acceptance to _saved.acceptance>>
+						<<set $identity.body.genitals[_slot].reject to _saved.reject>>
+						<<set $identity.body.genitals[_slot].dysphoria to _saved.dysphoria>>
+						<<set $identity.body.genitals[_slot].tolerance to _saved.tolerance>>
+					<</if>>
+				<</for>>
+			<</if>>
+			<<set $xchange.permaReflection to {pending: false, lastShownDay: -1, answer: null, snapshot: null, lastReminderDay: -1}>>
+		<</if>>
+		/* Also clear any queued prompt message so it doesn't render after restore. */
+		<<if $xchangePermaReflectionMessage>><<unset $xchangePermaReflectionMessage>><</if>>
+	<</widget>>
+
+	<<widget "perma-reflection-daily-reminder">>
+		<<set $xchange.permaReflection to $xchange.permaReflection || {pending: false, lastShownDay: -1, answer: null, snapshot: null, lastReminderDay: -1}>>
+		<<set _today to (typeof Time !== "undefined" && Time && typeof Time.days === "number" ? Time.days : 0)>>
+		<<if $background.transgender and $xchange.permaReflection.answer
+			and (typeof pillIsPermanent === "function") and pillIsPermanent()
+			and _today gt ($xchange.permaReflection.lastReminderDay !== undefined ? $xchange.permaReflection.lastReminderDay : -1)>>
+
+			<<set $xchange.permaReflection.lastReminderDay to _today>>
+			<<set _isTrans to !!($background and $background.transgender)>>
+
+			<<if $xchange.permaReflection.answer is "yes">>
+				<<set _yesLines to [
+					"A quiet moment draws your attention back to the body the pill left you with. <span class='green'>The thought no longer hurts.</span>",
+					"For a moment, you notice the shape of yourself again. <span class='green'>It does not feel strange the way it once did.</span>",
+					"The thought of your changed body passes through you, familiar now rather than frightening. <span class='green'>It feels like home.</span>",
+					"You become aware of your body and find no urge to pull away from it. <span class='green'>It belongs to you.</span>",
+					"The sex flip crosses your mind, but the answer comes easily. <span class='green'>You want to keep this body.</span>"
+				]>>
+				<<if _isTrans>>
+					<<run _yesLines.push("A relief settles through you as you think about the body the pill left behind. <span class='green'>It feels closer to the one you always needed.</span>")>>
+					<<run _yesLines.push("The thought of going back feels distant. This body may have come from a pill, but <span class='green'>it answers something real in you.</span>")>>
+				<</if>>
+				<<print _yesLines.random()>>
+				<<stress -3>><<lstress>>
+			<<elseif $xchange.permaReflection.answer is "no">>
+				<<set _noLines to [
+					"A quiet moment draws your attention back to the body the pill left you with. <span class='red'>This isn't yours.</span>",
+					"For a moment, you notice the shape of yourself again, and <span class='red'>everything about it feels out of place.</span>",
+					"The sex flip crosses your mind. <span class='red'>This is not what you wanted.</span>",
+					"You become aware of your body and still find yourself grimacing from it. <span class='red'>It feels wrong.</span>",
+					"The change to your genitals presses at the edge of your thoughts. <span class='red'>You never chose this.</span>"
+				]>>
+				<<if _isTrans>>
+					<<run _noLines.push("A bitter feeling rises as you think about the body the pill left behind. <span class='red'>This is not the body you fought to have.</span>")>>
+					<<run _noLines.push("Of all the shapes the pill could have forced on you, this is the one it chose. <span class='red'>It feels cruel.</span>")>>
+				<</if>>
+				<<print _noLines.random()>>
+				<<trauma 3>><<stress 3>><<gtrauma>><<gstress>>
+			<</if>>
+			<br>
+		<</if>>
+	<</widget>>

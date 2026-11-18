@@ -1,0 +1,381 @@
+:: Widgets NPC Types [widget]
+<<widget "npcstrip">>
+	/*
+	<<for $_npc range $NPCList>>
+
+		<!-- anus not implemented yet -->
+		<!-- <<set $_npc.anus to "idle">> -->
+
+		<!-- note: setting genitals to "idle" will remove them from combat unless they're set to something else later. -->
+
+		<<if $_npc.penis isnot "none">>
+			<<set $_npc.penis to "idle">>
+		<</if>>
+		<<if $_npc.vagina isnot "none">>
+			<<set $_npc.vagina to "idle">>
+		<</if>>
+
+		<<if !$worn.upper.type.includes("naked")>>
+			<<set $_npc.lefthand to "upperclothes">>
+		<<elseif !$worn.lower.type.includes("naked")>>
+			<<set $_npc.lefthand to "lowerclothes">>
+		<<elseif !$worn.under_lower.type.includes("naked") and !$worn.under_lower.type.includes("chastity")>>
+			<<set $_npc.lefthand to "underlowerclothes">>
+		<</if>>
+		<<if !$worn.lower.type.includes("naked")>>
+			<<set $_npc.righthand to "lowerclothes">>
+		<<elseif !$worn.upper.type.includes("naked")>>
+			<<set $_npc.righthand to "upperclothes">>
+		<<elseif !$worn.under_lower.type.includes("naked") and !$worn.under_lower.type.includes("chastity")>>
+			<<set $_npc.righthand to "underlowerclothes">>
+		<</if>>
+	<</for>>
+	*/
+	<<set $combatgoal to "strip">>
+<</widget>>
+
+<<widget "npcexhibit">>
+	<!-- Does nothing, used in one event -->
+<</widget>>
+
+<<widget "stuck_in_wall_oral">>
+	<<set $position to "wall">>
+	<<set $walltype to "front">>
+	<<set $anususe to "none">>
+	<<set $vaginause to "none">>
+	<<set $penisuse to "none">>
+	<<set $thighuse to "none">>
+	<<set $bottomuse to "none">>
+	<<set $feetuse to "none">>
+	<<set $chestuse to "none">>
+	<<npcoral>>
+<</widget>>
+
+<<widget "npcoral">>
+	<!-- TODO: make this take an index as an argument so you can use npcoral with NPCs in other slots -->
+	<!-- TODO: make this take "m" or "f" as an argument so we can enforce consistency between use of this widget and scenes which set up context before using it -->
+	
+	<<if $combatExtended.standingFights is 1>>
+		<<set $combatExtended.stability to 0>>
+		<<set $combatExtended.stabilityLost to 1>>
+		<<reversenpcidlegenitals>>
+	<</if>>
+
+	<<run npcMakeNaked($NPCList[0], "lower")>>
+	<<if $NPCList[0].penis isnot "none">>
+		<<set $NPCList[0].penis to "mouthentrance">><<set $mouthstate to "entrance">><<set $mouthuse to "penis">>
+		<<He>> presses <<his>> <<npcPenis>> against your lips.
+	<<elseif $NPCList[0].vagina isnot "none">>
+		<<set $NPCList[0].vagina to "mouth">><<set $mouthstate to "othervagina">><<set $mouthuse to "othervagina">>
+		<<He>> presses <<his>> <<npcVagina>> against your lips.
+	<<else>>
+		<<He>> presses <<his>> featureless crotch against your lips. Everyone is confused. <span class="red">This is a bug, please inform the developer</span>
+	<</if>>
+	<<if $NPCList[0].type is "plant" and !["peniskiss","penislick"].includes($mouthactiondefault)>>
+		<span class="pink">Nectar glistens <<print ($NPCList[0].penis isnot "none" ? "on the tip" : "at the entrance")>>. It smells sweet.</span>
+	<</if>>
+	<br><br>
+	<<submission 5>><<set $mouthtarget to 0>><<set $NPCList[0].location.genitals to "head">>
+	
+<</widget>>
+
+<<widget "npchand">>
+	<<if $NPCList[0].penis isnot "none">>
+		<<set $leftarm to "penis">><<set $NPCList[0].penis to "leftarm">>
+	<<else>>
+		<<set $leftarm to "othervagina">><<set $NPCList[0].vagina to "leftarm">>
+	<</if>>
+<</widget>>
+
+<<widget "npcidlegenitals">>
+	<<for _i = 0; _i < $NPCList.length; _i++>>
+		<<if $NPCList[_i]>>
+			<<if $NPCList[_i].penis isnot "none">>
+				<<set $NPCList[_i].penis to "idle">>
+			<</if>>
+			<<if $NPCList[_i].vagina isnot "none">>
+				<<set $NPCList[_i].vagina to "idle">>
+			<</if>>
+			<!-- Same "none" guard the genitals get: benching a chest the NPC doesn't have would hand it one on the way back. -->
+			<<if $NPCList[_i].chest isnot "none">>
+				<<set $NPCList[_i].chest to "idle">>
+			<</if>>
+			<<set $NPCList[_i].condomAsk to true>>
+		<</if>>
+	<</for>>
+<</widget>>
+
+<<widget "npckiss">>
+	<<set $NPCList[0].mouth to "kiss">><<set $NPCList[0].location.head to "head">><<set $mouthstate to "kiss">><<set $mouthuse to "kiss">><<set $mouthtarget to 0>>
+<</widget>>
+
+<<widget "npcexpose">>
+	<<for $_npc range $NPCList>>
+		<<run npcMakeNaked($_npc, "upper")>>
+		<<run npcMakeNaked($_npc, "lower")>>
+	<</for>>
+<</widget>>
+
+<<widget "npcgrapplestripall">>
+	<<if $rightarm is 0>>
+		<<set $rightarm to "grappled">>
+		<<set $NPCList[0].lefthand to "arms">>
+	<</if>>
+	<<if $leftarm is 0>>
+		<<set $leftarm to "grappled">>
+		<<set $NPCList[0].lefthand to "arms">>
+	<</if>>
+	<<set $NPCList[0].righthand to 0>>
+	<<set $position to "missionary">>
+	<<set $combatgoal to "strip">>
+	<<set $NPCList[0].mouth to "speech_only">>
+<</widget>>
+
+<<widget "npcstripall">>
+	<<set $NPCList[0].lefthand to 0>>
+	<<set $NPCList[0].righthand to 0>>
+	<<set $position to "missionary">>
+	<<set $combatgoal to "strip">>
+	<<set $NPCList[0].mouth to "speech_only">>
+<</widget>>
+
+<<widget "npcgangstrip">> /* Organises the NPC groups for strips, so they aren't all clawing at the same items (as much) */
+	<<set $combatgoal to "strip">>
+	<<set $position to "missionary">>
+	<<set _startpos to 0>>
+	<<for _i = 0; _i < $NPCList.length; _i++>>
+		<<if $NPCList[_i]>>
+			<<set $NPCList[_i].righthand to 0>>
+			<<set $NPCList[_i].lefthand to 0>>
+
+			<<if $rightarm is 0>>	/* Person 1 grabs you */
+				<<set $rightarm to "grappled">>
+				<<set $NPCList[_i].lefthand to "arms">>
+			<</if>>
+			<<if $leftarm is 0>>
+				<<set $leftarm to "grappled">>
+				<<set $NPCList[_i].lefthand to "arms">>
+			<</if>>
+
+			<<if $NPCList[_i].righthand is 0 and $NPCList[_i].lefthand is 0>>
+				<<switch _startpos>>
+					<<case 0>> /* Person 2 starts low */
+						<<if $worn.over_lower.name isnot "naked">>
+							<<set $NPCList[_i].lefthand to "overlowerclothes">>
+							<<set $NPCList[_i].righthand to "overlowerclothes">>
+						<<elseif $worn.lower.name isnot "naked">>
+							<<set $NPCList[_i].lefthand to "lowerclothes">>
+							<<set $NPCList[_i].righthand to "lowerclothes">>
+						<<elseif $worn.under_lower.name isnot "naked">>
+							<<set $NPCList[_i].lefthand to "underlowerclothes">>
+							<<set $NPCList[_i].righthand to "underlowerclothes">>
+						<</if>>
+					<<case 1>>	/* Person 3 starts high by default */
+					<<case 2>>	/* Person 4 works with 1 - goes straight to under */
+						<<if $worn.under_upper.name isnot "naked">>
+							<<set $NPCList[_i].lefthand to "underupperclothes">>
+							<<set $NPCList[_i].righthand to "underupperclothes">>
+						<</if>>
+				<</switch>>
+				<<set _startpos += 1>>
+			<</if>>
+		<</if>>
+	<</for>>
+<</widget>>
+
+<<widget "npcspank">>
+	<<if $rightarm is 0>>
+		<<set $rightarm to "grappled">>
+		<<set $NPCList[0].lefthand to "arms">>
+		<<set $righttarget to 0>>
+	<</if>>
+	<<if $leftarm is 0>>
+		<<set $leftarm to "grappled">>
+		<<set $NPCList[0].lefthand to "arms">>
+		<<set $lefttarget to 0>>
+	<</if>>
+	<<set $NPCList[0].righthand to "spank">>
+	<<set $position to "doggy">>
+<</widget>>
+
+<<widget "npcspankgag">>
+	<<hand_gag 0 left>>
+	<<set $NPCList[0].righthand to "spank">>
+	<<set $position to "doggy">>
+<</widget>>
+
+<<widget "npcgloryhole">>
+	<<set $gloryhole to 1>>
+	<<set $punishmentposition to "gloryhole">><!-- This is added to conform with other parts of code-base. Needs to be unset or set to 0 manually after a scene.-->
+	<<set $enemyhealthmax to 10>><<set $enemyhealth to 10>>
+	<<healthMultiplier>>
+	<<set $enemytrust += 100>>
+	<<set $NPCList[0].lefthand to "none">>
+	<<set $position to "doggy">>
+	<<set $NPCList[0].righthand to "none">>
+	<<set $NPCList[0].mouth to "speech_only">>
+	<<run npcMakeNaked($NPCList[0], "lower")>>
+<</widget>>
+
+<<widget "npcfence">>
+	<<set $NPCList[0].lefthand to "none">>
+	<<set $NPCList[0].righthand to "none">>
+	<<set $NPCList[0].mouth to "speech_only">>
+	<<run npcMakeNaked($NPCList[0], "lower")>>
+<</widget>>
+
+<<widget "npc_attempt_sex">>
+	<<if $combatExtended.standingFights is 1>>
+		<<set $combatExtended.stability to 0>>
+		<<set $combatExtended.stabilityLost to 1>>
+		<<reversenpcidlegenitals>>
+	<</if>>
+	<<run npcMakeNaked($NPCList[0], "lower")>>
+	<<if $NPCList[0].penis isnot "none">>
+		<<if $player.vaginaExist>>
+			<<set $NPCList[0].penis to "vaginaentrance">><<set $vaginause to "penis">><<set $vaginastate to "entrance">><<set $vaginatarget to 0>>
+		<<elseif $settings.analEnabled>>
+			<<set $NPCList[0].penis to "anusentrance">><<set $anususe to "penis">><<set $anusstate to "entrance">><<set $anustarget to 0>>
+		<</if>>
+	<<else>>
+		<<if $player.penisExist>>
+			<<set $NPCList[0].vagina to "penisentrance">><<set $penisuse to "othervagina">><<set $penisstate to "entrance">><<set $penistarget to 0>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "npc_submissive">>
+	<<if $NPCList[0].penis isnot "none">>
+		<<set $NPCList[0].penis to ($NPCList[0].clothes?.lower?.name is "naked" ? 0 : "clothed")>>
+	<</if>>
+	<<if $NPCList[0].vagina isnot "none">>
+		<<set $NPCList[0].vagina to ($NPCList[0].clothes?.lower?.name is "naked" ? 0 : "clothed")>>
+	<</if>>
+	<<set $NPCList[0].chest to ($NPCList[0].clothes?.upper?.name is "naked" ? 0 : "clothed")>>
+	<<set $NPCList[0].lefthand to "idle">>
+	<<set $NPCList[0].righthand to "idle">>
+	<<set $NPCList[0].location.genitals to 0>>
+	<<set $enemyarousal to 0>>
+	<<set $enemypleasure to 0>>
+	<<set $npcSub to 1>>
+	<<set $promiscuityIgnore to 1>>
+	<span class="green">Your partner is submissive. You may take the lead. [Promiscuity requirements will be ignored for this encounter]</span>
+<</widget>>
+
+<<widget "reversenpcidlegenitals">>
+	/* True if any NPC part is still positioned at this player body part. */
+	<<set _npcOccupiesPlayerPart to part => {
+		const prefixes = {
+			penis: ["penis"],
+			vagina: ["vagina"],
+			anus: ["anus"],
+			mouth: ["mouth", "kiss"],
+			chest: ["chest", "breast", "nipple"],
+		}[part] || [part];
+		const occupied = value => typeof value === "string" && prefixes.some(prefix => value.startsWith(prefix));
+		const fields = ["penis", "vagina", "mouth", "chest", "lefthand", "righthand"];
+		const list = Array.isArray(V.NPCList) ? V.NPCList : [];
+		const slots = (Number.isInteger(V.enemynomax) && V.enemynomax > 0)
+			? Math.min(V.enemynomax, list.length)
+			: list.length;
+		for (let i = 0; i < slots; i++) {
+			const npc = list[i];
+			if (!npc || typeof npc !== "object") continue;
+			if (fields.some(field => occupied(npc[field]))) return true;
+		}
+		/* Tentacles and struggle creatures are not in $NPCList, so falling should not remove them. Tentacle heads use the same position names as NPC parts. */
+		if (Array.isArray(V.tentacles) && V.tentacles.some(tentacle => tentacle && occupied(tentacle.head))) return true;
+		if (V.struggle && V.struggle[part] && V.struggle[part].creature) return true;
+		return false;
+	}>>
+	<<for _i = 0; _i < $NPCList.length; _i++>>
+		<<if $NPCList[_i]>>
+			/* Leaving idle now restores the NPC's covered state, so dressed NPCs properly undress before sex. */
+			<<set _idleLowerCovered to ($NPCList[_i].clothes?.lower?.name isnot undefined and $NPCList[_i].clothes?.lower?.name isnot "naked")>>
+			<<set _idleUpperCovered to ($NPCList[_i].clothes?.upper?.name isnot undefined and $NPCList[_i].clothes?.upper?.name isnot "naked")>>
+			<<if $NPCList[_i].penis is "idle">>
+				<<set $NPCList[_i].penis to (_idleLowerCovered ? "clothed" : 0)>>
+			<</if>>
+			<<if $NPCList[_i].vagina is "idle">>
+				<<set $NPCList[_i].vagina to (_idleLowerCovered ? "clothed" : 0)>>
+			<</if>>
+			<<if $NPCList[_i].chest is "idle">>
+				<<set $NPCList[_i].chest to (_idleUpperCovered ? "clothed" : 0)>>
+			<</if>>
+			<<if $NPCList[_i].traits.includes("lecher") or random(0,9) gt 6>>
+				<<set $NPCList[_i].condomAsk to false>>
+			<</if>>
+			<<set $NPCList[_i].lefthand to 0>>
+			<<set $NPCList[_i].righthand to 0>>
+			<<set $NPCList[_i].mouth to 0>>
+			/* Clear the mouth's old position when it is released, or it can block later head actions. Genital positions are cleared once they are no longer in use. */
+			<<if $NPCList[_i].location and ["head","genitals"].includes($NPCList[_i].location.head) and !["mouth","mouthentrance"].includes($NPCList[_i].chest)>>
+				<<set $NPCList[_i].location.head to 0>>
+			<</if>>
+			<<if $NPCList[_i].location and ["head","genitals"].includes($NPCList[_i].location.genitals)
+				and [0,"none","clothed"].includes($NPCList[_i].penis) and [0,"none","clothed"].includes($NPCList[_i].vagina)>>
+				<<set $NPCList[_i].location.genitals to 0>>
+			<</if>>
+		<</if>>
+	<</for>>
+
+	/* Only clear player trackers for body parts no longer in use. Clearing them all could make an occupied part count as free and hide related actions. */
+	<<if ($player.penisExist or playerHasStrapon()) and !_npcOccupiesPlayerPart("penis")>>
+		<<set $penisuse to 0>>
+		<<set $penisstate to 0>>
+	<</if>>
+	<<if $player.vaginaExist and !_npcOccupiesPlayerPart("vagina")>>
+		<<set $vaginause to 0>>
+		<<set $vaginastate to 0>>
+	<</if>>
+	<<if !_npcOccupiesPlayerPart("chest")>>
+		<<set $chestuse to 0>>
+		<<set $cheststate to 0>>
+	<</if>>
+	<<if !_npcOccupiesPlayerPart("anus")>>
+		<<set $anususe to 0>>
+		<<set $anusstate to 0>>
+	<</if>>
+	<<if !_npcOccupiesPlayerPart("mouth")>>
+		<<set $mouthuse to 0>>
+		<<set $mouthstate to 0>>
+	<</if>>
+<</widget>>
+
+<<widget "npc_submissive_multiple">>
+	<<set _anyNamedNPC to false>>
+	<<for _i = 0; _i < $NPCList.length; _i++>>
+		<<if $NPCList[_i]>>
+			<<if V.NPCNameList.includes($NPCList[_i].name) or V.NPCNameList.includes($NPCList[_i].fullDescription)>>
+				<<set _anyNamedNPC to true>>
+			<<else>>
+				<<set $NPCList[_i].lefthand to "idle">>
+				<<set $NPCList[_i].righthand to "idle">>
+				<<set $NPCList[_i].mouth to "speech_only">>
+			<</if>>
+		<</if>>
+	<</for>>
+	<<if !_anyNamedNPC>>
+		<<set $npcSub to 1>>
+		<<set $promiscuityIgnore to 1>>
+		<!-- group's single-enemy fallback reads $description/$role/$pronoun off whatever personselect last ran for (e.g. a plain attack this turn never touches it), so it can print a stale NPC from earlier in the passage. Resync to the actual enemy first. -->
+		<<personselect 0>>
+		<span class="green">The <<group>> <<= $enemynomax gte 2? "have":"has">> been beaten into submission. You may now take the lead.</span><br>
+	<</if>>
+<</widget>>
+
+<<widget "npctakevirginity">>
+	<<run npcMakeNaked($NPCList[0], "lower")>>
+
+	<<if $player.vaginaExist and $NPCList[0].penis isnot "none">>
+		<<set $vaginause to "penis">><<set $NPCList[0].penis to "vaginaentrance">><<set $vaginastate to "entrance">><<set $vaginatarget to 0>>
+		<<set $NPCList[0].location.genitals = "genitals">>
+	<<else>>
+		<<if $NPCList[0].penis isnot "none" and $settings.analEnabled>>
+			<<set $penisuse to "otheranus">><<set $NPCList[0].penis to "otheranusentrance">><<set $penisstate to "otheranusentrance">><<set $penistarget to 0>>
+		<<elseif $NPCList[0].vagina isnot "none">>
+			<<set $penisuse to "othervagina">><<set $NPCList[0].vagina to "penisentrance">><<set $penisstate to "entrance">><<set $penistarget to 0>>
+			<<set $NPCList[0].location.genitals = "genitals">>
+		<</if>>
+	<</if>>
+<</widget>>

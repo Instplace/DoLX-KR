@@ -1,0 +1,176 @@
+:: Widgets Underground [widget]
+
+<<widget "dungeonescape">>
+	<!-- Every way out of the brothel runs through here, so this is where a contract is torn up. -->
+	<<unset $undergroundbrothelhunt>>
+	<<if $undergroundbrothelcontract>>
+		<<storeon "underground_contract">>
+		<<clearNPC "contract_master">>
+		<<unset $contractWake>>
+		<<if _args[0] isnot "contractServed">>
+			<br>
+			You left the underground brothel before the date you agreed to. Your contract is canceled. You will not be paid for the time you worked.
+			<br><br>
+			<span class="red">The brothel will send people after you</span>. Some police officers take money from it. If they find you within a week, they will take you back. You will serve the rest of your time, plus five more days without pay.
+			<br><br>
+			<<set $undergroundbrothelhunt to {
+				"until": Time.days + 7,
+				"remaining": Math.max(1, $undergroundbrothelcontract.end - Time.days),
+				"penalty": $undergroundbrothelcontract.penalty
+			}>>
+		<</if>>
+		<<unset $undergroundbrothelcontract>>
+	<</if>>
+	<!-- Reunion scenes trigger only after a week out of town. -->
+	<<set _pcMissing to playerConsideredMissing()>>
+
+	<<if $baileySold and _pcMissing>>
+		<<set $baileyReunionScene to "dungeon">>
+	<</if>>
+	<!-- Bailey sold you here, so the weekends you spent locked up don't count against your deal. -->
+	<<if $baileySold and $baileyMonogamous>>
+		<<baileyWeekendVisitDone>>
+	<</if>>
+
+	<<if $whitneyromance is 1 and _pcMissing>>
+		<<set $whitneyReunionScene to "dungeon">>
+	<</if>>
+
+	<<if C.npc.Kylar.love gte 50 and _pcMissing>>
+		<<set $kylarReunionScene to "dungeon">>
+	<</if>>
+
+	<<if C.npc.Robin.init is 1 and _pcMissing>>
+		<<if $hoursGoneFromHome gte 4 and !$undergroundbrothel.robin>>
+			<<set $robinReunionScene to "dungeon">>
+		<<elseif $undergroundbrothel.robinGone>>
+			<<set $robinReunionScene to "dungeonRobin">>
+		<</if>>
+	<</if>>
+
+	<<if $undergroundbrothel.robin>>
+		<<set $robinmissing to 0>>
+	<</if>>
+
+	<<unset $baileySold>>
+	<<unset $wraithUnderground>>
+	<<set $undergroundbrothelescaped to true>>
+	<<set $undergroundbrothel to {"escape": $undergroundbrothel.escape}>>
+	<<unset $underground_shirt>>
+<</widget>>
+
+<<widget "undergroundCellOptions">>
+	<<bedicon "zzz">><<link [[Rest (1:00)|Underground Cell Rest]]>><<pass 1 hour>><<tiredness -12>><</link>><<ltiredness>>
+	<br>
+	<<if $undergroundbrothel.robin and !$undergroundbrothel.robinSpoke>>
+		<<socialiseicon>><<link [[Talk to Robin (0:10)|Underground Cell Robin Talk]]>><<pass 10>><<stress -4>><<trauma -4>><<npcincr Robin trauma -2>><</link>><<lstress>><<ltrauma>><<lrtrauma>>
+		<br>
+	<</if>>
+	<<if $undergroundbrothel.escape is 0>>
+		<<investigateicon>><<link [[Look for a way out|Underground Cell Look]]>><</link>>
+	<<elseif $undergroundbrothel.escape gte 21>>
+		<<getouticon "hole">><<link [[Escape|Underground Escape]]>><</link>>
+	<<elseif $undergroundbrothel.escape gte 19 and $physiquesize lte 15000>>
+		<<getouticon "hole">><<link [[Escape|Underground Escape]]>><</link>><<small_text>>
+	<<elseif $undergroundbrothel.escape gte 18 and $physiquesize lte 12000>>
+		<<getouticon "hole">><<link [[Escape|Underground Escape]]>><</link>><<small_text>>
+	<<elseif $undergroundbrothel.escape gte 17 and $physiquesize lte 10000>>
+		<<getouticon "hole">><<link [[Escape|Underground Escape]]>><</link>><<small_text>>
+	<<elseif $undergroundbrothel.escape gte 16 and $physiquesize lte 8000>>
+		<<getouticon "hole">><<link [[Escape|Underground Escape]]>><</link>><<small_text>>
+	<<elseif $undergroundbrothel.escape gte 14 and $physiquesize lte 6000>>
+		<<getouticon "hole">><<link [[Escape|Underground Escape]]>><</link>><<small_text>>
+	<<elseif $undergroundbrothel.escape gte 13 and $physiquesize lte 3000>>
+		<<getouticon "hole">><<link [[Escape|Underground Escape]]>><</link>><<small_text>>
+	<<else>>
+		<<getouticon "dig">><<link [[Dig (1:00)|Underground Cell Dig]]>><<pass 1 hour>><</link>>
+	<</if>>
+	<br>
+	<<investigateicon>><<link [[Examine the door|Underground Cell Lock]]>><</link>>
+<</widget>>
+
+<<widget "undergroundEscapeForestStart">>
+	<<clotheson>>
+	<<endcombat>>
+
+	A chill runs up your spine, a warning from some primal instinct. <span class="red">Something is hunting you.</span>
+	<<set $foresthunt to 1>><<set $forestHunter to "Eden">><<badEndTrackingEnd "Underground Dungeon" { reason: "uDungeonDefeated" }>><<dungeonescape>>
+	<br><br>
+	<<specialClothesUnlock "set" "underground_brothel">>
+
+	<<link [[Next|Forest]]>><<set $forest to 40>><</link>>
+<</widget>>
+
+<<widget "undergroundReturnToCell">>
+	<<clearNPC handler>>
+
+	<<tearful>> you sit on the mattress.
+	<<if _args[0] is "Robin">>
+		At least Robin got away.
+	<</if>>
+	<<if $undergroundbrothelcontract>>
+		<<stress -10>><<trauma -10>><<lstress>><<ltrauma>>
+	<</if>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<if _args[0] is "skip">>
+		<<set $eventskip to 1>>
+	<</if>>
+
+	<<if _args[0] is undefined or _args[0]>>
+		<<if $undergroundbrothelcontract>>
+			<<link [[Next|Underground Brothel Contract Quarters]]>><</link>>
+		<<else>>
+			<<link [[Next|Underground Cell]]>><</link>>
+		<</if>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "undergroundPlantFakeChoice">>
+	"Did you hit your head?" the <<person2>><<person>> grunts. "It doesn't matter if <<pshe stranger>> <<pverb "wants" "want" stranger>> to or not. <<pShes stranger>> yours."
+	<br><br>
+
+	"Oh yeah! I forgot this place worked like that!" The <<person1>><<person>> claps <<his>> hands together and lunges for you.
+	<br><br>
+
+	<<link [[Next|Underground Plant Molestation]]>><<set $molestationstart to 1>><</link>>
+<</widget>>
+
+<<widget "averyUndergroundReunionReaction">>
+	<<He>> <<if C.npc.Avery.rage gte 60>>yanks<<else>>grabs<</if>> your collar, pulling you close to <<him>>. <<He>> leans in to whisper in your ear.
+	<<if C.npc.Avery.state is "dismissed">>
+		"You made a mistake getting rid of me, you whore."
+	<<elseif C.npc.Avery.rage gte 60>>
+		<<if C.npc.Avery.love gte 60>>
+			"It's too bad a slut like you never learned how to be a <<goodgirl>>."
+		<<else>>
+			"Think of this as karma, you defiant slut. Maybe this will teach you how to be a <<goodgirl>>."
+		<</if>>
+	<<elseif C.npc.Avery.love gte 60>>
+		<<if isLoveInterest("Avery")>>
+			"What a pity, <<pcpetname "Avery">>. I was looking forward to taking you out this weekend."
+		<<else>>
+			"What a shame, you had such great potential."
+		<</if>>
+	<<else>>
+		"Too bad this is where you ended up. You always did seem like a whore."
+	<</if>>
+	<br><br>
+<</widget>>
+
+/* Once a day while the hunt lasts. Sets _brothelHuntCaught. */
+<<widget "undergroundBrothelHuntRoll">>
+	<<set _brothelHuntCaught to false>>
+	<<if $undergroundbrothelhunt and !$daily.undergroundBrothelHunt>>
+		<<set $daily.undergroundBrothelHunt to 1>>
+		<<if Time.days gt $undergroundbrothelhunt.until or $undergroundbrothelcontract or ($undergroundbrothel and $undergroundbrothel.active)>>
+			<<unset $undergroundbrothelhunt>>
+		<<elseif random(1, 100) lte 15>>
+			<<set _brothelHuntCaught to true>>
+		<</if>>
+	<</if>>
+<</widget>>

@@ -1,0 +1,1067 @@
+:: Racecourse
+<<effects>>
+<<run setup.horserace.ensureState()>><<run setup.horserace.weeklyState()>><<outfitChecks>>
+<<if $farm.horseRaceUnlocked isnot true>>
+	The fenced-off course is quiet. Alex has not opened it for racing yet.
+	<br><br>
+	<<link [[Return to the farm|Farm Work]]>><<endevent>><</link>>
+<<elseif $daily.horseRaceCancelled>>
+	<<endevent>>
+	<<npc Alex>><<person1>>
+	The racecourse is empty. An official is taking the numbers off the betting board, while two people who were taking bets put away their papers.
+	<br><br>
+	Alex stands beside the fence with <<his>> arms folded. "They've cancelled all the races today," <<he>> says. "Someone was interfering with the <<racehorses>>. The officials found out, and now nobody wants to bet on them."
+	<br><br>
+	<<He>> looks at the empty track, then turns back to you. "<span class="pink">We'll try again tomorrow.</span>"
+	<br><br>
+	<<getouticon>><<link [[Return to the farm|Farm Work]]>><<endevent>><</link>>
+<<else>>
+	<<if $horserace.phase is "idle" or $horserace.phase is "finished" or $horserace.phase is "closed">><<run setup.horserace.createRace(true)>><</if>>
+	<<if $horserace.phase is "closed">>
+		<<endevent>>
+		<<npc Alex>><<person1>>
+		The racecourse is much quieter than usual. A few workers are still standing near the stable gate, but nobody is taking bets or bringing the <<racehorses>> to the starting line.
+		<br><br>
+		Alex looks across the empty track, then turns to you. "The <<racehorses>> aren't ready to race today. Too many are injured or still frightened after what happened. We'll have to stop taking bets until they're better. <span class="pink">Maybe we can train them better...</span>"
+		<br><br>
+		<<link [[Return to the farm|Farm Work]]>><<endevent>><</link>>
+	<<else>>
+		The racecourse is already crowded and noisy. People taking bets shout out the prices for each <<racehorse>>, while customers hand them money and collect their betting slips. Workers lead the <<racehorses>> towards the starting gate.
+		<br><br>
+		<<if $weekly.horseRaceIncidentLossStreak gte 2>>
+			<span class="purple">Something seems wrong today.</span> Some of the workers keep checking the <<racehorses>>, even when there is nothing for them to do. The people taking bets stop talking whenever an official comes near. Nobody says it aloud, but several people look worried that someone might be cheating.
+		<</if>>
+		<<if $exposed gte 2>>
+			<span class="pink">Several people stop talking when you approach.</span> The people taking bets stare at you, while the workers look away as soon as you notice them. Alex quickly moves closer and stands between you and some of the people watching.<<stress 6>><<gstress>>
+			<<if $face isnot "covered">><<fameexhibitionism 8>><</if>>
+		<<elseif $exposed is 1>>
+			<span class="pink">Several people look at your clothes and whisper to each other.</span> Most of the people taking bets are too busy with customers to say anything about how little you're wearing.<<garousal>><<arousal 200>>
+		<</if>>
+		<<print setup.horserace.renderHorseList()>>
+		<<link "Place a bet" "Racecourse Betting">><</link>>
+		<br>
+		<<if $horserace.phase is "betting">>
+			<<if $horserace.rigEntered>>
+				<<link "Stable yard" "Racecourse Rigging">><</link>>
+			<<else>>
+				<<link "Stable yard" "Racecourse Rigging Enter">><</link>>
+			<</if>>
+			<br>
+		<</if>>
+		<br>
+		<<getouticon>><<link [[Return to the farm|Farm Work]]>><<endevent>><</link>>
+	<</if>>
+<</if>>
+
+:: Racecourse Betting
+<<effects>>
+<<if $horserace.phase is "closed">>
+	<<endevent>>
+	<<npc Alex>><<person1>>
+	<<if $horserace.riggedCancelled>>
+		Alex lowers <<his>> voice. "They've cancelled the race. The officials noticed something strange about the bets people were making. We should <span class="pink">wait until they're less suspicious</span> before trying again."
+	<<else>>
+		Alex looks across the empty track again. "The <<racehorses>> aren't ready to race today. Too many are injured or still frightened. We can't take any bets until they're better. <span class="pink">Maybe we can train them better...</span>"
+	<</if>>
+	<br><br>
+	<<link [[Return to the farm|Farm Work]]>><<endevent>><</link>>
+<<elseif setup.horserace.atWeeklyWinCap()>>
+	You head towards the betting window, but stop when you see how many people are waiting. There are far more customers than before.
+	<br><br>
+	People have heard how often you've won, and now they all want to try their luck. There are at least twenty people waiting to place bets at each window, and the lines are barely moving.
+	<br><br>
+	<<link [[Push into the queue|Racecourse Crowded Push]]>><</link>>
+	<br>
+	<<link [[Go back|Farm Work]]>><<endevent>><</link>>
+<<else>>
+	The numbers on the betting board change one last time. The person taking bets calls out that there is not much time left before the race starts.
+	<<print setup.horserace.renderHorseList()>>
+	<<if !$horserace.selectedHorseId>>
+		Choose which <<racehorse>> you want to bet on.
+		<p class="horse-race-bet-links">
+		<<set _firstHorseLink to true>>
+		<<for _horse range $horserace.horses>>
+			<<if _firstHorseLink>><<set _firstHorseLink to false>><<else>><br><</if>>
+			<<set _label to _horse.name + " (" + _horse.odds.toFixed(2) + "x)">>
+			<<capture _horse>>
+				<<link _label "Racecourse Betting">><<set $horserace.selectedHorseId to _horse.id>><<set $horserace.betInput to "">><<set $horserace.betType to "win">><</link>>
+			<</capture>>
+		<</for>>
+		</p>
+	<<else>>
+		<<set _horse to setup.horserace.getHorse($horserace.selectedHorseId)>>
+		<<if $horserace.betType is "place">>
+			You are betting that <<print _horse.name>> will finish <span class="green">first or second</span>. If you are right, you receive <<print _horse.placeOdds.toFixed(2)>> times the money you bet.
+			<br>
+			<<set _typeLabel to "Bet to win instead (" + _horse.odds.toFixed(2) + "x)">>
+			<<link _typeLabel "Racecourse Betting">><<set $horserace.betType to "win">><</link>>
+		<<else>>
+			You are betting that <<print _horse.name>> will <span class="green">finish first</span>. If you are right, you receive <<print _horse.odds.toFixed(2)>> times the money you bet.
+			<br>
+			<<set _typeLabel to "Bet to place instead (" + _horse.placeOdds.toFixed(2) + "x)">>
+			<<link _typeLabel "Racecourse Betting">><<set $horserace.betType to "place">><</link>>
+		<</if>>
+		<br><br>
+		<<set _maxStake to setup.horserace.toWholeMoney(setup.horserace.maxStake(_horse, $horserace.betType))>>
+		<<set _payoutPercent to Math.round(setup.horserace.suspicionPayoutMultiplier($horserace.suspicion) * 100)>>
+		<<if _payoutPercent lt 100>>
+			The person taking your bet has heard rumours about cheating. If you win, <span class="orange">you will only receive <<print _payoutPercent>>% of the normal payment</span>.
+			<br>
+		<</if>>
+		<<if _maxStake lt 2000>>
+			For this <<racehorse>>, the largest bet you can make at once is <<print "£" + _maxStake.toLocaleString("en-GB")>>.
+			<br>
+		<</if>>
+		Choose how much you want to bet.
+		<<set _presetBets to [100, 500, 1000, 2000].filter(function (amount) { return amount < _maxStake; })>>
+		<<if _maxStake lte 2000>><<set _presetBets.push(_maxStake)>><</if>>
+		<<set _firstBet to true>><<set _shownPreset to false>>
+		<p class="horse-race-bet-links">
+		<<for _amount range _presetBets>>
+			<<set _internalAmount to setup.horserace.toInternalMoney(_amount)>>
+			<<if _amount gte 1 and $money >= _internalAmount>>
+				<<set _shownPreset to true>>
+				<<if _firstBet>>
+					<<set _firstBet to false>>
+				<<else>>
+					 |
+				<</if>>
+				<<set _label to _amount.toLocaleString("en-GB") + "£">>
+				<<capture _amount>>
+					<<link _label "Racecourse Betting Submit">><<set $horserace.betInput to _amount + "">><</link>>
+				<</capture>>
+			<</if>>
+		<</for>>
+		</p>
+		<<if !_shownPreset>>
+			<span class="red">You do not have enough money</span> to place even the smallest bet.
+			<br>
+		<</if>>
+		<<steedicon>><<link `"Choose a different " + setup.horserace.kind()` "Racecourse Betting">><<set $horserace.selectedHorseId to "">><<set $horserace.betInput to "">><</link>>
+	<</if>>
+<</if>>
+
+:: Racecourse Crowded Push
+<<effects>>
+You turn sideways and try to get through a small space between two people in the queue. They move just enough to let you pass, and you manage to get a little closer to the betting window. More people immediately move into the space behind you.
+<br><br>
+People are standing so close on both sides that you can no longer get around them. You have to move at the same slow speed as everyone else.
+<br><br>
+Someone trying to move past hits you in the side with their elbow. It hurts enough to make you reach for your side, but there is so little space that you cannot turn around to see who did it.<<gpain>><<pain 4>><<gstress>><<stress 6>>
+<br><br>
+You look ahead. There are still several rows of people between you and the betting window.
+<br><br>
+<<link [[Keep pushing|Racecourse Crowded Push Two]]>><</link>>
+<br>
+<<link [[Go back|Farm Work]]>><<endevent>><</link>>
+
+:: Racecourse Crowded Push Two
+<<effects>>
+You try to push forward again and manage another two steps before the people ahead of you suddenly stop. You have to stop quickly to avoid walking into the person in front.
+<br><br>
+<<generate1>><<person1>>
+An official has climbed onto a wooden box near the betting board. <<He>> waves both arms and tells everyone near the barrier to move back. Instead of leaving, people push closer together because nobody wants to lose their place in the queue.
+<br><br>
+You try to move around the <<person>> in front of you, but <<he>> steps into your way. When you try again, <<he>> reaches back without turning around and pushes against your chest, forcing you to move back a step.
+<br><br>
+You step backwards into another person, then move your feet to keep yourself from falling.<<ggpain>><<pain 8>><<ggstress>><<stress 12>>
+<br><br>
+You look ahead, but there are still too many people between you and the betting window. You will not reach it before the betting closes. You turn sideways and slowly move back through the queue, asking people to let you pass until there is finally enough space to walk normally. You leave the racecourse.
+<br><br>
+<<link [[Next|Farm Work]]>><<endevent>><</link>>
+
+:: Racecourse Betting Submit
+<<set _betResult to setup.horserace.placeBet($horserace.selectedHorseId, $horserace.betInput, $horserace.betType)>>
+<<if _betResult.ok>>
+	The person taking bets collects your money and gives you a paper slip showing your bet. <<He>> points towards the fence where you can watch the race.
+	<br><br>
+	<<link [[Go to the viewing rail|Racecourse Rail Check]]>><<npc Alex>><<person1>><</link>>
+<<else>>
+	<<if $horserace.lastError>><p class="red"><<print $horserace.lastError>></p><</if>>
+	<<link [[Return to the betting window|Racecourse Betting]]>><</link>>
+<</if>>
+<br>
+
+:: Racecourse Rail Check
+<<outfitChecks>><<npc Alex>><<person1>>
+<<if $horserace.phase is "betting">>
+	The race can't start until you place a bet.
+	<br><br>
+	<<link [[Return to the betting window|Racecourse Betting]]>><</link>>
+<<elseif $exposed gte 2 and beastSexEnabledForType("horse") and (isBestialityOnForAnyCreature() or setup.horserace.centaurs()) and $daily.horseRaceHorseBreakChecked isnot true>>
+	<<set $daily.horseRaceHorseBreakChecked to true>><<set $horserace.autoWatch to false>><<run setup.horserace.cancelAutoWatch()>><<run setup.horserace.simulateToEnd()>>
+	As you walk towards the fence where people watch the races, several <<racehorses>> turn their heads towards you. At first, you think they are reacting to the nearby crowd. But they keep watching you even when their handlers try to get their attention. One of them ignores <<raceit its>> handler completely.
+	<br><br>
+	With the <<racehorses>> watching you, you become very aware that <span class="pink">you're not wearing enough clothes to cover yourself</span>.
+	<br><br>
+	Alex notices, then looks you over with a frown. "Why are you walking around dressed like that here?"
+	<br><br>
+	<<speechresolve>>
+	<<switch _speechAttitudeResolved>>
+		<<case "meek">>
+			"Sorry," you say quietly, moving your arms closer to your body. "I didn't think it would matter."
+		<<case "shy">>
+			You look away from the people watching. "I'd rather not talk about what I'm wearing," you say quietly.
+		<<case "polite">>
+			"I don't think my clothes are the important part right now, Alex," you say.
+		<<case "neutral">>
+			"It's not your business," you tell <<him>>.
+		<<case "confident">>
+			You look straight at Alex. "I know what I'm wearing. You don't have to worry about it."
+		<<case "bratty">>
+			"It's none of your business, Alex," you say. "Stop worrying about my clothes."
+		<<case "docile">>
+			"I can move away from the fence if you want," you offer.
+		<<case "flamboyant">>
+			"I don't think my clothes are the important part right now, Alex," you say.
+		<<case "cruel">>
+			"None of your business," you say, clearly irritated that <<he>> asked.
+	<</switch>>
+	<br><br>
+	Alex starts to answer, but stops when a few people standing nearby laugh at you. "Fine," <<he>> says, sounding annoyed. "Wear whatever you want at the biggest <<racehorse>> race we've ever held. What could go wrong?"
+	<br><br>
+	The <<racehorse>> that has been watching you suddenly pulls hard on the rope held by <<raceit its>> handler. The handler tries to pull <<raceit itobj>> back, but <<raceit it>> moves towards the fence and drags the handler through the dirt. Alex reaches for you, but people start running away from the <<racehorse>>, getting between you and <<him>>.
+	<br><br>
+	<<link [[Next|Racecourse Horse Break]]>><<endevent>><<set $molestationstart to 1>><</link>>
+<<else>>
+	As you reach the fence, one of the <<racehorses>> turns towards you, followed by another. A third keeps stepping back and forth, pulling on the rope held by <<raceit its>> handler until the handler pulls <<raceit itobj>> away.
+	<br><br>
+	One of the handlers has to pull a <<racehorse>> back before <<raceit it>> gets too close to the fence. Alex looks worried. "Maybe don't stand too close," <<he>> says, looking back towards the <<racehorses>>.<<stress 6>><<gstress>>
+	<br><br>
+	<<link [[Watch the race|Racecourse Watch]]>><</link>>
+<</if>>
+
+:: Racecourse Watch
+<<outfitChecks>>
+<<if $horserace.phase is "betting">>
+	The race can't start until you place a bet.
+	<br><br>
+	<<link [[Return to the betting window|Racecourse Betting]]>><</link>>
+<<else>>
+	<<print setup.horserace.renderTrack()>>
+	<<script>>setTimeout(function () {setup.horserace.placeMarkers(); setup.horserace.refreshLiveView("Racecourse Result", "See the result");}, 0);<</script>>
+	<<print setup.horserace.renderRaceLog()>>
+	<<print setup.horserace.renderLiveControls("Racecourse Result", "See the result", "Start watching", "Pause watching", 1600)>>
+	<span id="horse-race-result-link">
+	<<link "Skip to the finish" "Racecourse Result">><<set $horserace.autoWatch to false>><<run setup.horserace.cancelAutoWatch()>><<run setup.horserace.simulateToEnd()>><</link>>
+	</span>
+<</if>>
+
+:: Racecourse Result
+<<set $horserace.autoWatch to false>><<endevent>>
+<<run setup.horserace.cancelAutoWatch()>>
+<<if $horserace.phase isnot "finished">><<run setup.horserace.simulateToEnd()>><</if>>
+<<print setup.horserace.renderResult()>>
+<<link "Run another race" "Racecourse Betting">><<run setup.horserace.createRace(true)>><</link>>
+<<if $horserace.lossTraumaPending>><<gggtrauma>><<trauma 15>><<set $horserace.lossTraumaPending to false>>
+<<elseif $horserace.lossStressPending>><<gggstress>><<stress 20>><<set $horserace.lossStressPending to false>><</if>>
+<br>
+<<link [[Return to the farm|Farm Work]]>><<run setup.horserace.clearRaceData()>><</link>>
+
+:: Racecourse Horse Break
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastNEWinit 1 horse m penis `setup.horserace.centaurs() ? "monster" : "beast"`>>
+	<<beastCombatInit>>
+	<<set $NPCList[0].stance to "top">>
+	<<if $pronoun is "m">>
+		<<set $position to "doggy">>
+	<<else>>
+		<<set $position to "missionary">>
+	<</if>>
+	<<set $position_lock to 1>>
+<</if>>
+<<effects>>
+<<effectsman>>
+<<beast $enemyno>>
+<<audience>>
+<<stateman>>
+<<actionsman>>
+<<if _combatend>>
+	<span id="next"><<link [[Next|Racecourse Horse Break Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Racecourse Horse Break]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Racecourse Horse Break Finish
+<<effects>>
+The handlers finally manage to stop the <<racehorse>> and lead <<raceit itobj>> away from the fence. People are still talking and staring while those taking bets tell everyone to move back and give the handlers room.
+<br><br>
+By the time Alex finds you again, the race has already finished.
+<br><br>
+<<endcombat>>
+<<link [[Next|Racecourse Result]]>><</link>>
+
+:: Farm Horse Race Intro
+<<run setup.horserace.ensureState()>>
+<<set $farm.horseRaceUnlocked to true>><<set $farm.horseRaceIntroSeen to true>>
+Alex leads you past the stable to a new wooden fence. The grass beside it has been cut short, and the dirt has been pressed flat to make a clear path for the <<racehorses>>. Farther along, some workers are arguing about where the next fence posts should go. You can already see the shape of a racecourse.
+<br><br>
+"I wanted to show you before anyone else saw it," Alex says, unable to hide <<his>> smile. "We've done well. Not just survived. Done well. And that's because of you. The fields, the animals, the repairs... all of it. I couldn't have got this far alone."
+<br><br>
+<<He>> rubs the back of <<his>> neck. "One of my dad's old business partners helps organise horse races. They know how to arrange transport, take bets, and get the safety checks done. We talked, and... well, they want to work with us. We provide the land and the <<racehorses>>, and they bring in people who know how to organise races legally and make money from them."
+<br><br>
+Someone has put up a new sign beside the gate. You can still see the fresh paint on its letters.
+<br><br>
+<span class="gold">Alex's farm can now host <<racehorse>> races.</span>
+<br><br>
+"No pressure," Alex adds, trying to sound casual, but <<hes>> still smiling. You haven't seen <<him>> this excited all week. "I thought we could walk around the new track and make sure everything is ready before I invite half the town here."
+<br><br>
+<<link [[Walk the course|Farm Horse Race Walk]]>><<pass 5>><</link>>
+
+:: Farm Horse Race Walk
+<<effects>>
+As you walk past, one of the <<racehorses>> hits the ground with a hoof and keeps turning <<raceit its>> ears towards the open track. The handler speaks quietly to calm <<raceit itobj>>, but <<raceit it>> keeps looking towards the starting area.
+<br><br>
+"See? That's what I mean. The <<racehorses>> that work on the farm are used to following instructions. These ones just want to run, so our job is to make sure they run around the track instead of going wherever they please." Alex looks at the <<racehorse>> as <<raceit it>> shakes <<raceit its>> head. "Still easier than dealing with Remy. Usually."
+<br><br>
+<<if isBestialityOnForAnyCreature()>>
+	One <<= setup.horserace.centaurs() ? "centaur" : "stallion">> near the rail goes still as you pass, ears forward and body tense, before becoming <span class="pink">far too obviously excited, <<raceit its>> cock visibly erect</span>.
+	Another <<racehorse>> at the far end gives you the same fixed stare. Then a third.
+	<br><br>
+	Alex follows the direction you're looking and sees another <<racehorse>> behaving the same way. <<His>> face turns red. "Right... Brilliant. Great. We're going over there now."
+	<br><br>
+	<<He>> takes hold of your sleeve and leads you away from the fence, walking between you and the <<racehorses>>.
+<<else>>
+	One <<= setup.horserace.centaurs() ? "centaur" : "stallion">> near the fence stops moving when you walk past. <<raceit Its>> ears point towards you, and <<raceit it>> hits the ground twice with a hoof. Alex looks worried.
+	At the other end of the track, another <<racehorse>> starts moving around instead of standing still. A third begins pulling on <<raceit its>> rope, and the handler has to calm <<raceit itobj>> down.
+	<br><br>
+	Alex looks from one <<racehorse>> to the next, frowning. "Right... Brilliant. Great. We're going over there now."
+	<br><br>
+	<<He>> takes hold of your sleeve and quickly leads you away from the fence.
+<</if>>
+<br><br>
+When you reach the fence where people can watch the races, the handlers are already bringing the <<racehorses>> into position.
+"Let's see how they do in one race," Alex says. "If nobody panics or jumps over a fence, I'll call it a success."
+<br><br>
+<<link [[Watch the trial race|Farm Horse Race Trial Watch]]>><<run setup.horserace.startTrialRace()>><<pass 5>><</link>>
+
+:: Farm Horse Race Trial Watch
+<<print setup.horserace.renderTrack()>>
+<<script>>setTimeout(function () {setup.horserace.placeMarkers(); setup.horserace.refreshLiveView("Farm Horse Race Trial Result", "See how it went");}, 0);<</script>>
+<<print setup.horserace.renderRaceLog()>>
+<<print setup.horserace.renderLiveControls("Farm Horse Race Trial Result", "See how it went", "Start the trial race", "Pause watching", 1600)>>
+<span id="horse-race-result-link">
+<<link "Let Alex skip to the finish" "Farm Horse Race Trial Result">><<set $horserace.autoWatch to false>><<run setup.horserace.cancelAutoWatch()>><<run setup.horserace.simulateToEnd()>><</link>>
+</span>
+
+:: Farm Horse Race Trial Result
+<<set $horserace.autoWatch to false>>
+<<run setup.horserace.cancelAutoWatch()>>
+<<if $horserace.phase isnot "finished">><<run setup.horserace.simulateToEnd()>><</if>>
+<<print setup.horserace.renderResult()>>
+<<set _hurtHorse to setup.horserace.getHorse($horserace.incidentHorseId)>>
+<<if _hurtHorse>>
+	Alex watches the vets help <<print _hurtHorse.name>> leave the track, then looks towards the <<racehorse>> that won. "That happens sometimes," <<he>> says quietly. "The vets will look after <<raceit itobj>>. The others did well."
+<<else>>
+	Alex watches the winning <<racehorse>> reach the fence at the far end of the track. When the race is over, <<he>> finally relaxes. "Nothing broke!" <<He>> laughs, still a little nervous. "I'll take that as a good sign."
+<</if>>
+<br><br>
+A handler waves from the track. Alex waves back, then turns to you with a brighter smile.
+<br><br>
+"I'll have the betting board ready next time," <<he>> says. "Come back when you want to watch a race with more people here. There'll be someone taking bets too, if you feel like betting some money."
+<br><br>
+<span class="gold">The racecourse is now open</span> from the farmyard.
+<br>
+<<link [[Return to the farm|Farm Work]]>><<endevent>><<run setup.horserace.clearRaceData()>><</link>>
+
+:: Racecourse Rigging Enter
+<<effects>>
+<<if $horserace.phase isnot "betting">>
+	It's too late to visit the stables before the race. The <<racehorses>> have already been taken to the starting line.
+	<br><br>
+	<<link [[Return to the racecourse|Racecourse]]>><</link>>
+<<else>>
+	<<set $horserace.rigEntered to true>>
+	<<npc Alex>><<person1>>
+	"I'm going to go look at the <<racehorses>> before they line up," you say.
+	<br><br>
+	Alex is still looking at the betting board, with one hand resting on the fence. "Want me to come with you? I know most of the people who look after them."
+	<br><br>
+	<<speechresolve>>
+	<<switch _speechAttitudeResolved>>
+		<<case "meek">>
+			"It's all right," you say quietly. "I'll be back soon."
+		<<case "shy">>
+			"You don't need to come with me," you say, looking away. "I won't be long."
+		<<case "polite">>
+			"Thank you, but I'll go on my own," you say. "Could you keep an eye on the betting board?"
+		<<case "neutral">>
+			"Someone should watch the betting board," you say. "I'll be back before the race starts."
+		<<case "confident">>
+			"Stay here and watch the betting board for me," you say. "Let me know if the numbers change."
+		<<case "bratty">>
+			"I can walk down there on my own, Alex," you say. "I'll be fine."
+		<<case "docile">>
+			"You can stay here if you want," you say. "I'll come back soon."
+		<<case "flamboyant">>
+			"Stay here and watch the betting board for me," you say. "Let me know if the numbers change."
+		<<case "cruel">>
+			"I don't need someone following me down a path," you say. "Stay here."
+	<</switch>>
+	<br><br>
+	Alex raises <<his>> shoulders for a moment, then turns back to the betting board.
+	<br><br>
+	You leave the crowd and follow the path downhill towards the stables. As you get farther from the track, you can no longer hear the people shouting about bets clearly.
+	At the stable gate, an official is checking names on a list. <<He>> finds yours and moves aside to let you enter because you work with the farm.
+	<br><br>
+	Inside the stable yard, there are rows of small spaces for the <<racehorses>> on both sides of a wide dirt path. Workers walk between them carrying water, checking the saddles and other equipment, and bringing each <<racehorse>> out when it is time to leave. Another <<racehorse>> is being led towards the track ahead of you.
+	<br><br>
+	You watch <<raceit itobj>> pass through the far gate. When the last <<racehorse>> leaves the stables, nobody will be allowed to place more bets. You have very little time if you want to do something here before the race.
+	<br><br>
+	<<link [[Next|Racecourse Rigging]]>><<endevent>><</link>>
+<</if>>
+
+:: Racecourse Rigging
+<<effects>>
+<<if $horserace.phase isnot "betting">>
+	It's too late to visit the stables before the race. The <<racehorses>> have already been taken to the starting line.
+	<br><br>
+	<<link [[Return to the racecourse|Racecourse]]>><</link>>
+<<else>>
+	<<generate1>><<person1>>
+	<<if $horserace.suspicion is 0>>
+		The stable yard is busy. Workers carry food for the <<racehorses>>, check their saddles and other equipment, and walk between the stalls without paying you any attention.
+	<<elseif $horserace.suspicion lt 30>>
+		You pass a handler carrying a bucket. <<He>> gives you a quick nod before continuing towards the stalls.
+		Nobody else seems interested in what you are doing.
+	<<elseif $horserace.suspicion lt 60>>
+		An official enters through the stable gate and begins checking each stall. <<He>> asks the workers a few questions before moving to the next <<racehorse>>. <<Hes>> still several stalls away from you.
+	<<elseif $horserace.suspicion lt 80>>
+		The official stops near the end of the row. While checking a nearby stall, <<he>> keeps looking towards you. Two workers beside the large water container start speaking quietly, and one of them looks towards you more than once.
+	<<else>>
+		<span class="red">Three officials</span> are standing near the stable gate. One checks a list of bets while another points towards the stalls where you are standing. All three continue watching you when you look over.
+	<</if>>
+	<<endevent>>
+	<br><br>
+	<<if $horserace.suspicion gte 1>>
+		<span class="orange">Suspicion: <<print $horserace.suspicion>>%.</span>
+		<br><br>
+	<</if>>
+	<<set _tierColours to { high: "purple", medium: "pink", low: "blue" }>>
+	<<set _tierLabels to { high: "High risk", medium: "Medium risk", low: "Low risk" }>>
+	<<for _action range setup.horserace.RIG_ACTIONS>>
+		<<if _action.deviancyGated and !(hasSexStat("deviancy", 2) and beastSexEnabledForType("horse") and (isBestialityOnForAnyCreature() or setup.horserace.centaurs()))>>
+			<<continue>>
+		<</if>>
+		<<set _used to setup.horserace.rigActionUsed(_action.id)>>
+		<<set _colour to _tierColours[_action.tier]>>
+		<<if _used>>
+			<<crimeicon>><span class="grey"><<print _action.label>></span>
+		<<elseif _action.cost and $money < setup.horserace.rigCostInternal(_action)>>
+			<<crimeicon>><span class="grey"><<print _action.label>></span> |<span class="red"> Need <<print setup.horserace.formatMoney(setup.horserace.rigCostInternal(_action))>></span>
+		<<elseif _action.itemCost is "phial" and $phials_stored < 1>>
+			<<crimeicon>><span class="grey"><<print _action.label>></span> |<span class="red"> Need a small bottle of aphrodisiac</span>
+		<<else>>
+			<<crimeicon>><<capture _action>>
+				<<link _action.label "Racecourse Rigging Target">><<set $horserace.rigActionId to _action.id>><</link>>
+			<</capture>>
+			<<if _action.deviancyGated>><<deviant2>><</if>>
+			|<span @class="_colour"> <<print _tierLabels[_action.tier]>></span><<if _action.cost>> <</if>><<if _action.itemCost is "phial">> <span class="grey">1 bottle</span><</if>>
+		<</if>>
+		<br>
+	<</for>>
+	<br>
+	<<link [[Back to the rail|Racecourse Rigging Leave]]>><</link>>
+<</if>>
+
+:: Racecourse Rigging Leave
+<<effects>>
+<<npc Alex>><<person1>>
+You head back up the slope while the last runners are led out of the yard towards the course.
+<<if $horserace.suspicion is 0>>
+	Alex is still by the rail, checking the board when you return. <<He>> looks over as you stop beside <<him>>.
+	"Anything worth knowing?"
+	<br><br>
+	"They all look fine to me," you say.
+	<br><br>
+	Alex gives a small nod and turns back to the board.
+<<elseif $horserace.suspicion lt 40>>
+	Alex looks over as you come back to the rail. "You were down there a while."
+	<br><br>
+	"I was looking at the <<racehorses>>," you say.
+	<br><br>
+	Alex looks at you for a moment, then returns to the betting board without asking anything else.
+<<elseif $horserace.suspicion lt 70>>
+	When you reach the rail, Alex is watching the yard gate instead of the board.
+	"An official followed you into the stables, then came back out and went straight to the other officials."
+	<br><br>
+	<<He>> looks at you, waiting for an explanation. You keep quiet and turn your attention towards the course.
+	<<gstress>><<stress 6>>
+<<else>>
+	Alex grabs your arm as soon as you reach the rail and pulls you closer. "What did you do? Three officials have gone into the stables in the last ten minutes. Now they're all talking beside the betting board."
+	<br><br>
+	You look over. Several officials are talking beside it, while two of the bookies have stopped taking bets.
+	<br><br> <span class="red">Something has clearly gone wrong.</span><<ggstress>><<stress 14>>
+<</if>>
+<br><br>
+<<link [[Next|Racecourse]]>><<endevent>><</link>>
+
+:: Racecourse Rigging Target
+<<effects>>
+<<set _action to setup.horserace.getRigAction($horserace.rigActionId)>>
+<<if !_action or $horserace.phase isnot "betting">>
+	<<link [[Return to the racecourse|Racecourse]]>><</link>>
+<<else>>
+	<<if _action.target is "own">>
+		Which <<racehorse>> do you want to help?
+	<<else>>
+		Which <<racehorse>> do you want to target?
+	<</if>>
+	<br>
+	<<for _horse range $horserace.horses>>
+		<<capture _horse>>
+			<<capture _action>>
+				<<link _horse.name _action.passage>><<set $horserace.rigTargetId to _horse.id>><</link>>
+			<</capture>>
+		<</capture>>
+		<br>
+	<</for>>
+	<br>
+	<<link [[Never mind|Racecourse Rigging]]>><</link>>
+<</if>>
+
+:: Racecourse Rig Minigame
+<<effects>>
+<<set _game to setup.horserace.rigGameState()>>
+<<set _action to setup.horserace.getRigAction(_game.actionId)>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+<<if !_action or !_horse or $horserace.phase isnot "betting">>
+	<<link [[Return to the racecourse|Racecourse]]>><</link>>
+<<else>>
+	<<set _text to setup.horserace.RIG_MINIGAME_TEXT[_game.actionId]>>
+	<<print _text.scene>>
+	<<print setup.horserace.renderRigMeters()>>
+	<<crimeicon>><<link _text.quick "Racecourse Rig Minigame Step">><<set $horserace.rigGame.pendingMode to "quick">><</link>> | <span class="red">Risky</span>
+	<br>
+	<<crimeicon>><<link _text.careful "Racecourse Rig Minigame Step">><<set $horserace.rigGame.pendingMode to "careful">><</link>> | <span class="teal">Slow</span>
+	<br>
+	<<investigateicon>><<link _text.watchLabel "Racecourse Rig Minigame Step">><<set $horserace.rigGame.pendingMode to "watch">><</link>> | <span class="blue">Lowers risk</span>
+<</if>>
+
+:: Racecourse Rig Minigame Step
+<<effects>>
+<<set _game to setup.horserace.rigGameState()>>
+<<set _action to setup.horserace.getRigAction(_game.actionId)>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+<<set _text to setup.horserace.RIG_MINIGAME_TEXT[_game.actionId]>>
+<<set _mode to _game.pendingMode>>
+<<set _success to true>>
+<<if _mode isnot "watch">>
+	<<set $skulduggerydifficulty to setup.horserace.rigMinigameDifficulty(_action, _mode)>>
+	<<skulduggerycheck "silent">>
+	<<set _success to $skulduggerysuccess is 1>>
+<</if>>
+<<run setup.horserace.applyMinigameTurn(_mode, _success)>>
+<<set _outcome to setup.horserace.rigMinigameOutcome()>>
+<<if _mode is "quick">>
+	<<print _success ? _text.quickSuccess : _text.quickFail>>
+<<elseif _mode is "careful">>
+	<<print _success ? _text.carefulSuccess : _text.carefulFail>>
+<<else>>
+	<<print _text.watch>>
+<</if>>
+<br><br>
+<<if _outcome is "ongoing">>
+	<<link [[Continue|Racecourse Rig Minigame]]>><</link>>
+<<elseif _outcome is "success">>
+	<<link "Next" $horserace.rigSuccessPassage>><</link>>
+<<else>>
+	<<link "Next" $horserace.rigCaughtPassage>><</link>>
+<</if>>
+
+:: Racecourse Rig Injure Horse
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+<<if !_horse or $horserace.phase isnot "betting">>
+	<<link [[Return to the racecourse|Racecourse]]>><</link>>
+<<else>>
+	<<endevent>>
+	<<generate1>><<person1>>
+	You walk past the stalls until you find <<print _horse.name>> standing outside <<raceit its>> stall, with a rope keeping <<raceit itobj>> in place. The worker looking after <<raceit itobj>>, a <<person>>, is farther along the row checking another <<racehorse>>'s saddle.
+	<br><br>
+	You bend down beside <<print _horse.name>>'s front leg and reach towards the metal shoe attached to <<raceit its>> hoof. The <<racehorse>> moves the leg, so you pull your hand back and wait for <<raceit itobj>> to stand still. Then you try to damage the shoe without making it look different from the outside.
+	<br><br>
+	<<set $horserace.rigSuccessPassage to "Racecourse Rig Injure Horse Success">>
+	<<set $horserace.rigCaughtPassage to "Racecourse Rig Injure Horse Caught">>
+	<<run setup.horserace.startRigMinigame("injure_horse")>>
+	<<link [[Start|Racecourse Rig Minigame]]>><</link>>
+<</if>>
+
+:: Racecourse Rig Injure Horse Success
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+You finish tampering with the shoe and carefully set <<print _horse.name>>'s hoof back on the ground. Nobody has come to check on you, so you move away from the stall.
+<br><br>
+The shoe still looks properly attached, but <span class="pink">it will come loose when the race starts</span>.
+<<run setup.horserace.resolveRigAction("injure_horse", _horse.id, true)>>
+<br><br>
+<<riggingFooter>>
+
+:: Racecourse Rig Injure Horse Caught
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+The worker comes back along the row and sees you beside the <<racehorse>>'s front leg, with your hand close to its hoof.
+<br><br>
+"Hey! Get away from that <<racehorse>>!" <<he>> shouts. <<He>> walks quickly towards you and grabs your arm before you can leave.
+<<gpain>><<pain 3>>
+<br><br>
+<<if $athletics gte 400>>
+	<<link "Pull free" "Racecourse Rig Injure Horse Escape">><</link>>
+	<br>
+<</if>>
+<<link "Run" "Racecourse Rig Injure Horse Run">><</link>>
+<br>
+<<link "Talk" "Racecourse Rig Injure Horse Talk">><</link>>
+
+:: Racecourse Rig Injure Horse Escape
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+You pull your arm away while <<his>> grip is still loose. <<He>> tries to grab your clothes as you turn, but you move away before <<he>> can reach you and hurry towards the stable gate.
+<br><br>
+<<He>> does not chase you. By the time you leave the yard, <<he>> has already turned back to check the <<racehorse>>'s leg.
+<br><br>
+<<set $horserace.suspicion to Math.min(100, $horserace.suspicion + 8)>>
+<<run setup.horserace.resolveRigAction("injure_horse", _horse.id, false)>>
+<<riggingFooter>>
+
+:: Racecourse Rig Injure Horse Run
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+You pull your arm away, but the handler keeps hold of you. <<He>> starts pulling you back towards the stall, and you have to twist your arm hard before <<his>> hand finally slips off. You turn towards the gate and run.
+<br><br>
+You keep running until you are out of the yard. Only then do you slow down and glance back.
+<br><br>
+Your arm still hurts where <<he>> grabbed you.<<gpain>><<pain 3>><<gstress>><<stress 4>>
+<br><br>
+<<set $horserace.suspicion to Math.min(100, $horserace.suspicion + 15)>>
+<<run setup.horserace.resolveRigAction("injure_horse", _horse.id, false)>>
+<<riggingFooter>>
+
+:: Racecourse Rig Injure Horse Talk
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+"I was just checking the shoe," you say. "It looked loose."
+<br><br>
+<<He>> keeps hold of your arm. "Just checking it, were you?" <<He>> looks at the <<racehorse>>'s shoe, then back at you. "I'm telling the officials someone tried to interfere with the <<racehorses>>. They can decide whether it was you."
+<br><br>
+<<He>> lets go of your arm and walks towards the place where the race officials are working.<<gggstress>><<stress 13>>
+<br><br>
+<<set $horserace.suspicion to Math.min(100, $horserace.suspicion + 20)>>
+<<run setup.horserace.resolveRigAction("injure_horse", _horse.id, false)>>
+<<riggingFooter>>
+
+:: Racecourse Rig Threaten Rider
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+<<if !_horse or $horserace.phase isnot "betting">>
+	<<link [[Return to the racecourse|Racecourse]]>><</link>>
+<<else>>
+	<<endevent>>
+	<<generate1>><<person1>>
+	You find the <<person>> sitting on <<print _horse.name>> behind the stalls, adjusting the strap under <<his>> helmet. The other workers are too far away to hear you speaking to <<him>>.
+	<br><br>
+	You walk over and stop beside the <<racehorse>>, close enough to speak quietly to the rider. You need to scare <<him>> into holding back during the race before any of the other workers return.
+	<br><br>
+	<<set $horserace.rigSuccessPassage to "Racecourse Rig Threaten Rider Success">>
+	<<set $horserace.rigCaughtPassage to "Racecourse Rig Threaten Rider Caught">>
+	<<run setup.horserace.startRigMinigame("beat_rider")>>
+	<<link [[Start|Racecourse Rig Minigame]]>><</link>>
+<</if>>
+
+:: Racecourse Rig Threaten Rider Success
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+The rider looks frightened and pulls back a little in the saddle. <<He>> lifts one hand away from the reins. "Okay. Okay, I hear you," <<he>> says, <<his>> voice shaking.
+<br><br>
+<<He>> has agreed not to make <<print _horse.name>> run as fast as possible today.<<stress -2>><<lstress>>
+<br><br>
+<<run setup.horserace.resolveRigAction("beat_rider", _horse.id, true)>>
+<<riggingFooter>>
+
+:: Racecourse Rig Threaten Rider Caught
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+The rider refuses to agree. "Get away from me," <<he>> says loudly. A worker two stalls away turns towards you as the rider shouts, "Someone get security!"<<stress 4>><<gstress>>
+<br><br>
+<<if $athletics gte 400>>
+	<<link "Walk away" "Racecourse Rig Threaten Rider Escape">><</link>>
+	<br>
+<</if>>
+<<link "Push past" "Racecourse Rig Threaten Rider Run">><</link>>
+<br>
+<<link "Talk" "Racecourse Rig Threaten Rider Talk">><</link>>
+
+:: Racecourse Rig Threaten Rider Escape
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+You walk towards the stable gate without running or looking back. By the time anyone tries to follow you, you are already among the people waiting to place bets.
+<br><br>
+<<set $horserace.suspicion to Math.min(100, $horserace.suspicion + 10)>>
+<<run setup.horserace.resolveRigAction("beat_rider", _horse.id, false)>>
+<<riggingFooter>>
+
+:: Racecourse Rig Threaten Rider Run
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+A worker tries to grab your hand as you pass.
+<br><br>
+You push the worker's arm away, causing the worker to stumble into a fence post. You keep moving towards the gate without stopping.<<gpain>><<pain 5>><<gstress>><<stress 3>>
+<br><br>
+<<set $horserace.suspicion to Math.min(100, $horserace.suspicion + 18)>>
+<<run setup.horserace.resolveRigAction("beat_rider", _horse.id, false)>>
+<<riggingFooter>>
+
+:: Racecourse Rig Threaten Rider Talk
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+"I don't know what <<hes>> talking about," you tell the worker. "I was just asking what the <<racehorse>> eats."
+<br><br>
+The rider stays on the <<racehorse>> without saying anything. The worker looks at you and then at the rider, clearly unsure whom to believe, before going to get the official in charge.<<ggstress>><<stress 8>>
+<br><br>
+<<set $horserace.suspicion to Math.min(100, $horserace.suspicion + 25)>>
+<<run setup.horserace.resolveRigAction("beat_rider", _horse.id, false)>>
+<<riggingFooter>>
+
+:: Racecourse Rig Drug Horse
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+<<if !_horse or $horserace.phase isnot "betting">>
+	<<link [[Return to the racecourse|Racecourse]]>><</link>>
+<<elseif $phials_stored < 1>>
+	You don't have the liquid you need. You must get a small bottle of aphrodisiac from your extraction system before you can do this.
+	<br><br>
+	<<link [[Return to the racecourse|Racecourse]]>><</link>>
+<<else>>
+	<<endevent>>
+	<<generate1>><<person1>>
+	You take a small bottle of lurker aphrodisiac from your pocket and walk towards the bucket containing <<print _horse.name>>'s food. The worker looking after <<raceit itobj>>, a <<person>>, is busy with something else and isn't watching you.
+	<br><br>
+	You open the bottle and look at the food. You need to finish what you're doing before the worker turns around.
+	<br><br>
+	<<set $phials_stored -= 1>>
+	<<set $horserace.rigSuccessPassage to "Racecourse Rig Drug Horse Success">>
+	<<set $horserace.rigCaughtPassage to "Racecourse Rig Drug Horse Caught">>
+	<<run setup.horserace.startRigMinigame("drug_horse")>>
+	<<link [[Start|Racecourse Rig Minigame]]>><</link>>
+<</if>>
+
+:: Racecourse Rig Drug Horse Success
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+<<print _horse.name>> eats all the food without showing any sign that something is wrong.
+<br><br>
+A few minutes later, <<raceit it>> pulls <<raceit its>> ears back and repeatedly moves <<raceit its>> tail from side to side. <<raceit It>> keeps moving <<raceit its>> feet instead of standing still and stops paying attention to the track.
+<br><br>
+<<run setup.horserace.resolveRigAction("drug_horse", _horse.id, true)>>
+<<riggingFooter>>
+
+:: Racecourse Rig Drug Horse Caught
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+The worker walks past while you're still adding the liquid to the food.
+<br><br>
+You try to make it look as though you're only checking how much food is left, but <<he>> looks at your hand and then at you before walking away.
+<br><br>
+<<run setup.horserace.resolveRigAction("drug_horse", _horse.id, false)>>
+<<riggingFooter>>
+
+:: Racecourse Rig Stimulant
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+<<if !_horse or $horserace.phase isnot "betting">>
+	<<link [[Return to the racecourse|Racecourse]]>><</link>>
+<<elseif $phials_stored < 1>>
+	You don't have the liquid you need. You must get a small bottle of aphrodisiac from your extraction system before you can do this.
+	<br><br>
+	<<link [[Return to the racecourse|Racecourse]]>><</link>>
+<<else>>
+	<<endevent>>
+	<<generate1>><<person1>>
+	You find <<print _horse.name>> waiting near the fenced area outside the stables, with a rope keeping <<raceit itobj>> in place. The worker looking after <<raceit itobj>>, a <<person>>, has gone inside to get some equipment.
+	<br><br>
+	You take a small bottle of lurker aphrodisiac out of your pocket. You plan to add it to the drinking water, but you must finish and leave the bucket as you found it before the worker comes back.
+	<br><br>
+	<<set $phials_stored -= 1>>
+	<<set $horserace.rigSuccessPassage to "Racecourse Rig Stimulant Success">>
+	<<set $horserace.rigCaughtPassage to "Racecourse Rig Stimulant Caught">>
+	<<run setup.horserace.startRigMinigame("stimulate_own")>>
+	<<link [[Start|Racecourse Rig Minigame]]>><</link>>
+<</if>>
+
+:: Racecourse Rig Stimulant Success
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+<<print _horse.name>> drinks a lot of water, then shakes <<raceit its>> head and hits the ground with a front hoof. <<raceit Its>> ears point forward, and <<raceit it>> keeps looking at every person who moves nearby.
+<br><br>
+<<run setup.horserace.resolveRigAction("stimulate_own", _horse.id, true)>>
+<<riggingFooter>>
+
+:: Racecourse Rig Stimulant Caught
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+The handler walks back before you're done.
+<br><br>
+You move away from the bucket and put a hand on the <<racehorse>>'s neck, pretending you only came to pet <<raceit itobj>>. The water in the bucket still looks cloudy.<<gstress>><<stress 4>>
+<br><br>
+<<run setup.horserace.resolveRigAction("stimulate_own", _horse.id, false)>>
+<<riggingFooter>>
+
+:: Racecourse Rig Bribe Money
+<<effects>>
+<<set _action to setup.horserace.getRigAction("bribe_money")>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+<<if !_horse or $horserace.phase isnot "betting">>
+	<<link [[Return to the racecourse|Racecourse]]>><</link>>
+<<else>>
+	<<endevent>>
+	<<generate1>><<person1>>
+	You find the <<person>> sitting on <<print _horse.name>> beside the small platform riders use to get onto their <<racehorses>>. <<Hes>> checking the straps that hold <<his>> feet in place. You walk over to speak to <<him>>.
+	<br><br>
+	"I'll give you two hundred now and another three hundred after the race if you make <<print _horse.name>> finish behind the others," you say. The rider stays quiet, watching you. <<He>> hasn't agreed yet, but <<he>> hasn't told you to leave either.
+	<br><br>
+	<<set $horserace.rigSuccessPassage to "Racecourse Rig Bribe Money Success">>
+	<<set $horserace.rigCaughtPassage to "Racecourse Rig Bribe Money Caught">>
+	<<run setup.horserace.startRigMinigame("bribe_money")>>
+	<<link [[Start|Racecourse Rig Minigame]]>><</link>>
+<</if>>
+
+:: Racecourse Rig Bribe Money Success
+<<effects>>
+<<set _action to setup.horserace.getRigAction("bribe_money")>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+The rider looks around to make sure nobody is watching, then holds out a hand.
+<br><br>
+You hand <<him>> the money. <<He>> quickly puts it in <<his>> pocket and goes back to checking the straps near <<his>> feet, pretending that nothing happened.
+<<stress -3>><<lstress>>
+<br><br>
+<<set $money to $money - setup.horserace.rigCostInternal(_action)>>
+<<run setup.horserace.resolveRigAction("bribe_money", _horse.id, true)>>
+<<riggingFooter>>
+
+:: Racecourse Rig Bribe Money Caught
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+<<He>> looks at the money, then at you, and shakes <<his>> head.
+<br><br>
+"I'm not getting banned from racing for this," <<he>> says loudly enough for a nearby worker to hear.<<ggstress>><<stress 8>>
+<br><br>
+<<run setup.horserace.resolveRigAction("bribe_money", _horse.id, false)>>
+<<riggingFooter>>
+
+:: Racecourse Rig Sabotage Tack
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+<<if !_horse or $horserace.phase isnot "betting">>
+	<<link [[Return to the racecourse|Racecourse]]>><</link>>
+<<else>>
+	<<endevent>>
+	<<generate1>><<person1>>
+	You find <<print _horse.name>>'s riding equipment on a fence outside the stall. The saddle, which the rider sits on, is beside the straps used to control the <<racehorse>>. The worker looking after <<raceit itobj>>, a <<person>>, has gone to get some water.
+	<br><br>
+	You go over to the saddle and crouch beside it. You find a strap that helps hold the saddle on the <<racehorse>> and begin damaging it where someone might not notice.
+	<br><br>
+	<<set $horserace.rigSuccessPassage to "Racecourse Rig Sabotage Tack Success">>
+	<<set $horserace.rigCaughtPassage to "Racecourse Rig Sabotage Tack Caught">>
+	<<run setup.horserace.startRigMinigame("sabotage_equipment")>>
+	<<link [[Start|Racecourse Rig Minigame]]>><</link>>
+<</if>>
+
+:: Racecourse Rig Sabotage Tack Success
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+You finish damaging the strap. It still looks normal from a short distance away, but it is now weak enough to break when the <<racehorse>> starts moving.
+<br><br>
+<<run setup.horserace.resolveRigAction("sabotage_equipment", _horse.id, true)>>
+<<riggingFooter>>
+
+:: Racecourse Rig Sabotage Tack Caught
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+You hear someone coming back along the path and quickly move your hand away from the strap.
+<br><br>
+You stand up and put your hands in your pockets just before the worker comes around the corner carrying a bucket of water.
+<<gstress>><<stress 4>>
+<br><br>
+<<run setup.horserace.resolveRigAction("sabotage_equipment", _horse.id, false)>>
+<<riggingFooter>>
+
+:: Racecourse Rig Encourage Horse
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+<<if !_horse or $horserace.phase isnot "betting">>
+	<<link [[Return to the racecourse|Racecourse]]>><</link>>
+<<else>>
+	<<endevent>>
+	<<generate1>><<person1>>
+	A <<persons>> working two stalls down, close enough to hear you if you make too much noise.
+	You step into <<print _horse.name>>'s stall and stroke the side of <<raceit its>> neck.
+	The <<racehorse>> turns <<raceit its>> head towards you, then stays still as you continue.
+	<br><br>
+	Your hand moves farther down <<raceit its>> side and along <<raceit its>> flank. The <<racehorse>> shifts <<raceit its>> weight and lifts <<raceit its>> tail,
+	making you stop and check whether the <<person>> nearby has noticed.<<deviancy2>>
+	<<set $horserace.rigSuccessPassage to "Racecourse Rig Encourage Horse Success">>
+	<<set $horserace.rigCaughtPassage to "Racecourse Rig Encourage Horse Caught">>
+	<<run setup.horserace.startRigMinigame("encourage_own")>>
+	<<link [[Start|Racecourse Rig Minigame]]>><</link>>
+<</if>>
+
+:: Racecourse Rig Encourage Horse Success
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+<<raceit It>> stays still under your hand until <<raceit it>> is fully hard, then pushes forward into your grip.
+Nobody has come to check on the noise.<<garousal>><<arousal 100>>
+<br><br>
+<<link [[Next|Racecourse Horse Sex]]>><<endevent>><<set $sexstart to 1>><</link>>
+
+:: Racecourse Horse Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>><<famebestiality 1>>
+	<<beastNEWinit 1 horse m penis `setup.horserace.centaurs() ? "monster" : "beast"`>>
+	<<beastCombatInit>>
+	<<set $NPCList[0].stance to "top">>
+	<<if $pronoun is "m">>
+		<<set $position to "doggy">>
+	<<else>>
+		<<set $position to "missionary">>
+	<</if>>
+	<<set $position_lock to 1>>
+<</if>>
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<<stateman>>
+<br>
+<<actionsman>>
+<<if _combatend>>
+	<span id="next"><<link [[Next|Racecourse Horse Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Racecourse Horse Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Racecourse Horse Sex Finish
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+<<if $enemypleasure gte $enemypleasuremax>>
+	<<beastejaculation>>
+	<<raceit It>> backs off and settles, still breathing hard. You get your clothes straight and step out of the stall.
+	Nobody in the yard is looking your way. <<clotheson>>
+	<<if _horse>>
+		<<print _horse.name>> stands calmer than before, ready for the race.
+		<br><br>
+	<</if>>
+	<<run setup.horserace.resolveRigAction("encourage_own", _horse.id, true)>>
+<<else>>
+	<<if $finish is 1>><<encounterEndViolence>><</if>>
+	The <<racehorse>> jerks sideways, knocking over a bucket. Someone two stalls down calls out to ask what's going on.
+	You step back quickly.<<gstress>><<stress 4>><<garousal>><<arousal 40>>
+	<br><br>
+	<<tearful>> you climb to your feet.
+	<<run setup.horserace.resolveRigAction("encourage_own", _horse.id, false)>>
+<</if>>
+<<endcombat>>
+<<riggingFooter>>
+
+:: Racecourse Rig Encourage Horse Caught
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+The <<racehorse>> jerks sideways, knocking over a bucket. The <<person>> two stalls down calls out to ask what's going on.
+<br><br>
+You step back quickly.<<gstress>><<stress 4>><<garousal>><<arousal 40>>
+<br><br>
+<<run setup.horserace.resolveRigAction("encourage_own", _horse.id, false)>>
+<<riggingFooter>>
+
+:: Racecourse Rig Bribe Rider
+<<effects>>
+<<set _action to setup.horserace.getRigAction("bribe_sex")>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+<<if !_horse or $horserace.phase isnot "betting">>
+	<<link [[Return to the racecourse|Racecourse]]>><</link>>
+<<else>>
+	<<generate1>><<person1>>
+	You find the <<person>> who is going to ride <<print _horse.name>> standing alone behind the vehicle used to transport the <<racehorses>>. <<Hes>> checking a stopwatch and looks up when you approach.
+	<br><br>
+	"I want <<print _horse.name>> to win today," you say. "I can give you something in return if you help."
+	<br><br>
+	<<set $skulduggerydifficulty to _action.difficulty>>
+	<<skulduggerycheck "silent">>
+	<<set _success to $skulduggerysuccess is 1>>
+	<<if _success>>
+		<<He>> looks at you, then checks the path beside the stables to make sure nobody is coming. "All right, what are you offering?" <<he>> asks.
+		<br><br>
+		<<link "Offer yourself" "Racecourse Rig Bribe Rider Sex">><<set $sexstart to 1>><</link>>
+	<<else>>
+		<<He>> laughs and shakes <<his>> head. "I'm not risking my job for that," <<he>> says, then walks away before you can answer.<<gstress>><<stress 6>>
+		<br><br>
+		<<run setup.horserace.resolveRigAction("bribe_sex", _horse.id, false)>>
+		<<riggingFooter>>
+	<</if>>
+<</if>>
+
+:: Racecourse Rig Bribe Rider Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<promiscuity4>>
+	<<npcoral>>
+	<<set $enemytrust -= 40>>
+<</if>>
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if _combatend>>
+	<span id="next"><<link [[Next|Racecourse Rig Bribe Rider End]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Racecourse Rig Bribe Rider Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Racecourse Rig Bribe Rider End
+<<effects>>
+<<set _horse to setup.horserace.getHorse($horserace.rigTargetId)>>
+<<if $enemypleasure gte $enemypleasuremax>>
+	<<He>> lets out a breath and leans back against the horsebox.
+	<br><br>
+	"All right," <<he>> says, still breathing heavily. "I'll do everything I can to help <<print _horse.name>> win today. I promise."<<if $face isnot "covered">><<famesex 6>><</if>>
+	<<run setup.horserace.resolveRigAction("bribe_sex", _horse.id, true)>>
+<<else>>
+	<<if $finish is 1>><<encounterEndViolence>><</if>>
+	<<He>> fixes <<his>> clothes, then looks at the stopwatch again without meeting your eyes. "I listened to your offer. That doesn't mean I agreed."<<gstress>><<stress 6>>
+	<br><br>
+	<<run setup.horserace.resolveRigAction("bribe_sex", _horse.id, false)>>
+	<<tearful>> you climb to your feet.
+	<br><br>
+<</if>>
+<<endcombat>>
+<<riggingFooter>>
+
+
+:: Widgets Horse Rigging [widget]
+<<widget "racehorse">><<print setup.horserace.kind()>><</widget>>
+<<widget "racehorses">><<print setup.horserace.kind(true)>><</widget>>
+<<widget "raceit">><<print setup.horserace.it(_args[0])>><</widget>>
+
+<<widget "riggingFooter">>
+	<span class="orange">Suspicion is now <<print $horserace.suspicion>>%.</span>
+	<<if $horserace.suspicion gte 60>>
+		The race officials are <span class="red">checking the bets more carefully</span> now.
+	<</if>>
+	<br><br>
+	<<link [[Stay in the yard|Racecourse Rigging]]>><<endcombat>><</link>>
+	<br>
+	<<link [[Back to the rail|Racecourse Rigging Leave]]>><<endcombat>><</link>>
+<</widget>>

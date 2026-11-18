@@ -1,0 +1,225 @@
+:: Rent Pay Auto
+<<effects>>
+<<if $bus is "hospital">>
+	<<if $rentLastPaidVia is "deposit">>The rent has already come out of the money you paid Bailey in advance. Bailey has no reason to come after you for it today.<<else>>The rent has already been covered through your HBSC standing order. Bailey has no reason to come after you for it today.<</if>>
+	<br><br>
+	It is not a comforting thought, exactly, but it is one less problem to deal with while you are stuck here.
+	<br><br>
+	<<if crimeSumCurrent() gte 1000>>
+		<<link [[Next|Hospital Arrest]]>><<pass 10>><<endevent>><</link>>
+		<br>
+	<<else>>
+		<<link [[Next|Hospital front]]>><<pass 10>><<endevent>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<if $phase is 1>>
+		<<endevent>>
+		<<npc Robin>><<person1>>
+		You see Robin run up to you from around a corner as you exit <<his>> room. "You're okay!" <<He>> tackles you into a hug.
+		"Bailey took me away last night and I thought something awful was going to happen," <<he>> says before calming down.
+		<br><br>
+
+		You return the embrace before returning to your room.
+		<br><br>
+
+		<<link [[Next|Bedroom]]>><<endevent>><</link>>
+	<<elseif $inRobinsRoom>>
+		<<endevent>>
+		<<npc "Robin">><<person1>>
+		Robin lets out a breath as Bailey leaves empty-handed. "That was less frightening than usual," <<he>> says quietly.
+		<br><br>
+
+		<<link [[Next|Orphanage]]>><<endevent>><</link>>
+	<<else>>
+        You watch Bailey walk away with <<his>> goon.
+        <br><br>
+        Only once they are out of sight do you let yourself breathe a long sigh. <<if $rentLastPaidVia is "deposit">>The rent you paid ahead of time covered it, so the matter is settled now.<<else>>Thanks to the bank, the matter is settled now.<</if>>
+		<br><br>
+        <<link [[Next|Bedroom]]>><<endevent>><</link>>
+	<</if>>
+	<br>
+<</if>>
+<<unset $inRobinsRoom>>
+
+:: Orphanage Charity Mod
+<<set _charityAmount to random(500, 1000) * 100>>
+<<person3>>
+Bailey's frown sharpens. "Then it goes through me. I run the place."
+<br><br>
+The debate circles the same point several times. The <<person1>><<monk>> speaks of alms, duty, and trust.
+Bailey speaks of bills, rules, and debt. You can only watch from the edge of the hall,
+hemmed in by curious orphans and nervous initiates.
+<br><br>
+At last, the <<person2>><<monk>> produces a ledger. The temple has written down every donation,
+along with a list of things already delivered to the loft kitchen. Bailey reads it in silence, lips thin.
+<br><br>
+<<person3>>
+"Fine," <<he>> says, snapping the ledger shut. "I don't care where the money comes from as long as I get paid."
+<br><br>
+<<person2>>
+Before the temple group leaves, the <<monk>> presses a sealed envelope into your hands.
+"For you," <<he>> murmurs. "There was enough to help some of you directly."
+<br><br>
+<<person3>>
+Bailey glances at the envelope, then back at the tin. "Remember your dues," <<he>> says, already counting the rest.
+<br><br>
+You open the envelope once <<person3>><<hes>> gone. There's
+<<income _charityAmount "orphanageCharity">> inside.
+<br><br>
+<<link [[Next|Orphanage]]>><<endevent>><</link>>
+<br>
+
+:: Bedroom Shackle Pick
+<<effects>>
+<<set _shackleName to $worn.feet.name>>
+<<set _shackleRoom to ($location is "alex_cottage") ? "Farm Bedroom" : "Bedroom">>
+You sit on the floor with your back against the bed and open the Lockpick Lawyer set beside you.
+The lock on your _shackleName looks much simpler than the practice locks that came with the set.
+<br><br>
+You hold one ankle close and slide a pick into the lock. Keeping the lock turned with the other tool,
+you move the pick around inside until one part gives way, then another.
+Your legs start to ache from the awkward position, but the lock opens before you need to stop.
+<br><br>
+<span class="green">The shackle opens around your ankle.</span>
+You move to the other leg and open that one much faster now that you know what to do.
+<br><br>
+You pack the tools away, then push the shackles under the bed with your foot.
+<<remove_shackle>>
+<br><br>
+<<link [[Next|_shackleRoom]]>><<pass 10>><</link>>
+<br>
+
+:: Widgets Orphanage Misc [widget]
+<<widget "baileyGripDemand">>
+	/* Shared hand-grip dialogue used wherever Bailey turns aggressive and rent becomes unavoidable (temple, farm, street hunt).
+	Reason from setup.inflation. */
+	<<set _gripReason to (setup.inflation ? setup.inflation.baileyAggressionReason() : "")>>
+	<<if _gripReason isnot "">>
+		<<person1>>
+		Before you can get a word out, Bailey's hand clamps around your wrist.
+		<<switch _gripReason>>
+		<<case "loan">>
+			"The bank came to me about what you owe them. Your debt's my problem now, which makes it very much yours.
+			You're paying. Today."
+		<<case "inflation">>
+			<<His>> mouth curls into a knowing smirk. "I know exactly what you've been hoarding.
+			Don't insult me by pretending you're short. You've got the money, and I'm done waiting for it."
+		<<case "both">>
+			<<His>> mouth curls into a knowing smirk. "I know what you've been sitting on, and so does the bank you owe.
+			Don't waste my time pretending you can't pay. You'll settle up with me right now, every penny."
+		<<case "relentless">>
+			<<His>> grip tightens. "Don't bother with the excuses. I don't care how little you've got today.
+			You'll pay what I ask, and I'll be asking for more each week. That's just how it is now."
+		<<default>>
+			<<His>> grip tightens. "You've kept me waiting long enough. You're paying, right now."
+		<</switch>>
+		<br><br>
+	<</if>>
+<</widget>>
+
+<<widget "baileyRentFlavour">>
+	/* Special demand wording when wealth raises Bailey's rent cap. See setup.inflation.rentDemand. */
+	<<set _rentTier to (setup.inflation ? setup.inflation.rentDemandTier() : "")>>
+	<<if _rentTier is "jump">>
+		<<person1>><<He>> holds your gaze. "I know exactly how much you're really sitting on. <span class="red">I want more.</span>"
+		<br><br>
+	<<elseif _rentTier is "investment">>
+		<<person1>><<He>> looks you over with a smile. "You know, out of everything I've ever gotten my hands on, you've turned out to be my single best investment.
+		Don't think I won't keep asking for more. You can afford it, and we both know it."
+		<br><br>
+	<</if>>
+<</widget>>
+
+<<widget "baileyBankDraw">>
+	/* Called during rent payment when cash can't cover it but savings can: Bailey marches the player to HBSC and forces a withdrawal. _args[0] = pennies needed out of savings. */
+	<<if setup.hbsc and setup.hbsc.ensureState>><<run setup.hbsc.ensureState()>><</if>>
+	<<set _bankDraw to Math.min(Math.ceil(_args[0]), ($hbsc and $hbsc.account and Number.isFinite($hbsc.account.deposit) ? $hbsc.account.deposit : 0))>>
+	<<if _bankDraw gt 0>>
+		<<person1>>
+		<<He>> doesn't buy your empty pockets for a second. "The bank, then. <span class="red">You can't run from me</span> by stuffing it in a vault."
+		<<His>> hand closes around your arm, and <<he>> marches you down the street and in through the doors of HBSC.
+		<br><br>
+		The teller doesn't so much as care; a withdrawal is a withdrawal. By the door a security guard watches you instead, eyes narrowing, plainly deciding you're the trouble here.
+		The message lands: settle this, or you're the one who ends up in danger. Bailey, evidently, <<he>> can handle <<himself>>.
+		<br><br>
+		You have no choice. You draw <<printmoney _bankDraw>> out of your savings.
+		<<set $hbsc.account.deposit -= _bankDraw>><<set $money += _bankDraw>>
+	<</if>>
+<</widget>>
+
+<<widget "rentInflationNotice">>
+	/* One-time smirk the first time the player's wealth triggers inflation, when Bailey uncaps the rent and starts demanding more. */
+	<<if setup.inflation and setup.inflation.rentInflationActive(setup.inflation.baileyWealth()) and not $rentInflationAnnounced>>
+		<<set $rentInflationAnnounced to true>>
+		<<person1>>
+		<<if setup.inflation.baileyRelentless() and setup.inflation.percent(setup.inflation.baileyWealth()) lt 1>>
+			/* Relentless toggle, but the player isn't actually rich: Bailey is squeezing for its own sake. */
+			Bailey looks you up and down, then a slow, mean smile spreads across <<his>> face. <<He>> taps at <<his>> phone.
+			"Here's how it's going to be. Doesn't matter how little you've got. My rent goes up, week after week, and you'll find a way to pay it."
+			<br><br>
+			<<His>> smile sharpens. "Consider it motivation. The more it hurts, the harder you'll work for me. I'll be wanting more every single week from now on."
+			<br><br>
+		<<else>>
+			Bailey looks you up and down, then a smirk spreads across <<his>> face. <<He>> taps at <<his>> phone.
+			"Funny thing. Word gets around. Seems you've been sitting on quite the little fortune, haven't you? Holding out on me this whole time."
+			<br><br>
+			<<His>> smile sharpens. "Prices are going up for everyone, and your rent's no different. Only fair I get my share of what you've squirrelled away.
+			I'll be wanting more from now on, and more again the fatter that purse of yours gets."
+			<br><br>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "loanRentNotice">>
+	/* One-time heads-up when an ignored HBSC loan first gets handed to Bailey to collect. */
+	<<if setup.hbsc and setup.hbsc.ensureLoanState>>
+		<<run setup.hbsc.ensureLoanState()>>
+		<<if $hbsc.loan.baileyAnnouncePending>>
+			<<set $hbsc.loan.baileyAnnouncePending to false>>
+			"<span class="red">Before we settle up,</span>" Bailey says, "the bank's been in touch.
+			You never paid back what you borrowed, so they've asked me to collect for them. From now on,
+			part of what you hand me goes straight to clearing that debt. Lucky you."
+			<br><br>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "homeeventtemplecharity">>
+	<<generateTemple 1>><<generateyTemple 2>><<npc Bailey 3>>
+	A <<person1>><<monk>> from the temple enters the orphanage, followed by several initiates carrying crates and a locked tin.
+	Some of the orphans recognise the crates from the soup kitchen, and start whispering.
+	<br><br>
+	<<person3>>
+	Bailey appears before the visitors can reach the stairs. <<He>> frowns at the tin.
+	"If this is about the kitchen, take it upstairs and don't get in my way."
+	<br><br>
+	<<person1>>
+	"It's more than food this time," the <<monk>> says. "People have been generous.
+	We thought the residents should benefit directly."
+	<br><br>
+	<<person3>>
+	"They benefit by having a roof," Bailey says. "And a roof costs money."
+	<br><br>
+	<<person1>>
+	"This is charity," the <<monk>> replies. "It was given for the orphans."
+	<br><br>
+    <<link [[Next|Orphanage Charity Mod]]>><</link>>
+	<br>
+<</widget>>
+
+<<widget "shackleLockpick">>
+	/* Shackles are a locksmith's job: the Lockpick Lawyer set plus SSS skulduggery is enough to do it yourself, in private, instead of paying the museum or the police. */
+	<<if $worn.feet.type.includes("shackle") and $worn.feet.name isnot "vines" and !$possessed>>
+		<<if $lockpickTrainingSet gte 5 and $skulduggery gte 2000>>
+			<br>
+			<<lockicon "pick">><<link [[Pick your shackles open with your Lockpick Lawyer set (0:20)|Bedroom Shackle Pick]]>><<pass 20>><</link>> | <span class="lustful">Skulduggery: SSS Mastery</span>
+		<<elseif $lockpickTrainingSet gte 5 and !$settings.blindStatsEnabled>>
+			<br>
+			<span class="red">Pick your shackles open with your Lockpick Lawyer set</span> | <span class="lustful">Skulduggery: SSS Mastery required</span>
+		<<elseif $skulduggery gte 2000 and !$settings.blindStatsEnabled>>
+			<br>
+			<span class="red">Pick your shackles open</span> | <span class="blue">The Lockpick Lawyer set required</span>
+		<</if>>
+	<</if>>
+<</widget>>
