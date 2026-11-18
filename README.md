@@ -1,17 +1,29 @@
 # DoLX-KR
-
 [Degrees of Lewdity: X-Change Edition](https://gitgud.io/Akoz/dol-xchange)(DoLX)의 한국어 번역본입니다.
 
-## 원작과 출처
+> 이 게임은 성인용입니다. 성적·폭력적인 내용을 담고 있으며 미성년자에게 적합하지 않습니다.
 
-- **원작**: Vrelnir의 [Degrees of Lewdity](https://vrelnir.blogspot.com/) ([소스 저장소](https://gitgud.io/Vrelnir/degrees-of-lewdity))
-- **DoL+**: Frostberg와 기여자들의 [Degrees of Lewdity Plus](https://gitgud.io/Frostberg/degrees-of-lewdity-plus)
-- **DoLX**: Akoz와 기여자들의 [Degrees of Lewdity: X-Change Edition](https://gitgud.io/Akoz/dol-xchange). 이 저장소의 첫 커밋이 그 `master` 브랜치의 파일입니다.
-- **한국어 번역**: [DoLP-KR](https://github.com/Instplace/DoLP-KR)과 [DoL-KR](https://github.com/Instplace/DoL-KR). 그 바탕은 [아카라이브 DOL 채널](https://arca.live/b/dolgame)의 번역 참여자들이 만들고 [Ooo-eee/DoL_KrTranslation](https://github.com/Ooo-eee/DoL_KrTranslation)이 공개한 번역본입니다.
+## 원작자
+### Degrees of Lewdity
+© Vrelnir
+
+[개발자 블로그](https://vrelnir.blogspot.com/) | [GitGud (소스 코드)](https://gitgud.io/Vrelnir/degrees-of-lewdity) | [FANBOX (후원)](https://vrelnir.fanbox.cc)
+
+### Degrees of Lewdity Plus
+© Frostberg
+
+[GitGud (소스 코드)](https://gitgud.io/Frostberg/degrees-of-lewdity-plus) | [Patreon (후원)](https://www.patreon.com/DegreesofLewdityPlus)
+
+### Degrees of Lewdity Plus X-Change
+© Akoz
+
+[GitGud (소스 코드)](https://gitgud.io/Akoz/dol-xchange) | [Ko-fi (후원)](https://ko-fi.com/akozofbliss)
+
+### 한국어 번역
+[아카라이브 DOL 채널](https://arca.live/b/dolgame)의 여러 기여자
 
 ## 라이선스
-
-원작, DoL+, DoLX, 기존 번역본에 적용된 **CC BY-NC-SA 4.0**을 그대로 따릅니다. 이 저장소에서 더한 변경도 같은 조건으로 공개합니다.
+본 리포지토리의 모든 컨텐츠는 **CC BY-NC-SA 4.0**에 따라서 배포됩니다.
 
 - **BY (저작자표시)**: 원작과 번역본의 저작자 및 출처를 밝혀야 합니다.
 - **NC (비영리)**: 영리 목적으로 이용할 수 없습니다.
