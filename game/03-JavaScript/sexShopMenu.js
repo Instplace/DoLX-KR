@@ -43,9 +43,9 @@ setup.sextoys = [
 	{
 		index: 0,
 		name: "dildo",
-		namecap: "Dildo",
+		namecap: "딜도",
 		name_underscore: "dildo",
-		description: "A six inch dildo.",
+		description: "6인치짜리 딜도.",
 		cost: 5000,
 		category: "dildo",
 		wearable: 0,
@@ -65,9 +65,9 @@ setup.sextoys = [
 	{
 		index: 1,
 		name: "small dildo",
-		namecap: "Small dildo",
+		namecap: "소형 딜도",
 		name_underscore: "small_dildo",
-		description: "A good starter toy.",
+		description: "입문용으로 좋은 장난감.",
 		cost: 4000,
 		category: "dildo",
 		wearable: 0,
@@ -87,9 +87,9 @@ setup.sextoys = [
 	{
 		index: 2,
 		name: "anal beads",
-		namecap: "Anal beads",
+		namecap: "애널 비즈",
 		name_underscore: "anal_beads",
-		description: "For anal play. This item can be worn in your bottom or played with.",
+		description: "애널 플레이용. 엉덩이에 착용하거나 가지고 놀 수 있다.",
 		cost: 8000,
 		type: ["dildo", "anal"],
 		category: "butt_plug",
@@ -109,7 +109,7 @@ setup.sextoys = [
 	{
 		index: 3,
 		name: "bullet vibe",
-		namecap: "Bullet vibe",
+		namecap: "불릿 바이브",
 		name_underscore: "bullet_vibe",
 		description:
 			"A wearable bullet vibe you can keep snug in your underwear, ready to grind against your clit and anus to buzz you into a fast, powerful orgasm. Good for people new to sex toys.",
@@ -136,9 +136,9 @@ setup.sextoys = [
 	{
 		index: 4,
 		name: "butt plug",
-		namecap: "Butt plug",
+		namecap: "애널 플러그",
 		name_underscore: "butt_plug",
-		description: "For anal play. This item can be worn in your bottom or played with.",
+		description: "애널 플레이용. 엉덩이에 착용하거나 가지고 놀 수 있다.",
 		cost: 8000,
 		wearable: 1,
 		size: 2,
@@ -158,10 +158,10 @@ setup.sextoys = [
 	{
 		index: 5,
 		name: "strap-on",
-		namecap: "Strap-on",
+		namecap: "페니스 밴드",
 		name_underscore: "strap-on",
 		clothes_index: 33,
-		description: "Worn on your hips. Used for penetrative sex.",
+		description: "허리에 착용한다. 삽입 섹스에 사용된다.",
 		cost: 8000,
 		wearable: 1,
 		size: 2,
@@ -183,10 +183,10 @@ setup.sextoys = [
 	{
 		index: 6,
 		name: "strap-on horse cock",
-		namecap: "Strap-on horse cock",
+		namecap: "말 자지 페니스 밴드",
 		name_underscore: "strap-on_horse_cock",
 		clothes_index: 34,
-		description: "Novelty equine phallus. Worn on your hips. Used for penetrative sex.",
+		description: "말을 본뜬 특이한 남근. 허리에 착용하며 삽입 섹스에 사용된다.",
 		cost: 8000,
 		wearable: 1,
 		size: 4,
@@ -208,10 +208,10 @@ setup.sextoys = [
 	{
 		index: 7,
 		name: "strap-on knotted cock",
-		namecap: "Strap-on knotted cock",
+		namecap: "혹 달린 자지 페니스 밴드",
 		name_underscore: "strap-on_knotted_cock",
 		clothes_index: 35,
-		description: "Novelty canine phallus. Worn on your hips. Used for penetrative sex.",
+		description: "개를 본뜬 특이한 남근. 허리에 착용하며 삽입 섹스에 사용된다.",
 		cost: 8000,
 		wearable: 1,
 		size: 3,
@@ -233,7 +233,7 @@ setup.sextoys = [
 	{
 		index: 8,
 		name: "lube",
-		namecap: "Lube",
+		namecap: "윤활제",
 		name_underscore: "lube",
 		description: "Lubricant suitable for sexual purposes. 5 uses per bottle.",
 		cost: 2000,
@@ -258,9 +258,9 @@ setup.sextoys = [
 	{
 		index: 9,
 		name: "stroker",
-		namecap: "Stroker",
+		namecap: "오나홀",
 		name_underscore: "stroker",
-		description: "A penile masturbator sleeve. Made with a material with a flesh-like feel.",
+		description: "자지용 자위 슬리브. 살결 같은 촉감의 소재로 만들어졌다.",
 		cost: 8000,
 		wearable: 0,
 		category: "stroker",
@@ -279,9 +279,9 @@ setup.sextoys = [
 	{
 		index: 10,
 		name: "aphrodisiac pills",
-		namecap: "Aphrodisiac pills",
+		namecap: "최음제 알약",
 		name_underscore: "aphrodisiac_pills",
-		description: "A pack of three aphrodisiac pills. The instructions say to take 'a suitable number' before sex for an enhanced experience.",
+		description: "최음제 알약 3정 한 팩. 설명서에는 더 강렬한 경험을 위해 섹스 전에 '적당량'을 복용하라고 적혀 있다.",
 		cost: 4000,
 		wearable: 0,
 		size: 3,
@@ -303,9 +303,9 @@ setup.sextoys = [
 	{
 		index: 11,
 		name: "breast pump",
-		namecap: "Breast pump",
+		namecap: "유축기",
 		name_underscore: "breast_pump",
-		description: "A hand-held breast pump.",
+		description: "손으로 들고 쓰는 유축기.",
 		cost: 5000,
 		wearable: 0,
 		size: 3,
@@ -326,10 +326,10 @@ setup.sextoys = [
 	{
 		index: 12,
 		name: "strap-on dolphin cock",
-		namecap: "Strap-on dolphin cock",
+		namecap: "돌고래 자지 페니스 밴드",
 		name_underscore: "strap-on-dolphin-cock",
 		clothes_index: 48,
-		description: "Novelty dolphin phallus. Worn on your hips. Used for penetrative sex.",
+		description: "돌고래를 본뜬 특이한 남근. 허리에 착용하며 삽입 섹스에 사용된다.",
 		cost: 8000,
 		wearable: 1,
 		size: 3,
@@ -351,10 +351,10 @@ setup.sextoys = [
 	{
 		index: 13,
 		name: "strap-on tentacle",
-		namecap: "Strap-on tentacle",
+		namecap: "촉수 페니스 밴드",
 		name_underscore: "strap-on_tentacle",
 		clothes_index: 49,
-		description: "Novelty phallus. Worn on your hips. Used for penetrative sex.",
+		description: "특이한 남근. 허리에 착용하며 삽입 섹스에 사용된다.",
 		cost: 8000,
 		wearable: 1,
 		size: 3,
@@ -376,9 +376,9 @@ setup.sextoys = [
 	{
 		index: 14,
 		name: "wand vibe",
-		namecap: "Wand vibe",
+		namecap: "완드 바이브",
 		name_underscore: "wand_vibe",
-		description: "The vibrations produced from this item give intense orgasms. For external use only.",
+		description: "이 물건이 내는 진동은 격렬한 절정을 안겨준다. 외부 사용 전용.",
 		cost: 12000,
 		wearable: 0,
 		size: 0,
@@ -399,9 +399,9 @@ setup.sextoys = [
 	{
 		index: 15,
 		name: "fantasy stroker",
-		namecap: "Fantasy stroker",
+		namecap: "판타지 오나홀",
 		name_underscore: "fantasy_stroker",
-		description: "A penile masturbator sleeve with an alien design. Made with a material with a flesh-like feel.",
+		description: "외계적인 디자인의 자지용 자위 슬리브. 살결 같은 촉감의 소재로 만들어졌다.",
 		cost: 8000,
 		wearable: 0,
 		category: "stroker",
@@ -421,9 +421,9 @@ setup.sextoys = [
 	{
 		index: 16,
 		name: "horse dildo",
-		namecap: "Horse dildo",
+		namecap: "말 자지 딜도",
 		name_underscore: "horse_dildo",
-		description: "Novelty equine phallus.",
+		description: "말을 본뜬 특이한 남근.",
 		cost: 5000,
 		category: "dildo",
 		wearable: 0,
@@ -443,9 +443,9 @@ setup.sextoys = [
 	{
 		index: 17,
 		name: "knotted dildo",
-		namecap: "Knotted dildo",
+		namecap: "혹 달린 딜도",
 		name_underscore: "knotted_dildo",
-		description: "Novelty canine phallus.",
+		description: "개를 본뜬 특이한 남근.",
 		cost: 5000,
 		category: "dildo",
 		wearable: 0,
@@ -465,9 +465,9 @@ setup.sextoys = [
 	{
 		index: 18,
 		name: "dolphin dildo",
-		namecap: "Dolphin dildo",
+		namecap: "돌고래 딜도",
 		name_underscore: "dolphin_dildo",
-		description: "Novelty dolphin phallus.",
+		description: "돌고래를 본뜬 특이한 남근.",
 		cost: 5000,
 		category: "dildo",
 		wearable: 0,
@@ -487,9 +487,9 @@ setup.sextoys = [
 	{
 		index: 19,
 		name: "tentacle dildo",
-		namecap: "Tentacle dildo",
+		namecap: "촉수 딜도",
 		name_underscore: "tentacle_dildo",
-		description: "Novelty phallus shaped like a tentacle.",
+		description: "촉수 모양의 특이한 남근.",
 		cost: 5000,
 		category: "dildo",
 		wearable: 0,
@@ -509,9 +509,9 @@ setup.sextoys = [
 	{
 		index: 20,
 		name: "jeweled butt plug",
-		namecap: "Jeweled butt plug",
+		namecap: "보석 장식 애널 플러그",
 		name_underscore: "jeweled_butt_plug",
-		description: "For anal play. This item can be worn in your bottom or played with.",
+		description: "애널 플레이용. 엉덩이에 착용하거나 가지고 놀 수 있다.",
 		cost: 8000,
 		wearable: 1,
 		size: 2,
@@ -532,9 +532,9 @@ setup.sextoys = [
 	{
 		index: 21,
 		name: "fox tail butt plug",
-		namecap: "Fox tail butt plug",
+		namecap: "여우 꼬리 애널 플러그",
 		name_underscore: "fox_tail_butt_plug",
-		description: "For anal play. This item can be worn in your bottom or played with.",
+		description: "애널 플레이용. 엉덩이에 착용하거나 가지고 놀 수 있다.",
 		cost: 8000,
 		wearable: 1,
 		size: 2,
@@ -628,7 +628,7 @@ function sexShopGridAddItemBox(item) {
 
 		if (item.owned() > 0) {
 			const ownedDiv = $("<div>", { class: "ssm_already_owned" });
-			ownedDiv.append($("<span>", { class: "ssm_owned_text", text: "owned" }));
+			ownedDiv.append($("<span>", { class: "ssm_owned_text", text: "보유 중" }));
 			details.append(ownedDiv);
 		}
 
@@ -639,11 +639,13 @@ function sexShopGridAddItemBox(item) {
 window.sexShopGridAddItemBox = sexShopGridAddItemBox;
 
 function sexShopOnColourClick(colour) {
-	document.querySelectorAll("#ssm_colour_panel .colour-button.div-link").forEach(elem => elem.classList.remove("active"));
-	document.querySelector(`#ssm_colour_panel .colour-button[colour-name="${colour}"]`)?.classList.add("active");
+	document.querySelectorAll("#ssm_colour_panel .colour-button.div-link").forEach(elem => {
+		elem.classList.toggle("active", elem.dataset.colour === colour);
+	});
 	const icon = document.querySelector("#ssm_descContainer .ssm_icon.icon:not(.infront)");
+	const colourClass = colour.replace(/\s/g, "-");
 	icon.className = icon.className.replace(/\bclothes-\S+/g, "");
-	icon.classList.add("clothes-" + colour);
+	icon.classList.add("clothes-" + colourClass);
 }
 window.sexShopOnColourClick = sexShopOnColourClick;
 
@@ -702,8 +704,8 @@ function sexShopOnItemClick(index) {
 	borderDiv.innerHTML = `
 		<div id="ssm_desc">
 			<div class="ssm_closeContainer">
-				<div class="ssm_close" id="ssm_close1" title="close"
-					onclick="window.sexShopOnCloseDesc('ssmDescPillContainer')">x</div>
+				<div class="ssm_close" id="ssm_close1" title="닫기"
+				     onclick="window.sexShopOnCloseDesc('ssmDescPillContainer')">x</div>
 			</div>
 			<span style="color: #bcbcbc">${item.description}</span>
 			<div id="ssm_desc_action"></div>
@@ -717,14 +719,14 @@ function sexShopOnItemClick(index) {
 			"beforeend",
 			`
 			<hr>
-			<span style="color: #e0e0e0">Colours to choose from: </span>
+			<span style="color: #e0e0e0">선택 가능한 색상: </span>
 			<div id="ssm_colour_panel" class="colour-options-div">
 				${item.colour_options
 					.map(
 						colour => `
-					<div colour-name="${colour.replace(/\s/g, "-")}" onclick="window.sexShopOnColourClick('${colour.replace(/\s/g, "-")}')" class="colour-button div-link">
+					<div data-colour="${colour}" onclick='window.sexShopOnColourClick(${JSON.stringify(colour)})' class="colour-button div-link">
 						<div class="bg-${colour.replace(/\s/g, "-")}">
-							<span class="capitalize colour-name-span">${colour}</span>
+							<span class="capitalize colour-name-span">${setup.colourName(colour)}</span>
 							<a tabindex="0"></a>
 						</div>
 					</div>`
@@ -745,7 +747,7 @@ function sexShopOnItemClick(index) {
 			<br>
 			${
 				canAfford
-					? `<a id="ssmBuyButton" onclick="window.sexShopOnBuyClick(${item.index})" class="ssm_buy_button">Buy it</a> (<span class="gold">£${(
+					? `<a id="ssmBuyButton" onclick="window.sexShopOnBuyClick(${item.index})" class="ssm_buy_button">구매</a> (<span class="gold">£${(
 							displayCost / 100
 					  ).toFixed(2)}</span>)`
 					: `<span class="ssm_not_enough_money">Not enough money</span> (<span class="gold">£${(displayCost / 100).toFixed(2)}</span>)`
@@ -781,17 +783,20 @@ function determineRecipient(index) {
 
 	for (const li of ["Alex", "Bailey", "Eden", "Kylar", "Robin", "Sydney"]) {
 		if (isPossibleLoveInterest(li)) {
-			optionBuilder += `<option value="${li}">${li}</option>`;
+			// 내부 value는 영문을 유지하고, 화면에 보이는 텍스트만 한국어 사전 함수를 거쳐 출력
+			let displayLi = (window.KR && typeof window.KR.gatPersonNameDictKR === "function") ? window.KR.gatPersonNameDictKR(li) : li;
+			optionBuilder += `<option value="${li}">${displayLi}</option>`;
 		}
 	}
 	if (V.gwylanSeen?.includes("yearning")) {
-		optionBuilder += `<option value="${"Gwylan"}">${"Gwylan"}</option>`;
+		let displayGwylan = (window.KR && typeof window.KR.gatPersonNameDictKR === "function") ? window.KR.gatPersonNameDictKR("Gwylan") : "Gwylan";
+		optionBuilder += `<option value="Gwylan">${displayGwylan}</option>`;
 	}
 
 	// if no possible recipient, return.
 	if (optionBuilder === "") return "";
 	const builder = `<br id="giftBr"><a id="ssmGiftButton" onclick="window.sexShopOnGiftClick(${item.index})" class="ssm_gift_button">
-	Make a gift for :  </a><select name="recipient" id="recipientList">${optionBuilder}</select>
+	선물하기:  </a><select name="recipient" id="recipientList">${optionBuilder}</select>
 	<div id="spanGift">(<span class="gold">£${(giftCost / 100).toFixed(2)}</span>)</div>`;
 	return builder;
 }
@@ -897,13 +902,13 @@ function sexShopOnBuyClick(index, inSexShop = true, colour, costsMoney = true) {
 		// fade in "owned" indicator on the grid item
 		const ownedElem = document.getElementById("ssm_item_" + item.name_underscore)?.getElementsByClassName("ssm_already_owned")[0];
 		if (ownedElem) {
-			ownedElem.innerHTML = `<span class="ssm_owned_text ssm_fade_in">owned</span>`;
+			ownedElem.innerHTML = `<span class="ssm_owned_text ssm_fade_in">보유 중</span>`;
 		}
 
 		// fade in/out Buy button text
 		const buyBtn = document.getElementById("ssmBuyButton");
 		if (buyBtn) {
-			buyBtn.outerHTML = `<span class="ssm_buy_button ssm_fade_in" id="ssmBuyButton" style="color:#97de97">Bought!</span>`;
+			buyBtn.outerHTML = `<span class="ssm_buy_button ssm_fade_in" id="ssmBuyButton" style="color:#97de97">구매 완료!</span>`;
 		}
 
 		// reset Buy button after short delay
@@ -913,8 +918,8 @@ function sexShopOnBuyClick(index, inSexShop = true, colour, costsMoney = true) {
 				if (buyBtnReset) {
 					buyBtnReset.outerHTML =
 						V.money >= ssmInflatedCost(item.cost)
-							? `<a id="ssmBuyButton" onclick="window.sexShopOnBuyClick(${index})" class="ssm_buy_button ssm_fade_in_fast">Buy it</a>`
-							: `<span class="ssm_not_enough_money">Not enough money</span>`;
+							? `<a id="ssmBuyButton" onclick="window.sexShopOnBuyClick(${index})" class="ssm_buy_button ssm_fade_in_fast">구매</a>`
+							: `<span class="ssm_not_enough_money">돈이 부족합니다</span>`;
 				}
 				sexShopOnBuyClick.counter = "off";
 			}, 1400);

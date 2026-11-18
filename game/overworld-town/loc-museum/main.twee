@@ -76,37 +76,37 @@
 	<</if>>
 	<<for _labelM, _valueM range $museumAntiques.antiques>>
 		<<if !_museumAntiqueText[_labelM]>><<continue>><</if>>
-		<<capture _labelM, _museumAntiqueText[_labelM].name>>
+		<<capture _labelM, _museumAntiqueText[_labelM].key>>
 			<<set _antique to _museumAntiqueText[_labelM].name.toLowerCase()>>
 			<<if $museumAntiques.antiques[_labelM] is "talk">>
 				<<icon _museumAntiqueText[_labelM].icon>>
-				<<link [[`Ask about the _antique`|`Museum `+ _museumAntiqueText[_labelM].name]]>><<set $museumAntiques.antiques[_labelM] to "museum">><<set $museumAntiques.museumCount++>><<npcincr Winter love 1>><</link>><<glove "Winter" "simple">>
+				<<link [[_antique에 대해 물어본다|`Museum `+ _museumAntiqueText[_labelM].key]]>><<set $museumAntiques.antiques[_labelM] to "museum">><<set $museumAntiques.museumCount++>><<npcincr Winter love 1>><</link>><<glove "Winter" "simple">>
 				<br>
 			<</if>>
 		<</capture>>
 	<</for>>
 	<<if !$daily.winterStoryTime>>
 		<<if $bleedingWardCheckpoint and $museumAntiques.paintings.paintingward is "museum">>
-			<<icon _museumPaintingText.paintingward.icon>><<link [[Ask Winter to tell you the 'Bleeding Ward' story from where you left off (0:15)|Bleeding Ward Resume]]>><<set $daily.winterStoryTime to true>><</link>>
+			<<icon _museumPaintingText.paintingward.icon>><<link [[윈터에게 중단했던 '피 흘리는 병동' 이야기를 마저 들려달라고 부탁한다 (0:15)|Bleeding Ward Resume]]>><<set $daily.winterStoryTime to true>><</link>>
 			<br>
 		<</if>>
 		<<if $museumAntiques.paintings.paintingward is "museum" and !$bleedingWardCheckpoint and !$breedingWard and !$daily.breedingWard>>
-			<<icon _museumPaintingText.paintingward.icon>><<link[[Contemplate the 'Bleeding Ward' story again|Museum Breeding Ward]]>><</link>>
+			<<icon _museumPaintingText.paintingward.icon>><<link[['피 흘리는 병동' 이야기를 다시 곱씹어 본다|Museum Breeding Ward]]>><</link>>
 			<br>
 		<</if>>
 		<<for _labelP, _valueP range $museumAntiques.paintings>>
-			<<capture _labelP, _museumPaintingText[_labelP].name>>
+			<<capture _labelP, _museumPaintingText[_labelP].key>>
 				<<if $museumAntiques.paintings[_labelP] is "talk">>
 					<<set _painting to _museumPaintingText[_labelP].journalName.toLowerCase()>>
 					<<icon _museumPaintingText[_labelP].icon>>
-					<<link [[`Ask about the _painting (0:30)`|`Museum `+ _museumPaintingText[_labelP].name + ` Story`]]>><<set $daily.winterStoryTime to true>><<npcincr Winter love 3>><</link>><<gglove "Winter" "simple">>
-					<<if _labelP is "paintingsnake">><<note "This may be a long story..." "red">> | <span class="red tooltip-anchor" tooltip="<span class='red'>This scene contains disturbing content not found elsewhere, including bodily mutilation. It is not prevented by any toggles or settings. You have been warned.</span>"><i>(!Content Warning!)</i></span><</if>> <!-- Appears even with blind stats enabled. Intentional -->
+					<<link [[`_painting【을를】 물어본다 (0:30)`|`Museum `+ _museumPaintingText[_labelP].key + ` Story`]]>><<set $daily.winterStoryTime to true>><<npcincr Winter love 3>><</link>><<gglove "Winter" "simple">>
+					<<if _labelP is "paintingsnake">><<note "긴 이야기가 될 것입니다..." "red">> | <span class="red tooltip-anchor" tooltip="<span class='red'>이 장면에는 신체 훼손을 포함해 다른 곳에서는 볼 수 없는 불쾌한 콘텐츠가 포함되어 있습니다. 이는 어떤 토글이나 설정으로도 막을 수 없습니다. 경고했습니다.</span>\"><i>(!콘텐츠 경고!)</i></span><</if>> <!-- Appears even with blind stats enabled. Intentional -->
 					<br>
 				<<elseif $museumAntiques.paintings[_labelP] is "museum">>
 					<<set _painting to "'" + _museumPaintingText[_labelP].name + "'">>
 					<<icon _museumPaintingText[_labelP].icon>>
-					<<link [[`Ask Winter to tell you the _painting story again (0:30)`|`Museum `+ _museumPaintingText[_labelP].name + ` Story`]]>><<set $daily.winterStoryTime to true>><</link>>
-					<<if _labelP is "paintingsnake">><<note "This may be a long story..." "red">> | <span class="red tooltip-anchor" tooltip="<span class='red'>This scene contains disturbing content not found elsewhere, including bodily mutilation. It is not prevented by any toggles or settings. You have been warned.</span>"><i>(!Content Warning!)</i></span><</if>> <!-- Appears even with blind stats enabled. Intentional -->
+					<<link [[`윈터에게 _painting 이야기를 다시 들려달라고 부탁한다 (0:30)`|`Museum `+ _museumPaintingText[_labelP].key + ` Story`]]>><<set $daily.winterStoryTime to true>><</link>>
+					<<if _labelP is "paintingsnake">><<note "긴 이야기가 될 것입니다..." "red">> | <span class="red tooltip-anchor" tooltip="<span class='red'>이 장면에는 신체 훼손을 포함해 다른 곳에서는 볼 수 없는 불쾌한 콘텐츠가 포함되어 있습니다. 이는 어떤 토글이나 설정으로도 막을 수 없습니다. 경고했습니다.</span>\"><i>(!콘텐츠 경고!)</i></span><</if>> <!-- Appears even with blind stats enabled. Intentional -->
 					<br>
 				<</if>>
 			<</capture>>
@@ -117,15 +117,15 @@
 :: Museum Lock
 <<set $outside to 1>><<set $location to "museum">><<effects>>
 
-The museum is closed. A sign reads:
+박물관은 닫혀 있다. 표지판에 이렇게 쓰여 있다.
 <<if $town_projects.diving is 3>>
-	"Temporarily closed due to field work. Please contact me at my field office at the lake."
+	"현장 작업으로 인해 임시 휴관합니다. 호수에 있는 제 현장 사무실로 연락 주세요."
 <<else>>
-	"Open weekends:	<<ampm 9 00>> - <<ampm 18 00>>"
+	"주말 개관:	<<ampm 9 00>> - <<ampm 18 00>>"
 <</if>>
 <br><br>
 
-<<oxfordicon>><<link [[Leave|Oxford Street]]>><</link>>
+<<oxfordicon>><<link [[떠난다|Oxford Street]]>><</link>>
 <br>
 
 :: Museum
@@ -134,107 +134,107 @@ The museum is closed. A sign reads:
 <<if $museumintro isnot 1 and $passagePrev is "Oxford Street">>
 	<<set $museumintro to 1>><<set $phase to 0>>
 
-	<<npc Winter>><<person1>>You enter the dim museum. Small windows peek down from just beneath the high ceiling, doing little to break the gloom. The other rooms are no better.
+	<<npc Winter>><<person1>>당신은 어두컴컴한 박물관으로 들어선다. 높은 천장 바로 아래에 있는 작은 창문들은 어둠을 거의 걷어내지 못한다. 다른 방들도 별반 다르지 않다.
 	<br><br>
 
-	Winter stands polishing a brass pot. <<He>> regards you with a level stare. "Don't touch anything," <<he>> says. "I doubt you've washed your hands."
+	윈터가 놋쇠 냄비를 닦으며 서 있다. <<He>>【은는】 당신을 똑바로 쳐다본다. "아무것도 만지지 마." <<he>>【이가】 말한다. "손은 안 씻었을 것 같군."
 	<br><br>
 
-	<<link [[Respond indignantly|Museum Intro]]>><<def 1>><<set $phase to 0>><</link>>
+	<<link [[분개하며 대답한다|Museum Intro]]>><<def 1>><<set $phase to 0>><</link>>
 	<br>
-	<<link [[Respond obediently|Museum Intro]]>><<sub 1>><<set $phase to 1>><<npcincr Winter love 1>><</link>><<glove>>
+	<<link [[고분고분하게 대답한다|Museum Intro]]>><<sub 1>><<set $phase to 1>><<npcincr Winter love 1>><</link>><<glove>>
 	<br>
-	<<link [[Respond flirtatiously|Museum Intro]]>><<set $phase to 2>><<npcincr Winter love -1>><</link>><<promiscuous1>><<llove>>
+	<<link [[유혹적으로 대답한다|Museum Intro]]>><<set $phase to 2>><<npcincr Winter love -1>><</link>><<promiscuous1>><<llove>>
 	<br>
 <<elseif $bell_timer lte 0 and $passagePrev is "Oxford Street">>
 	<<npc Winter>><<generate2>><<person2>>
 	<<unset $bell_timer>>
 	<<if $worn.feet.type.includes("shackle")>>
-		A hooded figure barges through as you open the doors. You trip over your $worn.feet.name, and together tumble to the ground. The figure jumps to <<his>> feet, but yelps in pain, and hurries away with a limp. You get your bearings, but the figure's already gone.
+		당신이 문을 열자 두건을 쓴 인물이 난입한다. 당신은 $worn.feet.name에 걸려 넘어지고, 둘은 함께 바닥으로 굴러떨어진다. 그 인물은 벌떡 일어서지만 고통에 찬 비명을 지르더니, 다리를 절며 서둘러 달아난다. 당신이 정신을 차렸을 때, 그 인물은 이미 사라지고 없었다.
 	<<else>>
-		A hooded figure barges through as you open the doors, almost knocking you to the pavement. You get your bearings, but the figure's already gone.
+		당신이 문을 열자 두건을 쓴 인물이 난입해, 당신을 거의 보도블록으로 넘어뜨릴 뻔한다. 당신이 정신을 차렸을 때, 그 인물은 이미 사라지고 없었다.
 	<</if>>
 	<br><br>
 	<<person1>>
-	You enter the museum, <span class="red">and find Winter lying on the ground.</span> <<His>> eyes are shut. Antiques litter the floor, knocked from pedestals. The leather map still rests on the wall, but a great tear runs through it.
+	당신은 박물관에 들어서자, <span class="red">바닥에 쓰러져 있는 윈터를 발견한다.</span> <<His>> 눈은 감겨 있다. 받침대에서 떨어진 골동품들이 바닥에 널브러져 있다. 가죽 지도는 여전히 벽에 걸려 있지만, 크게 찢어져 있다.
 	<br><br>
 
-	Winter coughs as you approach. "No respect," <<he>> manages, opening <<his>> eyes. "I'll be fine. I'm just old. They heard you coming, and it scared them. They grabbed the bell and ran. I suspect they wanted more."
+	당신이 다가가자 윈터가 기침을 한다. "예의라고는 없군." <<he>>【이가】 간신히 말하며 <<his>> 눈을 뜬다. "괜찮을 거야. 그냥 늙어서 그런 거지. 네가 오는 소리를 듣고 놈들이 놀란 거야. 종을 움켜쥐고 달아났어. 더 많은 걸 원했던 것 같지만."
 	<br><br>
-	<<link [[Stay with Winter|Museum Attack Stay]]>><<museumAntiqueStatus "antiquebell" "stolen">><<npcincr Winter love 1>><<npcincr Winter dom -5>><<world_corruption "hard" 2>><</link>><<lldom>><<glove>>
+	<<link [[윈터 곁에 머문다|Museum Attack Stay]]>><<museumAntiqueStatus "antiquebell" "stolen">><<npcincr Winter love 1>><<npcincr Winter dom -5>><<world_corruption "hard" 2>><</link>><<lldom>><<glove>>
 	<br>
-	<<link [[Chase the culprit|Museum Attack]]>><</link>>
+	<<link [[범인을 쫓는다|Museum Attack]]>><</link>>
 	<br>
 <<elseif $museumhorseintro is undefined and $museumAntiques.museumCount gte 10 and $passagePrev is "Oxford Street">>
 	<<set $museumhorseintro to 0>>
-	<<npc Winter>><<person1>>You enter the dim museum. Winter stares at a brass pot sitting alone on a display. "I can't find a place for it," <<he>> sighs. <<He>> notices you. "I was hoping you'd visit. I have a favour to ask, seeing as you've been such a help already." <<He>> walks to the corner of the room, where something large hides beneath a dirty sheet. <<He>> tugs it off, revealing a wooden horse.
+	<<npc Winter>><<person1>>당신은 어두컴컴한 박물관으로 들어선다. 윈터가 전시대 위에 홀로 놓인 놋쇠 냄비를 쳐다보고 있다. "어디에 둬야 할지 모르겠군." <<he>>【이가】 한숨을 쉰다. <<He>>【은는】 당신을 알아본다. "네가 오길 바라고 있었어. 이미 많은 도움을 줬으니, 부탁 하나만 더 하고 싶어." <<He>>【은는】 방구석으로 걸어간다. 그곳에는 더러운 천 아래에 커다란 무언가가 숨겨져 있다. <<He>>【이가】 천을 잡아당기자 나무로 된 말이 드러난다.
 	<br><br>
 
-	"It's genuine," <<he>> says with satisfaction. "And in good condition."
+	"진품이야." <<he>>【이가】 만족스럽게 말한다. "상태도 좋군."
 	<br><br>
 
 	<<if $awareness gte 200>>
-		"It's a torture device," you say.
+		"고문 기구잖아요." 당신이 말한다.
 		<br><br>
 
-		"I'm impressed," <<he>> responds. "That's exactly what it is. They would sit the victim on top, and weigh them down to put pressure on their crotch. They'd often be whipped at the same time."
+		"놀랍군." <<he>>【이가】 대답한다. "정확해. 희생자를 위에 앉히고, 무게를 실어 가랑이에 압력을 가했지. 종종 동시에 채찍질을 당하기도 했고."
 	<<else>>
-		"What is it for?" you ask.
+		"무엇에 쓰는 건가요?" 당신이 묻는다.
 		<br><br>
 
-		"Torture," <<he>> responds. "Modern examples exist for... other uses. They would sit the victim on top, and weigh them down to put pressure on their crotch. They'd often be whipped at the same time."
+		"고문용이지." <<he>>【이가】 대답한다. "현대의 물건들은... 다른 용도로 존재하지만. 희생자를 위에 앉히고, 무게를 실어 가랑이에 압력을 가했지. 종종 동시에 채찍질을 당하기도 했고."
 	<</if>>
 	<br><br>
-	<<He>> rests a hand on the horse. "I want to stage a demonstration, to get people interested in history." <<He>> regards you. "I don't want you to feel pushed into it, but I'd like your help. Give it some thought."
+	<<He>>【은는】 말 위에 손을 얹는다. "사람들이 역사에 관심을 갖게 하려고 시연을 해볼까 해." <<He>>【은는】 당신을 바라본다. "억지로 시키고 싶진 않지만, 네 도움이 필요해. 한번 생각해 봐."
 	<br><br>
 
-	<<link [[Next|Museum]]>><<endevent>><</link>>
+	<<link [[다음|Museum]]>><<endevent>><</link>>
 	<br>
 <<elseif $museumduckintro is undefined and $museumAntiques.museumCount gte 20 and $passagePrev is "Oxford Street">>
 	<<set $museumduckintro to 0>>
-	<<npc Winter>><<generate2>><<person2>>You enter the dim museum. A <<person>> brushes past you.
+	<<npc Winter>><<generate2>><<person2>>당신은 어두컴컴한 박물관으로 들어선다. 한 <<person>>【이가】 당신을 스쳐 지나간다.
 	<br><br>
 	<<person1>>
-	"Just who I wanted to see," Winter says, looking up from a dark brown wooden chair. "I've been speaking with an interesting <<person2>><<gentleman_npc>>. You might have passed <<him>> on the way in."<<person1>>
+	"마침 잘 왔군." 윈터가 짙은 갈색 나무 의자에서 고개를 들며 말한다. "흥미로운 <<person2>><<gentleman_npc>>【와과】 이야기를 나누고 있었어. 들어오는 길에 <<him>>【을를】 마주쳤을지도 모르겠군."<<person1>>
 	<br><br>
 
-	<<person1>>Winter places a finger on the chair beside <<him>>. "I've received a donation. Something rather special."
+	<<person1>>윈터가 <<him>> 옆에 있는 의자에 손가락을 올려놓는다. "기증품을 하나 받았어. 꽤 특별한 물건이지."
 	<br><br>
 
 	<<if $awareness gte 300>>
-		You look closer. The chair has a hook at the back, as if it were meant to be tied to something. "It's a ducking stool," you say. "They'd use it to suffocate people underwater."
+		당신은 더 가까이 다가가 본다. 의자 뒤쪽에는 무언가에 묶기 위한 것처럼 보이는 고리가 달려 있다. "물고문 의자군요." 당신이 말한다. "사람들을 물속에 넣어 질식시키는 데 사용했죠."
 		<br><br>
 
-		"I'm very impressed," <<he>> responds. "That's it precisely. They'd tie the chair to a... crane of sorts. Then dunk the victim in a river. It could be fatal, depending."
+		"정말 인상적이군." <<he>>【이가】 대답한다. "정확해. 의자를 일종의... 기중기에 묶었지. 그러고는 희생자를 강에 담갔어. 경우에 따라 치명적일 수도 있었지."
 	<<else>>
-		"What is it for?" you ask.
+		"무엇에 쓰는 건가요?" 당신이 묻는다.
 		<br><br>
 
-		"Punishment," <<he>> responds. "It's called a ducking stool. See this hook at the back? They'd tie it to a crane with a victim strapped to the seat. Then suffocate said victim in water. It could be fatal."
+		"처벌용이야." <<he>>【이가】 대답한다. "물고문 의자라고 불리지. 뒤에 이 고리가 보이나? 희생자를 의자에 묶은 채로 기중기에 매달았어. 그러고는 물속에 넣어 질식시켰지. 치명적일 수도 있었어."
 	<</if>>
 	<br><br>
-	"I want to demonstrate it in public," <<he>> continues. "I've found someone who can provide the rest of the apparatus, and there's a river nearby. I don't presume anything, but I would like your help. Give it some thought."
+	"대중 앞에서 시연해보고 싶어." <<he>>【이가】 말을 잇는다. "나머지 장비를 제공해 줄 사람을 찾았고, 근처에 강도 있어. 억지로 시키려는 건 아니지만, 네 도움이 필요해. 한번 생각해 봐."
 	<br><br>
 
-	<<link [[Next|Museum]]>><<endevent>><</link>>
+	<<link [[다음|Museum]]>><<endevent>><</link>>
 	<br>
 <<elseif $museumfamoushorseintro is undefined and $museum_horse_success and ((fameSum('business', 'good', 'social', 'model')/8000) gte 0.25) and $passagePrev is "Oxford Street">>
 	<<set $museumfamoushorseintro to 0>>
-	<<npc Winter>><<person1>>You enter the museum. Winter is chatting with a few visitors when <<he>> meets your gaze and quickly rushes over to you. "The museum is getting more traffic than ever before. Your demonstration drew a lot of attention!" <<he>> says. "I think it's at a point where we could start charging for admission. If you're okay with it, I would like to make it into a bigger event. It would be a great opportunity to help educate the townsfolk, and I would give you a share of the profit, of course. Take a moment to think about it, and let me know."
+	<<npc Winter>><<person1>>당신은 박물관에 들어선다. 윈터는 몇몇 방문객과 이야기를 나누다가 당신과 눈이 마주치자 재빨리 달려온다. "박물관에 예전보다 훨씬 많은 사람이 오고 있어. 네 시연이 많은 관심을 끌었거든!" <<he>>【이가】 말한다. "이제 입장료를 받아도 될 것 같아. 네가 괜찮다면, 이걸 더 큰 행사로 만들고 싶어. 마을 사람들을 교육하는 좋은 기회가 될 거야. 물론 수익의 일부는 너에게 줄게. 잠시 생각해보고 알려줘."
 	<br><br>
-	Winter moves on to another group of guests looking over a classical theatre mask, giving you a chance to consider your options.
+	윈터는 고전 연극 가면을 구경하는 다른 손님 무리로 이동하며, 당신에게 선택지를 고려할 시간을 준다.
 	<br><br>
-	<<link [[Next|Museum]]>><<endevent>><</link>>
+	<<link [[다음|Museum]]>><<endevent>><</link>>
 <<else>>
-	You are inside the museum. Items of historic value cover the walls and perch on pedestals.
+	당신은 박물관 안에 있다. 역사적 가치가 있는 물건들이 벽을 덮고 받침대 위에 놓여 있다.
 	<<if $museuminterest gte 100>>
-		Visitors crowd the building, examining the antiques with interest. Winter looks overworked, but content.
+		방문객들이 건물에 가득 차 흥미롭게 골동품들을 살펴보고 있다. 윈터는 과로한 듯 보이지만 만족스러워 보인다.
 	<<elseif $museuminterest gte 60>>
-		The building is full of visitors, here to examine the antiques.
+		건물은 골동품을 구경하러 온 방문객들로 가득하다.
 	<<elseif $museuminterest gte 20>>
-		Several other visitors examine the displays.
+		몇몇 다른 방문객들이 전시품을 살펴보고 있다.
 	<<else>>
-		The building is empty of visitors, save yourself.
+		건물 안에는 당신 외에 다른 방문객이 없다.
 	<</if>>
 	<br><br>
 	<<if $pleasure gte $pleasuremax>>
@@ -242,24 +242,24 @@ The museum is closed. A sign reads:
 	<</if>>
 
 	<<if $museumhorseintro is 0>>
-		<<museumicon "horse">><<link [[Agree to wood horse demonstration|Museum Horse Agree]]>><<set $museumhorseintro to 1>><</link>>
+		<<museumicon "horse">><<link [[나무 말 시연에 동의한다|Museum Horse Agree]]>><<set $museumhorseintro to 1>><</link>>
 		<br>
 	<<elseif $museumhorseintro is 1 and $museumhorse isnot 1>>
-		<<museumicon "horse">><<link [[Demonstrate wooden horse (1:00)|Museum Horse]]>><<pass 60>><<set $museumhorse to 1>><</link>><<gpain>><<exhibitionist1>>
+		<<museumicon "horse">><<link [[나무 말을 시연한다 (1:00)|Museum Horse]]>><<pass 60>><<set $museumhorse to 1>><</link>><<gpain>><<exhibitionist1>>
 		<br>
 	<</if>>
 	<<if $museumfamoushorseintro is 0 and $museumhorse isnot 1>>
-		<<museumicon "horse">><<link [[Agree to paid wood horse demonstration|Museum Famous Horse Agree]]>><<set $museumfamoushorseintro to 1>><</link>>
+		<<museumicon "horse">><<link [[유료 나무 말 시연에 동의한다|Museum Famous Horse Agree]]>><<set $museumfamoushorseintro to 1>><</link>>
 		<br>
 	<<elseif $museumfamoushorseintro is 1 and $museumhorse isnot 1>>
-		<<museumicon "horse">><<link [[Demonstrate wooden horse for money (1:30)|Museum Famous Horse]]>><<set $museumhorse to 1>><</link>><<gpain>><<exhibitionist1>>
+		<<museumicon "horse">><<link [[돈을 받고 나무 말을 시연한다 (1:30)|Museum Famous Horse]]>><<set $museumhorse to 1>><</link>><<gpain>><<exhibitionist1>>
 		<br>
 	<</if>>
 	<<if $museumduckintro is 0>>
-		<<museumicon "duck">><<link [[Agree to ducking stool demonstration|Museum Duck Agree]]>><<set $museumduckintro to 1>><</link>>
+		<<museumicon "duck">><<link [[물고문 의자 시연에 동의한다|Museum Duck Agree]]>><<set $museumduckintro to 1>><</link>>
 		<br>
 	<<elseif $museumduckintro is 1 and $museumduck isnot 1>>
-		<<museumicon "duck">><<link [[Demonstrate ducking stool (1:00)|Museum Duck]]>><<pass 60>><<set $museumduck to 1>><</link>><<exhibitionist1>>
+		<<museumicon "duck">><<link [[물고문 의자를 시연한다 (1:00)|Museum Duck]]>><<pass 60>><<set $museumduck to 1>><</link>><<exhibitionist1>>
 		<br>
 	<</if>>
 	<<if $museumAntiqueJournalHints is undefined>>
@@ -268,25 +268,25 @@ The museum is closed. A sign reads:
 	<<museumtalk>>
 	<<museumPaintingText>>
 	<<for _labelP, _valueP range $museumAntiques.paintings>>
-		<<capture _labelP, _museumPaintingText[_labelP].name>>
+		<<capture _labelP, _museumPaintingText[_labelP].key>>
 			<<if $museumAntiques.paintings[_labelP] is "found">>
 				<<set _painting to _museumPaintingText[_labelP].journalName.toLowerCase()>>
 				<<icon _museumPaintingText[_labelP].icon>>
-				<<link [[`Show Winter the _painting`|`Museum `+ _museumPaintingText[_labelP].name + ` Painting`]]>><<set $museumAntiques.paintings[_labelP] to "talk">><</link>>
+				<<link [[`윈터에게 _painting【을를】 보여준다`|`Museum `+ _museumPaintingText[_labelP].key + ` Painting`]]>><<set $museumAntiques.paintings[_labelP] to "talk">><</link>>
 				<br>
 			<</if>>
 		<</capture>>
 	<</for>>
 	<<if $worn.feet.type.includes("shackle") and $worn.feet.name isnot "vines">>
-		<<crimeicon "shackles">><<link [[Ask to have your shackles removed (0:10)|Museum Shackle]]>><<pass 10>><</link>>
+		<<crimeicon "shackles">><<link [[족쇄를 풀어달라고 부탁한다 (0:10)|Museum Shackle]]>><<pass 10>><</link>>
 		<br>
 	<</if>>
 	<<if $temple_spear_mission is 1 and !$temple_spear_mission_winter>>
-		<<socialiseicon "ask">><<link [[Ask about the artefact spear|Museum Spear]]>><</link>>
+		<<socialiseicon "ask">><<link [[유물 창에 대해 묻는다|Museum Spear]]>><</link>>
 		<br>
 	<</if>>
 	<<if $museumAntiques.antiques.antiqueforestgem is "museum" and $daily.museumGreenGemTouch isnot 1>>
-		<<antiqueicon "forest-gem">><<link [[Touch green gem|Museum Green Gem Touch]]>><<stress -9>><<set $daily.museumGreenGemTouch to 1>><</link>><<lstress>>
+		<<antiqueicon "forest-gem">><<link [[녹색 보석을 만진다|Museum Green Gem Touch]]>><<stress -9>><<set $daily.museumGreenGemTouch to 1>><</link>><<lstress>>
 		<br>
 	<</if>>
 	<<if $museumAntiques.antiques.antiqueivorynecklace is "found">>
@@ -297,10 +297,10 @@ The museum is closed. A sign reads:
 		<<highicon>><<link [[Sell antiques|Museum Sell]]>><<if $museumAntiques.antiques.antiquesilvermask is "found">><<set $phase to 1>><<else>><<set $phase to 0>><</if>><<museumdonate>><</link>>
 		<br>
 	<</if>>
-	<<crimeicon "mark">><<link [[Look around the museum|Museum Look around]]>><</link>>
+	<<crimeicon "mark">><<link [[박물관을 둘러본다|Museum Look around]]>><</link>>
 	<br><br>
 
-	<<oxfordicon>><<link [[Leave|Oxford Street]]>><</link>>
+	<<oxfordicon>><<link [[떠난다|Oxford Street]]>><</link>>
 	<br>
 
 <</if>>
@@ -310,22 +310,21 @@ The museum is closed. A sign reads:
 
 <<npc Winter>><<person1>>
 
-Winter examines the $worn.feet.name. "I have just the thing," <<he>> says.
+윈터가 $worn.feet.name【을를】 살핀다. "마침 딱 맞는 게 있지." <<he>>【이가】 말한다.
 <br><br>
 
-<<He>> leads you into a small room behind reception. A broken pot sits on a counter, the fragments ordered by size and shape. There's a table not far from it. Winter directs you to lie down.
+<<He>>【은는】 당신을 안내 데스크 뒤의 작은 방으로 이끈다. 카운터 위에는 깨진 항아리가 놓여 있고, 그 조각들은 크기와 모양에 따라 정렬되어 있다. 그곳에서 멀지 않은 곳에 테이블이 있다. 윈터는 당신에게 누우라고 지시한다.
 <br><br>
-
-You do so as <<he>> retrieves a set of black iron keys from a hook on the wall, each a different size and shape. <<He>> separates one without looking, and inserts it into the keyhole on your $worn.feet.name. Nothing happens.
+당신이 그렇게 하자 <<he>>【은는】 벽에 걸린 갈고리에서 각각 다른 크기와 모양의 검은 철제 열쇠 꾸러미를 가져온다. <<He>>【은는】 보지도 않고 하나를 분리해 당신의 $worn.feet.name에 있는 열쇠 구멍에 삽입한다. 아무 일도 일어나지 않는다.
 <br><br>
-<<He>> tries another key. <<He>> continues without expression, trying key after key, until at last you feel a click, <span class="green">and the metal around your ankles comes loose.</span>
+<<He>>【은는】 다른 열쇠를 시도한다. <<He>>【은는】 표정 없이 계속해서 열쇠를 하나씩 시도하다가, 마침내 딸깍하는 소리가 들리고, <span class="green">당신의 발목을 감싸고 있던 금속이 느슨해진다.</span>
 <br><br>
 
 <<remove_shackle>>
 
-<<link [[Thank|Museum Shackle Thank]]>><</link>>
+<<link [[감사합니다|Museum Shackle Thank]]>><</link>>
 <br>
-<<link [[Ask why Winter has so many keys|Museum Shackle Ask]]>><</link>>
+<<link [[윈터가 왜 그렇게 많은 열쇠를 가지고 있는지 묻는다|Museum Shackle Ask]]>><</link>>
 <br>
 
 :: Museum Shackle Thank
@@ -341,21 +340,21 @@ You do so as <<he>> retrieves a set of black iron keys from a hook on the wall, 
 <<elseif _speechAttitudeResolved is "meek">>
 	"Th-Thank you," you say. "I felt so vulnerable."
 <<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
-	"Thanks," you say. "They were annoying."
+	"고마워요." 당신은 말한다. "성가셨거든요."
 <<elseif _speechAttitudeResolved is "confident">>
 	"Thank you," you say. "I was ready to be rid of them."
 <<else>>
-	"Thank you," you say. "That was troublesome."
+	"고맙습니다." 당신은 말한다. "귀찮았어요."
 <</if>>
 <br><br>
 
-"You're welcome," Winter says, already examining the lock. "I'll keep the shackles. They might have... historical value."
+"천만에." 윈터가 이미 자물쇠를 살피며 말한다. "족쇄는 내가 갖겠어. 역사적 가치가 있을지도 모르니까."
 <br><br>
 
-You return to the museum proper.
+당신은 박물관 본관으로 돌아간다.
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Shackle Ask
@@ -371,50 +370,48 @@ You return to the museum proper.
 <<elseif _speechAttitudeResolved is "meek">>
 	"Wh-Where did you get so many old keys?" you ask.
 <<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
-	"What are you doing with so many old keys?" you ask.
+	"그렇게 많은 오래된 열쇠로 뭘 하시는 거예요?" 당신이 묻는다.
 <<elseif _speechAttitudeResolved is "confident">>
 	"You know your way around old locks," you say. "Where did you get so many keys?"
 <<else>>
-	"Why do you have so many old keys?" you ask.
+	"왜 그렇게 많은 오래된 열쇠를 가지고 계세요?" 당신이 묻는다.
 <</if>>
 <br><br>
 
-"I collect them," Winter replies after brief hesitation. "People bring in antique lockboxes and the like now and then. It's fun to match the lock and key. There are more brute methods, of course, but some things ought be done properly."
+"수집해." 윈터가 잠시 망설인 후 대답한다. "사람들이 가끔 골동품 자물쇠 상자 같은 걸 가져오거든. 자물쇠와 열쇠를 맞추는 게 재미있어. 물론 더 과격한 방법도 있지만, 어떤 것들은 제대로 해야지."
 <br><br>
 
-You return to the museum.
+당신은 박물관으로 돌아간다.
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Attack Stay
 <<effects>>
 
-You crouch beside Winter, and ask if you should call an ambulance. <<He>> shakes <<his>> head. "I'll be up in no time. Just winded."
+당신은 윈터 옆에 웅크리고 앉아 구급차를 불러야 할지 묻는다. <<He>>【은는】 고개를 젓는다. "금방 일어날 거야. 그냥 숨이 막혔을 뿐이야."
 <br><br>
 
-When <<hes>> ready, you help <<him>> to <<his>> feet. <<He>> steadies <<himself>> against a pedestal. "Thank you. The police will bring our culprit to justice." <<He>> notices the slash across the leather map, and sighs.
+<<he>>【이가】 준비가 되자, 당신은 <<him>>【을를】 일으켜 세운다. <<He>>【은는】 받침대에 기대어 몸을 가눈다. "고마워. 경찰이 범인을 법의 심판대에 세울 거야." <<He>>【은는】 가죽 지도에 난 칼자국을 보고 한숨을 쉰다.
 <br><br>
 
-<<link [[Help Winter clean up (0:30)|Museum Attack Help]]>><<pass 30>><<npcincr Winter love 1>><<npcincr Winter dom -1>><</link>><<ldom>><<glove>>
+<<link [[윈터를 도와 정리한다 (0:30)|Museum Attack Help]]>><<pass 30>><<npcincr Winter love 1>><<npcincr Winter dom -1>><</link>><<ldom>><<glove>>
 <br>
-<<link [[Leave|Oxford Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<<link [[떠난다|Oxford Street]]>><<endevent>><<set $eventskip to 1>><</link>>
 <br>
 
 :: Museum Attack Help
 <<effects>>
 
-You restore the antiques to their pedestals while Winter phones the police. Once the scuff marks are removed from the floor, the museum looks almost as good as ever.
+윈터가 경찰에 전화하는 동안 당신은 골동품들을 받침대 위로 되돌려 놓는다. 바닥의 긁힌 자국을 제거하자 박물관은 거의 원래 모습으로 돌아온다.
 <br><br>
 
-"There doesn't seem to be any lasting damage," Winter says, relieved. <<He>> points at the map. "Except that. Could have been a lot worse. Thank you for the help."
+"영구적인 손상은 없는 것 같군." 윈터가 안도하며 말한다. <<He>>【은는】 지도를 가리킨다. "저것만 빼고. 훨씬 더 나빴을 수도 있었는데. 도와줘서 고마워."
 <br><br>
 
-<<link [[Next|Oxford Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<<link [[다음|Oxford Street]]>><<endevent>><<set $eventskip to 1>><</link>>
 <br>
-
-
 
 :: Museum Attack
 <<effects>>
@@ -426,165 +423,159 @@ You turn towards the exit.
 <<He>> can't stop coughing.
 <br><br>
 
-<<link [[Stay|Museum Attack Stay]]>><<museumAntiqueStatus "antiquebell" "stolen">><<npcincr Winter love 1>><<npcincr Winter dom -5>><<world_corruption "hard" 2>><</link>><<lldom>><<glove>>
+<<link [[남는다|Museum Attack Stay]]>><<museumAntiqueStatus "antiquebell" "stolen">><<npcincr Winter love 1>><<npcincr Winter dom -5>><<world_corruption "hard" 2>><</link>><<lldom>><<glove>>
 <br>
-<<link [[Chase the culprit|Museum Attack 2]]>><</link>><<athleticsdifficulty 1 800>>
+<<link [[범인을 쫓는다|Museum Attack 2]]>><</link>><<athleticsdifficulty 1 800>>
 <br>
-
 
 :: Museum Attack 2
 <<effects>>
 
 <<person2>>
-You run out onto Oxford Street, just in time to see the hooded figure rush around the corner. You give chase,
+당신은 옥스포드 가로 뛰쳐나가, 마침 후드 쓴 인물이 모퉁이를 돌아 달려가는 것을 본다. 당신은 추격한다,
 
 <<if $athleticsSuccess>>
 	<<set $outside to 1>><<set $location to "alley">><<set $bus to "industrial">>
-	round the corner, <span class="green">and see <<him>> duck into an alley.</span> You follow through an industrial maze, until you trap <<him>> against a brick wall.
+	모퉁이를 돌아, <span class="green">골목으로 몸을 숨기는 <<him>>【을를】 본다.</span> 당신은 공업 지구의 미로를 따라가, 마침내 벽돌 벽에 <<him>>【을를】 몰아넣는다.
 	<br><br>
 
-	<<He>> turns and plants <<his>> feet, holding the bell in front of <<him>>. <<He>> shakes <<his>> hand, but not to test the sound as you and Winter did. <<His>> movements are deliberate.
+	<<He>>【은는】 돌아서서 발을 딛고, 종을 <<him>> 앞에 든다. <<He>>【은는】 손을 흔들지만, 당신과 윈터가 했던 것처럼 소리를 시험하기 위한 것이 아니다. <<His>> 움직임은 의도적이다.
 	<br><br>
 
-	<<link [[Next|Museum Attack 3]]>><</link>>
+	<<link [[다음|Museum Attack 3]]>><</link>>
 	<br>
 <<else>>
 	<<museumAntiqueStatus "antiquebell" "stolen">><<world_corruption "hard" 2>>
-	<span class="red">but they've already vanished</span> by the time you make it to the end of the street.
+	<span class="red">하지만 그들은 이미 사라졌다</span> 당신이 거리 끝에 도착했을 때쯤에는.
 	<br><br>
 	<<endevent>><<npc Winter>><<person1>>
-	You return to the museum. Winter is on <<his>> feet, steadying <<himself>> against a pedestal.
+	당신은 박물관으로 돌아간다. 윈터는 일어나서 받침대에 몸을 기대고 있다.
 	<br><br>
-	"Don't you dare do anything so stupid again," <<he>> says. "The police will bring our culprit to justice." <<He>> notices the slash through the leather map, and sighs.
+	"다시는 그런 멍청한 짓 하지 마." <<he>>【이가】 말한다. "경찰이 범인을 법의 심판대에 세울 거야." <<He>>【은는】 가죽 지도에 난 칼자국을 보고 한숨을 쉰다.
 	<br><br>
 
-	<<link [[Help Winter clean up (0:30)|Museum Attack Help]]>><<pass 30>><<npcincr Winter love 1>><<npcincr Winter dom -1>><</link>><<ldom>><<glove>>
+	<<link [[윈터를 도와 정리한다 (0:30)|Museum Attack Help]]>><<pass 30>><<npcincr Winter love 1>><<npcincr Winter dom -1>><</link>><<ldom>><<glove>>
 	<br>
-	<<link [[Leave|Oxford Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<<link [[떠난다|Oxford Street]]>><<endevent>><<set $eventskip to 1>><</link>>
 	<br>
 <</if>>
 
 :: Museum Attack 3
 <<effects>>
 
-The bell tolls, and the familiar dread washes into you. Birds take flight from the surrounding rooftops, and a rat scurries from beneath a dumpster, running right past you.<<gstress>><<stress 6>>
+종이 울리고, 익숙한 공포가 당신을 덮친다. 주변 옥상에서 새들이 날아오르고, 쥐 한 마리가 쓰레기통 밑에서 뛰쳐나와 당신 바로 옆을 지나간다.<<gstress>><<stress 6>>
 <br><br>
 
-You step forward. The bell tolls a second time. Your muscles seize. It's an effort to move again.<<ggstress>><<stress 12>>
+당신은 앞으로 나아간다. 종이 두 번째로 울린다. 근육이 경직된다. 다시 움직이려면 힘이 든다.<<ggstress>><<stress 12>>
 <br><br>
 
-The <<persons>> hood conceals <<his>> eyes, but not <<his>> mad grin.
+<<persons>> 후드가 <<his>> 눈을 가리지만, <<his>> 광기 어린 미소는 가리지 못한다.
 <br><br>
 
-<<link [[Walk closer|Museum Attack 4]]>><</link>><<willpowerdifficulty 1 300>>
+<<link [[더 가까이 다가간다|Museum Attack 4]]>><</link>><<willpowerdifficulty 1 300>>
 <br>
-<<link [[Give up|Museum Attack Retreat]]>><</link>>
+<<link [[포기한다|Museum Attack Retreat]]>><</link>>
 <br>
-
 
 :: Museum Attack Retreat
 <<effects>>
 <<museumAntiqueStatus "antiquebell" "stolen">><<world_corruption "hard" 2>>
-You back away. The <<person>> grasps the bell with <<his>> other hand, stilling it. A relieved sigh escapes <<his>> lips.
+당신은 물러선다. <<person>>【은는】 다른 손으로 종을 잡아 멈춘다. 안도의 한숨이 <<his>> 입술에서 새어 나온다.
 <br><br>
 
 <<endevent>><<npc Winter>><<person1>>
-You return to the museum. Winter is on <<his>> feet, steadying <<himself>> against a pedestal.
+당신은 박물관으로 돌아간다. 윈터는 일어나서 받침대에 몸을 기대고 있다.
 <br><br>
-"Don't you dare do anything so stupid again," <<he>> says. "The police will bring our culprit to justice." <<He>> notices the slash through the leather map, and sighs.
+"다시는 그런 멍청한 짓 하지 마." <<he>>【이가】 말한다. "경찰이 범인을 법의 심판대에 세울 거야." <<He>>【은는】 가죽 지도에 난 칼자국을 보고 한숨을 쉰다.
 <br><br>
 
-<<link [[Help Winter clean up (0:30)|Museum Attack Help]]>><<pass 30>><<npcincr Winter love 1>><<npcincr Winter dom -1>><</link>><<ldom>><<glove>>
+<<link [[윈터를 도와 정리한다 (0:30)|Museum Attack Help]]>><<pass 30>><<npcincr Winter love 1>><<npcincr Winter dom -1>><</link>><<ldom>><<glove>>
 <br>
-<<link [[Leave|Oxford Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<<link [[떠난다|Oxford Street]]>><<endevent>><<set $eventskip to 1>><</link>>
 <br>
-
 
 :: Museum Attack 4
 <<effects>>
 
-You force your muscles to move, and walk closer to the <<person>>. Another toll. The dread builds, urging you to turn back.
+당신은 억지로 근육을 움직여 <<person>>에게 더 가까이 다가간다. 또 한 번 종이 울린다. 공포가 커지며, 뒤돌아서라고 재촉한다.
 <br><br>
 <<if $willpowerSuccess>>
 	<<willpowersuccess>>
-	<span class="green">You ignore it.</span> You brave worse threats every day.<<gwillpower>><<willpower 3>>
+	<span class="green">당신은 그것을 무시한다.</span> 당신은 매일 더 심한 위협에 맞서고 있다.<<gwillpower>><<willpower 3>>
 	<br><br>
 <<else>>
 	<<willpowerfailure>>
-	<span class="red">Your heart races.</span><<llcontrol>><<gtrauma>><<gstress>><<control -25>><<trauma 6>><<stress 6>><<ggwillpower>><<willpower 10>>
+	<span class="red">심장이 마구 뛴다.</span><<llcontrol>><<gtrauma>><<gstress>><<control -25>><<trauma 6>><<stress 6>><<ggwillpower>><<willpower 10>>
 	<br><br>
 <</if>>
 
-<<link [[Walk closer|Museum Attack 5]]>><</link>><<willpowerdifficulty 1 600>>
+<<link [[더 가까이 다가간다|Museum Attack 5]]>><</link>><<willpowerdifficulty 1 600>>
 <br>
-<<link [[Give up|Museum Attack Retreat]]>><</link>>
+<<link [[포기한다|Museum Attack Retreat]]>><</link>>
 <br>
 
 :: Museum Attack 5
 <<effects>>
 
-Another toll. A terrible fear strikes you. Your pulse races. You're certain something is about to lunge from that manhole, or that window, or from that dumpster. You want to turn and run.
+또 한 번 종이 울린다. 끔찍한 공포가 당신을 덮친다. 맥박이 빨라진다. 저 맨홀이나, 저 창문, 혹은 저 쓰레기통에서 무언가 튀어나올 것만 같다. 당신은 돌아서서 도망치고 싶다.
 <br><br>
 <<if $willpowerSuccess>>
 	<<willpowersuccess>>
-	You take deep breaths. You're imagining things. <span class="green">You're not in danger.</span> The <<person>> grimaces.<<gwillpower>><<willpower 3>>
+	당신은 심호흡을 한다. 상상일 뿐이다. <span class="green">위험하지 않다.</span> <<person>>【은는】 얼굴을 찡그린다.<<gwillpower>><<willpower 3>>
 	<br><br>
 <<else>>
 	<<willpowerfailure>>
-	<span class="red">You can't breathe.</span><<llcontrol>><<ggtrauma>><<ggstress>><<ggwillpower>><<control -25>><<trauma 12>><<stress 12>><<willpower 10>>
+	<span class="red">숨을 쉴 수 없다.</span><<llcontrol>><<ggtrauma>><<ggstress>><<ggwillpower>><<control -25>><<trauma 12>><<stress 12>><<willpower 10>>
 	<br><br>
 <</if>>
 
-
-<<link [[Walk closer|Museum Attack 6]]>><</link>><<willpowerdifficulty 1 900>>
+<<link [[더 가까이 다가간다|Museum Attack 6]]>><</link>><<willpowerdifficulty 1 900>>
 <br>
-<<link [[Give up|Museum Attack Retreat]]>><</link>>
+<<link [[포기한다|Museum Attack Retreat]]>><</link>>
 <br>
 
 :: Museum Attack 6
 <<effects>>
 
-The <<person>> holds the bell with both hands. It tolls again. The sky opens. The shadows grow, skittering across the tarmac. Heading for you, and the <<person>>.
+<<person>>【은는】 양손으로 종을 붙든다. 종이 다시 울린다. 하늘이 열린다. 그림자가 길어지며 활주로 위를 바스락대며 내달린다. 당신과 그 <<person>>에게로 향한다.
 <br><br>
 <<if $willpowerSuccess>>
 	<<willpowersuccess>>
-	<span class="green">You stay focused.</span> Shadows can't hurt you. With a thought, they return to nothingness.
+	<span class="green">당신은 집중을 유지한다.</span> 그림자는 당신을 해칠 수 없다. 생각만으로 그것들은 무로 돌아간다.
 	<br><br>
 	The <<persons>> less fortunate. <<He>> lies on <<his>> back, <<his>> face contorted as <<he>> clutches at <<his>> neck, gasping for every breath. The bell rolls in front of you.
 	<br><br>
 
-	<<link [[Take it and leave|Museum Attack Take]]>><</link>>
+	<<link [[그것을 가지고 떠난다|Museum Attack Take]]>><</link>>
 	<br>
-	<<link [[Help the thief|Museum Attack Thief]]>><<famegood 2>><</link>>
+	<<link [[도둑을 돕는다|Museum Attack Thief]]>><<famegood 2>><</link>>
 	<br>
 <<else>>
 	<<willpowerfailure>>
-	They speed up as they close in. <span class="red">You back away,</span> throwing your arms in front of your face. The shadows pierce your limbs as if they weren't there, but feel quite corporeal as they tangle <<if $settings.asphyxiaLevel gte 1>>around your throat. You drop to your knees, gasping for air<<else>>around you. You drop to your knees<</if>>. You claw at the shadows. Your fingers find only skin.
+	그림자들은 가까워질수록 빨라진다. <span class="red">당신은 뒷걸음질치며</span> 팔을 얼굴 앞에 던지듯 들어 올린다. 그림자들은 아무것도 없는 것처럼 당신의 팔다리를 꿰뚫지만, <<if $settings.asphyxiaLevel gte 1>>목을 휘감자 실체가 있는 것처럼 느껴진다. 당신은 숨을 헐떡이며 무릎을 꿇는다<<else>>몸을 휘감자 실체가 있는 것처럼 느껴진다. 당신은 무릎을 꿇는다<</if>>. 당신은 그림자를 할퀸다. 손끝에 닿는 것은 살갗뿐이다.
 	<br><br>
 
-	You hear a clatter as your consciousness fades.
+	의식이 희미해지면서 달그락거리는 소리가 들린다.
 	<br><br>
 
-	<<link [[Next|Museum Attack Passout]]>><</link>>
+	<<link [[다음|Museum Attack Passout]]>><</link>>
 	<br>
 <</if>>
 
 :: Museum Attack Take
 <<effects>>
 
-You grab the bell, and leave the <<person>> to <<his>> struggle.
+당신은 종을 잡고, <<person>>【은는】 <<his>> 몸부림에 내버려 둔다.
 <br><br>
 
-<<link [[Next|Museum Attack Return]]>><</link>>
+<<link [[다음|Museum Attack Return]]>><</link>>
 <br>
-
-
 
 :: Museum Attack Return
 <<set $location to "museum">><<effects>>
 
 <<endevent>><<npc Winter>><<person1>>
-You return to the museum. Winter is on <<his>> feet, busy returning antiques to their pedestals.
+당신은 박물관으로 돌아간다. 윈터는 일어나서 골동품들을 받침대 위로 되돌려 놓느라 분주하다.
 <br><br>
 "Don't you ever do something so stupid again. The police will..." <<He>> sees the bell in your hand and fails to conceal <<his>> surprise.
 <br><br>
@@ -597,27 +588,26 @@ You return to the museum. Winter is on <<his>> feet, busy returning antiques to 
 <<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
 	"I know," you say. "I was careful."
 <<elseif _speechAttitudeResolved is "meek">>
-	"I-I was careful," you say.
+	"조-조심했어요." 당신이 말한다.
 <<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
-	"I can handle myself," you say.
+	"제 몸은 제가 챙길 수 있어요." 당신이 말한다.
 <<elseif _speechAttitudeResolved is "confident">>
-	"I knew what I was doing," you say.
+	"내가 뭘 하는지 알고 있었어." 당신이 말한다.
 <<else>>
-	"I didn't take any risks," you say.
+	"위험한 짓은 안 했어요." 당신이 말한다.
 <</if>>
 <br><br>
 
-Winter returns the bell to its resting place and throws a sheet over it. "Not much lasting damage. Except that." <<He>> points at the slashed leather map. "I'll contact the police." <<He>> steadies <<himself>> against the pedestal. "I won't thank you for putting yourself in danger." <<He>> pauses. "But I'm grateful for your help."
+윈터는 종을 제자리에 돌려놓고 그 위에 천을 덮는다. "큰 손상은 없군. 저것만 빼고." <<He>>【은는】 찢어진 가죽 지도를 가리킨다. "경찰에 연락하겠어." <<He>>【은는】 받침대에 기대어 몸을 가눈다. "위험에 빠진 것에 대해 고마워하진 않겠어." <<He>>【이가】 잠시 멈춘다. "하지만 도움에 대해서는 고마워."
 <br><br>
 
-<<link [[Next|Oxford Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<<link [[다음|Oxford Street]]>><<endevent>><<set $eventskip to 1>><</link>>
 <br>
-
 
 :: Museum Attack Thief
 <<set $location to "museum">><<effects>><<wearProp "antique bell">>
 
-You ignore the bell for now, and approach the <<person>>. You try pulling <<his>> hands away from <<his>> throat, but <<he>> won't budge.
+당신은 일단 종은 무시하고 <<person>>에게 다가간다. 당신은 <<his>> 목에서 손을 떼어내려 하지만, <<he>>【은는】 꼼짝도 하지 않는다.
 <<speechresolve>>
 <<if _speechAttitudeResolved is "docile">>
 	"Please," you say, keeping your voice low. "There's no danger. Try to relax."
@@ -628,14 +618,14 @@ You ignore the bell for now, and approach the <<person>>. You try pulling <<his>
 <<elseif _speechAttitudeResolved is "meek">>
 	"P-Please listen to me," you plead. "There's no danger. You need to relax."
 <<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
-	"Idiot," you say. "Stop hurting yourself and relax."
+	"멍청이." 당신이 말한다. "그만 자해하고 진정해요."
 <<elseif _speechAttitudeResolved is "confident">>
 	"Listen to me," you say. "You're hurting yourself. Breathe before you faint."
 <<else>>
-	"You have to listen to me," you say. "You're hurting yourself. You need to relax."
+	"제 말을 들으셔야 해요." 당신이 말한다. "스스로를 해치고 있어요. 진정하셔야 해요."
 <</if>>
 <br><br>
-Whether through your words, or lack of oxygen, <<his>> arms weaken enough for you to pull them away. You pin them to <<his>> side.
+당신의 말이든, 산소 부족 때문이든, <<his>> 팔의 힘이 풀려 당신이 떼어낼 수 있을 정도가 된다. 당신은 <<his>> 팔을 옆구리에 고정시킨다.
 
 <<if _speechAttitudeResolved is "docile">>
 	"Slow breaths," you say. "In and out. Please."
@@ -646,21 +636,21 @@ Whether through your words, or lack of oxygen, <<his>> arms weaken enough for yo
 <<elseif _speechAttitudeResolved is "meek">>
 	"J-Just breathe in and out slowly. Please trust me."
 <<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
-	"Control your fucking breathing. You're a mess."
+	"빌어먹을 호흡 좀 조절해요. 엉망진창이잖아."
 <<elseif _speechAttitudeResolved is "confident">>
 	"Match my breathing," you say. "Slow and steady."
 <<else>>
-	"Take deep breaths. In and out."
+	"심호흡하세요. 들이쉬고, 내쉬고."
 <</if>>
 <br><br>
 
-Gradually, the <<persons>> breathing slows. <<He>> stares at you a moment. With a newfound strength, <<he>> shoves you aside and jumps to <<his>> feet. <<He>> runs down the alley, giving the bell a wide berth.
+점차 <<persons>> 호흡이 느려진다. <<He>>【은는】 잠시 당신을 쳐다본다. 새로운 힘을 얻은 듯, <<he>>【은는】 당신을 밀치고 벌떡 일어선다. <<He>>【은는】 종을 멀리 피하며 골목 아래로 달려간다.
 <br><br>
 
-You pick up the bell, and hold it steady.
+당신은 종을 집어 들고, 흔들리지 않게 잡는다.
 <br><br>
 
-<<link [[Next|Museum Attack Return]]>><</link>>
+<<link [[다음|Museum Attack Return]]>><</link>>
 <br>
 
 
@@ -668,29 +658,28 @@ You pick up the bell, and hold it steady.
 <<set $location to "town">><<set $outside to 0>><<effects>>
 <<pass 60>>
 <<passout>><<endevent>><<npc Winter>><<person1>>
-You awaken to the sight of a concerned face. "Here," Winter says, offering you a glass of water. You sit up. <<He>> sounds relieved.<<gcontrol>><<control 10>>
+당신은 걱정스러운 얼굴을 보며 깨어난다. "여기요." 윈터가 물 한 잔을 건네며 말한다. 당신은 몸을 일으킨다. <<He>>【은는】 안도하는 듯한 목소리다.<<gcontrol>><<control 10>>
 <br><br>
 
-You're in a small, old-fashioned room. It could be one of the backrooms at the museum, if not for the bed. "A doctor checked you out. A young blond<<if C.npc.Harper.pronoun is "f">>e lady<<else>> fellow<</if>>. Said you'd be up soon, and there was no need to worry. Wanted to keep an eye on you, though."
+당신은 작고 낡은 방에 있다. 침대만 아니었다면 박물관의 뒷방 중 하나일 수도 있겠다. "의사가 당신을 진찰했어요. 젊은 <<if C.npc.Harper.pronoun is "f">>금발 여성<<else>>금발 신사<</if>>【이었였】죠.. 곧 일어날 거고, 걱정할 필요 없다고 하더군요. 그래도 계속 지켜보고 싶어 했지만요."
 <br><br>
 
-<<He>> leans back. "Forgive me," <<he>> says. "This is my home. It was here or your orphanage. This was more convenient."
+<<He>>【은는】 뒤로 기댄다. "용서해." <<he>>【이가】 말한다. "여긴 내 집이야. 여기 아니면 네 고아원이었는데, 여기가 더 편했어."
 <br><br>
 
-<<link [[Next|Museum Attack Up]]>><</link>>
+<<link [[다음|Museum Attack Up]]>><</link>>
 <br>
-
 
 :: Museum Attack Up
 <<effects>>
 
-Winter helps you off the bed, and leads you down a thin flight of stairs. "The bell is back on its pedestal," <<he>> says. "But I'm afraid the thief gave me the slip. I found you lying alone, and the bell nearby."
+윈터는 당신이 침대에서 내려오는 것을 돕고, 좁은 계단으로 안내한다. "종은 받침대 위에 다시 올려놨어." <<he>>【이가】 말한다. "하지만 도둑은 놓친 것 같군. 네가 혼자 누워 있는 걸 발견했고, 근처에 종이 있었어."
 <br><br>
 
-You emerge from the cottage, into a tidy garden on the edge of Domus Street. "I need to return to the museum," Winter says. "I won't thank you for putting yourself in danger." <<He>> pauses. "But I'm grateful for your help."
+당신은 오두막에서 나와 도무스 가 가장자리의 깔끔한 정원으로 들어선다. "박물관으로 돌아가야겠어." 윈터가 말한다. "위험에 빠진 것에 대해 고마워하진 않겠어." <<He>>【이가】 잠시 멈춘다. "하지만 도움에 대해서는 고마워."
 <br><br>
 
-<<link [[Next|Domus Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<<link [[다음|Domus Street]]>><<endevent>><<set $eventskip to 1>><</link>>
 <br>
 
 :: Museum Intro
@@ -707,16 +696,16 @@ You emerge from the cottage, into a tidy garden on the edge of Domus Street. "I 
 	<<elseif _speechAttitudeResolved is "flamboyant">>
 	You give <<him>> a bright look. "That's not much of a welcome," you say. "I thought you'd be happy I was showing interest."
 	<<elseif _speechAttitudeResolved is "meek">>
-	"I-I thought you'd be happy I was showing interest," you say.
+	"저-저는 제가 관심을 보이는 걸 좋아하실 줄 알았어요." 당신이 말한다.
 	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
-	You put your hands on your hips. "Is that how you always greet people?" you ask. "I thought you'd be happy I was showing interest."
+	당신은 허리에 손을 얹는다. "원래 사람들을 그렇게 맞이하세요?" 당신이 묻는다. "제가 관심을 보이는 걸 좋아하실 줄 알았는데."
 	<<elseif _speechAttitudeResolved is "confident">>
 	You meet <<his>> glare. "I expected you to be happy I was showing interest," you say.
 	<<else>>
-	"I expected you to be happy I was showing interest," you say.
+	"제가 관심을 보이는 걸 좋아하실 줄 알았어요." 당신이 말한다.
 	<</if>>
 	<br><br>
-A vein twitches on <<his>> forehead as <<he>> stares at you. "You shouldn't speak to your elders that way," <<he>> says. "But that was rude of me."
+<<his>> 이마에 핏줄이 불끈거리며 당신을 쳐다본다. "어른에게 그런 식으로 말하면 안 돼." <<he>>【이가】 말한다. "하지만 내가 무례했군."
 
 <<elseif $phase is 1>>
 	<<if _speechAttitudeResolved is "docile">>
@@ -726,16 +715,16 @@ A vein twitches on <<his>> forehead as <<he>> stares at you. "You shouldn't spea
 	<<elseif _speechAttitudeResolved is "flamboyant">>
 	"Of course," you say, showing your empty hands. "I'll admire them properly."
 	<<elseif _speechAttitudeResolved is "meek">>
-	You nod, and keep your hands firm at your sides.
+	당신은 고개를 끄덕이고, 양손을 옆에 단단히 붙인다.
 	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
-	You clench your fists and look away. "Sure," you say. "Why would I want to touch these dumb things anyway?"
+	당신은 주먹을 쥐고 고개를 돌린다. "그러시겠죠." 당신이 말한다. "어쨌든 이 멍청한 것들을 만지고 싶지도 않았다고요."
 	<<elseif _speechAttitudeResolved is "confident">>
 	"Understood," you say. You keep your hands firm at your sides.
 	<<else>>
-	"I will," you say, keeping your hands firm at your sides.
+	"알겠습니다." 당신은 양손을 옆에 단단히 붙인 채 말한다.
 	<</if>>
 	<br><br>
-"Good," <<he>> says. "Forgive my caution, but some of these are very old."
+"좋아." <<he>>【이가】 말한다. "내 조심성을 용서해, 하지만 이것들 중 일부는 매우 오래된 것들이라서."
 
 <<else>>
 	<<if _speechAttitudeResolved is "docile">>
@@ -747,26 +736,26 @@ A vein twitches on <<his>> forehead as <<he>> stares at you. "You shouldn't spea
 	<<elseif _speechAttitudeResolved is "flamboyant">>
 	"Then you'd better supervise me closely," you purr. "I might touch something priceless."
 	<<elseif _speechAttitudeResolved is "meek">>
-	"I am very dirty," you purr. "Would you help wash me?"
+	"전 아주 더러워요." 당신이 속삭인다. "씻는 것 좀 도와주시겠어요?"
 	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
-	"That's okay," you purr. "You're the only antique I want to touch."
+	"괜찮아요." 당신이 속삭인다. "제가 만지고 싶은 골동품은 당신뿐이에요."
 	<<else>>
-	"The only thing I want to touch is you," you purr.
+	"제가 만지고 싶은 건 당신뿐이에요." 당신이 속삭인다.
 	<</if>>
 <<promiscuity1>>
 
-"What insolence," <<he>> sneers. "I suppose I should expect no better. Don't think I won't ban you from the premises."
+"이 무슨 무례함인가." <<he>>【이가】 비웃는다. "더 나은 걸 기대하지는 말았어야 했는데. 이 건물에서 널 금지시키지 않을 거라고 생각하지 마."
 
 <</if>>
 <br><br>
 
-<<He>> places the pot back on its pedestal. "It's a sorry collection for an area so rich in history. The mayor's office agrees, and has set aside funds to reward anyone who provides local antiques."
+<<He>>【은는】 항아리를 받침대 위에 다시 올려놓는다. "역사가 풍부한 지역치고는 초라한 수집품이지. 시장실도 동의했고, 지역 골동품을 제공하는 사람에게 보상하기 위한 기금을 마련했어."
 <br><br>
 
-<<He>> starts polishing an ornate breastplate. "If you find anything, I'll appraise it. I won't hold my breath."
+<<He>>【은는】 화려한 흉갑을 닦기 시작한다. "무언가 찾으면, 내가 감정해 주지. 기대는 하지 않겠어."
 <br><br>
 <<endevent>>
-<<link [[Next|Museum]]>><</link>>
+<<link [[다음|Museum]]>><</link>>
 <br>
 
 :: Museum Sell
@@ -774,7 +763,7 @@ A vein twitches on <<his>> forehead as <<he>> stares at you. "You shouldn't spea
 <<npc Winter>><<person1>>
 <<set _antiqueSaleAmount to $antiquemoney - ($museumAntiques.antiques.antiqueivorynecklace is "found" ? 2000 : 0)>>
 
-Winter dons a pair of gloves and appraises the goods.
+윈터는 장갑 한 켤레를 끼고 물건들을 감정한다.
 <<if $phase is 1>>
 	"Aha," <<he>> says. "The mask. I'm glad you've decided to put it under my care." <<He>> places <<printmoney `previewSaleValue(antiqueSaleValue(_antiqueSaleAmount), "museumAntique")`>> on the table.
 	<<glove>><<npcincr Winter love 1>>
@@ -791,12 +780,12 @@ Winter dons a pair of gloves and appraises the goods.
 <</if>>
 <br><br>
 
-<<He>> takes the goods into a back room.
+<<He>>【은는】 물건들을 뒷방으로 가져간다.
 <br><br>
 
 <<money `antiqueSaleValue(_antiqueSaleAmount)` "museumAntique">><<set $antiquemoneyhistory += _antiqueSaleAmount>><<set $antiquemoney -= _antiqueSaleAmount>>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Sell Ivory Necklace
@@ -812,37 +801,37 @@ You hand Winter the ivory necklace. <<He>> dons a pair of gloves and turns it ov
 <<museumAntiqueStatus "antiqueivorynecklace" "talk">><<world_corruption "hard" 2>>
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Waterlogged Ivory Box
 <<set $outside to 0>><<set $location to "museum">><<effects>>
 <<npc Winter>><<person1>><<museumClearHint "antiquebox">>
 
-Winter picks up the small box. "It's a jewellery case," <<he>> says. "They would have made thousands of these. Very few have survived. That the lock still works is a miracle."
+윈터가 작은 상자를 집어든다. "보석함이군." <<he>>【이가】 말한다. "이런 건 수천 개는 만들었을 텐데, 살아남은 건 거의 없지. 자물쇠가 아직도 작동하는 건 기적이야."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Worn Silver Ring
 <<effects>><<museumClearHint "antiquesilverring">>
 <<npc Winter>><<person1>>
 
-Winter holds the silver ring up to the light and examines it. "Common jewellery," <<he>> says. "And of enduring metal. There's a lot of these around. This one was worn by someone who lived here. There's value there, I think. Thanks for bringing it."
+윈터는 은반지를 빛에 비추어 살핀다. "흔한 장신구로군." <<he>>【이가】 말한다. "그리고 오래가는 금속으로 만들어졌지. 이런 게 많이 남아 있어. 이건 여기에 살던 누군가가 착용했던 거군. 거기에 가치가 있다고 생각해. 가져와 줘서 고마워."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Ornate Gold Necklace
 <<set $outside to 0>><<set $location to "museum">><<effects>>
 <<npc Winter>><<person1>><<museumClearHint "antiquegoldnecklace">>
 
-Winter turns the gold necklace in <<his>> palm. "This is magnificent," <<he>> says. "Worn by someone of note, I imagine. Where did you find it?"
+윈터가 <<his>> 손바닥에서 금 목걸이를 돌려본다. "이건 굉장하군." <<he>>【이가】 말한다. "주목할 만한 인물이 착용했던 것 같군. 어디서 찾았나?"
 <br><br>
 
-<<link [[Tell|Museum Tell]]>><<set $winterlakeknown to 1>><</link>>
+<<link [[말해준다|Museum Tell]]>><<set $winterlakeknown to 1>><</link>>
 <br>
-<<link [[Keep secret|Museum Secret]]>><</link>>
+<<link [[비밀로 한다|Museum Secret]]>><</link>>
 <br>
 
 :: Museum Golden Chastity Belt
@@ -851,206 +840,206 @@ Winter turns the gold necklace in <<his>> palm. "This is magnificent," <<he>> sa
 
 <<if $worn.genitals.origin is "Underwater Temple" and $gold_chastity_held isnot true>>
 	<<strip>>
-	You tell Winter about a gold chastity belt that you found and decided to wear. "How intriguing, can you strip for me?" <<he>> says.
+	당신은 윈터에게 황금 정조대를 발견해서 착용하기로 했다고 말한다. "정말 흥미롭군, 나를 위해 벗어 줄래?" <<he>>【이가】 말한다.
 	<br><br>
-	You strip and allow <<him>> to examine it.
+	당신은 옷을 벗고 <<he>>【이가】 그것을 검사하도록 허락한다.
 <<else>>
-	Winter holds the gold chastity belt.
+	윈터가 황금 정조대를 들고 있다.
 <</if>>
 
-"This is ancient," <<he>> says. "There are religious inscriptions. This would have been worn by a priestess for a particular ritual or ceremony."
+"이건 고대 물건이군." <<he>>【이가】 말한다. "종교적인 비문이 새겨져 있어. 특정 의식이나 행사를 위해 여사제가 착용했을 거야."
 <<if $worn.genitals.origin is "Underwater Temple" and $gold_chastity_held isnot true>>
 	<br>
-	"Let me take a couple of close up photos," <<he>> continues as <<he>> takes out a small camera. "I'm sure I can get a replication set up. Try not to get it locked on you next time."
+	"가까이서 사진 몇 장만 찍을게." <<he>>【이가】 작은 카메라를 꺼내며 말을 잇는다. "복제품을 만들 수 있을 거야. 다음엔 잠기지 않도록 조심해."
 <</if>>
 <br><br>
 <<unset $gold_chastity_held>>
 
-<<link [[Next|Museum]]>><<endevent>><<clotheson>><</link>>
+<<link [[다음|Museum]]>><<endevent>><<clotheson>><</link>>
 
 :: Museum Tell
 <<set $outside to 0>><<set $location to "museum">><<effects>>
 
-"The lake," <<he>> says. "Buried on the shore I suppose. Interesting. <<if $town_projects.diving gte 3>>I'll have to take a look next time I do field work.<<else>>I've heard there's evidence of old structures there. Maybe I'll take a look.<</if>>"
+"호수라." <<he>>【이가】 말한다. "호숫가에 묻혀 있었겠군. 흥미롭네. <<if $town_projects.diving gte 3>>다음 현장 조사를 할 때 한 번 봐야겠어.<<else>>거기에 오래된 구조물의 증거가 있다고 들었어. 한번 가봐야겠군.<</if>>"
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Secret
 <<set $outside to 0>><<set $location to "museum">><<effects>>
 
-<<He>> frowns and nods. "That's your right," <<he>> says. "Maybe I'll puzzle it out on my own."
+<<He>>【은는】 얼굴을 찌푸리며 고개를 끄덕인다. "네 권리지." <<he>>【이가】 말한다. "어쩌면 혼자서 알아낼 수 있을지도 모르겠군."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Immaculate Ivory Necklace
 <<set $outside to 0>><<set $location to "museum">><<effects>>
 <<npc Winter>><<person1>><<museumClearHint "antiqueivorynecklace">>
 
 <<if $necklaceThief is "player">>
-	"The ivory necklace?" Winter says. "I had to send it away. Terrible shame, but I was told to inform the mayor's office should I acquire anything fitting that description. They've sent someone to pick it up." <<He>> shakes <<his>> head. "Best not interfere with those types."
+	"상아 목걸이 말인가?" 윈터가 말한다. "보내야만 했어. 끔찍한 일이지만, 그런 물건을 입수하면 시장실에 보고하라는 지시를 받았거든. 그들이 사람을 보내 가져갔어." <<He>>【은는】 고개를 젓는다. "그런 부류와는 엮이지 않는 게 최선이야."
 <<else>>
-	"Thanks to you," Winter starts, "we found the ivory necklace. I got nonstop calls from the mayor's office about it. They've sent someone to pick it up." <<He>> shakes <<his>> head. "It was a beautiful piece."
+	"네 덕분에," 윈터가 말을 시작한다, "상아 목걸이를 찾았지. 시장실에서 그것에 대해 끊임없이 전화가 왔어. 그들이 사람을 보내 가져갔어." <<He>>【은는】 고개를 젓는다. "아름다운 작품이었는데 말이야."
 <</if>>
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Arousing Crystal
 <<effects>><<museumClearHint "antiquecrystal">>
 <<npc Winter>><<person1>>
 
-"I must admit," Winter says. "I have no idea what it is. There's a carving. Looks like writing, but I don't recognise it." <<He>> frowns. "A corporation is looking to buy the thing. They must know something I don't."
+"인정해야겠군." 윈터가 말한다. "이게 뭔지 전혀 모르겠어. 조각이 있군. 글씨 같지만, 알아볼 수가 없어." <<He>>【은는】 얼굴을 찌푸린다. "한 회사가 이걸 사려고 해. 내가 모르는 뭔가를 알고 있는 게 틀림없어."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Hunting Horn
 <<effects>><<museumClearHint "antiquehorn">>
 <<npc Winter>><<person1>>
 
-Winter runs <<his>> finger over the mouthpiece, and recoils as if hurt. <<His>> face shows no sign of pain. "A hunting trophy from abroad," <<he>> says. "They had it made into an instrument. Not what I would have done."
+윈터가 <<his>> 손가락으로 마우스피스를 쓸어보다가, 다친 듯이 움찔한다. <<His>> 얼굴에는 고통의 기색이 없다. "해외에서 온 사냥 전리품이군." <<he>>【이가】 말한다. "그걸로 악기를 만들었군. 나라면 그렇게 하지 않았을 거야."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Noble Candlestick
 <<effects>><<museumClearHint "antiquecandlestick">>
 <<npc Winter>><<person1>>
 
-"Candlesticks are common enough," Winter says. "This one was made for a particular noble house that resided here." <<He>> shakes <<his>> head. "A pity what became of them."
+"촛대는 흔하지." 윈터가 말한다. "이건 여기에 거주했던 특정 귀족 가문을 위해 만들어진 거야." <<He>>【은는】 고개를 젓는다. "그들에게 일어난 일은 안타깝군."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Old Watch
 <<effects>><<museumClearHint "antiquewatch">>
 <<npc Winter>><<person1>>
 
-"This is something special," Winter says. "A century and a half, yet still ticking away. Was made during the town's glory days."
+"이건 특별한 물건이군." 윈터가 말한다. "백오십 년이 지났는데도 여전히 똑딱거리고 있어. 마을의 영광스러운 시절에 만들어졌지."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Odd Medical Aid
 <<effects>><<museumClearHint "antiquedildo">>
 <<npc Winter>><<person1>>
 
-Winter blushes. "That's," <<he>> says. "That's a... medical aid. A very old-fashioned one. It's not terribly interesting." <<He>> wants to change the subject.
+윈터가 얼굴을 붉힌다. "그건." <<he>>【이가】 말한다. "그건... 의료 보조 기구야. 아주 구식이지. 그다지 흥미롭지는 않아." <<He>>【은는】 화제를 바꾸고 싶어 한다.
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Mossy Forest Arrow
 <<effects>><<museumClearHint "antiqueforestarrow">>
 <<npc Winter>><<person1>>
 
-"You can't take twenty steps in the forest without finding an old arrowhead," Winter says. "Not that I'm ungrateful. Most people wouldn't spot them."
+"숲에서는 스무 걸음도 못 가서 오래된 화살촉을 찾을 수 있지." 윈터가 말한다. "고맙지 않다는 건 아니야. 대부분의 사람들은 그걸 발견하지 못할 테니까."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Rusted Forest Dagger
 <<effects>><<museumClearHint "antiqueforestdagger">>
 <<npc Winter>><<person1>>
 
-"A nice find," Winter says. "These would have been common in the distant past, but few have survived. I'm surprised you found it without any digging."
+"좋은 발견이군." 윈터가 말한다. "먼 과거에는 흔했을 테지만, 살아남은 것은 거의 없지. 땅을 파지 않고도 찾았다니 놀랍네."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Pulsing Forest Gem
 <<effects>><<museumClearHint "antiqueforestgem">>
 <<npc Winter>><<person1>>
 
-Winter holds the gem up to the light. "Pretty," <<he>> says. "Similar to the ones they mine nearby." <<He>> frowns. "Except a different hue."
+윈터가 보석을 빛에 비춰본다. "예쁘군." <<he>>【이가】 말한다. "근처에서 채굴하는 것들과 비슷하네." <<He>>【은는】 얼굴을 찌푸린다. "색조가 다르다는 것만 빼면."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Green Gem Touch
 <<set $outside to 0>><<set $location to "museum">><<effects>>
 
-You touch the green gem. A calmness falls over you.
+당신은 녹색 보석을 만진다. 평온함이 당신을 감싼다.
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Silver Brooch
 <<effects>><<museumClearHint "antiquesilverbrooch">>
 <<npc Winter>><<person1>>
 
-"Sterling silver," Winter says. "The design was popular several decades ago. I imagine it was hidden away in a loft somewhere."
+"스털링 실버군." 윈터가 말한다. "몇십 년 전에 유행했던 디자인이야. 다락방 어딘가에 숨겨져 있었을 거라고 생각해."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Discarded Cup
 <<effects>><<museumClearHint "antiquetrashcup">>
 <<npc Winter>><<person1>>
 
-"This style was popular among the middle-classes some hundred years ago," Winter says. <<He>> curls <<his>> nose. "I wouldn't drink from it now. I think it's had quite an adventure."
+"이 스타일은 백여 년 전 중산층 사이에서 유행했지." 윈터가 말한다. <<He>>【은는】 코를 찡긋한다. "지금은 이걸로 마시지 않겠어. 꽤나 험난한 모험을 겪은 것 같군."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Incense Burner
 <<effects>><<museumClearHint "antiquetrashburner">>
 <<npc Winter>><<person1>>
 
-"They still use these," Winter says. "At the temple. Got them in trouble with the greater church in the past."
+"이것들은 아직도 사용해." 윈터가 말한다. "신전에서. 과거에 이것 때문에 대교회와 문제가 있었지."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Forgotten Brass Statuette
 <<effects>><<museumClearHint "antiquebrassstatuette">>
 <<npc Winter>><<person1>>
 
-"This wasn't made locally," Winter says, examining the statuette through a magnifying glass. "Possibly brought by foreign conquerors over a thousand years ago."
+"이건 현지에서 만들어진 게 아니군." 윈터가 돋보기를 통해 조각상을 살피며 말한다. "아마도 천 년도 더 전에 외국의 정복자들이 가져온 것일 거야."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Copper Compass
 <<effects>><<museumClearHint "antiquecoppercompass">>
 <<npc Winter>><<person1>>
 
-"Remarkable," Winter says, turning the compass and observing the spin. "We're fortunate it survived its ordeal at sea."
+"놀랍군." 윈터가 나침반을 돌리며 회전을 관찰하며 말한다. "바다에서의 시련을 견뎌낸 것이 다행이야."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Old Grenade
 <<effects>><<museumClearHint "antiquegrenade">>
 <<npc Winter>><<person1>>
 
-"This one might be younger than me," Winter laughs. You assume <<hes>> joking. "I'm not surprised you found it in the countryside. I hear of some impressive collections."
+"이건 나보다 젊을지도 모르겠군." 윈터가 웃는다. 당신은 <<he>>【이가】 농담이라고 생각한다. "시골에서 찾았다니 놀랍지 않군. 인상적인 수집품들에 대해 듣고 있어."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Stone Talisman
 <<effects>><<museumClearHint "antiquestonetalisman">>
 <<npc Winter>><<person1>>
 
-"I wasn't sure about this one," Winter says. "Had to phone an old colleague, but it's genuine. Ancient, and engraved with symbols of the old religion."
+"이건 확신이 없었어." 윈터가 말한다. "옛 동료에게 전화해야 했지만, 진품이야. 고대의 물건이고, 옛 종교의 상징이 새겨져 있군."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Silver Mask
 <<effects>><<museumClearHint "antiquesilvermask">>
 <<npc Winter>><<person1>>
 
-"It was serendipitous," Winter says. "That you found this where you did. Or sinister. We don't know much about its origins, but it was used by the old religion. The myths are colourful."
+"우연의 일치였군." 윈터가 말한다. "네가 이걸 거기서 찾았다는 게 말이야. 아니면 불길한 일일 수도 있고. 그 기원에 대해선 잘 모르지만, 옛 종교에서 사용되었어. 신화는 다채롭지."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 <br>
 
@@ -1058,10 +1047,10 @@ You touch the green gem. A calmness falls over you.
 <<effects>><<museumClearHint "antiquediamond">>
 <<npc Winter>><<person1>>
 
-"I did some digging," Winter says. "That rock you found was reported stolen almost two centuries ago. The authorities are content to let us hang on to it for now."
+"조금 파고들어 봤다." 윈터가 말한다. "네가 찾은 그 돌은 거의 2세기 전에 도난당했다고 신고된 물건이더군. 당국은 일단 우리가 보관하는 것에 만족하는 모양이야."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 <br>
@@ -1070,10 +1059,10 @@ You touch the green gem. A calmness falls over you.
 <<effects>><<museumClearHint "antiquesilvercompass">>
 <<npc Winter>><<person1>>
 
-"Silver doesn't tarnish," Winter says. "But a tool like this wouldn't be made of pure silver. It's in remarkably good condition."
+"은은 변색되지 않아." 윈터가 말한다. "하지만 이런 도구는 순은으로 만들지 않았을 거다. 놀라울 정도로 상태가 좋군."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 <br>
@@ -1082,10 +1071,10 @@ You touch the green gem. A calmness falls over you.
 <<effects>><<museumClearHint "antiquesilverdagger">>
 <<npc Winter>><<person1>>
 
-"It would have been worn as an accessory," Winter says. "But do be careful around it. It's still a sharp blade."
+"장신구로 착용했을 거다." 윈터가 말한다. "하지만 조심하도록 해. 여전히 날카로운 칼날이니까."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 <br>
@@ -1093,10 +1082,10 @@ You touch the green gem. A calmness falls over you.
 :: Museum Rusted Cutlass
 <<effects>><<museumClearHint "antiquerustedcutlass">>
 
-<<npc Winter>><<person1>>"A sailor's weapon," Winter says. "I looked into having it restored, but it's too far gone. We're lucky it hasn't crumbled."
+<<npc Winter>><<person1>>"선원의 무기군." 윈터가 말한다. "복원할 수 있는지 알아봤지만, 너무 심하게 손상됐다. 부서지지 않은 게 다행일 정도다."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 <br>
@@ -1105,10 +1094,10 @@ You touch the green gem. A calmness falls over you.
 <<effects>><<museumClearHint "antiquecutlass">>
 <<npc Winter>><<person1>>
 
-"A sailor's weapon," Winter says, testing the straps. "It's in good condition, but there are notches on the blade." <<He>> runs a finger along the surface. "It saw use."
+"선원의 무기군." 윈터가 끈을 시험하며 말한다. "상태는 좋지만, 칼날에 흠집이 있군." <<He>>【이가】 표면을 손가락으로 쓸어본다. "사용된 흔적이 있다."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 <br>
@@ -1118,14 +1107,13 @@ You touch the green gem. A calmness falls over you.
 <<set $treasure_map to 1>>
 <<npc Winter>><<person1>>
 
-"An actual treasure map!" Winter laughs. "The coastline matches other depictions from the time. This is our town here, with the forest right here." <<His>> finger trails across, and taps on a rendition of a castle. A dragon perches on top. Winter rubs the paper, and a red X appears.
+"진짜 보물 지도라니!" 윈터가 웃는다. "해안선이 그 시대의 다른 묘사들과 일치하는군. 여기가 우리 마을이고, 바로 여기가 숲이야." <<His>> 손가락이 지도를 따라가다 성 그림을 톡톡 친다. 용 한 마리가 꼭대기에 앉아 있다. 윈터가 종이를 문지르자 붉은 X 표시가 나타난다.
 <br><br>
-"As a younger <<personsimple>> I'd have gone on such an adventure." The old historian continues. "But the moor is treacherous, and there's likely nothing there." <<He>> glances at you. "Don't get any ideas. I mean it."
+"젊었을 때라면 그런 모험을 떠났을 텐데." 늙은 역사학자가 말을 잇는다. "하지만 황야는 위험하고, 아마 아무것도 없을 거야." <<He>>【이가】 당신을 힐끗 본다. "딴생각하지 마. 진심이야."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Sonorous Bell
 <<effects>><<museumClearHint "antiquebell">>
@@ -1133,13 +1121,13 @@ You touch the green gem. A calmness falls over you.
 
 <<set $bell_timer to 2>>
 
-"An exceptional find." Winter shakes the bell. The deep toll fills you with a familiar dread. "And a unique sound," <<he>> muses. <<He>> seems affected as well, and places it back upon the pedestal. <<He>> throws a sheet over it. "Should put it behind glass. This'll do for now."<<gstress>><<stress 6>>
+"대단한 발견이야." 윈터가 종을 흔든다. 그 깊은 울림이 익숙한 공포감으로 당신을 채운다. "독특한 소리군." <<he>>【이가】 중얼거린다. <<He>>【이가】 역시 영향을 받은 듯, 종을 다시 받침대 위에 올려놓는다. <<He>>【이가】 그 위에 천을 덮는다. "유리관 안에 둬야겠다. 일단은 이걸로 됐지."<<gstress>><<stress 6>>
 <br><br>
 
-"Not surprised it had religious significance," <<he>> continues. "But I never want to hear it again."
+"종교적인 의미가 있었다 해도 놀랍지 않아." <<he>>【이가】 말을 잇는다. "하지만 다시는 듣고 싶지 않군."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 
@@ -1147,14 +1135,13 @@ You touch the green gem. A calmness falls over you.
 <<effects>><<museumClearHint "antiquebullet">>
 <<npc Winter>><<person1>>
 
-Winter examines the bullet through a magnifying glass. "Over a century old, but you can still make out the manufacturer," <<he>> says. "Some careless volunteer dropped it during training, perhaps."
+윈터가 돋보기로 총알을 살핀다. "1세기도 더 된 물건이지만, 아직 제조사를 알아볼 수 있군." <<he>>【이가】 말한다. "아마 훈련 중에 부주의한 지원병이 떨어뜨렸겠지."
 <br><br>
 
-<<link [[Tease|Museum Bullet Tease]]>><<npcincr Winter love -1>><</link>><<llove>>
+<<link [[놀린다|Museum Bullet Tease]]>><<npcincr Winter love -1>><</link>><<llove>>
 <br>
-<<link [[Be polite|Museum Bullet Polite]]>><</link>>
+<<link [[정중하게 대한다|Museum Bullet Polite]]>><</link>>
 <br>
-
 
 :: Museum Bullet Tease
 <<effects>>
@@ -1171,18 +1158,17 @@ Winter examines the bullet through a magnifying glass. "Over a century old, but 
 <<elseif _speechAttitudeResolved is "meek">>
 	"M-Maybe it was you," you say.
 <<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
-	"I bet it was you," you say.
+	"분명 당신이었을 거예요." 당신이 말한다.
 <<else>>
 	"Maybe it was you," you say, watching for Winter's reaction.
 <</if>>
 <br><br>
 
-"I'm not that old," Winter snaps. "And I'd remind you to treat your elders with respect." <<He>> collects <<himself>>. "Could have been my grandfather, though."
+"난 그렇게 늙지 않았다." 윈터가 쏘아붙인다. "그리고 어른을 공경해야 한다는 걸 명심해줬으면 좋겠군." <<He>>【이가】 <<himself>> 진정한다. "내 할아버지였을 수는 있겠지."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Bullet Polite
 <<effects>>
@@ -1199,172 +1185,161 @@ Winter examines the bullet through a magnifying glass. "Over a century old, but 
 <<elseif _speechAttitudeResolved is "confident">>
 	Winter goes off on a tangent. You listen without interrupting, then nod when <<he>> reaches the point.
 <<else>>
-	Winter goes off on a tangent, but you remain polite, and nod along.
+	윈터가 주제에서 벗어난 이야기를 하지만, 당신은 정중하게 고개를 끄덕이며 듣는다.
 <</if>>
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Artillery Shell
 <<effects>><<museumClearHint "antiqueshell">>
 <<npc Winter>><<person1>>
 
-Winter taps the artillery shell. "It's not live," <<he>> says. "Not after all this time. It might never have worked. Not sure why else they'd cast it aside."
+윈터가 포탄을 두드린다. "실탄은 아니야." <<he>>【이가】 말한다. "이렇게 오랜 시간이 지났으니. 애초에 작동하지 않았을 수도 있고. 그렇지 않고서야 왜 버렸겠나."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Gold Ring
 <<effects>><<museumClearHint "antiquegoldring">>
 <<npc Winter>><<person1>>
 
-"Magnificent," Winter says, turning the ring in <<his>> palm. "To think something this valuable has remained hidden for so long. This would have been worn by nobility, or someone very wealthy."
+"장엄하군." 윈터가 <<his>> 손바닥 안에서 반지를 굴리며 말한다. "이렇게 가치 있는 것이 오랫동안 숨겨져 있었다니. 귀족이나 아주 부유한 사람이 착용했을 거다."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Gold Brooch
 <<effects>><<museumClearHint "antiquegoldbrooch">>
 <<npc Winter>><<person1>>
 
-"This is interesting," Winter says, peering at the central jewel with one eye. "It's hard to make out, but there's religious iconography, but not quite Christian. I don't think this would have been worn by a member of the clergy."
+"이건 흥미롭군." 윈터가 한쪽 눈으로 중앙의 보석을 들여다보며 말한다. "알아보기는 어렵지만, 종교적인 도상이 있는데, 기독교와는 조금 달라. 성직자가 착용했을 것 같지는 않군."
 <br><br>
 
-
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Coral Ring
 <<effects>><<museumClearHint "antiquecoralring">>
 <<npc Winter>><<person1>>
 
-"I'm surprised to see this," Winter says, ignoring the coral and examining the metal. "I'd need to have it dated by someone with better equipment, but I've a hunch this is over a thousand years old. The pirates must have recognised its value."
+"이걸 보게 될 줄은 몰랐군." 윈터가 산호는 무시하고 금속을 살피며 말한다. "더 좋은 장비를 가진 사람에게 연대 측정을 의뢰해야겠지만, 내 직감으로는 천 년 이상 된 물건이다. 해적들이 그 가치를 알아봤음에 틀림없다."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Inscribed Hourglass
 <<effects>><<museumClearHint "antiquehourglass">>
 <<npc Winter>><<person1>>
 
-"How odd," Winter murmurs, turning it in <<his>> hands. "These symbols don't seem to match up to any script I know. And the inscriptions haven't worn down with age either. It's remarkably well preserved; I have no idea how old it is, but it must be very old indeed."
+"참 이상하군." 윈터가 <<his>> 손안에서 그것을 돌리며 중얼거린다. "이 기호들은 내가 아는 어떤 문자와도 일치하지 않는 것 같다. 그리고 새겨진 글자가 세월에 마모되지도 않았고. 놀라울 정도로 잘 보존되어 있군. 얼마나 오래된 건지 알 수 없지만, 아주 오래된 것임에는 틀림없다."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Copper Coin
 <<effects>><<museumClearHint "antiquecoppercoin">>
 <<npc Winter>><<person1>>
 
-"Lots of these around," Winter says, looking across its surface. "In private collections. Few quite as old as this though. Almost two thousand years. Preserved well for such an age. Almost as well as I."
+"이런 건 흔하지." 윈터가 표면을 훑어보며 말한다. "개인 소장품 중에 말이다. 하지만 이것만큼 오래된 건 거의 없지. 거의 2천 년이나 됐다. 그 세월에 비하면 잘 보존됐군. 거의 나만큼이나."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Silver Coin
 <<effects>><<museumClearHint "antiquesilvercoin">>
 <<npc Winter>><<person1>>
 
-"A later example of its kind," Winter says, peering at the worn metal. "Minted late in the empire's reign. I'm surprised it's not more tarnished."
+"이 종류 중에서는 후기 물건이군." 윈터가 닳은 금속을 들여다보며 말한다. "제국 통치 말기에 주조됐다. 더 변색되지 않은 게 놀랍군."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
-
 
 :: Museum Gold Coin
 <<effects>><<museumClearHint "antiquegoldcoin">>
 <<npc Winter>><<person1>>
 
-"Very valuable," Winter says, donning a latex glove. "Even just as scrap metal. Though perish the thought at it being scrapped! I'm surprised it remained hidden all these years."
+"아주 귀중한 물건이야." 윈터가 라텍스 장갑을 끼며 말한다. "고철로만 쳐도 말이지. 고철로 만든다는 생각만 해도 끔찍하지만! 이 모든 세월 동안 숨겨져 있었다니 놀랍군."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Silver Blade
 <<effects>><<museumClearHint "antiquesilverblade">>
 <<npc Winter>><<person1>>
 
-"Could have been part of a weapon," Winter says, running a finger along its edge. "If not for the material. Ceremonial use, probably. What the metal was attached to however, I can only speculate."
+"무기의 일부였을 수도 있겠군." 윈터가 가장자리를 손가락으로 쓸며 말한다. "재질만 아니었다면 말이야. 아마 의식용이었겠지. 하지만 금속이 어디에 붙어 있었는지는 추측만 할 수 있을 뿐이야."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Ivory Statuette
 <<effects>><<museumClearHint "antiqueivorystatuette">>
 <<npc Winter>><<person1>>
 
-"The priests were right," Winter says. "They insisted their religious text was accurate, but I had doubts. A strange thing. Amazing they were able to carve such detail, so long ago."
+"사제들이 옳았다." 윈터가 말한다. "그들은 자신들의 종교 경전이 정확하다고 주장했지만, 난 의심했었지. 이상한 물건이다. 그렇게 오래전에 이런 세밀한 조각을 할 수 있었다니 놀랍군."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Strange Fetish
 <<effects>><<museumClearHint "antiquestrangefetish">>
 <<npc Winter>><<person1>>
 
-"I don't know what to make of this," Winter says, handling the fetish with a ginger touch, as if afraid it will fall apart. "Perhaps it had religious significance? I've an old friend who studies the old religion. I'll send them a photograph."
+"이걸 어떻게 봐야 할지 모르겠군." 윈터가 부서질까 두려운 듯 조심스러운 손길로 페티쉬를 다루며 말한다. "아마 종교적인 의미가 있었을까? 옛 종교를 연구하는 오랜 친구가 있는데, 그 친구에게 사진을 보내봐야겠다."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Silver Goblet
 <<effects>><<museumClearHint "antiquesilvergoblet">>
 <<npc Winter>><<person1>>
 
-"I'm glad it was cleaned before its long rest," Winter says, sniffing the interior. "Ornate. Would have been used by someone important. Perhaps for special occasions. The metalworking techniques are too advanced for its age, interestingly. If my dating is accurate. I'll need a second opinion."
+"오랜 휴식 전에 깨끗이 닦아놓아서 다행이군." 윈터가 내부 냄새를 맡으며 말한다. "화려하다. 중요한 인물이 사용했겠지. 아마 특별한 경우에만. 흥미롭게도, 금속 가공 기술이 시대에 비해 너무 발전했다. 내 연대 측정이 정확하다면 말이지. 다른 의견도 들어봐야겠군."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Silver Crown
 <<effects>><<museumClearHint "antiquesilvercrown">>
 <<npc Winter>><<person1>>
 
-"Would have been forged at great expense," Winter says, holding the crown up to <<his>> forehead. "A petty monarch might have worn it. Likely before the gems were pried out. Was the metal not so valuable at that time? So many questions."
+"엄청난 비용을 들여 만들었을 거야." 윈터가 <<his>> 이마에 왕관을 대보며 말한다. "소국의 군주가 썼을지도 모르지. 보석이 빠지기 전에는 말이야. 그 당시에는 금속이 그렇게 귀하지 않았나? 궁금한 게 너무 많군."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum White Crystal
 <<effects>><<museumClearHint "antiquewhitecrystal">>
 <<npc Winter>><<person1>>
 
-"You know how to find strange things," Winter says, peering into the crystal depths. "There's writing, carved inside somehow. I'd have thought it a modern art piece, if it weren't so ancient." A faint light flashes within.
+"넌 이상한 물건을 찾아내는 재주가 있군." 윈터가 수정 깊은 곳을 들여다보며 말한다. "안에 어떻게든 글씨가 새겨져 있다. 이렇게 오래되지 않았다면 현대 미술 작품이라고 생각했을 것이다." 안에서 희미한 빛이 번쩍인다.
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Bailey Sign
 <<effects>><<museumClearHint "antiqueminesign">>
 <<npc Winter>><<person1>>
 
-"Ah, now this one is easy," Winter says, tracing the engraving. "I remember the Bailey mine before it closed. Or the outside, at least. My parents warned me to stay away. It was deemed unsafe, In the end."
+		"아, 이건 쉽지." 윈터가 각인을 더듬으며 말한다. "폐쇄되기 전의 베일리 광산을 기억한단다. 적어도 바깥쪽이라도. 내 부모님은 가까이 가지 말라고 경고하셨지. 결국, 안전하지 않은 곳으로 판명 났단다."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 
@@ -1372,227 +1347,213 @@ Winter taps the artillery shell. "It's not live," <<he>> says. "Not after all th
 <<effects>><<museumClearHint "antiqueobsidiandisc">>
 <<npc Winter>><<person1>>
 
-"You say you found it on an island off the coast?" Winter runs a finger over the rim, as if daring it to draw blood. "Not the prison? I was unaware of other islands. Perhaps you roamed further than you realised."
+"해안가 섬에서 찾았다고?" 윈터가 피라도 낼 듯이 가장자리를 손가락으로 쓸어본다. "감옥이 아니고? 다른 섬이 있는 줄은 몰랐는데. 아마 네가 생각보다 멀리 돌아다녔나 보군."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Wooden Mask
 <<effects>><<museumClearHint "antiquewoodenmask">>
 <<npc Winter>><<person1>>
 
-"This is a similar shape to some of the carvings on the temple murals," Winter says, staring into the mask's eyes. "I thought they were supposed to depict angels. Or demons, perhaps."
+"이건 신전 벽화에 있는 조각들과 비슷한 모양이군." 윈터가 가면의 눈을 응시하며 말한다. "천사를 묘사한 거라고 생각했는데. 아니면 악마일지도 모르지."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Trilobite Fossil
 <<effects>><<museumClearHint "antiquetrilobitefossil">>
 <<npc Winter>><<person1>>
 
-"Trilobites aren't uncommon in certain parts of the world," Winter says, weighing the fossil in <<his>> hand. "This is a rare species, however."
+"삼엽충은 세계 특정 지역에서는 드물지 않아." 윈터가 <<his>> 손에서 화석의 무게를 재며 말한다. "하지만 이건 희귀종이군."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Islander Arrow
 <<effects>><<museumClearHint "antiqueislandarrow">>
 <<npc Winter>><<person1>>
 
-"They have one of these at the temple," Winter says, smelling the wood. "They consider it a relic." <<He>> frowns. "There's something on the tip. Forgive me, but I need to clear my head."
+"신전에 이런 게 하나 있지." 윈터가 나무 냄새를 맡으며 말한다. "그들은 그걸 성물로 여기지." <<He>>【이가】 얼굴을 찌푸린다. "끝에 뭔가가 묻어 있군. 미안하지만, 머리를 좀 식혀야겠다."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Spear
 <<effects>><<npc Winter>><<person1>>
 <<set $temple_spear_mission_winter to 1>>
 
-"You're the second person to ask about that," Winter says. "A young <<nnpc_monk "Jordan">> visited, not so long ago. <<nnpc_He "Jordan">> was very polite. I fear I had nothing useful to tell <<nnpc_him "Jordan">>, but I resolved to investigate."
+"그것에 대해 묻는 건 네가 두 번째다." 윈터가 말한다. "얼마 전에 <<nnpc_monk "Jordan">>【이】라는 젊은 수도사가 찾아왔었지. <<nnpc_He "Jordan">>【은는】 아주 예의 발랐다. 유감스럽게도 <<nnpc_him "Jordan">>에게 유용한 정보는 알려주지 못했지만, 조사해보기로 마음먹었지."
 <br><br>
-<<He>> clears <<his>> throat. "As it would happen, someone brought in a very old, very peculiar antique. They insisted it came from such an island. They seemed something of a rascal, and I'd have pegged them as a liar if not for the <<nnpc_monk "Jordan">>."
+<<He>>【이가】 헛기침을 한다. "마침, 어떤 사람이 아주 오래되고 아주 기묘한 골동품을 가져왔다. 그 섬에서 가져왔다고 주장하더군. 약간 악동 같아 보였는데, 그 <<nnpc_monk "Jordan">>【이가】 아니었다면 거짓말쟁이라고 생각했을 것이다."
 <br><br>
 
-<<link [[Next|Museum Spear 2]]>><</link>>
+<<link [[다음|Museum Spear 2]]>><</link>>
 <br>
 
 :: Museum Spear 2
 <<effects>>
 
-"I wanted to ask our fellow more questions, but they were anxious about something, and made their excuses. I know their ilk have a pub to themselves, hidden in the sewers. Not the storm drain. <span class="green">The old sewers.</span> But I'm too old to go searching for such a place."
+"그 친구에게 더 물어보고 싶었지만, 뭔가 불안해하며 핑계를 대고 가버렸다. 그 무리가 하수도에 숨겨진 자신들만의 술집을 가지고 있다는 건 알지. 빗물 배수구가 아니라, <span class="green">오래된 하수도</span> 말이다. 하지만 난 그런 곳을 찾아다니기엔 너무 늙었지."
 <br><br>
-<<He>> frowns. "Not that I'd recommend it to you either. Besides, I doubt you've paid enough attention in class to know how to get there."
+<<He>>【이가】 얼굴을 찌푸린다. "너에게도 추천하고 싶지는 않아. 게다가, 네가 거기에 가는 방법을 알 만큼 수업에 집중했을 것 같지도 않고."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Gold Compass
 <<effects>><<museumClearHint "antiquegoldcompass">>
 <<npc Winter>><<person1>>
 
-"This is a remarkable piece," Winter says. "It's mine. That is, my own property. I used to carry it with me, but it went missing years ago." <<He>> examines the back, and smiles at something. "It's worthy of the museum, and it'll be safer here."
+"이건 주목할 만한 물건이다." 윈터가 말한다. "내 것이지. 그러니까, 내 소유물이다. 예전에 가지고 다녔는데, 몇 년 전에 잃어버렸다." <<He>>【이가】 뒷면을 살피더니 무언가를 보고 미소 짓는다. "박물관에 있을 가치가 있고, 여기가 더 안전할 것이다."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Sword Cane
 <<effects>><<museumClearHint "antiqueswordcane">>
 <<npc Winter>><<person1>>
 
-"The edge is dull," Winter says, drawing the blade and running a finger along its length. "Still, I should keep it behind glass." <<He>> sheathes it. "We can't be having any accidents."
+"날이 무디군." 윈터가 칼을 뽑아 그 길이를 따라 손가락을 쓸며 말한다. "그래도 유리관 안에 보관해야겠다." <<He>>【이가】 칼을 칼집에 넣는다. "사고가 나면 안 되니까."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Chocolate
 <<effects>><<museumClearHint "antiquechocolate">>
 <<npc Winter>><<person1>>
 
-"It would still be edible," Winter says, removing the lid. "It would taste terrible." <<He>> leans <<his>> nose closer. "The tin is interesting as well. It was a soldier's ration." <<He>> looks sad for a moment.
+"아직 먹을 수는 있을 것이다." 윈터가 뚜껑을 열며 말한다. "맛은 끔찍하겠지만." <<He>>【이가】 <<his>> 코를 더 가까이 댄다. "통조림 캔도 흥미롭군. 군인 배급품이었지." <<He>>【이가】 잠시 슬픈 표정을 짓는다.
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Tea Caddy
 <<effects>><<museumClearHint "antiqueteacaddy">>
 <<npc Winter>><<person1>>
 
-"This would have carried tea across the world," Winter says, sticking <<his>> nose inside. "Always black tea. Green wouldn't survive the trip." <<He>> smiles. "I could use a cup right now."
+"이걸로 전 세계에 차를 운반했겠지." 윈터가 <<his>> 코를 안에 집어넣으며 말한다. "항상 홍차였을 거야. 녹차는 운송 중에 상했을 테니." <<He>>【이가】 미소 짓는다. "지금 당장 한 잔 마시고 싶군."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Wooden Figurine
 <<effects>><<museumClearHint "antiquewoodenfigurine">>
 <<npc Winter>><<person1>>
 
-"This matches the descriptions I've read," Winter says, peering into the figurine's eyes. "A curious thing. I can't place the culture that produced it." <<He>> puts it down. "Maybe just a local and eccentric cottage industry."
+"내가 읽은 묘사와 일치하는군." 윈터가 조각상의 눈을 들여다보며 말한다. "신기한 물건이야. 이걸 만든 문화를 특정할 수가 없군." <<He>>【이가】 그것을 내려놓는다. "아마 그냥 지역적이고 괴짜스러운 가내 수공업이었을지도."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Copper Ring
 <<effects>><<museumClearHint "antiquecopperring">>
 <<npc Winter>><<person1>>
 
-"There's an engraving here," Winter says, peering at the metal. "But it's too worn." <<He>> looks thoughtful as <<he>> puts it down. "It's a miracle it's survived as well as it has, considering where you found it."
+"여기 조각이 있군." 윈터가 금속을 들여다보며 말한다. "하지만 너무 닳았다." <<he>>【이가】 그것을 내려놓으며 생각에 잠긴다. "네가 찾은 곳을 생각하면, 이렇게 잘 보존된 것만으로도 기적이다."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
-
 
 :: Museum Silver Amulet
 <<effects>><<museumClearHint "antiquesilveramulet">>
 <<npc Winter>><<person1>>
 
-"It's an old design of the temple's," Winter says, leaning close. "Odd. The engravings on this one are different. Similar, but distinct. Perhaps the result of a botched job. Or a failed facsimile."
+"신전의 오래된 디자인이군." 윈터가 가까이 다가가며 말한다. "이상하네. 이건 조각이 달라. 비슷하지만, 명백히 달라. 아마 잘못된 작업의 결과물이거나, 실패한 모조품이겠지."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Bucket
 <<effects>><<museumClearHint "antiquebucket">>
 <<npc Winter>><<person1>>
 
-"A bucket from the late middle ages. Could have been used for all sorts, but from the damage I'd say this was used to carry water." <<He>> pauses, then leans closer. "Did something make this its home?"
+"중세 후기의 양동이군. 온갖 용도로 쓰였겠지만, 손상된 걸로 봐선 물을 나르는 데 사용된 것 같아." <<He>>【이가】 잠시 멈추더니, 더 가까이 다가간다. "뭔가가 이걸 집으로 삼았나?"
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Silver Manacle
 <<effects>><<museumClearHint "antiquesilvermanacle">>
 <<npc Winter>><<person1>>
 
-"I never expected to see one of these witch-binders," Winter whispers. "I don't think the temple would like this reminder of their dark history. But history it is, and it has a place here."
+"이런 마녀-구속구를 보게 될 줄은 몰랐는데," 윈터가 속삭인다. "신전이 자신들의 어두운 역사를 상기시키는 걸 좋아할 것 같지는 않군. 하지만 역사이고, 여기 있을 자격이 있지."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Snuffer
 <<effects>><<museumClearHint "antiquesnuffer">>
 <<npc Winter>><<person1>>
 
-"It's a snuffer," Winter says. <<He>> glances at you. "Used to snuff out torches. The fiery kind. It's faded, but this one bears marks of the temple. Looks well-used."
+"불 끄는 도구야." 윈터가 말한다. <<He>>【이가】 당신을 힐끗 본다. "횃불을 끄는 데 사용됐지. 불타는 종류 말이야. 색은 바랬지만, 이건 신전의 표식이 있군. 꽤 사용된 것 같아."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Whip
 <<effects>><<museumClearHint "antiquewhip">>
 <<npc Winter>><<person1>>
 
-"This is a nasty thing," Winter says. <<He>> sounds disturbed, but <<his>> fingers tremble as <<he>> feels its length. "It was made by, or at least for, the temple, but it's nothing like the ceremonial whips used in nowadays. This was made to hurt."
+"이건 끔찍한 물건이군." 윈터가 말한다. <<He>>【은는】 불안한 목소리지만, <<his>> 손가락은 그 길이를 느끼며 떨린다. "신전에 의해, 혹은 적어도 신전을 위해 만들어졌지만, 요즘 사용되는 의식용 채찍과는 전혀 다르다. 이건 상처를 입히기 위해 만들어졌다."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Intricate Horn
 <<effects>><<museumClearHint "antiquehorn2">>
 <<npc Winter>><<person1>>
 
-"From a statue, you say?" Winter says, tracing the silver with <<his>> fingertips. "Shame we can't move the whole thing here, but I dread to think about the expense. Still, if we could have just one piece of the whole, we could do worse than this."
+"조각상에서 나왔다고?" 윈터가 <<his>> 손끝으로 은을 따라가며 말한다. "전체를 여기로 옮길 수 없다는 게 아쉽지만, 그 비용을 생각하면 끔찍하군. 그래도 전체 중 한 조각이라도 가질 수 있다면, 이보다 나쁠 순 없겠지."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
-
 
 :: Museum Gold Dagger
 <<effects>><<museumClearHint "antiquegolddagger">>
 <<npc Winter>><<person1>>
 
-"This is peculiar," Winter says, examining the blade through a magnifying glass. "There are traces of silver, as if it were silver plated. Someone wanted to conceal the gold, then someone wanted to reveal it."
+"이건 기묘하군." 윈터가 돋보기로 칼날을 살피며 말한다. "은으로 도금된 것처럼 은의 흔적이 있다. 누군가는 금을 숨기고 싶어 했고, 또 누군가는 그것을 드러내고 싶어 했군."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Gold Amulet
 <<effects>><<museumClearHint "antiquegoldamulet">>
 <<npc Winter>><<person1>>
 
-"A very valuable find," Winter says, letting the amulet dangle from its chain. "Tarnished, but less than typical for an object so old. I wonder what story these burn marks could tell."
+"아주 귀중한 발견이야." 윈터가 목걸이 줄을 늘어뜨리며 말한다. "변색됐지만, 이렇게 오래된 물건치고는 덜한 편이야. 이 그을린 자국이 어떤 이야기를 들려줄지 궁금하군."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Gold Mask
 <<effects>><<museumClearHint "antiquegoldmask">>
 <<npc Winter>><<person1>>
 
-"This was used by the old religion," Winter says. "It would have had jewels for eyes, then. You say you found it with the gold amulet and dagger? That's unsettling."
+"이건 옛 종교에서 사용되던 거야." 윈터가 말한다. "그때는 눈에 보석이 박혀 있었겠지. 금 부적과 단검과 함께 발견했다고? 그거 불안한데."
 <br><br>
 
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 <br>
 
 :: Museum Shovel Handle
@@ -1601,9 +1562,9 @@ Winter taps the artillery shell. "It's not live," <<he>> says. "Not after all th
 <<museumClearHint "antiqueshovelhandle">>
 <<npc Winter>><<person1>>
 
-Winter touches the handle gingerly. "This is barely being held together. Decades of water damage has almost destroyed this piece," <<he>> says.
+윈터가 손잡이를 조심스럽게 만져 본다. "간신히 형태만 유지하고 있군. 수십 년간 물에 잠겨 있어서 이 물건은 거의 망가졌어." <<he>>【이가】 말한다.
 <br><br>
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Lantern
 <<effects>>
@@ -1611,9 +1572,9 @@ Winter touches the handle gingerly. "This is barely being held together. Decades
 <<museumClearHint "antiquelantern">>
 <<npc Winter>><<person1>>
 
-Winter holds the lantern. "This design was common in the 1930s," <<he>> says. "Built to last. I wouldn't be surprised if it still worked."
+윈터가 랜턴을 들어 올린다. "이 디자인은 1930년대에 흔했지." <<he>>【이가】 말한다. "튼튼하게 만들었군. 아직도 작동한다고 해도 놀랍지 않아."
 <br><br>
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Rusty Pickaxe
 <<effects>>
@@ -1621,12 +1582,12 @@ Winter holds the lantern. "This design was common in the 1930s," <<he>> says. "B
 <<museumClearHint "antiquerustypickaxe">>
 <<npc Winter>><<person1>>
 
-Winter grips the handle. "These were commonly used in the nearby mines," <<he>> says.
+윈터가 자루를 움켜쥔다. "이런 건 근처 광산에서 흔히 쓰였지." <<he>>【이가】 말한다.
 <<if !$mine.diamond_talk>>
-	"You haven't been going there, have you?"
+	"너 거기 간 건 아니겠지?"
 <</if>>
 <br><br>
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>
 
 :: Museum Purple Diamond
 <<effects>>
@@ -1635,8 +1596,8 @@ Winter grips the handle. "These were commonly used in the nearby mines," <<he>> 
 <<npc Winter>><<person1>>
 <<set $mine.diamond_talk to 1>>
 
-Winter stares at the diamond, enraptured. You grab <<his>> shoulder and shake <<him>>. It seems to snap <<him>> out of it. "Sorry, I don't know what got into me," <<he>> says looking embarrassed. "Where did you even find this?"
+윈터가 넋을 잃고 다이아몬드를 바라본다. 당신이 윈터의 어깨를 붙잡고 흔들자, 정신이 번쩍 든 듯하다. "미안, 내가 왜 이랬는지 모르겠군." <<he>>【이가】 민망한 얼굴로 말한다. "이건 대체 어디서 찾았나?"
 <br><br>
-You tell <<him>> about how you cleared a collapsed section of the mines and swam through a flooded tunnel, ending with the strange room you found it in. <<He>> listens intently. "You went in the mines! You shouldn't go back there, the mines are extremely dangerous. They were shut down for a reason."
+당신은 윈터에게 무너진 광산 구간을 치우고 물에 잠긴 터널을 헤엄쳐 지나, 이것을 발견한 기이한 방에 이르기까지의 이야기를 들려준다. 윈터는 귀를 기울여 듣는다. "광산에 들어갔다니! 다시는 거기 가면 안 돼. 광산은 아주 위험해. 이유가 있어서 폐쇄된 거야."
 <br><br>
-<<link [[Next|Museum]]>><<endevent>><</link>>
+<<link [[다음|Museum]]>><<endevent>><</link>>

@@ -73,7 +73,7 @@ Dynamic.eventBinderWithId = (id, ...valuesToInject) => {
 	Dynamic.task(() => {
 		const elm = document.getElementById(id);
 		if (!elm) {
-			console.warn(`Unable to find Dynamic id ${id} on page. Page maybe rendered incorrectly`);
+			console.warn(`페이지에서 Dynamic id를 찾을 수 없습니다: ${id}. 페이지가 잘못 렌더링되었을 수 있습니다.`);
 		} else {
 			Dynamic.bindEvents(elm, {}, valuesToInject);
 		}
@@ -140,7 +140,7 @@ Macro.add("dynamicblock", {
 			} else if (arg.indexOf("class=") === 0) {
 				div.className = arg.slice(6);
 			} else {
-				return this.error(`bad dynamicblock argument '${arg}'`);
+				return this.error(`잘못된 dynamicblock 인수입니다: '${arg}'`);
 			}
 		}
 		if (!div.id) div.id = Dynamic.getNewId();
@@ -193,14 +193,14 @@ Dynamic.processTasks = () => {
 		}
 
 		if (inLoopTasks++ > Dynamic.MAX_IN_LOOP_TASKS) {
-			console.error(`Too many dynamic tasks, likely an infinite recursion occurred. Quitting.`);
+			console.error(`Dynamic 작업이 너무 많습니다. 무한 재귀가 발생했을 가능성이 있어 중단합니다.`);
 			break;
 		}
 	}
 	Dynamic.stage = Dynamic.Stage.Settled;
 	if (errors.length) {
 		console.warn(
-			`Encountered errors while finishing a Dynamic render:`,
+			`Dynamic 렌더링을 마무리하는 중 오류가 발생했습니다:`,
 			errors.map(([task, error]) => {
 				return [task.toString(), error];
 			})
@@ -213,7 +213,7 @@ Dynamic.task = (fn, name) => {
 		try {
 			fn();
 		} catch (e) {
-			console.warn(`Encountered an unexpected critical error while performing a dynamic render task`, fn.toString(), e);
+			console.warn(`Dynamic 렌더링 작업을 수행하는 중 예상치 못한 치명적 오류가 발생했습니다.`, fn.toString(), e);
 		}
 	} else {
 		Dynamic.tasks.push(fn);
@@ -247,7 +247,7 @@ Dynamic.renderAt = (id, content) => {
 		elm.append(Wikifier.wikifyEval(content));
 		Dynamic.stage = priorStage;
 	} else {
-		console.warn(`Unable to locate element {#${id}} for rendering content:`, content);
+		console.warn(`콘텐츠 렌더링 대상 요소 {#${id}}를 찾을 수 없습니다:`, content);
 	}
 };
 const SUGARCUBE_IDENTIFIER = /(.*?)\$([A-Za-z0-9_]+)(.*)/g;
@@ -285,12 +285,12 @@ Dynamic.createBoundHandler = (sourceHandler, ...valuesToInject) => {
 		};
 	} catch (e) {
 		console.error(
-			`Failed to create bound handler from raw handler:`,
+			`원본 핸들러에서 바인딩된 핸들러를 만들지 못했습니다:`,
 			handlerText,
-			`\nLast contents / match:`,
+			`\n마지막 내용 / 일치 항목:`,
 			handlerContents,
 			lastMatch,
-			`\nError encountered:`,
+			`\n발생한 오류:`,
 			e
 		);
 		throw e;

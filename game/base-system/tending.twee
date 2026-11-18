@@ -74,38 +74,38 @@
 <<widget "display_quality">><<silently>>
 	<<set $_plot to _args[0]>>
 	<<switch $_plot.bed>>
-		<<case "water">><<set _bedType to "water">>
-		<<case "earth">><<set _bedType to "soil">>
+		<<case "water">><<set _bedType to "수경 재배지">>
+		<<case "earth">><<set _bedType to "흙밭">>
 		<<default>><<set _bedType to clone($_plot.bed)>>
 	<</switch>>
 
 	<<switch Math.clamp($_plot.quality, 0, 4)>>
-		<<case 1>> <<set $_result to `<span class="blue">poor `+_bedType+`</span>`>>
-		<<case 2>> <<set $_result to `<span class="lblue">decent `+_bedType+`</span>`>>
-		<<case 3>> <<set $_result to `<span class="teal">good `+_bedType+`</span>`>>
-		<<case 4>> <<set $_result to `<span class="green">excellent `+_bedType+`</span>`>>
-		<<default>> <<set $_result to `<span class="red">ERROR</span>`>>
+		<<case 1>> <<set $_result to `<span class="blue">형편없는 `+_bedType+`</span>`>>
+		<<case 2>> <<set $_result to `<span class="lblue">괜찮은 `+_bedType+`</span>`>>
+		<<case 3>> <<set $_result to `<span class="teal">좋은 `+_bedType+`</span>`>>
+		<<case 4>> <<set $_result to `<span class="green">훌륭한 `+_bedType+`</span>`>>
+		<<default>> <<set $_result to `<span class="red">에러</span>`>>
 	<</switch>>
 <</silently>><<print $_result>><</widget>>
 
-<<widget "display_plot">> <!-- Argument is the plot location you want to display. -->
+<<widget "display_plot">><!-- Argument is the plot location you want to display. -->
 	<<set _location to _args[0]>>
 	<<set $_plotsHere to $plots[_location]>>
 	<<set _water_needed to 0>>
 	<<if $tendingUI is undefined>>
 		<<set $tendingUI to {hideOutOfSeason: false, hideIncompatible: false, hiddenSeeds: []}>>
 	<</if>>
-	There <<pluralise $_plotsHere.length "is">> <<number $_plotsHere.length>> tillable
+	이곳에는 개간할 수 있는
 	<<switch $_plotsHere[0].size>>
-		<<case "small">> <span class="lblue"><<pluralise $_plotsHere.length "bed">></span>
-		<<case "medium">> <span class="teal"><<pluralise $_plotsHere.length "plot">></span>
-		<<default>> <span class="green"><<pluralise $_plotsHere.length "field">></span>
+		<<case "small">> <span class="lblue">화단</span>
+		<<case "medium">> <span class="teal">밭</span>
+		<<default>> <span class="green">들판</span>
 	<</switch>>
-	here.
+	<<number $_plotsHere.length>>곳이 있다.
 	<<if $fertiliser.current + $fertiliser.used gt 0>>
-		You have <<number $fertiliser.current>> <<pluralise $fertiliser.current "bag">> of fertiliser.
+		비료 <<number $fertiliser.current>>포대를 가지고 있다.
 	<</if>>
-	Tilling time is reduced by tending skill.
+	관리 스킬이 높을수록 개간 시간이 줄어든다.
 	<br><br>
 
 	<<if _location is "garden" and $robin.autoWater and C.npc.Robin.trauma < 50 and ["orphanage", "garden", "bath"].includes(getRobinLocation()) and Time.hour is 16 and between(Time.minute, 30, 59) and orphanagePlotsPlanted() and !orphanagePlotsWatered() and Weather.precipitation !== "rain" and (Weather.precipitation !== "snow" or V.alex_greenhouse >= 3)>>
@@ -113,7 +113,7 @@
 			<span class="green">Robin is out here with a watering can, waiting to do this with you.</span>
 			<br><br>
 		<<else>>
-			<span class="green">Robin is busy watering the garden for you.</span>
+			<span class="green">로빈이 당신을 위해 정원에 물을 주느라 바쁘다.</span>
 			<br>
 			<<exit>>
 		<</if>>
@@ -134,13 +134,13 @@
 
 	<<for _plantbed range $_plotsHere>>
 		<<capture _plantbed>>
-			<span class="gold"><<wordify_i $_i true>> plot (<<display_quality _plantbed>>):</span>
+			<span class="gold"><<wordify_i $_i true>> 구획 (<<display_quality _plantbed>>):</span>
 
 			<<if _plantbed.stage gte 1>>
 				<<set $_plantedPlant to setup.foodstuff[_plantbed.plant]>>
 				<<if $_plantedPlant is undefined>>
 					<<error {
-						message	: `Could not access property from modded save. (${_plantbed.plant})`,
+						message : `모드 세이브의 속성에 접근할 수 없습니다. (${_plantbed.plant})`,
 					}>>
 					<<exitAll>>
 				<</if>>
@@ -168,7 +168,7 @@
 			<</if>>
 
 			<<if _plantbed.stage gte 5>>
-				<span class="green">The <<print $_plantedPlant.tending?.seed_name ? `$_plantedPlant.tending.seed_name is` : `$_plantedPlant.plural are`>> flowering and ready for picking.</span>
+				<span class="green"><<print $_plantedPlant.tending?.seed_name ? `$_plantedPlant.tending.seed_name` : `$_plantedPlant.plural`>>【이가】 꽃을 피워 수확할 준비가 되어 있다.</span>
 				<br>
 				<<switch _plantbed.size>>
 					<<case "small">> <<set _pass to 10>>
@@ -179,42 +179,42 @@
 				<<set $_timeStr to getTimeString(_pass)>>
 
 				<<if pcAreArmsBound("both")>>
-					<span class="red">Can't pick when your arms are bound.</span>
+					<span class="red">팔이 묶여 있어 수확할 수 없다.</span>
 				<<else>>
 					<<if $options.images is 1>>
 						<<foodstufficon _plantbed.plant>>
 					<</if>>
-					<<link "Pick ($_timeStr)" $passage>><<pass _pass>><<tending_harvest _plantbed>><<clear_plot _plantbed>><</link>>
+					<<link "수확한다 ($_timeStr)" $passage>><<pass _pass>><<tending_harvest _plantbed>><<clear_plot _plantbed>><</link>>
 				<</if>>
 				<br>
 
 			<<elseif _plantbed.stage is 4>>
-				<span class="teal">The <<print $_plantedPlant.tending?.seed_name ? `$_plantedPlant.tending.seed_name is` : `$_plantedPlant.plural are`>> budding.</span>
+				<span class="teal"><<print $_plantedPlant.tending?.seed_name ? `$_plantedPlant.tending.seed_name` : `$_plantedPlant.plural`>>【이가】 싹을 틔우고 있다.</span>
 			<<elseif _plantbed.stage is 3>>
-				<span class="lblue">The <<print $_plantedPlant.tending?.seed_name ? `$_plantedPlant.tending.seed_name has` : `$_plantedPlant.plural have`>> grown into seedlings.</span>
+				<span class="lblue"><<print $_plantedPlant.tending?.seed_name ? `$_plantedPlant.tending.seed_name` : `$_plantedPlant.plural`>>【이가】 모종으로 자라났다.</span>
 			<<elseif _plantbed.stage is 2>>
-				<span class="blue"><<print $_plantedPlant.tending?.seed_name ? `${$_plantedPlant.tending.seed_name.toUpperFirst()} sprouts` : `Thin $_plantedPlant.plural sprout`>> from the soil.</span>
+				<span class="blue"><<print $_plantedPlant.tending?.seed_name ? `${$_plantedPlant.tending.seed_name.toUpperFirst()}` : `$_plantedPlant.plural`>>【이가】 흙에서 작은 싹을 틔운다.</span>
 			<<elseif _plantbed.stage is 1>>
-				<span class="blue">You planted <<print $_plantedPlant.name.replace(/_/g," ")>> seeds here.</span>
+				<span class="blue">이곳에 <<print $_plantedPlant.plural>> 씨앗을 심었다.</span>
 			<<else>>
 				<<if _plantbed.till gte 1>>
-					The soil is ready for planting.
+					씨앗을 심을 준비가 되었다.
 					<<if $plants_known.length is 0>>
 						<br>
-						Search wild areas for seeds to plant.
+						심을 씨앗은 야생 지역에서 찾아야 한다.
 						<br>
 					<<elseif _seedsByBed[_plantbed.bed].length is 0>>
 						<br>
-						<span class="blue">None of your seeds can be planted here right now.</span>
+						<span class="blue">지금은 이곳에 심을 수 있는 씨앗이 없다.</span>
 						<br>
 					<<else>>
 						<details class="journal">
-							<summary class="journal">Plant seeds (<<= _seedsByBed[_plantbed.bed].length>> available)</summary>
+							<summary class="journal">씨앗 심기 (<<= _seedsByBed[_plantbed.bed].length>>개 가능)</summary>
 							<<tendingPlantSeedsOptions _location _plantbed `_seedsByBed[_plantbed.bed]`>>
 						</details>
 					<</if>>
 				<<else>>
-					The soil is ready for tilling.
+					개간할 준비가 되었다.
 					<br>
 					<<tendingTillOptions _plantbed>>
 				<</if>>
@@ -223,10 +223,10 @@
 				<<if _plantbed.bed is "water">>
 					<br>
 				<<elseif _plantbed.water is 1>>
-					<span class="green">The <<print (_plantbed.bed is "large" ? "field" : "plot")>> is watered.</span>
+					<span class="green"><<print (_plantbed.size is "large" ? "들판이" : "밭이")>> 물에 젖었다.</span>
 					<br>
 				<<else>>
-					<span class="purple">The <<print (_plantbed.bed is "large" ? "field" : "plot")>> is dry.</span>
+					<span class="purple"><<print (_plantbed.size is "large" ? "들판이" : "밭이")>> 말라 있다.</span>
 					<br>
 					<<tendingWaterPlot _plantbed>>
 					<br>
@@ -248,11 +248,11 @@
 			<<set $_hoursUntilAttack to (24 - Time.hour)>>
 		<</if>>
 		<<if $location is "alex_farm" and _plotsToWater.length gte $_hoursUntilAttack>>
-			<span class="pink">You won't have enough time to water all your fields before Remy's arrival.</span>
+			<span class="pink">레미가 도착하기 전에 모든 밭에 물을 줄 충분한 시간이 없다.</span>
 		<<else>>
 			<<if !pcAreArmsBound("both")>>
 				<<gardenicon "water">>
-				<<link "Water all dry beds ($_time)" $passage>>
+				<<link "모든 마른 밭에 물을 준다 ($_time)" $passage>>
 					<<tendingWaterAllDryBeds _plotsToWater>><<tiredness _water_needed>><<physique _water_needed>><<tending _water_needed>>
 				<</link>><<gtiredness>><<gtending>>
 			<</if>>
@@ -261,14 +261,14 @@
 	<</if>>
 	<<if _readyBeds.length gte 1>>
 		<<for _plantType range _brokenSeeds>>
-			<span class="red">Plant type '<<= _plantType>>' not found.</span>
+			<span class="red">'<<= _plantType>>' 식물 종류를 찾을 수 없습니다.</span>
 			<br><br>
-			Please report this.
+			이 버그를 보고해 주십시오.
 			<br>
 		<</for>>
 		<<if _blockedSeeds.length gte 1>>
 			<details class="journal">
-				<summary class="journal">Seeds you can't plant (<<= _blockedSeeds.length>>)</summary>
+				<summary class="journal">심을 수 없는 씨앗 (<<= _blockedSeeds.length>>)</summary>
 				<<tendingUnplantableSeeds _readyBeds `_blockedSeeds`>>
 			</details>
 			<br>
@@ -288,7 +288,7 @@
 	<<gardenicon "fertiliser">><<link [[Seed list settings|Seed List Settings]]>><<set $tendingUIExitPassage to $passage>><</link>>
 	<<if $debug is 1 and $_plotsHere.filter(plot => plot.stage > 0 && plot.stage < 5).length gte 1>>
 		<br>
-		<<link "DEBUG: Instagrow all plants here" $passage>><<run tendingInstaGrow(_location)>><</link>>
+		<<link "DEBUG: 이곳의 모든 작물을 즉시 다 자라게 함" $passage>><<run tendingInstaGrow(_location)>><</link>>
 		<br>
 	<</if>>
 <</widget>>
@@ -306,10 +306,10 @@
 
 	<<set $_time to getTimeString(_tPass)>>
 	<<if pcAreArmsBound("both")>>
-		<span class="red">Can't water when your arms are bound.</span>
+		<span class="red">팔이 묶인 상태에서는 물을 줄 수 없다.</span>
 	<<else>>
 		<<gardenicon "water">>
-		<<link "Water ($_time)" $passage>>
+		<<link "물을 준다 ($_time)" $passage>>
 			<<tending _tStatup>><<pass _tPass>><<set _plantbed.water to 1>><<set $tendingvars.plot_watered to true>>
 			<<tiredness _tStatup>><<physique _tStatup>><<set $phase to Number(dangerEvent())>><<set $phase2 to "watered">>
 		<</link>><<gtiredness>><<gtending>>
@@ -387,16 +387,16 @@
 					<<if $options.images is 1>>
 						<<foodstufficon _plantType>>
 					<</if>>
-					<<link "Plant $_name ($_timeString)" $passage>><<pass _passTime>><<run plantSeedsInPlot(_plantbed, _plantType)>><</link>>
+					<<link "$_name【을를】 심는다 ($_timeString)" $passage>><<pass _passTime>><<run plantSeedsInPlot(_plantbed, _plantType)>><</link>>
 				<</capture>>
 				<<if !$settings.blindStatsEnabled>>
-					<span class="orange">(<<print $_plant.tending.growth_days>> days)</span>
+					<span class="orange">(<<print $_plant.tending.growth_days>> 일)</span>
 				<</if>>
 			<<else>>
 				<<if $options.images is 1>>
 					<<foodstufficon _plantType>>
 				<</if>>
-				<span class="blue"><<print $_name.toLocaleUpperFirst()>> only grow<<if $_plant.tending.seed_name>>s<</if>> in <<print $_plant.tending.planting_bed>>.</span>
+				<span class="blue"><<print $_name.toLocaleUpperFirst()>>【은는】 <<print _bedName>>에서만 자랍니다<<if $_plant.tending.seed_name>>. (<<print $_plant.tending.seed_name>> 씨앗)<</if>>.</span>
 			<</if>>
 				<<else>>
 					<<tending_season_notice _plantType>>
@@ -419,7 +419,7 @@
 		<<else>>
 			<<set $_name to $_plant.tending.seed_name ? $_plant.tending.seed_name : $_plant.plural>>
 			<<foodstufficon _plantType>>
-			<span class="blue"><<print $_name.toLocaleUpperFirst()>> only grow<<if $_plant.tending.seed_name>>s<</if>> in <<print $_plant.tending.planting_bed>>.</span>
+			<span class="blue"><<print $_name.toLocaleUpperFirst()>>【은는】 <<print _bedName>>에서만 자랍니다<<if $_plant.tending.seed_name>>. (<<print $_plant.tending.seed_name>> 씨앗)<</if>>.</span>
 		<</if>>
 		<br>
 	<</for>>
@@ -476,15 +476,15 @@
 		<<set $_timeUntilAttack to ((23 - Time.hour) * 60) + (60 - Time.minute)>>
 	<</if>>
 	<<if pcAreArmsBound("both")>>
-		<span class="red">Can't till when your arms are bound.</span>
+		<span class="red">팔이 묶인 상태에서는 땅을 일굴 수 없다.</span>
 		<br>
 	<<else>>
 		<<if $location is "alex_farm" and _baseTime gte $_timeUntilAttack>>
-			<span class="pink">Not enough time to till the field before Remy's arrival.</span>
+			<span class="pink">레미가 도착하기 전에 밭을 일굴 시간이 부족하다.</span>
 		<<else>>
 			<<capture _baseTiredness _baseTime _plantbed>>
 				<<gardenicon "till">>
-				<<link "Till (_timeString)" $passage>>
+				<<link "밭을 간다 (_timeString)" $passage>>
 					<<set $tendingvars.plot_tilled to true>>
 					<<tiredness _baseTiredness>><<physique _baseTiredness>>
 					<<if $location is "alex_farm">>
@@ -502,7 +502,7 @@
 			<<set _fertTiredness to Math.floor(_baseTiredness * 1.5)>>
 			<<capture _baseTimeFert _fertTiredness _plantbed>>
 				<<gardenicon "fertiliser">>
-				<<link "Till and apply fertiliser (_timeString)" $passage>>
+				<<link "밭을 갈고 비료를 준다 (_timeString)" $passage>>
 					<!-- Till -->
 					<<set $tendingvars.plot_tilled_fertiliser to true>>
 					<<tiredness _fertTiredness>><<physique _fertTiredness>>
@@ -556,66 +556,66 @@
 
 <<widget "plot_effects">>
 	<<if $tendingvars.plot_watered>>
-		You water the plot. <span class="gold">You get a good workout.</span>
+		밭에 물을 준다. <span class="gold">좋은 운동이 된다.</span>
 		<br>
 	<<elseif $tendingvars.all_plots_watered>>
-		You water the plots. <span class="gold">You get a good workout.</span>
+		마른 밭에 모두 물을 준다. <span class="gold">좋은 운동이 된다.</span>
 		<br>
 	<</if>>
 	<<if $tendingvars.harvest>>
-		You harvest <<number $tendingvars.harvest_amount>> <<print $tendingvars.harvest_name>>. <<harvestText>>
+		<<print window.KR.getFoodstuffCountKr($tendingvars.harvest_type, $tendingvars.harvest_amount)>>【을를】 수확한다. <<harvestText>>
 		<<if $tendingvars.plotDecay>>
-			The fertiliser effect has decayed<<if $tendingvars.plotDecay is 2>> completely<</if>>.
+			비료의 효과가<<if $tendingvars.plotDecay is 2>> 완전히<</if>> 사라졌다.
 		<</if>>
 		<br>
 	<</if>>
 	<<if $tendingvars.plot_tilled>>
 		<<wearProp "hoe">>
-		You get to work removing weeds and tilling the soil. It's hard going, but when you're done the soil is ready for planting.
-		<span class="gold">You get a good workout.</span>
+		잡초를 뽑고 흙을 갈기 시작한다. 고된 일이지만, 끝나고 나면 흙은 씨앗을 심을 준비가 되어 있다.
+		<span class="gold">좋은 운동이 된다.</span>
 		<br>
 	<</if>>
 	<<if $tendingvars.plot_tilled_fertiliser>>
 		<<wearProp "fertiliser">>
-		You get to work removing weeds and tilling the soil while mixing in some fertiliser. It's hard going, but when you're done the soil is ready for planting.
-		<span class="gold">You get a good workout.</span>
+		약간의 비료를 섞으며 잡초를 뽑고 흙을 갈기 시작한다. 고된 일이지만, 끝나고 나면 흙은 씨앗을 심을 준비가 되어 있다.
+		<span class="gold">좋은 운동이 된다.</span>
 	<</if>>
 	<<if $tendingvars.plot_planted>>
-		You plant the seeds in the cool earth.
+		시원한 흙 속에 씨앗을 심는다.
 		<br>
 	<</if>>
 	<<tendingCalm>>
 	<<if Weather.precipitation is "rain">>
 		<<if $location is "home" and $alex_greenhouse gte 3>>
-			<span class="green">A rainwater harvester soaks the ground inside the greenhouse.</span>
+			<span class="green">빗물받이가 온실 안의 땅을 흠뻑 적신다.</span>
 		<<else>>
-			<span class="green">The rain soaks the ground.</span>
+			<span class="green">비가 땅을 흠뻑 적신다.</span>
 		<</if>>
 		<br>
 	<<elseif $location is "home" and orphanagePlotsPlanted() and ["orphanage", "garden", "bath", "sleep"].includes(getRobinLocation())>>
 		<<if $robin.autoWater and C.npc.Robin.trauma gte 50 and ((Time.hour gte 16 and Time.minute gte 30) or Time.hour gte 17) and !orphanagePlotsWatered()>>
-			<span class="red">Robin is too traumatised to water the garden for you.</span>
+			<span class="red">로빈은 트라우마가 너무 심해 당신을 위해 정원에 물을 줄 수 없다.</span>
 			<<set $robin.autoWater to false>><<set $robin.waterTogether to false>>
 			<br>
 		<<elseif Weather.precipitation is "snow">>
 			<<if $alex_greenhouse gte 3>>
 				<<if $daily.robin.watered>>
 					<<if $daily.robin.watered is "together">>
-						<span class="green">You watered the garden with Robin.</span>
+						<span class="green">로빈과 함께 정원에 물을 주었다.</span>
 					<<elseif $daily.robin.watered is "alone">>
-						<span class="green">Robin watered the garden for you.</span>
+						<span class="green">로빈이 당신을 위해 정원에 물을 주었다.</span>
 					<</if>>
 				<</if>>
 			<<elseif $robin.autoWater and ((Time.hour gte 16 and Time.minute gte 30) or Time.hour gte 17) and !orphanagePlotsWatered()>>
-				<span class="blue">Robin won't water the garden while it's snowing.</span>
+				<span class="blue">로빈은 눈이 오는 동안 정원에 물을 주지 않는다.</span>
 			<</if>>
 			<br>
 		<<elseif $daily.robin.watered>>
 			<<if $daily.robin.watered is "together">>
-				<span class="green">You watered the garden with Robin.</span>
+				<span class="green">로빈과 함께 정원에 물을 주었다.</span>
 				<br>
 			<<elseif $daily.robin.watered is "alone">>
-				<span class="green">Robin watered the garden for you.</span>
+				<span class="green">로빈이 당신을 위해 정원에 물을 주었다.</span>
 				<br>
 			<</if>>
 		<</if>>
@@ -661,7 +661,7 @@
 	<<if !$backgroundTraits.includes("greenthumb") and $tending gte 1000 and $plants_known.length gte 16 and
 	($fertiliser.used gte 40 or ($fertiliser.used gte 25 and $farm_stage gte 6))>>
 		<<run $backgroundTraits.pushUnique("greenthumb")>>
-		<span class="gold">Spending a large amount of time in the dirt has given you a green thumb.</span>
+		<span class="gold">오랜 시간 흙을 만진 덕분에 식물을 돌보는 솜씨가 늘었다.</span>
 		<br>
 	<</if>>
 	<<if $backgroundTraits.includes("greenthumb")>>
@@ -681,7 +681,8 @@
 
 	<<set $tendingvars.harvest to true>>
 	<<set $tendingvars.harvest_amount to _tending_amount>>
-	<<set $tendingvars.harvest_name to (_tending_amount is 1 ? setup.foodstuff[$_type].name.replace(/_/g," ") : setup.foodstuff[$_type].plural)>>
+	<<set $tendingvars.harvest_type to $_type>>
+	<<set $tendingvars.harvest_name to (_tending_amount is 1 ? setup.foodstuff[$_type].singular : setup.foodstuff[$_type].plural)>>
 <</widget>>
 
 <<widget "tending_pick">>
@@ -714,25 +715,13 @@
 	<<set $foodstuff[$_type].amount += _tending_amount>>
 	<<set $wild_plant_stat += _tending_amount>>
 
-	You pick
-	<<if $_type is "bird_egg">>
-		up
+	<<if $options.images is 1>>
+		<<foodstufficon $_type>>
 	<</if>>
 	<<if _tending_amount is 1>>
-		<<if (["a","e","i","o","u","A","E","I","O","U"].some(letter => $_type.startsWith(letter)))>>
-			an
-		<<else>>
-			a
-		<</if>>
-		<<if $options.images is 1>>
-			<<foodstufficon $_type>>
-		<</if>>
-		<<print setup.foodstuff[$_type].name.replace(/_/g," ")>>.
+		<<print setup.foodstuff[$_type].plural>>【을를】 채집한다.
 	<<else>>
-		<<if $options.images is 1>>
-			<<foodstufficon $_type>>
-		<</if>>
-		<<number _tending_amount>> <<print setup.foodstuff[$_type].plural>>.
+		<<print window.KR.getFoodstuffCountKr($_type, _tending_amount)>>【을를】 채집한다.
 	<</if>>
 <</widget>>
 
@@ -753,8 +742,8 @@
 		<<foodstufficon _args[0]>>
 	<</if>>
 	<span class="blue">
-	<<set $_seasons to formatList($_plant.tending?.seasons || [])>>
-		<<print $_plant.plural.toLocaleUpperFirst()>> can only be planted in $_seasons.
+	<<set $_seasons to formatList(($_plant.tending?.seasons || []).map(season => window.KR.getSeasonKr(season)), "【와과】")>>
+		<<print $_plant.plural.toLocaleUpperFirst()>>【은는】 $_seasons에만 심을 수 있습니다.
 	</span>
 <</widget>>
 
@@ -779,67 +768,62 @@
 <</widget>>
 
 <<widget "updateFoodstuffVariables">>
-	<<set $_oldKey to _args[0]>>
-	<<set $_newKey to _args[1]>>
+    <<set $_oldKey to _args[0]>>
+    <<set $_newKey to _args[1]>>
 
-	<<if $foodstuff[$_oldKey]>>
-		<<set $foodstuff[$_newKey] to clone($foodstuff[$_oldKey])>>
-		<<run delete V.foodstuff[$_oldKey]>>
-	<</if>>
+    <<if $foodstuff[$_oldKey]>>
+        <<set $foodstuff[$_newKey] to clone($foodstuff[$_oldKey])>>
+        <<run delete V.foodstuff[$_oldKey]>>
+    <</if>>
 
-	<<if $avery_mansion?.food is $_oldKey>>
-		<<set $avery_mansion.food to $_newKey>>
-	<</if>>
-	<<if $avery_mansion?.food_last is $_oldKey>>
-		<<set $avery_mansion.food_last to $_newKey>>
-	<</if>>
-	<<if $avery_requested_food is $_oldKey>>
-		<<set $avery_requested_food to $_newKey>>
-	<</if>>
+    <<if $avery_mansion?.food is $_oldKey>>
+        <<set $avery_mansion.food to $_newKey>>
+    <</if>>
+    <<if $avery_mansion?.food_last is $_oldKey>>
+        <<set $avery_mansion.food_last to $_newKey>>
+    <</if>>
+    <<if $avery_requested_food is $_oldKey>>
+        <<set $avery_requested_food to $_newKey>>
+    <</if>>
 <</widget>>
 
 <<widget "foodstuffReport">>
-	<<set _name to _args[0]>>
-	<<set _quantity to _args[1]>>
-	<<set _icon to _args[2] ? _args[2] : "">>
+    <<set _name to _args[0]>>
+    <<set _quantity to _args[1]>>
+    <<set _icon to _args[2] ? _args[2] : "">>
 
-	<<if _quantity is 1>>
-		<<if (["a","e","i","o","u","A","E","I","O","U"].some(letter => _name.startsWith(letter)))>>
-			an
-		<<else>>
-			a
-		<</if>>
-		<<if _icon is not "">>
-			<<foodstufficon _icon>>
-		<</if>>
-		<<print setup.foodstuff[_name].name.replace(/_/g," ")>>\
-	<<else>>
-		<<if _icon is not "">>
-			<<foodstufficon _icon>>
-		<</if>>
-		<<number _quantity>> <<print setup.foodstuff[_name].plural>>\
-	<</if>>
+    <<if _quantity is 1>>
+        <<if _icon is not "">>
+            <<foodstufficon _icon>>
+        <</if>>
+        <<print setup.foodstuff[_name].name.replace(/_/g," ")>>\
+    <<else>>
+        <<if _icon is not "">>
+            <<foodstufficon _icon>>
+        <</if>>
+        <<print window.KR.getFoodstuffCountKr(_name, _quantity)>>\
+    <</if>>
 <</widget>>
 
 <<widget "harvestText">>
 	<<if currentSkillValue('tending') gte 100>>
-		Your tending skill improves the yield
+		관리 기술 덕분에 수확량이
 		<!-- Clamp so S+/SS/SSS tending (skill 1100+) can't overflow past the top case and fall back to the misleading "slightly". -->
 		<<switch Math.clamp(Math.floor(currentSkillValue('tending') / 100), 1, 15)>>
 			<<case 15 14 13 12 11>><span class = "lustful">phenomenally</span>.
-			<<case 10>><span class = "green">tremendously</span>.
-			<<case 9>><span class = "teal">hugely</span>.
-			<<case 8>><span class = "teal">greatly</span>.
-			<<case 7>><span class = "lblue">substantially</span>.
-			<<case 6>><span class = "lblue">significantly</span>.
-			<<case 5>><span class = "blue">noticeably</span>.
-			<<case 4>><span class = "blue">decently</span>.
-			<<case 3>><span class = "purple">modestly</span>.
-			<<case 2>><span class = "purple">a little</span>.
-			<<default>><span class = "pink">slightly</span>.
+			<<case 10>><span class="green">엄청나게</span> 증가한다.
+			<<case 9>><span class="teal">막대하게</span> 증가한다.
+			<<case 8>><span class="teal">크게</span> 증가한다.
+			<<case 7>><span class="lblue">상당히</span> 증가한다.
+			<<case 6>><span class="lblue">눈에 띄게</span> 증가한다.
+			<<case 5>><span class="blue">확실하게</span> 증가한다.
+			<<case 4>><span class="blue">제법</span> 증가한다.
+			<<case 3>><span class="purple">적당히</span> 증가한다.
+			<<case 2>><span class="purple">약간</span> 증가한다.
+			<<default>><span class="pink">아주 조금</span> 증가한다.
 		<</switch>>
 	<<else>>
-		Your tending skill is <span class = "red">too low</span> to improve the yield.
+		관리 기술이 <span class="red">너무 낮아</span> 수확량을 늘릴 수 없다.
 	<</if>>
 	<<if $worn.feet.type.includes("rugged")>>
 		<span class="green">Your rugged footwear helps you bring in a larger harvest.</span>

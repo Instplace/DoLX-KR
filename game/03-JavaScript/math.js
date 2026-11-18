@@ -170,11 +170,11 @@ window.randomExp = randomExp;
 function normalise(value, max, min = 0) {
 	const denominator = max - min;
 	if (denominator === 0) {
-		Errors.report("[normalise]: min and max params must be different.", { value, max, min });
+		Errors.report("[normalise]: min과 max 매개변수는 서로 달라야 합니다.", { value, max, min });
 		return 0;
 	}
 	if (denominator < 0) {
-		Errors.report("[normalise]: max param must be greater than min param.", { value, max, min });
+		Errors.report("[normalise]: max 매개변수는 min보다 커야 합니다.", { value, max, min });
 		return 0;
 	}
 	return Math.clamp((value - min) / denominator, 0, 1);

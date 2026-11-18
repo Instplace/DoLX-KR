@@ -3,7 +3,7 @@ Macro.add("safereplace", {
 	tags: null,
 	handler() {
 		if (this.args.length === 0) {
-			return this.error("no selector specified");
+			return this.error("선택자가 지정되지 않았습니다.");
 		}
 		const target = document.querySelector(this.args[0]);
 		if (target === null) return;

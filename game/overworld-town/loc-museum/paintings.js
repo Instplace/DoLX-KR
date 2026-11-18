@@ -1,3 +1,48 @@
+/* Hopeless Cycle 아이템 및 명칭 한국어 매핑 사전 */
+setup.hcItemNames = {
+	"torch": "횃불",
+	"snuffer": "횃불 끄개",
+	"torch snuffer": "횃불 끄개",
+	"water": "물",
+	"bucket": "양동이",
+	"container": "용기",
+	"bandages": "붕대",
+	"food": "음식",
+	"sheets": "천",
+	"prisoner": "죄수",
+	"clothes": "옷",
+	"clutter": "잡동사니",
+	"herbs": "약초",
+	"medicinal herbs": "약초",
+	"bones": "뼈",
+	"bloodstained sack": "피 묻은 포대자루",
+	"torn vegetable sack": "찢어진 야채 자루",
+	"prison gruel": "배급 죽",
+	"stolen food": "훔친 음식",
+	"stolen fruit": "훔친 과일",
+	"dish": "접시",
+	"stolen dish": "훔친 접시",
+	"used dish": "사용한 접시",
+	"ruined fabric scraps": "찢어진 천 조각",
+	"torn bandages": "찢어진 붕대",
+	"warded bandages": "보호 붕대",
+	"witchblooms": "마녀꽃",
+	"purified witchblooms": "정화된 마녀꽃",
+	"leather gloves": "가죽 장갑",
+	"forearm bones": "팔뚝뼈",
+	"bucket of water": "물 한 양동이",
+	"roll of bandages": "붕대 한 묶음",
+	"lit": "불 붙은",
+	"snuffed": "꺼진",
+	"burnt": "다 탄"
+};
+
+function hcTranslateName(name) {
+	if (!name) return "";
+	return setup.hcItemNames[name] || name;
+}
+window.hcTranslateName = hcTranslateName;
+
 function hcItemSetup() {
 	if (V.hcItems) {
 		V.hcItems = V.hcItems.filter(toKeep => toKeep.persists);
@@ -221,25 +266,26 @@ function hcItemsFilter(filterfn) {
 window.hcItemsFilter = hcItemsFilter;
 
 function hcItemName(item, cap = false, vanished = false, decorations = false) {
-	const nameSpace = decorations && item.nameText ? item.nameText : item.name;
+	const rawName = decorations && item.nameText ? item.nameText : item.name;
+	const nameSpace = decorations && item.nameText ? item.nameText : hcTranslateName(item.name);
 	let itemText;
 	switch (item.type) {
 		case "bandages":
-			itemText = "a roll of " + nameSpace;
+			itemText = nameSpace + " 한 개";
 			break;
 		case "snuffer":
-			itemText = "your torch snuffer";
+			itemText = "횃불 끄개";
 			break;
 		case "torch":
 			switch (item.state) {
 				case "lit":
-					itemText = "a lit torch";
+					itemText = "불 붙은 횃불";
 					break;
 				case "snuffed":
-					itemText = "an unlit torch";
+					itemText = "꺼진 횃불";
 					break;
 				default:
-					itemText = "a burnt out torch";
+					itemText = "다 탄 횃불";
 					break;
 			}
 			break;
@@ -247,32 +293,32 @@ function hcItemName(item, cap = false, vanished = false, decorations = false) {
 		case "sheets":
 		case "herbs":
 		case "bones":
-			itemText = "some " + nameSpace;
+			itemText = nameSpace + " 조금";
 			break;
 		case "food":
 			switch (item.name) {
 				case "prison gruel":
 					if (item.used) {
-						itemText = "a used bowl";
+						itemText = "사용한 그릇";
 					} else {
-						itemText = "a bowl of prison gruel";
+						itemText = "배급 죽 한 그릇";
 					}
 					break;
 				case "stolen food":
 					if (item.used) {
-						itemText = "a stolen plate";
+						itemText = "훔친 빈 접시";
 					} else {
-						itemText = "a plate of stolen food";
+						itemText = "훔친 음식이 담긴 접시";
 					}
 					break;
 				default:
-					itemText = "some stolen fruit";
+					itemText = "훔친 과일 조금";
 					break;
 			}
 			break;
 		case "bucket":
 		case "container":
-			itemText = "a " + item.name;
+			itemText = hcTranslateName(item.name);
 
 			// eslint-disable-next-line no-case-declarations
 			const containerItemArray = [];
@@ -290,14 +336,14 @@ function hcItemName(item, cap = false, vanished = false, decorations = false) {
 					});
 			}
 			if (containerItemArray.length) {
-				itemText += " containing " + formatList(containerItemArray);
+				itemText = formatList(containerItemArray) + "【이가】 담긴 " + hcTranslateName(item.name);
 			}
 			break;
 		case "water":
 			itemText = nameSpace;
 			break;
 		default:
-			itemText = "a " + nameSpace;
+			itemText = nameSpace;
 			break;
 	}
 

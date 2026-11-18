@@ -2,66 +2,66 @@
 <<widget "feats">>
 	<<updateFeats>>
 	<br>
-	As you play through Degrees of Lewdity, you will obtain <span class="gold">feats</span> by completing different tasks. The more feats you earn, the more <span class="gold">VrelCoins</span> you will earn. When you start a new game, your VrelCoins can be used to purchase <span class="gold">feat boosters</span>. These boosters grant you bonuses in your next game.
+Degrees of Lewdity를 플레이하며 다양한 임무를 완수함으로써 <span class="gold">업적</span>을 얻게 됩니다. 더 많은 업적을 얻을수록 더 많은 <span class="gold">브렐 코인</span>을 얻습니다. 새로운 게임을 시작할 때 브렐 코인을 이용해 <span class="gold">업적 부스터</span>를 구매할 수 있습니다. 이 부스터들은 다음 게임 시 다양한 보너스를 제공합니다.
 	<br><br>
-	This tab displays all the feats that have been unlocked in your <span class="gold">most recently loaded save</span>, which will carry over to your next playthrough. VrelCoins are earned linearly, over the course of a single playthrough. <span class="red">Save-hopping may cause your VrelCoins and unlocked feats to disappear from this page.</span>
+	이 탭은 <span class="gold">가장 최근에 불러온 세이브</span>에서 해금된 모든 업적들을 보여주며, 이 정보는 다음 게임으로 인계됩니다. 브렐 코인은 하나의 게임 회차 내에서 누적되어 얻어집니다. <span class="red">여러 세이브 파일들을 넘나들며 플레이할 경우 획득한 코인과 잠금 해제된 업적들이 초기화되어 사라질 수 있습니다.</span>
 	<br><br>
-	Multiple runs are necessary in order to achieve all feats. If you have multiple saves with different feats earned, you will be able to combine these feats when you start a new game by using the <span class="gold">Import all feats</span> button on the Feat Boosters page. Keep this in mind if you are aiming for 100% completion!
+	모든 업적을 달성하기 위해서는 여러 번의 플레이가 필요합니다. 각기 다른 업적을 달성한 여러 세이브 파일이 존재한다면, 새로운 게임을 시작할 때 업적 부스터 창에 위치한 <span class="gold">모든 업적 불러오기</span> 버튼을 통해 여러 업적들을 병합할 수 있습니다. 100% 달성을 노리고 계시다면 참고해 주시길 바랍니다!
 	<br><br>
-	Some feats display as earned as soon as you meet the requirements, while others won't trigger until the next in-game hour. Happy hunting!
+	어떤 업적들은 조건을 달성하자마자 획득 표시가 뜨지만, 또 다른 업적들은 게임 내 시간이 다음 시간으로 넘어가야 표시됩니다. 그럼 즐거운 수집 시간 되시길 바랍니다!
 	<br><br>
 
 	<<if $feats.locked>>
-		<span class="red">You can't earn feats as you have enabled cheats at some point.</span>
+		<span class="red">플레이 도중 치트를 사용한 기록이 있어 업적을 달성할 수 없습니다.</span>
 	<<elseif $debug>>
-		<span class="red">Feats are disabled during debug mode.</span>
+		<span class="red">디버그 모드 중에는 업적을 달성할 수 없습니다.</span>
 	<<elseif $replayScene isnot undefined>>
-		<span class="red">Feats are disabled during replay mode.</span>
+		<span class="red">리플레이 모드 중에는 업적을 달성할 수 없습니다.</span>
 	<<elseif $feats.soft or $feats.pregnancyLocked or $feats.pregnancySillyLocked>>
-		<span class="red">Some feats are locked in this current game.</span>
+		<span class="red">현재 게임에서는 몇몇 업적들의 해금이 제한됩니다.</span>
 	<<else>>
-		<span class="green">You can earn feats.</span>
+		<span class="green">업적을 달성할 수 있습니다.</span>
 	<</if>>
 	<br><br>
 	<<set _keysSetup to Object.keys(setup.feats)>>
 	<<set _keysSave to Object.keys($feats.currentSave)>>
 	<<set _keysAll to Object.keys($feats.allSaves).filter(f => !["points", "specialClothes", "seeds"].includes(f))>>
 	You currently have <<if $feats.allSaves.points isnot undefined>><span class="gold"><<print $feats.allSaves.points>></span><<else>><span class="red">0</span><</if>> <<pluralise $feats.allSaves.points "VrelCoin">>.
-	You have obtained
-	<<if _keysSave.length gte 1>><span class="gold"><<print _keysSave.length>></span> <<pluralise _keysSave.length "feat">> in this save and <</if>>
-	<<if _keysAll.length gte 1>><span class="gold"><<print _keysAll.length>></span><<else>><span class="red">0</span><</if>> <<pluralise _keysAll.length "feat">> in total, out of a possible <span class="gold"><<print _keysSetup.length>></span>.
+	달성한 업적:
+	<<if _keysSave.length gte 1>>현재 세이브 파일에서 총 <span class="gold"><<print _keysSave.length>></span>개의 <<pluralise _keysSave.length "업적" "업적">>【을를】 달성했으며, <</if>>
+	전체 <span class="gold"><<print _keysSetup.length>></span>개 중 총 <<if _keysAll.length gte 1>><span class="gold"><<print _keysAll.length>></span><<else>><span class="red">0</span><</if>>개의 <<pluralise _keysAll.length "업적" "업적">>【을를】 해금했습니다.
 	<br><br>
 	<<set $feats.filter to "General">>
-	Filter by:
+	필터 적용:
 	<select id="featTypes" name="featTypes" onchange="V.feats.filter = this.value; Wikifier.wikifyEval('<<replace #featsList>><<featsList>><</replace>>')">
-		<option value="General" selected>General</option>
-		<option value="Stats">Stats</option>
-		<option value="Social">Social</option>
-		<option value="Transformation">Transformation</option>
-		<option value="Discoveries-Town">Discoveries - In Town</option>
-		<option value="Discoveries-Other">Discoveries - Outside Town</option>
-		<option value="Special">Special</option>
-		<option value="Pregnancy">Pregnancy</option>
-		<option value="AMC Traits">AMC Traits</option>
-		<option value="Combat Extended">Combat Extended</option>
-		<option value="All">Show All</option>
-		<option value="General" hidden="hidden" selected="selected">General</option>
+		<option value="General" selected>일반</option>
+		<option value="Stats">스탯</option>
+		<option value="Social">사교</option>
+		<option value="Transformation">신체 변화</option>
+		<option value="Discoveries-Town">발견 - 시내</option>
+		<option value="Discoveries-Other">발견 - 시외</option>
+		<option value="Special">특수</option>
+		<option value="Pregnancy">임신</option>
+		<option value="AMC Traits">애니 주인공 특성</option>
+		<option value="Combat Extended">확장 전투</option>
+		<option value="All">모두 보기</option>
+		<option value="General" hidden="hidden" selected="selected">일반</option>
 	</select>
 	<br>
 	<<set $feats.sort to "None">>
-	Sort by:
+	정렬 기준:
 	<select id="featSort" name="featSort" onchange="V.feats.sort = this.value; Wikifier.wikifyEval('<<replace #featsList>><<featsList>><</replace>>')">
-		<option value="None" selected>None</option>
-		<option value="Date">Date</option>
-		<option value="None" hidden="hidden" selected="selected">None</option>
+		<option value="None" selected>없음</option>
+		<option value="Date">날짜순</option>
+		<option value="None" hidden="hidden" selected="selected">없음</option>
 	</select>
 	<br>
 	<<set $feats.shownew to true>>
-	<label><input type="checkbox" checked name="showNew" onchange="V.feats.shownew = this.checked; Wikifier.wikifyEval('<<replace #featsList>><<featsList>><</replace>>')" /> Show New</label> |
+	<label><input type="checkbox" checked name="showNew" onchange="V.feats.shownew = this.checked; Wikifier.wikifyEval('<<replace #featsList>><<featsList>><</replace>>')" /> 신규 표시</label> |
 	<<set $feats.showold to true>>
-	<label><input type="checkbox" checked name="showOld" onchange="V.feats.showold = this.checked; Wikifier.wikifyEval('<<replace #featsList>><<featsList>><</replace>>')" /> Show Old</label> |
+	<label><input type="checkbox" checked name="showOld" onchange="V.feats.showold = this.checked; Wikifier.wikifyEval('<<replace #featsList>><<featsList>><</replace>>')" /> 기존 표시</label> |
 	<<set $feats.showmissing to true>>
-	<label><input type="checkbox" checked name="showMissing" onchange="V.feats.showmissing = this.checked; Wikifier.wikifyEval('<<replace #featsList>><<featsList>><</replace>>')" /> Show Missing</label>
+	<label><input type="checkbox" checked name="showMissing" onchange="V.feats.showmissing = this.checked; Wikifier.wikifyEval('<<replace #featsList>><<featsList>><</replace>>')" /> 미달성 표시</label>
 	<br><br>
 	<div id="featsList">
 		<<featsList>>
@@ -127,9 +127,9 @@
 				<</if>>
 				<br>
 				<<if _feat.owned is 2>>
-					<span class="text">Earned on: <<print _feat.date.toLocaleString(returnTimeFormat())>></span>
+					<span class="text">달성 일시: <<print _feat.date.toLocaleString(returnTimeFormat())>></span>
 				<<elseif _feat.owned is 1>>
-					<span class="text">Originally Earned on: <<print _feat.date.toLocaleString(returnTimeFormat())>></span>
+					<span class="text">최초 달성 일시: <<print _feat.date.toLocaleString(returnTimeFormat())>></span>
 				<</if>>
 			</div>
 		</div>
@@ -140,11 +140,11 @@
 <<widget "featsPointsMenu">>
 	<div id="featsStats" class="settingsToggleIndent">
 		<<if $feats.allSaves.points is undefined or $feats.allSaves.points is 0>>
-			You have earned a lifetime total of <span class="red">0 VrelCoins</span> and cannot purchase Feat Boosters.
+			당신은 평생 총 <span class="red">0 브렐 코인</span>을 얻었으며, 위업 부스터를 구매할 수 없습니다.
 			<br>
-			<span class="black small-description">If this is incorrect, please load your last save and restart.</span>
+			<span class="black small-description">이 내용이 잘못되었다면, 마지막 세이브를 로드하고 다시 시작해 주십시오.</span>
 		<<else>>
-			You have earned a lifetime total of <span class="green"><<print $feats.allSaves.points>> <<pluralise $feats.allSaves.points "VrelCoin">>.</span>
+			당신은 평생 총 <span class="green"><<print $feats.allSaves.points>> <<pluralise $feats.allSaves.points "브렐 코인" "브렐 코인">></span>【을를】 얻었습니다.
 		<</if>>
 	</div>
 	/*Have to do this due to the `????` names*/
@@ -156,7 +156,7 @@
 	<</for>>
 	<<set _upgradeName to _upgradeNames[_upgradeNameID or 0]>>
 	<<set _listbox += '<</listbox>>'>>
-	<span class="gold settingsToggleIndent">Jump to a specific feat boost:</span>
+	<span class="gold settingsToggleIndent">위업 부스트:</span>
 	<<print _listbox>>
 	<<run $(() => {
 		$('#featsPointsMenu > select.macro-listbox').off('change.featBoostJump').on('change.featBoostJump', () => {
@@ -169,7 +169,7 @@
 			<span id="featName"><<featName>></span>
 			<br>
 			<span style="font-size:80%;">
-				<<link "Previous">>
+				<<link "이전">>
 					<<set _upgradeNameID-->>
 					<<if _upgradeNameID lt 0>>
 						<<set _upgradeNameID to _upgradeNames.length - 1>>
@@ -182,7 +182,7 @@
 					<<updateFeatsPointsMenu>>
 					<<updateFeatName>>
 				<</link>> |
-				<<link "Next">>
+				<<link "다음">>
 					<<set _upgradeNameID++>>
 					<<if _upgradeNameID gte _upgradeNames.length>>
 						<<set _upgradeNameID to 0>>
@@ -222,7 +222,7 @@
 			<</if>>
 			<<if $featsBoosts.pointsUsed isnot 0>>
 				<hr>
-				Purchased Feat Boosts:
+				구매한 위업 부스트:
 				<ul>
 					<<for $_i to 0; $_i lt _allUpgradeNames.length; $_i++>>
 						<<if $featsBoosts.upgrades[_allUpgradeNames[$_i]] gt 0>>
@@ -234,7 +234,7 @@
 									Special Clothing: <span class="gold"><<print $featsBoosts.upgrades[_allUpgradeNames[$_i]]>></span> <<pluralise $featsBoosts.upgrades[_allUpgradeNames[$_i]] "coin">>
 									<br>
 										<<foldout false "_unlockedSets">>
-											<span class="gold">Unlocked Sets</span>
+											<span class="gold">해금된 세트</span>
 											<span class="descriptunlocked-hint">
 												<<= Object.keys($featsBoosts.specialClothesSets)
 												.filter(k => $featsBoosts.specialClothesSets[k])
@@ -245,14 +245,14 @@
 								<<case "xchangePremiumPills">>
 									X-Change Premium Pills: <span class="gold"><<print $featsBoosts.upgradeDetails[_allUpgradeNames[$_i]].purchased>></span> <<pluralise $featsBoosts.upgradeDetails[_allUpgradeNames[$_i]].purchased "pack">>
 								<<case "seeds">>
-									Starting Seeds: <span class="gold"><<print $featsBoosts.upgrades[_upgradeNames[$_i]]>></span> <<pluralise $featsBoosts.upgrades[_upgradeNames[$_i]] "coin">>
+									시작 씨앗: <span class="gold"><<print $featsBoosts.upgrades[_upgradeNames[$_i]]>></span> <<pluralise $featsBoosts.upgrades[_upgradeNames[$_i]] "코인" "코인">>
 									<br>
 										<<foldout false "_unlockedSeed">>
-											<span class="gold">Unlocked Seeds</span>
+											<span class="gold">해금된 씨앗</span>
 											<span class="descriptunlocked-hint">
 												<<= Object.keys($featsBoosts.seeds)
 												.filter(k => $featsBoosts.seeds[k])
-												.map(k => `${k.replace(/_/g," ").toUpperFirst()}: <span class="gold">${setup.foodstuff[k].tending.featCost}</span> coins`)
+												.map(k => `${setup.foodstuff[k].name}: <span class="gold">${setup.foodstuff[k].tending.featCost}</span> 코인`)
 												.join("<br>")>>
 											</span>
 										<</foldout>>
@@ -264,7 +264,7 @@
 					<</for>>
 				</ul>
 				<<set _pointsRemaining to $feats.allSaves.points - $featsBoosts.pointsUsed>>
-				You have<span class="green"> <<print _pointsRemaining>> <<pluralise _pointsRemaining "VrelCoin">></span> left to spend on Feat Boosts.
+				당신에게는 위업 부스트에 사용할 수 있는 <span class="green"><<print _pointsRemaining>> <<pluralise _pointsRemaining "브렐 코인" "브렐 코인">></span>【이가】 남아 있습니다.
 			<</if>>
 		</div>
 	</div>
@@ -296,21 +296,21 @@
 		<<if _details.max gte 1>>
 		<<switch _upgradeName>>
 			<<case "money">>
-				<span class="gold">Starting Money</span>
+				<span class="gold">시작 소지금</span>
 			<<case "grades">>
 				<span class="gold">School Performance Grades</span>
-			<<case "purity" "impurity">>
-				<span class="gold" style="text-transform: capitalize;">Daily _upgradeName Boost</span>
+			<<case "purity">>
+				<span class="gold">일일 순결함 상승치 증가</span>
 			<<case "newLife">>
-				<span class="gold">A New Life</span>
+				<span class="gold">새로운 삶</span>
 			<<case "aNewBestFriend">>
-				<span class="gold">A New Best Friend</span>
+				<span class="gold">새로운 친구</span>
 			<<case "randomClothing">>
-				<span class="gold">Random Clothing</span>
+				<span class="gold">무작위 옷 세트</span>
 			<<case "tattoos">>
-				<span class="gold">Starting Tattoos</span>
+				<span class="gold">시작 문신</span>
 			<<case "specialClothing">>
-				<span class="gold">Special Clothing</span>
+				<span class="gold">특수 의상</span>
 			<<case "hopelessEndings">>
 				<span class="gold">Hopeless Cycle Endings</span>
 			<<case "xchangeGrayAgentTrait">>
@@ -318,21 +318,21 @@
 			<<case "xchangePremiumPills">>
 				<span class="gold">X-Change Premium Pills</span>
 			<<case "seeds">>
-				<span class="gold">Starting Seeds</span>
+				<span class="gold">시작 씨앗</span>
 			<<case "sexToys">>
-				<span class="gold">Sex Toys</span>
+				<span class="gold">섹스 토이</span>
 			<<case "orgasmTrait" "chokeTrait" "ejacTrait" "molestTrait" "rapeTrait" "bestialityTrait" "tentacleTrait" "critterMagnetTrait" "milkDrankTrait">>
 				<span class="gold"><<print $featsBoosts.name[_upgradeName]>></span>
 			<<case "divineTFs">>
-				<span class="gold">Divine Transformation</span>
+				<span class="gold">신성한 변신</span>
 			<<case "animalTFs">>
-				<span class="gold">Animal Transformation</span>
+				<span class="gold">동물 변신</span>
 			<<case "sadism" "masochism">>
-			<span class="gold" style="text-transform: capitalize;">Daily _upgradeName Boost</span>
+			<span class="gold">일일 순결함 상승치 증가</span>
 			<<case "adaptiveGenes">>
-				<span class="gold">Adaptive Genes</span>
+				<span class="gold">적응형 유전자</span>
 			<<default>>
-				<span class="gold" style="text-transform: capitalize;">Starting _upgradeName Grade</span>
+				<span class="gold" style="text-transform: capitalize;">시작 _upgradeName 등급</span>
 		<</switch>>
 		<<else>>
 			<span class="red">?????</span>
@@ -548,13 +548,13 @@
 		<<set _purchasedUpgrades to _details.purchased>>
 		<<if _maxUpgrades>>
 			<<if !$feats.allSaves.points>>
-				<span class="red">Earn some VrelCoins in order to purchase this feat boost!</span>
+				<span class="red">이 위업 부스트를 구매하려면 브렐 코인을 획득하십시오!</span>
 			<<else>>
 				<<switch _name>>
 					<<case "money">>
-						You will start the game with <span class="green"> £<<= 5 + _purchasedUpgrades * _maxUpgrades * 25>>.00</span>.
+						당신은 <span class="green"> £<<= 5 + _purchasedUpgrades * _maxUpgrades * 25>>.00</span>의 자금으로 게임을 시작합니다.
 					<<case "grades">>
-						You will start the game with
+						당신은
 						<<switch _details.purchased>>
 							<<case 4>><span class="green">A*</span>
 							<<case 3>><span class="green">A</span>
@@ -562,7 +562,7 @@
 							<<case 1>><span class="blue">C</span>
 							<<default>><span class="purple">D</span>
 						<</switch>>
-						grades.
+						학점으로 게임을 시작합니다.
 					<<case "purity">>
 						<<if !_purchasedUpgrades>>
 							You will always gain <span class="green">1</span> point of purity per day. Each purchased boost adds one more point of purity every day. It still adds up when other effects are making you lose purity, so you can end the day with a net gain. <i>Actions you take can negate or amplify your purity gains.</i>
@@ -579,35 +579,35 @@
 								You will lose <span class="red"><<= _purchasedUpgrades - 1>></span> <<= _purchasedUpgrades is 2 ? "point" : "points">> of purity per day from this and the daily point combined. Other effects are added on top. <i>Actions you take can negate or amplify your purity losses.</i>
 						<</switch>>
 					<<case "newLife">>
-						You will start the game
+						당신은
 						<span @class="$featsBoosts.upgrades.newLife ? 'green' : 'red'">
-							<<= $featsBoosts.upgrades.newLife ? "with" : "without">>
+							<<= $featsBoosts.upgrades.newLife ? "기생충과 함께" : "기생충 없이">>
 						</span>
-						a parasite.
+						게임을 시작합니다.
 					<<case "aNewBestFriend">>
-						You will start the game
+						당신은
 						<<switch $featsBoosts.upgrades.aNewBestFriend>>
 							<<case 0>><span class='red'>without</span> <<if earSlimeThoughts()>>a voice in your head<<else>>an ear slime<</if>>.
 							<<case 10>><span class='green'>with</span> <<if earSlimeThoughts()>>a voice in your head<<else>>an ear slime<</if>>.
 							<<case 20>><span class='green'>with two</span> <<if earSlimeThoughts()>>voices in your head<<else>>ear slimes<</if>>.
 						<</switch>>
 					<<case "randomClothing">>
-						You will start the game with <span class="gold"><<= 3 * _purchasedUpgrades>></span> random clothing items.
+						무작위 의류 아이템 <span class="gold"><<= 3 * _purchasedUpgrades>></span>개를 가지고 게임을 시작합니다.
 					<<case "tattoos">>
 						<<if _purchasedUpgrades is 0>>
-							You will start the game with <span class="red">no</span> tattoos.
+							문신이 <span class="red">없는</span> 상태로 게임을 시작합니다.
 						<<elseif _purchasedUpgrades is 1>>
-							You will start the game with <span class="green">1</span> tattoo.
+							문신 <span class="green">1</span>개를 가지고 게임을 시작합니다.
 						<<else>>
-							You will start the game with <span class="green">_purchasedUpgrades</span> tattoos.
+							문신 <span class="green">_purchasedUpgrades</span>개를 가지고 게임을 시작합니다.
 						<</if>>
 					<<case "specialClothing">>
 						<<if _purchasedUpgrades is 0>>
-							You will start the game with special clothing from the Forest Shop <span class='red'>locked</span>.
+							숲속 상점의 특수 의류가 <span class='red'>잠긴</span> 상태로 게임을 시작합니다.
 						<<elseif _purchasedUpgrades is 1>>
-							You can purchase <span class="teal">up to half</span> of special clothing sets from the Forest Shop to start the game with them <span class="green">unlocked</span>, if you've unlocked it in any other save.
+							다른 세이브 파일에서 숲속 상점의 특수 의류 세트를 해금한 적이 있다면, <span class="teal">최대 절반</span>까지 구매하여 <span class="green">해금된</span> 상태로 게임을 시작할 수 있습니다.
 						<<elseif _purchasedUpgrades is 2>>
-							You can purchase <span class="teal">any amount</span> of special clothing sets from the Forest Shop to start the game with them <span class="green">unlocked</span>, if you've unlocked it in any other save.
+							다른 세이브 파일에서 숲속 상점의 특수 의류 세트를 해금한 적이 있다면, <span class="teal">원하는 만큼</span> 구매하여 <span class="green">해금된</span> 상태로 게임을 시작할 수 있습니다.
 						<<else>>
 							You can purchase <span class="teal">any amount</span> of previously unlocked special clothing sets at <span class="gold">twice their normal VrelCoin price</span> and start with their <span class="green">normal story dialogue available</span>.
 						<</if>>
@@ -615,7 +615,7 @@
 						Purchase any of the <span class="gold">Hopeless Cycle</span> endings to <span class="green">read them directly</span> from the painting next game, claiming their rewards without playing the whole sequence again. Buy all, some, or none. <i>The harder the ending, the more it costs.</i>
 					<<case "xchangePremiumPills">>
 						<<set _premiumPillTotal to _purchasedUpgrades * 5>>
-						You will start the game with
+						당신은
 						<<if _premiumPillTotal>>
 							<span class="green"><<print _premiumPillTotal>></span> <<pluralise _premiumPillTotal "X-Change Premium pill">> in your medicine drawer.
 						<<else>>
@@ -623,21 +623,21 @@
 						<</if>>
 					<<case "seeds">>
 						<<if _purchasedUpgrades is 0>>
-							You will start the game <span class='red'>without</span> any seeds.
+							씨앗이 <span class='red'>하나도 없는</span> 상태로 게임을 시작합니다.
 						<<elseif _purchasedUpgrades is 1>>
-							You can purchase <span class="teal">up to half</span> of seeds to start the game with them <span class="green">unlocked</span>, if you've unlocked them in any other save.
+							다른 세이브 파일에서 씨앗을 해금한 적이 있다면, <span class="teal">최대 절반</span>까지 구매하여 <span class="green">해금된</span> 상태로 게임을 시작할 수 있습니다.
 						<<else>>
-							You can purchase <span class="teal">any amount</span> of seeds to start the game with them <span class="green">unlocked</span>, if you've unlocked them in any other save.
+							다른 세이브 파일에서 씨앗을 해금한 적이 있다면, <span class="teal">원하는 만큼</span> 구매하여 <span class="green">해금된</span> 상태로 게임을 시작할 수 있습니다.
 						<</if>>
 					<<case "sexToys">>
-						You will start the game with
+						당신은
 						<<if _purchasedUpgrades>>
-							<span class="green"><<print 3 * _purchasedUpgrades>></span> sex toys.
+							섹스 토이 <span class="green"><<print 3 * _purchasedUpgrades>></span>개를 가지고 게임을 시작합니다.
 						<<else>>
-							<span class="red">no</span> sex toys.
+							섹스 토이가 <span class="red">없는</span> 상태로 게임을 시작합니다.
 						<</if>>
 					<<case "greenThumb">>
-						You will start the game with the <span class="green">Green Thumb</span> trait.
+						게임을 <span class="green">녹색의 손</span> 특성을 가진 채로 시작합니다.
 					<<case "xchangePurityTrait">>
 						You will start the game permanently <span class="blue">pure of X-Change pill effects</span>.
 					<<case "xchangeGrayAgentTrait">>
@@ -645,20 +645,20 @@
 					<<case "orgasmTrait" "chokeTrait" "ejacTrait" "molestTrait" "rapeTrait" "bestialityTrait" "tentacleTrait" "critterMagnetTrait" "milkDrankTrait">>
 						You will start the game with the <span class="green"><<print $featsBoosts.name[_name]>></span> trait.
 					<<case "divineTFs">>
-						You will start the game with a divine transformation.
+						게임을 신성한 변신 상태로 시작합니다.
 					<<case "animalTFs">>
-						You will start the game with an animal transformation.
+						게임을 동물 변신 상태로 시작합니다.
 					<<case "sadism">>
 						<<if ($featsBoosts.upgrades[_name] / _details.cost) is 0>>
-						Purchased sadism boosts will increase your daily sadism gain. <i>Actions you take can amplify your sadism gains.</i>
+						구매한 가학 성향 부스트는 일일 가학 성향 상승량을 늘립니다. <i>당신의 행동에 따라 가학 성향 상승이 증폭될 수 있습니다.</i>
 						<<else>>
-						You will gain <span class="green"><<print 1+$featsBoosts.upgrades[_name] / _details.cost>></span> points of sadism per day. <i>Actions you take can amplify your sadism gains.</i>
+						당신은 매일 <span class="green"><<print 1+$featsBoosts.upgrades[_name] / _details.cost>></span>점의 가학 성향을 얻습니다. <i>당신의 행동에 따라 가학 성향 상승이 증폭될 수 있습니다.</i>
 						<</if>>
 					<<case "masochism">>
 						<<if ($featsBoosts.upgrades[_name] / _details.cost) is 0>>
-						Purchased masochism boosts will increase your daily masochism gain. <i>Actions you take can amplify your masochism gains.</i>
+						구매한 피학 성향 부스트는 일일 피학 성향 상승량을 늘립니다. <i>당신의 행동에 따라 피학 성향 상승이 증폭될 수 있습니다.</i>
 						<<else>>
-						You will gain <span class="green"><<print 1+$featsBoosts.upgrades[_name] / _details.cost>></span> points of masochism per day. <i>Actions you take can amplify your masochism gains.</i>
+						당신은 매일 <span class="green"><<print 1+$featsBoosts.upgrades[_name] / _details.cost>></span>점의 피학 성향을 얻습니다. <i>당신의 행동에 따라 피학 성향 상승이 증폭될 수 있습니다.</i>
 						<</if>>
 					<<case "physique">>
 						<<switch $bodysize>>
@@ -678,7 +678,7 @@
 							<<set _previewPhysique += (_previewPhysiqueSize / 7)>>
 						<</if>>
 						<<set _previewPhysique += $featsBoosts.upgrades[_name] / _details.cost * 1500>>
-						You will start the game with _name at 
+						게임 시작 시 _name 수치:
 						<<if _previewPhysique gte (_previewPhysiqueSize / 7) * 6>>
 							<span class="green"><<print Math.trunc(_previewPhysique)>></span>.
 						<<elseif _previewPhysique gte (_previewPhysiqueSize / 7) * 5>>
@@ -696,7 +696,7 @@
 						<</if>>
 					<<case "willpower">>
 						<<set _previewWillpower to 350 + $featsBoosts.upgrades[_name] / _details.cost * 200>>
-						You will start the game with _name at 
+						게임 시작 시 _name 수치:
 						<<if _previewWillpower gte (1000 / 7) * 6>>
 							<span class="green"><<print _previewWillpower>></span>.
 						<<elseif _previewWillpower gte (1000 / 7) * 5>>
@@ -713,70 +713,174 @@
 							<span class="red"><<print _previewWillpower>></span>.
 						<</if>>
 					<<case "oral" "chest" "hands" "buttocks" "penile" "anal" "vaginal" "feet" "thighs">>
-						You will start the game with
+						당신은
 						<<if $featsBoosts.upgrades[_name] / _details.cost is 1>>
-							_name at level <span class="purple">D</span>.
+							<span class="purple">D</span> 등급의 _name 기술을 가지고 게임을 시작합니다.
 						<<elseif $featsBoosts.upgrades[_name] / _details.cost is 2>>
-							_name at level <span class="blue">C</span>.
+							<span class="blue">C</span> 등급의 _name 기술을 가지고 게임을 시작합니다.
 						<<elseif $featsBoosts.upgrades[_name] / _details.cost is 3>>
-							_name at level <span class="lblue">B</span>.
+							<span class="lblue">B</span> 등급의 _name 기술을 가지고 게임을 시작합니다.
 						<<elseif $featsBoosts.upgrades[_name] / _details.cost is 4>>
-							_name at level <span class="teal">A</span>.
+							<span class="teal">A</span> 등급의 _name 기술을 가지고 게임을 시작합니다.
 						<<elseif $featsBoosts.upgrades[_name] / _details.cost is 5>>
-							_name at level <span class="green">S</span>.
+							<span class="green">S</span> 등급의 _name 기술을 가지고 게임을 시작합니다.
 						<<else>>
-							<span class="red">no</span> proficiency in _name.
+							<<print _name>> 기술에 대한 숙련도가 <span class="red">없는</span> 상태로 게임을 시작합니다.
 						<</if>>
 					<<case "promiscuity" "exhibitionism" "deviancy">>
-						You will start the game with an additional <span class="blue"><<print $featsBoosts.upgrades[_name] / _details.cost * 15>></span> _name.
+						게임 시작 시 _name 수치에 <span class="blue"><<print $featsBoosts.upgrades[_name] / _details.cost * 15>></span>점이 추가됩니다.
 					<<case "transcend">>
-						You will gain <span class="gold"><<print $featsBoosts.upgrades[_name] / _details.cost * 50>>%</span> more when grinding skills.
+						스킬을 키울 때 <span class="gold"><<print $featsBoosts.upgrades[_name] / _details.cost * 50>>%</span> 더 많이 얻습니다.
 					<<case "adaptiveGenes">>
-						You will gain <span class="gold"><<print $featsBoosts.upgrades[_name] * 2>>%</span> more transformation points.
+						변신 포인트를 <span class="gold"><<print $featsBoosts.upgrades[_name] * 2>>%</span> 더 많이 얻습니다.
+					<<case "skulduggery">>
+						<<switch _purchasedUpgrades>>
+							<<case 1>><span class="pink">F+</span> 등급의 속임수 기술을 가지고 게임을 시작합니다.
+							<<case 2>><span class="purple">D</span> 등급의 속임수 기술을 가지고 게임을 시작합니다.
+							<<case 3>><span class="purple">D+</span> 등급의 속임수 기술을 가지고 게임을 시작합니다.
+							<<case 4>><span class="blue">C</span> 등급의 속임수 기술을 가지고 게임을 시작합니다.
+							<<case 5>><span class="blue">C+</span> 등급의 속임수 기술을 가지고 게임을 시작합니다.
+							<<case 6>><span class="lblue">B</span> 등급의 속임수 기술을 가지고 게임을 시작합니다.
+							<<case 7>><span class="lblue">B+</span> 등급의 속임수 기술을 가지고 게임을 시작합니다.
+							<<case 8>><span class="teal">A</span> 등급의 속임수 기술을 가지고 게임을 시작합니다.
+							<<case 9>><span class="teal">A*</span> 등급의 속임수 기술을 가지고 게임을 시작합니다.
+							<<case 10>><span class="green">S</span> 등급의 속임수 기술을 가지고 게임을 시작합니다.
+							<<default>>속임수 기술에 대한 숙련도가 <span class="red">없는</span> 상태로 게임을 시작합니다.
+						<</switch>>
+					<<case "dancing">>
+						<<switch _purchasedUpgrades>>
+							<<case 1>><span class="pink">F+</span> 등급의 춤 기술을 가지고 게임을 시작합니다.
+							<<case 2>><span class="purple">D</span> 등급의 춤 기술을 가지고 게임을 시작합니다.
+							<<case 3>><span class="purple">D+</span> 등급의 춤 기술을 가지고 게임을 시작합니다.
+							<<case 4>><span class="blue">C</span> 등급의 춤 기술을 가지고 게임을 시작합니다.
+							<<case 5>><span class="blue">C+</span> 등급의 춤 기술을 가지고 게임을 시작합니다.
+							<<case 6>><span class="lblue">B</span> 등급의 춤 기술을 가지고 게임을 시작합니다.
+							<<case 7>><span class="lblue">B+</span> 등급의 춤 기술을 가지고 게임을 시작합니다.
+							<<case 8>><span class="teal">A</span> 등급의 춤 기술을 가지고 게임을 시작합니다.
+							<<case 9>><span class="teal">A*</span> 등급의 춤 기술을 가지고 게임을 시작합니다.
+							<<case 10>><span class="green">S</span> 등급의 춤 기술을 가지고 게임을 시작합니다.
+							<<default>>춤 기술에 대한 숙련도가 <span class="red">없는</span> 상태로 게임을 시작합니다.
+						<</switch>>
+					<<case "tending">>
+						<<switch _purchasedUpgrades>>
+							<<case 1>><span class="pink">F+</span> 등급의 관리 기술을 가지고 게임을 시작합니다.
+							<<case 2>><span class="purple">D</span> 등급의 관리 기술을 가지고 게임을 시작합니다.
+							<<case 3>><span class="purple">D+</span> 등급의 관리 기술을 가지고 게임을 시작합니다.
+							<<case 4>><span class="blue">C</span> 등급의 관리 기술을 가지고 게임을 시작합니다.
+							<<case 5>><span class="blue">C+</span> 등급의 관리 기술을 가지고 게임을 시작합니다.
+							<<case 6>><span class="lblue">B</span> 등급의 관리 기술을 가지고 게임을 시작합니다.
+							<<case 7>><span class="lblue">B+</span> 등급의 관리 기술을 가지고 게임을 시작합니다.
+							<<case 8>><span class="teal">A</span> 등급의 관리 기술을 가지고 게임을 시작합니다.
+							<<case 9>><span class="teal">A*</span> 등급의 관리 기술을 가지고 게임을 시작합니다.
+							<<case 10>><span class="green">S</span> 등급의 관리 기술을 가지고 게임을 시작합니다.
+							<<default>>관리 기술에 대한 숙련도가 <span class="red">없는</span> 상태로 게임을 시작합니다.
+						<</switch>>
+					<<case "swimming">>
+						<<switch _purchasedUpgrades>>
+							<<case 1>><span class="pink">F+</span> 등급의 수영 기술을 가지고 게임을 시작합니다.
+							<<case 2>><span class="purple">D</span> 등급의 수영 기술을 가지고 게임을 시작합니다.
+							<<case 3>><span class="purple">D+</span> 등급의 수영 기술을 가지고 게임을 시작합니다.
+							<<case 4>><span class="blue">C</span> 등급의 수영 기술을 가지고 게임을 시작합니다.
+							<<case 5>><span class="blue">C+</span> 등급의 수영 기술을 가지고 게임을 시작합니다.
+							<<case 6>><span class="lblue">B</span> 등급의 수영 기술을 가지고 게임을 시작합니다.
+							<<case 7>><span class="lblue">B+</span> 등급의 수영 기술을 가지고 게임을 시작합니다.
+							<<case 8>><span class="teal">A</span> 등급의 수영 기술을 가지고 게임을 시작합니다.
+							<<case 9>><span class="teal">A*</span> 등급의 수영 기술을 가지고 게임을 시작합니다.
+							<<case 10>><span class="green">S</span> 등급의 수영 기술을 가지고 게임을 시작합니다.
+							<<default>>수영 기술에 대한 숙련도가 <span class="red">없는</span> 상태로 게임을 시작합니다.
+						<</switch>>
+					<<case "athletics">>
+						<<switch _purchasedUpgrades>>
+							<<case 1>><span class="pink">F+</span> 등급의 체육 기술을 가지고 게임을 시작합니다.
+							<<case 2>><span class="purple">D</span> 등급의 체육 기술을 가지고 게임을 시작합니다.
+							<<case 3>><span class="purple">D+</span> 등급의 체육 기술을 가지고 게임을 시작합니다.
+							<<case 4>><span class="blue">C</span> 등급의 체육 기술을 가지고 게임을 시작합니다.
+							<<case 5>><span class="blue">C+</span> 등급의 체육 기술을 가지고 게임을 시작합니다.
+							<<case 6>><span class="lblue">B</span> 등급의 체육 기술을 가지고 게임을 시작합니다.
+							<<case 7>><span class="lblue">B+</span> 등급의 체육 기술을 가지고 게임을 시작합니다.
+							<<case 8>><span class="teal">A</span> 등급의 체육 기술을 가지고 게임을 시작합니다.
+							<<case 9>><span class="teal">A*</span> 등급의 체육 기술을 가지고 게임을 시작합니다.
+							<<case 10>><span class="green">S</span> 등급의 체육 기술을 가지고 게임을 시작합니다.
+							<<default>>체육 기술에 대한 숙련도가 <span class="red">없는</span> 상태로 게임을 시작합니다.
+						<</switch>>
+					<<case "seduction">>
+						<<switch _purchasedUpgrades>>
+							<<case 1>><span class="pink">F+</span> 등급의 유혹 기술을 가지고 게임을 시작합니다.
+							<<case 2>><span class="purple">D</span> 등급의 유혹 기술을 가지고 게임을 시작합니다.
+							<<case 3>><span class="purple">D+</span> 등급의 유혹 기술을 가지고 게임을 시작합니다.
+							<<case 4>><span class="blue">C</span> 등급의 유혹 기술을 가지고 게임을 시작합니다.
+							<<case 5>><span class="blue">C+</span> 등급의 유혹 기술을 가지고 게임을 시작합니다.
+							<<case 6>><span class="lblue">B</span> 등급의 유혹 기술을 가지고 게임을 시작합니다.
+							<<case 7>><span class="lblue">B+</span> 등급의 유혹 기술을 가지고 게임을 시작합니다.
+							<<case 8>><span class="teal">A</span> 등급의 유혹 기술을 가지고 게임을 시작합니다.
+							<<case 9>><span class="teal">A*</span> 등급의 유혹 기술을 가지고 게임을 시작합니다.
+							<<case 10>><span class="green">S</span> 등급의 유혹 기술을 가지고 게임을 시작합니다.
+							<<default>>유혹 기술에 대한 숙련도가 <span class="red">없는</span> 상태로 게임을 시작합니다.
+						<</switch>>
+					<<case "housekeeping">>
+						<<switch _purchasedUpgrades>>
+							<<case 1>><span class="pink">F+</span> 등급의 가사 기술을 가지고 게임을 시작합니다.
+							<<case 2>><span class="purple">D</span> 등급의 가사 기술을 가지고 게임을 시작합니다.
+							<<case 3>><span class="purple">D+</span> 등급의 가사 기술을 가지고 게임을 시작합니다.
+							<<case 4>><span class="blue">C</span> 등급의 가사 기술을 가지고 게임을 시작합니다.
+							<<case 5>><span class="blue">C+</span> 등급의 가사 기술을 가지고 게임을 시작합니다.
+							<<case 6>><span class="lblue">B</span> 등급의 가사 기술을 가지고 게임을 시작합니다.
+							<<case 7>><span class="lblue">B+</span> 등급의 가사 기술을 가지고 게임을 시작합니다.
+							<<case 8>><span class="teal">A</span> 등급의 가사 기술을 가지고 게임을 시작합니다.
+							<<case 9>><span class="teal">A*</span> 등급의 가사 기술을 가지고 게임을 시작합니다.
+							<<case 10>><span class="green">S</span> 등급의 가사 기술을 가지고 게임을 시작합니다.
+							<<default>>가사 기술에 대한 숙련도가 <span class="red">없는</span> 상태로 게임을 시작합니다.
+						<</switch>>
 					<<default>>
-						You will start the game with
+						당신은
 						<<switch _purchasedUpgrades>>
 							<<case 1>>
-								_name at level <span class="pink">F+</span>.
+								<span class="pink">F+</span> 등급의 _name 기술을 가지고 게임을 시작합니다.
 							<<case 2>>
-								_name at level <span class="purple">D</span>.
+								<span class="purple">D</span> 등급의 _name 기술을 가지고 게임을 시작합니다.
 							<<case 3>>
-								_name at level <span class="purple">D+</span>.
+								<span class="purple">D+</span> 등급의 _name 기술을 가지고 게임을 시작합니다.
 							<<case 4>>
-								_name at level <span class="blue">C</span>.
+								<span class="blue">C</span> 등급의 _name 기술을 가지고 게임을 시작합니다.
 							<<case 5>>
-								_name at level <span class="blue">C+</span>.
+								<span class="blue">C+</span> 등급의 _name 기술을 가지고 게임을 시작합니다.
 							<<case 6>>
-								_name at level <span class="lblue">B</span>.
+								<span class="lblue">B</span> 등급의 _name 기술을 가지고 게임을 시작합니다.
 							<<case 7>>
-								_name at level <span class="lblue">B+</span>.
+								<span class="lblue">B+</span> 등급의 _name 기술을 가지고 게임을 시작합니다.
 							<<case 8>>
-								_name at level <span class="teal">A</span>.
+								<span class="teal">A</span> 등급의 _name 기술을 가지고 게임을 시작합니다.
 							<<case 9>>
-								_name at level <span class="teal">A*</span>.
+								<span class="teal">A*</span> 등급의 _name 기술을 가지고 게임을 시작합니다.
 							<<case 10>>
-								_name at level <span class="green">S</span>.
+								<span class="green">S</span> 등급의 _name 기술을 가지고 게임을 시작합니다.
 							<<default>>
-								<span class="red">no</span> proficiency in _name.
+								<<print _name>> 기술에 대한 숙련도가 <span class="red">없는</span> 상태로 게임을 시작합니다.
 						<</switch>>
 				<</switch>>
 				<<if _name is "randomClothing">>
 					<br>
-					<span class="gold bold">Clothing Type: </span>
-					<label><<print '<<radiobutton "$featsBoosts.clothingGender" "Either" ' + ($featsBoosts.clothingGender is "Either" ? "checked" : "") + '>>'>> Either</label> |
-					<label><<print '<<radiobutton "$featsBoosts.clothingGender" "Male" ' + ($featsBoosts.clothingGender is "Male" ? "checked" : "") + '>>'>> Male</label> |
-					<label><<print '<<radiobutton "$featsBoosts.clothingGender" "Female" ' + ($featsBoosts.clothingGender is "Female" ? "checked" : "") + '>>'>> Female</label>
+					<span class="gold bold">의류 종류: </span>
+					<label><<print '<<radiobutton "$featsBoosts.clothingGender" "Either" ' + ($featsBoosts.clothingGender is "Either" ? "checked" : "") + '>>'>> 남녀 공용</label> |
+					<label><<print '<<radiobutton "$featsBoosts.clothingGender" "Male" ' + ($featsBoosts.clothingGender is "Male" ? "checked" : "") + '>>'>> 남성용</label> |
+					<label><<print '<<radiobutton "$featsBoosts.clothingGender" "Female" ' + ($featsBoosts.clothingGender is "Female" ? "checked" : "") + '>>'>> 여성용</label>
 					<br>
-					<span class="gold bold">Enable Custom Colour (expect crazy results): </span>
-						<label><<print '<<radiobutton "$featsBoosts.clothingCustomColors" false ' + ($featsBoosts.clothingCustomColors is false ? "checked" : "") + '>>'>> No</label> |
-						<label><<print '<<radiobutton "$featsBoosts.clothingCustomColors" true ' + ($featsBoosts.clothingCustomColors is true ? "checked" : "") + '>>'>> Yes</label>
+					<span class="gold bold">커스텀 색상 활성화 (터무니없는 결과가 나올 수 있음): </span>
+						<label><<print '<<radiobutton "$featsBoosts.clothingCustomColors" false ' + ($featsBoosts.clothingCustomColors is false ? "checked" : "") + '>>'>> 아니오</label> |
+						<label><<print '<<radiobutton "$featsBoosts.clothingCustomColors" true ' + ($featsBoosts.clothingCustomColors is true ? "checked" : "") + '>>'>> 예</label>
 				<</if>>
 				<<if _name is "hopelessEndings">>
 					<div id="hopelessEndings"><<hopelessEndingsFeatUI>></div>
 				<<elseif !_details.exclusive or $featsBoosts.upgrades[_details.exclusive] is 0>>
 					<<featsPointsMenuButtons _name _details>>
 				<<else>>
-					<span class="red">Remove _details.exclusive upgrades to make use of this upgrade.</span>
+					<span class="red">이 업그레이드를 사용하려면 
+						<<switch _details.exclusive>>
+							<<case "purity">>순결도
+							<<case "impurity">>불결함
+							<<default>><<print _details.exclusive>>
+						<</switch>> 업그레이드를 제거하십시오.
+					</span>
 				<</if>>
 
 				<<if _name is "tattoos">>
@@ -787,18 +891,18 @@
 
 					<<if _totalTattoos gt 0>>
 						<div class="settingsGrid" style="margin:10px 0px">
-							<div class="settingsHeader">Tattoo <<print _tattooNumber>>
+							<div class="settingsHeader">문신 <<print _tattooNumber>>
 							<br>
 								<<if _tattooNumber gte 1 and _totalTattoos gt 1>>
 								<span style="font-size:80%;">
-									<<link "Previous Tattoo">>
+									<<link "이전 문신">>
 										<<set _tattooNumber-->>
 										<<if _tattooNumber lte 0>>
 											<<set _tattooNumber to _totalTattoos>>
 										<</if>>
 										<<replace #featsPointsMenu>><<featsPointsMenu>><</replace>>
 									<</link>> |
-									<<link "Next Tattoo">>
+									<<link "다음 문신">>
 										<<set _tattooNumber++>>
 										<<if _tattooNumber gt _totalTattoos>>
 											<<set _tattooNumber to 1>>
@@ -810,24 +914,24 @@
 							</div>
 							<div class="settingsToggleItem">
 								<span class="listMargin">
-									<span class="gold">Tattoo Type:</span>
-									<<set _penOptions to ["Tattoo","Brand"]>>
+									<span class="gold">문신 종류:</span>
+									<<set _penOptions to {"문신":"Tattoo", "낙인":"Brand"}>>
 									<<listbox `"$featsBoosts.tattoos["+_tattooNumber+"].pen"` autoselect>>
 										<<optionsfrom _penOptions>>
 									<</listbox>>
 								</span>
 							</div>
 							<div class="settingsToggleItem">
-								<span class="gold">Tattoo Location:</span>
-								<<set _bodyPartOptions to ["Forehead","Left cheek","Right cheek","Left shoulder","Right shoulder","Back","Breasts","Left bottom","Right bottom","Left thigh","Right thigh","Pubic"]>>
+								<span class="gold">문신 부위:</span>
+								<<set _bodyPartOptions to {"이마":"Forehead", "왼쪽 뺨":"Left cheek", "오른쪽 뺨":"Right cheek", "왼쪽 어깨":"Left shoulder", "오른쪽 어깨":"Right shoulder", "등":"Back", "가슴":"Breasts", "왼쪽 엉덩이":"Left bottom", "오른쪽 엉덩이":"Right bottom", "왼쪽 허벅지":"Left thigh", "오른쪽 허벅지":"Right thigh", "음부":"Pubic"}>>
 								<<for _l to 1; _l lte _totalTattoos; _l++>>
 									<<if _tattooNumber is _l>>
 										<<continue>>
 									<</if>>
-									<<run _bodyPartOptions.delete($featsBoosts.tattoos[_l].bodypart)>>
+									<<run Object.keys(_bodyPartOptions).forEach(k => { if(_bodyPartOptions[k] === $featsBoosts.tattoos[_l].bodypart) delete _bodyPartOptions[k]; })>>
 								<</for>>
 								<<listbox `"$featsBoosts.tattoos["+_tattooNumber+"].bodypart"` autoselect>>
-									<<option "Random">>
+									<<option "무작위" "Random">>
 									<<optionsfrom _bodyPartOptions>>
 								<</listbox>>
 							</div>
@@ -852,11 +956,11 @@
 				<</if>>
 				<<if _name is "aNewBestFriend" and $featsBoosts.upgradeDetails.aNewBestFriend.purchased gte 2>>
 					<div id="aNewBestFriend">
-						<label>Earslime starting type:
+						<label>귀 슬라임 시작 유형:
 							<<listbox "$featsBoosts.earSlimeType" autoselect>>
-								<<option "Immature and passive" "immaturePassive">>
-								<<option "Immature and aggressive" "immatureAggressive">>
-								<<option "Partly grown and aggressive" "grownAggressive">>
+								<<option "미성숙하고 수동적" "immaturePassive">>
+								<<option "미성숙하고 공격적" "immatureAggressive">>
+								<<option "부분적으로 성장하고 공격적" "grownAggressive">>
 							<</listbox>>
 						</label>
 					</div>
@@ -876,7 +980,7 @@
 					<<if _keys.count("Demon of Purity")>>
 						<<set _options["Virgin Demon"] = "virginDemon">>
 					<</if>>
-					<label>Divine Transformation:
+					<label>신성한 변신:
 						<<listbox "$featsBoosts.divineTFs" autoselect>>
 							<<optionsfrom _options>>
 						<</listbox>>
@@ -908,7 +1012,7 @@
 					<<if _keys.count("Bunny") gt 0>>
 						<<set _options["Bunny"] = "bunny">>
 					<</if>>
-					<label>Animal Transformation:
+					<label>동물 변신:
 						<<listbox "$featsBoosts.animalTFs" autoselect>>
 							<<optionsfrom _options>>
 						<</listbox>>
@@ -928,24 +1032,24 @@
 <</widget>>
 
 <<widget "tattooFilter">>
-	<span class="gold">Filter designs by:</span>
+	<span class="gold">도안 필터:</span>
 	<<set _tattooFilters = {
-		"All" : "all",
-		"Image" : "object",
-		"Text" : "text",
-		"Masculine" : "m",
-		"Feminine" : "f",
-		"Bestiality" : "bestiality",
-		"Cattle" : "cattle",
-		"Combat" : "combat",
-		"Criminal" : "criminal",
-		"Exhibitionism" : "exhibitionism",
-		"Prostitution" : "prostitution",
-		"Rape" : "rape",
-		"Sex" : "sex",
-		"Violence" : "violence",
-		"Pregnancy" : "pregnancy",
-		"Impreg" : "impreg",
+		"모두" : "all",
+		"이미지" : "object",
+		"텍스트" : "text",
+		"남성적" : "m",
+		"여성적" : "f",
+		"수간" : "bestiality",
+		"가축" : "cattle",
+		"전투" : "combat",
+		"범죄" : "criminal",
+		"노출" : "exhibitionism",
+		"매춘" : "prostitution",
+		"강간" : "rape",
+		"섹스" : "sex",
+		"폭력" : "violence",
+		"임신" : "pregnancy",
+		"수정" : "impreg",
 		}>>
 	<<listbox `"$tattooFilter"+_tattooNumber` autoselect>>
 		<<optionsfrom _tattooFilters>>
@@ -953,10 +1057,10 @@
 <</widget>>
 
 <<widget "tattooList">>
-	<span class="gold">Tattoo Design:</span>
+	<span class="gold">문신 도안:</span>
 	<<featsTattooOptions>>
 	<<listbox `"$featsBoosts.tattoos["+_tattooNumber+"].tattoo"` autoselect>>
-		<<option "Random">>
+		<<option "무작위" "Random">>
 		<<optionsfrom _featsTattooOptions>>
 	<</listbox>>
 <</widget>>
@@ -968,7 +1072,7 @@
 			<<if _value.featSkip is true>>
 				<<continue>>
 			<</if>>
-			<<run _featsTattooAll.push(_value.writing)>>
+			<<run _featsTattooAll.push(_value.writingKr || _value.writing)>>
 		<</for>>
 	<</if>>
 	<<set _featsTattooOptions to {}>>
@@ -1005,51 +1109,51 @@
 	<<set _nextUpgradeCost to _type is "specialClothing" and _purchasedUpgrades is 2 ? _specialClothingBaseCost : _cost>>
 	<<set _maxUpgradeCost to _type is "specialClothing" and _maxUpgrades gte 3 and _purchasedUpgrades lt 3 ? _specialClothingBaseCost : _remainingUpgrades * _cost>>
 	<br><br>
-	<span class="gold bold">Upgrades:</span>
+	<span class="gold bold">업그레이드:</span>
 	<br>
 	<div style="margin-bottom:10px;">
 	<<switch _name>>
 		<<case "money">>
-			Each purchased upgrade will add <span class="green">£<<print _maxUpgrades * 25>></span> to your starting money.
+			각 업그레이드를 구매할 때마다 시작 자금에 <span class="green">£<<print _maxUpgrades * 25>></span>【이가】 추가됩니다.
 		<<case "grades">>
-			Each purchased upgrade will raise your starting school grades by <span class="green">one letter grade.</span>
+			각 업그레이드를 구매할 때마다 시작 학점이 <span class="green">한 단계씩</span> 올라갑니다.
 		<<case "purity">>
-			Each purchased upgrade will increase your daily purity by one point per level.
+			각 업그레이드를 구매할 때마다 매일 획득하는 순결도가 레벨당 1점씩 증가합니다.
 		<<case "impurity">>
-			Each purchased upgrade will decrease your daily purity by one point per level.
+			각 업그레이드를 구매할 때마다 매일 감소하는 순결도가 레벨당 1점씩 증가합니다.
 		<<case "newLife">>
 			<<if _maxUpgrades is 2>>
-				Purchase the first upgrade to start the game with a hermaphrodite tentacle parasite. Purchase the second upgrade to give it perfect activity; otherwise it will have random activity.
+				첫 번째 업그레이드를 구매하면 자웅동체 촉수 기생충과 함께 게임을 시작합니다. 두 번째 업그레이드를 구매하면 완벽한 활동성을 부여합니다. 그렇지 않으면 활동성이 무작위로 결정됩니다.
 			<<else>>
-				Purchase the first upgrade to start the game with a hermaphrodite tentacle parasite with random activity. Acquire a second broodmother feat to give it perfect activity.
+				첫 번째 업그레이드를 구매하면 무작위 활동성을 가진 자웅동체 촉수 기생충과 함께 게임을 시작합니다. 완벽한 활동성을 부여하려면 두 번째 무리어미 위업을 달성하십시오.
 			<</if>>
 		<<case "aNewBestFriend">>
 			Purchase this upgrade to start the game with <<if earSlimeThoughts()>>a voice in your head<<else>>an ear slime parasite<</if>>.
 		<<case "randomClothing">>
-			Each purchased upgrade gives you three random clothing items of the specified gender.
+			각 업그레이드를 구매할 때마다 지정한 성별의 무작위 의류 아이템 3개를 받습니다.
 		<<case "tattoos">>
-			Each purchased upgrade will allow you to get one starting tattoo or brand of your choice.
+			각 업그레이드를 구매할 때마다 원하는 시작 문신이나 낙인을 하나 얻을 수 있습니다.
 		<<case "specialClothing">>
 			<<if _maxUpgrades gte 3>>
 				The first rank allows up to half of previously unlocked special clothing sets. The second allows any amount. The third charges twice each set's normal price and makes selected sets count as normally unlocked, enabling their route dialogue.
 			<<elseif _maxUpgrades is 2>>
-				Select the first upgrade to purchase up to half of previously unlocked special clothes. Purchase the second rank to purchase any number of previously unlocked special clothes.
+				첫 번째 업그레이드를 선택하면 이전에 해금한 특수 의류를 최대 절반까지 구매할 수 있습니다. 두 번째 랭크를 구매하면 이전에 해금한 특수 의류를 수량 제한 없이 구매할 수 있습니다.
 			<<else>>
-				Select the first upgrade to purchase up to half of previously unlocked special clothes. Acquire a secret feat to purchase any number of previously unlocked special clothes.
+				첫 번째 업그레이드를 선택하면 이전에 해금한 특수 의류를 최대 절반까지 구매할 수 있습니다. 수량 제한 없이 구매하려면 비밀 위업을 달성하십시오.
 			<</if>>
 		<<case "seeds">>
 			<<if _maxUpgrades is 2>>
-				Select the first upgrade to purchase up to half of previously unlocked seeds. Purchase the second rank to purchase more seeds.
+				첫 번째 업그레이드를 선택하면 이전에 해금한 씨앗을 최대 절반까지 구매할 수 있습니다. 두 번째 랭크를 구매하면 씨앗을 더 많이 구매할 수 있습니다.
 			<<else>>
-				Select the first upgrade to purchase up to half of previously unlocked seeds. Acquire a feat 'Breedy' to purchase more seeds.
+				첫 번째 업그레이드를 선택하면 이전에 해금한 씨앗을 최대 절반까지 구매할 수 있습니다. '품종 개량가' 위업을 달성하면 씨앗을 더 많이 구매할 수 있습니다.
 			<</if>>
 		<<case "sexToys">>
-			Each purchased upgrade will give you three starting sex toys of your choice.
+			각 업그레이드를 구매할 때마다 원하는 시작 섹스 토이 3개를 받습니다.
 			Novelty chastity devices are placed in your wardrobe with their keys.
 		<<case "xchangePremiumPills">>
 			Each purchased pack gives you five X-Change Premium pills.
 		<<case "greenThumb">>
-			Purchase this upgrade to start with the <span class="green">Green Thumb</span> trait.
+			이 업그레이드를 구매하면 <span class="green">녹색의 손</span> 특성을 가진 채로 게임을 시작합니다.
 		<<case "xchangePurityTrait">>
 			Purchase this upgrade to <span class="green">make all X-Change pills permanently harmless</span>. Pills can still be applied and recognised by events, but their transformations and other X-Change effects will not working.
 		<<case "xchangeGrayAgentTrait">>
@@ -1057,19 +1161,26 @@
 		<<case "orgasmTrait" "chokeTrait" "ejacTrait" "molestTrait" "rapeTrait" "bestialityTrait" "tentacleTrait" "critterMagnetTrait" "milkDrankTrait">>
 			Purchase this upgrade to start with the <span class="green"><<print $featsBoosts.name[_type]>></span> trait.
 		<<case "divineTFs">>
-			Purchase this upgrade to start with a divine transformation.
+			이 업그레이드를 구매하면 신성한 변신 상태로 게임을 시작합니다.
 		<<case "animalTFs">>
-			Purchase this upgrade to start with an animal transformation.
+			이 업그레이드를 구매하면 동물 변신 상태로 게임을 시작합니다.
 		<<case "sadism">>
-			Each purchased upgrade will increase your daily sadism by one point per level.
+			업그레이드를 구매할 때마다 일일 가학 성향이 1점씩 늘어납니다.
 		<<case "masochism">>
-			Each purchased upgrade will increase your daily masochism by one point per level.
+			업그레이드를 구매할 때마다 일일 피학 성향이 1점씩 늘어납니다.
 		<<case "transcend">>
-			Each purchased upgrade will increase the amount of skill, grades, physique and willpower points gained by <span class=gold>50%</span>.
+			업그레이드를 구매할 때마다 스킬, 학점, 체격, 의지력 포인트 획득량이 <span class=gold>50%</span> 늘어납니다.
 		<<case "adaptiveGenes">>
-			Each purchased upgrade will increase the amount of transformation points gained by <span class=gold>100%</span>.
+			업그레이드를 구매할 때마다 변신 포인트 획득량이 <span class=gold>100%</span> 늘어납니다.
+		<<case "skulduggery">>각 업그레이드를 구매할 때마다 속임수 레벨이 한 등급씩 상승합니다.
+		<<case "dancing">>각 업그레이드를 구매할 때마다 춤 레벨이 한 등급씩 상승합니다.
+		<<case "tending">>각 업그레이드를 구매할 때마다 관리 레벨이 한 등급씩 상승합니다.
+		<<case "swimming">>각 업그레이드를 구매할 때마다 수영 레벨이 한 등급씩 상승합니다.
+		<<case "athletics">>각 업그레이드를 구매할 때마다 운동 레벨이 한 등급씩 상승합니다.
+		<<case "seduction">>각 업그레이드를 구매할 때마다 유혹 레벨이 한 등급씩 상승합니다.
+		<<case "housekeeping">>각 업그레이드를 구매할 때마다 가사 레벨이 한 등급씩 상승합니다.
 		<<default>>
-			Each purchased upgrade will raise your _type level by <span class="green">one letter grade.</span>
+			각 업그레이드를 구매할 때마다 _type 레벨이 <span class="green">한 등급씩</span> 상승합니다.
 	<</switch>>
 	</div>
 	<<capture _type _cost _specialClothingBaseCost _nextUpgradeCost _maxUpgradeCost>>
@@ -1180,18 +1291,18 @@
 	<</if>>
 	<<if _totalToys gt 1>>
 		<div class="settingsGrid" style="margin:10px 0px">
-			<div class="settingsHeader">Toy <<print _toyNumber+1>>
+			<div class="settingsHeader">장난감 <<print _toyNumber+1>>
 			<br>
 				<<if _toyNumber gte 0 and _totalToys gt 1>>
 				<span style="font-size:80%;">
-					<<link "Previous Toy">>
+					<<link "이전 장난감">>
 						<<set _toyNumber-->>
 						<<if _toyNumber lt 0>>
 							<<set _toyNumber to _totalToys-1>>
 						<</if>>
 						<<replace #featsPointsMenu>><<featsPointsMenu>><</replace>>
 					<</link>> |
-					<<link "Next Toy">>
+					<<link "다음 장난감">>
 						<<set _toyNumber++>>
 						<<if _toyNumber+1 gt _totalToys>>
 							<<set _toyNumber to 0>>
@@ -1202,10 +1313,10 @@
 				<</if>>
 			</div>
 			<div class="settingsToggleItem">
-				<span class="gold">Sex Toy:</span>
+				<span class="gold">섹스 토이:</span>
 				<div id="sexToysFeatUIIndex">
 					<<listbox "$featsBoosts.sexToys[_toyNumber].index" autoselect>>
-						<<option "Random" -1>>
+						<<option "무작위" -1>>
 						<<optionsfrom _toys>>
 					<</listbox>>
 				</div>
@@ -1228,16 +1339,16 @@
 			<<set _selectedToy to setup.clothes.genitals.find(item => item.name === V.featsBoosts.sexToys[T.toyNumber].index and item.chastityKey === "player")>>
 		<</if>>
 		<<if _selectedToy and _selectedToy.colour_options and _selectedToy.colour_options.length>>
-			<<run _selectedToy.colour_options.forEach(colour => _toyColours[colour] = colour)>>
+			<<run _selectedToy.colour_options.forEach(colour => _toyColours[setup.colourName(colour)] = colour)>>
 		<</if>>
 	<<else>>
 		<<set _toyColours to {}>>
 	<</if>>
 	<<if Object.values(_toyColours).length gt 1>>
 		<div class="settingsToggleItem">
-			<span class="gold">Colour:</span><br>
+			<span class="gold">색상:</span><br>
 			<<listbox "$featsBoosts.sexToys[_toyNumber].colour" autoselect>>
-				<<option "Random" -1>>
+				<<option "무작위" -1>>
 				<<optionsfrom _toyColours>>
 			<</listbox>>
 		</div>
@@ -1258,14 +1369,14 @@
 		<</if>>
 		<<run $(() => { $('[data-limit-group]').first().trigger('change.macros') })>>
 		<br>
-		<div class="settingsHeader" style="margin-bottom: 0.5em">Sets To Unlock</div>
+		<div class="settingsHeader" style="margin-bottom: 0.5em">해금할 세트</div>
 		<<if _specialClothingCostMultiplier is 2>>
 			<div class="gold" style="margin-bottom: 0.5em;">Stage 3 story unlocks cost twice each set's normal VrelCoin price.</div>
 		<</if>>
 		<form>
 			<fieldset class="specialClothesFeatFieldset">
-				<legend>Select up to _totalUnlockedSetsLimit sets</legend>
-					<div class="red" style="padding-left: 10px">If you find that certain sets aren't unlocked when they should be, try loading a save with the set unlocked, move a passage, and save.</div>
+				<legend>최대 _totalUnlockedSetsLimit개의 세트 선택</legend>
+					<div class="red" style="padding-left: 10px">해금되어야 할 특정 세트가 해금되지 않는다면, 세트가 해금된 세이브 파일을 로드하여 다른 장소로 이동한 후 저장해 보십시오.</div>
 					<div class="settingsGridSmall specialClothesFeatGrid">
 						<<for $_labelC, $_valueC range $featsBoosts.specialClothesSets>>
 							<label>
@@ -1281,11 +1392,11 @@
 
 										<<if _totalUnlockedSets.includes($_labelC)>>
 											<<if $_canAfford or $featsBoosts.specialClothesSets[$_labelC]>>
-												<<set $_listText to "Includes: <span class='green'>" + formatList($_listFromSets, 'and', true) + "</span>">>
-												<<checkbox "$featsBoosts.specialClothesSets[$_labelC]" false true autocheck "specialClothingFeatSets" _totalUnlockedSetsLimit "<span class='red'>Selection limit reached!</span>">>
+												<<set $_listText to "포함: <span class='green'>" + formatList($_listFromSets, '그리고', true) + "</span>">>
+												<<checkbox "$featsBoosts.specialClothesSets[$_labelC]" false true autocheck "specialClothingFeatSets" _totalUnlockedSetsLimit "<span class='red'>선택 한도에 도달했습니다!</span>">>
 											<<else>>
-												<<set $_listText to "<span class='red'>Not enough VrelCoins!</span><br> Includes: <span class='green'>" + formatList($_listFromSets, 'and', true) + "</span>">>
-												<input type="checkbox" class="black tooltip-anchor" @tooltip="Includes: $_listText" disabled>
+												<<set $_listText to "<span class='red'>브렐 코인이 부족합니다!</span><br> 포함: <span class='green'>" + formatList($_listFromSets, '그리고', true) + "</span>">>
+												<input type="checkbox" class="black tooltip-anchor" @tooltip="포함: $_listText" disabled>
 											<</if>>
 												<<if $_clothingObject.icon is "clothes">>
 													<<set $_cIcon to clone(setup.clothes[$_clothingObject.iconSlot][$_clothingObject.iconIndex])>>
@@ -1295,7 +1406,7 @@
 													<<set $_cIcon to $_clothingObject.icon>>
 													<<icon $_cIcon>>
 												<</if>>
-												<span class="gold tooltip-anchor" @tooltip="$_listText"><<print $_labelC.replace(/_/g," ").toUpperFirst()>></span>
+												<span class="gold tooltip-anchor" @tooltip="$_listText"><<print setup.specialClothesSets[$_labelC].text>></span>
 												<div class="gold" style="display:inline-block">($_costDisplay)</div>
 										<<else>>
 												<<if setup.specialClothesSets[$_labelC].subsetOf>>
@@ -1306,11 +1417,11 @@
 												<<if setup.specialClothesSets[$_labelC].hint>>
 													<<set $_hints.pushUnique(setup.specialClothesSets[$_labelC].hint)>>
 												<</if>>
-												<<set $_hintText to $_hints.length ? "<br><span class='black'>Hint: " + formatList($_hints, 'or', true).toUpperFirst() + "</span>" : "">>
-												<<set $_listText to "<span class='red'>Not earned!</span><br> Includes: <span class='black'>" + formatList($_listFromSets, 'and', true) + "</span>" + $_hintText>>
-												<input type="checkbox" class="black tooltip-anchor" @tooltip="Includes: $_listText" disabled>
+												<<set $_hintText to $_hints.length ? "<br><span class='black'>힌트: " + formatList($_hints, '또는', true).toUpperFirst() + "</span>" : "">>
+												<<set $_listText to "<span class='red'>아직 획득하지 못했습니다!</span><br> 포함: <span class='black'>" + formatList($_listFromSets, '그리고', true) + "</span>" + $_hintText>>
+												<input type="checkbox" class="black tooltip-anchor" @tooltip="포함: $_listText" disabled>
 												<<lockicon>>
-												<span class="black tooltip-anchor" @tooltip="Includes: $_listText"><<print $_labelC.replace(/_/g," ").toUpperFirst()>></span>
+												<span class="gold tooltip-anchor" @tooltip="$_listText"><<print setup.specialClothesSets[$_labelC].text>></span>
 												<div class="black" style="display:inline-block">($_costDisplay)</div>
 										<</if>>
 									<</capture>>
@@ -1343,18 +1454,17 @@
 		<<set _totalUnlockedSeeds to $feats.allSaves.seeds>>
 		<<set _totalUnlockedSeedsLimit to $featsBoosts.upgradeDetails.seeds.purchased gte 2 ? Math.ceil(_totalUnlockedSeeds.length / 1) : Math.ceil(_totalUnlockedSeeds.length / 2)>>
 		<<if !Object.values($featsBoosts.seeds).length>>
-			<!-- Populate object -->
 			<<for $_labelPop, $_valuePop range _totalSeeds>>
 				<<set $featsBoosts.seeds[$_valuePop] to false>>
 			<</for>>
 		<</if>>
 		<<run $(() => { $('[data-limit-group]').first().trigger('change.macros') })>>
 		<br>
-		<div class="settingsHeader" style="margin-bottom: 0.5em">Seeds To Unlock</div>
+		<div class="settingsHeader" style="margin-bottom: 0.5em">해금할 씨앗</div>
 		<form>
 			<fieldset>
-				<legend>Select up to _totalUnlockedSeedsLimit seeds</legend>
-					<div class="red" style="padding-left: 10px">If you find that certain seeds aren't unlocked when they should be, try loading a save with the seed unlocked, move a passage, and save.</div>
+				<legend>최대 _totalUnlockedSeedsLimit개 선택</legend>
+					<div class="red" style="padding-left: 10px">해금되어 있어야 할 특정 씨앗이 해금되지 않은 경우, 해당 씨앗이 해금된 세이브를 불러온 후 패시지를 한 번 이동하고 다시 저장해 보십시오.</div>
 					<div class="settingsGridSmall">
 						<<for $_labelC, $_valueC range $featsBoosts.seeds>>
 							<label>
@@ -1362,15 +1472,15 @@
 									<<capture $_labelC>>
 										<<set $_seed to clone(setup.foodstuff[$_labelC])>>
 										<<set $_canAfford to ($feats.allSaves.points - $featsBoosts.pointsUsed) - $_seed.tending.featCost gte 0>>
-										<<set $_costDisplay to "<<print $_seed.tending.featCost>>"+ ($options.images is 1 ? " <img class='imgButton' src='img/ui/coin-gold.gif'/>" : "Vrelcoins")>>
+										<<set $_costDisplay to "<<print $_seed.tending.featCost>>"+ ($options.images is 1 ? " <img class='imgButton' src='img/ui/coin-gold.gif'/>" : " 브렐코인")>>
 
 										<<if _totalUnlockedSeeds.includes($_labelC)>>
 											<<if $_canAfford or $featsBoosts.seeds[$_labelC]>>
-												<<checkbox "$featsBoosts.seeds[$_labelC]" false true autocheck "seedsFeatSelect" _totalUnlockedSeedsLimit "<span class='red'>Selection limit reached!</span>">>
+												<<checkbox "$featsBoosts.seeds[$_labelC]" false true autocheck "seedsFeatSelect" _totalUnlockedSeedsLimit "<span class='red'>선택 한도에 도달했습니다!</span>">>
 												<<icon `"tending/" + $_seed.icon`>>
 												<span class="gold"><<print $_seed.name.toUpperFirst()>></span>
 											<<else>>
-												<<set $_listText to "<span class='red'>Not enough VrelCoins!</span>">>
+												<<set $_listText to "<span class='red'>브렐코인이 부족합니다!</span>">>
 												<input type="checkbox" class="black tooltip-anchor" @tooltip="$_listText" disabled>
 												<<icon `"tending/" + $_seed.icon`>>
 												<span class="gold tooltip-anchor" @tooltip="$_listText"><<print $_seed.name.toUpperFirst()>></span>
@@ -1378,8 +1488,8 @@
 											<div class="gold" style="display:inline-block">($_costDisplay)</div>
 										<<else>>
 											<<set $_hints to []>>
-											<<set $_hintText to $_hints.length ? "<br><span class='black'>Hint: " + formatList($_hints, 'or', true).toUpperFirst() + "</span>" : "">>
-											<<set $_listText to "<span class='red'>Not earned!</span>" + $_hintText>>
+											<<set $_hintText to $_hints.length ? "<br><span class='black'>힌트: " + formatList($_hints, '또는', true).toUpperFirst() + "</span>" : "">>
+											<<set $_listText to "<span class='red'>획득하지 못함</span>" + $_hintText>>
 											<input type="checkbox" class="black tooltip-anchor" @tooltip="$_listText" disabled>
 											<<lockicon>>
 											<span class="black tooltip-anchor" @tooltip="$_listText"><<print $_seed.name.toUpperFirst()>></span>
@@ -1442,7 +1552,7 @@
 			<div class="featText">
 				<<switch _args[0]>>
 					<<case "It Belongs in a Museum">>
-						<span class="title">It Belongs in a Museum?</span>
+						<span class="title">박물관으로 가야 해?</span>
 					<<default>>
 						<<if setup.feats[_args[0]].title.endsWith("?")>>
 							<span class="title"><<print setup.feats[_args[0]].title>></span>
@@ -1453,16 +1563,16 @@
 				<br>
 				<<switch _args[0]>>
 					<<case "No More Control">>
-						<span class="text">You don't know how to get lewder... right?</span>
+						<span class="text">여기서 더 음란해질 수는 없겠지... 안 그래?</span>
 					<<case "Teachers Nightmare">>
-						<span class="text">You are a terror... right?</span>
+						<span class="text">너는 골칫거리잖아... 안 그래?</span>
 					<<case "Anti-Social Moth">>
-						<span class="text">Who needs friends... right?</span>
+						<span class="text">친구 따위 누가 필요하겠어... 안 그래?</span>
 					<<default>>
 						<<if setup.feats[_args[0]].desc.endsWith(".")>>
-							<span class="text"><<print setup.feats[_args[0]].desc>>.. right?</span>
+							<span class="text"><<print setup.feats[_args[0]].desc>>... 안 그래?</span>
 						<<else>>
-							<span class="text"><<print setup.feats[_args[0]].desc>>... right?</span>
+							<span class="text"><<print setup.feats[_args[0]].desc>>... 안 그래?</span>
 						<</if>>
 				<</switch>>
 			</div>

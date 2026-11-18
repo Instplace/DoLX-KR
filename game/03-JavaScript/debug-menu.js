@@ -17,91 +17,91 @@ setup.debugMenu = {
 setup.debugMenu.eventList = {
 	Main: [
 		{
-			link: [`Home`, `Bedroom`],
+			link: [`홈`, `Bedroom`],
 			widgets: [`<<endcombat>>`],
 		},
 		{
-			link: [`Test`, `Test`],
+			link: [`테스트`, `Test`],
 			widgets: [`<<endcombat>>`],
 		},
 		{
-			link: [`Enrage Avery`, stayOnPassageFn],
+			link: [`에이버리 분노 증가`, stayOnPassageFn],
 			widgets: [`<<npcincr Avery rage 100>>`, `<<set $averyragerevealed to 1>>`],
 		},
 		{
-			link: [`Calm Avery`, stayOnPassageFn],
+			link: [`에이버리 진정`, stayOnPassageFn],
 			widgets: [`<<npcincr Avery rage -100>>`, `<<set $averyragerevealed to 0>>`],
 		},
 		{
-			link: [`Pass 1 minute`, stayOnPassageFn],
+			link: [`1분 경과`, stayOnPassageFn],
 			widgets: [`<<pass 1>>`],
 		},
 		{
-			link: [`Pass 15 minutes`, stayOnPassageFn],
+			link: [`15분 경과`, stayOnPassageFn],
 			widgets: [`<<pass 15>>`],
 		},
 		{
-			link: [`Pass 20 minutes`, stayOnPassageFn],
+			link: [`20분 경과`, stayOnPassageFn],
 			widgets: [`<<pass 20>>`],
 		},
 		{
-			link: [`Pass 1 hour`, stayOnPassageFn],
+			link: [`1시간 경과`, stayOnPassageFn],
 			widgets: [`<<pass 60>>`],
 		},
 		{
-			link: [`Pass 3 hours`, stayOnPassageFn],
+			link: [`3시간 경과`, stayOnPassageFn],
 			widgets: [`<<pass 3 hours>>`],
 		},
 		{
-			link: [`Pass 6 hours`, stayOnPassageFn],
+			link: [`6시간 경과`, stayOnPassageFn],
 			widgets: [`<<pass 6 hours>>`],
 		},
 		{
-			link: [`Pass 12 hours`, stayOnPassageFn],
+			link: [`12시간 경과`, stayOnPassageFn],
 			widgets: [`<<pass 12 hours>>`],
 		},
 		{
-			link: [`Pass 18 hours`, stayOnPassageFn],
+			link: [`18시간 경과`, stayOnPassageFn],
 			widgets: [`<<pass 18 hours>>`, `<<set $tiredness to 0>>`],
 		},
 		{
-			link: [`Pass 23 hours`, stayOnPassageFn],
+			link: [`23시간 경과`, stayOnPassageFn],
 			widgets: [`<<pass 23 hours>>`, `<<set $tiredness to 0>>`],
 		},
 		{
-			link: [`Pass 24 hours`, stayOnPassageFn],
+			link: [`24시간 경과`, stayOnPassageFn],
 			widgets: [`<<pass 24 hours>>`, `<<set $tiredness to 0>>`],
 		},
 		{
-			link: [`Wardrobe`, `Wardrobe`],
+			link: [`옷장`, `Wardrobe`],
 			widgets: [``],
 		},
 		{
-			link: [`Foodstuff Prop Debug`, `Foodstuff Prop Debug`],
+			link: [`식재료 속성 디버그`, `Foodstuff Prop Debug`],
 			widgets: [``],
 		},
 		{
-			link: [`Caught Fish Prop Debug`, `Caught Fish Prop Debug`],
+			link: [`잡은 물고기 소지 디버그`, `Caught Fish Prop Debug`],
 			widgets: [``],
 		},
 		{
-			link: [`Learn all recipes`, stayOnPassageFn],
+			link: [`모든 레시피 습득`, stayOnPassageFn],
 			widgets: [`<<learn_recipe_all>>`],
 		},
 		{
-			link: [`Give 20 of each foodstuff`, stayOnPassageFn],
+			link: [`식재료별 20개 지급`, stayOnPassageFn],
 			widgets: [`<<give_all_foodstuff>>`],
 		},
 		{
-			link: [`Unlock All Love Interests`, stayOnPassageFn],
+			link: [`모든 연애 대상 잠금 해제`, stayOnPassageFn],
 			widgets: [`<<debugUnlockAllLoveInterests>>`],
 		},
 		{
-			link: [`Strip`, stayOnPassageFn],
+			link: [`벗기기`, stayOnPassageFn],
 			widgets: [`<<undressclothes "wardrobe">>`],
 		},
 		{
-			link: [`Strip to undies`, stayOnPassageFn],
+			link: [`속옷만 남기기`, stayOnPassageFn],
 			widgets: [
 				`<<generalUndress wardrobe over_upper>>`,
 				`<<generalUndress wardrobe over_lower>>`,
@@ -110,59 +110,59 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`Strip all`, stayOnPassageFn],
+			link: [`전부 벗기기`, stayOnPassageFn],
 			widgets: [`<<undress "wardrobe">>`],
 		},
 		{
-			link: [`CanvasModel Example`, `CanvasModel Example`],
+			link: [`CanvasModel 예시`, `CanvasModel Example`],
 			widgets: [``],
 		},
 		{
-			link: [`Make Rent Due`, stayOnPassageFn],
+			link: [`상납금 납부일로 만들기`, stayOnPassageFn],
 			widgets: [`<<set $rentTime to -1>>`],
 		},
 		{
-			link: [`Max Thug Anger`, stayOnPassageFn],
+			link: [`불량배 분노 최대`, stayOnPassageFn],
 			widgets: [`<<set $rentThug to { anger: 5, angerCountdown: 0, traps: [] }>>`],
 		},
 		{
-			link: [`Enemy Trust +++`, stayOnPassageFn],
+			link: [`적 신뢰도 +++`, stayOnPassageFn],
 			widgets: [`<<set $enemytrust += 2000>>`, `<<set $enemyanger -= 1000>>`],
 		},
 		{
-			link: [`Enemy Trust ---`, stayOnPassageFn],
+			link: [`적 신뢰도 ---`, stayOnPassageFn],
 			widgets: [`<<set $enemytrust -= 2000>>`, `<<set $enemyanger += 1000>>`],
 		},
 		{
-			link: [`Super Punch`, stayOnPassageFn],
+			link: [`슈퍼 펀치`, stayOnPassageFn],
 			widgets: [`<<set $enemyhealth to 0>>`],
 		},
 		{
-			link: [`Super Stroke`, stayOnPassageFn],
+			link: [`슈퍼 애무`, stayOnPassageFn],
 			widgets: [() => `<<set $enemyarousal to ` + V.enemyarousalmax + `>>`],
 		},
 		{
-			link: [`Scream`, stayOnPassageFn],
+			link: [`비명`, stayOnPassageFn],
 			widgets: [`<<set $alarm to 1>>`],
 		},
 		{
-			link: [`Finish Var (doesn't always work)`, stayOnPassageFn],
+			link: [`Finish 변수 설정(항상 작동하진 않음)`, stayOnPassageFn],
 			widgets: [`<<set $finish to 1>>`],
 		},
 		{
-			link: [`Make Rape`, stayOnPassageFn],
+			link: [`비동의 상태로 설정`, stayOnPassageFn],
 			widgets: [`<<set $consensual to 0>>`],
 		},
 		{
-			link: [`Make Consensual`, stayOnPassageFn],
+			link: [`동의 상태로 설정`, stayOnPassageFn],
 			widgets: [`<<set $consensual to 1>>`],
 		},
 		{
-			link: [`Enemy Arousal ---`, stayOnPassageFn],
+			link: [`적 흥분 ---`, stayOnPassageFn],
 			widgets: [`<<set $enemyarousal to 0>>`],
 		},
 		{
-			link: [`Roll Over`, stayOnPassageFn],
+			link: [`자세 뒤집기`, stayOnPassageFn],
 			widgets: [
 				() => {
 					V.position = V.position === "doggy" ? "missionary" : "doggy";
@@ -214,39 +214,39 @@ setup.debugMenu.eventList = {
 			widgets: [`<<set $rng to 91>>`],
 		},
 		{
-			link: [`RNG reroll x1`, stayOnPassageFn],
+			link: [`RNG 재굴림 x1`, stayOnPassageFn],
 			widgets: [`<<set $rng to random(1,100)>>`],
 		},
 		{
-			link: [`RNG reroll x3`, stayOnPassageFn],
+			link: [`RNG 재굴림 x3`, stayOnPassageFn],
 			widgets: [`<<run random(1,100)>>`, `<<run random(1,100)>>`, `<<set $rng to random(1,100)>>`],
 		},
 		{
-			link: [`RNG reroll x5`, stayOnPassageFn],
+			link: [`RNG 재굴림 x5`, stayOnPassageFn],
 			widgets: [`<<run random(1,100)>>`, `<<run random(1,100)>>`, `<<run random(1,100)>>`, `<<run random(1,100)>>`, `<<set $rng to random(1,100)>>`],
 		},
 		{
-			link: [`Wear sundress`, stayOnPassageFn],
+			link: [`선드레스 착용`, stayOnPassageFn],
 			widgets: [`<<upperwear "sundress">>`],
 		},
 		{
-			link: [`Wear swimsuit`, stayOnPassageFn],
+			link: [`수영복 착용`, stayOnPassageFn],
 			widgets: [`<<underupperwear "school swimsuit">>`],
 		},
 		{
-			link: [`Testing Room`, `Testing Room`],
+			link: [`테스트 룸`, `Testing Room`],
 			widgets: [`<<upperstrip>>`, `<<lowerstrip>>`, `<<underlowerstrip>>`],
 		},
 		{
-			link: [`End Event`, stayOnPassageFn],
+			link: [`이벤트 종료`, stayOnPassageFn],
 			widgets: [`<<endevent>>`],
 		},
 		{
-			link: [`Escape Vore`, stayOnPassageFn],
+			link: [`보어 탈출`, stayOnPassageFn],
 			widgets: [`<<set $vorestage to 0>>`],
 		},
 		{
-			link: [`Earn all Feats`, stayOnPassageFn],
+			link: [`모든 업적 달성하기`, stayOnPassageFn],
 			widgets: [
 				`
 				<<set _featList to Object.keys(setup.feats)>>
@@ -257,7 +257,7 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`Unlock forest shop clothing`, stayOnPassageFn],
+			link: [`숲 상점 의상 잠금 해제하기`, stayOnPassageFn],
 			widgets: [
 				`
 				<<for _i to 0; _i lt $specialClothes.length; _i++>>
@@ -270,7 +270,7 @@ setup.debugMenu.eventList = {
 			text_only: `\n`,
 		},
 		{
-			link: [`Make all beasts male`, stayOnPassageFn],
+			link: [`모든 짐승을 수컷으로`, stayOnPassageFn],
 			widgets: [
 				() => {
 					C.beastSettingTypes.forEach(type => {
@@ -282,7 +282,7 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`Make all beasts female`, stayOnPassageFn],
+			link: [`모든 짐승을 암컷으로`, stayOnPassageFn],
 			widgets: [
 				() => {
 					C.beastSettingTypes.forEach(type => {
@@ -294,7 +294,7 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`Make all beasts monster people`, stayOnPassageFn],
+			link: [`모든 짐승을 수인으로`, stayOnPassageFn],
 			widgets: [
 				() => {
 					C.beastSettingTypes.forEach(type => {
@@ -308,19 +308,19 @@ setup.debugMenu.eventList = {
 			text_only: `\n`,
 		},
 		{
-			link: [`Spring`, stayOnPassageFn],
+			link: [`봄`, stayOnPassageFn],
 			widgets: [`<<run Time.timeTravel(new DateTime(Time.year, 3))>>`],
 		},
 		{
-			link: [`Summer`, stayOnPassageFn],
+			link: [`여름`, stayOnPassageFn],
 			widgets: [`<<run Time.timeTravel(new DateTime(Time.year, 6))>>`],
 		},
 		{
-			link: [`Autumn`, stayOnPassageFn],
+			link: [`가을`, stayOnPassageFn],
 			widgets: [`<<run Time.timeTravel(new DateTime(Time.year, 9))>>`],
 		},
 		{
-			link: [`Winter`, stayOnPassageFn],
+			link: [`겨울`, stayOnPassageFn],
 			widgets: [`<<run Time.timeTravel(new DateTime(Time.year, 12))>>`],
 		},
 		{
@@ -335,23 +335,23 @@ setup.debugMenu.eventList = {
 			text_only: `\n`,
 		},
 		{
-			link: [`Enable basic Pregnancy features`, stayOnPassageFn],
+			link: [`기본 임신 기능 활성화`, stayOnPassageFn],
 			widgets: [`<<set $pregnancyStats.parasiteDoctorEvents to 2>>`],
 		},
 		{
-			link: [`Get Initial Mother Trait`, stayOnPassageFn],
+			link: [`초기 어머니 특성 획득`, stayOnPassageFn],
 			widgets: [`<<set $sexStats.anus.pregnancy.motherStatus to 1>>`],
 		},
 		{
-			link: [`Fertilise New Eggs`, stayOnPassageFn],
+			link: [`새 알 수정`, stayOnPassageFn],
 			widgets: [`<<fertiliseParasites>>`, `<<fertiliseParasites "vagina">>`],
 		},
 		{
-			link: [`Pregnancy Progress Day`, stayOnPassageFn],
+			link: [`임신 하루 진행`, stayOnPassageFn],
 			widgets: [`<<parasiteProgressDay>>`, `<<parasiteProgressDay "vagina">>`],
 		},
 		{
-			link: [`Pregnancy Progress Week`, stayOnPassageFn],
+			link: [`임신 일주일 진행`, stayOnPassageFn],
 			widgets: [
 				`<<parasiteProgressDay>>`,
 				`<<parasiteProgressDay "vagina">>`,
@@ -372,7 +372,7 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [() => `Set all pregnancy events to next `, stayOnPassageFn],
+			link: [() => `모든 임신 이벤트를 다음 단계로 설정`, stayOnPassageFn],
 			widgets: [
 				`<<set _pregnancy to $sexStats.anus.pregnancy>>`,
 				() => (T.pregnancy.fetus[0] == null ? "" : `<<set _pregnancy.fetus[0].timeLeft to 1>>`),
@@ -382,33 +382,33 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			text_only: `\nThese still require Fertilise`,
+			text_only: `\n이 항목들은 여전히 수정(Fertilise)이 필요함`,
 		},
 		{
-			link: [`Get Pregnant with an eel`, stayOnPassageFn],
+			link: [`장어 기생충 임신`, stayOnPassageFn],
 			widgets: [`<<impregnateParasite "eels" 1000>>`],
 		},
 		{
-			link: [`Get Pregnant with a slime`, stayOnPassageFn],
+			link: [`슬라임 기생충 임신`, stayOnPassageFn],
 			widgets: [`<<impregnateParasite "slimes" 1000>>`],
 		},
 		{
-			link: [`Get Pregnant with a worm`, stayOnPassageFn],
+			link: [`벌레 기생충 임신`, stayOnPassageFn],
 			widgets: [`<<impregnateParasite "worms" 1000>>`],
 		},
 		{
-			link: [`Get Pregnant with a tentacle`, stayOnPassageFn],
+			link: [`촉수 기생충 임신`, stayOnPassageFn],
 			widgets: [`<<impregnateParasite "tentacle" 1000>>`],
 		},
 		{
 			text_only: `\n`,
 		},
 		{
-			link: [`Repair Pregnancy Objects`, stayOnPassageFn],
+			link: [`임신 객체 복구`, stayOnPassageFn],
 			widgets: [`<<pregnancyObjectRepair>>`],
 		},
 		{
-			link: [`Reset Pregnancy Objects`, stayOnPassageFn],
+			link: [`임신 객체 초기화`, stayOnPassageFn],
 			widgets: [`<<unset $container>>`, `<<run delete $sexStats.anus>>`, `<<physicalAdjustmentsInit>>`, `<<containersInit>>`],
 		},
 		{
@@ -418,13 +418,13 @@ setup.debugMenu.eventList = {
 			},
 		},
 		{
-			text_only: `Player is already pregnant\n`,
+			text_only: `플레이어가 이미 임신 중\n`,
 			condition() {
 				return V.player.penisExist === false && playerIsPregnant() && !betaSecondWombOpen();
 			},
 		},
 		{
-			link: [`Get Pregnant with humans`, stayOnPassageFn],
+			link: [`인간 아이 임신`, stayOnPassageFn],
 			widgets: [
 				() => {
 					return `<<playerPregnancy "Debug Man" "human" true "vagina" undefined true>>`;
@@ -435,7 +435,7 @@ setup.debugMenu.eventList = {
 			},
 		},
 		{
-			link: [`Get Pregnant with wolves`, stayOnPassageFn],
+			link: [`늑대 새끼 임신`, stayOnPassageFn],
 			widgets: [
 				() => {
 					return `<<playerPregnancy "Debug Wolf" "wolf" true "vagina" undefined true>>`;
@@ -446,7 +446,7 @@ setup.debugMenu.eventList = {
 			},
 		},
 		{
-			link: [`Progress Pregnancy to the end`, stayOnPassageFn],
+			link: [`임신을 말기까지 진행`, stayOnPassageFn],
 			widgets: [
 				() => {
 					const preg = getPlayerPregnancy();
@@ -459,7 +459,7 @@ setup.debugMenu.eventList = {
 			},
 		},
 		{
-			link: [`End pregnancy and send children to default locations`, stayOnPassageFn],
+			link: [`임신 종료 후 아이를 기본 위치로 보내기`, stayOnPassageFn],
 			widgets: [
 				() => {
 					switch (playerNormalPregnancyType()) {
@@ -481,21 +481,21 @@ setup.debugMenu.eventList = {
 			},
 		},
 		{
-			text_only: `\nNPC Pregnancies`,
+			text_only: `\nNPC 임신`,
 		},
 		{
-			text_only: `(Each npc needs to be enabled for pregnancy in setup)\n`,
+			text_only: `(각 NPC는 setup에서 임신 가능 상태로 활성화되어 있어야 함)\n`,
 		},
 		{
-			link: [`Get Robin Pregnant with PCs children`, stayOnPassageFn],
+			link: [`로빈을 PC의 아이로 임신시킴`, stayOnPassageFn],
 			widgets: [`<<namedNpcPregnancy "Robin" "pc" "human" true true>>`],
 		},
 		{
-			link: [`Get Whitney Pregnant with Black Wolf pups`, stayOnPassageFn],
+			link: [`휘트니를 검은 늑대 새끼로 임신시킴`, stayOnPassageFn],
 			widgets: [`<<namedNpcPregnancy "Whitney" "Black Wolf" "wolf" true true>>`],
 		},
 		{
-			link: [`Basic NPC Compression Test`, stayOnPassageFn],
+			link: [`기본 NPC 압축 테스트`, stayOnPassageFn],
 			widgets: [
 				() => {
 					// Copy this debug option for use with other compressor debugging.
@@ -522,11 +522,11 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`Enable Debug Lines`, stayOnPassageFn],
+			link: [`디버그 줄 표시`, stayOnPassageFn],
 			widgets: [`<<set $debugLines to true>>`],
 		},
 		{
-			link: [`Disable Debug Lines`, stayOnPassageFn],
+			link: [`디버그 줄 숨김`, stayOnPassageFn],
 			widgets: [`<<set $debugLines to false>>`],
 		},
 		{
@@ -535,55 +535,55 @@ setup.debugMenu.eventList = {
 	],
 	Events: [
 		{
-			link: [`Sex Shop`, `Adult Shop Menu`],
+			link: [`성인용품점`, `Adult Shop Menu`],
 			widgets: [],
 		},
 		{
-			link: [`Sextoys Inventory`, `Sextoys Inventory`],
+			link: [`섹스 토이 인벤토리`, `Sextoys Inventory`],
 			widgets: [],
 		},
 		{
-			link: [`Imprison Me with Robin`, `Underground Intro`],
+			link: [`로빈과 함께 감금`, `Underground Intro`],
 			widgets: [`<<set $phase to 1>>`],
 		},
 		{
-			link: [`Start Robin Event`, stayOnPassageFn],
+			link: [`로빈 이벤트 시작`, stayOnPassageFn],
 			widgets: [`<<set $robindebt to 9>>`],
 		},
 		{
-			link: [`School Start`, `Oxford Street`],
+			link: [`학교 시작`, `Oxford Street`],
 			widgets: [`<<pass 1 day>>`],
 		},
 		{
-			link: [`Rape Me`, `Molestation`],
+			link: [`강간 이벤트 시작`, `Molestation`],
 			widgets: [`<<endcombat>>`, `<<set $debugRapeMe to 1>>`, `<<set $molestationstart to 1>>`],
 		},
 		{
-			link: [`Double Rape Me`, `Forest Molestation`],
+			link: [`2인 강간 이벤트 시작`, `Forest Molestation`],
 			widgets: [`<<endcombat>>`, `<<set $molestationstart to 1>>`],
 		},
 		{
-			link: [`Gang Rape Me w/ Audience`, `The Pod`],
+			link: [`관객 동반 집단 강간 이벤트`, `The Pod`],
 			widgets: [`<<endcombat>>`, `<<set $molestationstart to 1>>`],
 		},
 		{
-			link: [`Sex Me [M]`, `Beach Day Encounter Sex`],
+			link: [`성관계 이벤트 [남]`, `Beach Day Encounter Sex`],
 			widgets: [`<<endcombat>>`, `<<generateNPC 1 a m m>>`, `<<person1>>`, `<<set $sexstart to 1>>`],
 		},
 		{
-			link: [`Sex Me [F]`, `Beach Day Encounter Sex`],
+			link: [`성관계 이벤트 [여]`, `Beach Day Encounter Sex`],
 			widgets: [`<<endcombat>>`, `<<generateNPC 1 a f f>>`, `<<person1>>`, `<<set $sexstart to 1>>`],
 		},
 		{
-			link: [`Gang Sex Me w/ Audience`, `Maths Lesson Gang Bang`],
+			link: [`관객 동반 집단 성관계 이벤트`, `Maths Lesson Gang Bang`],
 			widgets: [`<<endcombat>>`, `<<set $sexstart to 1>>`],
 		},
 		{
-			link: [`DP Test`, `DP Test`],
+			link: [`DP 테스트`, `DP Test`],
 			widgets: [`<<endcombat>>`, `<<set $molestationstart to 1>>`],
 		},
 		{
-			link: [`Choke Suffocate Test`, `Beach Day Encounter Sex`],
+			link: [`목조르기/질식 테스트`, `Beach Day Encounter Sex`],
 			widgets: [
 				`<<endcombat>>`,
 				`<<generate1>>`,
@@ -597,63 +597,63 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`Named NPC Gangbang Test`, `Named NPC Gangbang Select`],
+			link: [`이름 있는 NPC 갱뱅 테스트`, `Named NPC Gangbang Select`],
 			widgets: [`<<endcombat>>`],
 		},
 		{
-			link: [`NPC role select`, `NPC Role Select`],
+			link: [`NPC 역할 선택`, `NPC Role Select`],
 			widgets: [`<<endcombat>>`],
 		},
 		{
-			link: [`NPC clothing select`, `NPC Clothing Select`],
+			link: [`NPC 의상 선택`, `NPC Clothing Select`],
 			widgets: [`<<endcombat>>`],
 		},
 		{
-			link: [`NNPC Strapon test`, `NNPC Strapon Generator`],
+			link: [`NNPC 페니스 밴드 테스트`, `NNPC Strapon Generator`],
 			widgets: [`<<endcombat>>`],
 		},
 		{
-			link: [`Plantperson Test`, `Plantperson Test`],
+			link: [`인간형 식물 테스트`, `Plantperson Test`],
 			widgets: [`<<endcombat>>`],
 		},
 		{
-			link: ["Hypnotist Test", "Hypnotist Test"],
+			link: ["최면술사 테스트", "Hypnotist Test"],
 			widgets: ["<<endcombat>>"],
 		},
 		{
-			link: [`Pregnancy Belly Test`, `Pregnancy Belly Test`],
+			link: [`임신 배 테스트`, `Pregnancy Belly Test`],
 			widgets: [`<<endcombat>><<set $sexstart to 1>>`],
 		},
 		{
-			link: [`statDisplay test`, `statDisplay Test`],
+			link: [`스탯 표시 테스트`, `statDisplay Test`],
 			widgets: [`<<endcombat>>`],
 		},
 		{
-			link: [`Virginity Show Test`, `Virginity Show Test`],
+			link: [`순결 표시 테스트`, `Virginity Show Test`],
 			widgets: [],
 		},
 		{
-			link: [`Eels Swarm Me`, `Sea Eels`],
+			link: [`장어 떼 이벤트`, `Sea Eels`],
 			widgets: [`<<endcombat>>`, `<<set $molestationstart to 1>>`],
 		},
 		{
-			link: [`Machine`, `Machine`],
+			link: [`기계`, `Machine`],
 			widgets: [`<<endcombat>>`, `<<set $molestationstart to 1>>`],
 		},
 		{
-			link: [`Struggle`, `Struggle`],
+			link: [`저항`, `Struggle`],
 			widgets: [`<<endcombat>>`, `<<set $struggle_start to 1>>`],
 		},
 		{
-			link: [`Bus Rape`, `Bus move`],
+			link: [`버스 강간`, `Bus move`],
 			widgets: [`<<endcombat>>`, `<<generate1>>`, `<<person1>>`, `<<set $molestationstart to 1>>`],
 		},
 		{
-			link: [`Whale Vore Me`, `Monster Test`],
+			link: [`고래 보어 이벤트`, `Monster Test`],
 			widgets: [`<<endcombat>>`, `<<set $molestationstart to 1>>`],
 		},
 		{
-			link: [`Dogs Rape Me`, "Street Dogs"],
+			link: [`개 강간 이벤트`, "Street Dogs"],
 			widgets: [
 				`<<endcombat>>`,
 				`<<set $molestationstart to 1>>`,
@@ -664,11 +664,11 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`Beast Gang Test (currently broken)`, `The Farm`],
+			link: [`짐승 집단 테스트(현재 고장)`, `The Farm`],
 			widgets: [`<<endcombat>>`, `<<set $molestationstart to 1>>`, `<<set $outside to 1>>`, `<<location "forest">>`, `<<set $bus to "forest">>`],
 		},
 		{
-			link: [`Dolphin Sex Me`, `Sea Dolphins Sex`],
+			link: [`돌고래 성관계 이벤트`, `Sea Dolphins Sex`],
 			widgets: [
 				`<<endcombat>>`,
 				`<<set $sexstart to 1>>`,
@@ -679,19 +679,19 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`Cow Test`, `Cow Test Sex`],
+			link: [`소 테스트`, `Cow Test Sex`],
 			widgets: [`<<endcombat>>`, `<<set $sexstart to 1>>`],
 		},
 		{
-			link: [`Tentacle Rape Me`, `Sea Tentacles`],
+			link: [`촉수 강간 이벤트`, `Sea Tentacles`],
 			widgets: [`<<endcombat>>`, `<<set $molestationstart to 1>>`],
 		},
 		{
-			link: [`Bailey Test`, `Bus move`],
+			link: [`베일리 테스트`, `Bus move`],
 			widgets: [`<<endcombat>>`, `<<set $molestationstart to 1>>`, `<<npc Bailey>>`, `<<person1>>`],
 		},
 		{
-			link: [`Leighton Office Spank`, `School Detention`],
+			link: [`레이튼 사무실 체벌`, `School Detention`],
 			widgets: [`<<endcombat>>`, `<<set $detention to 55>>`],
 		},
 		{
@@ -699,7 +699,7 @@ setup.debugMenu.eventList = {
 			widgets: [`<<endcombat>>`],
 		},
 		{
-			link: [`Eden Start`, `Eden Cabin`],
+			link: [`에덴 시작`, `Eden Cabin`],
 			widgets: [
 				`<<endcombat>>`,
 				`<<set $syndromeeden to 1>>`,
@@ -711,50 +711,50 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`Kylar Basement Rape`, `Kylar Basement Rape`],
+			link: [`카일라 지하실 강간`, `Kylar Basement Rape`],
 			widgets: [`<<endcombat>>`, `<<set $molestationstart to 1>>`, `<<npc Kylar>>`, `<<person1>>`],
 		},
 		{
-			link: [`Kylar Sex`, `Street Kylar Sex`],
+			link: [`카일라 성관계`, `Street Kylar Sex`],
 			widgets: [`<<endcombat>>`, `<<set $sexstart to 1>>`, `<<set $location to "town">>`, `<<npc Kylar>>`, `<<person1>>`],
 		},
 		{
-			link: [`Robin Sex Start`, `Bed Robin Sex`],
+			link: [`로빈 성관계 시작`, `Bed Robin Sex`],
 			widgets: [`<<endcombat>>`, `<<set $sexstart to 1>>`, `<<npc Robin>>`, `<<person1>>`],
 		},
 		{
-			link: [`Robin Pillory Watch`, `Robin Pillory Watch`],
+			link: [`로빈 형틀 관람`, `Robin Pillory Watch`],
 			widgets: [`<<robinPunishment "pillory">>`, `<<set $robinmissing to "pillory">>`, `<<set $robinPillory.known to 1>>`],
 		},
 		{
-			link: [`Distract Robin Crowd`, stayOnPassageFn],
+			link: [`로빈 군중 주의 돌리기`, stayOnPassageFn],
 			widgets: [`<<set $robinPillory.distracted to 1>>`],
 			condition() {
 				return V.robinPillory != null;
 			},
 		},
 		{
-			link: [`Briar Pay Refuse`, `Brothel Pay Refuse`],
+			link: [`브라이어 지불 거부`, `Brothel Pay Refuse`],
 			widgets: [`<<endcombat>>`, `<<set $molestationstart to 1>>`, `<<npc Briar>>`, `<<generate2>>`, `<<generate3>>`, `<<person1>>`],
 		},
 		{
-			link: [`Leighton Sex`, `Head's Office Photoshoot Sex`],
+			link: [`레이튼 성관계`, `Head's Office Photoshoot Sex`],
 			widgets: [`<<endcombat>>`, `<<set $sexstart to 1>>`, `<<set $phase to 1>>`, `<<npc Leighton>>`, `<<person1>>`],
 		},
 		{
-			link: [`Leighton Forced`, `Head's Office Blackmail Rape`],
+			link: [`레이튼 강제 이벤트`, `Head's Office Blackmail Rape`],
 			widgets: [`<<endcombat>>`, `<<set $molestationstart to 1>>`, `<<npc Leighton>>`, `<<person1>>`],
 		},
 		{
-			link: [`Avery Date`, `Domus Street`],
+			link: [`에이버리 데이트`, `Domus Street`],
 			widgets: [`<<set $averydate to 1>>`, `<<set Time.setTime(20, 0)>>`],
 		},
 		{
-			link: [`Avery Sex Me In The Car`, `Avery Date Sex`],
+			link: [`차 안에서 에이버리와 섹스하기`, `Avery Date Sex`],
 			widgets: [`<<endcombat>>`, `<<set $sexstart to 1>>`, `<<npc Avery>>`, `<<person1>>`],
 		},
 		{
-			link: [`Avery Sex Me At The Hotel`, `Avery Hotel Sex`],
+			link: [`호텔에서 에이버리와 섹스하기`, `Avery Hotel Sex`],
 			widgets: [
 				`<<endcombat>>`,
 				`<<set $sexstart to 1>>`,
@@ -770,11 +770,11 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`Avery Rape Me In The Car`, `Avery Walk Rape`],
+			link: [`차 안에서 에이버리에게 강간당하기`, `Avery Walk Rape`],
 			widgets: [`<<endcombat>>`, `<<set $molestationstart to 1>>`, `<<npc Avery>>`, `<<person1>>`],
 		},
 		{
-			link: [`Black Wolf Forced`, `Forest Wolf Molestation`],
+			link: [`검은 늑대 강제 이벤트`, `Forest Wolf Molestation`],
 			widgets: [
 				/* `<<beastNNPCinit>>`, */
 				`<<endcombat>>`,
@@ -783,99 +783,99 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`Great Hawk Hunt Capture`, `Moor`],
+			link: [`거대 매 사냥 포획`, `Moor`],
 			widgets: [`<<set $moor to 50>>`, `<<set $eventskip to 1>>`, `<<moor_hunt_start>>`, `<<set $moor_hunt to 10>>`],
 		},
 		{
-			link: [`Police Pillory Start`, `Police Pillory Start`],
+			link: [`경찰 형틀 시작`, `Police Pillory Start`],
 			widgets: [`<<crimeUpFlat 5000 "thievery">>`, `<<generate1>>`, `<<person1>>`],
 		},
 		{
-			link: [`Put Whitney in the Pillory`, stayOnPassageFn],
+			link: [`휘트니를 형틀에 넣기`, stayOnPassageFn],
 			widgets: [`<<imprison_whitney>>`],
 		},
 		{
-			link: [`Put Leighton in the Pillory`, stayOnPassageFn],
+			link: [`레이튼을 형틀에 넣기`, stayOnPassageFn],
 			widgets: [`<<imprison_leighton>>`],
 		},
 		{
-			link: [`Clear the Pillory`, stayOnPassageFn],
+			link: [`형틀 비우기`, stayOnPassageFn],
 			widgets: [`<<clear_pillory>>`],
 		},
 		{
-			link: [`Put random NPC in the Pillory`, stayOnPassageFn],
+			link: [`무작위 NPC를 형틀에 넣기`, stayOnPassageFn],
 			widgets: [`<<clear_pillory>><<new_npc_pillory>>`],
 		},
 		{
-			link: [`Hole in wall`, `Temple Arcade 2`],
+			link: [`벽 구멍`, `Temple Arcade 2`],
 			widgets: [``],
 		},
 		{
-			link: [`Brothel Punishment`, `Brothel Punishment`],
+			link: [`창관 처벌`, `Brothel Punishment`],
 			widgets: [``],
 		},
 		{
-			link: [`Brothel Gloryhole`, `Brothel Gloryhole`],
+			link: [`창관 글로리홀`, `Brothel Gloryhole`],
 			widgets: [``],
 		},
 		{
-			link: [`Clothing Shop`, `Clothing Shop`],
+			link: [`의류점`, `Clothing Shop`],
 			widgets: [``],
 		},
 		{
-			link: [`Forest Shop`, `Forest Shop`],
+			link: [`숲속 상점`, `Forest Shop`],
 			widgets: [``],
 		},
 		{
-			link: [`Sea`, `Sea`],
+			link: [`바다`, `Sea`],
 			widgets: [`<<set $sea to 0>>`],
 		},
 		{
-			link: [`Hospital`, `Hospital Foyer`],
+			link: [`병원`, `Hospital Foyer`],
 			widgets: [``],
 		},
 		{
-			link: [`Wolf Pack`, `Forest Wolf Cave`],
+			link: [`늑대 무리`, `Forest Wolf Cave`],
 			widgets: [`<<set $wolfpacktrust to 12>>`],
 		},
 		{
-			link: [`Halloween`, stayOnPassageFn],
+			link: [`할로윈`, stayOnPassageFn],
 			widgets: [`<<run Time.timeTravel(new DateTime(Time.year, 10, 21, 7))>>`],
 		},
 		{
-			link: [`Full winter`, stayOnPassageFn],
+			link: [`완전한 겨울`, stayOnPassageFn],
 			widgets: [`<<run Time.timeTravel(new DateTime(Time.year, 12, 1, 7))>>`],
 		},
 		{
-			link: [`Christmas`, stayOnPassageFn],
+			link: [`크리스마스`, stayOnPassageFn],
 			widgets: [`<<run Time.timeTravel(new DateTime(Time.year, 12, 18, 7))>>`],
 		},
 		{
-			link: [`Blood moon`, stayOnPassageFn],
+			link: [`붉은 달`, stayOnPassageFn],
 			widgets: [`<<run Time.timeTravel(new DateTime(Time.year, Time.month, Time.lastDayOfMonth, 21, 0))>>`, `<<set $moonstate to "evening">>`],
 		},
 		{
-			link: [`Month is October`, stayOnPassageFn],
+			link: [`10월로 설정`, stayOnPassageFn],
 			widgets: [`<<run Time.timeTravel(new DateTime(Time.year, 10))>>`],
 		},
 		{
-			link: [`Ambulance Rescue Wakeup`, `Ambulance rescue`],
+			link: [`구급차 구조 후 기상`, `Ambulance rescue`],
 			widgets: [`<<pass 1 hour>>`],
 		},
 		{
-			link: [`Harper Appointment`, `Hospital Foyer`],
+			link: [`하퍼 예약`, `Hospital Foyer`],
 			widgets: [`<<set Time.timeTravel(Time.getNextWeekdayDate(6))>>`, `<<set Time.setTime(16)>>`],
 		},
 		{
-			link: [`Deep forest`, `Forest`],
+			link: [`깊은 숲`, `Forest`],
 			widgets: [`<<set $forest to 80>>`],
 		},
 		{
-			link: [`Street Police Extreme`, `Street Police Extreme`],
+			link: [`거리 경찰 극단 이벤트`, `Street Police Extreme`],
 			widgets: [`<<pass 1 week>>`, `<<pass 1 week>>`, `<<npc Leighton>>`, `<<person1>>`],
 		},
 		{
-			link: [`Brothel Show Swarm`, `Brothel Show Swarm`],
+			link: [`창관 공연 떼 이벤트`, `Brothel Show Swarm`],
 			widgets: [
 				`<<leash 1>>`,
 				`<<set $leftarm to "bound">>`,
@@ -888,95 +888,95 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`Pussy Inspection`, `Pussy Inspection`],
+			link: [`보지 검사`, `Pussy Inspection`],
 			widgets: [`<<pass 1 week>>`, `<<pass 1 week>>`, `<<npc Leighton>>`, `<<person1>>`],
 		},
 		{
-			link: [`Penis Inspection`, `Penis Inspection`],
+			link: [`자지 검사`, `Penis Inspection`],
 			widgets: [`<<pass 1 week>>`, `<<pass 1 week>>`, `<<npc Leighton>>`, `<<person1>>`],
 		},
 		{
-			link: [`Breast Inspection`, `Breast Inspection`],
+			link: [`가슴 검사`, `Breast Inspection`],
 			widgets: [`<<pass 1 week>>`, `<<pass 1 week>>`, `<<npc Leighton>>`, `<<person1>>`],
 		},
 		{
-			link: [`Science Class Exposure`, `Science Event3`],
+			link: [`과학 수업 노출`, `Science Event3`],
 			widgets: [`<<set $scienceprogression to 3>>`, `<<set $delinquency to 600>>`],
 		},
 		{
-			link: [`History Class Pillory`, `History Lesson Pillory`],
+			link: [`역사 수업 형틀`, `History Lesson Pillory`],
 			widgets: [``],
 		},
 		{
-			link: [`Alley Dog`, `Alley Dog`],
+			link: [`골목 개`, `Alley Dog`],
 			widgets: [``],
 		},
 		{
-			link: [`NNPC Parade`, `NNPC Parade`],
+			link: [`NNPC 행렬`, `NNPC Parade`],
 			widgets: [``],
 		},
 		{
-			link: [`Beast Parade`, `Beast Parade`],
+			link: [`짐승 행렬`, `Beast Parade`],
 			widgets: [``],
 		},
 		{
-			link: [`Beast Train`, `Beast Train`],
+			link: [`짐승 열차`, `Beast Train`],
 			widgets: [``],
 		},
 		{
-			link: [`Demon Encounter`, `Demon Start`],
+			link: [`악마 조우`, `Demon Start`],
 			widgets: [``],
 		},
 		{
-			link: [`Temple Initiate`, `Temple`],
+			link: [`신전 입문자`, `Temple`],
 			widgets: [`<<inittemple>>`],
 		},
 		{
-			link: [`Strip Club`, `Strip Club`],
+			link: [`스트립 클럽`, `Strip Club`],
 			widgets: [`<<set $id to 1>>`, `<<set $wardrobes.stripClub.unlocked to true>>`],
 		},
 		{
-			link: [`Asylum`, `Hospital Bed`],
+			link: [`정신병원`, `Hospital Bed`],
 			widgets: [`<<set $trauma to 4900>>`],
 		},
 		{
-			link: [`Prison`, `Police Prison Intro Bailey`],
+			link: [`교도소`, `Police Prison Intro Bailey`],
 			widgets: [`<<npc Bailey>>`, `<<generate2>>`, `<<generate3>>`, `<<generate4>>`, `<<person2>>`, `<<neckwear "collar">>`, `<<crimeUpFlat 5000 "thievery">>`],
 		},
 		{
-			link: [`Remy's Farm`, `Livestock Intro`],
+			link: [`레미의 농장`, `Livestock Intro`],
 			widgets: [``],
 		},
 		{
-			link: [`Farmlands`, `Farmland`],
+			link: [`농장지대`, `Farmland`],
 			widgets: [``],
 		},
 		{
-			link: [`Museum`, `Museum`],
+			link: [`박물관`, `Museum`],
 			widgets: [``],
 		},
 		{
-			link: [`Beach Cave`, `Beach Cave`],
+			link: [`해변 동굴`, `Beach Cave`],
 			widgets: [`<<set $cave to 0>>`, `<<beach_cave_init>>`],
 		},
 		{
-			link: [`Stall Rent`, `Stall Rent`],
+			link: [`노점 임대료`, `Stall Rent`],
 			widgets: [`<<run Time.setTime(6, 0)>>`],
 		},
 		{
-			link: [`Estate`, `Estate`],
+			link: [`저택`, `Estate`],
 			widgets: [`<<estate_end>>`, `<<estate_init secret>>`],
 		},
 		{
-			link: [`Stalk me`, `Street Stalk`],
+			link: [`스토킹 이벤트`, `Street Stalk`],
 			widgets: [`<<endcombat>>`, `<<generate1>>`, `<<person1>>`, `<<set $molestationstart to 1>>`],
 		},
 		{
-			link: [`Named NPC stalk test`, `Named NPC Stalk Select`],
+			link: [`이름 있는 NPC 스토킹 테스트`, `Named NPC Stalk Select`],
 			widgets: [`<<endcombat>>`, `<<set $phase to 0>>`],
 		},
 		{
-			link: [`Bailey selling Robin`, `Orphanage`],
+			link: [`베일리가 로빈을 팔다`, `Orphanage`],
 			widgets: [
 				`<<set $rentTime to 0>>`,
 				`<<set $baileydefeatedchain to 3>>`,
@@ -987,143 +987,143 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`Summon the Wraith`, `Wraith Test Start`],
+			link: [`원혼 소환`, `Wraith Test Start`],
 			widgets: [`<<endcombat>>`, `<<run Time.timeTravel(new DateTime(Time.year, Time.month, Time.lastDayOfMonth, 21, 0))>>`, `<<set $moonstate to "evening">>`],
 		},
 		{
-			link: [`Possessed Fight`, `Possessed Fight Test`],
+			link: [`빙의 전투`, `Possessed Fight Test`],
 			widgets: [`<<set $control to 0>>`, `<<set $possessed to true>>`],
 		},
 		{
-			link: [`Bait Shop Fish Request`, `Bait Shop Request`],
+			link: [`미끼 가게 물고기 의뢰`, `Bait Shop Request`],
 			widgets: [``],
 		},
 		{
-			text_only: "\n\nBeast encounters",
+			text_only: "\n\n짐승 조우",
 		},
 		{
 			link: ["Horse", "Livestock Field Deviancy Sex"],
 			widgets: ["<<endcombat>>", "<<beastNEWinit 1 'horse'>>", "<<person1>>", "<<set $phase to 2>>", "<<set $sexstart to 1>>"],
 		},
 		{
-			link: ["Pig", "Livestock Job Pig Rape"],
+			link: ["돼지", "Livestock Job Pig Rape"],
 			widgets: ["<<endcombat>>", "<<beastNEWinit 1 'pig'>>", "<<person1>>", "<<set $molestationstart to 1>>"],
 		},
 		{
-			link: ["Boar", "Forest Boar Rape"],
+			link: ["멧돼지", "Forest Boar Rape"],
 			widgets: ["<<endcombat>>", "<<beastNEWinit 1 'boar'>>", "<<person1>>", "<<set $molestationstart to 1>>"],
 		},
 		{
-			link: ["Dog", "Wolf Pack"],
+			link: ["개", "Wolf Pack"],
 			widgets: ["<<endcombat>>", "<<beastNEWinit 1 'dog'>>", "<<person1>>", "<<set $molestationstart to 1>>"],
 		},
 		{
-			link: ["Fox", "Meadow Cave Sex"],
+			link: ["여우", "Meadow Cave Sex"],
 			widgets: ["<<endcombat>>", "<<beastNEWinit 1 'fox'>>", "<<person1>>", "<<set $sexstart to 1>>"],
 		},
 		{
-			link: ["Bear", "Forest Bear Molestation"],
+			link: ["곰", "Forest Bear Molestation"],
 			widgets: ["<<endcombat>>", "<<beastNEWinit 1 'bear'>>", "<<person1>>", "<<set $molestationstart to 1>>"],
 		},
 		{
-			text_only: "\n\nTurn beast into: ",
+			text_only: "\n\n짐승을 다음으로 바꾸기: ",
 			condition: hasActiveEnemyFn,
 		},
 		{
-			link: [`Creature`, stayOnPassageFn],
+			link: [`생물`, stayOnPassageFn],
 			widgets: [`<<set _xy to $enemyno-1>>`, `<<set $NPCList[_xy].type to "creature">>`],
 			condition: hasActiveEnemyFn,
 		},
 		{
-			link: [`Dog`, stayOnPassageFn],
+			link: [`개`, stayOnPassageFn],
 			widgets: [`<<set _xy to $enemyno-1>>`, `<<set $NPCList[_xy].type to "dog">>`],
 			condition: hasActiveEnemyFn,
 		},
 		{
-			link: [`Wolf`, stayOnPassageFn],
+			link: [`늑대`, stayOnPassageFn],
 			widgets: [`<<set _xy to $enemyno-1>>`, `<<set $NPCList[_xy].type to "wolf">>`],
 			condition: hasActiveEnemyFn,
 		},
 		{
-			link: [`Dolphin`, stayOnPassageFn],
+			link: [`돌고래`, stayOnPassageFn],
 			widgets: [`<<set _xy to $enemyno-1>>`, `<<set $NPCList[_xy].type to "dolphin">>`],
 			condition: hasActiveEnemyFn,
 		},
 		{
-			link: [`Bear`, stayOnPassageFn],
+			link: [`곰`, stayOnPassageFn],
 			widgets: [`<<set _xy to $enemyno-1>>`, `<<set $NPCList[_xy].type to "bear">>`],
 			condition: hasActiveEnemyFn,
 		},
 		{
-			link: [`Boar`, stayOnPassageFn],
+			link: [`멧돼지`, stayOnPassageFn],
 			widgets: [`<<set _xy to $enemyno-1>>`, `<<set $NPCList[_xy].type to "boar">>`],
 			condition: hasActiveEnemyFn,
 		},
 		{
-			link: [`Pig`, stayOnPassageFn],
+			link: [`돼지`, stayOnPassageFn],
 			widgets: [`<<set _xy to $enemyno-1>>`, `<<set $NPCList[_xy].type to "pig">>`],
 			condition: hasActiveEnemyFn,
 		},
 		{
-			link: [`Lizard`, stayOnPassageFn],
+			link: [`도마뱀`, stayOnPassageFn],
 			widgets: [`<<set _xy to $enemyno-1>>`, `<<set $NPCList[_xy].type to "lizard">>`],
 			condition: hasActiveEnemyFn,
 		},
 		{
-			text_only: "\n\nSwarm Encounters:",
+            text_only: "\n\n떼 조우:",
 		},
 		{
-			link: [`Ruin Fish`, `Swarm Test`],
-			widgets: [`<<set $molestationstart to 1>>`, `<<swarminit "fish" "container" "shaking" "shatter" "steady" 4 6>>`, `<<set $water to 1>>`],
+            link: [`물고기 망치기`, `Swarm Test`],
+            widgets: [`<<set $molestationstart to 1>>`, `<<swarminit "fish" "물고기 떼" "흔들린다" "깨진다" "붙잡는다" 4 6>>`, `<<set $water to 1>>`],
 		},
 		{
-			link: [`Lake Fish`, `Swarm Test`],
+			link: [`호수 물고기`, `Swarm Test`],
 			widgets: [`<<set $molestationstart to 1>>`, `<<swarminit "fish" "swarm" "moving towards you" "encircle you" "fend off" 1 7>>`, `<<set $water to 1>>`],
 		},
 		{
-			link: [`Forest Snakes`, `Swarm Test`],
-			widgets: [`<<set $molestationstart to 1>>`, `<<swarminit "snakes" "swarm" "slithering" "slither" "keep back" 10 0>>`],
+            link: [`숲 뱀`, `Swarm Test`],
+            widgets: [`<<set $molestationstart to 1>>`, `<<swarminit "snakes" "뱀 떼" "당신을 향해 기어온다" "당신을 칭칭 감는다" "밀쳐낸다" 10 0>>`],
 		},
 		{
-			link: [`Danube Spiders`, `Swarm Test`],
-			widgets: [`<<set $molestationstart to 1>>`, `<<swarminit "spiders" "sac" "slipping" "break" "steady" 1 9>>`],
+            link: [`다뉴브 거미`, `Swarm Test`],
+            widgets: [`<<set $molestationstart to 1>>`, `<<swarminit "spiders" "거미 떼" "미끄러져 나온다" "깨진다" "붙잡는다" 1 9>>`],
 		},
 		{
-			link: [`Bath Slimes`, `Swarm Test`],
-			widgets: [`<<set $molestationstart to 1>>`, `<<swarminit "slimes" "slime mass" "moving towards you" "encircle you" "fend off" 8 0>>`],
+            link: [`목욕 슬라임`, `Swarm Test`],
+            widgets: [`<<set $molestationstart to 1>>`, `<<swarminit "slimes" "슬라임 덩어리" "당신을 향해 다가온다" "당신을 포위한다" "뿌리친다" 8 0>>`],
 		},
 		{
-			link: [`Trash Maggots`, `Swarm Test`],
-			widgets: [`<<set $molestationstart to 1>>`, `<<swarminit "maggots" "swarm" "crawling" "crawl" "keep back" 2 8>>`],
+            link: [`쓰레기 구더기`, `Swarm Test`],
+            widgets: [`<<set $molestationstart to 1>>`, `<<swarminit "maggots" "구더기 떼" "기어온다" "파고든다" "밀쳐낸다" 2 8>>`],
 		},
 		{
-			link: [`Science Worms`, `Swarm Test`],
-			widgets: [`<<set $molestationstart to 1>>`, `<<swarminit "worms" "jar" "held above the terrarium" "fall into the terrarium" "block" 0 10>>`],
+            link: [`과학 벌레`, `Swarm Test`],
+            widgets: [`<<set $molestationstart to 1>>`, `<<swarminit "worms" "벌레들" "사육장 위에서 흔들린다" "사육장으로 떨어진다" "막는다" 0 10>>`],
 		},
 		{
-			link: [`Sea Eels`, `Swarm Test`],
+			link: [`바다 장어`, `Swarm Test`],
 			widgets: [`<<set $molestationstart to 1>>`, `<<swarminit "eels" "swarm" "moving towards you" "encircle you" "fend off" 1 9>>`, `<<set $water to 1>>`],
 		},
 		{
-			link: [`Crate Worms`, `Swarm Test`],
-			widgets: [`<<set $molestationstart to 1>>`, `<<swarminit "worms" "container" "shaking" "shatter" "steady" 1 9>>`],
+			link: [`상자 벌레`, `Swarm Test`],
+			widgets: [`<<set $molestationstart to 1>>`, `<<swarminit "worms" "상자 벌레" "흔들린다" "깨진다" "붙잡는다" 1 9>>`],
 		},
 		{
-			text_only: `\nEvent Debugging:`,
+			text_only: `\n이벤트 디버깅:`,
 		},
 		{
-			link: [`Test NPC Insertion`, `NPCInsertionAssert`],
+			link: [`NPC 삽입 테스트`, `NPCInsertionAssert`],
 			widgets: [``],
 		},
 		{
-			link: [`Time Test`, `TimeTest`],
+			link: [`시간 테스트`, `TimeTest`],
 			widgets: [`<<set $prevPassage to $passage>>`, `<<set $timeDistortion to 5>>`],
 		},
 		{
-			text_only: `\nFlashbacks / Out of body events`,
+			text_only: `\n회상 / 유체이탈 이벤트`,
 		},
 		{
-			link: [`Schism`, `Schism`],
+			link: [`분열`, `Schism`],
 			widgets: [
 				`<<set $outside to 0>>`,
 				`<<set $location to 'lake_ruin'>>`,
@@ -1132,38 +1132,38 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`Give Bleeding Ward Painting`, `Museum`],
+			link: [`피 흘리는 병동 그림 지급`, `Museum`],
 			widgets: [`<<updateMuseumAntiques>>`, `<<set $museumAntiques.paintings.paintingward to "museum">>`],
 		},
 		{
-			link: [`Give Hopeless Cycle Painting`, `Museum`],
+			link: [`절망의 굴레 그림 지급`, `Museum`],
 			widgets: [`<<updateMuseumAntiques>>`, `<<set $museumAntiques.paintings.paintingsnake to "museum">>`],
 		},
 		{
-			link: [`Raul and Janet Book Event`, `ScarletBook5`],
+			link: [`라울과 자넷 책 이벤트`, `ScarletBook5`],
 			widgets: [],
 		},
 		{
-			link: [`Olive Book Event`, `Olive Book 1`],
+			link: [`올리브 책 이벤트`, `Olive Book 1`],
 			widgets: [],
 		},
 		{
-			text_only: `\nBad Ends`,
+			text_only: `\n배드 엔딩`,
 		},
 		{
-			link: [`Underground Brothel`, `Underground Intro`],
+			link: [`지하 창관`, `Underground Intro`],
 			widgets: [`<<generate1>>`, `<<generate2>>`, `<<generate3>>`, `<<person1>>`, `<<badEndTracking "Underground Dungeon" { reason: "soldBailey" }>>`],
 		},
 		{
-			link: [`Underground Farm`, `Livestock Intro`],
+			link: [`지하 농장`, `Livestock Intro`],
 			widgets: [`<<endevent>>`, `<<leash "collar with leash">>`, `<<badEndTracking "Underground Farm" { reason: "abductedMoor" }>>`],
 		},
 		{
-			link: [`Prison`, `Police Cell`],
+			link: [`교도소`, `Police Cell`],
 			widgets: [`<<set $stat_police.pillory += 1>>`, `<<crimeUp 7000 "prostitution" "debug">>`],
 		},
 		{
-			link: [`Asylum`, `Asylum Intro`],
+			link: [`정신병원`, `Asylum Intro`],
 			widgets: [
 				`<<endevent>>`,
 				`<<trauma 5000>>`,
@@ -1177,108 +1177,108 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`Captured by Eden`, `Forest Hunter Intro`],
+			link: [`에덴에게 붙잡힘`, `Forest Hunter Intro`],
 			widgets: [`<<endcombat>>`, `<<set $location to "forest">>`, `<<badEndTracking "Eden" { reason: "edenHuntedSubmitted" }>>`],
 		},
 		{
-			link: [`Captured by The Great Hawk`, `Moor`],
+			link: [`거대 매에게 붙잡힘`, `Moor`],
 			widgets: [`<<set $moor to 50>>`, `<<set $eventskip to 1>>`, `<<moor_hunt_start>>`, `<<set $moor_hunt to 10>>`],
 		},
 		{
-			text_only: `\n\nFishing Minigame: `,
+			text_only: `\n\n낚시 미니게임: `,
 		},
 		{
-			link: [`Fish: Haddock (runner)`, fishingMinigameDebugPassage],
+			link: [`물고기: 대구 (도망자)`, fishingMinigameDebugPassage],
 			widgets: [`<<fishingMinigameDebugTeleportWidget "haddock">>`],
 		},
 		{
-			link: [`Fish: Salmon (panicked)`, fishingMinigameDebugPassage],
+			link: [`물고기: 연어 (공황)`, fishingMinigameDebugPassage],
 			widgets: [`<<fishingMinigameDebugTeleportWidget "salmon">>`],
 		},
 		{
-			link: [`Fish: Trout (darter)`, fishingMinigameDebugPassage],
+			link: [`물고기: 송어 (돌격자)`, fishingMinigameDebugPassage],
 			widgets: [`<<fishingMinigameDebugTeleportWidget "trout">>`],
 		},
 		{
-			link: [`Fish: Herring (panicked)`, fishingMinigameDebugPassage],
+			link: [`물고기: 청어 (공황)`, fishingMinigameDebugPassage],
 			widgets: [`<<fishingMinigameDebugTeleportWidget "herring">>`],
 		},
 		{
-			link: [`Fish: Whiting (runner)`, fishingMinigameDebugPassage],
+			link: [`물고기: 대구살 (도망자)`, fishingMinigameDebugPassage],
 			widgets: [`<<fishingMinigameDebugTeleportWidget "whiting">>`],
 		},
 		{
-			link: [`Fish: Mackerel (panicked)`, fishingMinigameDebugPassage],
+			link: [`물고기: 고등어 (공황)`, fishingMinigameDebugPassage],
 			widgets: [`<<fishingMinigameDebugTeleportWidget "mackerel">>`],
 		},
 		{
-			link: [`Fish: Flounder (runner)`, fishingMinigameDebugPassage],
+			link: [`물고기: 가자미 (도망자)`, fishingMinigameDebugPassage],
 			widgets: [`<<fishingMinigameDebugTeleportWidget "flounder">>`],
 		},
 		{
-			link: [`Fish: Bass (darter)`, fishingMinigameDebugPassage],
+			link: [`물고기: 배스 (돌격자)`, fishingMinigameDebugPassage],
 			widgets: [`<<fishingMinigameDebugTeleportWidget "bass">>`],
 		},
 		{
-			link: [`Fish:  Roach (darter)`, fishingMinigameDebugPassage],
+			link: [`물고기: 바퀴고기 (돌격자)`, fishingMinigameDebugPassage],
 			widgets: [`<<fishingMinigameDebugTeleportWidget "roach">>`],
 		},
 		{
-			link: [`Fish: Perch (panicked)`, fishingMinigameDebugPassage],
+			link: [`물고기: 농어 (공황)`, fishingMinigameDebugPassage],
 			widgets: [`<<fishingMinigameDebugTeleportWidget "perch">>`],
 		},
 		{
-			link: [`Fish: Chub (runner)`, fishingMinigameDebugPassage],
+			link: [`물고기: 피라미 (도망자)`, fishingMinigameDebugPassage],
 			widgets: [`<<fishingMinigameDebugTeleportWidget "chub">>`],
 		},
 		{
-			link: [`Fish: Grayling (darter)`, fishingMinigameDebugPassage],
+			link: [`물고기: 끄리 (돌격자)`, fishingMinigameDebugPassage],
 			widgets: [`<<fishingMinigameDebugTeleportWidget "grayling">>`],
 		},
 		{
-			link: [`Fish: Cod (anchor)`, fishingMinigameDebugPassage],
+			link: [`물고기: 대구 (닻)`, fishingMinigameDebugPassage],
 			widgets: [`<<fishingMinigameDebugTeleportWidget "cod">>`],
 		},
 		{
-			link: [`Fish: Pike (thrasher)`, fishingMinigameDebugPassage],
+			link: [`물고기: 강준치 (난동꾼)`, fishingMinigameDebugPassage],
 			widgets: [`<<fishingMinigameDebugTeleportWidget "pike">>`],
 		},
 		{
-			link: [`Fish: Eel (slipper)`, fishingMinigameDebugPassage],
+			link: [`물고기: 장어 (미끄러움)`, fishingMinigameDebugPassage],
 			widgets: [`<<fishingMinigameDebugTeleportWidget "eel">>`],
 		},
 	],
 	Character: [
 		{
-			link: [`Default allure`, stayOnPassageFn],
+			link: [`기본 매력`, stayOnPassageFn],
 			widgets: [`<<set $alluretest to 0>>`],
 			condition() {
 				return V.alluretest !== 0;
 			},
 		},
 		{
-			link: [`Become Alluring`, stayOnPassageFn],
+			link: [`매력적으로 만들기`, stayOnPassageFn],
 			widgets: [`<<set $alluretest to 1>>`],
 			condition() {
 				return V.alluretest !== 1;
 			},
 		},
 		{
-			link: [`Become Unalluring`, stayOnPassageFn],
+			link: [`매력 없게 만들기`, stayOnPassageFn],
 			widgets: [`<<set $alluretest to 2>>`],
 			condition() {
 				return V.alluretest !== 2;
 			},
 		},
 		{
-			link: [`Hide`, stayOnPassageFn],
+			link: [`숨기기`, stayOnPassageFn],
 			widgets: [`<<dontHideRevert>>`],
 			condition() {
 				return V.dontHide;
 			},
 		},
 		{
-			link: [`Don't hide`, stayOnPassageFn],
+			link: [`숨기지 않기`, stayOnPassageFn],
 			widgets: [`<<dontHideForNow>>`],
 			condition() {
 				return !V.dontHide;
@@ -1288,7 +1288,7 @@ setup.debugMenu.eventList = {
 			text_only: "\n\n",
 		},
 		{
-			link: [`All Fame Up`, stayOnPassageFn],
+			link: [`모든 명성 증가`, stayOnPassageFn],
 			widgets: [
 				`<<fameexhibitionism 1000 "none" true>>`,
 				`<<fameprostitution 1000 "none" true>>`,
@@ -1305,238 +1305,238 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`Fame Sex Up`, stayOnPassageFn],
+			link: [`섹스 명성 증가`, stayOnPassageFn],
 			widgets: [`<<famesex 2000 "none" true>>`],
 		},
 		{
-			link: [`Timer Down`, stayOnPassageFn],
+			link: [`타이머 감소`, stayOnPassageFn],
 			widgets: [`<<set $timer -= 60>>`],
 		},
 		{
-			link: [`Full Lewd Characteristics`, stayOnPassageFn],
+			link: [`음란 계열 전체`, stayOnPassageFn],
 			widgets: [`<<set $promiscuity to 100>>`, `<<set $exhibitionism to 100>>`, `<<set $deviancy to 100>>`],
 		},
 		{
-			link: [`Exhibitionism`, stayOnPassageFn],
+			link: [`노출증`, stayOnPassageFn],
 			widgets: [`<<set $exhibitionism += 20>>`],
 		},
 		{
-			link: [`Promiscuity`, stayOnPassageFn],
+			link: [`음란`, stayOnPassageFn],
 			widgets: [`<<set $promiscuity += 20>>`],
 		},
 		{
-			link: [`Deviancy`, stayOnPassageFn],
+			link: [`이상성욕`, stayOnPassageFn],
 			widgets: [`<<set $deviancy += 20>>`],
 		},
 		{
-			link: [`Beauty`, stayOnPassageFn],
+			link: [`미모`, stayOnPassageFn],
 			widgets: [`<<set $beauty += 10000>>`],
 		},
 		{
-			link: [`Physique`, stayOnPassageFn],
+			link: [`체격`, stayOnPassageFn],
 			widgets: [`<<set $physique += 2000>>`],
 		},
 		{
-			link: [`Awareness up`, stayOnPassageFn],
+			link: [`성지식 증가`, stayOnPassageFn],
 			widgets: [`<<set $awareness += 200>>`],
 		},
 		{
-			link: [`Awareness down`, stayOnPassageFn],
+			link: [`성지식 감소`, stayOnPassageFn],
 			widgets: [`<<set $awareness -= 200>>`],
 		},
 		{
-			link: [`Purity Up`, stayOnPassageFn],
+			link: [`순결함 증가`, stayOnPassageFn],
 			widgets: [`<<set $purity += 500>>`],
 		},
 		{
-			link: [`Purity Down`, stayOnPassageFn],
+			link: [`순결함 감소`, stayOnPassageFn],
 			widgets: [`<<set $purity -= 500>>`],
 		},
 		{
 			text_only: "\n\n",
 		},
 		{
-			link: [`Pain Up`, stayOnPassageFn],
+			link: [`고통 증가`, stayOnPassageFn],
 			widgets: [`<<set $pain += 50>>`],
 		},
 		{
-			link: [`Pain Down`, stayOnPassageFn],
+			link: [`고통 감소`, stayOnPassageFn],
 			widgets: [`<<set $pain -= 50>>`],
 		},
 		{
-			link: [`Stress Up`, stayOnPassageFn],
+			link: [`스트레스 증가`, stayOnPassageFn],
 			widgets: [`<<set $stress += 5000>>`],
 		},
 		{
-			link: [`Stress Down`, stayOnPassageFn],
+			link: [`스트레스 감소`, stayOnPassageFn],
 			widgets: [`<<set $stress -= 5000>>`],
 		},
 		{
-			link: [`Trauma Way Up`, stayOnPassageFn],
+			link: [`트라우마 대폭 증가`, stayOnPassageFn],
 			widgets: [`<<set $trauma += 2000>>`],
 		},
 		{
-			link: [`Trauma Way Down`, stayOnPassageFn],
+			link: [`트라우마 대폭 감소`, stayOnPassageFn],
 			widgets: [`<<set $trauma -= 2000>>`],
 		},
 		{
-			link: [`Arousal max`, stayOnPassageFn],
+			link: [`흥분 최대`, stayOnPassageFn],
 			widgets: [`<<arousal $arousalmax>>`],
 		},
 		{
-			link: [`Arousal zero`, stayOnPassageFn],
+			link: [`흥분 0`, stayOnPassageFn],
 			widgets: [`<<arousal 0>>`],
 		},
 		{
-			link: [`Booze`, stayOnPassageFn],
+			link: [`술`, stayOnPassageFn],
 			widgets: [`<<drunk 60>>`],
 		},
 		{
-			link: [`Drugged`, stayOnPassageFn],
+			link: [`약물 상태`, stayOnPassageFn],
 			widgets: [`<<set $drugged += 600>>`],
 		},
 		{
-			link: [`Hallucinogen`, stayOnPassageFn],
+			link: [`환각제`, stayOnPassageFn],
 			widgets: [`<<set $hallucinogen += 600>>`],
 		},
 		{
 			text_only: "\n\n",
 		},
 		{
-			link: [`Wash`, stayOnPassageFn],
+			link: [`씻기`, stayOnPassageFn],
 			widgets: [`<<wash>>`],
 		},
 		{
 			text_only: "\n\n",
 		},
 		{
-			link: [`Seduction Up`, stayOnPassageFn],
+			link: [`유혹 증가`, stayOnPassageFn],
 			widgets: [`<<set $seductionskill += 200>>`],
 		},
 		{
-			link: [`Skulduggery Up`, stayOnPassageFn],
+			link: [`속임수 증가`, stayOnPassageFn],
 			widgets: [`<<set $skulduggery += 200>>`],
 		},
 		{
-			link: [`Swimming Skill Up`, stayOnPassageFn],
+			link: [`수영 스킬 증가`, stayOnPassageFn],
 			widgets: [`<<set $swimmingskill += 100>>`],
 		},
 		{
 			text_only: "\n\n",
 		},
 		{
-			link: [`Crime Up`, stayOnPassageFn],
+			link: [`범죄도 증가`, stayOnPassageFn],
 			widgets: [`<<crimeUp 500 "thievery">>`],
 		},
 		{
-			link: [`Crime Down`, stayOnPassageFn],
+			link: [`범죄도 감소`, stayOnPassageFn],
 			widgets: [`<<crimeDown 500>>`],
 		},
 		{
 			text_only: "\n\n",
 		},
 		{
-			link: [`Reset NPC[0]'s Hand`, stayOnPassageFn],
+			link: [`NPC[0]의 손 초기화`, stayOnPassageFn],
 			widgets: [`<<set $NPCList[0].lefthand to 0>>`, `<<set $NPCList[0].righthand to 0>>`],
 		},
 		{
 			text_only: "\n\n",
 		},
 		{
-			link: [`Chastity Belt`, stayOnPassageFn],
+			link: [`정조대`, stayOnPassageFn],
 			widgets: [`<<genitalswear "chastity belt">>`],
 		},
 		{
-			link: [`Chastity Cage`, stayOnPassageFn],
+			link: [`정조 케이지`, stayOnPassageFn],
 			widgets: [`<<genitalswear "chastity cage">>`],
 		},
 		{
-			link: [`Collar`, stayOnPassageFn],
+			link: [`목걸이`, stayOnPassageFn],
 			widgets: [`<<leash "collar with leash">>`],
 		},
 		{
-			link: [`Bind`, stayOnPassageFn],
+			link: [`묶기`, stayOnPassageFn],
 			widgets: [`<<set $leftarm to "bound">>`, `<<set $rightarm to "bound">>`],
 		},
 		{
-			link: [`UnBind`, stayOnPassageFn],
+			link: [`묶기 해제`, stayOnPassageFn],
 			widgets: [`<<unbind>>`],
 		},
 		{
 			text_only: "\n\n",
 		},
 		{
-			link: [`Breasts Up`, stayOnPassageFn],
+			link: [`가슴 확대`, stayOnPassageFn],
 			widgets: [`<<set $player.breastsize += 1>>`],
 		},
 		{
-			link: [`Breasts Down`, stayOnPassageFn],
+			link: [`가슴 축소`, stayOnPassageFn],
 			widgets: [`<<set $player.breastsize -= 1>>`],
 		},
 		{
-			link: [`Butt Up`, stayOnPassageFn],
+			link: [`엉덩이 확대`, stayOnPassageFn],
 			widgets: [`<<set $player.bottomsize += 1>>`],
 		},
 		{
-			link: [`Butt Down`, stayOnPassageFn],
+			link: [`엉덩이 축소`, stayOnPassageFn],
 			widgets: [`<<set $player.bottomsize -= 1>>`],
 		},
 		{
-			link: [`Penis Up`, stayOnPassageFn],
+			link: [`자지 확대`, stayOnPassageFn],
 			widgets: [`<<set $player.penissize += 1>>`],
 		},
 		{
-			link: [`Penis Down`, stayOnPassageFn],
+			link: [`자지 축소`, stayOnPassageFn],
 			widgets: [`<<set $player.penissize -= 1>>`],
 		},
 		{
-			link: [`Balls Up`, stayOnPassageFn],
+			link: [`고환 확대`, stayOnPassageFn],
 			widgets: [`<<set $ballssize += 1>>`],
 		},
 		{
-			link: [`Balls Down`, stayOnPassageFn],
+			link: [`고환 축소`, stayOnPassageFn],
 			widgets: [`<<set $ballssize -= 1>>`],
 		},
 		{
 			text_only: "\n\n",
 		},
 		{
-			link: [`Money`, stayOnPassageFn],
+			link: [`돈`, stayOnPassageFn],
 			widgets: [`<<money 500000 "debug">>`],
 		},
 		{
-			link: [`Grow hair`, stayOnPassageFn],
+			link: [`머리카락 기르기`, stayOnPassageFn],
 			widgets: [`<<set $hairlength += 100>>`],
 		},
 		{
-			link: [`Grow fringe`, stayOnPassageFn],
+			link: [`앞머리 기르기`, stayOnPassageFn],
 			widgets: [`<<set $fringelength += 100>>`],
 		},
 		{
-			link: [`Chest Parasite`, stayOnPassageFn],
+			link: [`가슴 기생충`, stayOnPassageFn],
 			widgets: [`<<parasite nipples urchin>>`],
 		},
 		{
-			link: [`Penis Parasite`, stayOnPassageFn],
+			link: [`자지 기생충`, stayOnPassageFn],
 			widgets: [`<<parasite penis urchin>>`],
 		},
 		{
-			link: [`Chastity Parasite`, stayOnPassageFn],
+			link: [`정조 기생충`, stayOnPassageFn],
 			widgets: [`<<set $analchastityparasite to "worms">>`],
 		},
 		{
-			link: [`Month`, stayOnPassageFn],
+			link: [`달`, stayOnPassageFn],
 			widgets: [`<<run Time.timeTravel(new DateTime(Time.date).addMonths(1))>>`],
 		},
 		{
 			text_only: "\n\n",
 		},
 		{
-			link: [`Delinquency`, stayOnPassageFn],
+			link: [`비행도`, stayOnPassageFn],
 			widgets: [`<<set $delinquency += 1000>>`],
 		},
 		{
-			link: [`Detention`, stayOnPassageFn],
+			link: [`방과 후 벌`, stayOnPassageFn],
 			widgets: [`<<set $detention += 10>>`],
 		},
 		{
@@ -1557,7 +1557,7 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`School Skills`, stayOnPassageFn],
+			link: [`학교 스킬`, stayOnPassageFn],
 			widgets: [
 				`<<set $school += 8000>>`,
 				`<<set $science += 800>>`,
@@ -1571,11 +1571,11 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`School Exam Skill`, stayOnPassageFn],
+			link: [`학교 시험 스킬`, stayOnPassageFn],
 			widgets: [`<<set $science_exam += 1000>>`, `<<set $maths_exam += 1000>>`, `<<set $english_exam += 1000>>`, `<<set $history_exam += 1000>>`],
 		},
 		{
-			link: [`All Skills`, stayOnPassageFn],
+			link: [`모든 스킬`, stayOnPassageFn],
 			widgets: [
 				`<<set $school += 448>>`,
 				`<<set $science += 112>>`,
@@ -1598,7 +1598,7 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`All Skills Super`, stayOnPassageFn],
+			link: [`모든 스킬 최고치`, stayOnPassageFn],
 			widgets: [
 				`<<set $school += 4000>>`,
 				`<<set $science += 1000>>`,
@@ -1625,49 +1625,49 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`School Status Up`, stayOnPassageFn],
+			link: [`학교 평판 증가`, stayOnPassageFn],
 			widgets: [`<<set $cool += 400>>`],
 		},
 		{
-			link: [`School Status Down`, stayOnPassageFn],
+			link: [`학교 평판 감소`, stayOnPassageFn],
 			widgets: [`<<set $cool -= 400>>`],
 		},
 		{
 			text_only: "\n\n",
 		},
 		{
-			link: [`Destroy Swimming Outfits`, stayOnPassageFn],
+			link: [`수영복 파괴`, stayOnPassageFn],
 			widgets: [`<<set $upperschoolswimsuitno to 0>>`, `<<set $lowerschoolswimsuitno to 0>>`, `<<set $schoolswimshortsno to 0>>`],
 		},
 		{
-			link: [`Towels`, stayOnPassageFn],
+			link: [`수건`, stayOnPassageFn],
 			widgets: [`<<clothesontowel>>`],
 		},
 		{
-			link: [`Towels Please`, stayOnPassageFn],
+			link: [`수건 받기`, stayOnPassageFn],
 			widgets: [`<<towelup>>`],
 		},
 		{
-			link: [`Submission`, stayOnPassageFn],
+			link: [`순종`, stayOnPassageFn],
 			widgets: [`<<set $submissive += 250>>`],
 		},
 		{
-			link: [`Defiance`, stayOnPassageFn],
+			link: [`반항심`, stayOnPassageFn],
 			widgets: [`<<set $submissive -= 250>>`],
 		},
 		{
 			text_only: "\n\n",
 		},
 		{
-			link: [`Robin Love`, stayOnPassageFn],
+			link: [`로빈 애정`, stayOnPassageFn],
 			widgets: [`<<npcincr Robin love 100>>`, `<<npcincr Robin lust 100>>`],
 		},
 		{
-			link: [`Robin Note`, stayOnPassageFn],
+			link: [`로빈 쪽지`, stayOnPassageFn],
 			widgets: [`<<set $robinnote to 1>>`],
 		},
 		{
-			link: [`Robin Romance`, stayOnPassageFn],
+			link: [`로빈 로맨스`, stayOnPassageFn],
 			widgets: [`<<set $robinromance to 1>>`],
 		},
 		{
@@ -1692,7 +1692,7 @@ setup.debugMenu.eventList = {
 			text_only: "\n\n",
 		},
 		{
-			link: [`Sex Statistics Up`, stayOnPassageFn],
+			link: [`성적 통계 증가`, stayOnPassageFn],
 			widgets: [
 				`<<set $orgasmstat += 2000>>`,
 				`<<set $ejacstat += 2000>>`,
@@ -1709,185 +1709,185 @@ setup.debugMenu.eventList = {
 			text_only: "\n\n",
 		},
 		{
-			link: [`Almost Destroy Lowerclothes`, stayOnPassageFn],
+			link: [`하의 거의 파괴`, stayOnPassageFn],
 			widgets: [`<<set $worn.lower.integrity to 1>>`],
 		},
 		{
-			link: [`Almost Destroy Upperclothes`, stayOnPassageFn],
+			link: [`상의 거의 파괴`, stayOnPassageFn],
 			widgets: [`<<set $worn.upper.integrity to 1>>`],
 		},
 		{
-			link: [`Almost Destroy Underclothes`, stayOnPassageFn],
+			link: [`하의 속옷 거의 파괴`, stayOnPassageFn],
 			widgets: [`<<set $worn.under_lower.integrity to 1>>`],
 		},
 		{
-			link: [`Almost Destroy Underupperclothes`, stayOnPassageFn],
+			link: [`상의 속옷 거의 파괴`, stayOnPassageFn],
 			widgets: [`<<set $worn.under_upper.integrity to 1>>`],
 		},
 		{
-			link: [`Damage Lowerclothes`, stayOnPassageFn],
+			link: [`하의 손상`, stayOnPassageFn],
 			widgets: [`<<set $worn.lower.integrity -= 200>>`],
 		},
 		{
-			link: [`Damage Upperclothes`, stayOnPassageFn],
+			link: [`상의 손상`, stayOnPassageFn],
 			widgets: [`<<set $worn.upper.integrity -= 200>>`],
 		},
 		{
-			link: [`Damage Underupperclothes`, stayOnPassageFn],
+			link: [`상의 속옷 손상`, stayOnPassageFn],
 			widgets: [`<<set $worn.under_upper.integrity -= 200>>`],
 		},
 		{
-			link: [`Damage Underclothes`, stayOnPassageFn],
+			link: [`하의 속옷 손상`, stayOnPassageFn],
 			widgets: [`<<set $worn.under_lower.integrity -= 200>>`],
 		},
 		{
-			link: [`Damage Chastity`, stayOnPassageFn],
+			link: [`정조대 손상`, stayOnPassageFn],
 			widgets: [`<<set $worn.genitals.integrity -= 5000>>`],
 		},
 		{
 			text_only: "\n\n",
 		},
 		{
-			link: [`Cat up`, stayOnPassageFn],
+			link: [`고양이 변이 증가`, stayOnPassageFn],
 			widgets: [`<<set $cat += 1>>`],
 		},
 		{
-			link: [`Cat build up`, stayOnPassageFn],
+			link: [`고양이 변이 최대`, stayOnPassageFn],
 			widgets: [`<<set $catbuild += 80>>`],
 		},
 		{
-			link: [`Cat off`, stayOnPassageFn],
+			link: [`고양이 변이 끄기`, stayOnPassageFn],
 			widgets: [`<<set $cat = 0>>`],
 		},
 		{
-			link: [`Wolf off`, stayOnPassageFn],
+			link: [`늑대 변이 끄기`, stayOnPassageFn],
 			widgets: [`<<set $wolfgirl to 0>>`],
 		},
 		{
-			link: [`Wolf up`, stayOnPassageFn],
+			link: [`늑대 변이 증가`, stayOnPassageFn],
 			widgets: [`<<set $wolfgirl += 1>>`],
 		},
 		{
-			link: [`Wolf build up`, stayOnPassageFn],
+			link: [`늑대 변이 최대`, stayOnPassageFn],
 			widgets: [`<<set $wolfbuild += 40>>`],
 		},
 		{
-			link: [`Wolf build down`, stayOnPassageFn],
+			link: [`늑대 변이 감소`, stayOnPassageFn],
 			widgets: [`<<set $wolfbuild -= 40>>`],
 		},
 		{
-			link: [`Oh For Fox Sake`, stayOnPassageFn],
+			link: [`여우 변이 이벤트`, stayOnPassageFn],
 			widgets: [`<<set $fox to 0>>`],
 		},
 		{
-			link: [`Go Fox Yourself`, stayOnPassageFn],
+			link: [`여우 변이 적용`, stayOnPassageFn],
 			widgets: [`<<set $fox += 1>>`],
 		},
 		{
-			link: [`Fox build up`, stayOnPassageFn],
+			link: [`여우 변이 증가`, stayOnPassageFn],
 			widgets: [`<<set $foxbuild += 40>>`],
 		},
 		{
-			link: [`Fox build down`, stayOnPassageFn],
+			link: [`여우 변이 감소`, stayOnPassageFn],
 			widgets: [`<<set $foxbuild -= 40>>`],
 		},
 		{
-			link: [`Cow build up`, stayOnPassageFn],
+			link: [`소 변이 증가`, stayOnPassageFn],
 			widgets: [`<<set $cowbuild += 40>>`],
 		},
 		{
-			link: [`Cow build down`, stayOnPassageFn],
+			link: [`소 변이 감소`, stayOnPassageFn],
 			widgets: [`<<set $cowbuild -= 40>>`],
 		},
 		{
-			link: [`Angel build up`, stayOnPassageFn],
+			link: [`천사 변이 증가`, stayOnPassageFn],
 			widgets: [`<<set $angelbuild += 40>>`],
 		},
 		{
-			link: [`Angel build down`, stayOnPassageFn],
+			link: [`천사 변이 감소`, stayOnPassageFn],
 			widgets: [`<<set $angelbuild -= 40>>`],
 		},
 		{
-			link: [`Demon build up`, stayOnPassageFn],
+			link: [`악마 변이 증가`, stayOnPassageFn],
 			widgets: [`<<set $demonbuild += 40>>`],
 		},
 		{
-			link: [`Demon build down`, stayOnPassageFn],
+			link: [`악마 변이 감소`, stayOnPassageFn],
 			widgets: [`<<set $demonbuild -= 40>>`],
 		},
 		{
-			link: [`Undertemp off`, stayOnPassageFn],
+			link: [`저체온 끄기`, stayOnPassageFn],
 			widgets: [`<<set $undertemp to 0>>`],
 		},
 		{
-			link: [`Goo Me`, stayOnPassageFn],
+			link: [`끈적임 묻히기`, stayOnPassageFn],
 			widgets: [`<<drench "semen" "slime" 5>>`],
 		},
 		{
-			link: [`Goo Me Small`, stayOnPassageFn],
+			link: [`끈적임 조금 묻히기`, stayOnPassageFn],
 			widgets: [`<<drench "semen" "slime" 1>>`],
 		},
 		{
-			link: [`Drench me`, stayOnPassageFn],
+			link: [`흠뻑 적시기`, stayOnPassageFn],
 			widgets: [`<<overupperwet 200>>`, `<<overlowerwet 200>>`, `<<upperwet 200>>`, `<<lowerwet 200>>`, `<<underupperwet 200>>`, `<<underlowerwet 200>>`],
 		},
 		{
-			link: [`Drench over-outfit only`, stayOnPassageFn],
+			link: [`겉옷만 흠뻑 적시기`, stayOnPassageFn],
 			widgets: [`<<overupperwet 200>>`, `<<overlowerwet 200>>`],
 		},
 		{
-			link: [`Drench middle-outfit only`, stayOnPassageFn],
+			link: [`중간 의상만 흠뻑 적시기`, stayOnPassageFn],
 			widgets: [`<<upperwet 200>>`, `<<lowerwet 200>>`],
 		},
 		{
-			link: [`Drench under-outfit only`, stayOnPassageFn],
+			link: [`속옷만 흠뻑 적시기`, stayOnPassageFn],
 			widgets: [`<<underupperwet 200>>`, `<<underlowerwet 200>>`],
 		},
 		{
-			link: [`Soak me in water`, stayOnPassageFn],
+			link: [`물에 적시기`, stayOnPassageFn],
 			widgets: [`<<water>>`],
 		},
 		{
-			link: [`Bully Timer`, stayOnPassageFn],
+			link: [`괴롭힘 타이머`, stayOnPassageFn],
 			widgets: [`<<set $bullytimer to 100>>`, `<<set $bullytimeroutside to 100>>`],
 		},
 		{
-			link: [`Whitney Lower Dominance`, stayOnPassageFn],
+			link: [`휘트니 지배도 낮추기`, stayOnPassageFn],
 			widgets: [`<<npcincr Whitney dom -20>>`],
 		},
 		{
-			link: [`Whitney Raise Dominance`, stayOnPassageFn],
+			link: [`휘트니 지배도 높이기`, stayOnPassageFn],
 			widgets: [`<<npcincr Whitney dom 20>>`],
 		},
 		{
-			link: [`Whitney Love`, stayOnPassageFn],
+			link: [`휘트니 애정`, stayOnPassageFn],
 			widgets: [`<<npcincr Whitney love 20>>`, `<<npcincr Whitney lust 20>>`],
 		},
 		{
-			link: [`Whitney Romance`, stayOnPassageFn],
+			link: [`휘트니 로맨스`, stayOnPassageFn],
 			widgets: [`<<set $whitneyromance to 1>>`, `<<set $whitney_home_timer to 0>>`],
 		},
 		{
-			link: [`Pub Whore`, stayOnPassageFn],
+			link: [`술집 창부`, stayOnPassageFn],
 			widgets: [`<<set $pubwhore += 10>>`],
 		},
 		{
-			link: [`Make Creature`, stayOnPassageFn],
+			link: [`생물로 만들기`, stayOnPassageFn],
 			widgets: [`<<beasttype bear>>`],
 		},
 		{
-			link: [`Full Spray`, stayOnPassageFn],
+			link: [`완전 분사`, stayOnPassageFn],
 			widgets: [`<<set $spraymax to 5>>`, `<<spray 5>>`],
 		},
 		{
 			text_only: "\n\n",
 		},
 		{
-			link: [`Unlock all seeds`, stayOnPassageFn],
+			link: [`모든 씨앗 해금`, stayOnPassageFn],
 			widgets: [`<<run unlockAllSeeds()>>`],
 		},
 		{
-			link: [`Complete fishing journal`, stayOnPassageFn],
+			link: [`낚시 도감 완성`, stayOnPassageFn],
 			widgets: [`<<run debugDiscoverAllFishing()>>`],
 		},
 		{
@@ -1895,7 +1895,7 @@ setup.debugMenu.eventList = {
 			widgets: [`<<run debugUnlockAllFishingGear()>>`],
 		},
 		{
-			link: [`Super Debug Character`, stayOnPassageFn],
+			link: [`슈퍼 디버그 캐릭터`, stayOnPassageFn],
 			widgets: [
 				`<<set $school += 4000>>`,
 				`<<set $science += 1000>>`,
@@ -1936,7 +1936,7 @@ setup.debugMenu.eventList = {
 			],
 		},
 		{
-			link: [`Unlock all pills`, stayOnPassageFn],
+			link: [`모든 알약 해금`, stayOnPassageFn],
 			widgets: [`<<run window.getAllPills()>>`],
 		},
 	],
@@ -2210,33 +2210,33 @@ function addDebugForm() {
 		if (document.getElementById("debugEventsAdd") != null)
 			document.getElementById("debugEventsAdd").innerHTML =
 				`
-		<abbr>Event Title:</abbr>
+		<abbr>이벤트 제목:</abbr>
 		<div class="addevent-content-search-content" id="formChangeColor2" style="">
-			<input name="addEvents" id="addEventsTitle" placeholder="Event Title..." onfocusout="" onfocus="" oninput="" />
+			<input name="addEvents" id="addEventsTitle" placeholder="이벤트 제목..." onfocusout="" onfocus="" oninput="" />
 		</div>
-		<abbr title="For dynamic allocation, you can enter a function that will be saved !\nFor example stayOnPassageFn">Passage Name*:</abbr>
+		<abbr title="동적 할당이 필요하면 저장할 함수를 입력할 수 있습니다.\n예: stayOnPassageFn">패시지 이름*:</abbr>
 		<div class="addevent-content-search-content" id="formChangeColor3" style="">
-			<input name="addEvents" id="addEventsPassage" placeholder="Passage name..." onfocusout="" onfocus="" oninput="" />
+			<input name="addEvents" id="addEventsPassage" placeholder="패시지 이름..." onfocusout="" onfocus="" oninput="" />
 		</div>
-		<span>Widgets:</span>
+		<span>위젯:</span>
 		<div class="addevent-content-search-content" style="max-height:unset;" id="formChangeColor4" style="">
 			<input name="addEvents" id="addEventsWidgets" placeholder="<<set $allure = 5>><<set $rng to 3>>..." onfocusout="" onfocus="" oninput="">
 		</div>
-		<span>Category:</span><br>
+		<span>분류:</span><br>
 		<select name="catlist" id="debugCatList">
-			<option value="Events">Events</option>
-			<option value="Main">Main</option>
-			<option value="Character">Character</option>
+			<option value="Events">이벤트</option>
+			<option value="Main">메인</option>
+			<option value="Character">캐릭터</option>
 		</select><br><br>
-		<button type="button" onclick="window.submitNewDebugPassage()">Submit</button><br><br>
+		<button type="button" onclick="window.submitNewDebugPassage()">추가</button><br><br>
 		<div id="debugAddResult"></div>
 		<div id="debugRemovePassage">
-			<h3>Remove passages from the Menu</h3>
+			<h3>메뉴에서 passage 제거</h3>
 			<select name="catlist" id="debugEvList">
 			` +
 				op +
 				`</select><br><br>
-			<button type="button" id="button-remove" onclick="window.removeDebugCustomPassage()">Remove</button><br><br>
+			<button type="button" id="button-remove" onclick="window.removeDebugCustomPassage()">제거</button><br><br>
 			<div id="debugRemoveResult"></div>
 		</div>
 	`;
@@ -2255,7 +2255,7 @@ function submitNewDebugPassage() {
 
 	for (const element of inputList) {
 		if ((element.id === "addEventsTitle" || element.id === "addEventsPassage" || element.id === "debugCatList") && element.value.length < 1) {
-			element.setCustomValidity("Fill this value!");
+			element.setCustomValidity("값을 입력하세요!");
 			element.reportValidity();
 			document.getElementById("debugAddResult").innerHTML = "";
 			sigerror = 1;
@@ -2264,7 +2264,7 @@ function submitNewDebugPassage() {
 			const match = element.value.match("<<.+>>{0,}");
 
 			if (match == null || match[0] !== match.input) {
-				element.setCustomValidity("Invalid widget format. Valid : <<widget @params>>");
+				element.setCustomValidity("위젯 형식이 잘못되었습니다. 올바른 형식: <<widget @params>>");
 				element.reportValidity();
 				document.getElementById("debugAddResult").innerHTML = "";
 				sigerror = 1;
@@ -2274,7 +2274,7 @@ function submitNewDebugPassage() {
 	for (const section of ["Character", "Events", "Favourites", "Main"]) {
 		for (const ev of setup.debugMenu.eventList[section]) {
 			if (Object.hasOwn(ev, "link") && ev.link[0] === inputList[0].value) {
-				inputList[0].setCustomValidity("This event title already exists. It needs to be unique!");
+				inputList[0].setCustomValidity("이 이벤트 제목은 이미 있습니다. 고유한 제목이어야 합니다!");
 				inputList[0].reportValidity();
 				document.getElementById("debugAddResult").innerHTML = "";
 				sigerror = 1;
@@ -2295,7 +2295,7 @@ function submitNewDebugPassage() {
 		V.debug_custom_events[inputList[3].value].unshift(newObj);
 		setup.debugMenu.eventList[inputList[3].value].unshift(newObj);
 		document.getElementById("debugAddResult").innerHTML =
-			'<span style="color: #5eac5e;">Event Added<br>Click any blue regular link in-game<br>for changes to apply.<br>(No reload, No links in debug menu)</span>';
+			'<span style="color: #5eac5e;">이벤트 추가됨<br>변경 사항을 적용하려면 게임 내 파란 일반 링크를 클릭하세요.<br>(새로고침 아님, 디버그 메뉴 링크 아님)</span>';
 		setup.debugMenu.cacheDebugDiv = {};
 	}
 }
@@ -2323,7 +2323,7 @@ function removeDebugCustomPassage() {
 				if (Object.hasOwn(setup.debugMenu.eventList[section][ev2], "link") && setup.debugMenu.eventList[section][ev2].link[0] === selectedForRemoval) {
 					setup.debugMenu.eventList[section].splice(ev2, 1);
 					document.getElementById("debugRemoveResult").innerHTML =
-						'<span style="color: #5eac5e;">Event Removed<br>Click any blue regular link in-game<br>for changes to apply.<br>(No reload, No links in debug menu)</span>';
+						'<span style="color: #5eac5e;">이벤트 제거됨<br>변경 사항을 적용하려면 게임 내 파란 일반 링크를 클릭하세요.<br>(새로고침 아님, 디버그 메뉴 링크 아님)</span>';
 					let op = "<br>";
 					for (const section of ["Main", "Character", "Events"]) {
 						for (const ev of V.debug_custom_events[section]) op += "<option value=" + '"' + ev.link[0] + '" ' + ">" + ev.link[0] + "</option>";

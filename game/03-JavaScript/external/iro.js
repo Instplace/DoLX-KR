@@ -100,7 +100,6 @@
 	* @param max - max unit value, used for calculating percentages
 	*/
 
-
   function parseUnit(str, max) {
 	var isPercentage = str.indexOf('%') > -1;
 	var num = parseFloat(str);
@@ -111,7 +110,6 @@
 	* @param str - hex string to parse
 	*/
 
-
   function parseHexInt(str) {
 	return parseInt(str, 16);
   }
@@ -119,7 +117,6 @@
 	* @desc Convert number into to 2-digit hex
 	* @param int - number to convert
 	*/
-
 
   function intToHex(_int) {
 	return _int.toString(16).padStart(2, '0');
@@ -150,7 +147,6 @@
 		* @param value - new color value
 	*/
 
-
 	var _proto = IroColor.prototype;
 
 	_proto.set = function set(value) {
@@ -175,7 +171,7 @@
 			this.kelvin = value.kelvin;
 		}
 		} else {
-		throw new Error('Invalid color value');
+		throw new Error('올바르지 않은 색상 값입니다.');
 		}
 	}
 	/**
@@ -588,7 +584,7 @@
 				a: a
 			};
 		} else {
-			throw new Error('Invalid rgb string');
+			throw new Error('올바르지 않은 RGB 문자열입니다.');
 		}
 		}
 	}, {
@@ -641,7 +637,7 @@
 				a: a / 255
 			};
 		} else {
-			throw new Error('Invalid hex string');
+			throw new Error('올바르지 않은 HEX 문자열입니다.');
 		}
 		}
 	}, {
@@ -685,7 +681,7 @@
 				a: a
 			};
 		} else {
-			throw new Error('Invalid hsl string');
+			throw new Error('올바르지 않은 HSL 문자열입니다.');
 		}
 		}
 	}, {
@@ -809,7 +805,6 @@
 	} else {
 		handlePos = x - handleStart;
 	} // clamp handle position
-
 
 	handlePos = Math.max(Math.min(handlePos, handleRange), 0);
 	var percent = Math.round(100 / handleRange * handlePos);
@@ -938,7 +933,6 @@
 	return (a % n + n) % n;
   }; // distance between points (x, y) and (0, 0)
 
-
   var dist = function dist(x, y) {
 	return Math.sqrt(x * x + y * y);
   };
@@ -946,7 +940,6 @@
 	* @param props - wheel props
 	* @internal
 	*/
-
 
   function getHandleRange(props) {
 	return props.width / 2 - props.padding - props.handleRadius - props.borderWidth;
@@ -957,7 +950,6 @@
 	* @param x
 	* @param y
 	*/
-
 
   function isInputInsideWheel(props, x, y) {
 	var _getWheelDimensions = getWheelDimensions(props),

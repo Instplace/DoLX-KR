@@ -9,7 +9,7 @@
 <<fishingMoorLocationAmbient>>
 
 <<if $moor_hunt gte 1>>
-	<span class="red">You are still being hunted.</span>
+	<span class="red">여전히 추격당하고 있다.</span>
 <</if>>
 
 <br><br>
@@ -32,7 +32,7 @@
 	<br><br>
 
 	<<fishingKitSummary>>
-	<<link [[Wait for a bite (0:05)|Fishing Moor Wait Loop]]>>
+	<<link [[입질을 기다린다 (0:05)|Fishing Moor Wait Loop]]>>
 		<<pass 5>>
 		<<if $moor_hunt gte 1>>
 			<<set $moor_hunt += 0.5>>
@@ -47,24 +47,24 @@
 		<</if>>
 
 		<<if !$daily.fishing.fishingMoor.hikers.flirt>>
-			<<link [[Flirt|Fishing Moor Hiker Flirt]]>><</link>><<promiscuous1>>
+			<<link [[추파를 던진다|Fishing Moor Hiker Flirt]]>><</link>><<promiscuous1>>
 			<br>
 		<</if>>
 	<</if>>
 
 	<<if $daily.fishing.fishingMoor.hikers.drinkCount gte 1>>
 		<<if $daily.fishing.fishingMoor.hikers.spike and $rng gte 50>>
-			<<link [[Take a sip|Fishing Moor Spiked Drink 1]]>><<drunk 10>><</link>><<gdrunk>>
+			<<link [[한 모금 마신다|Fishing Moor Spiked Drink 1]]>><<drunk 10>><</link>><<gdrunk>>
 		<<else>>
-			<<link [[Take a sip|Fishing Moor Wait]]>><<set $fishingAmbientOverride to "sip">><<drunk 10>><</link>><<gdrunk>>
+			<<link [[한 모금 마신다|Fishing Moor Wait]]>><<set $fishingAmbientOverride to "sip">><<drunk 10>><</link>><<gdrunk>>
 		<</if>>
 		<br>
 	<</if>>
 
 	<<if ["sit", "campfire"].includes($daily.fishing.fishingMoor.hikers.phase)>>
-		<<link [[Return to the moor|Fishing Moor Hikers Drink Offer On PC Leave]]>><</link>>
+		<<link [[황야로 돌아간다|Fishing Moor Hikers Drink Offer On PC Leave]]>><</link>>
 	<<else>>
-		<<link [[Return to the moor|Moor]]>><<set $eventskip to 1>><<endevent>><</link>>
+		<<link [[황야로 돌아간다|Moor]]>><<set $eventskip to 1>><<endevent>><</link>>
 	<</if>>
 <</if>>
 
@@ -239,16 +239,16 @@ You open wide and drop the whole <<= fishDisplayName($fishingHookedFish.type)>> 
 <<unset $fishingHookedFish>>
 <br><br>
 
-<<link [[Next|Fishing Moor Wait]]>><<set $fishingAmbientOverride to "castOut">><</link>>
+<<link [[다음|Fishing Moor Wait]]>><<set $fishingAmbientOverride to "castOut">><</link>>
 
 
 :: Widgets Fishing Moor Wait Flavour [widget]
 <<widget "fishingMoorLocationAmbient">>
 	<<if _foxStartled>>
-		<<loadNPC 0 "moor_fishing_fox">>The <<beasttype>> perks up, ears pricked forward, then quickly scampers away into the heather.<<clearnpc>>
+		<<loadNPC 0 "moor_fishing_fox">><<beasttype>>【이가】 귀를 쫑긋 세우고 고개를 번쩍 들더니, 재빨리 헤더 덤불 속으로 달아난다.<<clearnpc>>
 	<<elseif $daily.fishing.fishingMoor.fox.phase is "watching" and Time.hour gte 22>>
 		<<set $daily.fishing.fishingMoor.fox.phase to "finished">>
-		<<loadNPC 0 "moor_fishing_fox">>The <<beasttype>> yawns, then turns and wanders off into the dark.<<clearnpc>>
+		<<loadNPC 0 "moor_fishing_fox">><<beasttype>>【이가】 하품을 하더니, 몸을 돌려 어둠 속으로 어슬렁어슬렁 사라진다.<<clearnpc>>
 	<<elseif $daily.fishing.fishingMoor.fox.phase is "watching">>
 		<<fishingMoorFoxAmbient>>
 	<<elseif $daily.fishing.fishingMoor.hikers.phase is "sit">>
@@ -261,27 +261,27 @@ You open wide and drop the whole <<= fishDisplayName($fishingHookedFish.type)>> 
 <<widget "fishingMoorWaitAmbient">>
 	<<if $fishingAmbientOverride is "throwBack">>
 		<<if $fishing.currentBait>>
-			You throw the fish back into the water before <<fishingRebaitMid>>
+			물고기를 다시 물속으로 던져주고 <<fishingRebaitMid>>
 		<<else>>
-			You throw the fish back into the water.
+			물고기를 다시 물속으로 던져버린다.
 		<</if>>
 	<<elseif $fishingAmbientOverride is "stowAway">>
 		<<if $fishing.currentBait>>
-			You stow the fish away before <<fishingRebaitMid>>
+			물고기를 보관하고 <<fishingRebaitMid>>
 		<<else>>
-			You stow the fish away and cast back out.
+			물고기를 보관한 뒤 낚싯줄을 다시 던진다.
 		<</if>>
 	<<elseif $fishingAmbientOverride is "reHook">>
 		<<if $fishing.currentBait>>
 			<<fishingRebaitStart>>
 		<<else>>
-			You re-hook your line and cast back out.
+			낚싯줄에 바늘을 다시 꿰고 물속으로 던진다.
 		<</if>>
 	<<elseif $fishingAmbientOverride is "sip">>
 		<<fishingMoorHikerDrinkSip>>
 		<<unset $fishingAmbientOverride>>
 	<<elseif $fishingAmbientOverride is "castOut">>
-		You cast out into the water.
+		물속으로 낚싯줄을 던진다.
 	<<else>>
 		<<cleareventpool>>
 		<<fishingWaitAmbient $bus>>

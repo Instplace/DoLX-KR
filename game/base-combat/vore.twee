@@ -22,28 +22,29 @@
 <</widget>>
 
 <<widget "leftActionInitVore">>
+	<<set _vorecreatureKr to window.KR.getCreatureTypeKr($vorecreature)>>
 	<<set $lefttarget to "vore">>
 	<<switch $leftarm>>
 		<<case 0>>
 			<<set $lefttarget to "vore">>
 			<<if $orgasmdown gte 1>>
 				<<set _leftOptions to "orgasm">>
-				<span class="lewd">Your left arm is free, but you can't stop the spasms.</span>
+				<span class="lewd">왼팔은 자유롭지만, 경련을 멈출 수 없다.</span>
 			<<elseif $pain gte 100 and $willpowerpain is 0>>
 				<<set _leftOptions to "pain">>
-				<span class="red">Your left arm is free, but hurts to move.</span>
+				<span class="red">왼팔은 자유롭지만, 움직이면 아프다.</span>
 			<<elseif $dissociation gte 2>>
 				<<set _leftOptions to "unreal">>
-				<span class="pink">Your left arm is free, but doesn't feel real.</span>
+				<span class="pink">왼팔은 자유롭지만, 현실감각이 없다.</span>
 			<<else>>
 				<<if _targetYourself is true and _targetnumber gt 1>>
-					<<set _targetlistarms["Yourself"] to "self">>
+					<<set _targetlistarms["자신"] to "self">>
 				<</if>>
 				<<if not $options.combatControls.includes("adio") and _targetnumber gt 1>>
 					<<targetListBox "left" _targetlistarms>>
 				<</if>>
 				<<set _leftOptions to "free">>
-				<span @class="($lastOptions.left isnot _leftOptions ?'gold':'')">Your left arm is free.</span>
+				<span @class="($lastOptions.left isnot _leftOptions ?'gold':'')">왼팔은 자유롭다.</span>
 				<<if $options.combatControls.includes("adio") and _targetnumber gt 1>>
 					<<targetListBox "left" _targetlistarms>>
 					<<if $options.combatControls is "radio">><br><</if>>
@@ -52,17 +53,17 @@
 		<<case "bound">>
 			<<set _leftOptions to "bound">>
 			<<if $orgasmdown gte 1>>
-				<span class="lewd">Your left arm jerks against its bonds.</span>
+				<span class="lewd">왼팔이 결박에서 벗어나려 꿈틀거린다.</span>
 			<<elseif $pain gte 100 and $willpowerpain is 0>>
-				<span class="red">Your left arm is held in a painful bind.</span>
+				<span class="red">왼팔이 고통스럽게 결박되어 있다.</span>
 			<<elseif $dissociation gte 2>>
-				<span class="pink">Your left arm lies limp in its bonds.</span>
+				<span class="pink">왼팔이 결박된 채 축 늘어져 있다.</span>
 			<<else>>
-				<span @class="($lastOptions.left isnot _leftOptions ?'gold':'')">Your left arm is bound.</span>
+				<span @class="($lastOptions.left isnot _leftOptions ?'gold':'')">왼팔이 결박되어 있다.</span>
 			<</if>><<if $options.combatControls.includes("adio")>><br><</if>>
 		<<case "trapped">>
 			<<set _leftOptions to "trapped">>
-			<span @class="($lastOptions.left isnot _leftOptions ?'gold':'purple')">Your left arm is trapped by the $vorecreature.</span><<if $options.combatControls.includes("adio")>><br><</if>>
+			<span @class="($lastOptions.left isnot _leftOptions ?'gold':'purple')">왼팔이 _vorecreatureKr에게 갇혀 있다.</span><<if $options.combatControls.includes("adio")>><br><</if>>
 		<<case "grappled" "penis" "othervagina" "vagina" "coverpenis" "anus" "behind">>
 			<<set $_changetype to true>><<leftActionInit>>
 		<<case "struggle">>
@@ -99,54 +100,56 @@
 <</widget>>
 
 <<widget "leftActionsVore">>
+	<<set _vorecreatureKr to window.KR.getCreatureTypeKr($vorecreature)>>
 	<<set _leftaction to {}>>
 	<<if !(["orgasm", "pain", "unreal"].includes(_leftOptions))>>
-		<<set _leftaction["Rest"] to "rest">>
+		<<set _leftaction["쉰다"] to "rest">>
 	<</if>>
 	<<switch _leftOptions>>
 		<<case "free">>
-			<<set _leftaction["Escape the "+$vorecreature] to "leftescape">>
+			<<set _leftaction[_vorecreatureKr + "에게서 탈출한다"] to "leftescape">>
 			<<if $vorestage lte 6>>
-				<<set _leftaction["Hold on to the "+$vorecreature] to "lefthold">>
+				<<set _leftaction[_vorecreatureKr + "에 매달린다"] to "lefthold">>
 			<</if>>
 			<<if $rightarm is "trapped">>
-				<<set _leftaction["Free your right arm"] to "leftvorefree">>
+				<<set _leftaction["오른팔을 빼낸다"] to "leftvorefree">>
 			<</if>>
 		<<case "bound" "trapped">>
 		<<case "orgasm">>
-			<<set _leftaction["Fold"] to "leftfold">>
-			<<set _leftaction["Grip"] to "leftgrip">>
+			<<set _leftaction["접는다"] to "leftfold">>
+			<<set _leftaction["움켜쥔다"] to "leftgrip">>
 		<<case "pain">>
-			<<set _leftaction["Struggle"] to "leftstruggleweak">>
-			<<set _leftaction["Protect"] to "leftprotect">>
+			<<set _leftaction["버둥거린다"] to "leftstruggleweak">>
+			<<set _leftaction["보호한다"] to "leftprotect">>
 		<<case "unreal">>
-			<<set _leftaction["Poke yourself"] to "leftpoke">>
-			<<set _leftaction["Keep your arms out of the way"] to "leftcurl">>
+			<<set _leftaction["자신을 찌른다"] to "leftpoke">>
+			<<set _leftaction["팔을 치워둔다"] to "leftcurl">>
 	<</switch>>
 <</widget>>
 
 <<widget "rightActionInitVore">>
+	<<set _vorecreatureKr to window.KR.getCreatureTypeKr($vorecreature)>>
 	<<set $righttarget to "vore">>
 	<<switch $rightarm>>
 		<<case 0>>
 			<<if $orgasmdown gte 1>>
 				<<set _rightOptions to "orgasm">>
-				<span class="lewd">Your right arm is free, but you can't stop the spasms.</span>
+				<span class="lewd">오른팔은 자유롭지만, 경련을 멈출 수 없다.</span>
 			<<elseif $pain gte 100 and $willpowerpain is 0>>
 				<<set _rightOptions to "pain">>
-				<span class="red">Your right arm is free, but hurts to move.</span>
+				<span class="red">오른팔은 자유롭지만, 움직이면 아프다.</span>
 			<<elseif $dissociation gte 2>>
 				<<set _rightOptions to "unreal">>
-				<span class="pink">Your right arm is free, but doesn't feel real.</span>
+				<span class="pink">오른팔은 자유롭지만, 현실감각이 없다.</span>
 			<<else>>
 				<<if _targetYourself is true and _targetnumber gt 1>>
-					<<set _targetlistarms["Yourself"] to "self">>
+					<<set _targetlistarms["자신"] to "self">>
 				<</if>>
 				<<if not $options.combatControls.includes("adio") and _targetnumber gt 1>>
 					<<targetListBox "right" _targetlistarms>>
 				<</if>>
 				<<set _rightOptions to "free">>
-				<span @class="($lastOptions.right isnot _rightOptions ?'gold':'')">Your right arm is free.</span>
+				<span @class="($lastOptions.right isnot _rightOptions ?'gold':'')">오른팔은 자유롭다.</span>
 				<<if $options.combatControls.includes("adio") and _targetnumber gt 1>>
 					<<targetListBox "right" _targetlistarms>>
 					<<if $options.combatControls is "radio">><br><</if>>
@@ -155,17 +158,17 @@
 		<<case "bound">>
 			<<set _rightOptions to "bound">>
 			<<if $orgasmdown gte 1>>
-				<span class="lewd">Your right arm jerks against its bonds.</span>
+				<span class="lewd">오른팔이 결박에서 벗어나려 꿈틀거린다.</span>
 			<<elseif $pain gte 100 and $willpowerpain is 0>>
-				<span class="red">Your right arm is held in a painful bind.</span>
+				<span class="red">오른팔이 고통스럽게 결박되어 있다.</span>
 			<<elseif $dissociation gte 2>>
-				<span class="pink">Your right arm lies limp in its bonds.</span>
+				<span class="pink">오른팔이 결박된 채 축 늘어져 있다.</span>
 			<<else>>
-				<span @class="($lastOptions.right isnot _rightOptions ?'gold':'')">Your right arm is bound.</span>
+				<span @class="($lastOptions.right isnot _rightOptions ?'gold':'')">오른팔이 결박되어 있다.</span>
 			<</if>>
 		<<case "trapped">>
 			<<set _rightOptions to "trapped">>
-			<span @class="($lastOptions.right isnot _rightOptions ?'gold':'purple')">Your right arm is trapped by the $vorecreature.</span><br>
+			<span @class="($lastOptions.right isnot _rightOptions ?'gold':'purple')">오른팔이 _vorecreatureKr에게 갇혀 있다.</span><br>
 		<<case "grappled" "penis" "othervagina" "vagina" "coverpenis" "anus" "behind">>
 			<<set $_changetype to true>><<rightActionInit>>
 		<<case "struggle">>
@@ -202,58 +205,60 @@
 <</widget>>
 
 <<widget "rightActionsVore">>
+	<<set _vorecreatureKr to window.KR.getCreatureTypeKr($vorecreature)>>
 	<<set _rightaction to {}>>
 	<<if !(["orgasm", "pain", "unreal"].includes(_rightOptions))>>
-		<<set _rightaction["Rest"] to "rest">>
+		<<set _rightaction["쉰다"] to "rest">>
 	<</if>>
 	<<switch _rightOptions>>
 		<<case "free">>
-			<<set _rightaction["Escape the "+$vorecreature] to "rightescape">>
+			<<set _rightaction[_vorecreatureKr + "에게서 탈출한다"] to "rightescape">>
 			<<if $vorestage lte 6>>
-				<<set _rightaction["Hold on to the "+$vorecreature] to "righthold">>
+				<<set _rightaction[_vorecreatureKr + "에 매달린다"] to "righthold">>
 			<</if>>
 			<<if $rightarm is "trapped">>
-				<<set _rightaction["Free your right arm"] to "rightvorefree">>
+				<<set _rightaction["오른팔을 빼낸다"] to "rightvorefree">>
 			<</if>>
 		<<case "bound" "trapped">>
 		<<case "orgasm">>
-			<<set _rightaction["Fold"] to "rightfold">>
-			<<set _rightaction["Grip"] to "rightgrip">>
+			<<set _rightaction["접는다"] to "rightfold">>
+			<<set _rightaction["움켜쥔다"] to "rightgrip">>
 		<<case "pain">>
-			<<set _rightaction["Struggle"] to "rightstruggleweak">>
-			<<set _rightaction["Protect"] to "rightprotect">>
+			<<set _rightaction["버둥거린다"] to "rightstruggleweak">>
+			<<set _rightaction["보호한다"] to "rightprotect">>
 		<<case "unreal">>
-			<<set _rightaction["Poke yourself"] to "rightpoke">>
-			<<set _rightaction["Keep your arms out of the way"] to "rightcurl">>
+			<<set _rightaction["자신을 찌른다"] to "rightpoke">>
+			<<set _rightaction["팔을 치워둔다"] to "rightcurl">>
 	<</switch>>
 <</widget>>
 
 :: Widgets Vore [widget]
 <<widget "vore">>
+	<<set _vorecreatureKr to window.KR.getCreatureTypeKr($vorecreature)>>
 	<<rng>>
 	<<if $vorestage is 1>>
-		Your thighs are gripped by the $vorecreature's mouth, your shins and feet at the mercy of its probing tongue.
+		_vorecreatureKr의 입이 당신의 허벅지를 움켜쥐고, 당신의 정강이와 발은 놈의 더듬는 혀에 내맡겨져 있다.
 		<<neutral 4>>
 	<<elseif $vorestage is 2>>
-		Your waist is gripped by the $vorecreature's mouth, your delicate parts at the mercy of its slippery tongue.
+		_vorecreatureKr의 입이 당신의 허리를 움켜쥐고, 당신의 은밀한 부위는 놈의 미끈한 혀에 내맡겨져 있다.
 		<<neutral 2 "genitals">><<neutral 2 "bottom">>
 	<<elseif $vorestage is 3>>
-		Your chest is gripped by the $vorecreature's mouth, your body at the mercy of its slimy tongue.
+		_vorecreatureKr의 입이 당신의 가슴을 움켜쥐고, 당신의 몸은 놈의 끈적한 혀에 내맡겨져 있다.
 		<<neutral 2 "breasts">><<neutral 3 "genitals">><<neutral 3 "bottom">>
 	<<elseif $vorestage is 4>>
-		Your shoulders are gripped by the $vorecreature's mouth, your body at the mercy of its intrusive tongue.
+		_vorecreatureKr의 입이 당신의 어깨를 움켜쥐고, 당신의 몸은 파고드는 혀에 내맡겨져 있다.
 		<<neutral 3 "breasts">><<neutral 4 "genitals">><<neutral 4 "bottom">>
 	<<elseif $vorestage is 5>>
-		Your entire body is in the $vorecreature's mouth. Its slimy tongue presses against your whole body.
+		당신의 온몸이 _vorecreatureKr의 입 안에 들어가 있다. 놈의 끈적한 혀가 당신의 온몸을 짓누른다.
 		<<neutral 4 "breasts">><<neutral 5 "genitals">><<neutral 5 "bottom">>
 	<<elseif $vorestage is 6>>
-		You are in the $vorecreature's gullet, pushed along by movements in the walls.
+		당신은 _vorecreatureKr의 식도 안에 있으며, 벽의 움직임에 밀려 나아간다.
 		<<neutral 5 "breasts">><<neutral 6 "genitals">><<neutral 6 "bottom">>
 	<<elseif $vorestage is 7>>
-		You are in the $vorecreature's stomach. It's a struggle to keep your head above the slimy liquid.
+		당신은 _vorecreatureKr의 위장 안에 있다. 끈적한 액체 위로 머리를 내밀고 있기조차 힘겹다.
 		<<if $vorecreature is "oyster" and $rng lte 10 and $pearlChance is undefined>>
 			<<wearProp "oyster pearl">>
-			You feel something round and smooth pressing against your body. You grab it and investigate it. <span class="green">You found a rare pearl.</span> It's going to fetch a tidy sum.
+			당신은 뭔가 둥글고 매끄러운 것이 당신의 몸을 누르는 것을 느낀다. 당신은 그것을 붙잡고 살펴본다. <span class="green">당신은 희귀한 진주를 찾았다.</span> 꽤 짭짤한 돈벌이가 될 것이다.
 			<<tending_give oyster_pearl 1>>
 			<<set $pearlChance to 1>>
 		<</if>>
@@ -262,23 +267,23 @@
 	<<if $vorestage is 1>>
 		<<if ($vorestruggle * currentSkillValue('physique')) gte $vorestrength>>
 			<<if $vorestruggle is 2>>
-				You push down on the $vorecreature's maw with both your arms, <span class="green">preventing it from swallowing you further.</span>
+				당신은 두 팔로 _vorecreatureKr의 아가리를 밀어내어, <span class="green">당신을 더 삼키지 못하게 막는다.</span>
 			<<elseif $vorestruggle is 1>>
-				You push down on the $vorecreature's maw with one arm, <span class="green">preventing it from swallowing you further.</span>
+				당신은 한 팔로 _vorecreatureKr의 아가리를 밀어내어, <span class="green">당신을 더 삼키지 못하게 막는다.</span>
 			<<else>>
-				There's nothing preventing the $vorecreature from swallowing you further, <span class="green">but it doesn't take advantage of your vulnerability.</span>
+				_vorecreatureKr【이가】 당신을 더 삼키는 것을 막을 방법이 없지만, <span class="green">놈은 당신의 취약한 상태를 이용하지 않는다.</span>
 			<</if>>
 		<<else>>
 			<<set $vorestage += 1>>
 			<<if $vorestruggle is 2>>
-				You push down on the $vorecreature's maw with both your arms,<span class="blue"> but it isn't enough.</span> You slide deeper into its mouth, until it swallows you up to the waist.
+				당신은 두 팔로 _vorecreatureKr의 아가리를 밀어내어 보지만, <span class="blue">충분하지 않다.</span> 당신은 놈의 입안으로 더 깊숙이 미끄러져 들어가, 허리까지 삼켜진다.
 			<<elseif $vorestruggle is 1>>
-				You push down on the $vorecreature's maw with one arm,<span class="blue"> but it isn't enough.</span> You slide deeper into its mouth, until it swallows you up to the waist.
+				당신은 한 팔로 _vorecreatureKr의 아가리를 밀어내어 보지만, <span class="blue">충분하지 않다.</span> 당신은 놈의 입안으로 더 깊숙이 미끄러져 들어가, 허리까지 삼켜진다.
 			<<else>>
-				There's nothing preventing the $vorecreature from swallowing you further, <span class="blue">and it takes advantage of your vulnerability.</span> You slide deeper into its mouth, until it swallows you up to the waist.
+				_vorecreatureKr【이가】 당신을 더 삼키는 것을 막을 방법이 없으며, <span class="blue">놈은 당신의 취약한 상태를 이용한다.</span> 당신은 놈의 입안으로 더 깊숙이 미끄러져 들어가, 허리까지 삼켜진다.
 			<</if>>
 			<<if $voretrait gte 1 and random(1, 3) is 3>>
-				You shiver at the sensation.<<arousal 100>>
+				당신은 그 감각에 몸을 떤다.<<arousal 100>>
 			<</if>>
 		<</if>>
 	<<elseif $vorestage is 2>>
@@ -291,20 +296,20 @@
 		<</if>>
 		<<if ($vorestruggle * currentSkillValue('physique')) gte $vorestrength>>
 			<<if $vorestruggle is 2>>
-				You push down on the $vorecreature's maw with both your arms, <span class="green">preventing it from swallowing you further.</span>
+				당신은 두 팔로 _vorecreatureKr의 아가리를 밀어내어, <span class="green">당신을 더 삼키지 못하게 막는다.</span>
 			<<elseif $vorestruggle is 1>>
-				You push down on the $vorecreature's maw with one arm, <span class="green">preventing it from swallowing you further.</span>
+				당신은 한 팔로 _vorecreatureKr의 아가리를 밀어내어, <span class="green">당신을 더 삼키지 못하게 막는다.</span>
 			<<else>>
-				There's nothing preventing the $vorecreature from swallowing you further, <span class="green">but it doesn't take advantage of your vulnerability.</span>
+				_vorecreatureKr【이가】 당신을 더 삼키는 것을 막을 방법이 없지만, <span class="green">놈은 당신의 취약한 상태를 이용하지 않는다.</span>
 			<</if>>
 		<<else>>
 			<<set $vorestage += 1>>
 			<<if $vorestruggle is 2>>
-				You push down on the $vorecreature's maw with both your arms,<span class="purple"> but it isn't enough.</span> You slide deeper into its mouth, until it swallows you up to your chest.
+				당신은 두 팔로 _vorecreatureKr의 아가리를 밀어내어 보지만, <span class="purple">충분하지 않다.</span> 당신은 놈의 입안으로 더 깊숙이 미끄러져 들어가, 가슴까지 삼켜진다.
 			<<elseif $vorestruggle is 1>>
-				You push down on the $vorecreature's maw with one arm,<span class="purple"> but it isn't enough.</span> You slide deeper into its mouth, until it swallows you up to your chest.
+				당신은 한 팔로 _vorecreatureKr의 아가리를 밀어내어 보지만, <span class="purple">충분하지 않다.</span> 당신은 놈의 입안으로 더 깊숙이 미끄러져 들어가, 가슴까지 삼켜진다.
 			<<else>>
-				There's nothing preventing the $vorecreature from swallowing you further, <span class="purple">and it takes advantage of your vulnerability.</span> You slide deeper into its mouth, until it swallows you up to your chest.
+				_vorecreatureKr【이가】 당신을 더 삼키는 것을 막을 방법이 없으며, <span class="purple">놈은 당신의 취약한 상태를 이용한다.</span> 당신은 놈의 입안으로 더 깊숙이 미끄러져 들어가, 가슴까지 삼켜진다.
 			<</if>>
 		<</if>>
 	<<elseif $vorestage is 3>>
@@ -325,20 +330,20 @@
 		<<set $worn.upper.integrity -= 1>>
 		<<if ($vorestruggle * currentSkillValue('physique')) gte $vorestrength>>
 			<<if $vorestruggle is 2>>
-				You push down on the $vorecreature's maw with both your arms, <span class="green">preventing it from swallowing you further.</span>
+				당신은 두 팔로 _vorecreatureKr의 아가리를 밀어내어, <span class="green">당신을 더 삼키지 못하게 막는다.</span>
 			<<elseif $vorestruggle is 1>>
-				You push down on the $vorecreature's maw with one arm, <span class="green">preventing it from swallowing you further.</span>
+				당신은 한 팔로 _vorecreatureKr의 아가리를 밀어내어, <span class="green">당신을 더 삼키지 못하게 막는다.</span>
 			<<else>>
-				There's nothing preventing the $vorecreature from swallowing you further, <span class="green">but it doesn't take advantage of your vulnerability.</span>
+				_vorecreatureKr【이가】 당신을 더 삼키는 것을 막을 방법이 없지만, <span class="green">놈은 당신의 취약한 상태를 이용하지 않는다.</span>
 			<</if>>
 		<<else>>
 			<<set $vorestage += 1>>
 			<<if $vorestruggle is 2>>
-				You push down on the $vorecreature's maw with both your arms,<span class="pink"> but it isn't enough.</span> You slide deeper into its mouth, until it swallows you up to your neck.
+				당신은 두 팔로 _vorecreatureKr의 아가리를 밀어내어 보지만, <span class="pink">충분하지 않다.</span> 당신은 놈의 입안으로 더 깊숙이 미끄러져 들어가, 목까지 삼켜진다.
 			<<elseif $vorestruggle is 1>>
-				You push down on the $vorecreature's maw with one arm,<span class="pink"> but it isn't enough.</span> You slide deeper into its mouth, until it swallows you up to your neck.
+				당신은 한 팔로 _vorecreatureKr의 아가리를 밀어내어 보지만, <span class="pink">충분하지 않다.</span> 당신은 놈의 입안으로 더 깊숙이 미끄러져 들어가, 목까지 삼켜진다.
 			<<else>>
-				There's nothing preventing the $vorecreature from swallowing you further, <span class="pink">and it takes advantage of your vulnerability.</span> You slide deeper into its mouth, until it swallows you up to your neck.
+				_vorecreatureKr【이가】 당신을 더 삼키는 것을 막을 방법이 없으며, <span class="pink">놈은 당신의 취약한 상태를 이용한다.</span> 당신은 놈의 입안으로 더 깊숙이 미끄러져 들어가, 목까지 삼켜진다.
 			<</if>>
 		<</if>>
 	<<elseif $vorestage is 4>>
@@ -358,20 +363,20 @@
 		<</if>>
 		<<if ($vorestruggle * currentSkillValue('physique')) gte $vorestrength>>
 			<<if $vorestruggle is 2>>
-				You grab the inside of the $vorecreature's maw with both arms, <span class="green">preventing it from swallowing you further.</span>
+				당신은 두 팔로 _vorecreatureKr의 아가리 안쪽을 붙잡아, <span class="green">당신을 더 삼키지 못하게 막는다.</span>
 			<<elseif $vorestruggle is 1>>
-				You grab the inside of the $vorecreature's maw with one arm, <span class="green">preventing it from swallowing you further.</span>
+				당신은 한 팔로 _vorecreatureKr의 아가리 안쪽을 붙잡아, <span class="green">당신을 더 삼키지 못하게 막는다.</span>
 			<<else>>
-				There's nothing preventing the $vorecreature from swallowing you further, <span class="green">but it doesn't take advantage of your vulnerability.</span>
+				_vorecreatureKr【이가】 당신을 더 삼키는 것을 막을 방법이 없지만, <span class="green">놈은 당신의 취약한 상태를 이용하지 않는다.</span>
 			<</if>>
 		<<else>>
 			<<set $vorestage += 1>>
 			<<if $vorestruggle is 2>>
-				You grab the inside of the $vorecreature's maw with both your arms,<span class="pink"> but it isn't enough.</span> The last of your body slides into its mouth, its lips closing behind you.
+				당신은 두 팔로 _vorecreatureKr의 아가리 안쪽을 붙잡아 보지만, <span class="pink">충분하지 않다.</span> 당신의 몸 마지막 부분마저 놈의 입안으로 미끄러져 들어가고, 당신의 등 뒤로 놈의 입술이 닫힌다.
 			<<elseif $vorestruggle is 1>>
-				You grab the inside of the $vorecreature's maw with one arm,<span class="pink"> but it isn't enough.</span> The last of your body slides into its mouth, its lips closing behind you.
+				당신은 한 팔로 _vorecreatureKr의 아가리 안쪽을 붙잡아 보지만, <span class="pink">충분하지 않다.</span> 당신의 몸 마지막 부분마저 놈의 입안으로 미끄러져 들어가고, 당신의 등 뒤로 놈의 입술이 닫힌다.
 			<<else>>
-				There's nothing preventing the $vorecreature from swallowing you further, <span class="pink">and it takes advantage of your vulnerability.</span> The last of your body slides into its mouth, its lips closing behind you.
+				_vorecreatureKr【이가】 당신을 더 삼키는 것을 막을 방법이 없으며, <span class="pink">놈은 당신의 취약한 상태를 이용한다.</span> 당신의 몸 마지막 부분마저 놈의 입안으로 미끄러져 들어가고, 당신의 등 뒤로 놈의 입술이 닫힌다.
 			<</if>>
 		<</if>>
 	<<elseif $vorestage is 5>>
@@ -391,20 +396,20 @@
 		<</if>>
 		<<if ($vorestruggle * currentSkillValue('physique')) gte $vorestrength>>
 			<<if $vorestruggle is 2>>
-				You grab the inside of the $vorecreature's maw with both arms, <span class="green">preventing it from swallowing you further.</span>
+				당신은 두 팔로 _vorecreatureKr의 아가리 안쪽을 붙잡아, <span class="green">당신을 더 삼키지 못하게 막는다.</span>
 			<<elseif $vorestruggle is 1>>
-				You grab the inside of the $vorecreature's maw with one arm, <span class="green">preventing it from swallowing you further.</span>
+				당신은 한 팔로 _vorecreatureKr의 아가리 안쪽을 붙잡아, <span class="green">당신을 더 삼키지 못하게 막는다.</span>
 			<<else>>
-				There's nothing preventing the $vorecreature from swallowing you further, <span class="green">but it doesn't take advantage of your vulnerability.</span>
+				_vorecreatureKr【이가】 당신을 더 삼키는 것을 막을 방법이 없지만, <span class="green">놈은 당신의 취약한 상태를 이용하지 않는다.</span>
 			<</if>>
 		<<else>>
 			<<set $vorestage += 1>>
 			<<if $vorestruggle is 2>>
-				You grab the inside of the $vorecreature's maw with both your arms,<span class="pink"> but it isn't enough.</span> The $vorecreature sucks you further down, sliding you into its gullet.
+				당신은 두 팔로 _vorecreatureKr의 아가리 안쪽을 붙잡아 보지만, <span class="pink">충분하지 않다.</span> _vorecreatureKr【이가】 당신을 더 밑으로 빨아들이며, 식도로 미끄러뜨린다.
 			<<elseif $vorestruggle is 1>>
-				You grab the inside of the $vorecreature's maw with one arm,<span class="pink"> but it isn't enough.</span> The $vorecreature sucks you further down, sliding you into its gullet.
+				당신은 한 팔로 _vorecreatureKr의 아가리 안쪽을 붙잡아 보지만, <span class="pink">충분하지 않다.</span> _vorecreatureKr【이가】 당신을 더 밑으로 빨아들이며, 식도로 미끄러뜨린다.
 			<<else>>
-				There's nothing preventing the $vorecreature from swallowing you further, <span class="pink">and it takes advantage of your vulnerability.</span> The $vorecreature sucks you further down, sliding you into its gullet.
+				_vorecreatureKr【이가】 당신을 더 삼키는 것을 막을 방법이 없으며, <span class="pink">놈은 당신의 취약한 상태를 이용한다.</span> _vorecreatureKr【이가】 당신을 더 밑으로 빨아들이며, 식도로 미끄러뜨린다.
 			<</if>>
 		<</if>>
 	<<elseif $vorestage is 6>>
@@ -424,23 +429,23 @@
 		<</if>>
 		<<if ($vorestruggle * currentSkillValue('physique')) gte $vorestrength>>
 			<<if $vorestruggle is 2>>
-				You grab the inside of the $vorecreature's maw with both arms, <span class="green">preventing it from swallowing you further.</span>
+				당신은 두 팔로 _vorecreatureKr의 아가리 안쪽을 붙잡아, <span class="green">당신을 더 삼키지 못하게 막는다.</span>
 			<<elseif $vorestruggle is 1>>
-				You grab the inside of the $vorecreature's maw with one arm, <span class="green">preventing it from swallowing you further.</span>
+				당신은 한 팔로 _vorecreatureKr의 아가리 안쪽을 붙잡아, <span class="green">당신을 더 삼키지 못하게 막는다.</span>
 			<<else>>
-				There's nothing preventing the $vorecreature from swallowing you further, <span class="green">but it doesn't take advantage of your vulnerability.</span>
+				_vorecreatureKr【이가】 당신을 더 삼키는 것을 막을 방법이 없지만, <span class="green">놈은 당신의 취약한 상태를 이용하지 않는다.</span>
 			<</if>>
 		<<else>>
 			<<set $vorestomach to 0>>
 			<<set $vorestage += 1>>
 			<<if $vorestruggle is 2>>
-				You grab the inside of the $vorecreature's maw with both your arms,<span class="pink"> but it isn't enough.</span> The $vorecreature sucks you further down, depositing you in a fleshy chamber.
+				당신은 두 팔로 _vorecreatureKr의 아가리 안쪽을 붙잡아 보지만, <span class="pink">충분하지 않다.</span> _vorecreatureKr【이가】 당신을 더 밑으로 빨아들이며, 고기로 된 방 안에 당신을 밀어 넣는다.
 				<<if $leftarm is "trapped">><<set $leftarm to 0>><</if>><<if $rightarm is "trapped">><<set $rightarm to 0>><<swallowed>><</if>>
 			<<elseif $vorestruggle is 1>>
-				You grab the inside of the $vorecreature's maw with one arm,<span class="pink"> but it isn't enough.</span> The $vorecreature sucks you further down, depositing you in a fleshy chamber.
+				당신은 한 팔로 _vorecreatureKr의 아가리 안쪽을 붙잡아 보지만, <span class="pink">충분하지 않다.</span> _vorecreatureKr【이가】 당신을 더 밑으로 빨아들이며, 고기로 된 방 안에 당신을 밀어 넣는다.
 				<<if $leftarm is "trapped">><<set $leftarm to 0>><</if>><<if $rightarm is "trapped">><<set $rightarm to 0>><<swallowed>><</if>>
 			<<else>>
-				There's nothing preventing the $vorecreature from swallowing you further, <span class="pink">and it takes advantage of your vulnerability.</span> The $vorecreature sucks you further down, depositing you in a fleshy chamber.
+				_vorecreatureKr【이가】 당신을 더 삼키는 것을 막을 방법이 없으며, <span class="pink">놈은 당신의 취약한 상태를 이용한다.</span> _vorecreatureKr【이가】 당신을 더 밑으로 빨아들이며, 고기로 된 방 안에 당신을 밀어 넣는다.
 				<<if $leftarm is "trapped">><<set $leftarm to 0>><</if>><<if $rightarm is "trapped">><<set $rightarm to 0>><</if>><<swallowed>>
 			<</if>>
 		<</if>>
@@ -472,110 +477,110 @@
 	<<rng>>
 	<<if $vorestage is 1>>
 		<<if $rng gte 66>>
-			You feel the $vorecreature licking your feet.
+			_vorecreatureKr【이가】 당신의 발을 핥고 있는 게 느껴진다.
 			<<neutral 5>>
 		<<elseif $rng gte 33>>
-			The $vorecreature's tongue protrudes from its maw and licks your inner thighs.
+			_vorecreatureKr의 혀가 아가리 밖으로 튀어나와 당신의 허벅지 안쪽을 핥는다.
 			<<neutral 5 "genitals">>
 		<<else>>
-			The $vorecreature's tongue protrudes from its maw and licks your butt.
+			_vorecreatureKr의 혀가 아가리 밖으로 튀어나와 당신의 엉덩이를 핥는다.
 			<<neutral 5 "anus">>
 		<</if>>
 	<<elseif $vorestage is 2>>
 		<<if $rng gte 66>>
-			You feel the $vorecreature licking your butt.
+			_vorecreatureKr【이가】 당신의 엉덩이를 핥고 있는 게 느껴진다.
 			<<neutral 5 "anus">>
 		<<elseif $rng gte 33>>
-			The $vorecreature gently licks your <<groin>>.
+			_vorecreatureKr【이가】 당신의 <<groin>>【을를】 부드럽게 핥는다.
 			<<neutral 10 "genitals">>
 		<<else>>
-			The $vorecreature's tongue wraps around your pelvis and rubs up and down the length of your thighs.
+			_vorecreatureKr의 혀가 당신의 골반을 휘감고, 허벅지를 따라 위아래로 문지른다.
 			<<neutral 5 "genitals">>
 		<</if>>
 	<<elseif $vorestage is 3>>
 		<<if $rng gte 66>>
-			The $vorecreature's tongue presses your body against the roof of its maw.
+			_vorecreatureKr의 혀가 당신의 몸을 입천장 쪽으로 밀어붙인다.
 			<<neutral 5>>
 		<<elseif $rng gte 33>>
-			The $vorecreature gently prods your <<groin>>.
+			_vorecreatureKr【이가】 당신의 <<groin>>【을를】 부드럽게 쿡쿡 찌른다.
 			<<neutral 10 "genitals">>
 		<<else>>
-			The $vorecreature's tongue caresses your inner thighs.
+			_vorecreatureKr의 혀가 당신의 허벅지 안쪽을 어루만진다.
 			<<neutral 5 "genitals">>
 		<</if>>
 	<<elseif $vorestage is 4>>
 		<<if $rng gte 66>>
-			The $vorecreature runs the tip of its tongue down the length of your body.
+			_vorecreatureKr【이가】 혀끝으로 당신의 몸을 길게 훑어내린다.
 			<<neutral 5>>
 		<<elseif $rng gte 33>>
-			The $vorecreature gently prods your <<groin>>.
+			_vorecreatureKr【이가】 당신의 <<groin>>【을를】 부드럽게 쿡쿡 찌른다.
 			<<neutral 10 "genitals">>
 		<<else>>
-			The $vorecreature's tongue caresses your inner thighs.
+			_vorecreatureKr의 혀가 당신의 허벅지 안쪽을 어루만진다.
 			<<neutral 10 "genitals">>
 		<</if>>
 	<<elseif $vorestage is 5>>
 		<<if $rng gte 66>>
-			The $vorecreature runs the tip of its tongue down the length of your body.
+			_vorecreatureKr【이가】 혀끝으로 당신의 몸을 길게 훑어내린다.
 			<<neutral 10>>
 		<<elseif $rng gte 33>>
-			The $vorecreature wraps its tongue around your body.
+			_vorecreatureKr【이가】 혀로 당신의 몸을 휘감는다.
 			<<neutral 10>>
 		<<else>>
-			The $vorecreature flicks your <<groin>> with the tip of its tongue.
+			_vorecreatureKr【이가】 혀끝으로 당신의 <<groin>>【을를】 튕기듯 건드린다.
 			<<neutral 15 "genitals">>
 		<</if>>
 	<<elseif $vorestage is 6>>
 		<<if $rng gte 81 and $leftarm is 0>>
-			A groove in the side of the gullet constricts around your left arm, trapping it.
+			식도 측면의 주름이 당신의 왼팔을 휘감아 조이며, 팔을 가둔다.
 			<<set $leftarm to "trapped">><<set $lefttarget to "vore">><<neutral 10>>
 			<<set _voretrappedimg to 1>>
 		<<elseif $rng gte 61 and $rightarm is 0>>
-			A groove in the side of the gullet constricts around your right arm, trapping it.
+			식도 측면의 주름이 당신의 오른팔을 휘감아 조이며, 팔을 가둔다.
 			<<set $rightarm to "trapped">><<set $righttarget to "vore">><<neutral 10>>
 			<<set _voretrappedimg to 1>>
 		<<elseif $rng gte 41>>
-			The gullet tightens around your entire body, holding you in place.
+			식도가 당신의 온몸을 꽉 조이며, 당신을 제자리에 붙잡아 둔다.
 			<<neutral 10>>
 		<<elseif $rng gte 21>>
-			Valves open at the side of the tube and release a warm liquid, coating you in a slimy goo.
+			관 측면에 있는 판막이 열리며 따뜻한 액체를 분비하여, 끈적거리는 점액으로 당신을 뒤덮는다.
 			<<neutral 15>>
 		<<elseif $rng gte 1>>
-			The sides of the gullet push against you, sliding you along the tube.
+			식도 벽이 당신을 압박하며, 관을 따라 미끄러뜨린다.
 			<<neutral 15>>
 		<</if>>
 	<<elseif $vorestage is 7>>
 		<<if $rng gte 81 and $rightarm is 0>>
-			A groove in the side of the chamber constricts around your right arm, trapping it.
+			방 측면의 주름이 당신의 오른팔을 꽉 조이며, 팔을 가둔다.
 			<<set $rightarm to "trapped">><<set $righttarget to "vore">><<neutral 15>>
 		<<elseif $rng gte 61>>
-			More liquid squirts out the side of the chamber, covering you in a slimy goo.
+			방 측면에서 더 많은 액체가 뿜어져 나와, 끈적거리는 점액으로 당신을 뒤덮는다.
 			<<neutral 15>><<outergoo>>
 		<<elseif $rng gte 41 and $leftarm is 0>>
-			A groove in the side of the chamber constricts around your left arm, trapping it.
+			방 측면의 주름이 당신의 왼팔을 꽉 조이며, 팔을 가둔다.
 			<<set $leftarm to "trapped">><<set $lefttarget to "vore">><<neutral 15>>
 		<<elseif $rng gte 21>>
-			The chamber pulses to a gentle rhythm.
+			고기로 된 방이 부드러운 리듬으로 고동친다.
 			<<neutral 15>>
 		<<elseif $rng gte 1>>
-			The entire chamber pulsates and rubs against you.
+			방 전체가 맥동하며 당신을 문지른다.
 			<<neutral 20>>
 		<</if>>
 		<<if $vorestomach is 0>>
 			<<set $vorestomach to 1>>
-			<span class="blue">The walls close in around you.</span>
+			<span class="blue">사방의 벽이 당신을 조여온다.</span>
 		<<elseif $vorestomach is 1>>
 			<<set $vorestomach to 2>>
-			<span class="purple">The walls close in around you.</span>
+			<span class="purple">사방의 벽이 당신을 조여온다.</span>
 		<<elseif $vorestomach is 2>>
 			<<set $vorestomach to 3>>
-			<span class="pink">The walls close in around you, squeezing your body and stealing your breath.</span>
+			<span class="pink">사방의 벽이 당신을 조여오며, 몸을 쥐어짜고 숨을 앗아간다.</span>
 		<<elseif $vorestomach is 3>>
 			<<set $vorestomach to 4>>
-			<span class="red">The walls close in around you. You soon won't be able to move at all.</span>
+			<span class="red">사방의 벽이 당신을 조여온다. 곧 당신은 전혀 움직일 수 없게 될 것이다.</span>
 		<<else>>
 			<<set $vorestomach to 5>>
-			<span class="red">The walls close in around you. The world starts to fade.</span>
+			<span class="red">사방의 벽이 당신을 조여온다. 시야가 흐려지기 시작한다.</span>
 		<</if>>
 	<</if>>
 	<br><br>
@@ -598,13 +603,13 @@
 
 	<<if $vorestage lte 5>>
 		<<if $vorestrength lte 0>>
-			<span class="lblue">The $vorecreature seems content to savour your taste, for now.</span>
+			<span class="lblue">_vorecreatureKr【은는】 지금은 당신의 맛을 음미하는 것으로 만족하는 듯하다.</span>
 		<<elseif $vorestrength lte 5000>>
-			<span class="blue">The $vorecreature salivates in anticipation.</span>
+			<span class="blue">_vorecreatureKr【이가】 기대감에 침을 흘린다.</span>
 		<<elseif $vorestrength lte 10000>>
-			<span class="purple">The $vorecreature prepares to suck you in.</span>
+			<span class="purple">_vorecreatureKr【이가】 당신을 빨아들일 준비를 한다.</span>
 		<<elseif $vorestrength lte 20000>>
-			<span class="pink">The $vorecreature prepares to gulp you down.</span>
+			<span class="pink">_vorecreatureKr【이가】 당신을 꿀꺽 삼킬 준비를 한다.</span>
 		<</if>>
 		<br><br>
 	<</if>>
@@ -639,6 +644,7 @@
 		<<swallowedstat>>
 	<</if>>
 <</widget>>
+
 :: Widgets Vore Actions [widget]
 <<widget "voreactions">>
 	<<animateCombat>>
@@ -655,8 +661,10 @@
 	<</if>>
 	<br>
 <</widget>>
+
 :: Widgets Vore Effects [widget]
 <<widget "voreeffects">>
+	<<set _vorecreatureKr to window.KR.getCreatureTypeKr($vorecreature)>>
 	<<rng>>
 	<<effectspain>>
 	<<effectsorgasm>>
@@ -667,41 +675,41 @@
 			<<if $leftarm is "trapped">><<set $leftarm to 0>><</if>><<if $rightarm is "trapped">><<set $rightarm to 0>><</if>>
 			<<if $vorestage is 1>>
 				<<set $vorestage -= 1>>
-				You hit the $vorecreature's maw with both arms, <span class="green">and make it spit you out.</span>
+				당신은 두 팔로 _vorecreatureKr의 아가리를 때려, <span class="green">당신을 뱉어내게 만든다.</span>
 			<<elseif $vorestage is 2>>
 				<<set $vorestage -= 1>>
-				You hit the $vorecreature's mouth with both arms. <span class="green">It gags, letting you slide your body out, freeing your <<genitals>> from its maw.</span>
+				당신은 두 팔로 _vorecreatureKr의 입을 때린다. <span class="green">놈이 헛구역질을 하며 당신의 몸이 밖으로 미끄러져 나오고, 당신의 <<genitals>>【이가】 놈의 아가리에서 풀려난다.</span>
 			<<elseif $vorestage is 3>>
 				<<set $vorestage -= 1>>
-				You hit the $vorecreature's mouth with both arms. <span class="green">It gags, letting you slide your body out, freeing your <<breasts>> from its maw.</span>
+				당신은 두 팔로 _vorecreatureKr의 입을 때린다. <span class="green">놈이 헛구역질을 하며 당신의 몸이 밖으로 미끄러져 나오고, 당신의 <<breasts>>【이가】 놈의 아가리에서 풀려난다.</span>
 			<<elseif $vorestage is 4>>
 				<<set $vorestage -= 1>>
-				You hit the inside of the $vorecreature's mouth with both arms. <span class="green">It gags, letting you slide your body out, freeing your arms from its maw.</span>
+				당신은 두 팔로 _vorecreatureKr의 입 안쪽을 때린다. <span class="green">놈이 헛구역질을 하며 당신의 몸이 밖으로 미끄러져 나오고, 두 팔도 놈의 아가리에서 풀려난다.</span>
 			<<elseif $vorestage is 5>>
 				<<set $vorestage -= 1>>
-				You hit the inside of the $vorecreature's mouth with both arms. <span class="green">It gags, letting you slide your head back out.</span>
+				당신은 두 팔로 _vorecreatureKr의 입 안쪽을 때린다. <span class="green">놈이 헛구역질을 하며 당신의 머리가 다시 밖으로 미끄러져 나온다.</span>
 			<<elseif $vorestage is 6>>
 				<<set $vorestage -= 1>>
-				You hit the walls of the $vorecreature's gullet with both arms. <span class="green">It convulses, violently pushing you up into its mouth.</span>
+				당신은 두 팔로 _vorecreatureKr의 식도 벽을 친다. <span class="green">식도가 요동치며, 당신을 입 안으로 격렬하게 밀어 올린다.</span>
 			<<elseif $vorestage is 7>>
 				<<set $vorestage -= 1>>
-				You pound the walls of the $vorecreature's stomach with both arms. <span class="green">It convulses, violently pushing you up into its gullet.</span>
+				당신은 두 팔로 _vorecreatureKr의 위장 벽을 두들긴다. <span class="green">위장이 요동치며, 당신을 식도로 격렬하게 밀어 올린다.</span>
 			<</if>>
 		<<else>>
 			<<if $vorestage is 1>>
-				You hit the $vorecreature's maw with both arms, <span class="red">but it doesn't react.</span>
+				당신은 두 팔로 _vorecreatureKr의 아가리를 치지만, <span class="red">놈은 아무 반응도 없다.</span>
 			<<elseif $vorestage is 2>>
-				You hit the $vorecreature's mouth with both arms, <span class="red">but it doesn't react.</span>
+				당신은 두 팔로 _vorecreatureKr의 입을 치지만, <span class="red">놈은 아무 반응도 없다.</span>
 			<<elseif $vorestage is 3>>
-				You hit the $vorecreature's mouth with both arms, <span class="red">but it doesn't react.</span>
+				당신은 두 팔로 _vorecreatureKr의 입을 치지만, <span class="red">놈은 아무 반응도 없다.</span>
 			<<elseif $vorestage is 4>>
-				You hit the inside of the $vorecreature's mouth with both arms, <span class="red">but it doesn't react.</span>
+				당신은 두 팔로 _vorecreatureKr의 입 안쪽을 치지만, <span class="red">놈은 아무 반응도 없다.</span>
 			<<elseif $vorestage is 5>>
-				You hit the inside of the $vorecreature's mouth with both arms, <span class="red">but it doesn't react.</span>
+				당신은 두 팔로 _vorecreatureKr의 입 안쪽을 치지만, <span class="red">놈은 아무 반응도 없다.</span>
 			<<elseif $vorestage is 6>>
-				You hit the walls of the $vorecreature's gullet with both arms, <span class="red">but it doesn't react.</span>
+				당신은 두 팔로 _vorecreatureKr의 식도 벽을 치지만, <span class="red">아무 반응도 없다.</span>
 			<<elseif $vorestage is 7>>
-				You pound the walls of the $vorecreature's stomach with both arms, <span class="red">but it doesn't react.</span>
+				당신은 두 팔로 _vorecreatureKr의 위장 벽을 두들기지만, <span class="red">아무 반응도 없다.</span>
 			<</if>>
 		<</if>>
 	<<elseif $leftaction is "leftescape">>
@@ -710,41 +718,41 @@
 			<<if $leftarm is "trapped">><<set $leftarm to 0>><</if>><<if $rightarm is "trapped">><<set $rightarm to 0>><</if>>
 			<<if $vorestage is 1>>
 				<<set $vorestage -= 1>>
-				You hit the $vorecreature's maw with your left arm, <span class="green">and make it spit you out.</span>
+				당신은 왼팔로 _vorecreatureKr의 아가리를 때려, <span class="green">당신을 뱉어내게 만든다.</span>
 			<<elseif $vorestage is 2>>
 				<<set $vorestage -= 1>>
-				You hit the $vorecreature's mouth with your left arm. <span class="green">It gags, letting you slide your body out, freeing your <<genitals>> from its maw.</span>
+				당신은 왼팔로 _vorecreatureKr의 입을 때린다. <span class="green">놈이 헛구역질을 하며 당신의 몸이 밖으로 미끄러져 나오고, 당신의 <<genitals>>【이가】 놈의 아가리에서 풀려난다.</span>
 			<<elseif $vorestage is 3>>
 				<<set $vorestage -= 1>>
-				You hit the $vorecreature's mouth with your left arm. <span class="green">It gags, letting you slide your body out, freeing your <<breasts>> from its maw.</span>
+				당신은 왼팔로 _vorecreatureKr의 입을 때린다. <span class="green">놈이 헛구역질을 하며 당신의 몸이 밖으로 미끄러져 나오고, 당신의 <<breasts>>【이가】 놈의 아가리에서 풀려난다.</span>
 			<<elseif $vorestage is 4>>
 				<<set $vorestage -= 1>>
-				You hit the inside of the $vorecreature's mouth with your left arm. <span class="green">It gags, letting you slide your body out, freeing your arms from its maw.</span>
+				당신은 왼팔로 _vorecreatureKr의 입 안쪽을 때린다. <span class="green">놈이 헛구역질을 하며 당신의 몸이 밖으로 미끄러져 나오고, 두 팔도 놈의 아가리에서 풀려난다.</span>
 			<<elseif $vorestage is 5>>
 				<<set $vorestage -= 1>>
-				You hit the inside of the $vorecreature's mouth with your left arm. <span class="green">It gags, letting you slide your head back out.</span>
+				당신은 왼팔로 _vorecreatureKr의 입 안쪽을 때린다. <span class="green">놈이 헛구역질을 하며 당신의 머리가 다시 밖으로 미끄러져 나온다.</span>
 			<<elseif $vorestage is 6>>
 				<<set $vorestage -= 1>>
-				You hit the walls of the $vorecreature's gullet with your left arm. <span class="green">It convulses, violently pushing you up into its mouth.</span>
+				당신은 왼팔로 _vorecreatureKr의 식도 벽을 친다. <span class="green">식도가 요동치며, 당신을 입 안으로 격렬하게 밀어 올린다.</span>
 			<<elseif $vorestage is 7>>
 				<<set $vorestage -= 1>>
-				You pound the walls of the $vorecreature's stomach with your left arm. <span class="green">It convulses, violently pushing you up into its gullet.</span>
+				당신은 왼팔로 _vorecreatureKr의 위장 벽을 두들긴다. <span class="green">위장이 요동치며, 당신을 식도로 격렬하게 밀어 올린다.</span>
 			<</if>>
 		<<else>>
 			<<if $vorestage is 1>>
-				You hit the $vorecreature's maw with your left arm, <span class="red">but it doesn't react.</span>
+				당신은 왼팔로 _vorecreatureKr의 아가리를 치지만, <span class="red">놈은 아무 반응도 없다.</span>
 			<<elseif $vorestage is 2>>
-				You hit the $vorecreature's mouth with your left arm, <span class="red">but it doesn't react.</span>
+				당신은 왼팔로 _vorecreatureKr의 입을 치지만, <span class="red">놈은 아무 반응도 없다.</span>
 			<<elseif $vorestage is 3>>
-				You hit the $vorecreature's mouth with your left arm, <span class="red">but it doesn't react.</span>
+				당신은 왼팔로 _vorecreatureKr의 입을 치지만, <span class="red">놈은 아무 반응도 없다.</span>
 			<<elseif $vorestage is 4>>
-				You hit the inside of the $vorecreature's mouth with your left arm, <span class="red">but it doesn't react.</span>
+				당신은 왼팔로 _vorecreatureKr의 입 안쪽을 치지만, <span class="red">놈은 아무 반응도 없다.</span>
 			<<elseif $vorestage is 5>>
-				You hit the inside of the $vorecreature's mouth with your left arm, <span class="red">but it doesn't react.</span>
+				당신은 왼팔로 _vorecreatureKr의 입 안쪽을 치지만, <span class="red">놈은 아무 반응도 없다.</span>
 			<<elseif $vorestage is 6>>
-				You hit the walls of the $vorecreature's gullet with your left arm, <span class="red">but it doesn't react.</span>
+				당신은 왼팔로 _vorecreatureKr의 식도 벽을 치지만, <span class="red">아무 반응도 없다.</span>
 			<<elseif $vorestage is 7>>
-				You pound the walls of the $vorecreature's stomach with your left arm, <span class="red">but it doesn't react.</span>
+				당신은 왼팔로 _vorecreatureKr의 위장 벽을 두들기지만, <span class="red">아무 반응도 없다.</span>
 			<</if>>
 		<</if>>
 	<<elseif $rightaction is "rightescape">>
@@ -753,99 +761,99 @@
 			<<if $leftarm is "trapped">><<set $leftarm to 0>><</if>><<if $rightarm is "trapped">><<set $rightarm to 0>><</if>>
 			<<if $vorestage is 1>>
 				<<set $vorestage -= 1>>
-				You hit the $vorecreature's maw with your right arm, <span class="green">and make it spit you out.</span>
+				당신은 오른팔로 _vorecreatureKr의 아가리를 때려, <span class="green">당신을 뱉어내게 만든다.</span>
 			<<elseif $vorestage is 2>>
 				<<set $vorestage -= 1>>
-				You hit the $vorecreature's mouth with your right arm. <span class="green">It gags, letting you slide your body out, freeing your <<genitals>> from its maw.</span>
+				당신은 오른팔로 _vorecreatureKr의 입을 때린다. <span class="green">놈이 헛구역질을 하며 당신의 몸이 밖으로 미끄러져 나오고, 당신의 <<genitals>>【이가】 놈의 아가리에서 풀려난다.</span>
 			<<elseif $vorestage is 3>>
 				<<set $vorestage -= 1>>
-				You hit the $vorecreature's mouth with your right arm. <span class="green">It gags, letting you slide your body out, freeing your <<breasts>> from its maw.</span>
+				당신은 오른팔로 _vorecreatureKr의 입을 때린다. <span class="green">놈이 헛구역질을 하며 당신의 몸이 밖으로 미끄러져 나오고, 당신의 <<breasts>>【이가】 놈의 아가리에서 풀려난다.</span>
 			<<elseif $vorestage is 4>>
 				<<set $vorestage -= 1>>
-				You hit the inside of the $vorecreature's mouth with your right arm. <span class="green">It gags, letting you slide your body out, freeing your arms from its maw.</span>
+				당신은 오른팔로 _vorecreatureKr의 입 안쪽을 때린다. <span class="green">놈이 헛구역질을 하며 당신의 몸이 밖으로 미끄러져 나오고, 두 팔도 놈의 아가리에서 풀려난다.</span>
 			<<elseif $vorestage is 5>>
 				<<set $vorestage -= 1>>
-				You hit the inside of the $vorecreature's mouth with your right arm. <span class="green">It gags, letting you slide your head back out.</span>
+				당신은 오른팔로 _vorecreatureKr의 입 안쪽을 때린다. <span class="green">놈이 헛구역질을 하며 당신의 머리가 다시 밖으로 미끄러져 나온다.</span>
 			<<elseif $vorestage is 6>>
 				<<set $vorestage -= 1>>
-				You hit the walls of the $vorecreature's gullet with your right arm. <span class="green">It convulses, violently pushing you up into its mouth.</span>
+				당신은 오른팔로 _vorecreatureKr의 식도 벽을 친다. <span class="green">식도가 요동치며, 당신을 입 안으로 격렬하게 밀어 올린다.</span>
 			<<elseif $vorestage is 7>>
 				<<set $vorestage -= 1>>
-				You pound the walls of the $vorecreature's stomach with your right arm. <span class="green">It convulses, violently pushing you up into its gullet.</span>
+				당신은 오른팔로 _vorecreatureKr의 위장 벽을 두들긴다. <span class="green">위장이 요동치며, 당신을 식도로 격렬하게 밀어 올린다.</span>
 			<</if>>
 		<<else>>
 			<<if $vorestage is 1>>
-				You hit the $vorecreature's maw with your right arm, <span class="red">but it doesn't react.</span>
+				당신은 오른팔로 _vorecreatureKr의 아가리를 치지만, <span class="red">놈은 아무 반응도 없다.</span>
 			<<elseif $vorestage is 2>>
-				You hit the $vorecreature's mouth with your right arm, <span class="red">but it doesn't react.</span>
+				당신은 오른팔로 _vorecreatureKr의 입을 치지만, <span class="red">놈은 아무 반응도 없다.</span>
 			<<elseif $vorestage is 3>>
-				You hit the $vorecreature's mouth with your right arm, <span class="red">but it doesn't react.</span>
+				당신은 오른팔로 _vorecreatureKr의 입을 치지만, <span class="red">놈은 아무 반응도 없다.</span>
 			<<elseif $vorestage is 4>>
-				You hit the inside of the $vorecreature's mouth with your right arm, <span class="red">but it doesn't react.</span>
+				당신은 오른팔로 _vorecreatureKr의 입 안쪽을 치지만, <span class="red">놈은 아무 반응도 없다.</span>
 			<<elseif $vorestage is 5>>
-				You hit the inside of the $vorecreature's mouth with your right arm, <span class="red">but it doesn't react.</span>
+				당신은 오른팔로 _vorecreatureKr의 입 안쪽을 치지만, <span class="red">놈은 아무 반응도 없다.</span>
 			<<elseif $vorestage is 6>>
-				You hit the walls of the $vorecreature's gullet with your right arm, <span class="red">but it doesn't react.</span>
+				당신은 오른팔로 _vorecreatureKr의 식도 벽을 치지만, <span class="red">아무 반응도 없다.</span>
 			<<elseif $vorestage is 7>>
-				You pound the walls of the $vorecreature's stomach with your right arm, <span class="red">but it doesn't react.</span>
+				당신은 오른팔로 _vorecreatureKr의 위장 벽을 두들기지만, <span class="red">아무 반응도 없다.</span>
 			<</if>>
 		<</if>>
 	<</if>>
 	<<if $leftaction is "lefthold" and $rightaction is "righthold">>
 		<<set $leftaction to 0>><<set $rightaction to 0>><<set $leftactiondefault to "lefthold">><<set $rightactiondefault to "righthold">><<set $vorestruggle to 2>>
 		<<if $vorestage is 1>>
-			You grab hold of the $vorecreature's maw with both arms.
+			당신은 두 팔로 _vorecreatureKr의 아가리를 붙잡는다.
 		<<elseif $vorestage is 2>>
-			You grab hold of the $vorecreature's maw with both arms.
+			당신은 두 팔로 _vorecreatureKr의 아가리를 붙잡는다.
 		<<elseif $vorestage is 3>>
-			You grab hold of the $vorecreature's maw with both arms.
+			당신은 두 팔로 _vorecreatureKr의 아가리를 붙잡는다.
 		<<elseif $vorestage is 4>>
-			You cling to the side of the $vorecreature's mouth with both arms.
+			당신은 두 팔로 _vorecreatureKr의 입 안쪽에 매달린다.
 		<<elseif $vorestage is 5>>
-			You cling to the side of the $vorecreature's mouth with both arms.
+			당신은 두 팔로 _vorecreatureKr의 입 안쪽에 매달린다.
 		<<elseif $vorestage is 6>>
-			You cling to the side of the $vorecreature's gullet with both arms.
+			당신은 두 팔로 _vorecreatureKr의 식도 벽에 매달린다.
 		<</if>>
 	<<elseif $leftaction is "lefthold">>
 		<<set $leftaction to 0>><<set $leftactiondefault to "lefthold">><<set $vorestruggle to 1>>
 		<<if $vorestage is 1>>
-			You grab hold of the $vorecreature's maw with your left arm.
+			당신은 왼팔로 _vorecreatureKr의 아가리를 붙잡는다.
 		<<elseif $vorestage is 2>>
-			You grab hold of the $vorecreature's maw with your left arm.
+			당신은 왼팔로 _vorecreatureKr의 아가리를 붙잡는다.
 		<<elseif $vorestage is 3>>
-			You grab hold of the $vorecreature's maw with your left arm.
+			당신은 왼팔로 _vorecreatureKr의 아가리를 붙잡는다.
 		<<elseif $vorestage is 4>>
-			You cling to the side of the $vorecreature's mouth with your left arm.
+			당신은 왼팔로 _vorecreatureKr의 입 안쪽에 매달린다.
 		<<elseif $vorestage is 5>>
-			You cling to the side of the $vorecreature's mouth with your left arm.
+			당신은 왼팔로 _vorecreatureKr의 입 안쪽에 매달린다.
 		<<elseif $vorestage is 6>>
-			You cling to the side of the $vorecreature's gullet with your left arm.
+			당신은 왼팔로 _vorecreatureKr의 식도 벽에 매달린다.
 		<</if>>
 	<<elseif $rightaction is "righthold">>
 		<<set $rightaction to 0>><<set $rightactiondefault to "righthold">><<set $vorestruggle to 1>>
 		<<if $vorestage is 1>>
-			You grab hold of the $vorecreature's maw with your right arm.
+			당신은 오른팔로 _vorecreatureKr의 아가리를 붙잡는다.
 		<<elseif $vorestage is 2>>
-			You grab hold of the $vorecreature's maw with your right arm.
+			당신은 오른팔로 _vorecreatureKr의 아가리를 붙잡는다.
 		<<elseif $vorestage is 3>>
-			You grab hold of the $vorecreature's maw with your right arm.
+			당신은 오른팔로 _vorecreatureKr의 아가리를 붙잡는다.
 		<<elseif $vorestage is 4>>
-			You cling to the side of the $vorecreature's mouth with your right arm.
+			당신은 오른팔로 _vorecreatureKr의 입 안쪽에 매달린다.
 		<<elseif $vorestage is 5>>
-			You cling to the side of the $vorecreature's mouth with your right arm.
+			당신은 오른팔로 _vorecreatureKr의 입 안쪽에 매달린다.
 		<<elseif $vorestage is 6>>
-			You cling to the side of the $vorecreature's gullet with your right arm.
+			당신은 오른팔로 _vorecreatureKr의 식도 벽에 매달린다.
 		<</if>>
 	<</if>>
 	<<if $leftaction is "leftvorefree">>
 		<<set $leftaction to 0>>
 		<<set $rightarm to 0>>
-		<span class="lblue">Using all your strength, you manage to free your right arm from the side of the gullet.</span>
+		<span class="lblue">젖먹던 힘까지 다해, 당신은 가까스로 식도 측면에서 오른팔을 빼낸다.</span>
 	<</if>>
 	<<if $rightaction is "rightvorefree">>
 		<<set $rightaction to 0>>
 		<<set $leftarm to 0>>
-		<span class="lblue">Using all your strength, you manage to free your left arm from the side of the gullet.</span>
+		<span class="lblue">젖먹던 힘까지 다해, 당신은 가까스로 식도 측면에서 왼팔을 빼낸다.</span>
 	<</if>>
 	<<if $leftaction is "vorerest">>
 		<<set $leftaction to 0>><<set $leftactiondefault to "vorerest">>

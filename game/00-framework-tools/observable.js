@@ -80,7 +80,7 @@ class ObservableValue {
 				if (keep === false) remove.push(listener);
 			} catch (e) {
 				remove.push(listener);
-				console.error("Exception in ObservableValue listener: ", e, "listener is ", listener);
+				console.error("ObservableValue 리스너에서 예외 발생: ", e, "리스너: ", listener);
 			}
 		}
 		for (const listener of remove) {
@@ -116,7 +116,7 @@ class ObservableValue {
 		let n = 0;
 		while (this._nextValues.length > 0) {
 			if (n++ > 999) {
-				console.error("Possible endless loop in ObservableValue ", this);
+				console.error("ObservableValue에서 무한 루프 가능성 감지 ", this);
 				break;
 			}
 			oldValue = newValue;

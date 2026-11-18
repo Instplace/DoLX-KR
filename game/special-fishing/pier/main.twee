@@ -27,25 +27,25 @@
 	<</if>>
 	<br><br>
 
-	<<if Weather.dayState isnot "night" and !$daily.fishing.fishingPier.whitney.cantLeave and !_exhibitionismCheck>>
-		<<insufficientStat "exhibitionism" "to keep standing around in such an exposed state">>
+<<if Weather.dayState isnot "night" and !$daily.fishing.fishingPier.whitney.cantLeave and !_exhibitionismCheck>>
+		<<insufficientStat "exhibitionism" "이렇게 노출한 상태로 계속 서있기엔">>
 	<<else>>
 		<<fishingKitSummary>>
-		<<link [[Wait for a bite (0:05)|Fishing Pier Wait Loop]]>><<pass 5>><</link>>
+		<<link [[입질을 기다린다 (0:05)|Fishing Pier Wait Loop]]>><<pass 5>><</link>>
 		<<if ["bet", "idle"].includes($daily.fishing.fishingPier.whitney.phase) and $daily.fishing.fishingPier.whitney.pcCider gte 1>>
 			<br>
-			<<link [[Take a sip|Fishing Pier Wait]]>><<set $fishingAmbientOverride to "sip">><</link>><<gdrunk>>
+			<<link [[사이다를 한 모금 마신다|Fishing Pier Wait]]>><<set $fishingAmbientOverride to "sip">><</link>><<gdrunk>>
 		<</if>>
 	<</if>>
 
 	<<if $daily.fishing.fishingPier.whitney.phase is "bet">>
 		<<if !$daily.fishing.fishingPier.whitney.cantLeave>>
 			<br>
-			<<link [[Return to the pier|Fishing Pier Cannot Leave]]>><<set $daily.fishing.fishingPier.whitney.cantLeave to true>><</link>>
+			<<link [[부두로 돌아간다|Fishing Pier Cannot Leave]]>><<set $daily.fishing.fishingPier.whitney.cantLeave to true>><</link>>
 		<</if>>
 	<<else>>
 		<br>
-		<<link [[Return to the pier|Mer Pier]]>><</link>>
+		<<link [[부두로 돌아간다|Mer Pier]]>><</link>>
 	<</if>>
 <</if>>
 
@@ -247,7 +247,7 @@ You open wide and drop the whole <<= fishDisplayName($fishingHookedFish.type)>> 
 <<unset $fishingHookedFish>>
 <br><br>
 
-<<link [[Next|Fishing Pier Wait]]>><<set $fishingAmbientOverride to "castOut">><</link>>
+<<link [[다음|Fishing Pier Wait]]>><<set $fishingAmbientOverride to "castOut">><</link>>
 
 :: Widgets Fishing Pier Wait Flavour [widget]
 <<widget "fishingPierLocationAmbient">>
@@ -255,7 +255,7 @@ You open wide and drop the whole <<= fishDisplayName($fishingHookedFish.type)>> 
 		<<fishingPierFisherAmbient>>
 	<<elseif ["bet", "idle"].includes($daily.fishing.fishingPier.whitney.phase)>>
 		<<if $daily.fishing.fishingPier.whitney.playerFellOff>>
-			Whitney looks over at you with a smirk. "Welcome back, slut. Did you enjoy your swim?"
+			휘트니가 툭 내뱉듯 웃으며 당신을 쳐다본다. "다시 왔냐, 걸레년. 수영은 할 만했어?"
 
 			<<unset $daily.fishing.fishingPier.whitney.playerFellOff>>
 		<<else>>
@@ -272,43 +272,43 @@ You open wide and drop the whole <<= fishDisplayName($fishingHookedFish.type)>> 
 <<widget "fishingPierWaitAmbient">>
 	<<if $fishingAmbientOverride is "throwBack">>
 		<<if $fishing.currentBait>>
-			You toss the fish back into the sea before <<fishingRebaitMid>>
+			당신은 바다로 물고기를 도로 던져 넣고는 <<fishingRebaitMid>>
 		<<else>>
-			You toss the fish back into the sea and cast back out.
+			당신은 물고기를 바다로 도로 던져 넣고는 낚싯대를 다시 던진다.
 		<</if>>
 	<<elseif $fishingAmbientOverride is "stowAway">>
 		<<if $fishing.currentBait>>
-			You stow the fish away before <<fishingRebaitMid>>
+			당신은 물고기를 챙겨 넣고는 <<fishingRebaitMid>>
 		<<else>>
-			You stow the fish away and cast back out.
+			당신은 물고기를 챙겨 넣고 낚싯대를 다시 던진다.
 		<</if>>
 	<<elseif $fishingAmbientOverride is "reHook">>
 		<<if $fishing.currentBait>>
 			<<fishingRebaitStart>>
 		<<else>>
-			You re-hook your line and cast back out.
+			당신은 낚싯바늘을 다시 정돈하고 낚싯대를 던진다.
 		<</if>>
 	<<elseif $fishingAmbientOverride is "keepClothing">>
 		<<generalSend "wardrobe" $clothingItem.slot $clothingItem.item.name $clothingItem.colour>>
-		You wring out the <<= $clothingItem.item.name>> and stow <<= $clothingItem.item.word is "n" ? "them" : "it">> away.
+		젖은 <<= $clothingItem.item.name>>의 물기를 짜내고 잘 챙겨둔다.
 	<<elseif $fishingAmbientOverride is "tossClothing">>
-		You carry the sodden <<= $clothingItem.item.name>> over to a bin and throw <<= $clothingItem.item.word is "n" ? "them" : "it">> away.
+		당신은 흠뻑 젖은 <<= $clothingItem.item.name>>【을를】 쓰레기통까지 들고 가서 <<= $clothingItem.item.word is "n" ? "그것들을" : "그것을">> 버린다.
 	<<elseif $fishingAmbientOverride is "acceptedFishingRequest">>
-		"Thanks! I'm looking forward to it. No worries if you can't though, I know how it goes. You can find them <<baitShopFishLocationHint>>." The shop owner wolfs down their sandwich, then walks back to the bait shop with a wave.
+		"고마워! 기대하고 있을게. 물론 못 구해도 상관없어, 어떤 식인지 아니까. 거기는 <<baitShopFishLocationHint>>에서 찾을 수 있을 거야." 가게 주인이 샌드위치를 허겁지겁 해치우더니, 손을 흔들며 미끼 가게로 걸어간다.
 	<<elseif $fishingAmbientOverride is "declinedFishingRequest">>
-		"Ah well, that's fine. I'll see if I can catch one sometime later. If you change your mind, you can find them <<baitShopFishLocationHint>>." The shop owner wolfs down their sandwich, then walks back to the bait shop with a wave.
+		"아 뭐, 알겠어. 나중에 언젠가 직접 잡을 수 있나 봐야겠네. 생각이 바뀌면 거기는 <<baitShopFishLocationHint>>에서 찾을 수 있을 거야." 가게 주인이 샌드위치를 허겁지겁 해치우더니, 손을 흔들며 미끼 가게로 걸어간다.
 	<<elseif $fishingAmbientOverride is "sip">>
 		<<fishingPierWhitneySip>>
 	<<elseif $fishingAmbientOverride is "castOut">>
-		You cast out into the water.
+		물가로 낚싯대를 던진다.
 	<<else>>
 		<<set $daily.fishing.fishingPier.sheltered ??= Weather.precipitation is "rain">>
 		<<if (Weather.precipitation is "rain") isnot $daily.fishing.fishingPier.sheltered>>
 			<<set $daily.fishing.fishingPier.sheltered to Weather.precipitation is "rain">>
 			<<if Weather.precipitation is "rain">>
-				As the rain picks up, you step back under the pavilion roof.
+				빗발이 거세지자, 당신은 정자 지붕 아래로 물러선다.
 			<<else>>
-				The rain lets up. You step back out to the railing.
+				비가 그친다. 당신은 다시 난간 쪽으로 걸어 나간다.
 			<</if>>
 		<<else>>
 			<<cleareventpool>>

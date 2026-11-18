@@ -1,7 +1,7 @@
 const events = [
 	{
 		// event name for debugging and logging failures
-		name: "school day",
+		name: "등교일",
 		// conditions for the reminder to show up
 		// must be specific enough to no longer trigger once the event is actually attended. mandatory.
 		condition() {
@@ -17,39 +17,39 @@ const events = [
 		text: "<<schoolday>>",
 		// text shown if condition() is still met, but it's past the time to attend
 		failuretext:
-			"You have missed <<print Object.keys(V.daily.school.attended).length === 4 ? 'a lesson' : ('<<number ' + (5 - Object.keys(V.daily.school.attended).length) + '>> lessons')>> today.",
+			"오늘 수업을 <<print Object.keys(V.daily.school.attended).length === 4 ? '한' : ('<<number ' + (5 - Object.keys(V.daily.school.attended).length) + '>>')>>번 빠졌습니다.",
 	},
 	{
 		// example of a lazy event that will still work
-		name: "tomorrow",
+		name: "내일",
 		condition() {
 			return Time.isSchoolDay(Time.tomorrow) && (!Time.schoolDay || Time.hour > 14);
 		},
-		text: "You have school tomorrow.",
+		text: "내일은 학교에 가는 날입니다.",
 	},
 	{
 		// fallback event when no others are available
-		name: "no school",
+		name: "등교 안 하는 날",
 		condition() {
 			// other school-related events have higher priority anyway
 			return true;
 		},
-		text: "There's no school tomorrow.",
+		text: "내일은 학교가 쉬는 날입니다.",
 		priority: 0,
 	},
 	{
-		name: "avery date",
+		name: "에이버리 데이트",
 		condition() {
 			return V.avery_mansion?.schedule !== "away" && V.averydate === 1 && V.averydatedone !== 1 && V.averydateattended !== 1 && Time.weekDay === 7;
 		},
 		starthour: 20,
 		endhour: 20,
 		priority: 4,
-		text: "You have a date with Avery <<print $avery_mansion ? 'in the mansion garage': 'on Domus Street'>> <<if Time.hour is 20>><span class='gold'>right now</span>.<<else>>at <<ampm 20 00>>.<</if>>",
-		failuretext: "You didn't show up for your date with Avery.",
+		text: "<<if Time.hour is 20>><span class='gold'>지금</span><<else>><<ampm 20 00>>에<</if>> <<print $avery_mansion ? '저택 차고에서' : '도무스 가에서'>> 에이버리와 데이트 약속이 있습니다.",
+		failuretext: "에이버리와의 데이트에 나타나지 않았습니다.",
 	},
 	{
-		name: "avery valentines date",
+		name: "에이버리 발렌타인 데이트",
 		condition() {
 			return V.avery_valentines?.invite && !V.avery_valentines.done && Time.month === 2 && Time.monthDay === 14;
 		},
@@ -58,8 +58,8 @@ const events = [
 		},
 		endhour: 24,
 		priority: 4,
-		text: "You have a <span class='pink'>Valentine's date</span> with Avery <<if $avery_mansion>>in the mansion garage from <<ampm 21 00>><<elseif Time.hour lt 20>>on Domus Street from <<ampm 20 00>><</if>>.",
-		failuretext: "You have missed your Valentine's date with Avery.",
+		text: "<<if $avery_mansion>>저택 차고에서 <<ampm 21 00>>부터<<elseif Time.hour lt 20>>도무스 가에서 <<ampm 20 00>>부터<</if>> 에이버리와 <span class='pink'>발렌타인 데이트</span> 약속이 있습니다.",
+		failuretext: "에이버리와의 발렌타인 데이트를 놓쳤습니다.",
 	},
 	{
 		name: "blackmail task",
@@ -102,39 +102,39 @@ const events = [
 		starthour: 20,
 		endhour: 20,
 		priority: 4,
-		text: "You have a <span class='pink'>Valentine's date</span> with Poppy at the flat on Barb Street from <<ampm 20 00>>.",
-		failuretext: "You have missed your Valentine's date with Poppy.",
+		text: "바브 가 아파트에서 <<ampm 20 00>>부터 포피와 <span class='pink'>발렌타인 데이트</span> 약속이 있습니다.",
+		failuretext: "포피와의 발렌타인 데이트를 놓쳤습니다.",
 	},
 	{
-		name: "community service",
+		name: "사회봉사",
 		condition() {
 			return V.community_service >= 1 && V.community_service_done !== 1;
 		},
 		starthour: 6,
 		endhour: 20,
 		priority: 1,
-		text: "The police station on Barb Street expects you for community service.",
-		failuretext: "You didn't attend your community service today.",
+		text: "바브 가 경찰서에서 사회봉사를 하러 오길 기다리고 있습니다.",
+		failuretext: "오늘 사회봉사에 참석하지 않았습니다.",
 	},
 	{
-		name: "harper appointment",
+		name: "하퍼 진료",
 		condition() {
 			return (V.harper_appointments.enabled || V.schoolPsych === 1) && Time.weekDay === 6 && V.daily.harperVisit !== 1;
 		},
 		priority: 2,
-		text: "You <<print $harper_appointments.enabled ? 'have an' : 'may get an'>> appointment with Doctor Harper at the hospital today.",
-		failuretext: "You have missed <<print $harper_appointments.enabled ? 'an' : 'a chance to get an'>> appointment with Doctor Harper.",
+		text: "오늘 병원에서 하퍼 의사<<print $harper_appointments.enabled ? '와 진료 예약이 잡혀 있습니다' : '의 진료 예약을 잡을 수 있을지도 모릅니다'>>.",
+		failuretext: "하퍼 의사의 진료 <<print $harper_appointments.enabled ? '예약' : '예약 기회'>>【을를】 놓쳤습니다.",
 	},
 	{
-		name: "brothel show",
+		name: "창관 쇼",
 		condition() {
 			return V.brothelshowdata.type !== "none" && V.brothelshowdata.intro && Time.weekDay === 6 && !V.brothelshowdata.done;
 		},
 		priority: 3,
-		text: "You're expected to perform a <<print $brothelshowdata.type>> show at the brothel today.",
+		text: "오늘 창관에서 <<print ({flirt:\"유혹 연극\",gangbang:\"윤간 연극\",pig:\"돼지\",swarm:\"생물 테라리움\",machine:\"섹스 머신\",tentacles:\"섹스 머신, 촉수 모드\",horse:\"말\",bukkake:\"붓카케 게임\",virginity:\"처녀 판매\"}[$brothelshowdata.type] || $brothelshowdata.type)>> 쇼에 출연하기로 했습니다.",
 	},
 	{
-		name: "escort job",
+		name: "에스코트 일",
 		condition() {
 			const job = V.brothel_escortjob;
 			if (!job) return;
@@ -148,41 +148,41 @@ const events = [
 			return this.starthour;
 		},
 		priority: 6,
-		text: "You have an escort job at <<ampm `new DateTime(V.brothel_escortjob.date).hour`>>.",
-		failuretext: "You missed your escort job.",
+		text: "<<ampm `new DateTime(V.brothel_escortjob.date).hour`>>에 에스코트 일이 있습니다.",
+		failuretext: "에스코트 일을 놓쳤습니다.",
 	},
 	{
-		name: "wren heist",
+		name: "렌의 강탈",
 		condition() {
 			return V.wrenHeist === true && V.wrenHeistDance.attended !== true;
 		},
 		starthour: 19,
 		endhour: 20,
 		priority: 3,
-		text: "Wren waits for you between <<ampm 19 00>> and <<ampm 21 00>> on Danube Street.",
+		text: "렌이 다뉴브 가에서 <<ampm 19 00>>부터 <<ampm 21 00>> 사이에 당신을 기다립니다.",
 	},
 	{
-		name: "smugglers",
+		name: "밀수업자",
 		condition() {
 			return V.smuggler_known === 1 && V.smuggler_timer === 0;
 		},
 		starthour: 21,
 		endhour: 24,
 		priority: 5,
-		text: "You heard that smugglers are moving their goods <<switch $smuggler_location>><<case 'forest'>>through the forest<<case 'sewer'>>through the old sewers<<case 'beach'>>at the rocks near the beach<<case 'bus'>>on a bus<<default>><</switch>> tonight, before midnight.",
+		text: "오늘 밤 자정 전에 밀수꾼들이 물건을 <<switch $smuggler_location>><<case 'forest'>>숲을 통해<<case 'sewer'>>오래된 하수도를 통해<<case 'beach'>>해변 근처 암초에서<<case 'bus'>>버스로<<default>><</switch>> 옮긴다는 이야기를 들었습니다.",
 	},
 	{
-		name: "remy attacc",
+		name: "레미의 공격",
 		condition() {
 			return V.farm_stage >= 7 && V.farm_attack_timer === 0;
 		},
 		starthour: 21,
 		endhour: 24,
 		priority: 3,
-		text: "Remy will attack the farm tonight between <<ampm 21 00>> and midnight.",
+		text: "레미가 오늘 밤 <<ampm 21 00>>부터 자정 사이에 농장을 습격할 것입니다.",
 	},
 	{
-		name: "adult shop help",
+		name: "성인용품점 돕기",
 		condition() {
 			return (
 				V.adultshopprogress < 22 &&
@@ -196,65 +196,65 @@ const events = [
 		starthour: 16,
 		endhour: 19,
 		priority: 6,
-		text: "The adult shop on Elk Street is undergoing renovations after <<ampm 16>> today.",
-		failuretext: "You didn't help <<if C.npc.Sydney.init>>Sydney<</if>> at the adult shop today.",
+		text: "엘크 가의 성인용품점은 오늘 <<ampm 16>> 이후 개조 공사를 합니다.",
+		failuretext: "오늘 성인용품점에서 <<if C.npc.Sydney.init>>시드니를<</if>> 돕지 않았습니다.",
 	},
 	{
-		name: "science fair",
+		name: "과학 박람회",
 		condition() {
 			return V.scienceproject === "ongoing" && V.scienceprojectdays === 0;
 		},
 		starthour: 9,
 		endhour: 18,
 		priority: 5,
-		text: "The science fair is being held at Cliff Street from <<ampm 9 00>> until <<ampm 18 00>>.",
-		failuretext: "The science fair has ended. You didn't attend.",
+		text: "과학 박람회가 클리프 가에서 <<ampm 9 00>>부터 <<ampm 18 00>>까지 열립니다.",
+		failuretext: "과학 박람회가 끝났습니다. 참석하지 않았습니다.",
 	},
 	{
-		name: "science fair tomorrow",
+		name: "내일 과학 박람회",
 		condition() {
 			return V.scienceprojectdays === 1;
 		},
 		priority: 2,
-		text: "The science fair is being held at Cliff Street tomorrow.",
+		text: "내일 클리프 가에서 과학 박람회가 열립니다.",
 	},
 	{
-		name: "maths competition",
+		name: "수학 경시대회",
 		condition() {
 			return V.mathsprojectdays === 0 && V.mathsproject === "ongoing";
 		},
 		starthour: 9,
 		endhour: 18,
 		priority: 5,
-		text: "The maths competition is being held at Cliff Street from <<ampm 9 00>> until <<ampm 18 00>>.",
-		failuretext: "The maths competition has ended. You didn't attend.",
+		text: "수학 경시대회가 클리프 가에서 <<ampm 9 00>>부터 <<ampm 18 00>>까지 열립니다.",
+		failuretext: "수학 경시대회가 끝났습니다. 참석하지 않았습니다.",
 	},
 	{
-		name: "maths competition tomorrow",
+		name: "내일 수학 경시대회",
 		condition() {
 			return V.mathsprojectdays === 1;
 		},
 		priority: 2,
-		text: "The maths competition is being held at Cliff Street tomorrow.",
+		text: "내일 클리프 가에서 수학 경시대회가 열립니다.",
 	},
 	{
-		name: "english play",
+		name: "영어 연극",
 		condition() {
 			return V.englishPlayDays === 0 && V.englishPlay === "ongoing";
 		},
 		starthour: 17,
 		endhour: 21,
 		priority: 5,
-		text: "The school plays are being held today at Cliff Street from <<ampm 17 00>> until <<ampm 21 00>>.",
-		failuretext: "The last of the school plays has finished by now. You didn't attend.",
+		text: "오늘 클리프 가에서 학교 연극제가 <<ampm 17 00>>부터 <<ampm 21 00>>까지 열립니다.",
+		failuretext: "학교 연극제가 모두 끝났습니다. 참석하지 않았습니다.",
 	},
 	{
-		name: "english play tomorrow",
+		name: "내일 영어 연극",
 		condition() {
 			return V.englishPlayDays === 1;
 		},
 		priority: 2,
-		text: "The school plays are being held at Cliff Street tomorrow.",
+		text: "내일 클리프 가에서 학교 연극제가 열립니다.",
 	},
 	{
 		name: "bailey date",

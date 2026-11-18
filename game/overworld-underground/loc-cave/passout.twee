@@ -1,69 +1,69 @@
 :: Beach Slug
 <<effects>>
 <<set $pursuit = Math.clamp($pursuit, 0, 3)>>
-You run as the slug slithers after you.
+달팽이가 미끄러지듯 당신을 쫓아오자 당신은 달린다.
 <br><br>
 <<if $eventskip is 0>>
 	<<if $rng gte 76>>
-		You approach a pool of slime. You could run around, but that would cost precious time.
+		점액 웅덩이에 다가간다. 주위로 돌아갈 수도 있지만, 그러면 귀중한 시간을 낭비하게 될 것이다.
 		<br><br>
 		<<if $settings.swarmsEnabled>>
-			Something squirms beneath the surface.
+			수면 아래에서 무언가 꿈틀거린다.
 			<br><br>
 		<</if>>
-		<<link [[Jump over|Beach Slug Jump]]>><</link>><<athleticsdifficulty 400 1100>>
+		<<link [[뛰어넘는다|Beach Slug Jump]]>><</link>><<athleticsdifficulty 400 1100>>
 		<br>
-		<<link [[Run around|Beach Slug Run]]>><<set $pursuit += 1>><</link>><<gpursuit>>
+		<<link [[돌아간다|Beach Slug Run]]>><<set $pursuit += 1>><</link>><<gpursuit>>
 		<br>
 	<<elseif $rng gte 51>>
-		The giant slug rears up and points its mouth at you. It shudders, and spits.
+		거대한 달팽이가 몸을 일으켜 당신에게 입을 겨눈다. 몸을 부르르 떨더니, 뱉어낸다.
 		<br><br>
 
-		The projectile unfurls as it hurtles towards you. It's another slug.
+		발사체는 당신을 향해 날아오면서 펼쳐진다. 또 다른 달팽이다.
 		<br><br>
 
-		<<link [[Dodge|Beach Slug Dodge]]>><</link>><<dancedifficulty 400 1100>>
+		<<link [[피한다|Beach Slug Dodge]]>><</link>><<dancedifficulty 400 1100>>
 		<br>
-		<<link [[Brace|Beach Slug Brace]]>><<set $pursuit += 1>><</link>><<gpursuit>>
+		<<link [[대비한다|Beach Slug Brace]]>><<set $pursuit += 1>><</link>><<gpursuit>>
 		<br>
 	<<elseif $rng gte 26>>
-		The giant slug slams against the ground. The stone trembles, and you stagger into a slimy membrane hanging from the ceiling.
+		거대한 달팽이가 땅에 몸을 부딪친다. 돌이 흔들리고, 당신은 비틀거리다 천장에 매달린 끈적한 막에 부딪힌다.
 		<br><br>
 		<<physiquedifficulty 1 18000 true>>
 		<<if $physiqueSuccess>>
-			<span class="green">You tug yourself free</span> before the slug gets much closer.
+			당신은 민달팽이가 훨씬 가까워지기 전에 <span class="green">스스로를 잡아당겨 빠져나온다.</span>
 			<br><br>
 		<<else>>
-			<span class="red">You struggle to tug yourself free.</span> You manage it, but the slug gets closer.<<gpursuit>><<set $pursuit += 1>>
+			당신은 몸을 잡아당겨 빠져나오려 애쓴다. 성공하긴 하지만, <span class="red">민달팽이가 가까워진다.</span><<gpursuit>><<set $pursuit += 1>>
 			<br><br>
 		<</if>>
-		<<link [[Next|Beach Slug]]>><<set $eventskip to 1>><</link>>
+		<<link [[다음|Beach Slug]]>><<set $eventskip to 1>><</link>>
 		<br>
 	<<else>>
-		The rocky ground is smoother than normal up ahead.
+		앞쪽의 바위 바닥이 평소보다 더 매끄럽다.
 		<br><br>
 
-		<<link [[Sprint|Beach Slug Sprint]]>><</link>><<athleticsdifficulty 600 1200>>
+		<<link [[전력 질주한다|Beach Slug Sprint]]>><</link>><<athleticsdifficulty 600 1200>>
 		<br>
-		<<link [[Be careful|Beach Slug Careful]]>><</link>>
+		<<link [[조심스럽게 움직인다|Beach Slug Careful]]>><</link>>
 		<br>
 	<</if>>
 <<else>>
-	You make it to the
+	당신은
 	<<if $cave_current is 1>>
-		lichen-filled tunnel.
+		이끼로 가득한 터널에 도착한다.
 	<<elseif $cave_current is 2>>
-		mushroom-filled tunnel.
+		버섯으로 가득한 터널에 도착한다.
 	<<elseif $cave_current is 3>>
-		dark tunnel.
+		어두운 터널에 도착한다.
 	<<else>>
-		watery tunnel.
+		물기 많은 터널에 도착한다.
 	<</if>>
 
 	<<if $cave_current is $cave_exit>>
-		<span class="green">It leads away from the chamber!</span>
+		<span class="green">그곳은 방 밖으로 이어진다!</span>
 	<<else>>
-		<span class="red">It's a dead end!</span> You'll have to look elsewhere.
+		<span class="red">막다른 길이다!</span> 다른 곳을 찾아야 한다.
 	<</if>>
 	<br><br>
 	<<slug_text>>
@@ -74,24 +74,24 @@ You run as the slug slithers after you.
 	<<else>>
 		<<set $cave_seen.pushUnique($cave_current)>>
 		<<if $cave_current is $cave_exit>>
-			<<link [[Escape|Beach Slug Escape]]>><</link>>
+			<<link [[탈출한다|Beach Slug Escape]]>><</link>>
 			<br>
 		<</if>>
 
 		<<if $cave_current isnot 1>>
-			<<link [[Run to the lichen-filled tunnel|Beach Slug]]>><<set $cave_current to 1>><</link>> <<if $cave_seen.includes(1) and $cave_exit is 1>><<note "The exit is here" "green">><<elseif $cave_seen.includes(1)>><<note "(You've looked here)">><</if>>
+			<<link [[이끼가 가득한 터널로 달린다|Beach Slug]]>><<set $cave_current to 1>><</link>> <<if $cave_seen.includes(1) and $cave_exit is 1>><<note "출구가 여기 있다" "green">><<elseif $cave_seen.includes(1)>><<note "(여기는 살펴봤다)">><</if>>
 			<br>
 		<</if>>
 		<<if $cave_current isnot 2>>
-			<<link [[Run to the mushroom-filled tunnel|Beach Slug]]>><<set $cave_current to 2>><</link>> <<if $cave_seen.includes(2) and $cave_exit is 2>><<note "The exit is here" "green">><<elseif $cave_seen.includes(2)>><<note "(You've looked here)">><</if>>
+			<<link [[버섯이 가득한 터널로 달린다|Beach Slug]]>><<set $cave_current to 2>><</link>> <<if $cave_seen.includes(2) and $cave_exit is 2>><<note "출구가 여기 있다" "green">><<elseif $cave_seen.includes(2)>><<note "(여기는 살펴봤다)">><</if>>
 			<br>
 		<</if>>
 		<<if $cave_current isnot 3>>
-			<<link [[Run to the dark tunnel|Beach Slug]]>><<set $cave_current to 3>><</link>> <<if $cave_seen.includes(3) and $cave_exit is 3>><<note "The exit is here" "green">><<elseif $cave_seen.includes(3)>><<note "(You've looked here)">><</if>>
+			<<link [[어두운 터널로 달린다|Beach Slug]]>><<set $cave_current to 3>><</link>> <<if $cave_seen.includes(3) and $cave_exit is 3>><<note "출구가 여기 있다" "green">><<elseif $cave_seen.includes(3)>><<note "(여기는 살펴봤다)">><</if>>
 			<br>
 		<</if>>
 		<<if $cave_current isnot 4>>
-			<<link [[Run to the watery tunnel|Beach Slug]]>><<set $cave_current to 4>><</link>> <<if $cave_seen.includes(4) and $cave_exit is 4>><<note "The exit is here" "green">><<elseif $cave_seen.includes(4)>><<note "(You've looked here)">><</if>>
+			<<link [[물이 흐르는 터널로 달린다|Beach Slug]]>><<set $cave_current to 4>><</link>> <<if $cave_seen.includes(4) and $cave_exit is 4>><<note "출구가 여기 있다" "green">><<elseif $cave_seen.includes(4)>><<note "(여기는 살펴봤다)">><</if>>
 			<br>
 		<</if>>
 	<</if>>
@@ -99,58 +99,56 @@ You run as the slug slithers after you.
 
 <<set $eventskip to 0>>
 
-
 :: Beach Slug Sprint
 <<effects>>
 
 <<if $athleticsSuccess>>
-	You sprint away from the slug, <span class="green">and manage to gain some distance.</span><<lpursuit>><<set $pursuit -= 1>>
+	당신은 민달팽이에게서 전력으로 달아나, <span class="green">어느 정도 거리를 벌리는 데 성공한다.</span><<lpursuit>><<set $pursuit -= 1>>
 	<br><br>
 <<else>>
-	You try to sprint away from the slug, <span class="red">but lose your footing.</span> You tumble to the ground.<<gpain>><<gstress>><<pain 4>><<stress 6>>
+	당신은 민달팽이에게서 전력으로 달아나려 하지만, <span class="red">발을 헛디딘다.</span> 바닥으로 굴러 넘어지고 만다.<<gpain>><<gstress>><<pain 4>><<stress 6>>
 	<br><br>
 
-	You scramble to your feet, and keep running.<<gpursuit>><<set $pursuit += 1>>
+	당신은 황급히 일어나 계속 달린다.<<gpursuit>><<set $pursuit += 1>>
 	<br><br>
 <</if>>
 
-<<link [[Next|Beach Slug]]>><<set $eventskip to 1>><</link>>
+<<link [[다음|Beach Slug]]>><<set $eventskip to 1>><</link>>
 <br>
 
 :: Beach Slug Careful
 <<effects>>
 
-You continue to run with care, keeping to the solid-looking ground.
+당신은 단단해 보이는 땅을 골라 조심스럽게 계속 달린다.
 <br><br>
 
-<<link [[Next|Beach Slug]]>><<set $eventskip to 1>><</link>>
+<<link [[다음|Beach Slug]]>><<set $eventskip to 1>><</link>>
 <br>
-
 
 :: Beach Slug Dodge
 <<effects>>
 
 <<if $danceSuccess>>
-	You step aside. <span class="green">The slug sails past you,</span> splashing into a pool. You continue running. It's a few moments before the giant slug is able to slither after you.<<lpursuit>><<set $pursuit -= 1>>
+	당신은 옆으로 비켜선다. <span class="green">민달팽이가 당신을 스쳐 지나가</span> 웅덩이에 첨벙 떨어진다. 당신은 계속 달린다. 거대 민달팽이가 다시 당신을 따라 미끄러져 오기까지는 몇 순간이 걸린다.<<lpursuit>><<set $pursuit -= 1>>
 	<br><br>
 
-	<<link [[Next|Beach Slug]]>><<set $eventskip to 1>><</link>>
+	<<link [[다음|Beach Slug]]>><<set $eventskip to 1>><</link>>
 	<br>
 <<else>>
-	You try to step aside, <span class="red">but you're too slow.</span> The slug hits you square in the chest, knocking you to the floor. The giant slug slithers closer.
+	당신은 옆으로 피하려 하지만, <span class="red">너무 늦었다.</span> 민달팽이가 당신의 가슴에 정면으로 부딪혀 바닥에 쓰러뜨린다. 거대 민달팽이가 가까워진다.
 	<br><br>
 
-	<<link [[Next|Beach Slug Struggle]]>><<set $struggle_start to 1>><</link>>
+	<<link [[다음|Beach Slug Struggle]]>><<set $struggle_start to 1>><</link>>
 	<br>
 <</if>>
 
 :: Beach Slug Brace
 <<effects>>
 
-You brace yourself. You stagger as the slug collides with your chest. You manage to keep your footing, but the giant slug is now closer.
+당신은 몸을 단단히 버틴다. 민달팽이가 가슴에 부딪히자 비틀거린다. 가까스로 넘어지지 않지만, 거대 민달팽이는 이제 더 가까워졌다.
 <br><br>
 
-<<link [[Next|Beach Slug]]>><<set $eventskip to 1>><</link>>
+<<link [[다음|Beach Slug]]>><<set $eventskip to 1>><</link>>
 <br>
 
 :: Beach Slug Struggle
@@ -174,83 +172,77 @@ You brace yourself. You stagger as the slug collides with your chest. You manage
 	<<set $timer to 0>>
 <<elseif $timer is 8 and random(1, 2) is 2>>
 	<<struggle_add 1 1>>
-	<span class="pink">Another slug leaps from the slime!</span>
+	<span class="pink">또 다른 민달팽이가 점액에서 튀어 오른다!</span>
 	<br><br>
 <</if>>
 
 <<slug_text>>
 <br><br>
 
-
 <<struggle>>
 
-
-
 <<if $struggle.done gte $struggle.number>>
-	<span id="next"><<link [[Next|Beach Slug Struggle End]]>><</link>></span>
+	<span id="next"><<link [[다음|Beach Slug Struggle End]]>><</link>></span>
 	<br>
 <<elseif $pursuit gte 3>>
-	<span id="next"><<link [[Next|Beach Slug Struggle End]]>><</link>></span>
+	<span id="next"><<link [[다음|Beach Slug Struggle End]]>><</link>></span>
 	<br>
 <<else>>
-	<span id="next"><<link [[Next|Beach Slug Struggle]]>><</link>></span>
+	<span id="next"><<link [[다음|Beach Slug Struggle]]>><</link>></span>
 	<br>
 <</if>>
-
 
 :: Beach Slug Struggle End
 <<effects>>
 
 <<if $pursuit gte 3>>
-	The smaller slug jumps away as the giant approaches.
+	거대한 달팽이가 다가오자 작은 달팽이가 뛰어 달아난다.
 	<br><br>
 	<<endcombat>>
 	<<clotheson>>
 	<<slug_caught>>
 <<else>>
-	The slug dives into the slime. <<tearful>> you rise to your feet before the giant can bear down on you.
+	달팽이가 점액 속으로 뛰어든다. <<tearful>> 당신은 거대한 달팽이가 덮치기 전에 일어선다.
 	<br><br>
 
 	<<clotheson>>
 	<<endcombat>>
 
-	<<link [[Next|Beach Slug]]>><<set $eventskip to 1>><</link>>
+	<<link [[다음|Beach Slug]]>><<set $eventskip to 1>><</link>>
 	<br>
 <</if>>
-
 
 :: Beach Slug Jump
 <<effects>>
 
 <<if $athleticsSuccess>>
-	You leap, <span class="green">landing on the other side of the pool.</span> You keep running. The giant slug sloshes through without slowing.
+	당신은 뛰어올라, <span class="green">웅덩이 반대편에 착지한다.</span> 계속 달린다. 거대 민달팽이는 속도도 줄이지 않고 점액을 헤치고 온다.
 	<br><br>
 
-	<<link [[Next|Beach Slug]]>><<set $eventskip to 1>><</link>>
+	<<link [[다음|Beach Slug]]>><<set $eventskip to 1>><</link>>
 	<br>
 <<else>>
-	You leap, <span class="red">and plunge into the pool of slime.</span>
+	당신은 뛰어오르지만, <span class="red">점액 웅덩이 속으로 빠져든다.</span>
 	<<drench "goo" 5>>
 	<br><br>
 	<<if $settings.swarmsEnabled>>
-		You manage to get your head above the surface, but feel a squirming against your skin.
+		당신은 간신히 수면 위로 머리를 내밀지만, 피부에 무언가 꿈틀거리는 것이 느껴진다.
 		<br><br>
 
-		<<link [[Next|Beach Slug Swarm]]>><<set $molestationstart to 1>><</link>>
+		<<link [[다음|Beach Slug Swarm]]>><<set $molestationstart to 1>><</link>>
 		<br>
 	<<else>>
-		You manage to get your head above the surface, pull yourself onto the opposite bank. The giant slug is close behind. It sloshes through without slowing<<gpursuit>><<set $pursuit += 1>>
+		가까스로 머리를 수면 위로 내밀고, 반대편 둑으로 몸을 끌어올린다. 거대 민달팽이가 바로 뒤에 있다. 그것은 속도도 줄이지 않고 점액을 헤치고 온다.<<gpursuit>><<set $pursuit += 1>>
 		<br><br>
 
 		<<if $pursuit gte 3>>
 			<<slug_caught>>
 		<<else>>
-			<<link [[Next|Beach Slug]]>><<set $eventskip to 1>><</link>>
+			<<link [[다음|Beach Slug]]>><<set $eventskip to 1>><</link>>
 			<br>
 		<</if>>
 	<</if>>
 <</if>>
-
 
 :: Beach Slug Swarm
 <<effects>>
@@ -262,7 +254,7 @@ You brace yourself. You stagger as the slug collides with your chest. You manage
 	<<controlloss>>
 	<<set $combat to 1>>
 	<<set $enemytype to "swarm">>
-	<<swarminit "eels" "swarm" "moving towards you" "encircle you" "fend off" 1 6>>
+	<<swarminit "eels" "장어" "당신을 향해 다가온다" "당신을 포위한다" "뿌리친다" 1 6>>
 
 	<<set $swimdistance to 10>>
 	<<set $water to 1>>
@@ -278,35 +270,34 @@ You brace yourself. You stagger as the slug collides with your chest. You manage
 <br>
 
 <<if $swimdistance gte 10>>
-	You need to start swimming toward the bank!
+	둑을 향해 헤엄치기 시작해야 한다!
 <<elseif $swimdistance gte 5>>
-	The bank is still a long way off.
+	둑은 아직 멀리 있다.
 <<elseif $swimdistance gte 3>>
-	You've passed halfway to the bank.
+	둑까지 절반을 지났다.
 <<elseif $swimdistance gte 1>>
-	You're almost at the bank.
+	둑에 거의 다 왔다.
 <<else>>
-	The bank is within arm's reach!
+	둑이 팔 닿는 거리에 있다!
 <</if>>
 <br><br>
 <<swarmeffects>>
 <<swarm>>
 <<swarmactions>>
 <<if $stress gte $stressmax>>
-	<span id="next"><<link [[Next|Beach Slug Swarm Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Beach Slug Swarm Finish]]>><</link>></span><<nexttext>>
 <<elseif $pursuit gte 3>>
-	<span id="next"><<link [[Next|Beach Slug Swarm Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Beach Slug Swarm Finish]]>><</link>></span><<nexttext>>
 <<elseif $swimdistance lte 0>>
-	<span id="next"><<link [[Next|Beach Slug Swarm Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Beach Slug Swarm Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Beach Slug Swarm]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Beach Slug Swarm]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Beach Slug Swarm Finish
-
 <<effects>>
 <<if $stress gte $stressmax>>
-	It's all just too much for you. You pass out.
+	모든 것이 너무 버겁다. 당신은 기절한다.
 	<br><br>
 	<<if $upperoff isnot 0>>
 		<<upperruined>>
@@ -322,60 +313,59 @@ You brace yourself. You stagger as the slug collides with your chest. You manage
 	<</if>>
 	<<endcombat>>
 	<<slug_end>>
-	<<link [[Next|Passout Beach]]>><<pass 1 hour>><</link>>
+	<<link [[다음|Passout Beach]]>><<pass 1 hour>><</link>>
 <<elseif $pursuit gte 3>>
-	The giant slug sloshes into the pool, pushing the slime into a wave ahead of it and leaving you washed up on the bank.
+	거대한 달팽이가 웅덩이로 첨벙거리며 뛰어들어 점액을 파도처럼 밀어내고, 당신은 둑 위로 쓸려 올라간다.
 	<br><br>
 	<<endcombat>>
 	<<clotheson>>
 	<<slug_caught>>
 <<else>>
-	<<tearful>> you haul yourself out of the slime. The slugs drop off as you stagger to your feet.
+	<<tearful>> 당신은 점액 밖으로 힘겹게 기어 나온다. 비틀거리며 일어서자 민달팽이들이 떨어져 나간다.
 	<br><br>
 
-	The giant slug sloshes through the slime without slowing.
+	거대한 달팽이는 속도를 늦추지 않고 점액을 첨벙거리며 통과한다.
 	<br><br>
 
 	<<clotheson>>
 	<<endcombat>>
-	<<link [[Next|Beach Slug]]>><<set $eventskip to 1>><</link>>
+	<<link [[다음|Beach Slug]]>><<set $eventskip to 1>><</link>>
 	<br>
 <</if>>
 
 :: Beach Slug Run
 <<effects>>
 
-You run around the pool. The giant slug just sloshes through, and gains on you.
+당신은 웅덩이를 돌아 달린다. 거대한 달팽이는 그냥 첨벙거리며 통과하고, 당신을 따라잡는다.
 <br><br>
 
-<<link [[Next|Beach Slug]]>><<set $eventskip to 1>><</link>>
+<<link [[다음|Beach Slug]]>><<set $eventskip to 1>><</link>>
 <br>
-
 
 :: Beach Slug Try
 <<effects>>
 
 <<if $physiqueSuccess>>
-	You tug against the sticky slime, <span class="green">and manage to pull yourself free.</span> You jump from the closing maw just in time.
+	당신은 끈적한 점액을 잡아당겨, <span class="green">가까스로 몸을 빼낸다.</span> 닫혀 오는 아가리에서 가까스로 뛰쳐나온다.
 	<br><br>
-	You're in another cave, tall and well-lit by pink lichen. Slime drips from the ceiling, forming large pools.
-	<br><br>
-
-	The creature rises behind you. A gargantuan slug, larger than a horse. <span class="red">It slithers closer with alarming speed.</span>
+	당신은 또 다른 동굴에 있다. 천장이 높고 분홍색 이끼로 환하게 밝혀져 있다. 천장에서 점액이 떨어져 큰 웅덩이를 이룬다.
 	<br><br>
 
-	<<link [[Run|Beach Slug Start]]>><</link>>
+	생물이 뒤에서 몸을 일으킨다. 말보다도 큰 거대한 민달팽이다. <span class="red">섬뜩할 만큼 빠른 속도로 미끄러져 다가온다.</span>
+	<br><br>
+
+	<<link [[달아난다|Beach Slug Start]]>><</link>>
 	<br>
 
 <<else>>
-	You tug against the sticky slime, <span class="red">but you can't get free.</span> The maw surrounds you, then closes in, engulfing you.
+	당신은 끈적한 점액에 맞서 몸을 잡아당기지만, <span class="red">빠져나올 수 없다.</span> 아가리가 당신을 둘러싸고, 이내 닫히며 당신을 집어삼킨다.
 	<br><br>
 
 	<<if $settings.tentaclesEnabled and $hallucinations gte 1>>
-	You feel a squirming against your skin.
+	피부에 무언가 꿈틀거리는 것이 느껴진다.
 	<br><br>
 	<</if>>
-	<<link [[Next|Beach Slug Vore]]>><<set $molestationstart to 1>><</link>>
+	<<link [[다음|Beach Slug Vore]]>><<set $molestationstart to 1>><</link>>
 	<br>
 <</if>>
 
@@ -383,18 +373,17 @@ You run around the pool. The giant slug just sloshes through, and gains on you.
 <<effects>>
 
 <<clothesruined>>
-You struggle free from your clothes, and jump from the closing maw just in time.
+당신은 옷에서 간신히 빠져나와, 닫히는 아가리에서 제때 뛰어내린다.
 <br><br>
 
-You're in another cave, tall and well-lit by pink lichen. Slime drips from the ceiling, forming large pools.
+당신은 또 다른 동굴에 있다. 천장이 높고 분홍색 이끼로 환하게 밝혀져 있다. 천장에서 점액이 떨어져 큰 웅덩이를 이룬다.
 <br><br>
 
-The creature rises behind you. A gargantuan slug, larger than a horse. <span class="red">It slithers closer with alarming speed.</span>
+생물이 뒤에서 몸을 일으킨다. 말보다도 큰 거대한 민달팽이다. <span class="red">섬뜩할 만큼 빠른 속도로 미끄러져 다가온다.</span>
 <br><br>
 
-<<link [[Run|Beach Slug Start]]>><</link>>
+<<link [[달아난다|Beach Slug Start]]>><</link>>
 <br>
-
 
 :: Beach Slug Vore
 <<effects>>
@@ -432,20 +421,19 @@ The creature rises behind you. A gargantuan slug, larger than a horse. <span cla
 	<<voreactions>>
 <</if>>
 <<if $stress gte $stressmax>>
-	<span id="next"><<link [[Next|Beach Slug Vore Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Beach Slug Vore Finish]]>><</link>></span><<nexttext>>
 <<elseif $vorestage lte 0>>
-	<span id="next"><<link [[Next|Beach Slug Vore Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Beach Slug Vore Finish]]>><</link>></span><<nexttext>>
 <<elseif $vorestomach gte 5>>
-	<span id="next"><<link [[Next|Beach Slug Vore Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Beach Slug Vore Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Beach Slug Vore]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Beach Slug Vore]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Beach Slug Vore Finish
-
 <<effects>>
 <<if $stress gte $stressmax or $vorestomach gte 5>>
-	It's too much for you. You pass out.
+	당신에게는 너무 버겁다. 의식을 잃는다.
 	<br><br>
 	<<if $upperoff isnot 0>>
 		<<upperruined>>
@@ -461,128 +449,122 @@ The creature rises behind you. A gargantuan slug, larger than a horse. <span cla
 	<</if>>
 	<<endcombat>>
 	<<slug_end>>
-	<<link [[Next|Passout Beach]]>><<clotheson>><<pass 1 hour>><</link>>
+	<<link [[다음|Passout Beach]]>><<clotheson>><<pass 1 hour>><</link>>
 <<else>>
 	<<set $pursuit to 1>>
 	<<if $cave_exit>>
-		<<tearful>> you haul yourself out of the $vorecreature's maw. You stagger to your feet, and run. It slithers close behind.
+		<<tearful>> 당신은 <<print window.KR.getCreatureTypeKr($vorecreature)>>의 아가리 밖으로 몸을 끌어낸다. 비틀거리며 일어나 달린다. 그것이 바로 뒤에서 미끄러져 온다.
 		<br><br>
 	<<else>>
-		<<tearful>> you haul yourself out of the $vorecreature's maw. You're in another cave, tall and well-lit by pink lichen. Slime drips from the ceiling, forming large pools.
+		<<tearful>> 당신은 <<print window.KR.getCreatureTypeKr($vorecreature)>>의 아가리 밖으로 몸을 끌어낸다. 당신은 다른 동굴 안에 있다. 키가 크고 분홍 이끼 덕분에 밝다. 천장에서 점액이 떨어져 커다란 웅덩이들을 만들고 있다.
 		<br><br>
 
-		The creature rises behind you. A gargantuan slug, larger than a horse. <span class="red">It slithers closer with alarming speed.</span>
+		생물이 뒤에서 몸을 일으킨다. 말보다도 큰 거대한 민달팽이다. <span class="red">섬뜩할 만큼 빠른 속도로 미끄러져 다가온다.</span>
 		<br><br>
 	<</if>>
 	<<clotheson>>
 	<<endcombat>>
 	<<if $cave_exit>>
-		<<link [[Next|Beach Slug]]>><</link>>
+		<<link [[다음|Beach Slug]]>><</link>>
 		<br>
 	<<else>>
-		<<link [[Next|Beach Slug Start]]>><</link>>
+		<<link [[다음|Beach Slug Start]]>><</link>>
 		<br>
 	<</if>>
 <</if>>
 
-
 :: Beach Slug Start
 <<effects>>
 <<slug_init>>
-You turn and run. Four tunnels lead away from the chamber.
+당신은 돌아서서 달린다. 방에서 네 개의 터널이 이어진다.
 <br>
-The tunnel ahead is covered with bioluminescent lichen.
+앞쪽 터널은 생물 발광 이끼로 덮여 있다.
 <br>
-The tunnel to the right is full of mushrooms, some almost as tall as you. It seems to lead upward.
+오른쪽 터널은 버섯으로 가득하며, 일부는 당신 키만큼 크다. 위쪽으로 이어지는 것 같다.
 <br>
-The tunnel to the left drops, leading deeper underground. You hear rushing water from that direction.
+왼쪽 터널은 아래로 떨어져 지하 깊은 곳으로 이어진다. 그 방향에서 물 흐르는 소리가 들린다.
 <br>
-You glance back. There's another tunnel behind the slug, but no lichen, leaving it dark and foreboding. The slug blocks the path for now.
+당신은 뒤를 돌아본다. 민달팽이 뒤에도 터널이 하나 있지만, 이끼가 없어 어둡고 불길하다. 지금은 민달팽이가 길을 막고 있다.
 <br><br>
 
-<<link [[Run to the lichen-filled tunnel|Beach Slug]]>><<set $cave_current to 1>><</link>>
+<<link [[이끼로 가득 찬 통로로 달려간다|Beach Slug]]>><<set $cave_current to 1>><</link>>
 <br>
-<<link [[Run to the mushroom-filled tunnel|Beach Slug]]>><<set $cave_current to 2>><</link>>
+<<link [[버섯으로 가득 찬 통로로 달려간다|Beach Slug]]>><<set $cave_current to 2>><</link>>
 <br>
-<<link [[Run to the watery tunnel|Beach Slug]]>><<set $cave_current to 4>><</link>>
+<<link [[물이 차 있는 통로로 달려간다|Beach Slug]]>><<set $cave_current to 4>><</link>>
 <br>
-
-
-
 
 :: Beach Slug Escape
 <<effects>>
 
 <<earnFeat "Abnormal Mollusc">>
 
-
 <<pass 10>>
 <<if $cave_current is 1>>
-	You escape along the lichen-filled tunnel. You glance over your shoulder. The giant slug is reluctant to follow.
+	당신은 이끼로 가득한 터널을 따라 탈출한다. 어깨너머로 힐끗 보니, 거대한 달팽이는 따라오기를 꺼려한다.
 	<br><br>
-	The tunnel slopes upwards as the pink hue gives way to a light blue.
+	분홍빛이 옅어지고 옅은 푸른빛으로 바뀌면서 터널은 위쪽으로 경사져 있다.
 
 	<<if Time.dayState isnot "night">>
-		You hear waves, and see daylight pierce the gloom up ahead.
+		파도 소리가 들리고, 앞쪽 어둠 속으로 햇빛이 뚫고 들어온다.
 	<<elseif !Weather.isOvercast>>
-		You hear waves, and see pale moonlight pierce the gloom up ahead.
+		파도 소리가 들리고, 앞쪽 어둠 속으로 창백한 달빛이 뚫고 들어온다.
 	<<else>>
-		You hear waves up ahead.
+		앞에서 파도 소리가 들린다.
 	<</if>>
 	<br><br>
 
-	You emerge from the cliff facing the sea, and drop into the water. You're near the beach.
+	당신은 바다를 마주한 절벽에서 나와 물속으로 떨어진다. 해변 근처다.
 	<br><br>
 
-	<<link [[Next|Sea Beach]]>><<set $eventskip to 1>><</link>>
+	<<link [[다음|Sea Beach]]>><<set $eventskip to 1>><</link>>
 	<br>
 <<elseif $cave_current is 2>>
-	You escape up the mushroom-filled tunnel. You glance over your shoulder. The giant slug is reluctant to follow.
+	당신은 버섯으로 가득한 터널 위로 탈출한다. 어깨너머로 힐끗 보니, 거대한 달팽이는 따라오기를 꺼려한다.
 	<br><br>
-	The mushrooms grow denser as the tunnel continues. You step around a particularly large specimen, and almost step through a crack in the ground. You thought you heard a voice. You listen, but hear only rushing water.
+	터널이 계속되면서 버섯이 더 빽빽해진다. 당신은 특히 큰 버섯을 돌아가다가 땅의 갈라진 틈으로 거의 발을 디딜 뻔한다. 목소리를 들은 것 같았다. 귀를 기울이지만, 물 흐르는 소리만 들린다.
 	<br><br>
 
-	<span class="red">The ground gives way,</span> and you tumble into darkness.
+	<span class="red">땅이 무너지고,</span> 당신은 어둠 속으로 굴러 떨어진다.
 	<br><br>
 	<<if $sewersintro is 1>>
-		<<link [[Next|Sewers Commercial]]>><<sewersstart>><<set $eventskip to 1>><</link>>
+		<<link [[다음|Sewers Commercial]]>><<sewersstart>><<set $eventskip to 1>><</link>>
 		<br>
 	<<else>>
-		<<link [[Next|Sewers Intro]]>><</link>>
+		<<link [[다음|Sewers Intro]]>><</link>>
 	<</if>>
 <br>
 <<elseif $cave_current is 3>>
-	You escape into the dark tunnel. You glance over your shoulder. The giant slug is reluctant to follow.
+	당신은 어두운 터널로 탈출한다. 어깨너머로 힐끗 보니, 거대한 달팽이는 따라오기를 꺼려한다.
 	<br><br>
-	You feel your way along the walls as the tunnel takes you higher,
+	터널이 당신을 더 높은 곳으로 이끌면서, 당신은 벽을 더듬으며 나아간다.
 	<<if Time.dayState isnot "night">>
-		until daylight pierces the dark up ahead.
+		앞쪽 어둠 속으로 햇빛이 뚫고 들어올 때까지.
 	<<elseif !Weather.isOvercast>>
-		until moonlight pierces the dark up ahead.
+		앞쪽 어둠 속으로 달빛이 뚫고 들어올 때까지.
 	<<else>>
-		until you feel a breeze. It smells of the forest.
+		산들바람이 느껴질 때까지. 숲 냄새가 난다.
 	<</if>>
-	Emboldened you continue, and emerge in the forest.
+	용기를 얻은 당신은 계속 나아가 숲으로 나온다.
 	<br><br>
 
-	<<link [[Next|Forest]]>><<set $forest to 20>><<set $eventskip to 1>><</link>>
+	<<link [[다음|Forest]]>><<set $forest to 20>><<set $eventskip to 1>><</link>>
 	<br>
 <<elseif $cave_current is 4>>
-	You escape down the watery tunnel. You glance over your shoulder. The giant slug is reluctant to follow.
+	당신은 물기 많은 터널 아래로 탈출한다. 어깨너머로 힐끗 보니, 거대한 달팽이는 따라오기를 꺼려한다.
 	<br><br>
 
-	The tunnel leads deeper into the earth. Water breaks through cracks in the walls, joining you in the journey downward.
+	터널은 땅속 깊은 곳으로 이어진다. 벽의 갈라진 틈으로 물이 새어 나와, 아래로 향하는 여정에 당신과 함께한다.
 	<br><br>
 
-	The tunnel opens, revealing a black pool, disturbed only by the water rushing around your ankles. The dark hides the other side, and even the ceiling. For all you can tell, the pool could reach to the horizon.
+	터널이 열리며 검은 웅덩이가 드러난다. 발목을 감싸고 흐르는 물살만이 그 수면을 흔든다. 어둠은 반대편도, 천장마저도 숨긴다. 보기에는 웅덩이가 지평선까지 이어질 수도 있을 것 같다.
 	<br><br>
 
-	You hear a roar behind you. A torrent thunders down the passage, snatching you off your feet and plunging you into the gloom.
+	뒤에서 포효가 들린다. 급류가 통로를 따라 굉음을 내며 쏟아져 내려와 당신을 휩쓸고 어둠 속으로 처박는다.
 	<br><br>
 
-	<<link [[Next|Underground Lake]]>><</link>>
+	<<link [[다음|Underground Lake]]>><</link>>
 	<br>
-
 
 <</if>>
 

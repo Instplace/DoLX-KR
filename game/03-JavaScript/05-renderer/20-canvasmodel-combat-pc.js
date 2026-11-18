@@ -1478,7 +1478,7 @@ const combatMainPc = {
 			showfn(options) {
 				const clothes = options.clothes.hands;
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의류 객체가 정의되지 않았습니다");
 					return false;
 				}
 				if (!CombatRenderer.isClothingShown(clothes, options.showClothing)) {
@@ -1509,7 +1509,7 @@ const combatMainPc = {
 			showfn(options) {
 				const clothes = options.clothes.hands;
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의류 객체가 정의되지 않았습니다");
 					return false;
 				}
 				if (!CombatRenderer.isClothingShown(clothes, options.showClothing)) {
@@ -1541,7 +1541,7 @@ const combatMainPc = {
 			showfn(options) {
 				const clothes = options.clothes.hands;
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의류 객체가 정의되지 않았습니다");
 					return false;
 				}
 				if (!CombatRenderer.isClothingShown(clothes, options.showClothing)) {
@@ -1573,7 +1573,7 @@ const combatMainPc = {
 			showfn(options) {
 				const clothes = options.clothes.hands;
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의류 객체가 정의되지 않았습니다");
 					return false;
 				}
 				if (!CombatRenderer.isClothingShown(clothes, options.showClothing)) {
@@ -1604,7 +1604,7 @@ const combatMainPc = {
 			showfn(options) {
 				const clothes = options.clothes.hands;
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의류 객체가 정의되지 않았습니다");
 					return false;
 				}
 				if (!CombatRenderer.isClothingShown(clothes, options.showClothing)) {
@@ -1636,7 +1636,7 @@ const combatMainPc = {
 			showfn(options) {
 				const clothes = options.clothes.hands;
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의류 객체가 정의되지 않았습니다");
 					return false;
 				}
 				if (!CombatRenderer.isClothingShown(clothes, options.showClothing)) {
@@ -1663,7 +1663,7 @@ const combatMainPc = {
 			showfn(options) {
 				const clothes = options.clothes.head;
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의류 객체가 정의되지 않았습니다");
 					return false;
 				}
 				if (options.clothes.head?.name === "witchsage") {
@@ -1684,7 +1684,7 @@ const combatMainPc = {
 			showfn(options) {
 				const clothes = options.clothes.head;
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의류 객체가 정의되지 않았습니다");
 					return false;
 				}
 				if (!CombatRenderer.isClothingShown(clothes, options.showClothing)) return false;
@@ -1699,7 +1699,7 @@ const combatMainPc = {
 			showfn(options) {
 				const clothes = options.clothes.head;
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의류 객체가 정의되지 않았습니다");
 					return false;
 				}
 				if (options.clothes.head?.name === "witchsage") {
@@ -1864,7 +1864,7 @@ const combatMainPc = {
 			showfn(options) {
 				const clothes = options.clothes.upper;
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의류 객체가 정의되지 않았습니다");
 					return false;
 				}
 				const show = CombatRenderer.isClothingShown(clothes, options.showClothing) && clothes.sleeves.show;
@@ -1879,7 +1879,7 @@ const combatMainPc = {
 			showfn(options) {
 				const clothes = options.clothes.upper;
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의류 객체가 정의되지 않았습니다");
 					return false;
 				}
 				const show = CombatRenderer.isClothingShown(clothes, options.showClothing) && clothes.sleeves.hasAccessory;
@@ -1894,7 +1894,7 @@ const combatMainPc = {
 			showfn(options) {
 				const clothes = options.clothes.upper;
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의류 객체가 정의되지 않았습니다");
 					return false;
 				}
 				const show = CombatRenderer.isClothingShown(clothes, options.showClothing) && clothes.sleeves.show;
@@ -1914,7 +1914,7 @@ const combatMainPc = {
 			showfn(options) {
 				const clothes = options.clothes.upper;
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의류 객체가 정의되지 않았습니다");
 					return false;
 				}
 				const show = CombatRenderer.isClothingShown(clothes, options.showClothing) && clothes.sleeves.hasAccessory;
@@ -1934,7 +1934,7 @@ const combatMainPc = {
 			showfn(options) {
 				const clothes = options.clothes.under_upper;
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의류 객체가 정의되지 않았습니다");
 					return false;
 				}
 				const show = CombatRenderer.isClothingShown(clothes, options.showClothing) && clothes.sleeves.show;
@@ -1949,7 +1949,7 @@ const combatMainPc = {
 			showfn(options) {
 				const clothes = options.clothes.under_upper;
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의류 객체가 정의되지 않았습니다");
 					return false;
 				}
 				const show = CombatRenderer.isClothingShown(clothes, options.showClothing) && clothes.sleeves.hasAccessory;
@@ -1964,7 +1964,7 @@ const combatMainPc = {
 			showfn(options) {
 				const clothes = options.clothes.under_upper;
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의류 객체가 정의되지 않았습니다");
 					return false;
 				}
 				const show = CombatRenderer.isClothingShown(clothes, options.showClothing) && clothes.sleeves.show;
@@ -1981,7 +1981,7 @@ const combatMainPc = {
 			showfn(options) {
 				const clothes = options.clothes.under_upper;
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의류 객체가 정의되지 않았습니다");
 					return false;
 				}
 				const show = CombatRenderer.isClothingShown(clothes, options.showClothing) && clothes.sleeves.hasAccessory;

@@ -19,9 +19,9 @@
 		<<for _j = $enemyno-1; _j gte _end; _j-->>
 			<<if $NPCList[_j].penis is 0>>
 				<<if $feetactiondefault is "grab">>
-					| <label><span class="sub">Grab <<his>> penis</span> <<radiobutton "$feetaction" "grab" checked>><<feetdifficulty>> <<combatpromiscuous3>></label>
+					| <label><span class="sub"><<his>> 자지를 움켜쥔다</span> <<radiobutton "$feetaction" "grab" checked>><<feetdifficulty>> <<combatpromiscuous3>></label>
 				<<else>>
-					| <label><span class="sub">Grab <<his>> penis</span> <<radiobutton "$feetaction" "grab">><<feetdifficulty>> <<combatpromiscuous3>></label>
+					| <label><span class="sub"><<his>> 자지를 움켜쥔다</span> <<radiobutton "$feetaction" "grab">><<feetdifficulty>> <<combatpromiscuous3>></label>
 				<</if>>
 				<<break>>
 			<</if>>
@@ -29,9 +29,9 @@
 		<<for _j = $enemyno-1; _j gte _end; _j-->>
 			<<if $NPCList[_j].vagina is 0>>
 				<<if $feetactiondefault is "vaginagrab">>
-					| <label><span class="sub">Press your feet against <<his>> pussy</span> <<radiobutton "$feetaction" "vaginagrab" checked>><<feetdifficulty>> <<combatpromiscuous3>></label>
+					| <label><span class="sub">발로 <<his>> 보지를 누른다</span> <<radiobutton "$feetaction" "vaginagrab" checked>><<feetdifficulty>> <<combatpromiscuous3>></label>
 				<<else>>
-					| <label><span class="sub">Press your feet against <<his>> pussy</span> <<radiobutton "$feetaction" "vaginagrab">><<feetdifficulty>> <<combatpromiscuous3>></label>
+					| <label><span class="sub">발로 <<his>> 보지를 누른다</span> <<radiobutton "$feetaction" "vaginagrab">><<feetdifficulty>> <<combatpromiscuous3>></label>
 				<</if>>
 				<<break>>
 			<</if>>
@@ -43,23 +43,23 @@
 	<<if $feettarget isnot "self">>
 		<<set _stanceCheck to $NPCList[$feettarget].stance>>
 
-		<<set $_penis to (npcHasStrapon($feettarget) ? "strap-on" : "penis")>>
+		<<set $_penis to (npcHasStrapon($feettarget) ? "페니스 밴드" : "자지")>>
 		<<if $consensual is 1 and (!hasSexStat("promiscuity", 3) and $enemytype is "man" or !hasSexStat("deviancy", 3) and $enemytype isnot "man") and !$promiscuityIgnore>>
 			<!-- Do Nothing -->
 		<<elseif _stanceCheck isnot "topface">>
 			<<if $NPCList[$feettarget].penis is 0>>
 				<<if $NPCList[$feettarget].chastity.penis.includes("chastity")>>
-					<<set _feetaction["Press your foot on " + $NPCList[$feettarget].pronouns.his + " " + $NPCList[$feettarget].chastity.penis] to "grab">>
+					<<set _feetaction["상대의 " + $NPCList[$feettarget].chastity.penis + "【을를】 발로 누른다"] to "grab">>
 				<<elseif !($leftleg isnot 0 or $rightleg isnot 0)>>
-					<<set _feetaction["Grab "+ $NPCList[$feettarget].pronouns.his + " " + $_penis] to "grab">>
+					<<set _feetaction["상대의 " + $_penis + "【을를】 움켜쥔다"] to "grab">>
 				<</if>>
 			<</if>>
 
 			<<if $NPCList[$feettarget].vagina is 0>>
 				<<if $NPCList[$feettarget].chastity.vagina.includes("chastity")>>
-					<<set _feetaction["Press your feet against " + $NPCList[$feettarget].pronouns.his + " " + $NPCList[$feettarget].chastity.vagina] to "vaginagrab">>
+					<<set _feetaction["상대의 " + $NPCList[$feettarget].chastity.vagina + "【을를】 발로 누른다"] to "vaginagrab">>
 				<<else>>
-					<<set _feetaction["Press your feet against " + $NPCList[$feettarget].pronouns.his + " pussy"] to "vaginagrab">>
+					<<set _feetaction["상대의 보지를 발로 누른다"] to "vaginagrab">>
 				<</if>>
 			<</if>>
 		<</if>>
@@ -69,32 +69,32 @@
 <<widget "feetKick">>
 	<<if $feettarget isnot "self">>
 		<<if ($consensual isnot 1 or $combatExtended.reverseRapeStart is 1) and ($fightTargets is undefined or $fightTargets.includes($feettarget))>>
-			<<set _feetaction["Kick"] to "kick">>
+			<<set _feetaction["발로 찬다"] to "kick">>
 		<</if>>
 	<</if>>
 <</widget>>
 
 <<widget "feetGrabRub">>
-	<<set _feetaction["Rub"] to "grabrub">>
-	<<set _feetaction["Stop"] to "stop">>
+	<<set _feetaction["비빈다"] to "grabrub">>
+	<<set _feetaction["멈춘다"] to "stop">>
 <</widget>>
 
 <<widget "feetOthervagina">>
-	<<set _feetaction["Rub"] to "vaginagrabrub">>
-	<<set _feetaction["Stop"] to "stop">>
+	<<set _feetaction["비빈다"] to "vaginagrabrub">>
+	<<set _feetaction["멈춘다"] to "stop">>
 <</widget>>
 
 <<widget "feetRunClothed">>
 	/* Commented for lack of effect
 	<<if $NPCList[$feettarget].vagina is "clothed" or $NPCList[$feettarget].penis is "clothed">>
-		<<set _feetaction["Rub " + $NPCList[$feettarget].pronouns.his + " crotch"] to "rub">>
+		<<set _feetaction["상대의 사타구니를 문지른다"] to "rub">>
 	<</if>>*/
 <</widget>>
 
 <<widget "feetshoes">>
 	<<if $feettarget is "self" or $options.targetYourself is false or _targetnumber is 1>>
 		<<if !$worn.feet.type.includes("shackle") and !$worn.feet.type.includes("naked")>>
-			<<set _feetaction["Kick off your shoes"] to "feetshoes">>
+			<<set _feetaction["신발을 벗어찬다"] to "feetshoes">>
 		<</if>>
 	<</if>>
 <</widget>>
@@ -103,9 +103,9 @@
 	<<if $feettarget is "self" or $options.targetYourself is false or _targetnumber is 1>>
 		<<if $worn.feet.type.includes("shackle") or $worn.feet.type.includes("naked")>>
 			<<if $worn.legs.state is "ankles">>
-				<<set _feetaction["Kick off your legwear"] to "feetsocks">>
+				<<set _feetaction["하의를 벗어찬다"] to "feetsocks">>
 			<<elseif $worn.legs.state is "thighs">>
-				<<set _feetaction["Peel down your legwear"] to "feetsocks">>
+				<<set _feetaction["하의를 끌어내린다"] to "feetsocks">>
 			<</if>>
 		<</if>>
 	<</if>>
@@ -120,9 +120,9 @@
 			<!-- Do Nothing -->
 			<<else>>
 				<<if $position is "missionary">>
-					<<set _feetaction["Leg lock " + $NPCList[$feettarget].pronouns.him] to "legLock">>
+					<<set _feetaction["다리로 휘감는다"] to "legLock">>
 				<<else>>
-					<<set _feetaction["Push back against " + $NPCList[$feettarget].pronouns.him] to "legLock">>
+					<<set _feetaction["뒤로 밀어붙인다"] to "legLock">>
 				<</if>>
 			<</if>>
 		<</if>>
@@ -131,18 +131,18 @@
 
 <<widget "legLocked">>
 	<<if $position is "missionary">>
-		<<set _feetaction["Maintain the leg lock"] to "legLocked">>
-		<<set _feetaction["Release"] to "legRelease">>
+		<<set _feetaction["다리 조이기를 유지한다"] to "legLocked">>
+		<<set _feetaction["풀어준다"] to "legRelease">>
 	<<else>>
-		<<set _feetaction["Keep pushing back"] to "legLocked">>
-		<<set _feetaction["Stop"] to "legRelease">>
+		<<set _feetaction["계속 뒤로 밀어붙인다"] to "legLocked">>
+		<<set _feetaction["멈춘다"] to "legRelease">>
 	<</if>>
 <</widget>>
 
 <<widget "feetDodge">>
 	<<if $feettarget isnot "self">>
 		<<if $consensual isnot 1 and ($fightTargets is undefined or $fightTargets.includes($feettarget)) and $position isnot "wall" and $combatExtended.stabilityLost is 0 and $combatExtended.activeDodging is 1>>
-			<<set _feetaction["Dodge"] to "dodge">>
+			<<set _feetaction["피한다"] to "dodge">>
 		<</if>>
 	<</if>>
 <</widget>>
@@ -150,7 +150,7 @@
 <<widget "feetPlant">>
 	<<if $feettarget isnot "self">>
 		<<if $consensual isnot 1 and $position isnot "wall" and $combatExtended.stabilityLost is 0 and $combatExtended.standingFights is 1>>
-			<<set _feetaction["Plant"] to "plant">>
+			<<set _feetaction["버틴다"] to "plant">>
 		<</if>>
 	<</if>>
 <</widget>>
@@ -158,7 +158,7 @@
 <<widget "feetSubmit">>
 	<<if $feettarget isnot "self">>
 		<<if $consensual isnot 1 and $position isnot "wall" and $combatExtended.stabilityLost is 0 and $combatExtended.standingFights is 1>>
-			<<set _feetaction["Submit"] to "submit">>
+			<<set _feetaction["굴복한다"] to "submit">>
 		<</if>>
 	<</if>>
 <</widget>>

@@ -132,7 +132,7 @@
 	  toHexFromHsl: function (hslString) {
 		const hsl = stringInputToObject(hslString);
 		if (!hsl) {
-		  throw new Error("Invalid HSL string");
+		  throw new Error("잘못된 HSL 문자열입니다");
 		}
 
 		const rgb = hslaToRgba(hsl.h, hsl.s, hsl.l, hsl.a);
@@ -662,7 +662,7 @@
 	}
 	function polyad(color, number) {
 	  if (isNaN(number) || number <= 0) {
-		throw new Error("Argument to polyad must be a positive number");
+		throw new Error("polyad 인수는 양수여야 합니다");
 	  }
 	  var hsl = tinycolor(color).toHsl();
 	  var result = [tinycolor(color)];

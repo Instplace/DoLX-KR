@@ -37,7 +37,7 @@ class DateTime {
 			// If the argument is a timestamp, validate it and set the DateTime object accordingly
 			if (arguments[0] < TimeConstants.MIN_DATE.timeStamp || arguments[0] > TimeConstants.MAX_DATE.timeStamp)
 				throw new Error(
-					`Invalid timestamp: Timestamp cannot be lower than ${TimeConstants.MIN_DATE.timeStamp} or higher than ${TimeConstants.MAX_DATE.timeStamp}.`
+					`잘못된 타임스탬프: 타임스탬프는 ${TimeConstants.MIN_DATE.timeStamp}보다 작거나 ${TimeConstants.MAX_DATE.timeStamp}보다 클 수 없습니다.`
 				);
 			this.fromTimestamp(arguments[0]);
 			return;
@@ -97,10 +97,10 @@ class DateTime {
 	 */
 	toTimestamp(year, month, day, hour, minute, second) {
 		if (year < TimeConstants.MIN_DATE.year || year > TimeConstants.MAX_DATE.year)
-			throw new Error(`Invalid year: Year must be between ${TimeConstants.MIN_DATE.timeStamp}-${TimeConstants.MAX_DATE.year}.`);
-		if (month < 1 || month > 12) throw new Error("Invalid month: Month must be between 1-12.");
+			throw new Error(`잘못된 연도: 연도는 ${TimeConstants.MIN_DATE.timeStamp}-${TimeConstants.MAX_DATE.year} 사이여야 합니다.`);
+		if (month < 1 || month > 12) throw new Error("잘못된 월: 월은 1-12 사이여야 합니다.");
 		const daysInMonth = DateTime.getDaysOfMonthFromYear(year);
-		if (day < 1 || day > daysInMonth[month - 1]) throw new Error("Invalid date: Day must be between 1-" + daysInMonth[month - 1] + ".");
+		if (day < 1 || day > daysInMonth[month - 1]) throw new Error("잘못된 날짜: 일은 1-" + daysInMonth[month - 1] + " 사이여야 합니다.");
 
 		const totalDays = DateTime.getTotalDaysSinceStart(year) + daysInMonth.slice(0, month - 1).reduce((a, b) => a + b, 0) + day - 1;
 		const totalSeconds = totalDays * TimeConstants.secondsPerDay + hour * TimeConstants.secondsPerHour + minute * TimeConstants.secondsPerMinute + second;
@@ -145,7 +145,7 @@ class DateTime {
 		while (day >= daysPerMonth[month]) {
 			day -= daysPerMonth[month++];
 			if (month > 11) {
-				console.assert(month <= 11, "Month overflow for timestamp:%s, year %s", timestamp, year);
+				console.assert(month <= 11, "타임스탬프 월 초과:%s, 연도 %s", timestamp, year);
 				month = 0;
 				year++;
 			}
@@ -221,7 +221,7 @@ class DateTime {
 	 * @returns {DateTime} The DateTime for the first occurrence of the specified weekday
 	 */
 	getFirstWeekdayOfMonth(weekDay) {
-		if (weekDay < 1 || weekDay > 7) throw new Error("Invalid weekDay: Must be between 1-7");
+		if (weekDay < 1 || weekDay > 7) throw new Error("잘못된 weekDay: 1-7 사이여야 합니다");
 
 		const date = new DateTime(this.year, this.month, 1);
 		return date.addDays((weekDay - date.weekDay + 7) % 7);
@@ -234,7 +234,7 @@ class DateTime {
 	 * @returns {DateTime} The DateTime for the next occurrence of the specified weekday
 	 */
 	getNextWeekdayDate(weekDay) {
-		if (weekDay < 1 || weekDay > 7) throw new Error("Invalid weekDay: Must be between 1-7");
+		if (weekDay < 1 || weekDay > 7) throw new Error("잘못된 weekDay: 1-7 사이여야 합니다");
 
 		const days = ((7 + weekDay - this.weekDay - 1) % 7) + 1;
 		const date = new DateTime(this);
@@ -248,7 +248,7 @@ class DateTime {
 	 * @returns {DateTime} The DateTime for the previous occurrence of the specified weekday
 	 */
 	getPreviousWeekdayDate(weekDay) {
-		if (weekDay < 1 || weekDay > 7) throw new Error("Invalid weekDay: Must be between 1-7");
+		if (weekDay < 1 || weekDay > 7) throw new Error("잘못된 weekDay: 1-7 사이여야 합니다");
 		const days = ((7 + weekDay - this.weekDay) % 7) - 7;
 		const date = new DateTime(this);
 		return date.addDays(days);
@@ -372,7 +372,7 @@ class DateTime {
 	 */
 	between(startDate, endDate) {
 		if (!(startDate instanceof DateTime && endDate instanceof DateTime)) {
-			throw new Error("Parameters must be instances of DateTime.");
+			throw new Error("매개변수는 DateTime 인스턴스여야 합니다.");
 		}
 
 		return this.timeStamp >= startDate.timeStamp && this.timeStamp <= endDate.timeStamp;

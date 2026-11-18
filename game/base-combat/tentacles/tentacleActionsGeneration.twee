@@ -134,13 +134,13 @@
 		<<case 0>>
 			<<if $orgasmdown gte 1>>
 				<<set _leftOptions to "orgasm">>
-				<span class="lewd">Your left arm is free, but you can't stop the spasms.</span>
+				<span class="lewd">왼팔은 자유롭지만, 경련을 멈출 수 없다.</span>
 			<<elseif $pain gte 100 and $willpowerpain is 0>>
 				<<set _leftOptions to "pain">>
-				<span class="red">Your left arm is free, but hurts to move.</span>
+				<span class="red">왼팔은 자유롭지만, 움직이면 아프다.</span>
 			<<elseif $dissociation gte 2>>
 				<<set _leftOptions to "unreal">>
-				<span class="pink">Your left arm is free, but doesn't feel real.</span>
+				<span class="pink">왼팔은 자유롭지만, 현실감각이 없다.</span>
 			<<else>>
 				<<if _targetYourself is true and _targetnumber gt 1>>
 					<<set _targetlistarms["Yourself"] to "self">>
@@ -149,7 +149,7 @@
 					<<targetListBox "left" _targetlistarms>>
 				<</if>>
 				<<set _leftOptions to "free">>
-				<span @class="($lastOptions.left isnot _leftOptions ?'gold':'')">Your left arm is free.</span>
+				<span @class="($lastOptions.left isnot _leftOptions ?'gold':'')">왼팔은 자유롭다.</span>
 				<<if $options.combatControls.includes("adio") and _targetnumber gt 1>>
 					<<targetListBox "left" _targetlistarms>>
 				<</if>>
@@ -157,18 +157,18 @@
 		<<case "tentgrappled">>
 			<<if $orgasmdown gte 1>>
 				<<set _leftOptions to "bound">>
-				<span class="lewd">Your left arm jerks against _the grip.</span>
+				<span class="lewd">왼팔이 손아귀에서 벗어나려 꿈틀거린다.</span>
 			<<elseif $pain gte 100 and $willpowerpain is 0>>
 				<<set _leftOptions to "bound">>
-				<span class="red">Your left arm is held in a painful grip.</span>
+				<span class="red">왼팔이 고통스럽게 꽉 붙잡혀 있다.</span>
 			<<elseif $dissociation gte 2>>
 				<<set _leftOptions to "bound">>
-				<span class="pink">Your left arm lies limp in _the grip.</span>
+				<span class="pink">왼팔이 손아귀 속에서 축 늘어져 있다.</span>
 			<<else>>
 				<<set _leftOptions to "grappled">>
 				<<for _i to 0; _i lt $tentacles.max; _i++>>
 					<<if $tentacles[_i].shaft is "leftarm">>
-						<span @class="($lastOptions.left isnot _leftOptions ?'gold':'')">_The $tentacles[_i].fullDesc entangles your left arm.</span>
+						<span @class="($lastOptions.left isnot _leftOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 왼팔을 얽매고 있다.</span>
 						<<set $_tentgrab to 1>>
 						<<if canAngelBanish() and !$banishDisable>>
 							<<set _banishTarget to $tentacles[_i]>>
@@ -177,19 +177,19 @@
 					<</if>>
 				<</for>>
 				<<if !$_tentgrab>>
-					<span @class="($lastOptions.left isnot _leftOptions ?'gold':'')">Your left arm is being held down.</span>
+					<span @class="($lastOptions.left isnot _leftOptions ?'gold':'')">왼팔이 짓눌려 있다.</span>
 				<</if>>
 			<</if>>
 		<<case "bound">>
 			<<set _leftOptions to "bound">>
 			<<if $orgasmdown gte 1>>
-				<span class="lewd">Your left arm jerks against its bonds.</span>
+				<span class="lewd">왼팔이 결박에서 벗어나려 꿈틀거린다.</span>
 			<<elseif $pain gte 100 and $willpowerpain is 0>>
-				<span class="red">Your left arm is held in a painful bind.</span>
+				<span class="red">왼팔이 고통스럽게 결박되어 있다.</span>
 			<<elseif $dissociation gte 2>>
-				<span class="pink">Your left arm lies limp in its bonds.</span>
+				<span class="pink">왼팔이 결박된 채 축 늘어져 있다.</span>
 			<<else>>
-				<span @class="($lastOptions.left isnot _leftOptions ?'gold':'')">Your left arm is bound.</span>
+				<span @class="($lastOptions.left isnot _leftOptions ?'gold':'')">왼팔이 결박되어 있다.</span>
 			<</if>>
 		<<case "grappled" "penis" "othervagina" "vagina" "coverpenis" "anus" "behind">>
 			<<set $_changetype to true>><<leftActionInit>>
@@ -206,7 +206,7 @@
 				<<if $leftarm is $tentacles[_i].id>>
 					<<set _leftOptions to "tentacle">>
 					<<set _tentacleLeftOption to $tentacles[_i].id>>
-					<span @class="($lastOptions.left isnot _leftOptions ?'gold':'')">You hold _the $tentacles[_i].fullDesc in your left hand.</span>
+					<span @class="($lastOptions.left isnot _leftOptions ?'gold':'')">당신은 왼손으로 _the $tentacles[_i].fullDesc【을를】 붙잡고 있다.</span>
 					<<break>>
 				<</if>>
 			<</for>>
@@ -222,7 +222,7 @@
 					<<if ["leftgrabtentacle"].includes(_actionsSet[_set]) and $leftactionTarget isnot undefined>>
 						<<for _i to 0; _i lt $tentacles.max; _i++>>
 							<<if $tentacles[_i].shaft isnot "finished">>
-								<<if ($regrab or $regrab is 1) and $tentacles[_i].head is 0>>
+								<<if $regrab and $tentacles[_i].head is 0>>
 									<<set $leftactiondefault to clone(_actionsSet[_set])>>
 									<<set $leftactionTarget to $tentacles[_i].id>>
 									<<set _pass to true>>
@@ -323,7 +323,7 @@
 		<<if _tentacle_targets_available>>
 			<<if $options.combatControls is "columnRadio">>
 				<label>
-					Target: <span @class="'whiteList ' + 'reducedWidth'">
+					대상: <span @class="'whiteList ' + 'reducedWidth'">
 						<<listbox "$leftactionTarget" autoselect>>
 							<<optionsfrom _availableTargets>>
 						<</listbox>>
@@ -373,65 +373,65 @@
 	/*Generate Actions*/
 	<<set _leftaction to {}>>
 	<<if !(["orgasm", "pain", "unreal"].includes(_leftOptions))>>
-		<<set _leftaction["Rest"] to "rest">>
+		<<set _leftaction["쉰다"] to "rest">>
 	<</if>>
 	<<switch _leftOptions>>
 		<<case "free">>
 			<<if $tentacles.active gt 0>>
 				<<if $consensual is 0>>
-					<<set _leftaction["Strike the"] to "lefthittentacle">>
+					<<set _leftaction["후려친다"] to "lefthittentacle">>
 					<<if canAngelBanish() and !$banishDisable>>
-						<<set _leftaction["("+$angelBanish+" / "+$angelBanishMax+") Banish the"] to "leftbanish">>
+						<<set _leftaction["("+$angelBanish+" / "+$angelBanishMax+") 추방한다"] to "leftbanish">>
 					<</if>>
 				<</if>>
 				<<if effectiveTransformationLevel("cat") gte 4>>
 					<<set _leftaction["Swat the"] to "leftswattentacle">>
 				<</if>>
-				<<set _leftaction["Grab the"] to "leftgrabtentacle">>
+				<<set _leftaction["붙잡는다"] to "leftgrabtentacle">>
 			<</if>>
 			<<leftclothesnew>>
 		<<case "grappled">>
 			<<if canAngelBanish() and !$banishDisable>>
 				<<for _i to 0; _i lt $tentacles.max; _i++>>
 					<<if $tentacles[_i].shaft is "leftarm">>
-						<<set _leftaction["("+$angelBanish+" / "+$angelBanishMax+") Banish the"] to "leftbanish">>
+						<<set _leftaction["("+$angelBanish+" / "+$angelBanishMax+") 추방한다"] to "leftbanish">>
 						<<break>>
 					<</if>>
 				<</for>>
 			<</if>>
 		<<case "bound">>
 		<<case "tentacle">>
-			<<set _leftaction["Milk it"] to "leftrub"+_tentacleLeftOption>>
-			<<set _leftaction["Let go"] to "leftstop"+_tentacleLeftOption>>
+			<<set _leftaction["쥐어짠다"] to "leftrub"+_tentacleLeftOption>>
+			<<set _leftaction["놓는다"] to "leftstop"+_tentacleLeftOption>>
 			<<if hasSexStat("deviancy", 5)>>
 				<<if playerHasStrapon() and $penisuse is 0>>
-					<<set _leftaction["Guide to your strap-on"] to "showpenis"+_tentacleLeftOption>>
+					<<set _leftaction["페니스 밴드로 이끈다"] to "showpenis"+_tentacleLeftOption>>
 				<<elseif $player.penisExist and $penisuse is 0>>
-					<<set _leftaction["Guide to your penis"] to "showpenis"+_tentacleLeftOption>>
+					<<set _leftaction["자지 쪽으로 이끈다"] to "showpenis"+_tentacleLeftOption>>
 				<</if>>
 				<<if $player.vaginaExist and $vaginause is 0>>
-					<<set _leftaction["Guide to your pussy"] to "showvagina"+_tentacleLeftOption>>
+					<<set _leftaction["보지 쪽으로 이끈다"] to "showvagina"+_tentacleLeftOption>>
 				<</if>>
 				<<if $anususe is 0 and $settings.analEnabled>>
-					<<set _leftaction["Guide to your ass"] to "showbottom"+_tentacleLeftOption>>
+					<<set _leftaction["엉덩이 쪽으로 이끈다"] to "showbottom"+_tentacleLeftOption>>
 				<</if>>
 				/* Old Control
 				<<if ($player.vaginaExist and $vaginause is 0) or ($player.penisExist and $penisuse is 0)>>
 					<<set _leftaction["Guide to your thighs"] to "showthighs"+_tentacleLeftOption>>
 				<</if>>*/
 				<<if $mouthuse is 0>>
-					<<set _leftaction["Guide to your mouth"] to "showmouth"+_tentacleLeftOption>>
+					<<set _leftaction["입 쪽으로 이끈다"] to "showmouth"+_tentacleLeftOption>>
 				<</if>>
 			<</if>>
 		<<case "orgasm">>
-			<<set _leftaction["Fold"] to "leftfold">>
-			<<set _leftaction["Grip"] to "leftgrip">>
+			<<set _leftaction["접는다"] to "leftfold">>
+			<<set _leftaction["움켜쥔다"] to "leftgrip">>
 		<<case "pain">>
-			<<set _leftaction["Struggle"] to "leftstruggleweak">>
-			<<set _leftaction["Protect"] to "leftprotect">>
+			<<set _leftaction["버둥거린다"] to "leftstruggleweak">>
+			<<set _leftaction["보호한다"] to "leftprotect">>
 		<<case "unreal">>
-			<<set _leftaction["Poke yourself"] to "leftpoke">>
-			<<set _leftaction["Keep your arms out of the way"] to "leftcurl">>
+			<<set _leftaction["자신을 찌른다"] to "leftpoke">>
+			<<set _leftaction["팔을 치워둔다"] to "leftcurl">>
 	<</switch>>
 <</widget>>
 
@@ -442,22 +442,22 @@
 		<<case 0>>
 			<<if $orgasmdown gte 1>>
 				<<set _rightOptions to "orgasm">>
-				<span class="lewd">Your right arm is free, but you can't stop the spasms.</span>
+				<span class="lewd">오른팔은 자유롭지만, 경련을 멈출 수 없다.</span>
 			<<elseif $pain gte 100 and $willpowerpain is 0>>
 				<<set _rightOptions to "pain">>
-				<span class="red">Your right arm is free, but hurts to move.</span>
+				<span class="red">오른팔은 자유롭지만, 움직이면 아프다.</span>
 			<<elseif $dissociation gte 2>>
 				<<set _rightOptions to "unreal">>
-				<span class="pink">Your right arm is free, but doesn't feel real.</span>
+				<span class="pink">오른팔은 자유롭지만, 현실감각이 없다.</span>
 			<<else>>
 				<<if _targetYourself is true and _targetnumber gt 1>>
-					<<set _targetlistarms["Yourself"] to "self">>
+					<<set _targetlistarms["자신"] to "self">>
 				<</if>>
 				<<if not $options.combatControls.includes("adio") and _targetnumber gt 1>>
 					<<targetListBox "right" _targetlistarms>>
 				<</if>>
 				<<set _rightOptions to "free">>
-				<span @class="($lastOptions.right isnot _rightOptions ?'gold':'')">Your right arm is free.</span>
+				<span @class="($lastOptions.right isnot _rightOptions ?'gold':'')">오른팔은 자유롭다.</span>
 				<<if $options.combatControls.includes("adio") and _targetnumber gt 1>>
 					<<targetListBox "right" _targetlistarms>>
 				<</if>>
@@ -468,18 +468,18 @@
 		<<case "tentgrappled">>
 			<<if $orgasmdown gte 1>>
 				<<set _rightOptions to "bound">>
-				<span class="lewd">Your right arm jerks against _the grip.</span>
+				<span class="lewd">오른팔이 손아귀에서 벗어나려 꿈틀거린다.</span>
 			<<elseif $pain gte 100 and $willpowerpain is 0>>
 				<<set _rightOptions to "bound">>
-				<span class="red">Your right arm is held in a painful grip.</span>
+				<span class="red">오른팔이 고통스럽게 꽉 붙잡혀 있다.</span>
 			<<elseif $dissociation gte 2>>
 				<<set _rightOptions to "bound">>
-				<span class="pink">Your right arm lies limp in _the grip.</span>
+				<span class="pink">오른팔이 손아귀 속에서 축 늘어져 있다.</span>
 			<<else>>
 				<<set _rightOptions to "grappled">>
 				<<for _i to 0; _i lt $tentacles.max; _i++>>
 					<<if $tentacles[_i].shaft is "rightarm">>
-						<span @class="($lastOptions.right isnot _rightOptions ?'gold':'')">_The $tentacles[_i].fullDesc entangles your right arm.</span>
+						<span @class="($lastOptions.right isnot _rightOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 오른팔을 얽매고 있다.</span>
 						<<set $_tentgrab to 1>>
 						<<if canAngelBanish() and !$banishDisable>>
 							<<set _banishTarget to $tentacles[_i]>>
@@ -488,19 +488,19 @@
 					<</if>>
 				<</for>>
 				<<if !$_tentgrab>>
-					<span @class="($lastOptions.right isnot _rightOptions ?'gold':'')">Your right arm is being held down.</span>
+					<span @class="($lastOptions.right isnot _rightOptions ?'gold':'')">오른팔이 짓눌려 있다.</span>
 				<</if>>
 			<</if>>
 		<<case "bound">>
 			<<set _rightOptions to "bound">>
 			<<if $orgasmdown gte 1>>
-				<span class="lewd">Your right arm jerks against its bonds.</span>
+				<span class="lewd">오른팔이 결박에서 벗어나려 꿈틀거린다.</span>
 			<<elseif $pain gte 100 and $willpowerpain is 0>>
-				<span class="red">Your right arm is held in a painful bind.</span>
+				<span class="red">오른팔이 고통스럽게 결박되어 있다.</span>
 			<<elseif $dissociation gte 2>>
-				<span class="pink">Your right arm lies limp in its bonds.</span>
+				<span class="pink">오른팔이 결박된 채 축 늘어져 있다.</span>
 			<<else>>
-				<span @class="($lastOptions.right isnot _rightOptions ?'gold':'')">Your right arm is bound.</span>
+				<span @class="($lastOptions.right isnot _rightOptions ?'gold':'')">오른팔이 결박되어 있다.</span>
 			<</if>>
 		<<case "grappled" "penis" "othervagina" "vagina" "coverpenis" "anus" "behind">>
 			<<set $_changetype to true>><<rightActionInit>>
@@ -517,7 +517,7 @@
 				<<if $rightarm is $tentacles[_i].id>>
 					<<set _rightOptions to "tentacle">>
 					<<set _tentaclerightOption to $tentacles[_i].id>>
-					<span @class="($lastOptions.right isnot _rightOptions ?'gold':'')">You hold _the $tentacles[_i].fullDesc in your right hand.</span>
+					<span @class="($lastOptions.right isnot _rightOptions ?'gold':'')">당신은 오른손으로 _the $tentacles[_i].fullDesc【을를】 붙잡고 있다.</span>
 					<<break>>
 				<</if>>
 			<</for>>
@@ -533,7 +533,7 @@
 					<<if ["rightgrabtentacle"].includes(_actionsSet[_set]) and $rightactionTarget isnot undefined>>
 						<<for _i to 0; _i lt $tentacles.max; _i++>>
 							<<if $tentacles[_i].shaft isnot "finished">>
-								<<if ($regrab or $regrab is 1) and $tentacles[_i].head is 0>>
+								<<if $regrab and $tentacles[_i].head is 0>>
 									<<set $rightactiondefault to clone(_actionsSet[_set])>>
 									<<set $rightactionTarget to $tentacles[_i].id>>
 									<<set _pass to true>>
@@ -634,7 +634,7 @@
 		<<if _tentacle_targets_available>>
 			<<if $options.combatControls is "columnRadio">>
 				<label>
-					Target: <span @class="'whiteList ' + 'reducedWidth'">
+					대상: <span @class="'whiteList ' + 'reducedWidth'">
 						<<listbox "$rightactionTarget" autoselect>>
 							<<optionsfrom _availableTargets>>
 						<</listbox>>
@@ -684,66 +684,66 @@
 	/*Generate Actions*/
 	<<set _rightaction to {}>>
 	<<if !(["orgasm", "pain", "unreal"].includes(_rightOptions))>>
-		<<set _rightaction["Rest"] to "rest">>
+		<<set _rightaction["쉰다"] to "rest">>
 	<</if>>
 	<<switch _rightOptions>>
 		<<case "free">>
 			<<if $tentacles.active gt 0>>
 				<<if $consensual is 0>>
-					<<set _rightaction["Strike the"] to "righthittentacle">>
+					<<set _rightaction["후려친다"] to "righthittentacle">>
 					<<if canAngelBanish() and !$banishDisable>>
-						<<set _rightaction["("+$angelBanish+" / "+$angelBanishMax+") Banish the"] to "rightbanish">>
+						<<set _rightaction["("+$angelBanish+" / "+$angelBanishMax+") 추방한다"] to "rightbanish">>
 					<</if>>
 				<</if>>
 				<<if effectiveTransformationLevel("cat") gte 4>>
 					<<set _rightaction["Swat the"] to "rightswattentacle">>
 				<</if>>
-				<<set _rightaction["Grab the"] to "rightgrabtentacle">>
+				<<set _rightaction["붙잡는다"] to "rightgrabtentacle">>
 			<</if>>
 			<<rightclothesnew>>
 		<<case "grappled">>
 			<<if canAngelBanish() and !$banishDisable>>
 				<<for _i to 0; _i lt $tentacles.max; _i++>>
 					<<if $tentacles[_i].shaft is "rightarm">>
-						<<set _rightaction["("+$angelBanish+" / "+$angelBanishMax+") Banish the"] to "rightbanish">>
+						<<set _rightaction["("+$angelBanish+" / "+$angelBanishMax+") 추방한다"] to "rightbanish">>
 						<<break>>
 					<</if>>
 				<</for>>
 			<</if>>
 		<<case "bound">>
 		<<case "tentacle">>
-			<<set _rightaction["Milk it"] to "rightrub"+_tentaclerightOption>>
-			<<set _rightaction["Let go"] to "rightstop"+_tentaclerightOption>>
+			<<set _rightaction["쥐어짠다"] to "rightrub"+_tentaclerightOption>>
+			<<set _rightaction["놓는다"] to "rightstop"+_tentaclerightOption>>
 			<<if hasSexStat("deviancy", 5)>>
 
 				<<if playerHasStrapon() and $penisuse is 0>>
-					<<set _rightaction["Guide to your strap-on"] to "showpenis"+_tentacleRightOption>>
+					<<set _rightaction["페니스 밴드로 이끈다"] to "showpenis"+_tentacleRightOption>>
 				<<elseif $player.penisExist and $penisuse is 0>>
-					<<set _rightaction["Guide to your penis"] to "showpenis"+_tentaclerightOption>>
+					<<set _rightaction["자지 쪽으로 이끈다"] to "showpenis"+_tentaclerightOption>>
 				<</if>>
 				<<if $player.vaginaExist and $vaginause is 0>>
-					<<set _rightaction["Guide to your pussy"] to "showvagina"+_tentaclerightOption>>
+					<<set _rightaction["보지 쪽으로 이끈다"] to "showvagina"+_tentaclerightOption>>
 				<</if>>
 				<<if $anususe is 0 and $settings.analEnabled>>
-					<<set _rightaction["Guide to your ass"] to "showbottom"+_tentaclerightOption>>
+					<<set _rightaction["엉덩이 쪽으로 이끈다"] to "showbottom"+_tentaclerightOption>>
 				<</if>>
 				/* Old controls
 				<<if ($player.vaginaExist and $vaginause is 0) or ($player.penisExist and $penisuse is 0)>>
 					<<set _rightaction["Guide to your thighs"] to "showthighs"+_tentaclerightOption>>
 				<</if>>*/
 				<<if $mouthuse is 0>>
-					<<set _rightaction["Guide to your mouth"] to "showmouth"+_tentaclerightOption>>
+					<<set _rightaction["입 쪽으로 이끈다"] to "showmouth"+_tentaclerightOption>>
 				<</if>>
 			<</if>>
 		<<case "orgasm">>
-			<<set _rightaction["Fold"] to "rightfold">>
-			<<set _rightaction["Grip"] to "rightgrip">>
+			<<set _rightaction["접는다"] to "rightfold">>
+			<<set _rightaction["움켜쥔다"] to "rightgrip">>
 		<<case "pain">>
-			<<set _rightaction["Struggle"] to "rightstruggleweak">>
-			<<set _rightaction["Protect"] to "rightprotect">>
+			<<set _rightaction["버둥거린다"] to "rightstruggleweak">>
+			<<set _rightaction["보호한다"] to "rightprotect">>
 		<<case "unreal">>
-			<<set _rightaction["Poke yourself"] to "rightpoke">>
-			<<set _rightaction["Keep your arms out of the way"] to "rightcurl">>
+			<<set _rightaction["자신을 찌른다"] to "rightpoke">>
+			<<set _rightaction["팔을 치워둔다"] to "rightcurl">>
 	<</switch>>
 <</widget>>
 
@@ -765,7 +765,7 @@
 					<</if>>
 				<</for>>
 				<<if _targetYourself is true and _targetnumber gt 1>>
-					<<set _targetlistall["Yourself"] to "self">>
+					<<set _targetlistall["자신"] to "self">>
 				<</if>>
 				<<if not $options.combatControls.includes("adio") and _targetnumber gt 1>>
 					<<if !(($leftleg is "grappled" and $rightleg is "grappled") or ($leftleg is "bound" and $rightleg is "bound"))>>
@@ -774,7 +774,7 @@
 				<</if>>
 				<<if $leftleg is 0 and $rightleg is 0>>
 					<<set _feetOptions to "free">>
-					<span @class="($lastOptions.feet isnot _feetOptions ?'gold':'')">Your legs are free.</span>
+					<span @class="($lastOptions.feet isnot _feetOptions ?'gold':'')">다리가 자유롭다.</span>
 				<<elseif $leftleg is 0>>
 					<<set _feetOptions to "leftfree">>
 					<span @class="($lastOptions.feet isnot _feetOptions ?'gold':'')">Your left leg is free. <<if _rightLegTentacle>>_The _rightLegTentacle.fullDesc entangles your right leg.<<else>>Your right leg is restrained.<</if>></span>
@@ -786,7 +786,7 @@
 					<span @class="($lastOptions.feet isnot _feetOptions ?'gold':'')"><<if _leftLegTentacle>>_The _leftLegTentacle.fullDesc entangles your left leg.<<else>>Your left leg is entangled.<</if>> <<if _rightLegTentacle>>_The _rightLegTentacle.fullDesc entangles your right leg.<<else>>Your right leg is entangled.<</if>> They are forced apart, leaving you less able to protect your <<genitals>>.</span>
 				<<elseif $leftleg is "bound" and $rightleg is "bound">>
 					<<set _feetOptions to "bound">>
-					<span @class="($lastOptions.feet isnot _feetOptions ?'gold':'')">Your legs are bound and forced apart, leaving you less able to protect your <<genitals>>.</span><<combatExtendedStability -15>>
+					<span @class="($lastOptions.feet isnot _feetOptions ?'gold':'')">다리가 묶인 채 억지로 벌어져 있어, <<genitals>>【을를】 보호하기가 더 어렵다.</span><<combatExtendedStability -15>>
 				<<elseif $leftleg is "grappled" or $rightleg is "grappled">>
 					<<set _feetOptions to "grappled">>
 					<span @class="($lastOptions.feet isnot _feetOptions ?'gold':'')"><<if _leftLegTentacle>>_The _leftLegTentacle.fullDesc entangles your left leg. <</if>><<if _rightLegTentacle>>_The _rightLegTentacle.fullDesc entangles your right leg. <</if>>Your other leg is bound.</span>
@@ -795,7 +795,7 @@
 						<<if $leftleg is $tentacles[_i].id>>
 							<<set _feetOptions to "tentacle">>
 							<<set _tentacleFeetOption to $tentacles[_i].id>>
-							<span @class="($lastOptions.feet isnot _feetOptions ?'gold':'')">You hold _the $tentacles[_i].fullDesc between your feet.</span>
+							<span @class="($lastOptions.feet isnot _feetOptions ?'gold':'')">당신은 두 발 사이로 _the $tentacles[_i].fullDesc【을를】 붙잡고 있다.</span>
 							<<break>>
 						<</if>>
 					<</for>>
@@ -818,7 +818,7 @@
 						<<if ["feetgrab"].includes(_actionsSet[_set]) and $feetactionTarget isnot undefined>>
 							<<for _i to 0; _i lt $tentacles.max; _i++>>
 								<<if $tentacles[_i].shaft isnot "finished">>
-									<<if ($regrab or $regrab is 1) and $tentacles[_i].head is 0>>
+									<<if $regrab and $tentacles[_i].head is 0>>
 										<<set $feetactiondefault to clone(_actionsSet[_set])>>
 										<<set $feetactionTarget to $tentacles[_i].id>>
 										<<set _pass to true>>
@@ -922,7 +922,7 @@
 		<<if _tentacle_targets_available>>
 			<<if $options.combatControls is "columnRadio">>
 				<label>
-					Target: <span @class="'whiteList ' + 'reducedWidth'">
+					대상: <span @class="'whiteList ' + 'reducedWidth'">
 						<<listbox "$feetactionTarget" autoselect>>
 							<<optionsfrom _availableTargets>>
 						<</listbox>>
@@ -953,35 +953,35 @@
 <<widget "feetActionsTentacle">>
 	/*Generate Actions*/
 	<<set _feetaction to {}>>
-	<<set _feetaction["Rest"] to "rest">>
+	<<set _feetaction["쉰다"] to "rest">>
 	<<switch _feetOptions>>
 		<<case "free">>
 			<<if $tentacles.active gt 0>>
 				<<if $consensual is 0>>
-					<<set _feetaction["Kick the"] to "feethit">>
+					<<set _feetaction["발로 찬다"] to "feethit">>
 				<</if>>
-				<<set _feetaction["Grab the"] to "feetgrab">>
+				<<set _feetaction["붙잡는다"] to "feetgrab">>
 			<</if>>
 		<<case "leftfree" "rightfree">>
 			<<if $tentacles.active gt 0>>
 				<<if $consensual is 0>>
-					<<set _feetaction["Kick the"] to "feethit">>
+					<<set _feetaction["발로 찬다"] to "feethit">>
 				<</if>>
 			<</if>>
 		<<case "tentacle">>
-			<<set _feetaction["Milk it"] to "feetrub"+_tentacleFeetOption>>
-			<<set _feetaction["Let go"] to "feetstop"+_tentacleFeetOption>>
+			<<set _feetaction["쥐어짠다"] to "feetrub"+_tentacleFeetOption>>
+			<<set _feetaction["놓는다"] to "feetstop"+_tentacleFeetOption>>
 			<<if hasSexStat("deviancy", 5)>>
 				<<if playerHasStrapon() and $penisuse is 0>>
-					<<set _feetaction["Guide to your strap-on"] to "showpenis"+_tentacleFeetOption>>
+					<<set _feetaction["페니스 밴드로 이끈다"] to "showpenis"+_tentacleFeetOption>>
 				<<elseif $player.penisExist and $penisuse is 0>>
-					<<set _feetaction["Guide to your penis"] to "showpenis"+_tentacleFeetOption>>
+					<<set _feetaction["자지 쪽으로 이끈다"] to "showpenis"+_tentacleFeetOption>>
 				<</if>>
 				<<if $player.vaginaExist and $vaginause is 0>>
-					<<set _feetaction["Guide to your pussy"] to "showvagina"+_tentacleFeetOption>>
+					<<set _feetaction["보지 쪽으로 이끈다"] to "showvagina"+_tentacleFeetOption>>
 				<</if>>
 				<<if $anususe is 0 and $settings.analEnabled>>
-					<<set _feetaction["Guide to your ass"] to "showbottom"+_tentacleFeetOption>>
+					<<set _feetaction["엉덩이 쪽으로 이끈다"] to "showbottom"+_tentacleFeetOption>>
 				<</if>>
 				/* Old control
 				<<if ($player.vaginaExist and $vaginause is 0) or ($player.penisExist and $penisuse is 0)>>
@@ -1008,9 +1008,9 @@
 						<<set _mouthOptions to "entrance">>
 						<<set _tentacleMouthOption to $tentacles[_i].id>>
 						<<if $worn.face.type.includes("face_covering") or $worn.face.type.includes("gag")>>
-							<span @class="($lastOptions.mouth isnot _mouthOptions ?'gold':'')">_The $tentacles[_i].fullDesc threatens your <<print $worn.face.name>>.</span>
+							<span @class="($lastOptions.mouth isnot _mouthOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 <<print $worn.face.name>>【을를】 위협한다.</span>
 						<<else>>
-							<span @class="($lastOptions.mouth isnot _mouthOptions ?'gold':'')">_The $tentacles[_i].fullDesc threatens your mouth.</span>
+							<span @class="($lastOptions.mouth isnot _mouthOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 입을 위협한다.</span>
 						<</if>>
 						<<break>>
 					<</if>>
@@ -1019,7 +1019,7 @@
 						<<set _mouthOptions to "imminent">>
 						<<set _tentacleMouthOption to $tentacles[_i].id>>
 						<<if $worn.face.type.includes("face_covering") or $worn.face.type.includes("gag")>>
-							<span @class="($lastOptions.mouth isnot _mouthOptions ?'gold':'')">_The $tentacles[_i].fullDesc presses against your <<print $worn.face.name>>.</span>
+							<span @class="($lastOptions.mouth isnot _mouthOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 <<print $worn.face.name>>에 밀착한다.</span>
 						<<else>>
 							<span @class="($lastOptions.mouth isnot _mouthOptions ?'gold':'')">_The $tentacles[_i].fullDesc presses against your lips, <span class="red">poised to penetrate your mouth.</span></span>
 						<</if>>
@@ -1029,14 +1029,14 @@
 					<<if $tentacles[_i].head is "mouth">>
 						<<set _mouthOptions to "penetrated">>
 						<<set _tentacleMouthOption to $tentacles[_i].id>>
-						<span @class="($lastOptions.mouth isnot _mouthOptions ?'gold':'')">_The $tentacles[_i].fullDesc thrusts into your mouth.</span>
+						<span @class="($lastOptions.mouth isnot _mouthOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 입안으로 파고든다.</span>
 						<<break>>
 					<</if>>
 				<<case "tentacledeep">>
 					<<if $tentacles[_i].head is "mouthdeep">>
 						<<set _mouthOptions to "penetrated">>
 						<<set _tentacleMouthOption to $tentacles[_i].id>>
-						<span @class="($lastOptions.mouth isnot _mouthOptions ?'gold':'')">_The $tentacles[_i].fullDesc thrusts into your mouth, ejaculating down your throat.</span>
+						<span @class="($lastOptions.mouth isnot _mouthOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 입안으로 파고들어, 당신의 목구멍에 정액을 사정한다.</span>
 						<<break>>
 					<</if>>
 				<<case "struggle" "struggle_pen">>
@@ -1105,36 +1105,36 @@
 	<<set _mouthaction to {}>>
 	<<switch _mouthOptions>>
 		<<case "entrance">>
-			<<set _mouthaction["Rest"] to "rest">>
+			<<set _mouthaction["쉰다"] to "rest">>
 			<<if !$worn.face.type.includes("face_covering") and !$worn.face.type.includes("gag")>>
-				<<set _mouthaction["Lick it"] to "mouthlick"+_tentacleMouthOption>>
+				<<set _mouthaction["핥는다"] to "mouthlick"+_tentacleMouthOption>>
 			<</if>>
 			<<if $head isnot "grappled">>
-				<<set _mouthaction["Pull away"] to "mouthpullaway"+_tentacleMouthOption>>
+				<<set _mouthaction["떨어진다"] to "mouthpullaway"+_tentacleMouthOption>>
 			<</if>>
 			<<if !$combat_silenced>>
-				<<set _mouthaction["Lull"] to "mouthlull"+_tentacleMouthOption>>
+				<<set _mouthaction["방심시킨다"] to "mouthlull"+_tentacleMouthOption>>
 			<</if>>
 		<<case "imminent">>
-			<<set _mouthaction["Rest"] to "rest">>
+			<<set _mouthaction["쉰다"] to "rest">>
 			<<if !$worn.face.type.includes("face_covering") and !$worn.face.type.includes("gag")>>
-				<<set _mouthaction["Kiss it"] to "mouthkiss"+_tentacleMouthOption>>
+				<<set _mouthaction["입 맞춘다"] to "mouthkiss"+_tentacleMouthOption>>
 			<</if>>
 			<<if $head isnot "grappled">>
-				<<set _mouthaction["Pull away"] to "mouthpullaway"+_tentacleMouthOption>>
+				<<set _mouthaction["떨어진다"] to "mouthpullaway"+_tentacleMouthOption>>
 			<</if>>
 			<<if !$combat_silenced>>
-				<<set _mouthaction["Lull"] to "mouthlull"+_tentacleMouthOption>>
+				<<set _mouthaction["방심시킨다"] to "mouthlull"+_tentacleMouthOption>>
 			<</if>>
 		<<case "penetrated">>
-			<<set _mouthaction["Take it"] to "take">>
-			<<set _mouthaction["Cooperate"] to "mouthcooperate"+_tentacleMouthOption>>
+			<<set _mouthaction["받아들인다"] to "take">>
+			<<set _mouthaction["협조한다"] to "mouthcooperate"+_tentacleMouthOption>>
 			<<if $consensual is 0>>
-				<<set _mouthaction["Bite"] to "mouthbite"+_tentacleMouthOption>>
+				<<set _mouthaction["깨문다"] to "mouthbite"+_tentacleMouthOption>>
 			<</if>>
 		<<default>>
 			<<if !$combat_silenced>>
-				<<set _mouthaction["Lull"] to "mouthlull"+_tentacleMouthOption>>
+				<<set _mouthaction["방심시킨다"] to "mouthlull"+_tentacleMouthOption>>
 			<</if>>
 	<</switch>>
 <</widget>>
@@ -1149,35 +1149,35 @@
 					<<if $tentacles[_i].head is "penisentrance">>
 						<<set _penisOptions to "entrance">>
 						<<set _tentaclepenisOption to $tentacles[_i].id>>
-						<span @class="($lastOptions.penis isnot _penisOptions ?'gold':'')">_The $tentacles[_i].fullDesc threatens your <<penis>>.</span>
+						<span @class="($lastOptions.penis isnot _penisOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 <<penis>>【을를】 위협한다.</span>
 						<<break>>
 					<</if>>
 				<<case "tentacleimminent">>
 					<<if $tentacles[_i].head is "penisimminent">>
 						<<set _penisOptions to "imminent">>
 						<<set _tentaclepenisOption to $tentacles[_i].id>>
-						<span @class="($lastOptions.penis isnot _penisOptions ?'gold':'')">_The $tentacles[_i].fullDesc presses against your <<penis>>, about to engulf.</span>
+						<span @class="($lastOptions.penis isnot _penisOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 <<penis>>에 꽉 눌리며, 당장이라도 집어삼킬 듯하다.</span>
 						<<break>>
 					<</if>>
 				<<case "tentacle">>
 					<<if $tentacles[_i].head is "penis">>
 						<<set _penisOptions to "penetrated">>
 						<<set _tentaclepenisOption to $tentacles[_i].id>>
-						<span @class="($lastOptions.penis isnot _penisOptions ?'gold':'')">_The $tentacles[_i].fullDesc envelops and pounds your <<penis>>.</span>
+						<span @class="($lastOptions.penis isnot _penisOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 <<penis>>【을를】 감싸고 들이박는다.</span>
 						<<break>>
 					<</if>>
 				<<case "tentacledeep">>
 					<<if $tentacles[_i].head is "penisdeep">>
 						<<set _penisOptions to "penetrated">>
 						<<set _tentaclepenisOption to $tentacles[_i].id>>
-						<span @class="($lastOptions.penis isnot _penisOptions ?'gold':'')">_The $tentacles[_i].fullDesc envelops and pounds your <<penis>>.</span>
+						<span @class="($lastOptions.penis isnot _penisOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 <<penis>>【을를】 감싸고 들이박는다.</span>
 						<<break>>
 					<</if>>
 				<<case "tentaclerub">>
 					<<if $tentacles[_i].head is "penisrub">>
 						<<set _penisOptions to "penisrub">>
 						<<set _tentaclepenisOption to $tentacles[_i].id>>
-						<span @class="($lastOptions.penis isnot _penisOptions ?'gold':'')">_The $tentacles[_i].fullDesc runs between your thighs, coiling around your <<penis>> and pressing against your tummy.</span>
+						<span @class="($lastOptions.penis isnot _penisOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 허벅지 사이를 지나, 당신의 <<penis>>【을를】 휘감고 배를 꾹 누른다.</span>
 						<<break>>
 					<</if>>
 				<<case "struggle" "struggle_pen">>
@@ -1250,17 +1250,17 @@
 	<<set _penisaction to {}>>
 	<<switch _penisOptions>>
 		<<case "entrance" "imminent">>
-			<<set _penisaction["Rest"] to "rest">>
-			<<set _penisaction["Rub"] to "penisrub"+_tentaclepenisOption>>
+			<<set _penisaction["쉰다"] to "rest">>
+			<<set _penisaction["문지른다"] to "penisrub"+_tentaclepenisOption>>
 			<<if $leftleg isnot "grappled" or $rightleg isnot "grappled">>
-				<<set _penisaction["Pull away"] to "penispullaway"+_tentaclepenisOption>>
+				<<set _penisaction["떨어진다"] to "penispullaway"+_tentaclepenisOption>>
 			<</if>>
 		<<case "penetrated">>
-			<<set _penisaction["Take it"] to "take">>
-			<<set _penisaction["Cooperate"] to "peniscooperate"+_tentaclepenisOption>>
+			<<set _penisaction["받아들인다"] to "take">>
+			<<set _penisaction["협조한다"] to "peniscooperate"+_tentaclepenisOption>>
 		<<case "penisrub">>
-			<<set _penisaction["Rest"] to "rest">>
-			<<set _penisaction["Rub"] to "penisrub"+_tentaclepenisOption>>
+			<<set _penisaction["쉰다"] to "rest">>
+			<<set _penisaction["문지른다"] to "penisrub"+_tentaclepenisOption>>
 	<</switch>>
 <</widget>>
 
@@ -1274,35 +1274,35 @@
 					<<if $tentacles[_i].head is "vaginaentrance">>
 						<<set _vaginaOptions to "entrance">>
 						<<set _tentaclevaginaOption to $tentacles[_i].id>>
-						<span @class="($lastOptions.right isnot _rightOptions ?'gold':'')">_The $tentacles[_i].fullDesc threatens your <<pussy>>.</span>
+						<span @class="($lastOptions.right isnot _rightOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 <<pussy>>【을를】 위협한다.</span>
 						<<break>>
 					<</if>>
 				<<case "tentacleimminent">>
 					<<if $tentacles[_i].head is "vaginaimminent">>
 						<<set _vaginaOptions to "imminent">>
 						<<set _tentaclevaginaOption to $tentacles[_i].id>>
-						<span @class="($lastOptions.vagina isnot _vaginaOptions ?'gold':'')">_The $tentacles[_i].fullDesc presses against your <<pussy>>, about to penetrate.</span>
+						<span @class="($lastOptions.vagina isnot _vaginaOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 <<pussy>>에 밀착해, 당장이라도 파고들 듯하다.</span>
 						<<break>>
 					<</if>>
 				<<case "tentacle">>
 					<<if $tentacles[_i].head is "vagina">>
 						<<set _vaginaOptions to "penetrated">>
 						<<set _tentaclevaginaOption to $tentacles[_i].id>>
-						<span @class="($lastOptions.vagina isnot _vaginaOptions ?'gold':'')">_The $tentacles[_i].fullDesc thrusts into your <<pussy>>.</span>
+						<span @class="($lastOptions.vagina isnot _vaginaOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 <<pussy>> 안으로 박혀든다.</span>
 						<<break>>
 					<</if>>
 				<<case "tentacledeep">>
 					<<if $tentacles[_i].head is "vaginadeep">>
 						<<set _vaginaOptions to "penetrated">>
 						<<set _tentaclevaginaOption to $tentacles[_i].id>>
-						<span @class="($lastOptions.vagina isnot _vaginaOptions ?'gold':'')">_The $tentacles[_i].fullDesc thrusts into your <<pussy>>, ejaculating deep into your womb.</span>
+						<span @class="($lastOptions.vagina isnot _vaginaOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 <<pussy>> 안으로 깊이 박혀들어, 자궁 깊숙이 사정한다.</span>
 						<<break>>
 					<</if>>
 				<<case "tentaclerub">>
 					<<if $tentacles[_i].head is "vaginarub">>
 						<<set _vaginaOptions to "vaginarub">>
 						<<set _tentaclevaginaOption to $tentacles[_i].id>>
-						<span @class="($lastOptions.vagina isnot _vaginaOptions ?'gold':'')">_The $tentacles[_i].fullDesc runs between your thighs, pressing against your labia and continuing to your tummy.</span>
+						<span @class="($lastOptions.vagina isnot _vaginaOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 허벅지 사이를 지나, 음순을 누르며 배까지 이어진다.</span>
 						<<break>>
 					<</if>>
 				<<case "struggle" "struggle_pen">>
@@ -1375,17 +1375,17 @@
 	<<set _vaginaaction to {}>>
 	<<switch _vaginaOptions>>
 		<<case "entrance" "imminent">>
-			<<set _vaginaaction["Rest"] to "rest">>
-			<<set _vaginaaction["Rub"] to "vaginarub"+_tentaclevaginaOption>>
+			<<set _vaginaaction["쉰다"] to "rest">>
+			<<set _vaginaaction["문지른다"] to "vaginarub"+_tentaclevaginaOption>>
 			<<if $leftleg isnot "grappled" or $rightleg isnot "grappled">>
-				<<set _vaginaaction["Pull away"] to "vaginapullaway"+_tentaclevaginaOption>>
+				<<set _vaginaaction["떨어진다"] to "vaginapullaway"+_tentaclevaginaOption>>
 			<</if>>
 		<<case "penetrated">>
-			<<set _vaginaaction["Take it"] to "take">>
-			<<set _vaginaaction["Cooperate"] to "vaginacooperate"+_tentaclevaginaOption>>
+			<<set _vaginaaction["받아들인다"] to "take">>
+			<<set _vaginaaction["협조한다"] to "vaginacooperate"+_tentaclevaginaOption>>
 		<<case "vaginarub">>
-			<<set _vaginaaction["Rest"] to "rest">>
-			<<set _vaginaaction["Rub"] to "vaginarub"+_tentaclevaginaOption>>
+			<<set _vaginaaction["쉰다"] to "rest">>
+			<<set _vaginaaction["문지른다"] to "vaginarub"+_tentaclevaginaOption>>
 	<</switch>>
 <</widget>>
 
@@ -1402,35 +1402,35 @@
 						<<if $tentacles[_i].head is "anusentrance">>
 							<<set _anusOptions to "entrance">>
 							<<set _tentacleanusOption to $tentacles[_i].id>>
-							<span @class="($lastOptions.anus isnot _anusOptions ?'gold':'')">_The $tentacles[_i].fullDesc threatens your <<bottom>>.</span>
+							<span @class="($lastOptions.anus isnot _anusOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 <<bottom>>【을를】 위협한다.</span>
 							<<break>>
 						<</if>>
 					<<case "tentacleimminent">>
 						<<if $tentacles[_i].head is "anusimminent">>
 							<<set _anusOptions to "imminent">>
 							<<set _tentacleanusOption to $tentacles[_i].id>>
-							<span @class="($lastOptions.anus isnot _anusOptions ?'gold':'')">_The $tentacles[_i].fullDesc presses against your <<bottom>>, about to penetrate.</span>
+							<span @class="($lastOptions.anus isnot _anusOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 <<bottom>>【을를】 짓누르며 꿰뚫기 직전이다.</span>
 							<<break>>
 						<</if>>
 					<<case "tentacle">>
 						<<if $tentacles[_i].head is "anus">>
 							<<set _anusOptions to "penetrated">>
 							<<set _tentacleanusOption to $tentacles[_i].id>>
-							<span @class="($lastOptions.anus isnot _anusOptions ?'gold':'')">_The $tentacles[_i].fullDesc thrusts into your <<bottom>>.</span>
+							<span @class="($lastOptions.anus isnot _anusOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 <<bottom>> 안으로 밀고 들어온다.</span>
 							<<break>>
 						<</if>>
 					<<case "tentacledeep">>
 						<<if $tentacles[_i].head is "anusdeep">>
 							<<set _anusOptions to "penetrated">>
 							<<set _tentacleanusOption to $tentacles[_i].id>>
-							<span @class="($lastOptions.anus isnot _anusOptions ?'gold':'')">_The $tentacles[_i].fullDesc thrusts into your <<bottom>>, ejaculating deep into your bowels.</span>
+							<span @class="($lastOptions.anus isnot _anusOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 <<bottom>> 안으로 파고들어 장 속 깊은 곳에 사정한다.</span>
 							<<break>>
 						<</if>>
 					<<case "tentaclerub">>
 						<<if $tentacles[_i].head is "anusrub">>
 							<<set _anusOptions to "anusrub">>
 							<<set _tentacleanusOption to $tentacles[_i].id>>
-							<span @class="($lastOptions.anus isnot _anusOptions ?'gold':'')">_The $tentacles[_i].fullDesc rubs itself between your butt cheeks.</span>
+							<span @class="($lastOptions.anus isnot _anusOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 엉덩이골 사이에서 몸을 비빈다.</span>
 							<<break>>
 						<</if>>
 					<<case "struggle" "struggle_pen">>
@@ -1504,17 +1504,17 @@
 	<<set _anusaction to {}>>
 	<<switch _anusOptions>>
 		<<case "entrance" "imminent">>
-			<<set _anusaction["Rest"] to "rest">>
-			<<set _anusaction["Rub"] to "anusrub"+_tentacleanusOption>>
+			<<set _anusaction["쉰다"] to "rest">>
+			<<set _anusaction["문지른다"] to "anusrub"+_tentacleanusOption>>
 			<<if $leftleg isnot "grappled" or $rightleg isnot "grappled">>
-				<<set _anusaction["Pull away"] to "anuspullaway"+_tentacleanusOption>>
+				<<set _anusaction["떨어진다"] to "anuspullaway"+_tentacleanusOption>>
 			<</if>>
 		<<case "penetrated">>
-			<<set _anusaction["Take it"] to "take">>
-			<<set _anusaction["Cooperate"] to "anuscooperate"+_tentacleanusOption>>
+			<<set _anusaction["받아들인다"] to "take">>
+			<<set _anusaction["협조한다"] to "anuscooperate"+_tentacleanusOption>>
 		<<case "anusrub">>
-			<<set _anusaction["Rest"] to "rest">>
-			<<set _anusaction["Rub"] to "anusrub"+_tentacleanusOption>>
+			<<set _anusaction["쉰다"] to "rest">>
+			<<set _anusaction["문지른다"] to "anusrub"+_tentacleanusOption>>
 	<</switch>>
 <</widget>>
 
@@ -1528,7 +1528,7 @@
 					<<if $tentacles[_i].head is "chest">>
 						<<set _chestOptions to "chestrub">>
 						<<set _tentaclechestOption to $tentacles[_i].id>>
-						<span @class="($lastOptions.chest isnot _chestOptions ?'gold':'')">_The $tentacles[_i].fullDesc rubs itself between your chest.</span>
+						<span @class="($lastOptions.chest isnot _chestOptions ?'gold':'')">_The $tentacles[_i].fullDesc【이가】 당신의 가슴 사이를 비비고 있다.</span>
 						<<break>>
 					<</if>>
 				<<case "penis">>
@@ -1544,7 +1544,7 @@
 					<<set $chestactiondefault to Object.values(_chestaction)[0]>>
 				<</if>>
 				<<set $chestaction to $chestactiondefault>>
-				<<set _textColor to combatListColor('chestaction', (Object.values(_chestaction).includes($chestaction) ? $chestaction : Object.values(_chestaction)[0]), "Tentacle")>>
+				<<set _textColor to combatListColor('chestaction', (Object.values(_chestaction).includes($chestaction) ? $chestaction : Object.values(_chestaction)[0]), "촉수")>>
 				<div class="extraMargin">
 					<<generateCombatAction _chestaction "chestaction" "Tentacle">>
 				</div>
@@ -1581,8 +1581,8 @@
 	<<set _chestaction to {}>>
 	<<switch _chestOptions>>
 		<<case "chestrub">>
-			<<set _chestaction["Rest"] to "rest">>
-			<<set _chestaction["Rub"] to "chestrub"+_tentaclechestOption>>
+			<<set _chestaction["쉰다"] to "rest">>
+			<<set _chestaction["문지른다"] to "chestrub"+_tentaclechestOption>>
 	<</switch>>
 <</widget>>
 

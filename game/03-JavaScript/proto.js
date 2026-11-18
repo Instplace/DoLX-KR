@@ -47,20 +47,20 @@ JSON.stringify = function (o, userReplacer, ...args) {
 							...val,
 						};
 						if (!JSON.debug.stringifyClasses[classPath]) {
-							console.log(`Serialising object with class ${classPath}`);
+							console.log(`클래스 ${classPath} 객체를 직렬화합니다`);
 							JSON.debug.stringifyClasses[classPath] = 0;
 						}
 						JSON.debug.stringifyClasses[classPath]++;
 					} else {
 						if (!JSON.debug.stringifyMissingClasses[classPath]) {
-							console.warn(`Serialising object with class ${classPath} failed. Skipping objects like`, val);
+							console.warn(`클래스 ${classPath} 객체 직렬화에 실패했습니다. 다음과 같은 객체는 건너뜁니다`, val);
 							JSON.debug.stringifyMissingClasses[classPath] = 0;
 						}
 						JSON.debug.stringifyMissingClasses[classPath]++;
 					}
 				}
 			} catch (e) {
-				console.error(`Critical error occurred in JSON.parse. Attempting to continue`, e);
+				console.error(`JSON.parse에서 치명적인 오류가 발생했습니다. 계속 진행을 시도합니다`, e);
 			} finally {
 				return userReplacer ? userReplacer(key, nextVal) : nextVal;
 			}
@@ -86,13 +86,13 @@ JSON.parse = function (string, userReviver, ...args) {
 				if (maybeClass && (typeof maybeClass === "object" || typeof maybeClass === "function")) {
 					nextVal = JSON.revive(maybeClass, val);
 					if (!JSON.debug.parseClasses[className]) {
-						console.log(`Revived object with class ${className}`, maybeClass);
+						console.log(`클래스 ${className} 객체를 복원했습니다`, maybeClass);
 						JSON.debug.parseClasses[className] = 0;
 					}
 					JSON.debug.parseClasses[className]++;
 				} else {
 					if (!JSON.debug.parseMissingClasses[className]) {
-						console.warn(`Parsing instance of ${className} failed. Skipping objects like`, val, maybeClass);
+						console.warn(`클래스 ${className} 인스턴스 파싱에 실패했습니다. 다음과 같은 객체는 건너뜁니다`, val, maybeClass);
 						JSON.debug.parseMissingClasses[className] = 0;
 					}
 					JSON.debug.parseMissingClasses[className]++;
@@ -116,7 +116,7 @@ JSON.revive = function (reviverClass, data) {
 		try {
 			nextVal = reviverClass[JSON.proto.reviver].call(nextVal);
 		} catch (e) {
-			console.error(`Failed to revive custom class ${reviverClass.name}`, e);
+			console.error(`사용자 정의 클래스 ${reviverClass.name} 복원에 실패했습니다`, e);
 		}
 	}
 	return nextVal;

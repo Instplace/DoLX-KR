@@ -26,7 +26,7 @@ var ConstantsLoader = (() => {
 				Object.defineProperty(fragment, key, {
 					set() {
 						if (!V.debug) return;
-						Errors.report("A modification of a constant was attempted.", {
+						Errors.report("상수를 수정하려는 시도가 있었습니다.", {
 							key,
 							value,
 							fragment,

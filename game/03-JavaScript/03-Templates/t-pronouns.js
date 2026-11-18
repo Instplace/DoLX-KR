@@ -1,18 +1,18 @@
 function getHe() {
 	switch (V.pronoun) {
 		case "m":
-			return "he";
+			return "그";
 		case "f":
-			return "she";
+			return "그녀";
 		case "i":
-			return "it";
+			return "그것의 것";
 		case "n":
-			return "one";
+			return "그 사람";
 		case "t":
-			return "they";
+			return "그들";
 		default:
-			Errors.report(`Used ?${this.name} without selecting the NPC. Typically requires <<person1>>. ${Utils.GetStack()}`);
-			return "they";
+			Errors.report(`NPC를 선택하지 않은 상태에서 ?${this.name} 사용됨. 보통 먼저 <<person1>> 호출이 필요합니다. ${Utils.GetStack()}`);
+			return "그들";
 	}
 }
 /**
@@ -27,17 +27,18 @@ Template.add(["he", "He"], function () {
 function getHim() {
 	switch (V.pronoun) {
 		case "m":
-			return "him";
+			return "그";
 		case "f":
-			return "her";
+			return "그녀";
 		case "i":
-			return "it";
+			return "그것의 것";
 		case "n":
+			return "그 사람";
 		case "t":
-			return "them";
+			return "그들";
 		default:
-			Errors.report(`Used ?${this.name} without selecting the NPC. Typically requires <<person1>>. ${Utils.GetStack()}`);
-			return "them";
+			Errors.report(`NPC를 선택하지 않은 상태에서 ?${this.name} 사용됨. 보통 먼저 <<person1>> 호출이 필요합니다. ${Utils.GetStack()}`);
+			return "그들";
 	}
 }
 /**
@@ -52,18 +53,18 @@ Template.add(["him", "Him"], function () {
 function getHis() {
 	switch (V.pronoun) {
 		case "m":
-			return "his";
+			return "그의";
 		case "f":
-			return "her";
+			return "그녀의";
 		case "i":
-			return "its";
+			return "그것의";
 		case "n":
-			return "the";
+			return "그 사람의";
 		case "t":
-			return "their";
+			return "그들의";
 		default:
-			Errors.report(`Used ?${this.name} without selecting the NPC. Typically requires <<person1>>. ${Utils.GetStack()}`);
-			return "their";
+			Errors.report(`NPC를 선택하지 않은 상태에서 ?${this.name} 사용됨. 보통 먼저 <<person1>> 호출이 필요합니다. ${Utils.GetStack()}`);
+			return "그들의";
 	}
 }
 /**
@@ -81,12 +82,11 @@ function getHeIs() {
 		case "f":
 		case "i":
 		case "n":
-			return getHe.call(this) + "'s";
 		case "t":
-			return getHe.call(this) + "'re";
+			return getHe.call(this) + "【은는】 ";
 		default:
-			DOL.Errors.report(`Used ?${this.name} without selecting the NPC. Typically requires <<person1>>. ${Utils.GetStack()}`);
-			return "they're";
+			DOL.Errors.report(`NPC를 선택하지 않은 상태에서 ?${this.name} 사용됨. 보통 먼저 <<person1>> 호출이 필요합니다. ${Utils.GetStack()}`);
+			return "그들은";
 	}
 }
 /**
@@ -101,18 +101,18 @@ Template.add(["hes", "Hes"], function () {
 function getHers() {
 	switch (V.pronoun) {
 		case "m":
-			return "his";
+			return "그의 것";
 		case "f":
-			return "hers";
+			return "그녀의 것";
 		case "i":
-			return "its";
+			return "그것의 것";
 		case "n":
-			return "the";
+			return "그 사람의 것";
 		case "t":
-			return "theirs";
+			return "그들의 것";
 		default:
-			Errors.report(`Used ?${this.name} without selecting the NPC. Typically requires <<person1>>. ${Utils.GetStack()}`);
-			return "theirs";
+			Errors.report(`NPC를 선택하지 않은 상태에서 ?${this.name} 사용됨. 보통 먼저 <<person1>> 호출이 필요합니다. ${Utils.GetStack()}`);
+			return "그들의 것";
 	}
 }
 /**
@@ -125,7 +125,21 @@ Template.add(["hers", "Hers"], function () {
 });
 
 function getHimself() {
-	return getHim.call(this) + "self";
+	switch (V.pronoun) {
+		case "m":
+			return "자기 자신";
+		case "f":
+			return "자기 자신";
+		case "i":
+			return "자기 자신";
+		case "n":
+			return "자기 자신";
+		case "t":
+			return "그들 자신";
+		default:
+			Errors.report(`NPC를 선택하지 않은 상태에서 ?${this.name} 사용됨. 보통 먼저 <<person1>> 호출이 필요합니다. ${Utils.GetStack()}`);
+			return "그들 자신";
+	}
 }
 /**
  * ?himself - Returns the pronoun based on whatever $pronoun is set to.
@@ -139,11 +153,11 @@ Template.add(["himself", "Himself"], function () {
 function getPeople() {
 	switch (maleChance()) {
 		case 100:
-			return "men";
+			return "남자들";
 		case 0:
-			return "women";
+			return "여자들";
 		default:
-			return "men and women";
+			return "남녀";
 	}
 }
 /**
@@ -158,11 +172,11 @@ Template.add(["people", "People"], function () {
 function getPeopleYoung() {
 	switch (maleChance()) {
 		case 100:
-			return "boys";
+			return "남학생들";
 		case 0:
-			return "girls";
+			return "여학생들";
 		default:
-			return "boys and girls";
+			return "학생들";
 	}
 }
 /**

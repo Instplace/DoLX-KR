@@ -179,7 +179,7 @@ class EventData {
 	 */
 	set Disable(value) {
 		if (typeof value !== "boolean") {
-			console.debug("EventData.disable set with unexpected data-type, requires boolean.");
+			console.debug("EventData.disable에 예상치 못한 데이터 타입이 설정되었습니다. 불리언 값이 필요합니다.");
 			return;
 		}
 		this.disable = value;
@@ -245,7 +245,7 @@ class EventData {
 				continue;
 			} else if (V.options.debugdisable === "f" || V.debug) {
 				// NPC position is being used more than once, although not a gap, flag.
-				console.warn("NPC slot", element.slot, "is being used more than once. Existing NPCs should be disposed before using their slot.");
+				console.warn("NPC 슬롯 " + element.slot + "【이가】 두 번 이상 사용되고 있습니다. 기존 NPC를 슬롯에서 제거한 뒤 사용해야 합니다.");
 				return false;
 			}
 		}
@@ -259,7 +259,7 @@ class EventData {
 		}
 		if (slots.length !== 0) {
 			if (V.options.debugdisable === "f" || V.debug) {
-				console.warn("NPC slots that are empty:", slots);
+				console.warn("비어 있는 NPC 슬롯:", slots);
 			}
 			return false;
 		}

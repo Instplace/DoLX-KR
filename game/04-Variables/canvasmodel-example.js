@@ -121,7 +121,7 @@ Renderer.CanvasModels.sexdemo = {
 			if (record) {
 				options.filters.under_lower = record.canvasfilter;
 			} else {
-				console.error("Unknown under_lower colour " + options.worn.under_lower.colour);
+				console.error("알 수 없는 under_lower 색상 " + options.worn.under_lower.colour);
 				options.filters.under_lower = {};
 			}
 		}

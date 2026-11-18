@@ -1,5 +1,5 @@
 :: CanvasModel Example
-<<link [[Bedroom]]>><</link>>
+<<link [[침실|Bedroom]]>><</link>>
 <hr>
 
 <!-- "divsex" is cache slot id to preserve layer caches between passages -->
@@ -23,7 +23,6 @@
 <<canvasModelEditor>>
 
 :: Combat Demo Widgets [widget]
-
 <<widget "animateCombat">>
 	<<if !$options.images or !$options.combatImages or (!$options.showCombatImgWhileStanding and $combatExtended.stability gt 0) or ($options.showCombatImgWhenGender isnot $player.sex and $options.showCombatImgWhenGender isnot "both")>>
 		<<exit>>
@@ -125,7 +124,7 @@
 			<<bindCombatDebugControls>>
 			<details>
 				<summary class="d-flex flex-row justify-content-between">
-					<span>Layers</span>
+					<span>레이어</span>
 					<<if CombatEditor.layersChecked>>
 						<input type="checkbox" name="layers" checked />
 					<<else>>
@@ -137,9 +136,9 @@
 				</div>
 			</details>
 			<details>
-				<summary>Main options</summary>
+				<summary>주요 설정</summary>
 				<label class="d-inline-flex flex-column">
-					Position:
+					위치:
 					<<listbox "$position" autoselect>>
 						<<optionsfrom setup.positions>>
 					<</listbox>>
@@ -147,7 +146,7 @@
 
 				<<set _crOverrides.legFrontPosition to PlayerCombatMapper.mapPcToLegFrontPosition(_options)>>
 				<label class="d-inline-flex flex-column">
-					Front leg:
+					앞다리:
 					<<listbox "_crOverrides.legFrontPosition" autoselect>>
 						<<optionsfrom setup.legPositions>>
 					<</listbox>>
@@ -155,7 +154,7 @@
 
 				<<set _crOverrides.legBackPosition to PlayerCombatMapper.mapPcToLegBackPosition(_options)>>
 				<label class="d-inline-flex flex-column">
-					Back leg:
+					뒷다리:
 					<<listbox "_crOverrides.legBackPosition" autoselect>>
 						<<optionsfrom setup.legPositions>>
 					<</listbox>>
@@ -163,7 +162,7 @@
 
 				<<set _crOverrides.animFrames to PlayerCombatMapper.getPcAnimationFrameCount(_options)>>
 				<label class="d-inline-flex flex-column">
-					Frames:
+					프레임:
 					<<listbox "_crOverrides.animFrames" autoselect>>
 						<<option "4" 4>>
 						<<option "2" 2>>
@@ -172,28 +171,29 @@
 
 				<<set _crOverrides.animSpeed to PlayerCombatMapper.getPcAnimationSpeed(_options)>>
 				<label class="d-inline-flex flex-column">
-					Speed:
+					속도:
 					<<listbox "_crOverrides.animSpeed" autoselect>>
-						<<option "VFast" "vfast">>
-						<<option "Fast" "fast">>
-						<<option "Mid" "mid">>
-						<<option "Slow" "slow">>
-						<<option "Idle" "idle">>
+						<<option "매우 빠름" "vfast">>
+						<<option "빠름" "fast">>
+						<<option "보통" "mid">>
+						<<option "느림" "slow">>
+						<<option "대기" "idle">>
 					<</listbox>>
 				</label>
 			</details>
 
 			<details>
-				<summary>Clothing options</summary>
+				<summary>의상 설정</summary>
 				<div class="d-grid grid-auto-2 gap-1">
 					<<for _slot range Object.keys($worn)>>
 						<<set _wornSetup to CombatRenderer.getClothingSetupBySlot(_slot)>>
 						<<set _source to CombatRenderer.getSourceClothing(_slot, _wornSetup)>>
 						<<set _worn to $worn[_slot]>>
-						<<capture _worn, _wornSetup, _source>>
+						<<set _slotKr to window.KR.getClothingSlotKr(_slot)>>
+						<<capture _worn, _wornSetup, _source, _slotKr>>
 							<div class="d-flex flex-column border rounded justify-content-space-between p-1">
 								<label class="d-flex flex-row justify-content-space-between">
-									<<= _slot>>
+									<<= _slotKr>>
 								</label>
 								<label class="d-flex flex-row justify-content-space-between">
 									<<= _wornSetup.name_cap>>
@@ -202,7 +202,7 @@
 									<<= _source.variable>>
 								</label>
 								<label class="d-flex flex-row justify-content-space-between">
-									State:
+									상태:
 									<<listbox "_worn.state" autoselect>>
 										<<optionsfrom setup.clothingStates>>
 									<</listbox>>
@@ -230,16 +230,16 @@
 			<</if>>
 			<<capture _npc>>
 				<div class="p-2 border border-primary">
-					Type: <<- _npc.type>>
-					Sex: <<- _npc.gender>>
-					Appearance: <<- _npc.pronoun>>
+					타입: <<- _npc.type>>
+					성별: <<- _npc.gender>>
+					외형: <<- _npc.pronoun>>
 				</div>
 			<</capture>>
 		<</for>>
 	</div>
 
 	<div class="d-flex flex-vertical">
-		<<button "Add human">>
+		<<button "인간 추가">>
 			<<generateNPC `$NPCList.countWith(a => a.type) + 1`>>
 			<<replace "#combat-setup">>
 				<<combatsetup>>
@@ -248,13 +248,13 @@
 		<<listbox "_animalType" autoselect>>
 			<<optionsfrom $BeastList>>
 		<</listbox>>
-		<<button `"Set " + _animalType`>>
+		<<button `"설정: " + _animalType`>>
 			<<beastNEWinit `$NPCList.countWith(a => a.type) + 1` _animalType>>
 			<<replace "#combat-setup">>
 				<<combatsetup>>
 			<</replace>>
 		<</button>>
-		<<button "Clear">>
+		<<button "초기화">>
 			<<endevent>>
 			<<replace "#combat-setup">>
 				<<combatsetup>>
@@ -264,12 +264,12 @@
 <</widget>>
 
 <<widget "combatdemotools">>
-	Tools:
+	도구:
 	<div>
 		<div id="tools-random-peek">
-			Next random: <<- State.prng.peek(1)>>
+			다음 난수: <<- State.prng.peek(1)>>
 		</div>
-		<<button "Randomly shift RNG">>
+		<<button "RNG 무작위 변경">>
 			<<script>>
 				const iterations = Math.trunc(Math.random() * 1000);
 				for (let index = 0; index < iterations; index++) {
@@ -277,7 +277,7 @@
 				}
 			<</script>>
 			<<replace "#tools-random-peek">>
-				Next random: <<- State.prng.peek(1)>>
+				다음 난수: <<- State.prng.peek(1)>>
 			<</replace>>
 		<</button>>
 	</div>

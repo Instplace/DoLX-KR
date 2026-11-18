@@ -58,7 +58,7 @@ Weather.BodyTemperature = (() => {
 		if (activity in T.bodyActivity) {
 			T.bodyActivity[activity] = 1;
 		} else {
-			console.error(`addActivity(): ${activity} doesn't exist.`);
+			console.error(`addActivity(): ${activity}【이가】 존재하지 않습니다.`);
 		}
 	}
 
@@ -303,7 +303,7 @@ Weather.BodyTemperature = (() => {
 			return V.player.bodyTemperature;
 		},
 		set(value) {
-			if (isNaN(value)) console.warn("Tried to set temperature to a non-number value", value);
+			if (isNaN(value)) console.warn("숫자가 아닌 값으로 온도를 설정하려 했습니다", value);
 			V.player.bodyTemperature = Number(value);
 		},
 		isDecreasing() {

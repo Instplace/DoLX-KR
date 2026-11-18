@@ -5,12 +5,6 @@ document.addEventListener('deviceready', onDeviceReady, false);
 function onDeviceReady() {
 	// Cordova is now initialized. Have fun!
 
-	// Hide the status bar
-	StatusBar.hide();
-	// AndroidFullScreen.immersiveMode(AndroidFullScreen.IMMERSIVE_MODE_IMMERSIVE_STICKY);
-	AndroidFullScreen.setSystemUiVisibility(AndroidFullScreen.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-	DisplayCutout.setDisplayCutout(DisplayCutout.LAYOUT_IN_DISPLAY_CUTOUT_MODE_NEVER);
-
 	// turn on the toaster
 	window.Toast = cordova.plugins.rnk.toast;
 	// record the last time when back button was pressed
@@ -31,6 +25,4 @@ function onDeviceReady() {
 
 		return false;
 	}, false)
-
-	
 }

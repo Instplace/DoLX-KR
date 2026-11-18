@@ -569,11 +569,11 @@ function wardrobesUpdate() {
 		V.wardrobes = {
 			shopReturn: "wardrobe",
 			wardrobe: {
-				NOTE: "DO NOT USE THIS OBJECT TO STORE CLOTHES",
+				NOTE: "이 물건을 옷 보관용으로 사용하지 마십시오",
 				unlocked: true,
 				shopSend: true,
 				transfer: true,
-				name: "Orphanage",
+				name: "고아원",
 			},
 			changingRoom: clone(defWardrobe),
 			edensCabin: clone(defWardrobe),

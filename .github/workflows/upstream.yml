@@ -1,0 +1,44 @@
+name: Upstream check
+
+# DoLX(master)와 DoLP-KR(main)에 이 저장소가 마지막으로 병합한 뒤의 새 커밋이 있으면 이슈로 알린다.
+# 병합한 커밋은 .github/upstream.json에 적어 두고, 병합할 때 함께 고친다.
+
+on:
+  schedule:
+    - cron: "0 0 * * 1" # 월요일 09:00 (한국 시간)
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: 새 커밋 확인
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          body=""
+          for key in dolx dolpkr; do
+            repo=$(jq -r ".$key.repo" .github/upstream.json)
+            ref=$(jq -r ".$key.ref" .github/upstream.json)
+            done_at=$(jq -r ".$key.commit" .github/upstream.json)
+            now=$(git ls-remote "$repo" "refs/heads/$ref" | cut -f1)
+            if [ -z "$now" ]; then echo "::warning::$repo $ref를 읽지 못했습니다"; continue; fi
+            echo "$key: 병합한 커밋 ${done_at:0:8}, 지금 ${now:0:8}"
+            if [ "$now" != "$done_at" ]; then
+              body="$body- **$key** ($repo, \`$ref\`): 병합한 커밋 \`${done_at:0:8}\` → 지금 \`${now:0:8}\`"$'\n'
+            fi
+          done
+          title="업스트림에 새 커밋이 있습니다"
+          number=$(gh issue list --state open --search "in:title $title" --json number --jq '.[0].number // empty')
+          if [ -z "$body" ]; then
+            echo "새 커밋 없음"
+            [ -n "$number" ] && gh issue close "$number" --comment "병합이 끝나 새 커밋이 없습니다."
+            exit 0
+          fi
+          text="$body"$'\n'"병합한 뒤에는 \`.github/upstream.json\`의 커밋을 함께 고칩니다."
+          if [ -n "$number" ]; then gh issue edit "$number" --body "$text"; else gh issue create --title "$title" --body "$text"; fi

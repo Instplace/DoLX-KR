@@ -200,14 +200,14 @@ Macro.add("rangeslider", {
 
 		if (this.args.length < 7) {
 			const errors = [];
-			this.args.length < 1 && errors.push("variable min name");
-			this.args.length < 2 && errors.push("variable max name");
-			this.args.length < 3 && errors.push("minimum default value");
-			this.args.length < 4 && errors.push("maximum default value");
-			this.args.length < 5 && errors.push("min bound value");
-			this.args.length < 6 && errors.push("max bound value");
-			this.args.length < 7 && errors.push("step value");
-			return this.error("No " + errors.join(" or ") + " specified.");
+			this.args.length < 1 && errors.push("최솟값 변수명");
+			this.args.length < 2 && errors.push("최댓값 변수명");
+			this.args.length < 3 && errors.push("최소 기본값");
+			this.args.length < 4 && errors.push("최대 기본값");
+			this.args.length < 5 && errors.push("하한값");
+			this.args.length < 6 && errors.push("상한값");
+			this.args.length < 7 && errors.push("단계값");
+			return this.error(errors.join(" 또는 ") + "【이가】 지정되지 않았습니다.");
 		}
 
 		const minName = this.args[0].trim();
@@ -221,18 +221,18 @@ Macro.add("rangeslider", {
 		const callbacks = typeof this.args[8] === "object" ? this.args[8] : typeof this.args[7] === "object" ? this.args[7] : {};
 		const options = optionsArg || {};
 
-		if (minName[0] !== "$" && minName[0] !== "_") return this.error(`Minimum variable name (${this.args[0]}) is missing its sigil ($ or _).`);
-		if (maxName[0] !== "$" && maxName[0] !== "_") return this.error(`Maximum variable name (${this.args[1]}) is missing its sigil ($ or _).`);
-		if (!Number.isFinite(minValue)) return this.error(`lowerBound (${this.args[4]}) is not a number.`);
-		if (!Number.isFinite(maxValue)) return this.error(`upperBound (${this.args[5]}) is not a number.`);
-		if (!Number.isFinite(stepValue) || stepValue <= 0) return this.error(`stepValue (${this.args[6]}) must be a number > 0.`);
-		if (minDefault < minValue) return this.error(`minDefault (${this.args[2]}) is less than lowerBound (${this.args[4]}).`);
-		if (maxDefault > maxValue) return this.error(`maxDefault (${this.args[3]}) is greater than upperBound (${this.args[5]}).`);
-		if (minDefault > maxDefault) return this.error(`minDefault (${this.args[2]}) cannot exceed maxDefault (${this.args[3]}).`);
+		if (minName[0] !== "$" && minName[0] !== "_") return this.error(`최솟값 변수명(${this.args[0]})에 접두 기호($ 또는 _)가 없습니다.`);
+		if (maxName[0] !== "$" && maxName[0] !== "_") return this.error(`최댓값 변수명(${this.args[1]})에 접두 기호($ 또는 _)가 없습니다.`);
+		if (!Number.isFinite(minValue)) return this.error(`하한값(${this.args[4]})이 숫자가 아닙니다.`);
+		if (!Number.isFinite(maxValue)) return this.error(`상한값(${this.args[5]})이 숫자가 아닙니다.`);
+		if (!Number.isFinite(stepValue) || stepValue <= 0) return this.error(`단계값(${this.args[6]})은 0보다 큰 숫자여야 합니다.`);
+		if (minDefault < minValue) return this.error(`최소 기본값(${this.args[2]})이 하한값(${this.args[4]})보다 작습니다.`);
+		if (maxDefault > maxValue) return this.error(`최대 기본값(${this.args[3]})이 상한값(${this.args[5]})보다 큽니다.`);
+		if (minDefault > maxDefault) return this.error(`최소 기본값(${this.args[2]})은 최대 기본값(${this.args[3]})을 초과할 수 없습니다.`);
 		if (options.minClamp !== undefined && options.minClamp < minValue)
-			return this.error(`minClamp (${options.minClamp}) cannot be less than minValue (${minValue}).`);
+			return this.error(`minClamp(${options.minClamp})는 최솟값(${minValue})보다 작을 수 없습니다.`);
 		if (options.maxClamp !== undefined && options.maxClamp > maxValue)
-			return this.error(`maxClamp (${options.maxClamp}) cannot be greater than maxValue (${maxValue}).`);
+			return this.error(`maxClamp(${options.maxClamp})는 최댓값(${maxValue})보다 클 수 없습니다.`);
 
 		if (Wikifier.getValue(minName) == null) Wikifier.setValue(minName, minDefault ?? minValue);
 		if (Wikifier.getValue(maxName) == null) Wikifier.setValue(maxName, maxDefault ?? maxValue);

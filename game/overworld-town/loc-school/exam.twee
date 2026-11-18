@@ -63,16 +63,16 @@ setup.schoolTraitDescriptions = {
 		<<default>>
 			<<run throw new Error("Invalid argument passed to 'exam' widget: ", _args[0])>>
 	<</switch>>
-	Understanding: <span class="black"><<print Math.trunc($exam_chance)>>%</span>
+	이해력: <span class="black"><<print Math.trunc($exam_chance)>>%</span>
 	<br>
 	<<if C.npc[$_teacher_name].love gte 10>>
 		<<set $exam_chance += 5>>
-		<span class="green">$_teacher_name's <<print setup.loveAlias[$_teacher_name]()>>:</span> <span class="black">+5%</span>
+		<span class="green"><<print window.KR.personNameDict[$_teacher_name] || $_teacher_name>>의 <<print setup.loveAlias[$_teacher_name]()>>:</span> <span class="black">+5%</span>
 		<br>
 	<</if>>
 	<<if $delinquency lte 400>>
 		<<set $exam_chance += 5>>
-		<span class="green">Model student:</span> <span class="black">+5%</span>
+		<span class="green">모범생:</span> <span class="black">+5%</span>
 		<br>
 	<</if>>
 	<<if _args[0] is "maths">>
@@ -83,36 +83,36 @@ setup.schoolTraitDescriptions = {
 			<br>
 		<<elseif $whitneymaths is "active">>
 			<<set $exam_chance -= 5>>
-			<span class="pink">Whitney's distractions:</span> <span class="black">-5%</span>
+			<span class="pink">휘트니의 방해:</span> <span class="black">-5%</span>
 			<br>
 		<<elseif $whitneymaths is "seat">>
 			<<set $exam_chance -= 10>>
-			<span class="red">Whitney's distractions:</span> <span class="black">-10%</span>
+			<span class="red">휘트니의 방해:</span> <span class="black">-10%</span>
 			<br>
 		<</if>>
 	<</if>>
 	<<if effectiveDrunk() gte 1>>
 		<<set _drunk to Math.ceil(effectiveDrunk() / 50)>>
 		<<set $exam_chance -= _drunk>>
-		<span class="purple">Drunk:</span> <span class="black">-_drunk%</span>
+		<span class="purple">술에 취함:</span> <span class="black">-_drunk%</span>
 		<br>
 	<</if>>
 	<<if $anxiety gte 2>>
 		<<set $exam_chance -= 20>>
-		<span class="red">Very anxious:</span> <span class="black">-20%</span>
+		<span class="red">매우 초조함:</span> <span class="black">-20%</span>
 		<br>
 	<<elseif $anxiety gte 1>>
 		<<set $exam_chance -= 10>>
-		<span class="red">Anxious:</span> <span class="black">-10%</span>
+		<span class="red">초조함:</span> <span class="black">-10%</span>
 		<br>
 	<</if>>
 	<<if $arousal gte 8000>>
 		<<set $exam_chance -= 10>>
-		<span class="lewd">Horny:</span> <span class="black">-10%</span>
+		<span class="lewd">발정남:</span> <span class="black">-10%</span>
 		<br>
 	<<elseif $arousal gte 6000>>
 		<<set $exam_chance -= 5>>
-		<span class="lewd">Aroused:</span> <span class="black">-5%</span>
+		<span class="lewd">흥분함:</span> <span class="black">-5%</span>
 		<br>
 	<</if>>
 
@@ -129,16 +129,16 @@ setup.schoolTraitDescriptions = {
 	<<if V[$_subject + '_exam'] gte (_cheatingSuccessful ? 25 : 50) and $exam_chance gte V[$_subject + '_exam_difficulty'] and !$xchange.pill.bimboEffect>>
 		<<if V[$_subject + 'trait'] gte 4>>
 			<<school_skill_up $_subject>>
-			<<school_mark $_subject>> printed and circled on the front, with <span class="green">"Distinction"</span> written beside it in green ink.<<ggcontrol>><<control 25>><<ldelinquency>><<detention -6>>
+			첫 페이지에 동그라미 쳐진 <<school_mark $_subject>>【이가】 인쇄되어 있고, 그 옆에 초록색 잉크로 <span class="green">"우수"</span>라고 적혀 있다.<<ggcontrol>><<control 25>><<ldelinquency>><<detention -6>>
 			<<distinction_stat>>
 		<<else>>
 			<<school_skill_up $_subject>>
-			<<school_mark $_subject>> printed and circled on the front. <span class="green">You've improved your mark!</span>
+			첫 페이지에 동그라미 쳐진 <<school_mark $_subject>>【이가】 인쇄되어 있다. <span class="green">점수가 올랐다!</span>
 			<br>
 			<<school_skill_up_text $_subject>>
 		<</if>>
 	<<else>>
-		<<school_mark $_subject>> printed and circled on the front. The expected mark.
+		첫 페이지에 동그라미 쳐진 <<school_mark $_subject>>【이가】 인쇄되어 있다. 예상했던 점수다.
 	<</if>>
 	<<unset $exam_chance>>
 <</widget>>
@@ -150,7 +150,7 @@ setup.schoolTraitDescriptions = {
 	<<set $history_exam_difficulty to random(1, 100)>>
 <</widget>>
 
-<<widget "school_mark">>
+<<widget "school_mark">><<silently>>
 	<<set $_trait to V[_args[0] + 'trait']>>
 	<<if (_args[0] is "english" and $AMCTraits.english is 2) or (_args[0] is "maths" and $AMCTraits.maths is 2) or (_args[0] is "science" and $AMCTraits.science is 2) or (_args[0] is "history" and $AMCTraits.history is 2)>>
 		<<set _AMCmod to 2>>
@@ -158,18 +158,18 @@ setup.schoolTraitDescriptions = {
 		<<set _AMCmod to 1>>
 	<</if>>
 	<<switch Math.clamp($_trait,-1,4 * _AMCmod)>>
-		<<case 8>> an <span class="lustful">SSS</span>
-		<<case 7>> an <span class="gold">SS</span>
-		<<case 6>> an <span class="yellow">S+</span>
-		<<case 5>> an <span class="yellow">S</span>
-		<<case 4>> an <span class="green">A*</span>
-		<<case 3>> an <span class="teal">A</span>
-		<<case 2>> a <span class="lblue">B</span>
-		<<case 1>> a <span class="blue">C</span>
-		<<case 0>> a <span class="purple">D</span>
-		<<default>> an <span class="red">F</span>
+		<<case 8>> <<set _text_output to '<span class="lustful">SSS</span>'>><span></span>
+		<<case 7>> <<set _text_output to '<span class="gold">SS</span>'>><span></span>
+		<<case 6>> <<set _text_output to '<span class="yellow">S+</span>'>><span></span>
+		<<case 5>> <<set _text_output to '<span class="yellow">S</span>'>><span></span>
+		<<case 4>> <<set _text_output to '<span class="green">A+</span>'>>
+		<<case 3>> <<set _text_output to '<span class="teal">A</span>'>>
+		<<case 2>> <<set _text_output to '<span class="lblue">B</span>'>>
+		<<case 1>> <<set _text_output to '<span class="blue">C</span>'>>
+		<<case 0>> <<set _text_output to '<span class="purple">D</span>'>>
+		<<default>> <<set _text_output to '<span class="red">F</span>'>>
 	<</switch>>
-<</widget>>
+<</silently>><<print _text_output>><</widget>>
 
 <<widget "school_skill_up">>
 	<<school_skill_change _args[0] 1>>
@@ -201,7 +201,6 @@ setup.schoolTraitDescriptions = {
 	<<set $skulduggerydifficulty to [100,200,400,700,1100,1100][Math.clamp($_trait + 1, 0, 5)]>>
 <</widget>>
 
-
 <<widget "science_skill_up_text">>
 	<<school_skill_up_text "science">>
 <</widget>>
@@ -219,7 +218,14 @@ setup.schoolTraitDescriptions = {
 <</widget>>
 
 <<widget "school_skill_up_text">>
-	<<set $_subject to _args[0].toUpperFirst()>>
+	<<switch _args[0]>>
+		<<case "science">><<set $_subject to "과학">>
+		<<case "maths">><<set $_subject to "수학">>
+		<<case "english">><<set $_subject to "영어">>
+		<<case "history">><<set $_subject to "역사">>
+		<<case "housekeeping">><<set $_subject to "가사">>
+		<<default>><<set $_subject to _args[0].toUpperFirst()>>
+	<</switch>>
 	<<set $_trait to V[_args[0] + 'trait']>>
 	<<if $_trait lt 1>>
 		<span class="blue">$_subject</span>: Keep at it, and you're sure to benefit.
@@ -236,10 +242,9 @@ setup.schoolTraitDescriptions = {
 	<</if>>
 
 	<<if $_trait lt 4 * _AMCmod and ($passage is "Science Exam" or $passage is "Maths Exam" or $passage is "English Exam" or $passage is "History Exam")>>
-		However, the next exam will be harder.
+		하지만 다음 시험은 더 어려워질 것이다.
 	<</if>>
 <</widget>>
-
 
 :: Science Exam
 <<schooleffects>><<effects>><<wearProp "pen">>
@@ -251,9 +256,9 @@ setup.schoolTraitDescriptions = {
 
 <<switch $phase>>
 	<<case 0>>
-		You focus on the exam, doing your best to tune out the scribbling and groans of other students.
+		당신은 시험에 집중하며, 다른 학생들의 사각거리는 소리와 신음 소리를 무시하려고 최선을 다한다.
 	<<case 1>>
-		You take a deep breath, and try not to let the pressure get to you.
+		당신은 심호흡을 하고, 압박감에 굴하지 않으려 노력한다.
 	<<case 2 3 5>>
 		<<if $phase is 5>>
 			<<if $earSlime.corruption gte (currentSkillValue('willpower') / 10)>>
@@ -264,13 +269,13 @@ setup.schoolTraitDescriptions = {
 			<</if>>
 		<<else>>
 			<<skulduggerycheck>><<set _cheating to true>>
-			<<if $phase is 3>>You follow the <<= numberOfEarSlime() gte 2 ? "slimes'" : "slime's">> command and look for ways to cheat in the exam.<</if>>
+			<<if $phase is 3>>당신은 <<= numberOfEarSlime() gte 2 ? "슬라임들의" : "슬라임의">> 명령에 따라 시험에서 부정행위를 할 방법을 찾는다.<</if>>
 		<</if>>
 
 		<<if _cheating>>
-			You watch Sirris. <<Hes>> supposed to keep an eye on the room, but spends more time looking out the window. You should be able to copy your neighbours if you're
+			당신은 시리스를 지켜본다. <<He>>【은는】 교실을 감시해야 하지만, 창밖을 보는 데 더 많은 시간을 보낸다. 조심한다면 이웃의 답을 베낄 수 있을 것이다.
 			<<if $skulduggerysuccess is 1>>
-				careful. <span class="green">You manage to glean a few answers to some of the tougher questions.</span>
+				조심스럽게. <span class="green">당신은 더 어려운 몇몇 문제에 대한 답을 간신히 얻어낸다.</span>
 				<<set _cheatingSuccessful to true>>
 				<<if $temple_calligraphy gte 11>>
 					<<set $exam_chance += 20>><<passPercent 20>>
@@ -278,9 +283,9 @@ setup.schoolTraitDescriptions = {
 					<<set $exam_chance += 10>><<passPercent 10>>
 				<</if>>
 			<<else>>
-				care-
+				조심-
 				<br><br>
-				<span class="red">"Focus on your own paper,"</span> Sirris says, looking right at you. <<He>> wasn't as distracted as <<he>> appeared.
+				<span class="red">"네 시험지에나 집중해라."</span> 시리스가 당신을 똑바로 쳐다보며 말한다. <<He>>【은는】 보이는 것만큼 정신이 팔려 있지는 않았다.
 				<<gstress>><<stress 6>><<set $exam_chance -= 10>><<passPercent -10>><<ggdelinquency>><<detention 5>>
 			<</if>>
 			<br><br>
@@ -288,26 +293,25 @@ setup.schoolTraitDescriptions = {
 			<<skulduggeryuseinline>>
 		<</if>>
 	<<case 4>>
-		You ignore the <<= numberOfEarSlime() gte 2 ? "slimes'" : "slime's">> command, and focus on doing your best to tune out the scribbling and groans of other students.
+		당신은 <<= numberOfEarSlime() gte 2 ? "슬라임들의" : "슬라임의">> 명령을 무시하고, 다른 학생들의 사각거리는 소리와 신음 소리를 무시하는 데 최선을 다한다.
 <</switch>>
 <br><br>
 
-Sirris looks at <<his>> watch now and then. "And done," <<he>> says. "I hope that wasn't too bad." Some students continue to scribble, but Sirris zips around the room in <<his>> haste to retrieve the booklets.
+시리스는 이따금 <<his>> 시계를 본다. "끝이다." <<he>>【이가】 말한다. "결과가 나쁘지 않기를 바란다." 몇몇 학생들은 계속해서 낙서를 하지만, 시리스는 시험지를 걷기 위해 서둘러 교실을 돌아다닌다.
 <br><br>
 
-The class are allowed to chat while Sirris marks the papers. They make up for the period of silence with more noise than usual, though some are too nervous to talk.
+시리스가 시험지를 채점하는 동안 반 학생들은 잡담을 할 수 있다. 그들은 평소보다 더 시끄럽게 침묵의 시간을 만회하지만, 일부는 너무 긴장해서 말을 하지 못한다.
 <br><br>
 
-The bell rings. Sirris stands by the door, smiling as <<he>> hands the booklets back to passing students. <<He>> holds out yours,
+종이 울린다. 시리스는 문 옆에 서서, 지나가는 학생들에게 시험지를 돌려주며 미소 짓는다. <<He>>【은는】 당신의 시험지도 내민다.
 <<exam_result "science">>
 <br><br>
 
-You join the throng of students in the hallway.
+당신은 복도에 있는 학생들 무리에 합류한다.
 <br><br>
 
-<<link [[Next|Hallways]]>><<endevent>><</link>>
+<<link [[다음|Hallways]]>><<endevent>><</link>>
 <br>
-
 
 :: Maths Exam
 <<schooleffects>><<effects>><<wearProp "pencil">>
@@ -320,26 +324,26 @@ You join the throng of students in the hallway.
 
 <<switch $phase>>
 	<<case 0 7>>
-		<<if $phase is 7>>You ignore the <<= numberOfEarSlime() gte 2 ? "slimes'" : "slime's">> command, and<<else>>You<</if>>
+		<<if $phase is 7>>당신은 <<= numberOfEarSlime() gte 2 ? "슬라임들의" : "슬라임의">> 명령을 무시하고,<<else>>당신은<</if>>
 		<<if [1,2].includes($whitney_orphanage_special_seen) and ($whitneymaths is "active" or $whitneymaths is "seat")>>
 			try to focus on the exam, but Whitney never lets a full minute pass without another kick, jab, or hissed insult. Each time you recover your place, 
 			<<nnpc_he "Whitney">> knocks you onto the wrong line again.
 		<<elseif $whitneymaths is "active">>
-			try to focus on the exam, but Whitney's frequent distractions make it difficult to concentrate.
+			시험에 집중하려 하지만, 휘트니가 자꾸 방해해서 집중하기 어렵다.
 		<<elseif $whitneymaths is "seat">>
-			try to focus on the exam, but Whitney's sporadic groping makes it difficult to concentrate. <<garousal>><<arousal 300 "genitals">><<arousal 300 "bottom">>
+			시험에 집중하려 하지만, 휘트니가 간헐적으로 더듬거리는 탓에 집중하기 어렵다. <<garousal>><<arousal 300 "genitals">><<arousal 300 "bottom">>
 		<<else>>
-			focus on the exam, doing your best to tune out the scribbling and groans of other students.
+			다른 학생들이 글씨를 쓰거나 신음하는 소리를 무시하려 애쓰며 시험에 집중한다.
 		<</if>>
 	<<case 1>>
 		<<if [1,2].includes($whitney_orphanage_special_seen) and ($whitneymaths is "active" or $whitneymaths is "seat")>>
 			You take a deep breath and try to relax. Whitney notices, then slowly grinds <<nnpc_his "Whitney">> shoe against your ankle until your grip tightens around the pencil again.
 		<<elseif $whitneymaths is "active">>
-			You take a deep breath, and try not to let Whitney's frequent distractions bother you.
+			당신은 심호흡을 하고, 휘트니의 잦은 방해에 신경 쓰지 않으려 노력한다.
 		<<elseif $whitneymaths is "seat">>
-			You take a deep breath, and try not to let Whitney's sporadic groping bother you. <<garousal>><<arousal 150 "genitals">><<arousal 150 "bottom">>
+			당신은 심호흡을 하고, 휘트니의 간헐적인 더듬거림에 신경 쓰지 않으려 노력한다. <<garousal>><<arousal 150 "genitals">><<arousal 150 "bottom">>
 		<<else>>
-			You take a deep breath, and try not to let the pressure get to you.
+			당신은 심호흡을 하고, 압박감에 굴하지 않으려 노력한다.
 		<</if>>
 	<<case 2 6 8>>
 		<<if $phase is 8>>
@@ -351,14 +355,14 @@ You join the throng of students in the hallway.
 			<</if>>
 		<<else>>
 			<<skulduggerycheck>><<set _cheating to true>>
-			<<if $phase is 6>>You follow the <<= numberOfEarSlime() gte 2 ? "slimes'" : "slime's">> command and look for ways to cheat in the exam.<</if>>
+			<<if $phase is 6>>당신은 <<= numberOfEarSlime() gte 2 ? "슬라임들의" : "슬라임의">> 명령에 따라 시험에서 부정행위를 할 방법을 찾는다.<</if>>
 		<</if>>
 		<<generatey3>><<person3>>
 
 		<<if _cheating>>
-			You glance sideways. The <<person>> beside you seems confident. You cover your glances with innocuous movements,
+			옆을 힐끗 쳐다본다. 옆자리의 <<person>>【은는】 자신만만해 보인다. 당신은 아무렇지 않은 척 움직이며 시선을 가린다.
 			<<if $skulduggerysuccess is 1>>
-				hoping to avoid River's gaze. <span class="green">You manage to glean a few answers to some of the tougher questions.</span>
+				리버의 시선을 피하려 애쓴다. <span class="green">당신은 몇몇 어려운 문제의 답을 간신히 엿보는 데 성공한다.</span>
 				<<set _cheatingSuccessful to true>>
 				<<if $temple_calligraphy gte 11>>
 					<<set $exam_chance += 20>><<passPercent 20>>
@@ -366,9 +370,9 @@ You join the throng of students in the hallway.
 					<<set $exam_chance += 10>><<passPercent 10>>
 				<</if>>
 			<<else>>
-				hoping to-
+				그러려던-
 				<br><br>
-				<span class="red">"Eyes in front,"</span> River says, piercing you with <<person1>><<his>> gaze. <<He>> doesn't say another word on the matter, but you know your paper will be under thorough scrutiny.
+				<span class="red">"앞이나 봐."</span> 리버가 <<person1>><<his>> 시선으로 당신을 꿰뚫으며 말한다. <<He>>【은는】 그 문제에 대해 더는 아무 말도 하지 않지만, 당신은 당신의 시험지가 철저한 감시 아래 놓일 것을 안다.
 				<<gstress>><<stress 6>><<set $exam_chance -= 10>><<passPercent -10>><<ggdelinquency>><<detention 5>>
 			<</if>>
 			<br><br>
@@ -379,58 +383,58 @@ You join the throng of students in the hallway.
 		<<npc Whitney 3>>
 		<<if $danceSuccess>>
 			<<wearProp "rubber">>
-			You glance behind you as Whitney throws, <span class="green">and manage to snatch the rubber from the air.</span>
-			Deprived of <<person3>><<his>> projectile, Whitney can only glower.
+			휘트니가 던지는 순간 뒤를 돌아본다. <span class="green">당신은 공중에서 지우개를 낚아채는 데 성공한다.</span>
+			던질 것을 빼앗긴 휘트니는 그저 노려볼 수밖에 없다.
 			<<set $exam_chance += 5>><<passPercent 5>>
 		<<else>>
-			You glance behind you as Whitney throws, hoping to snatch the rubber from the air.
+			휘트니가 던지는 순간 뒤를 돌아보며, 공중에서 지우개를 낚아채려 한다.
 			<br><br>
 
-			<span class="red">"Eyes in front,"</span> River says, piercing you with <<person1>><<his>> gaze. <<He>> doesn't say another word on the matter, but you know your paper will be under thorough scrutiny.
+			<span class="red">"앞이나 봐."</span> 리버가 <<person1>><<his>> 시선으로 당신을 꿰뚫으며 말한다. <<He>>【은는】 그 문제에 대해 더는 아무 말도 하지 않지만, 당신은 당신의 시험지가 철저한 감시 아래 놓일 것을 안다.
 			<<gstress>><<stress 6>><<passPercent -10>><<set $exam_chance -= 10>>
 			<br><br>
 
-			Whitney stops harassing you, but you just know <<person3>><<hes>> smirking.
+			휘트니는 당신을 괴롭히는 것을 멈추지만, 당신은 <<person3>><<he>>【은는】 씩 웃고 있다는 것을 안다.
 		<</if>>
 	<<default>>
 		<<if $phase is 4 or $phase is 5>>
 			<<npc Whitney 3>><<person3>>
-			You <<npcUndressText `C.npc.Whitney` "lower">>,
+			당신은 <<npcUndressText `C.npc.Whitney` "lower">>,
 			<<if $phase is 4>>
-				and wrap your fingers around <<his>> <<print C.npc.Whitney.penisdesc>>.
+				손가락으로 <<his>> <<print window.KR.getPenisDescKr(C.npc.Whitney.penisdesc)>>【을를】 감싼다.
 			<<else>>
-				and press your fingers against <<his>> clit.
+				손가락을 <<his>> 클리토리스에 갖다 댄다.
 			<</if>>
-			You <<handtext>> stroke <<him>>.
+			당신은 <<handtext>> <<him>>【을를】 쓰다듬는다.
 			<br><br>
 			<<if currentSkillValue("handskill") gte random(1, 1000)>>
-				You need to finish <<him>> quick, before River notices.
+				리버가 알아채기 전에 빨리 <<him>>【을를】 끝내야 한다.
 				<<if $phase is 4>>
-					<<He>> has the sense not to make a noise, but shudders as <<he>> <span class="green">climaxes over your hand.</span><<bodyliquid "leftarm" "semen">>
+					<<He>>【은는】 소리를 내지 않으려 애쓰지만, 당신의 손 위에서 <span class="green">절정하며</span> 몸을 떤다.<<bodyliquid "leftarm" "semen">>
 				<<else>>
-					<<He>> has the sense not to make a noise, but shudders as <<he>> <span class="green">climaxes.</span>
+					<<He>>【은는】 소리를 내지 않으려 애쓰지만, <span class="green">절정하며</span> 몸을 떤다.
 				<</if>>
 				<<passPercent 5>><<set $exam_chance += 5>>
 				<br><br>
 
-				<<He>> leans back, content, allowing you to work through the booklet.
+				<<He>>【은는】 만족스럽게 등을 기대고, 당신이 문제지를 풀도록 내버려 둔다.
 			<<else>>
-				You know you need to finish <<him>> quick, before River notices, but it's difficult with such limited movement.
+				리버가 알아채기 전에 빨리 <<him>>【을를】 끝내야 한다는 것을 알지만, 움직임이 제한되어 있어 어렵다.
 				<br><br>
 
-				<span class="red">"Stop fidgeting,"</span> River says, piercing you with <<person1>><<his>> gaze. You pull your hand away, leaving you to endure Whitney's sporadic groping. <<garousal>><<arousal 300 "genitals">><<arousal 300 "bottom">>
+				<span class="red">"꼼지락거리지 마."</span> 리버가 <<person1>><<his>> 시선으로 당신을 꿰뚫으며 말한다. 당신은 손을 떼고, 휘트니의 간헐적인 더듬거림을 견뎌야 한다. <<garousal>><<arousal 300 "genitals">><<arousal 300 "bottom">>
 			<</if>>
 		<</if>>
 <</switch>>
 <br><br>
 
-River watches throughout, casting an occasional glance at the clock on the wall. "Put down your pens," <<person1>><<he>> says. A <<person2>><<person>> keeps writing, until River shoots <<him>> a sharp look.
+리버는 내내 지켜보며, 벽에 걸린 시계를 가끔 힐끗 쳐다본다. "펜 내려놔." <<person1>><<he>>【이가】 말한다. 한 <<person2>><<person>>【이가】 계속 글을 쓰자, 리버가 <<him>>【을를】 날카롭게 쏘아본다.
 <br><br>
 
-River directs the class to solve some "fun" puzzles at the back of your textbooks while <<person1>><<he>> marks the exam. It only takes a few minutes.
+리버는 <<person1>><<he>>【이가】 시험지를 채점하는 동안 반 학생들에게 교과서 뒤에 있는 "재미있는" 퍼즐을 풀라고 지시한다. 채점은 몇 분밖에 걸리지 않는다.
 <br><br>
 
-The marked booklet lands on your desk,
+채점된 문제지가 당신의 책상 위에 놓인다.
 <<exam_result "maths">>
 <br><br>
 
@@ -442,21 +446,21 @@ The marked booklet lands on your desk,
 		Whitney snatches your marked booklet before you can properly read it. <<He>> studies the result, crushes the pages into a ball, and drops it beneath <<his>> shoe.
 		"Whatever it says, it isn't good enough. Pick it up, <<slut>>."
 	<<else>>
-		Whitney looks at your exam result and hands you <<hers>> all crumpled up, "Throw this away for me, <<slut>>." You open it to find
+		휘트니는 당신의 시험 결과를 쳐다보더니 꼬깃꼬깃 뭉친 <<he>>의 시험지를 당신에게 건넨다. "이거나 갖다 버려, <<slut>>." 당신이 종이를 펴보자 그 안에는
 		<<switch random(1, 3)>>
-			<<case 1>>an <span class="green">A*</span>
-			<<case 2>>an <span class="teal">A</span>
-			<<case 3>>a <span class="lblue">B</span>
+			<<case 1>><span class="green">A+</span>
+			<<case 2>><span class="teal">A</span>
+			<<case 3>><span class="lblue">B</span>
 		<</switch>>
-		staring back at you.
+		등급이 적혀 있다.
 	<</if>>
 	<br><br>
 <</if>>
 
-The bell rings. You shuffle with the other students into the throng of the hallway.
+종이 울린다. 당신은 다른 학생들과 함께 복도의 인파 속으로 섞여 들어간다.
 <br><br>
 
-<<link [[Next|Hallways]]>><<if $whitneymaths>><<set $whitneymaths to "absent">><</if>><<endevent>><</link>>
+<<link [[다음|Hallways]]>><<if $whitneymaths>><<set $whitneymaths to "absent">><</if>><<endevent>><</link>>
 <br>
 
 
@@ -472,12 +476,11 @@ The bell rings. You shuffle with the other students into the throng of the hallw
 	<<npc Kylar 2>>
 <</if>>
 
-
 <<switch $phase>>
 	<<case 0>>
-		You focus on the exam, doing your best to tune out the scribbling and groans of other students.
+		당신은 시험에 집중하며, 다른 학생들의 사각거리는 소리와 신음 소리를 무시하려고 최선을 다한다.
 	<<case 1>>
-		You take a deep breath, and try not to let the pressure get to you.
+		당신은 심호흡을 하고, 압박감에 굴하지 않으려 노력한다.
 	<<case 2 4 6>>
 		<<if $phase is 6>>
 			<<if $earSlime.corruption gte (currentSkillValue('willpower') / 10)>>
@@ -488,13 +491,13 @@ The bell rings. You shuffle with the other students into the throng of the hallw
 			<</if>>
 		<<else>>
 			<<skulduggerycheck>><<set _cheating to true>>
-			<<if $phase is 4>>You follow the <<= numberOfEarSlime() gte 2 ? "slimes'" : "slime's">> command and look for ways to cheat in the exam.<</if>>
+			<<if $phase is 4>>당신은 <<= numberOfEarSlime() gte 2 ? "슬라임들의" : "슬라임의">> 명령에 따라 시험에서 부정행위를 할 방법을 찾는다.<</if>>
 		<</if>>
 
 		<<if _cheating>>
-			Doren's back is often turned to you, but <<his>> path is unpredictable.
+			도렌은 종종 당신에게 등을 돌리고 있지만, <<his>> 동선은 예측할 수 없다.
 			<<if $skulduggerysuccess is 1>>
-				<<He>> could turn at any moment, <span class="green">but you manage to read your neighbour's papers with daring glances.</span>
+				<<He>>【은는】 언제든 돌아설 수 있지만, <span class="green">당신은 대담한 곁눈질로 옆자리 학생의 답안지를 읽는 데 성공한다.</span>
 				<<set _cheatingSuccessful to true>>
 				<<if $temple_calligraphy gte 11>>
 					<<set $exam_chance += 20>><<passPercent 20>>
@@ -502,10 +505,10 @@ The bell rings. You shuffle with the other students into the throng of the hallw
 					<<set $exam_chance += 10>><<passPercent 10>>
 				<</if>>
 			<<else>>
-				You wait until <<he>> passes, then sneak a glance at your neighbour. Doren spins, <span class="red">and smacks <<his>> hand against your desk.</span>
+				당신은 <<he>>【이가】 지나갈 때까지 기다렸다가, 옆자리 학생을 힐끗 쳐다본다. 도렌이 휙 돌아서더니, <span class="red">당신의 책상에 <<his>> 손을 내리친다.</span>
 				<br><br>
 
-				"Got the fly," <<he>> says. <<Hes>> sparing you the embarrassment of being caught cheating, but your paper will be under extra scrutiny.<<gstress>><<stress 6>><<set $exam_chance -= 10>><<passPercent -10>><<ggdelinquency>><<detention 5>>
+				"파리 잡았단다." <<he>>【이가】 말한다. <<He>>【은는】 당신이 부정행위를 하다 걸리는 창피함은 면하게 해주었지만, 당신의 답안지는 더욱 엄격하게 채점될 것이다.<<gstress>><<stress 6>><<set $exam_chance -= 10>><<passPercent -10>><<ggdelinquency>><<detention 5>>
 			<</if>>
 			<br><br>
 
@@ -515,42 +518,40 @@ The bell rings. You shuffle with the other students into the throng of the hallw
 		<<set _cheatingSuccessful to true>>
 		You glance at Kylar's booklet. <<nnpc_He "Kylar">> notices and, eager to please, keeps <<nnpc_his "Kylar">> arm from obscuring your view as <<nnpc_he "Kylar">> writes. <<nnpc_He "Kylar">> has creative answers to the tougher questions.
 	<<case 5>>
-		You ignore the <<= numberOfEarSlime() gte 2 ? "slimes'" : "slime's">> command, and focus on doing your best to tune out the scribbling and groans of other students.
+		당신은 <<= numberOfEarSlime() gte 2 ? "슬라임들의" : "슬라임의">> 명령을 무시하고, 다른 학생들의 사각거리는 소리와 신음 소리를 무시하는 데 최선을 다한다.
 <</switch>>
 <br><br>
 
-Doren prowls throughout, then lifts the tray on <<person1>><<his>> desk. <<He>> walks around the room, gathering the booklets.
+도렌이 내내 돌아다니다가, <<person1>><<his>> 책상 위의 서류함을 들어 올린다. <<He>>【은는】 교실을 돌아다니며 시험지를 걷는다.
 <br><br>
 
-"Won't be long," <<he>> says, tearing through the first paper with a red pen. <<Hes>> unbothered by the chatter that erupts. <<Hes>> soon finished.
+"오래 안 걸릴 거란다." <<he>>【이가】 빨간 펜으로 첫 번째 시험지를 찢을 듯이 채점하며 말한다. <<He>>【은는】 터져 나오는 잡담에도 아랑곳하지 않는다. <<He>>【은는】 곧 채점을 마친다.
 <br><br>
 
-Your marked booklet skids in front of you,
+채점된 당신의 시험지가 당신 앞으로 미끄러지듯 놓인다.
 <<exam_result "english">>
 <br><br>
 
 <!-- Add text for interacting with Kylar here, if they are present? -->
-
 <<if $kylarenglishstate is "active">>
 	Kylar walks tentatively towards you with <<nnpc_his "Kylar">> exam result, then
 	<<if !_kylarStatus.includes("Love")>>
-		dashes out of the classroom.
+		교실 밖으로 뛰쳐나간다.
 	<<else>>
-		asks you, "I-I got
+		당신에게 조심스럽게 묻는다. "저기, 나-나는...
 		<<switch random(1, 3)>>
-			<<case 1>>a <span class="lblue">B</span>.
-			<<case 2>>a <span class="blue">C</span>.
-			<<case 3>>a <span class="purple">D</span>.
+			<<case 1>><span class="lblue">B</span>
+			<<case 2>><span class="blue">C</span>
+			<<case 3>><span class="purple">D</span>
 		<</switch>>
 		What about you, <<kylar_pet_name>>?" <<nnpc_He "Kylar">> takes a peek at yours. <<status -3>><<lcool>>
 	<</if>>
 	<br><br>
 <</if>>
-
-The bell rings. You shuffle with the other students into the throng of the hallway.
+종이 울린다. 당신은 다른 학생들과 함께 복도의 인파 속으로 뒤섞여 들어간다.
 <br><br>
 
-<<link [[Next|Hallways]]>><<endevent>><</link>>
+<<link [[다음|Hallways]]>><<endevent>><</link>>
 <br>
 
 
@@ -564,9 +565,9 @@ The bell rings. You shuffle with the other students into the throng of the hallw
 
 <<switch $phase>>
 	<<case 0>>
-		You focus on the exam, doing your best to tune out the scribbling and groans of other students.
+		당신은 시험에 집중하며, 다른 학생들의 사각거리는 소리와 신음 소리를 무시하려고 최선을 다한다.
 	<<case 1>>
-		You take a deep breath, and try not to let the pressure get to you.
+		당신은 심호흡을 하고, 압박감에 굴하지 않으려 노력한다.
 	<<case 2 3 5>>
 		<<if $phase is 5>>
 			<<if $earSlime.corruption gte (currentSkillValue('willpower') / 10)>>
@@ -577,13 +578,13 @@ The bell rings. You shuffle with the other students into the throng of the hallw
 			<</if>>
 		<<else>>
 			<<skulduggerycheck>><<set _cheating to true>>
-			<<if $phase is 3>>You follow the <<= numberOfEarSlime() gte 2 ? "slimes'" : "slime's">> command and look for ways to cheat in the exam.<</if>>
+			<<if $phase is 3>>당신은 <<= numberOfEarSlime() gte 2 ? "슬라임들의" : "슬라임의">> 명령에 따라 시험에서 부정행위를 할 방법을 찾는다.<</if>>
 		<</if>>
 
 		<<if _cheating>>
-			Winter occupies <<himself>> with a book, and doesn't seem to be paying attention.
+			윈터는 책에 몰두해 있으며, 별로 신경 쓰지 않는 것 같다.
 			<<if $skulduggerysuccess is 1>>
-				You know that isn't true. There are moments, here and there, where the teacher's attention is taken. You glance at your neighbours during those moments, <span class="green">and manage to glean a few answers to the tougher questions.</span>
+				당신은 그게 사실이 아니라는 것을 안다. 여기저기 선생님의 주의가 다른 곳으로 쏠리는 순간들이 있다. 당신은 그 순간들을 이용해 옆자리 학생들을 힐끗 쳐다보고, <span class="green">더 어려운 문제들의 답 몇 개를 얻어내는 데 성공한다.</span>
 				<<set _cheatingSuccessful to true>>
 				<<if $temple_calligraphy gte 11>>
 					<<set $exam_chance += 20>><<passPercent 20>>
@@ -591,15 +592,15 @@ The bell rings. You shuffle with the other students into the throng of the hallw
 					<<set $exam_chance += 10>><<passPercent 10>>
 				<</if>>
 			<<else>>
-				You take the chance, and look at your neighbour's paper.
+				당신은 기회를 틈타 옆자리 학생의 시험지를 본다.
 				<br><br>
 				<<if $robinhistory is "seat">>
-					<span class="red">Robin nudges you.</span> "You shouldn't cheat!"
+					<span class="red">로빈이 당신을 쿡 찌른다.</span> "컨닝하면 안 돼!"
 					<br><br>
 
-					Winter glances up. "No talking." You won't be able to get away with it now.<<gstress>><<stress 6>><<set $exam_chance -= 10>><<passPercent -10>>
+					윈터가 고개를 든다. "조용." 이제는 빠져나갈 수 없을 것이다.<<gstress>><<stress 6>><<set $exam_chance -= 10>><<passPercent -10>>
 				<<else>>
-					<span class="red">"No cheating,"</span> Winter says without looking up. You know <<he>> was referring to you, though <<he>> gives no indication.<<gstress>><<stress 6>><<set $exam_chance -= 10>><<passPercent -10>><<ggdelinquency>><<detention 5>>
+					<span class="red">"부정행위 금지."</span> 윈터가 고개도 들지 않고 말한다. <<he>>【이가】 아무런 내색도 하지 않았지만, 당신은 <<he>>【이가】 당신을 가리켜 말한 것임을 안다.<<gstress>><<stress 6>><<set $exam_chance -= 10>><<passPercent -10>><<ggdelinquency>><<detention 5>>
 				<</if>>
 			<</if>>
 			<br><br>
@@ -607,43 +608,44 @@ The bell rings. You shuffle with the other students into the throng of the hallw
 			<<skulduggeryuseinline>>
 		<</if>>
 	<<case 4>>
-		You ignore the <<= numberOfEarSlime() gte 2 ? "slimes'" : "slime's">> command, and focus on doing your best to tune out the scribbling and groans of other students.
+		당신은 <<= numberOfEarSlime() gte 2 ? "슬라임들의" : "슬라임의">> 명령을 무시하고, 다른 학생들의 사각거리는 소리와 신음 소리를 무시하는 데 최선을 다한다.
 <</switch>>
 <br><br>
 
-Winter thumbs through the pages of <<person1>><<his>> book while the students work. <<He>> thuds it shut. "Done," <<he>> announces.
+학생들이 시험을 보는 동안 윈터는 <<person1>><<his>> 책장을 넘긴다. <<He>>【이가】 책을 탁 소리 나게 덮는다. "끝." <<he>>【이가】 알린다.
 <br><br>
 
-You form into another orderly queue. Winter marks each booklet as <<he>> receives them, <<his>> red pen ablur. Yours is no different. <<He>> hands it back to you,
+당신은 다시 질서정연하게 줄을 선다. 윈터는 시험지를 받을 때마다 채점하는데, <<his>> 빨간 펜이 휙휙 움직인다. 당신의 것도 예외는 아니다. <<He>>【이가】 당신에게 시험지를 돌려준다.
 <<exam_result "history">>
 <br><br>
 
 <!-- Add text for interacting with Robin here, if they are present? -->
 <<if $robinhistory isnot "missing">>
-	<<npc Robin 2>><<person2>>
-	<<if C.npc.Robin.trauma gte 40>>
-		Quietly, Robin walks to you, exam result in hand. You share exam results without a sound. <<He>> got
-		<<switch random(1, 3)>>
-			<<case 1>>an <span class="green">A*</span>.
-			<<case 2>>an <span class="teal">A</span>.
-			<<case 3>>a <span class="lblue">B</span>.
-		<</switch>>
-	<<else>>
-		"How did you do on the exam<<if $robinromance is 1>>, sweetheart<</if>>? I got
-		<<switch random(1, 3)>>
-			<<case 1>>an <span class="green">A*</span>!"
-			<<case 2>>an <span class="teal">A</span>!"
-			<<case 3>>a <span class="lblue">B</span>!"
-		<</switch>>
-		Robin smiles at you. You share your result with <<him>>.
-	<</if>>
-	<br><br>
+    <<npc Robin 2>><<person2>>
+    <<if C.npc.Robin.trauma gte 40>>
+        로빈이 시험지를 들고 조용히 당신에게 다가온다. 두 사람은 말없이 시험 결과를 공유한다. <<He>>【은는】 
+        <<switch random(1, 3)>>
+            <<case 1>><span class="green">A+</span>
+            <<case 2>><span class="teal">A</span>
+            <<case 3>><span class="lblue">B</span>
+        <</switch>>
+        등급을 받았다.
+    <<else>>
+        "시험은 어땠어<<if $robinromance is 1>>, 내 사랑<</if>>? 난 
+        <<switch random(1, 3)>>
+            <<case 1>><span class="green">A+</span>야!"
+            <<case 2>><span class="teal">A</span>야!"
+            <<case 3>><span class="lblue">B</span>야!"
+        <</switch>>
+        로빈이 미소 짓는다. 당신은 <<him>>【와과】 결과를 공유한다.
+    <</if>>
+    <br><br>
 <</if>>
 
-The bell rings, and you join the throng of students in the hallway.
+종이 울리고, 당신은 복도에 있는 학생들 무리에 합류한다.
 <br><br>
 
-<<link [[Next|Hallways]]>><<endevent>><</link>>
+<<link [[다음|Hallways]]>><<endevent>><</link>>
 <br>
 
 :: Swimming Exam
@@ -658,50 +660,50 @@ The bell rings, and you join the throng of students in the hallway.
 
 <<switch $phase>>
 	<<case 0>>
-		You focus on the exam, exerting yourself and ignoring the other students.<<set _swimdiff += 100>><<tiredness 4>>
+		당신은 시험에 집중하며 온 힘을 쏟고, 다른 학생들을 무시한다.<<set _swimdiff += 100>><<tiredness 4>>
 	<<case 1>>
-		You take a deep breath, and try not to let the pressure get to you.
+		당신은 심호흡을 하고, 압박감에 굴하지 않으려 노력한다.
 	<<case 2>>
 		<<skulduggerycheck>>
-		Mason has many students to watch, and there's some leeway for "accidents".
+		메이슨은 지켜봐야 할 학생이 많고, "사고"가 일어날 여지도 어느 정도 있다.
 
 
 		<<if $skulduggerysuccess is 1>>
-			You wait for your chances. There are moments, here and there, where the teacher's attention is taken. You sneak in a few splashes into the others' faces or sneakily get in their way, <span class="green">and manage to sabotage your competitors.</span>
+			당신은 기회를 기다린다. 교사의 주의가 다른 데로 쏠리는 순간이 여기저기서 생긴다. 당신은 다른 학생들의 얼굴에 몰래 물을 튀기거나 슬쩍 앞을 가로막고, <span class="green">결국 경쟁자들을 방해하는 데 성공한다.</span>
 			<<set _swimdiff += -200>>
 		<<else>>
-			You take the chance, and try to sabotage your competitors.
+			당신은 기회를 틈타 경쟁자들을 방해하려 한다.
 			<br><br>
-			<span class="red">"Stop that!"</span> Mason shouts. You flinch, shrinking under their intense glare.<<gstress>><<stress 6>><<set _swimdiff += 200>><<ggdelinquency>><<detention 5>>
+			<span class="red">"그만해!"</span> 메이슨이 소리친다. 당신은 움찔하며 매서운 눈초리 아래에서 몸을 움츠린다.<<gstress>><<stress 6>><<set _swimdiff += 200>><<ggdelinquency>><<detention 5>>
 		<</if>>
 
 		<<skulduggeryuse true>>
 <</switch>>
 <br><br>
-Mason keeps watch and writes down notes in <<his>> clipboard while the students swim. <<He>> whistles. "Stop!" <<he>> announces.
+학생들이 수영하는 동안 메이슨은 지켜보며 <<his>> 클립보드에 메모를 적는다. <<He>>【이가】 호루라기를 분다. "그만!" <<he>>【이가】 알린다.
 <br><br>
 
-You all gather around Mason as <<he>> reads out the results.
+<<he>>【이가】 결과를 읽어 주는 동안 모두가 메이슨 주위에 모인다.
 <br><br>
 
 <<set _swimmingdifficultymax to 1000 + _swimdiff>>
 <<swimmingdifficulty 900 _swimmingdifficultymax 0>>
 
 <<if $swimmingSuccess is 1>>
-	You puff your chest out in pride, <span class="green">you're easily the best among your class.</span><<stress -18>><<trauma -18>><<tiredness 4>><<lllstress>><<llltrauma>><<gtiredness>>
+	당신은 자랑스럽게 가슴을 편다. <span class="green">반에서 단연 최고다.</span><<stress -18>><<trauma -18>><<tiredness 4>><<lllstress>><<llltrauma>><<gtiredness>>
 <<else>>
 	<<set _swimmingdifficultymax to 800 + _swimdiff>>
 	<<swimmingdifficulty 500 _swimmingdifficultymax 0>>
 
 	<<if $swimmingSuccess is 1>>
-		You beam in happiness, <span class="green">you're among the best in class.</span><<stress -12>><<trauma -12>><<tiredness 4>><<llstress>><<lltrauma>><<gtiredness>>
+		당신은 기뻐서 활짝 웃는다. <span class="green">반에서 손꼽히는 실력이다.</span><<stress -12>><<trauma -12>><<tiredness 4>><<llstress>><<lltrauma>><<gtiredness>>
 	<<else>>
 		<<set _swimmingdifficultymax to 250 + _swimdiff>>
 		<<swimmingdifficulty 100 _swimmingdifficultymax 0>>
 		<<if $swimmingSuccess is 1>>
-			You're in the middle of the pack, not bad.<<stress -6>><<trauma -6>><<tiredness 4>><<lstress>><<ltrauma>><<gtiredness>>
+			당신은 중간쯤이다. 나쁘지 않다.<<stress -6>><<trauma -6>><<tiredness 4>><<lstress>><<ltrauma>><<gtiredness>>
 		<<else>>
-			<span class="red">You're among the worst.</span><<stress 6>><<trauma 6>><<tiredness 4>><<gstress>><<gtrauma>><<gtiredness>>
+			<span class="red">당신은 꼴찌권이다.</span><<stress 6>><<trauma 6>><<tiredness 4>><<gstress>><<gtrauma>><<gtiredness>>
 		<</if>>
 	<</if>>
 <</if>>
@@ -709,37 +711,37 @@ You all gather around Mason as <<he>> reads out the results.
 
 <<if $swimall is 1>>
 	<<if playerBellyVisible()>>
-		The bell rings, signifying the end of the lesson. You climb out of the pool once Mason gives the go ahead, and <<nnpc_he "Mason">> sticks close by to assist you. Despite everyone being naked, no one seems concerned. A <<generatey1>><<person1>><<person>> hands out towels to the other students as they pass, trying to avoid eye contact.<<endevent>>
+		종이 울리며 수업 종료를 알린다. 메이슨이 허락하자 당신은 수영장에서 나오고, <<nnpc_he "Mason">>【이가】 도우려고 곁에 바짝 붙는다. 모두가 알몸임에도 아무도 신경 쓰지 않는 것 같다. <<generatey1>><<person1>><<person>>【이가】 지나가는 다른 학생들에게 수건을 나눠 주며 눈을 마주치지 않으려 애쓴다.<<endevent>>
 	<<else>>
-		The bell rings, signifying the end of the lesson. You climb out of the pool. Despite everyone being naked, no one seems concerned. Mason hands out towels to each student as they pass, trying to avoid eye contact.
+		종이 울리며 수업 종료를 알린다. 당신은 수영장에서 나온다. 모두가 알몸임에도 불구하고 아무도 신경 쓰지 않는 것 같다. 메이슨은 지나가는 각 학생에게 수건을 나눠주며 눈을 마주치지 않으려 애쓴다.
 	<</if>>
 	<br><br>
 <<elseif $exposed gte 1>>
 	<<if playerBellyVisible()>>
-		The bell rings, signifying the end of the lesson. You wait as the other students leave, climbing out of the pool once Mason gives the go ahead, and <<nnpc_he "Mason">> sticks close by to assist you. Some students linger, doubtlessly hoping to get a nice view when you climb out, but Mason herds them away, giving you some privacy.
+		종이 울리며 수업 종료를 알린다. 당신은 다른 학생들이 떠나기를 기다리다가 메이슨이 허락하자 수영장에서 나오고, <<nnpc_he "Mason">>【이가】 도우려고 곁에 바짝 붙는다. 몇몇 학생들이 남아 있다. 의심할 여지 없이 당신이 나올 때 좋은 구경을 하려는 속셈이지만, 메이슨이 그들을 몰아내 당신에게 사적인 공간을 마련해 준다.
 	<<else>>
-		The bell rings, signifying the end of the lesson. You wait as the other students leave. Some students linger,
-		doubtlessly hoping to get a nice view when you climb out, but Mason herds them away, giving you some privacy.
+		종이 울리며 수업 종료를 알린다. 당신은 다른 학생들이 떠나기를 기다린다. 몇몇 학생들이 남아 있는데,
+		의심할 여지 없이 당신이 나올 때 좋은 구경을 하려는 속셈이다. 하지만 메이슨이 그들을 몰아내 당신에게 사적인 공간을 마련해 준다.
 	<</if>>
 	<br><br>
 <<elseif $exposed lte 0>>
 	<<if playerBellyVisible()>>
-		The bell rings, signifying the end of the lesson. You climb out of the pool once Mason gives the go ahead, and <<nnpc_he "Mason">> sticks close by to assist you.
+		종이 울리며 수업 종료를 알린다. 메이슨이 허락하자 당신은 수영장에서 나오고, <<nnpc_he "Mason">>【이가】 도우려고 곁에 바짝 붙는다.
 	<<else>>
-		The bell rings, signifying the end of the lesson. You climb out of the pool.
+		종이 울리며 수업 종료를 알린다. 당신은 수영장에서 나온다.
 	<</if>>
 	<br><br>
 <</if>>
 <<endevent>>
 <<if $exposed lte 0>>
-	<<maleicon>><<link [[Boys' changing room|School Boy Changing Room]]>><</link>>
+	<<maleicon>><<link [[남자 탈의실|School Boy Changing Room]]>><</link>>
 	<br>
-	<<femaleicon>><<link [[Girls' changing room|School Girl Changing Room]]>><</link>>
+	<<femaleicon>><<link [[여자 탈의실|School Girl Changing Room]]>><</link>>
 	<br><br>
 <<elseif $exposed gte 1>>
-	<<maleicon>><<link [[Grab some towels and enter the boys' changing room|School Boy Changing Room]]>><<towelupm>><</link>>
+	<<maleicon>><<link [[수건 몇 장을 챙겨 남자 탈의실로 들어간다|School Boy Changing Room]]>><<towelupm>><</link>>
 	<br>
-	<<femaleicon>><<link [[Grab some towels and enter the girls' changing room|School Girl Changing Room]]>><<towelup>><</link>>
+	<<femaleicon>><<link [[수건 몇 장을 챙겨 여자 탈의실로 들어간다|School Girl Changing Room]]>><<towelup>><</link>>
 	<br><br>
 <</if>>
 <<if Time.minute gte 5 and Time.minute lte 57>>
@@ -766,32 +768,32 @@ You all gather around Mason as <<he>> reads out the results.
 
 <<switch $phase>>
 	<<case 0>>
-		You focus on following the recipe, putting all you've learned to the test.
+		당신은 배운 모든 것을 시험하며 레시피를 따르는 데 집중한다.
 	<<case 1>>
-		You try to relax as you work on the recipe, putting you at odds with the frantic rushing of the other students.
+		당신은 레시피대로 작업하며 긴장을 풀려고 노력하지만, 이는 정신없이 서두르는 다른 학생들과는 대조적이다.
 <</switch>>
 <<if $exam_chance gte random(1, 100)>>
-	Your creation comes together into <span class="green">something edible.</span>
+	당신의 창작물은 <span class="green">먹을 수 있는 무언가</span>로 완성된다.
 	<<set _exam_pass to true>>
 <<else>>
-	<span class="red">Something goes wrong however,</span> and your ingredients transform into unrecognisable slop.
+	<span class="red">하지만 무언가 잘못되어,</span> 당신의 재료들은 알아볼 수 없는 꿀꿀이죽으로 변해버린다.
 	<<set _exam_pass to false>>
 <</if>>
 <br><br>
 
-River roams the room, giving sharp corrections to anyone misusing ingredients, or making a mess. "One minute," <<he>> warns, propelling a final spur of activity from the students. "Stop." A <<person2>><<person>> keeps working, until <<he>> notices the teacher's glare.
+리버는 교실을 돌아다니며 재료를 잘못 사용하거나 어지럽히는 학생들에게 날카롭게 지적한다. "1분 남았다." <<he>>【이가】 경고하자, 학생들이 마지막으로 분주하게 움직인다. "멈춰." 한 <<person2>><<person>>【이가】 선생님의 눈초리를 눈치챌 때까지 계속 작업을 한다.
 <br><br>
 
-<<person1>>River strides down the length of the room, <<his>> eyes consuming each student's creation in turn. <<He>> stops at the far end, turns around, then walks the way <<he>> came. This time, <<he>> announces whether each student passed, or failed.
+<<person1>>리버가 교실을 길게 가로질러 걸어가며, <<his>> 눈으로 각 학생의 창작물을 차례로 훑어본다. <<He>>【은는】 맨 끝에서 멈춰 서서 돌아선 다음, 왔던 길을 되돌아온다. 이번에는 각 학생이 합격인지 불합격인지를 발표한다.
 <br><br>
 
 <<if _exam_pass is true>>
-	<<He>> pauses before you, scrutinising your <<recipe_name $chosen_recipe>>, before making <<his>> announcement. <span class="green">"Pass."</span>
+	<<He>>【은는】 당신 앞에서 잠시 멈춰 당신의 <<recipe_name $chosen_recipe>>【을를】 꼼꼼히 살핀 후, 결과를 발표한다. <span class="green">"합격."</span>
 	<br><br>
 	<<wearProp $chosen_recipe>>
 	<<learn_recipe $chosen_recipe>>
 <<else>>
-	You know the result before River announces it. <span class="red">"Fail,"</span> <<he>> says without slowing. There'll be another chance to learn the recipe.<<ghousekeeping>><<housekeeping 1>>
+	당신은 리버가 발표하기 전에 결과를 안다. <span class="red">"불합격."</span> <<he>>【이가】 속도를 늦추지 않고 말한다. 레시피를 배울 기회는 또 있을 것이다.<<ghousekeeping>><<housekeeping 1>>
 	<<if random(1, 2) is 2>>
 		<<set _slopProp to $hallucinations gte 2 ? "inedible tentaslop" : "inedible slop">>
 		<<wearProp _slopProp>>
@@ -800,64 +802,64 @@ River roams the room, giving sharp corrections to anyone misusing ingredients, o
 	<</if>>
 <</if>>
 <br><br>
-The bell rings. You shuffle with the other students into the throng of the hallway.
+종이 울린다. 당신은 다른 학생들과 함께 복도의 인파 속으로 뒤섞여 들어간다.
 <br><br>
 
-<<link [[Next|Hallways]]>><<unset $exam_chance>><<unset $chosen_recipe>><<endevent>><</link>>
+<<link [[다음|Hallways]]>><<unset $exam_chance>><<unset $chosen_recipe>><<endevent>><</link>>
 <br>
 
 :: Housekeeping Exam Assistant Sweet
 <<effects>>
 
 <<generatey2>> <!-- student who doesn't stop cooking when the exam is over -->
-You choose a sweet recipe for the exam projector. River looks at it, and nods. You trail behind <<him>> as <<he>> roams the room, giving sharp corrections to anyone misusing ingredients, or making a mess.<<gcontrol>><<control 10>>
+당신은 시험 프로젝터에 띄울 달콤한 레시피를 선택한다. 리버가 그것을 보고 고개를 끄덕인다. 당신은 <<him>> 뒤를 따라 교실을 돌아다니며, 재료를 잘못 사용하거나 어지럽히는 학생들에게 날카롭게 지적한다.<<gcontrol>><<control 10>>
 <br><br>
 
-"One minute," River warns, propelling a final spur of activity from the students. "Stop." A <<person2>><<person>> keeps working, until <<he>> notices the teacher's glare.
+"1분 남았다." 리버가 경고하자, 학생들이 마지막으로 분주하게 움직인다. "멈춰." 한 <<person2>><<person>>【이가】 선생님의 눈초리를 눈치챌 때까지 계속 작업을 한다.
 <br><br>
 
-<<person1>>You follow River as <<he>> strides down the room, <<his>> eyes consuming each student's creation in turn. <<He>> stops at the far end, and turns to you to confer. <<Hes>> undecided on a few of the dishes, and wants your opinion.
+<<person1>>당신은 리버를 따라 교실을 가로질러 걸으며, <<his>> 눈으로 각 학생의 창작물을 차례로 훑어본다. <<He>>【은는】 맨 끝에서 멈춰 서서 당신과 상의하기 위해 돌아선다. <<He>>【은는】 몇몇 요리에 대해 결정을 내리지 못했고, 당신의 의견을 원한다.
 <br><br>
 
-<<link [[Be lenient|Housekeeping Exam Assistant Lenient]]>><</link>>
+<<link [[관대하게 평가한다|Housekeeping Exam Assistant Lenient]]>><</link>>
 <br>
-<<link [[Be strict|Housekeeping Exam Assistant Strict]]>><</link>>
+<<link [[엄격하게 평가한다|Housekeeping Exam Assistant Strict]]>><</link>>
 <br>
 
 :: Housekeeping Exam Assistant Savoury
 <<effects>>
 
 <<generatey2>> <!-- student who doesn't stop cooking when the exam is over -->
-You choose a savoury recipe for the exam projector. River looks at it, and nods. You trail behind <<him>> as <<he>> roams the room, giving sharp corrections to anyone misusing ingredients, or making a mess.<<gcontrol>><<control 10>>
+당신은 시험 프로젝터에 띄울 짭짤한 레시피를 선택한다. 리버가 그것을 보고 고개를 끄덕인다. 당신은 <<him>> 뒤를 따라 교실을 돌아다니며, 재료를 잘못 사용하거나 어지럽히는 학생들에게 날카롭게 지적한다.<<gcontrol>><<control 10>>
 <br><br>
 
-"One minute," River warns, propelling a final spur of activity from the students. "Stop." A <<person2>><<person>> keeps working, until <<he>> notices the teacher's glare.
+"1분 남았다." 리버가 경고하자, 학생들이 마지막으로 분주하게 움직인다. "멈춰." 한 <<person2>><<person>>【이가】 선생님의 눈초리를 눈치챌 때까지 계속 작업을 한다.
 <br><br>
 
-<<person1>>You follow River as <<he>> strides down the room, <<his>> eyes consuming each student's creation in turn. <<He>> stops at the far end, and turns to you to confer. <<Hes>> undecided on a few of the dishes, and wants your opinion.
+<<person1>>당신은 리버를 따라 교실을 가로질러 걸으며, <<his>> 눈으로 각 학생의 창작물을 차례로 훑어본다. <<He>>【은는】 맨 끝에서 멈춰 서서 당신과 상의하기 위해 돌아선다. <<He>>【은는】 몇몇 요리에 대해 결정을 내리지 못했고, 당신의 의견을 원한다.
 <br><br>
 
-<<link [[Be lenient|Housekeeping Exam Assistant Lenient]]>><</link>>
+<<link [[관대하게 평가한다|Housekeeping Exam Assistant Lenient]]>><</link>>
 <br>
-<<link [[Be strict|Housekeeping Exam Assistant Strict]]>><</link>>
+<<link [[엄격하게 평가한다|Housekeeping Exam Assistant Strict]]>><</link>>
 <br>
 
 :: Housekeeping Exam Assistant Spicy
 <<effects>>
 
 <<generatey2>> <!-- student who doesn't stop cooking when the exam is over -->
-You choose a spicy recipe for the exam projector. River looks at it, and nods. You trail behind <<him>> as <<he>> roams the room, giving sharp corrections to anyone misusing ingredients, or making a mess.<<gcontrol>><<control 10>>
+당신은 시험 프로젝터에 띄울 매운 레시피를 선택한다. 리버가 그것을 보고 고개를 끄덕인다. 당신은 <<him>> 뒤를 따라 교실을 돌아다니며, 재료를 잘못 사용하거나 어지럽히는 학생들에게 날카롭게 지적한다.<<gcontrol>><<control 10>>
 <br><br>
 
-"One minute," River warns, propelling a final spur of activity from the students. "Stop." A <<person2>><<person>> keeps working, until <<he>> notices the teacher's glare.
+"1분 남았다." 리버가 경고하자, 학생들이 마지막으로 분주하게 움직인다. "멈춰." 한 <<person2>><<person>>【이가】 선생님의 눈초리를 눈치챌 때까지 계속 작업을 한다.
 <br><br>
 
-<<person1>>You follow River as <<he>> strides down the room, <<his>> eyes consuming each student's creation in turn. <<He>> stops at the far end, and turns to you to confer. <<Hes>> undecided on a few of the dishes, and wants your opinion.
+<<person1>>당신은 리버를 따라 교실을 가로질러 걸으며, <<his>> 눈으로 각 학생의 창작물을 차례로 훑어본다. <<He>>【은는】 맨 끝에서 멈춰 서서 당신과 상의하기 위해 돌아선다. <<He>>【은는】 몇몇 요리에 대해 결정을 내리지 못했고, 당신의 의견을 원한다.
 <br><br>
 
-<<link [[Be lenient|Housekeeping Exam Assistant Lenient]]>><</link>>
+<<link [[관대하게 평가한다|Housekeeping Exam Assistant Lenient]]>><</link>>
 <br>
-<<link [[Be strict|Housekeeping Exam Assistant Strict]]>><</link>>
+<<link [[엄격하게 평가한다|Housekeeping Exam Assistant Strict]]>><</link>>
 <br>
 
 :: Housekeeping Exam Assistant Lenient
@@ -866,13 +868,13 @@ You choose a spicy recipe for the exam projector. River looks at it, and nods. Y
 <<set _time_temp to (59 - Time.minute)>>
 <<pass _time_temp>>
 
-You emphasise the strong aspects of the student's work, and portray the mistakes as a consequence of healthy experimentation. River appears unconvinced, but gives the students in question a <span class="green">pass</span> as <<he>> strides by.
+당신은 학생들의 작품에서 강점을 강조하고, 실수는 건전한 실험의 결과로 포장한다. 리버는 납득하지 못하는 듯 보이지만, 지나가면서 해당 학생들에게 <span class="green">합격</span>을 준다.
 <br><br>
 
-The bell rings. You shuffle with the other students into the throng of the hallway.
+종이 울린다. 당신은 다른 학생들과 함께 복도의 인파 속으로 뒤섞여 들어간다.
 <br><br>
 
-<<link [[Next|Hallways]]>><<unset $exam_chance>><<unset $chosen_recipe>><<endevent>><</link>>
+<<link [[다음|Hallways]]>><<unset $exam_chance>><<unset $chosen_recipe>><<endevent>><</link>>
 <br>
 
 :: Housekeeping Exam Assistant Strict
@@ -881,11 +883,11 @@ The bell rings. You shuffle with the other students into the throng of the hallw
 <<set _time_temp to (59 - Time.minute)>>
 <<pass _time_temp>>
 
-You argue that River should keep standards high, and that anything else would be doing the students a disservice. <<He>> nods, and gives the students in question a curt <span class="red">fail</span> as <<he>> passes them by.
+당신은 리버가 높은 기준을 유지해야 하며, 그렇지 않으면 학생들에게 해가 될 뿐이라고 주장한다. <<He>>【은는】 고개를 끄덕이고, 지나가면서 해당 학생들에게 퉁명스럽게 <span class="red">불합격</span>을 준다.
 <br><br>
 
-The bell rings. You shuffle with the other students into the throng of the hallway.
+종이 울린다. 당신은 다른 학생들과 함께 복도의 인파 속으로 뒤섞여 들어간다.
 <br><br>
 
-<<link [[Next|Hallways]]>><<unset $exam_chance>><<unset $chosen_recipe>><<endevent>><</link>>
+<<link [[다음|Hallways]]>><<unset $exam_chance>><<unset $chosen_recipe>><<endevent>><</link>>
 <br>

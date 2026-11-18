@@ -1,9 +1,8 @@
 :: Widgets Abomination [widget]
-
 /* Turn NPC into Abomination. Only works if only one NPC generated for now. Can be used mid-combat. */
 <<widget "makeAbomination">>
 	<<if $enemyno isnot 1>>
-		<span class="red">ERROR: Only one NPC may be present to turn into an Abomination.</span>
+		<span class="red">ERROR: 흉물로 변이시키려면 NPC가 한 명만 존재해야 합니다.</span>
 	<<else>>
 		<<set $abomination to 1>>
 		<<set _tentacleNumber to (_args[0] ? _args[0] : random(2,8))>>
@@ -49,7 +48,7 @@
 	<<tentaclechoke>>
 	<<if $oxygen lt $oxygenmax and $underwater isnot 1 and _strangle is 1>>
 		<<unset _strangle>>
-		Air: <<oxygencaption>>
+		산소: <<oxygencaption>>
 		<br>
 	<</if>>
 <</widget>>
@@ -88,7 +87,7 @@
 
 		<<if $traumafocus gte 1 and $traumafocusintro isnot 1 and !calmorylDissociationActive() and colosseumDrugStage() isnot "crash">>
 			<<set $traumafocusintro to 1>>
-			<i>As you gain focus, you become more and more likely to escape your helpless state of dissociation.</i>
+			<i>집중력을 되찾을수록, 해리 상태에서 벗어날 가능성이 점점 커집니다.</i>
 			<br><br>
 		<</if>>
 
@@ -96,10 +95,10 @@
 			<<set $traumafocus to 0>><<set $trauma -= 1000>><<set $dissociation to 1>>
 			/* Preserve regained lucidity if Insanity's default combat state is recalculated. */
 			<<set $insanityDissociationLucid to 1>><<unset $insanityDissociationTurns>>
-			<span class="green">Your lucidity returns.</span>
+			<span class="green">정신이 돌아옵니다.</span>
 			<<ltrauma>>
 			<br>
-			<span class="red">The weight of reality crashes down on you.</span>
+			<span class="red">현실의 무게가 당신을 덮칩니다.</span>
 			<br><br>
 		<</if>>
 
@@ -117,12 +116,12 @@
 			<<if $orgasmdown lte 0 and ($pain lt 100 or $willpowerpain is undefined) and $dissociation lte 1>>
 				<<if $options.images is 1 and $options.combatImages is 1 and $consensual is 1 and $position_lock isnot 1>>
 					<<if $position is "doggy">>
-						| <label>Roll over <<radiobutton "$bodyaction" "missionary">></label>
+						| <label>돌아서 정상위로 <<radiobutton "$bodyaction" "missionary">></label>
 					<<elseif $position is "missionary">>
-						| <label>Roll over <<radiobutton "$bodyaction" "doggy">></label>
+						| <label>돌아서 후배위로 <<radiobutton "$bodyaction" "doggy">></label>
 					<</if>>
 					<<if $position isnot "stalk">>
-						| <label>Rest <<radiobutton "$bodyaction" "rest" checked>></label>
+						| <label>가만히 있기 <<radiobutton "$bodyaction" "rest" checked>></label>
 						<br>
 					<</if>>
 				<</if>>
@@ -158,12 +157,12 @@
 	<</if>>
 
 	<<if $debug>>
-		__Debug__
+		__디버그__
 		<br>
 		<<for _i to 0; _i lt $enemynomax; _i++>>
-			<<print _i>> $NPCList[_i].fullDescription: Head Location: $NPCList[_i].location.head --- Genitals Location: $NPCList[_i].location.genitals
+			<<print _i>> $NPCList[_i].fullDescription: 머리 위치: $NPCList[_i].location.head --- 성기 위치: $NPCList[_i].location.genitals
 			<br>
-			Penis: $NPCList[_i].penis --- Vagina: $NPCList[_i].vagina --- Mouth: $NPCList[_i].mouth --- Anus: $NPCList[_i].anus
+			자지: $NPCList[_i].penis --- 보지: $NPCList[_i].vagina --- 입: $NPCList[_i].mouth --- 항문: $NPCList[_i].anus
 			<br><br>
 		<</for>>
 	<</if>>

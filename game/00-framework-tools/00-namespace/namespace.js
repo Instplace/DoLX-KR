@@ -38,7 +38,7 @@ window.defineGlobalNamespaces = namespaces => {
 			}
 		} catch (e) {
 			if (window[name] !== namespaceObject) {
-				console.error(`Failed to setup global namespace object ${name}. Attempting to continue. Source Error:`, e);
+				console.error(`전역 네임스페이스 객체 ${name} 설정에 실패했습니다. 계속 진행을 시도합니다. 원본 오류:`, e);
 			}
 		}
 	});

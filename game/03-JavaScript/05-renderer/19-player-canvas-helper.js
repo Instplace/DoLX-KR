@@ -70,7 +70,7 @@ class PlayerCanvasHelper {
 			alphafn(options) {
 				const clothes = options.clothes[slot];
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의상 객체가 정의되지 않았습니다");
 					return 1;
 				}
 				const alpha = clothes.alpha;
@@ -100,7 +100,7 @@ class PlayerCanvasHelper {
 	static genClothingLayerLowerSrc(slot, layer, isAccessory, options) {
 		const clothes = options.clothes[slot];
 		if (clothes == null) {
-			Errors.report("Clothing object was undefined", {
+			Errors.report("의상 객체가 정의되지 않았습니다", {
 				slot,
 				layer,
 				isAccessory,
@@ -111,7 +111,7 @@ class PlayerCanvasHelper {
 		const step = ClothingRendererStep.instances[clothes.renderStep];
 		if (step == null) {
 			// Fallback
-			Errors.report("Step key not found in ClothingRendererStep", {
+			Errors.report("ClothingRendererStep에서 단계 키를 찾을 수 없습니다", {
 				slot,
 				layer,
 				isAccessory,
@@ -149,7 +149,7 @@ class PlayerCanvasHelper {
 	static genClothingLayerLowerShow(options, slot, layer, isAccessory) {
 		const clothes = options.clothes[slot];
 		if (clothes == null) {
-			Errors.report("Clothing object was undefined", {
+			Errors.report("의상 객체가 정의되지 않았습니다", {
 				slot,
 				layer,
 				isAccessory,
@@ -162,7 +162,7 @@ class PlayerCanvasHelper {
 		const step = ClothingRendererStep.instances[clothes.renderStep];
 		if (step == null) {
 			// Fallback
-			Errors.report("Step key not found in ClothingRendererStep", {
+			Errors.report("ClothingRendererStep에서 단계 키를 찾을 수 없습니다", {
 				slot,
 				layer,
 				isAccessory,
@@ -245,7 +245,7 @@ class PlayerCanvasHelper {
 			showfn(options) {
 				const clothes = options.clothes[slot];
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의상 객체가 정의되지 않았습니다");
 					return false;
 				}
 				const show = CombatRenderer.isClothingShown(clothes, options.showClothing) && clothes.breasts.show;
@@ -292,7 +292,7 @@ class PlayerCanvasHelper {
 			showfn(options) {
 				const clothes = options.clothes[slot];
 				if (clothes == null) {
-					Errors.report("Clothing object was undefined");
+					Errors.report("의상 객체가 정의되지 않았습니다");
 					return false;
 				}
 				const show = CombatRenderer.isClothingShown(clothes, options.showClothing) && clothes.breasts.hasAccessory;

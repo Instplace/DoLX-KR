@@ -1,7 +1,7 @@
 // @ts-check
 
 function getDebuggingInfo() {
-	if (V == null) return "SugarCube variables could not be loaded.";
+	if (V == null) return "SugarCube 변수를 불러올 수 없습니다.";
 	const response = {
 		passage: V.passage,
 		stack: [...ExecutionContext.instance.callStack],
@@ -78,7 +78,14 @@ function getDebuggingInfo() {
 
 throwError = function (place, message, source, isExportable = true, isLogged = true) {
 	// add game version and active passage info at the start of the error box
-	const header = `${StartConfig.version} ${L10n.get("errorTitle")} (:: ${passage()}): `;
+	// 한글판: 개발판 빌드(StartConfig.build, 릴리스 워크플로가 dev 푸시 때만 넣는다)는 오류 상자에서 알아볼 수 있게 함께 적는다.
+	const header = `${StartConfig.version}${StartConfig.build ? ` (${StartConfig.build})` : ""} ${L10n.get("errorTitle")} (:: ${passage()}): `;
+
+	// 정상적인 세이브에서는 나올 수 없는 비정상적인 값으로 인한 random() 오류는 커스텀 안내문으로 대체
+	if (typeof message === "string" && message.includes("random max parameter must be an integer")) {
+		message = "정상적인 세이브에서는 나올 수 없는 비정상적인 값이 변수에 저장되어 발생한 오류입니다.";
+	}
+
 	// nested reports are implemented with military-grade stupidity, but informative enough for the screenshots
 	if (typeof message === "string")
 		message = message

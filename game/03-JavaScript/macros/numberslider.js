@@ -24,18 +24,18 @@ Macro.add("numberslider", {
 		if (this.args.length < 5) {
 			const errors = [];
 			return (
-				this.args.length < 1 && errors.push("variable name"),
-				this.args.length < 2 && errors.push("default value"),
-				this.args.length < 3 && errors.push("min value"),
-				this.args.length < 4 && errors.push("max value"),
-				this.args.length < 5 && errors.push("step value"),
-				this.error("no " + errors.join(" or ") + " specified")
+				this.args.length < 1 && errors.push("변수명"),
+				this.args.length < 2 && errors.push("기본값"),
+				this.args.length < 3 && errors.push("최솟값"),
+				this.args.length < 4 && errors.push("최댓값"),
+				this.args.length < 5 && errors.push("단계값"),
+				this.error(errors.join(" 또는 ") + "【이가】 지정되지 않았습니다")
 			);
 		}
 
 		const varName = this.args[0].trim();
 		if (varName[0] !== "$" && varName[0] !== "_") {
-			return this.error(`variable name "${this.args[0]}" is missing its sigil ($ or _)`);
+			return this.error(`변수명 "${this.args[0]}"에 접두 기호($ 또는 _)가 없습니다`);
 		}
 
 		const varId = Util.slugify(varName);
@@ -46,12 +46,12 @@ Macro.add("numberslider", {
 		const callbacks = typeof this.args[5] === "object" ? this.args[5] : {};
 		const autofocus = this.args[6] === "autofocus";
 
-		if (!Number.isFinite(defValue)) return this.error(`default value (${this.args[1]}) is not a number`);
-		if (!Number.isFinite(minValue)) return this.error(`min value (${this.args[2]}) is not a number`);
-		if (!Number.isFinite(maxValue)) return this.error(`max value (${this.args[3]}) is not a number`);
-		if (!Number.isFinite(stepValue) || stepValue <= 0) return this.error(`step value (${this.args[4]}) is not a number greater than zero`);
-		if (defValue < minValue) return this.error(`default value (${this.args[1]}) is less than min value (${this.args[2]})`);
-		if (defValue > maxValue) return this.error(`default value (${this.args[1]}) is greater than max value (${this.args[3]})`);
+		if (!Number.isFinite(defValue)) return this.error(`기본값(${this.args[1]})이 숫자가 아닙니다`);
+		if (!Number.isFinite(minValue)) return this.error(`최솟값(${this.args[2]})이 숫자가 아닙니다`);
+		if (!Number.isFinite(maxValue)) return this.error(`최댓값(${this.args[3]})이 숫자가 아닙니다`);
+		if (!Number.isFinite(stepValue) || stepValue <= 0) return this.error(`단계값(${this.args[4]})이 0보다 큰 숫자가 아닙니다`);
+		if (defValue < minValue) return this.error(`기본값(${this.args[1]})이 최솟값(${this.args[2]})보다 작습니다`);
+		if (defValue > maxValue) return this.error(`기본값(${this.args[1]})이 최댓값(${this.args[3]})보다 큽니다`);
 
 		const $elControl = $("<div>").attr("id", `${this.name}-body-${varId}`).addClass(`macro-${this.name}`).appendTo(this.output);
 		const $elInput = $("<input>")

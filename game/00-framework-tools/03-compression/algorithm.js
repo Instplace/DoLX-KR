@@ -138,7 +138,7 @@
 		}
 
 		decompress(object) {
-			if (!JsonDecompressor.isCompressed(object)) throw new Error("Not a valid compressed object");
+			if (!JsonDecompressor.isCompressed(object)) throw new Error("올바른 압축 객체가 아닙니다");
 			this.idx2val = [...this.wellKnownValues, ...object.values];
 			return this.decompress1(object.data);
 		}

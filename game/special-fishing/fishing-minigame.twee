@@ -1,7 +1,13 @@
 :: Widgets Fishing Minigame [widget]
 <<widget "fishingMinigameStartText">>
 	<<wearActiveFishingRodProp>>
-	<<set _initialMinigameAction to setup.fishingMinigame.behaviors[setup.fishing.lootTables.fish[$fishingHookedFish.type].minigame.behavior].initialAction>>
+	<<set _initialMinigameActionKey to setup.fishingMinigame.behaviors[setup.fishing.lootTables.fish[$fishingHookedFish.type].minigame.behavior].initialAction>>
+	<<switch _initialMinigameActionKey>>
+		<<case "run">><<set _initialMinigameAction to "달아나기 시작한다">>
+		<<case "thrash">><<set _initialMinigameAction to "발버둥치기 시작한다">>
+		<<case "idle">><<set _initialMinigameAction to "가만히 있는다">>
+		<<default>><<set _initialMinigameAction to _initialMinigameActionKey>>
+	<</switch>>
 	<<set _minSize to setup.fishing.lootTables.fish[$fishingHookedFish.type].minSize>>
 	<<set _maxSize to setup.fishing.lootTables.fish[$fishingHookedFish.type].maxSize>>
 	<<set _isHuge to $fishingHookedFish.size gt _minSize + (_maxSize - _minSize) * 0.8>>
@@ -18,11 +24,11 @@
 
 <<widget "debugFishingMinigameInfo">>
 	<<if V.debug>>
-		(Debug) | Stamina: $fishingMinigame.fishStamina / $fishingMinigame.maxStamina
-		| Distance: $fishingMinigame.fishDistance
-		| ArmFatigue: $fishingMinigame.armFatigue
-		| Escape timer: $fishingMinigame.fishEscapeTimer
-		| Behaviour: $fishingMinigame.behavior
+		(디버그) | 체력: $fishingMinigame.fishStamina / $fishingMinigame.maxStamina
+		| 거리: $fishingMinigame.fishDistance
+		| 팔 피로도: $fishingMinigame.armFatigue
+		| 도망 타이머: $fishingMinigame.fishEscapeTimer
+		| 행동 양식: $fishingMinigame.behavior
 		<br><br>
 	<</if>>
 <</widget>>
@@ -30,9 +36,9 @@
 <<widget "fishingMinigameArmFatigue">>
 	<<set _totalArmFatigue to $fishingMinigame.armFatigue * $fishingMinigame.armFatigueDifficulty>>
 	<<if _totalArmFatigue gte 8000>>
-		Your arms are burning.
+		팔이 타들어가는 것 같다.
 	<<elseif _totalArmFatigue gte 4000>>
-		Your arms are starting to ache.
+		팔이 쑤시기 시작한다.
 	<</if>>
 <</widget>>
 
@@ -73,7 +79,7 @@
 					<<if _totalArmFatigue gte 4000>>
 						You let the line go slack while the <<= fishDisplayName($fishingMinigame.fishName)>> rests, giving your arms a break.
 					<<else>>
-						You let the fish sit idle.
+						물고기가 가만히 있게 내버려 둔다.
 					<</if>>
 				<<default>>
 					<<error { message: "fishingMinigameTurnResult: unexpected player action \"" + $fishingMinigame.lastPlayerAction + "\"" }>>
@@ -137,26 +143,26 @@
 	<</switch>>
 
 	<<if $fishingMinigame.fishDistance lte 1>>
-		<<set _distanceText to "almost within reach">>
+		<<set _distanceText to "거의 손에 닿을 거리에">>
 	<<elseif $fishingMinigame.fishDistance lte 3>>
-		<<set _distanceText to "close">>
+		<<set _distanceText to "가까이에">>
 	<<elseif $fishingMinigame.fishDistance lte 6>>
-		<<set _distanceText to "a fair way out">>
+		<<set _distanceText to "꽤 멀리 떨어져">>
 	<<elseif $fishingMinigame.fishDistance gte 7>>
-		<<set _distanceText to "far out">>
+		<<set _distanceText to "아주 멀리">>
 	<</if>>
 
 	<<if $fishingMinigame.fishStamina is 0>>
-		<<set _staminaText to ", and completely worn out.">>
+		<<set _staminaText to "있고, 완전 지쳐 버렸다.">>
 	<<elseif $fishingMinigame.fishStamina lte 1>>
-		<<set _staminaText to ", and almost worn out.">>
+		<<set _staminaText to "있고, 거의 지쳐 있다.">>
 	<<elseif $fishingMinigame.fishStamina lte Math.ceil($fishingMinigame.maxStamina / 2)>>
-		<<set _staminaText to ", and starting to tire.">>
+		<<set _staminaText to "있고, 지쳐 가기 시작한다.">>
 	<<else>>
-		<<set _staminaText to ".">>
+		<<set _staminaText to "있다.">>
 	<</if>>
 
-	It's <<= _distanceText + _staminaText>>
+	<<= _distanceText + _staminaText>>
 <</widget>>
 
 <<widget "fishingMinigameAthleticsCheck">>

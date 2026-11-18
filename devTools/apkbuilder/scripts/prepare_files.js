@@ -5,7 +5,7 @@ const fs = require('fs-extra');
 const path = require('path');
 
 const sourcePath = path.resolve('../..'); // assume we're in gameDir/devTools/apkbuilder
-const sourceDirs = ["img","audio"]; // it's almost universally just img
+const sourceDirs = ["img", "img2", "audio"]; // DoLX: images, its img2/ and audio/
 const sourceName = "Degrees of Lewdity.html"; // game's compiled html
 const targetPath = path.resolve('./platforms/android/app/src/main/assets/www');
 const targetName = "index.html";

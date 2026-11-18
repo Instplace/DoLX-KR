@@ -3,7 +3,7 @@ function copyToClipboard(textarea, data) {
 	textarea.setAttribute("style", "");
 	textarea.select();
 	document.execCommand("copy");
-	alert("Copied to clipboard!");
+	alert("클립보드에 복사했습니다.");
 	textarea.setAttribute("style", "display:none");
 }
 
@@ -22,7 +22,7 @@ Macro.add("canvasColoursEditor", {
 
 		const groups = [
 			{
-				name: "Hair",
+				name: "머리카락",
 				colours: setup.colours.hair,
 				default: setup.colours.hair_default,
 				setVars(variable) {
@@ -33,7 +33,7 @@ Macro.add("canvasColoursEditor", {
 				exportSuffix: ";",
 			},
 			{
-				name: "Left eye",
+				name: "왼쪽 눈",
 				colours: setup.colours.eyes,
 				default: setup.colours.eyes_default,
 				setVars(variable) {
@@ -44,7 +44,7 @@ Macro.add("canvasColoursEditor", {
 				exportSuffix: ";",
 			},
 			{
-				name: "Right eye",
+				name: "오른쪽 눈",
 				colours: setup.colours.eyes,
 				default: setup.colours.eyes_default,
 				setVars(variable) {
@@ -55,7 +55,7 @@ Macro.add("canvasColoursEditor", {
 				exportSuffix: ";",
 			},
 			{
-				name: "Clothes",
+				name: "의류",
 				colours: setup.colours.clothes,
 				default: setup.colours.clothes_default,
 				setVars(variable) {
@@ -69,7 +69,7 @@ Macro.add("canvasColoursEditor", {
 				exportSuffix: ";",
 			},
 			{
-				name: "Lipstick",
+				name: "립스틱",
 				colours: setup.colours.lipstick,
 				default: setup.colours.lipstick_default,
 				setVars(variable) {
@@ -80,7 +80,7 @@ Macro.add("canvasColoursEditor", {
 				exportSuffix: ";",
 			},
 			{
-				name: "Eyeshadow",
+				name: "아이쉐도우",
 				colours: setup.colours.eyeshadow,
 				default: setup.colours.eyeshadow_default,
 				setVars(variable) {
@@ -91,7 +91,7 @@ Macro.add("canvasColoursEditor", {
 				exportSuffix: ";",
 			},
 			{
-				name: "Mascara",
+				name: "마스카라",
 				colours: setup.colours.mascara,
 				default: setup.colours.mascara_default,
 				setVars(variable) {
@@ -102,7 +102,7 @@ Macro.add("canvasColoursEditor", {
 				exportSuffix: ";",
 			},
 			{
-				name: "Blusher",
+				name: "블러셔",
 				colours: setup.colours.blusher,
 				default: setup.colours.blusher_default,
 				setVars(variable) {
@@ -151,7 +151,7 @@ Macro.add("canvasColoursEditor", {
 												copyToClipboard(textarea, group.exportPrefix + JSON.stringify(colours) + group.exportSuffix);
 											},
 										},
-										"Export"
+										"내보내기"
 									),
 									element("textarea", { style: "display:none" }),
 								]), // div.export-block
@@ -286,7 +286,7 @@ Macro.add("canvasLayersEditor", {
 							);
 						},
 					},
-					"Export"
+					"내보내기"
 				),
 				element("textarea", { style: "display:none" }),
 			])
@@ -690,7 +690,7 @@ Macro.add("canvasModelEditor", {
 							copyToClipboard(this.parentElement.querySelector("textarea"), JSON.stringify(ocopy));
 						},
 					},
-					"Export"
+					"내보내기"
 				),
 				element(
 					"button",
@@ -701,18 +701,18 @@ Macro.add("canvasModelEditor", {
 							if (textarea.getAttribute("style")) {
 								textarea.setAttribute("style", "");
 								textarea.value = "";
-								this.textContent = "Paste and click again to import";
+								this.textContent = "붙여넣은 뒤 다시 클릭해 불러오기";
 							} else {
 								const ioptions = JSON.parse(textarea.value);
 								Object.assign(options, ioptions);
 								model.redraw();
 								updateControls();
 								textarea.setAttribute("style", "display:none");
-								this.textContent = "Import";
+								this.textContent = "불러오기";
 							}
 						},
 					},
-					"Import"
+					"불러오기"
 				),
 				element("textarea", { rows: 1, style: "display:none" }),
 			])

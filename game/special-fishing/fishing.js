@@ -717,11 +717,11 @@ function fishingLocationWaterBodyName(bus) {
 		case "fishingPier":
 		case "fishingBeach":
 		case "fishingCoastPath":
-			return "sea";
+			return "바다";
 		case "fishingForestLake":
-			return "lake";
+			return "호수";
 		case "fishingMoor":
-			return "water";
+			return "물웅덩이";
 		default:
 			throw new Error(`fishingLocationWaterBodyName: unknown bus "${bus}"`);
 	}
@@ -768,15 +768,15 @@ window.fishingCatchEventWeight = fishingCatchEventWeight;
 function fishingLocationDisplayName(bus) {
 	switch (bus) {
 		case "fishingBeach":
-			return "Beach";
+			return "해변";
 		case "fishingPier":
-			return "Pier";
+			return "부두";
 		case "fishingCoastPath":
-			return "Coastal Path";
+			return "해안 산책로";
 		case "fishingForestLake":
-			return "Forest Lake";
+			return "숲속 호수";
 		case "fishingMoor":
-			return "Moor";
+			return "황야";
 		default:
 			throw new Error(`fishingLocationDisplayName: unknown bus "${bus}"`);
 	}

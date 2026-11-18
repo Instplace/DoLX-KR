@@ -251,9 +251,9 @@ function genderappearancecheck() {
 		}
 		const femininityfactor = Math.trunc((V.hairlength - 200) / 2);
 		if (lengthCap && femininityfactor >= lengthCap) {
-			addfemininityfromfactor(lengthCap, "Hair length (capped due to hair style)");
+			addfemininityfromfactor(lengthCap, "머리 길이 (헤어스타일로 인한 상한 적용)");
 		} else {
-			addfemininityfromfactor(femininityfactor, "Hair length");
+			addfemininityfromfactor(femininityfactor, "머리 길이");
 		}
 	}
 	/* Makeup */
@@ -263,12 +263,12 @@ function genderappearancecheck() {
 	addfemininityfromfactor(makeupPartEquipped("blusher") ? 50 : 0, "Blusher");
 	/* Body structure */
 	setfemininitymultiplierfromgender(V.player.gender_body);
-	addfemininityfromfactor(T.femininity_multiplier * 200, "Body appearance");
-	addfemininityfromfactor(Math.trunc(((V.physique + V.physiquesize / 2) / V.physiquesize) * -100), "Toned muscles");
+	addfemininityfromfactor(T.femininity_multiplier * 200, "체형");
+	addfemininityfromfactor(Math.trunc(((V.physique + V.physiquesize / 2) / V.physiquesize) * -100), "탄탄한 근육");
 	/* Behaviour */
 	setfemininitymultiplierfromgender(V.player.gender_posture);
 	const actingMultiplier = V.englishtrait + 1;
-	addfemininityfromfactor(T.femininity_multiplier * 100 * actingMultiplier, "Posture (x" + actingMultiplier + " effectiveness due to English skill)");
+	addfemininityfromfactor(T.femininity_multiplier * 100 * actingMultiplier, "자세 (영어 스킬 " + actingMultiplier + " 배 효과)");
 	/* Sexswap fame */
 	if (!V.statFreeze && playerHasXChangeBody() && V.xchange_fame >= 2) {
 		if (V.player.sex === "m") {
@@ -290,24 +290,24 @@ function genderappearancecheck() {
 	T.lower_femininity = wornSetupClothes("lower").femininity ? wornSetupClothes("lower").femininity : 0;
 	T.under_lower_femininity = wornSetupClothes("under_lower").femininity ? wornSetupClothes("under_lower").femininity : 0;
 	/* find maximum possible femininity of the last lower piece you can strip down to, and add it to the counter */
-	addfemininityfromfactor(Math.max(T.over_lower_femininity, T.lower_femininity, T.under_lower_femininity), "Lower clothes", "noow");
+	addfemininityfromfactor(Math.max(T.over_lower_femininity, T.lower_femininity, T.under_lower_femininity), "하의", "noow");
 	/* bulge and genitals checks for topless gender */
 	if (T.under_lower_protected && V.settings.nudeGenderPerception > 0) {
-		addfemininityfromfactor(T.bulge_size * -60, "Bulge visible through underwear", "noow");
+		addfemininityfromfactor(T.bulge_size * -60, "속옷 사이로 보이는 볼록함", "noow");
 	} else if ((T.over_lower_protected || T.lower_protected) && V.settings.nudeGenderPerception > 0) {
-		addfemininityfromfactor(-Math.max((T.bulge_size - 6) * 60, 0), "Bulge visible through clothing", "noow");
+		addfemininityfromfactor(-Math.max((T.bulge_size - 6) * 60, 0), "옷 위로 보이는 볼록함", "noow");
 	} else if (V.worn.genitals.exposed && V.settings.nudeGenderPerception === 1) {
 		if (V.player.penisExist) {
-			addfemininityfromfactor((V.player.penissize + 0.5) * -150, "Penis exposed", "noow");
+			addfemininityfromfactor((V.player.penissize + 0.5) * -150, "드러난 자지", "noow");
 		}
 		if (V.player.vaginaExist) {
-			addfemininityfromfactor(450, "Vagina exposed", "noow");
+			addfemininityfromfactor(450, "드러난 질", "noow");
 		}
 	} else if (V.worn.genitals.exposed && V.settings.nudeGenderPerception === 2) {
-		addfemininityfromfactor(V.player.vaginaExist * 100000 - V.player.penisExist * 100000, "Genitals exposed", "noow");
+		addfemininityfromfactor(V.player.vaginaExist * 100000 - V.player.penisExist * 100000, "드러난 성기", "noow");
 	}
 	/* plain breasts factor */
-	addfemininityfromfactor((V.player.perceived_breastsize - 0.5) * 100, "Exposed breasts", "noow");
+	addfemininityfromfactor((V.player.perceived_breastsize - 0.5) * 100, "드러난 가슴", "noow");
 	/* Lower clothing, bulge, and genitals */
 	addfemininityofclothingarticle("over_lower", V.worn.over_lower);
 	if (!T.over_lower_protected) {
@@ -323,17 +323,17 @@ function genderappearancecheck() {
 				/* Bare genitals are visible */
 				if (V.settings.nudeGenderPerception === 1) {
 					if (V.player.penisExist) {
-						addfemininityfromfactor((-V.player.penissize - 0.5) * 150, "Penis visible");
+						addfemininityfromfactor((-V.player.penissize - 0.5) * 150, "자지가 보임");
 					}
 					if (V.player.vaginaExist) {
-						addfemininityfromfactor(450, "Vagina visible");
+						addfemininityfromfactor(450, "보지가 보임");
 					}
 				} else if (V.settings.nudeGenderPerception === 2) {
 					if (V.player.penisExist) {
-						addfemininityfromfactor(-100000, "Penis visible");
+						addfemininityfromfactor(-100000, "자지가 보임");
 					}
 					if (V.player.vaginaExist) {
-						addfemininityfromfactor(100000, "Vagina visible");
+						addfemininityfromfactor(100000, "보지가 보임");
 					}
 				}
 			}
@@ -342,7 +342,7 @@ function genderappearancecheck() {
 			T.bottom_visibility *= 0.75;
 			/* Bulge visible through underwear */
 			if (V.settings.nudeGenderPerception > 0) {
-				addfemininityfromfactor(T.bulge_size * -60, "Bulge visible through underwear");
+				addfemininityfromfactor(T.bulge_size * -60, "속옷 사이로 보이는 볼록함");
 			}
 		}
 	} else {
@@ -350,7 +350,7 @@ function genderappearancecheck() {
 		T.bottom_visibility *= 0.75;
 		/* Bulge covered by lower clothes */
 		if (V.settings.nudeGenderPerception > 0) {
-			addfemininityfromfactor(-Math.max((T.bulge_size - 6) * 60, 0), "Bulge visible through clothing");
+			addfemininityfromfactor(-Math.max((T.bulge_size - 6) * 60, 0), "옷 위로 보이는 볼록함");
 		}
 	}
 	/* Upper clothing and breasts */
@@ -368,29 +368,29 @@ function genderappearancecheck() {
 		if (V.worn.under_upper.exposed >= 1) {
 			/* Exposed breasts */
 			T.breast_indicator = 1;
-			addfemininityfromfactor((V.player.perceived_breastsize - 0.5) * 100, V.player.perceived_breastsize > 0 ? "Exposed breasts" : "Exposed flat chest");
+			addfemininityfromfactor((V.player.perceived_breastsize - 0.5) * 100, V.player.perceived_breastsize > 0 ? "노출된 가슴" : "노출된 납작한 가슴");
 		} else {
 			/* Breasts covered by only underwear */
-			addfemininityfromfactor(Math.max((V.player.perceived_breastsize - 2) * 100, 0), "Breast size visible through underwear");
+			addfemininityfromfactor(Math.max((V.player.perceived_breastsize - 2) * 100, 0), "속옷 너머 보이는 가슴 크기");
 		}
 	} else {
 		/* Breast fully covered */
-		addfemininityfromfactor(Math.max((V.player.perceived_breastsize - 4) * 100, 0), "Breast size visible through clothing");
+		addfemininityfromfactor(Math.max((V.player.perceived_breastsize - 4) * 100, 0), "옷 위로 보이는 가슴 크기");
 	}
 	/* Bottom */
-	addfemininityfromfactor(Math.trunc(V.player.bottomsize * T.bottom_visibility * 50), "Bottom size (" + Math.trunc(T.bottom_visibility * 100) + "% visible)");
+	addfemininityfromfactor(Math.trunc(V.player.bottomsize * T.bottom_visibility * 50), "엉덩이 크기 (" + Math.trunc(T.bottom_visibility * 100) + "% 노출)");
 	/* Pregnant Belly */
 	if (V.sexStats === undefined || !playerBellyVisible() || V.settings.nudeGenderPerception === 0) {
 		// do glorious nothing
 	} else if (V.settings.nudeGenderPerception === 1) {
 		addfemininityfromfactor(
 			Math.max((playerBellySize() - 7) * (V.settings.nudeGenderPerception === 1 ? 90 : 70), 0),
-			playerAwareTheyArePregnant() ? "Pregnant Belly" : "Pregnant Looking Belly"
+			playerAwareTheyArePregnant() ? "임신한 배" : "임신한 것처럼 보이는 배"
 		);
 	} else if (playerBellySize() >= 18) {
-		addfemininityfromfactor(10000, playerAwareTheyArePregnant() ? "Pregnant Belly" : "Pregnant Looking Belly");
+		addfemininityfromfactor(10000, playerAwareTheyArePregnant() ? "임신한 배" : "임신처럼 보이는 배");
 	} else if (playerBellySize() >= 8) {
-		addfemininityfromfactor(Math.max((playerBellySize() - 7) * 250, 0), playerAwareTheyArePregnant() ? "Pregnant Belly" : "Pregnant Looking Belly");
+		addfemininityfromfactor(Math.max((playerBellySize() - 7) * 250, 0), playerAwareTheyArePregnant() ? "임신한 배" : "임신처럼 보이는 배");
 	}
 	/* Body writing */
 	bodywritingExposureCheck(true);
@@ -412,8 +412,8 @@ function genderappearancecheck() {
 			}
 		}
 	});
-	addfemininityfromfactor(T.skinValue, "Visible skin markings");
-	addfemininityfromfactor(T.skinValue + T.skinValue_noow, "Visible skin markings", "noow");
+	addfemininityfromfactor(T.skinValue, "눈에 띄는 피부 낙서/문신");
+	addfemininityfromfactor(T.skinValue + T.skinValue_noow, "눈에 띄는 피부 낙서/문신", "noow");
 	if (T.apparent_femininity > 0) {
 		T.gender_appearance = "f";
 	} else if (T.apparent_femininity < 0) {
@@ -582,9 +582,9 @@ DefineMacro("bodywritingHiddenCheck", bodywritingHiddenCheck);
  * @param {string} separator (", ") - A separator between elements of the formatted list
  * @returns {string} A formatted list, ie "a, b, c and d"
  */
-function formatList(arr, conjunction = "and", useOxfordComma = false, separator = ", ") {
+function formatList(arr, conjunction = "【와과】", useOxfordComma = false, separator = ", ") {
 	if (!(Array.isArray(arr) && arr.length > 0)) {
-		Errors.report("Error in formatList: Missing or invalid array argument", { Stacktrace: Utils.GetStack(), arguments });
+		Errors.report("formatList 오류: 배열 인자가 누락되었거나 올바르지 않습니다", { Stacktrace: Utils.GetStack(), arguments });
 		return "";
 	}
 	/*
@@ -598,8 +598,27 @@ function formatList(arr, conjunction = "and", useOxfordComma = false, separator 
 window.formatList = formatList;
 DefineMacroS("formatList", formatList);
 
+/* 엘크 단지(Elk Compound) 카메라 설치 위치 - $pubfame.compound.cameras 배열엔 영문 키가 그대로
+   저장되므로(원문과 동일한 내부 식별자), 화면에 표시할 때는 이 함수로 한글 명칭으로 바꿔서 출력한다. */
+function getCompoundCameraLocationKr(key) {
+	switch (key) {
+		case "the courtyard":
+			return "안뜰";
+		case "the building with storage tanks":
+			return "저장 탱크가 있는 건물";
+		case "the building with smokestacks":
+		case "the building with smoke stacks":
+			return "굴뚝이 있는 건물";
+		case "the central building":
+			return "중앙 건물";
+		default:
+			return key;
+	}
+}
+window.getCompoundCameraLocationKr = getCompoundCameraLocationKr;
+
 function liquidcount(liquid, parts) {
-	if (!setup.bodyliquid.liquidtype.includes(liquid)) return Errors.report("liquidcount error: wrong type", liquid);
+	if (!setup.bodyliquid.liquidtype.includes(liquid)) return Errors.report("liquidcount 오류: 잘못된 유형", liquid);
 	let count = 0;
 	for (const part of parts) {
 		count += V.player.bodyliquid[part][liquid];

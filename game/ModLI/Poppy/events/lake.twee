@@ -1,7 +1,7 @@
 ﻿/*
 	Entry point reached from the main :: Lake Shore passage when:
 	  - poppySchedule() returned poppy_location "lake"
-	  - Poppy is introduced / available 
+	  - Poppy is introduced / available
 	  - Weather allows the event (not rain, not snow, lake not frozen)
 	  - Time is within Poppy's weekend lake block
 
@@ -17,9 +17,9 @@
 <<set $outside to 1>><<set $location to "lake">><<effects>><<lakeeffects>><<set $eventskip to 0>>
 <<run poppySchedule()>>
 <<if !C.npc.Poppy or C.npc.Poppy.init isnot 1 or T.poppy_location isnot "lake" or Time.hour lt 9 or Time.hour gte 13 or Weather.precipitation is "rain" or Weather.precipitation is "snow">>
-	<span class="black">Poppy isn't here.</span>
+	<span class="black">포피가 여기 없다.</span>
 	<br><br>
-	<<link [[Back to shore|Lake Shore]]>><<endevent>><<set $eventskip to 0>><</link>>
+	<<link [[호숫가로 돌아간다|Lake Shore]]>><<endevent>><<set $eventskip to 0>><</link>>
 <<elseif isPregnancyEnding()>>
 	<<include "Poppy PC Birth">>
 <<elseif npcIsPregnant("Poppy") and npcPregnancyProgress("Poppy") gte 0.23 and !knowsAboutPregnancy("Poppy", "pc")>>
@@ -27,15 +27,15 @@
 <<elseif npcIsPregnant("Poppy") and npcPregnancyProgress("Poppy") lt 0.48 and knowsAboutPregnancy("Poppy", "pc") and !C.npc.Poppy.pregnancy.ultrasoundShown>>
 	<<include "Poppy Show Ultrasound">>
 <<elseif Number($poppyromance) lt 0 and !$poppySeen.includes("lake_claim_declined") and (Number(C.npc.Poppy.love) || 0) gte 100 and T.poppyPatience gte 100>>
-	As you get closer, Poppy whips <<his>> head towards your direction. <<His>> eyes gleam with excitement after confirming your presence. 
+	당신이 가까이 다가가자 포피가 고개를 홱 당신 쪽으로 돌린다. 당신이 온 것을 확인한 <<his>> 눈이 기쁨으로 반짝인다.
 	<br><br>
-	<<He>> springs to <<his>> feet and rushes over to you. "I'm glad you're here! I... have something to tell you." Poppy looks bashful, which is somewhat uncharacteristic of <<him>>. 
+	<<He>>【은는】 벌떡 일어나 당신에게 달려온다. "여기 있었구나, 다행이다! 나... 할 말이 있어." 포피가 수줍어하는 모습이 평소와는 사뭇 다르다.
 	<br><br>
-	"I'm in love with you. I feel drawn to you and want to... progress further into our relationship." <<He>> holds your hands and squeezes them gently. <<His>> eyes are filled with worry and hope.
+	"널 사랑해. 네게 끌리고, 우리 관계를... 더 깊이 나아가게 하고 싶어." <<He>>【은는】 당신의 손을 잡고 살며시 쥔다. <<His>> 눈에 걱정과 희망이 가득하다.
 	<<poppyOpiumPulse>>  
-	<<link [[Accept|Lake Poppy Claim Accept]]>><</link>>
+	<<link [[수락한다|Lake Poppy Claim Accept]]>><</link>>
 	<br>
-	<<link [[Decline|Lake Poppy Claim Decline]]>><</link>>
+	<<link [[거절한다|Lake Poppy Claim Decline]]>><</link>>
 <<else>>
 	<<if npcIsPregnant("Poppy") and npcPregnancyProgress("Poppy") gte 0.49 and knowsAboutPregnancy("Poppy", "pc")>>
 		<<include "Poppy Idle Pregnant Lake">>
@@ -51,45 +51,45 @@
 	<<set $daily.poppy.bodywriting to true>><<set _poppyStatus to Array.isArray(T.poppyStatus) ? T.poppyStatus : []>>
 	<<if ["Robin","Whitney","Eden","Kylar","Sydney","Avery","Alex","Black Wolf","Great Hawk","Gwylan"].includes($skin[_bodypart].special) and $skin[_bodypart].special isnot "Poppy">>
 		<<if _poppyStatus.includes("LowPatience")>>
-			You chat with Poppy. Poppy glares at the <<tattoo _bodypart>> on your <<bodypart _bodypart>>, clearly bothered by it. <<He>> grits <<his>> teeth and clenches <<his>> fists, as if ready to lash out at you, but the moment passes. 
+			당신은 포피와 이야기를 나눈다. 포피가 당신의 <<bodypart _bodypart>>에 있는 <<tattoo _bodypart>>【을를】 노려보며 눈에 띄게 거슬려 한다. <<He>>【은는】 이를 악물고 주먹을 쥐어 당신에게 달려들 기세지만, 그 순간은 지나간다.
 			<br><br>
 			Poppy rolls <<his>> eyes with a scoff and looks away.<<npcincr Poppy patience -4>><<if C.npc.Poppy.patience gte 0>><<llpatience>><<else>><<gganger>><</if>>
 		<<else>>
 			You chat with Poppy. Poppy narrows <<his>> eyes at the <<tattoo _bodypart>> on your <<bodypart _bodypart>>. "Why do you have someone else's name on you while you're my <<girlfriend "Poppy">>?"
 			<br><br>
-			Poppy presses <<his>> thumb against your skin and tries to rub it off.
+			포피가 엄지를 당신의 피부에 대고 문질러 지우려 한다.
 			<br><br>
 			<<if ["marker","tattoo","brand","magic"].includes($skin[_bodypart].pen)>>
-				<<He>> frowns when it doesn't come off and quickly gives up with a huff. "If only I had rubbing alcohol with me..." <<he>> grumbles.
+				<<He>>【은는】 지워지지 않자 얼굴을 찌푸리더니 한숨을 내쉬며 금세 포기한다. "소독용 알코올만 있었어도..." <<he>>【이가】 투덜거린다.
 				<<npcincr Poppy patience -4>><<if C.npc.Poppy.patience gte 0>><<llpatience>><<else>><<gganger>><</if>>
 			<<else>>
-				<span class="blue"><<He>> rubs at your <<tattoo _bodypart>> on your <<bodypart _bodypart>></span>,
+				<span class="blue"><<He>>【이가】 당신의 <<bodypart _bodypart>>에 있는 <<tattoo _bodypart>>【을를】 문지르자</span>,
 				<<if $skin[_bodypart].pen is "pen">>
-					smearing the ink before it finally comes away.
+					잉크가 번지다가 마침내 지워진다.
 				<<else>>
-					smearing the <<print $skin[_bodypart].pen>> before it finally comes away.
+					<<print $skin[_bodypart].pen>>【이가】 번지다가 마침내 지워진다.
 				<</if>>
 				<br><br><<bodywriting_clear _bodypart>>
-				"There. All better." <<He>> smiles triumphantly.
+				"자. 이제 다 말끔해졌네." <<He>>【은는】 의기양양하게 웃는다.
 			<</if>>
 		<</if>>
 	<<elseif ["prostitution","rape","exhibitionism","sex"].includes($skin[_bodypart].special) or $skin[_bodypart].lewd is 1 and !_poppyStatus.includes("LowPatience")>>
-		You chat with Poppy. <<He>> studies the <<tattoo _bodypart>> on your <<bodypart _bodypart>> with a faint frown. "Such vulgar things shouldn't be written on you."
+		당신은 포피와 이야기를 나눈다. <<He>>【은는】 당신의 <<bodypart _bodypart>>에 있는 <<tattoo _bodypart>>【을를】 살짝 찌푸린 얼굴로 살핀다. "이런 천박한 걸 네 몸에 써 놓으면 안 되지."
 		<br><br>
-		Poppy presses <<his>> thumb against your skin and tries to rub it off.
+		포피가 엄지를 당신의 피부에 대고 문질러 지우려 한다.
 		<br><br>
 		<<if ["marker","tattoo","brand","magic"].includes($skin[_bodypart].pen)>>
-			<<He>> frowns when it doesn't come off and quickly gives up with a huff. "If only I had rubbing alcohol with me..." <<he>> grumbles.
+			<<He>>【은는】 지워지지 않자 얼굴을 찌푸리더니 한숨을 내쉬며 금세 포기한다. "소독용 알코올만 있었어도..." <<he>>【이가】 투덜거린다.
 			<<npcincr Poppy patience -2>><<if C.npc.Poppy.patience gte 0>><<lpatience>><<else>><<ganger>><</if>>
 		<<else>>
-			<span class="blue"><<He>> rubs at your <<tattoo _bodypart>> on your <<bodypart _bodypart>></span> until the writing smears away.
+			<span class="blue"><<He>>【이가】 당신의 <<bodypart _bodypart>>에 있는 <<tattoo _bodypart>>【을를】 문지른다</span> 글씨가 번져 사라질 때까지.
 			<<bodywriting_clear _bodypart>>
-			"There, all gone now." <<He>> smiles triumphantly and kisses you on the cheek. "You're all beautiful again."
+			"자, 싹 없어졌네." <<He>>【은는】 의기양양하게 웃으며 당신의 뺨에 입을 맞춘다. "다시 온통 예쁜 모습이야."
 		<</if>>
 	<<elseif $skin[_bodypart].pen is "tattoo" and !_poppyStatus.includes("LowPatience")>>
-		You chat with Poppy. <<He>> notices the tattoo on your <<bodypart _bodypart>> and smiles. 
+		당신은 포피와 이야기를 나눈다. <<He>>【은는】 당신의 <<bodypart _bodypart>>에 있는 타투를 알아보고 미소 짓는다.
 		<br><br>
-		"That tattoo suits you. It must've been painful when you had it done, huh?" <<He>> chuckles.
+		"그 타투, 너한테 잘 어울려. 새길 때 많이 아팠지?" <<He>>【이가】 나직이 웃는다.
 	<</if>>
 <</if>>
 <<poppyOpiumPulse>>
@@ -98,66 +98,66 @@
 :: Lake Poppy Invite Home
 <<effects>><<lakeeffects>><<poppyFlatInit>>
 <<if !$poppySeen.includes("lake_postclaim_intro")>><<set $poppySeen.push("lake_postclaim_intro")>><</if>>
-Poppy hears you approaching and turns to you with a smile much softer than usual. 
+포피가 당신이 다가오는 소리를 듣고 평소보다 훨씬 부드러운 미소로 돌아본다.
 <br><br>
-"My precious jewel." <<He>> greets you warmly. "You should come and visit me at my place sometime. I live at the flats in Barb Street. You'll be able to tell which flat is mine. Look for the door with a Poppy on it." 
-<<He>> winks at you. "I would love to have your company at my home..." 
+"소중한 내 보석." <<He>>【이가】 따뜻하게 맞이한다. "언제 한번 우리 집에 놀러 와. 난 바브 가에 있는 아파트에 살아. 어느 집인지는 금방 알 수 있을 거야. 문에 양귀비가 달린 집을 찾아봐."
+<<He>>【은는】 당신에게 윙크한다. "네가 우리 집에 와 주면 정말 좋겠어..."
 <br><br>
-Poppy eyes you suggestively.<<npcincr Poppy lust 2>><<glust>>
+포피가 의미심장하게 당신을 바라본다.<<npcincr Poppy lust 2>><<glust>>
 <<poppyOpiumPulse>>
-<span class="gold"><i>You now have access to Poppy's flat!</i></span>
+<span class="gold"><i>이제 포피의 집에 갈 수 있다!</i></span>
 <<poppyLakeMenu>>
 
 :: Lake Poppy Chat
 <<effects>><<lakeeffects>><<run poppySchedule()>>
 <<if T.poppyStatus.includes("LowPatience")>>
-	You try to converse with Poppy, but <<he>> doesn't look at you. <<He>> gives you little to no response, <<if $awarelevel gte 5>>only the occasional ear twitch or tail flick.<</if>>
+	당신은 포피와 이야기를 해 보려 하지만 <<he>>【은는】 당신을 쳐다보지 않는다. <<He>>【은는】 거의 반응하지 않는다.<<if $awarelevel gte 5>> 가끔 귀가 씰룩이거나 꼬리가 까딱일 뿐이다.<</if>>
 <<elseif (Number(C.npc.Poppy.love) || 0) gte 80 and !$poppySeen.includes("poppy_tf_revealed") and $awarelevel lt 5>>
-	The more time you spend with Poppy, the more you feel like there's something just out of reach.
+	포피와 시간을 보낼수록 손에 닿을 듯 말 듯한 뭔가가 있다는 느낌이 든다.
 	<br><br>
-	"There's something different about you," you say. "But I just can't put my finger on it."
+	"너한테는 뭔가 다른 게 있어." 당신이 말한다. "그런데 그게 뭔지 딱 집어 말을 못 하겠어."
 	<br><br>
-	<<He>> chuckles at your question. "Isn't it a bit obvious? Come on now, <span class="blue">clear your vision</span>." <<He>> covers your eyes with <<his>> hand.
+	<<He>>【은는】 당신의 말에 웃음을 터뜨린다. "꽤 뻔하지 않아? 자, <span class="blue">눈을 맑게 떠 봐</span>." <<He>>【은는】 <<his>> 손으로 당신의 눈을 가린다.
 	<br><br>
-	"<span class="navy">See what you're meant to see, what you want to see</span>."
+	"<span class="navy">네가 봐야 할 것, 보고 싶은 것을 봐</span>."
 	<<if !$poppySeen.includes("poppy_tf_revealed")>><<set $poppySeen.push("poppy_tf_revealed")>><</if>>
 <<elseif Number($poppyromance) gte 0>>
 	<<if random(1,2) is 1>>
-		Poppy listens tentatively as you talk.
+		포피가 조심스레 귀를 기울이며 당신의 이야기를 듣는다.
 		<br><br>
-		<<He>> takes your hand into <<his>> and rests it on <<his>> lap while caressing it mindlessly with <<his>> thumb.<<takeHandholdingVirginity "Poppy" "consensual" null true>> You smile at <<him>>.
+		<<He>>【은는】 당신의 손을 <<his>> 손으로 감싸 무릎 위에 올려놓고 엄지로 무심히 쓰다듬는다.<<takeHandholdingVirginity "Poppy" "consensual" null true>> 당신은 포피에게 미소를 짓는다.
 	<<else>>
-		You talk about your struggles in life. As you do so, Poppy gives you a sympathetic look and pulls you closer, resting <<his>> hand on your hips. 
+		당신은 살아가며 겪는 어려움을 털어놓는다. 그러는 동안 포피가 안쓰러운 눈빛으로 당신을 끌어당겨 <<his>> 손을 당신의 골반에 얹는다.
 		<br><br>
-		You mention how harsh your caretaker is to you and the orphans.<<trauma -2>><<ltrauma>>
+		당신은 '보호자'가 당신과 고아원 아이들에게 얼마나 가혹한지 이야기한다.<<trauma -2>><<ltrauma>>
 		<br><br>
-		The topic seems to draw Poppy's attention more and make <<if $awarelevel gte 5>><<his>> ears perk up.<<else>><<him>> perk up.<</if>> <<He>> seemed hesitant to say something at first, but spoke up anyway. 
-		"You're right. No one should suffer such things in a place they call home. If Bailey tries anything with you, I'll do my best to help you." Poppy squeezes your hips lightly as reassurance.
+		그 화제가 포피의 관심을 더 끄는 듯하다. <<if $awarelevel gte 5>><<his>> 귀가 쫑긋 선다.<<else>>포피가 몸을 앞으로 기울인다.<</if>> <<He>>【은는】 처음에는 말하기를 망설이는 듯하더니, 결국 입을 연다.
+		"네 말이 맞아. 집이라고 부르는 곳에서 누구도 그런 일을 겪어선 안 돼. 베일리가 너한테 무슨 짓을 하려 들면, 내가 최선을 다해 도울게." 포피가 안심시키듯 당신의 골반을 가볍게 쥔다.
 		<br><br>
-		"You got it, you're tougher than you look. Believe in yourself, my jewel." <<He>> gives you a quick peck on the cheek.
+		"그래, 넌 보기보다 강해. 스스로를 믿어, 내 보석." <<He>>【은는】 당신의 뺨에 가볍게 입을 맞춘다.
 		<<npcincr Poppy lust 1>><<glust>><<arousal 250>><<garousal>>
 	<</if>>
 <<else>>
 	<<if random(1,3) is 1>>
-		As you chat with Poppy, <<he>> occasionally nods and smiles. <<He>> chimes in every now and then but it's mostly a one sided conversation.
+		포피와 수다를 떠는 동안 <<he>>【은는】 이따금 고개를 끄덕이며 미소 짓는다. 가끔 한마디씩 거들긴 하지만 대부분은 당신 혼자 이야기하는 쪽이다.
 	<<elseif random(1,3) is 2>>
-		You talk about your struggles in life. Poppy gives you a sympathetic look. You mention how harsh your caretaker is to you and the orphans.<<trauma -2>><<ltrauma>>
+		당신은 살아가며 겪는 어려움을 털어놓는다. 포피가 안쓰러운 눈빛으로 당신을 바라본다. 당신은 '보호자'가 당신과 고아원 아이들에게 얼마나 가혹한지 이야기한다.<<trauma -2>><<ltrauma>>
 		<br><br>
-		The topic seems to draw Poppy's attention more and make <<if $awarelevel gte 5>><<his>> fox ears perk up.<<else>><<him>> perk up.<</if>> "Bailey can be an asshole sometimes, I've experienced it firsthand, but <<nnpc_he "Bailey">> means well. You'll learn to appreciate <<nnpc_him "Bailey">> when you've endured the horrors of the world. There are much worse things out there than Bailey."
+		그 화제가 포피의 관심을 더 끄는 듯하다. <<if $awarelevel gte 5>><<his>> 여우 귀가 쫑긋 선다.<<else>>포피가 몸을 앞으로 기울인다.<</if>> "베일리가 가끔 못돼먹게 굴 때가 있지, 나도 직접 겪어 봤으니까. 그래도 속마음은 나쁘지 않아. 세상의 끔찍한 일들을 겪고 나면 베일리를 고맙게 여기게 될 거야. 세상엔 베일리보다 훨씬 나쁜 게 널려 있거든."
 		<<stress 1>><<gstress>><<awareness 5>><<gawareness>>
 		<br><br>
-		"Besides, <<nnpc_he "Bailey">>..." Poppy ponders for a moment before shaking <<his>> head with a smile. "Nevermind. You got it, you're tougher than you look. Believe in yourself."
+		"게다가 베일리는..." 포피는 잠시 생각에 잠겼다가 미소를 지으며 <<his>> 고개를 젓는다. "아니, 됐어. 그래, 넌 보기보다 강하니까. 스스로를 믿어."
 	<<else>>
-		You talk about your progress in housekeeping and the skills you're still unable to grasp despite multiple attempts. Poppy demonstrates with <<his>> hands, giving you detailed step by step instructions on how to solve your dilemma.
+		당신은 가사 실력이 얼마나 늘었는지, 몇 번을 해 봐도 아직 익히지 못한 기술이 있다는 이야기를 한다. 포피가 <<his>> 손으로 시범을 보이며 문제를 푸는 방법을 단계별로 자세히 알려 준다.
 		<<housekeeping 1>><<ghousekeeping>>
 		<br><br>
-		"There isn't much I could help you with since there's no equipment for me to demonstrate at the moment. Come see me at school if you still need help, okay?" <<He>> tilts <<his>> head with a smile.
+		"지금은 시범을 보일 도구가 없어서 내가 도와줄 수 있는 게 많지 않네. 그래도 도움이 더 필요하면 학교로 찾아와, 알았지?" <<He>>【은는】 미소 지으며 고개를 갸웃한다.
 	<</if>>
 <</if>>
 <<if T.poppyLoveGainAllowed>><<glove>><<npcincr Poppy love 1>><</if>><<npcincr Poppy patience 1>><<if C.npc.Poppy.patience gte 0>><<gpatience>><<else>><<langer>><</if>>
 <<poppyOpiumPulse>>
 <<if (Number(C.npc.Poppy.love) || 0) gte 80 and !$poppySeen.includes("poppy_tf_revealed") and $awarelevel lt 5>>
-	<<link [[Next|Lake Poppy Doze Ask 2]]>><</link>>
+	<<link [[다음|Lake Poppy Doze Ask 2]]>><</link>>
 <<else>>
 	<<poppyLakeReturn>>
 <</if>>
@@ -165,88 +165,88 @@ Poppy eyes you suggestively.<<npcincr Poppy lust 2>><<glust>>
 :: Lake Poppy Flirt
 <<effects>><<lakeeffects>><<run poppySchedule()>><<promiscuity1>>
 <<if T.poppyStatus.includes("LowPatience")>>
-	You try to flirt with Poppy, but <<he>> doesn't look at you.
+	당신은 포피에게 추파를 던져 보지만 <<he>>【은는】 당신을 쳐다보지도 않는다.
 	<br><br>
-	<<He>> gives you little to no response, only the occasional <<if $awarelevel gte 5>>ear twitch or tail flick<<else>>click of tongue<</if>>, and <<he>> seems more agitated than before.
+	<<He>>【은는】 거의 반응하지 않는다. 가끔 <<if $awarelevel gte 5>>귀가 씰룩이거나 꼬리가 까딱일 뿐<<else>>혀를 찰 뿐<</if>>이고, 전보다 더 짜증이 나 보인다.
 <<elseif Number($poppyromance) gte 0>>
 	<<if random(1,3) is 1>>
 		<<if $awarelevel gte 5>>
-			"Can I touch your tail?" you ask.
+			"꼬리 만져 봐도 돼?" 당신이 묻는다.
 			<br><br>
-			"Of course." Poppy smiles. <<He>> turns so that <<his>> back faces you. <<His>> fluffy tail settles onto your lap, and you stroke it gently, marveling at the thickness of it.
+			"물론이지." 포피가 미소 짓는다. <<He>>【은는】 등이 당신 쪽을 향하도록 돌아앉는다. <<His>> 푹신한 꼬리가 당신의 무릎 위에 내려앉고, 당신은 그 굵기에 감탄하며 부드럽게 쓰다듬는다.
 			<br><br>
-			Feeling emboldened, you reach forward and rub the base of the tail. Poppy shivers, a quiet whimper leaves <<his>> lips. <<His>> tail starts to wag.<<arousal 300>><<garousal>>
+			용기가 난 당신은 손을 뻗어 꼬리 뿌리를 문지른다. 포피가 몸을 부르르 떨고, 입술 사이로 나직한 신음이 새어 나온다. <<His>> 꼬리가 흔들리기 시작한다.<<arousal 300>><<garousal>>
 			<br><br>
-			"You enjoyed that as much as I did, didn't you?" Poppy says in a sultry tone as <<he>> turns to face you.
+			"너도 나만큼 좋았지, 그렇지?" 포피가 교태 어린 목소리로 말하며 <<he>>【이가】 당신 쪽으로 돌아앉는다.
 		<<else>>
-			"Can I play with your hair?" you ask. "It looks so fluffy."
+			"머리카락 만져 봐도 돼?" 당신이 묻는다. "엄청 폭신해 보여."
 			<br><br>
-			"Of course." Poppy smiles. <<He>> turns so that <<his>> back faces you. You sink your fingers into <<his>> hair and slowly comb through it. You marvel at the softness of it.
+			"물론이지." 포피가 미소 짓는다. <<He>>【은는】 등이 당신 쪽을 향하도록 돌아앉는다. 당신은 <<his>> 머리카락에 손가락을 파묻고 천천히 빗어 내린다. 그 부드러움에 감탄한다.
 			<br><br>
-			Feeling emboldened, you fist Poppy's hair and give it a slight tug, to which <<he>> responds with a grunt. <<He>> pulls away from you.
+			용기가 난 당신은 포피의 머리카락을 움켜쥐고 살짝 잡아당긴다. <<He>>【은는】 끙 하는 소리로 응하더니 당신에게서 몸을 뗀다.
 			<br><br>
-			"Careful now, I bite." <<He>> looks over <<his>> shoulder, giving you a suggestive grin. "You're into that, aren't you?"<<arousal 300>><<garousal>>
+			"조심해, 나 문다." <<He>>【은는】 어깨 너머로 돌아보며 노골적인 미소를 짓는다. "이런 거 좋아하잖아, 그렇지?"<<arousal 300>><<garousal>>
 		<</if>>
 	<<elseif random(1,3) is 2>>
-		You move closer to Poppy and wrap your arms around <<his>> waist. "I feel so lucky to call you mine," you say as your lips hover near <<him>>.
+		당신은 포피에게 다가가 <<his>> 허리에 팔을 두른다. "널 내 사람이라고 부를 수 있어서 정말 운이 좋아." 당신은 입술이 포피에게 닿을 듯 가까이 대고 말한다.
 		<br><br>
-		"I feel the same, my jewel." <<He>> waits for you to make your move. You press your lips against <<him>>, and <<he>> melts into the kiss with a contented sigh. The kiss grows heated as Poppy eagerly pushes <<his>> tongue against your lips to tangle with yours. Both of you pull away to catch your breath.
+		"나도 같은 마음이야, 내 보석." <<He>>【은는】 당신이 먼저 다가오기를 기다린다. 당신이 입술을 포개자 <<he>>【은는】 만족스러운 한숨을 쉬며 키스에 녹아든다. 키스가 뜨겁게 달아오르고, 포피가 간절히 혀를 당신의 입술에 밀어 넣어 당신의 혀와 얽는다. 둘은 숨을 고르려고 입술을 뗀다.
 		<br><br>
-		"That was... fun." Poppy grins at you.<<arousal 300>><<garousal>>
+		"방금... 재밌었어." 포피가 당신을 보며 씩 웃는다.<<arousal 300>><<garousal>>
 	<<else>>
-		You shift closer until your thigh presses against Poppy's. <<He>> glances at you, amused, as you curl up at <<his>> side and rest your head against <<his>> shoulder.
+		당신은 허벅지가 포피의 허벅지에 닿을 때까지 가까이 붙는다. <<He>>【은는】 재미있다는 듯 당신을 힐끗 보고, 당신은 <<his>> 곁에 웅크리고 앉아 어깨에 머리를 기댄다.
 		<br><br>
-		"My, how clingy." Poppy's voice is light with teasing, but <<he>> doesn't move away. Instead, <<he>> lets <<his>> <<if $awarelevel gte 5>>tail<<else>>hand<</if>> curl around your waist and draw you closer.
+		"어머, 엄청 달라붙네." 포피의 목소리는 놀리듯 가볍지만 <<he>>【은는】 몸을 빼지 않는다. 오히려 <<his>> <<if $awarelevel gte 5>>꼬리를<<else>>손을<</if>> 당신의 허리에 감아 더 가까이 끌어당긴다.
 		<br><br>
-		You breathe in the earthy, powdery scent clinging to <<him>> and tilt your face up. Poppy's lips brush your forehead, then linger at your temple. The soft affection makes your heart race far more than it should.
+		당신은 포피에게서 풍기는 흙내 섞인 분 냄새를 들이마시며 얼굴을 든다. 포피의 입술이 당신의 이마를 스치고, 이어 관자놀이에 머문다. 그 부드러운 애정에 심장이 마땅히 뛸 정도보다 훨씬 거세게 뛴다.
 		<br><br>
-		"Stay like this a little longer," <<he>> murmurs. "You look prettiest when you're needy for me."<<arousal 350>><<garousal>>
+		"조금만 더 이렇게 있어." <<he>>【이가】 속삭인다. "나한테 애가 타 있을 때 네가 제일 예뻐 보여."<<arousal 350>><<garousal>>
 	<</if>>
 <<else>>
 	<<if random(1,3) is 1>>
 		<<if $awarelevel gte 5>>
-			"Can I touch your tail?" you ask.
+			"꼬리 만져 봐도 돼?" 당신이 묻는다.
 			<br><br>
-			"Of course." Poppy smiles. <<He>> turns so that <<his>> back faces you. <<His>> fluffy tail settles onto your lap, you stroke it gently, marveling at the thickness of it. Feeling emboldened, you reach forward and rub the base of the tail. Poppy goes rigid for a moment and <<his>> tail flicks away from your lap.
+			"물론이지." 포피가 미소 짓는다. <<He>>【은는】 등이 당신 쪽을 향하도록 돌아앉는다. <<His>> 푹신한 꼬리가 당신의 무릎 위에 내려앉고, 당신은 그 굵기에 감탄하며 부드럽게 쓰다듬는다. 용기가 난 당신이 손을 뻗어 꼬리 뿌리를 문지르자, 포피가 잠시 몸이 굳더니 <<his>> 꼬리가 당신의 무릎에서 홱 빠져나간다.
 			<br><br>
-			"Careful now." <<He>> looks over <<his>> shoulder, giving you a subtle warning that hides behind a cunning smile.
+			"조심해." <<He>>【은는】 어깨 너머로 돌아보며, 교활한 미소 뒤에 숨긴 은근한 경고를 보낸다.
 		<<else>>
-			"Can I play with your hair?" you ask. "It looks so fluffy."
+			"머리카락 만져 봐도 돼?" 당신이 묻는다. "엄청 폭신해 보여."
 			<br><br>
-			"Of course." Poppy smiles. <<He>> turns so that <<his>> back faces you. You sink your fingers into <<his>> hair and slowly comb through it. You marvel at the softness of it.
+			"물론이지." 포피가 미소 짓는다. <<He>>【은는】 등이 당신 쪽을 향하도록 돌아앉는다. 당신은 <<his>> 머리카락에 손가락을 파묻고 천천히 빗어 내린다. 그 부드러움에 감탄한다.
 			<br><br>
-			Feeling emboldened, you fist Poppy's hair and give it a slight tug, to which <<he>> responds with a grunt. <<He>> pulls away from you.
+			용기가 난 당신은 포피의 머리카락을 움켜쥐고 살짝 잡아당긴다. <<He>>【은는】 끙 하는 소리로 응하더니 당신에게서 몸을 뗀다.
 			<br><br>
-			"Careful now." <<He>> looks over <<his>> shoulder, giving you a subtle warning that hides behind a cunning smile.
+			"조심해." <<He>>【은는】 어깨 너머로 돌아보며, 교활한 미소 뒤에 숨긴 은근한 경고를 보낸다.
 		<</if>>
 	<<elseif random(1,3) is 2>>
-		"You're so <<if C.npc.Poppy.gender is "m">>handsome<<else>>beautiful<</if>>, I wish I could keep you all to myself," you say as you rest a hand on Poppy's thigh. <<He>> seems amused by your advances, but not enough to make <<him>> flustered.
+		"넌 정말 <<if C.npc.Poppy.gender is "m">>잘생겼어<<else>>아름다워<</if>>, 너를 나 혼자 갖고 싶어." 당신이 말하며 포피의 허벅지에 손을 얹는다. <<He>>【은는】 당신의 접근이 재미있는 듯하지만, 당황할 정도는 아니다.
 		<br><br>
-		If anything, it seems that <<he>> took it as a challenge.
+		오히려 그것을 도전으로 받아들인 듯하다.
 		<br><br>
-		"Oh honey, you'll have to try harder than that..." Poppy leans forward, tilting your chin up with one hand as the other slides up your thigh. <<He>> holds intense eye contact with you as <<he>> rubs your inner thigh with <<his>> thumb.
+		"어머, 자기야, 그걸로는 어림도 없지..." 포피가 몸을 앞으로 기울여 한 손으로 당신의 턱을 들어 올리고, 다른 손은 당신의 허벅지를 타고 올라온다. <<He>>【은는】 강렬하게 눈을 맞춘 채 <<his>> 엄지로 당신의 허벅지 안쪽을 문지른다.
 		<br><br>
-		"Not so bold now, are you?" You feel <<his>> breath on your lips.<<arousal 400>><<ggarousal>>
+		"이제 별로 용감하지 않네, 응?" 당신의 입술에 <<his>> 숨결이 느껴진다.<<arousal 400>><<ggarousal>>
 		<br><br>
-		Poppy releases you after you've become a flustered mess. "Hm, seems like you have much to learn about the art of seduction." <<He>> chuckles.
+		당신이 어쩔 줄 모르는 지경이 되자 포피가 당신을 놓아 준다. "흠, 유혹의 기술은 아직 배울 게 많네." <<He>>【이가】 낮게 웃는다.
 	<<else>>
-        You inch closer and let your knee brush against Poppy's leg. "You're always so nice to look at," you murmur, letting your gaze linger.
+        당신은 슬며시 다가가 무릎을 포피의 다리에 스친다. "넌 볼 때마다 늘 보기 좋아." 당신은 시선을 거두지 않고 중얼거린다.
         <br><br>
-        Poppy laughs softly. "Nice?" <<He>> leans closer until you can feel <<his>> breath against your cheek. "What a miserly compliment."
+        포피가 조용히 웃는다. "보기 좋아?" <<He>>【은는】 당신의 뺨에 숨결이 느껴질 만큼 가까이 몸을 기울인다. "참 인색한 칭찬이네."
         <br><br>
-        Before you can answer, <<he>> hooks a finger beneath your chin and studies your face with a knowing smile. <<His>> thumb strokes once over your lower lip, slow enough to make your face redden.
+        당신이 대답하기도 전에 <<he>>【은는】 손가락 하나로 당신의 턱 밑을 받쳐 올리고 다 안다는 듯한 미소로 얼굴을 살핀다. <<His>> 엄지가 당신의 아랫입술 위를 한 번, 얼굴이 붉어질 만큼 천천히 쓸고 지나간다.
         <br><br>
-        "There. That's a better look on you." <<He>> withdraws, looking entirely too pleased with <<himself>> as you sit there flustered.<<arousal 300>><<ggarousal>>
+        "자. 이게 더 잘 어울려." <<He>>【은는】 몸을 빼며 스스로가 너무나 흡족한 얼굴을 하고, 당신은 얼굴이 달아오른 채 그 자리에 앉아 있다.<<arousal 300>><<ggarousal>>
 	<</if>>
 <</if>>
 <<if T.poppyLoveGainAllowed>><<npcincr Poppy love 1>><<glove>><</if>><<if Number($poppyromance) gte 0 and !T.poppyStatus.includes("LowPatience")>><<npcincr Poppy lust 2>><<glust>><</if>>
 <<poppyOpiumPulse>>
 <<if Number($poppyromance) gte 0 and !T.poppyStatus.includes("LowPatience")>>
 	<<if hasSexStat("promiscuity", 2)>>
-		<<brothelicon>><<link [[Take it further (0:15)|Lake Poppy Take Further]]>><<pass 15>><<set $daily.poppy.lastAction to "takeFurther">><</link>>
+		<<brothelicon>><<link [[더 나아간다 (0:15)|Lake Poppy Take Further]]>><<pass 15>><<set $daily.poppy.lastAction to "takeFurther">><</link>>
 		<br><br>
 	<<else>>
-		<<insufficientStat "promiscuity" "to take it further">>
+		<<insufficientStat "promiscuity" "진도를 더 빼기에는">>
 		<br>
 	<</if>>
 <</if>>
@@ -256,83 +256,83 @@ Poppy eyes you suggestively.<<npcincr Poppy lust 2>><<glust>>
 <<effects>><<lakeeffects>><<run poppySchedule()>>
 <<if T.poppyStatus.includes("LowPatience")>>
 	<<if (effectiveTransformationLevel("wolf") gte 6)>>
-		You let out a quiet howl, trying to draw Poppy's attention but <<he>> does not react.
+		당신은 포피의 관심을 끌려고 낮게 울부짖지만 <<he>>【은는】 반응하지 않는다.
 	<<elseif (effectiveTransformationLevel("fox") gte 6)>>
-		You yip for Poppy's attention. <<He>> does not respond.
+		당신은 포피의 관심을 끌려고 깽깽거린다. <<He>>【은는】 대답하지 않는다.
 	<<elseif (effectiveTransformationLevel("cow") gte 6)>>
-		You bump your head against Poppy's shoulder. <<He>> grunts upon contact and does not respond.
+		당신은 포피의 어깨에 머리를 들이받는다. 닿자 <<he>>【이가】 끙 소리를 낼 뿐 반응하지 않는다.
 	<<elseif (effectiveTransformationLevel("bird") gte 6)>>
-		You sing a gentle tune for Poppy. <<He>> does not acknowledge you.
+		당신은 포피를 위해 잔잔한 곡조를 노래한다. <<He>>【은는】 알은체하지 않는다.
 	<<elseif (effectiveTransformationLevel("cat") gte 6)>>
-		You push your head against Poppy's chin and rub. <<He>> instinctively moves away from you with a frown. 
+		당신은 머리를 포피의 턱에 밀어붙여 비빈다. <<He>>【은는】 본능적으로 얼굴을 찌푸리며 당신에게서 몸을 피한다.
 		<br><br>
-		"Please don't do that again." <<He>> reprimands you.
+		"다시는 그러지 말아 줘." <<He>>【이가】 당신을 나무란다.
 	<<elseif (effectiveTransformationLevel("bear") gte 6)>>
-		You lean against Poppy, putting all your weight on <<him>>. 
+		당신은 포피에게 기대어 온몸의 무게를 싣는다.
 		<br><br>
-		"Please stop that. You're heavy." <<He>> scoffs, clearly irritated by your action.
+		"그만해. 무겁잖아." <<He>>【은는】 당신의 행동에 확연히 짜증이 난 채 코웃음을 친다.
 		<br><br>
-		You sit upright after Poppy reprimanded you.
+		포피에게 한소리 듣고 나서 당신은 몸을 바로 세워 앉는다.
 	<<elseif (effectiveTransformationLevel("bunny") gte 6)>>
-		You butt your head against Poppy's arm to get <<his>> attention. <<He>> gives you a sideward glance and doesn't acknowledge you further.
+		당신은 포피의 주의를 끌려고 <<his>> 팔에 머리를 들이받는다. <<He>>【은는】 곁눈질로 당신을 한 번 볼 뿐 더는 신경 쓰지 않는다.
 	<<else>>
-		You try to get Poppy's attention with your altered mannerisms, but <<he>> only seems more agitated than before.
+		당신은 달라진 몸짓으로 포피의 관심을 끌려 하지만 <<he>>【은는】 전보다 더 짜증이 난 듯하다.
 	<</if>>
 <<else>>
 	<<if (effectiveTransformationLevel("wolf") gte 6)>>
-		You let out a quiet howl, drawing Poppy's attention. <<He>> follows along and starts howling with you. 
+		당신이 낮게 울부짖어 포피의 주의를 끈다. <<He>>【은는】 따라서 당신과 함께 울부짖기 시작한다.
 		<br><br>
-		<<He>> runs out of breath first. 
+		<<He>>【은는】 먼저 숨이 찬다.
 		<br><br>
-		"Wow, you're really good at this. No wonder you're a wolf." <<He>> says between breaths.
+		"와, 너 정말 잘한다. 늑대가 괜히 늑대가 아니네." <<He>>【이가】 숨을 고르며 말한다.
 		<<ltrauma>><<trauma -3>><<lstress>><<stress -5>><<if T.poppyLoveGainAllowed>><<npcincr Poppy love 1>><<glove>><</if>>
 		<<npcincr Poppy patience 1>><<if C.npc.Poppy.patience gte 0>><<gpatience>><<else>><<langer>><</if>>	
 	<<elseif (effectiveTransformationLevel("fox") gte 6)>>
-		You yip for Poppy's attention. Poppy yips back in response, <<he>> seems proud. 
+		당신이 포피의 관심을 끌려고 깽깽거린다. 포피도 대답하듯 깽깽거리는데 <<he>>【은는】 뿌듯해 보인다.
 		<br><br>
-		"What is it, kit?" <<He>> laughs.
+		"왜 그래, 새끼 여우야?" <<He>>【이가】 웃는다.
 		<br><br>
-		The two of you yip at each other for awhile until one of you tires.
+		둘은 한참 서로에게 깽깽거리다가 한쪽이 지쳐서야 멈춘다.
 		<<ltrauma>><<trauma -3>><<lstress>><<stress -5>><<if T.poppyLoveGainAllowed>><<npcincr Poppy love 1>><<glove>><</if>>
 		<<npcincr Poppy patience 1>><<if C.npc.Poppy.patience gte 0>><<gpatience>><<else>><<langer>><</if>>	
 	<<elseif (effectiveTransformationLevel("cow") gte 6)>>
-		You bump your head against Poppy's shoulder.
+		당신은 포피의 어깨에 머리를 들이받는다.
 		<br><br>
-		"Careful, you have quite sharp horns. I wouldn't want to get hurt." <<He>> smiles and pats your head, playing with your ears in the process.
+		"조심해, 뿔이 꽤 뾰족하잖아. 다치고 싶진 않아." <<He>>【은는】 미소 지으며 당신의 머리를 토닥이고, 그러다 당신의 귀를 만지작거린다.
 		<br><br>
-		You happily moo at <<him>>, which catches <<him>> by surprise.
+		당신이 포피에게 기분 좋게 음매 하고 울자 포피가 깜짝 놀란다.
 		<<ltrauma>><<trauma -3>><<lstress>><<stress -5>><<if T.poppyLoveGainAllowed>><<npcincr Poppy love 1>><<glove>><</if>>
 		<<npcincr Poppy patience 1>><<if C.npc.Poppy.patience gte 0>><<gpatience>><<else>><<langer>><</if>>	
 	<<elseif (effectiveTransformationLevel("bird") gte 6)>>
-		You sing a gentle tune for Poppy. <<He>> closes <<his>> eyes to savour the melody all the while humming along with you. 
+		당신은 포피를 위해 잔잔한 곡조를 노래한다. <<He>>【은는】 눈을 감고 선율을 음미하며 당신과 함께 흥얼거린다.
 		<br><br>
-		Once you finish, Poppy opens <<his>> eyes. "That was a beautiful tune, little mockingbird. It would make a great lullaby." <<He>> ponders with a slight smile.
+		노래가 끝나자 포피가 눈을 뜬다. "곡이 참 아름다웠어, 작은 흉내지빠귀야. 자장가로 딱이겠다." <<He>>【은는】 옅은 미소를 지으며 생각에 잠긴다.
 		<<ltrauma>><<trauma -3>><<lstress>><<stress -5>><<if T.poppyLoveGainAllowed>><<npcincr Poppy love 1>><<glove>><</if>>
 		<<npcincr Poppy patience 1>><<if C.npc.Poppy.patience gte 0>><<gpatience>><<else>><<langer>><</if>>	
 	<<elseif (effectiveTransformationLevel("cat") gte 6)>>
-		You push your head against Poppy's chin and rub. "Aw, the kitty wants some scritches?" 
+		당신은 머리를 포피의 턱에 밀어붙여 비빈다. "어머, 고양이가 긁어 주길 바라는 거야?"
 		<br><br>
-		<<He>> reaches up to scratch your chin and neck. <<His>> touch sends a shiver down your spine. You purr out of contentment.
+		<<He>>【은는】 손을 뻗어 당신의 턱과 목덜미를 긁어 준다. <<His>> 손길에 등줄기가 짜릿하게 떨린다. 당신은 흡족해서 그르렁거린다.
 		<br><br>
-		You rest against <<him>> for awhile as <<he>> pets you.
+		포피가 쓰다듬어 주는 동안 당신은 한참 포피에게 기대어 쉰다.
 		<<ltrauma>><<trauma -3>><<lstress>><<stress -5>><<if T.poppyLoveGainAllowed>><<npcincr Poppy love 1>><<glove>><</if>>
 		<<npcincr Poppy patience 1>><<if C.npc.Poppy.patience gte 0>><<gpatience>><<else>><<langer>><</if>>	
 	<<elseif (effectiveTransformationLevel("bear") gte 6)>>
-		You lean against Poppy, putting all your weight on <<him>>. "Hey!" <<He>> scoffs playfully and leans towards you to push against your weight. "I'm not as strong as you think I am, you know?" 
+		당신은 포피에게 기대어 온몸의 무게를 싣는다. "이봐!" <<He>>【은는】 장난스레 코웃음을 치며 당신의 무게에 맞서 몸을 기울여 민다. "나 네 생각만큼 힘세지 않거든, 알지?"
 		<br><br>
-		<<He>> tries to push you upright with <<his>> hands.
+		<<He>>【은는】 두 손으로 당신을 바로 세우려고 민다.
 		<br><br>
-		You playfully lean against Poppy for a little longer before sitting upright.
+		당신은 조금 더 장난스럽게 포피에게 기대어 있다가 몸을 바로 세워 앉는다.
 		<<ltrauma>><<trauma -3>><<lstress>><<stress -5>><<if T.poppyLoveGainAllowed>><<npcincr Poppy love 1>><<glove>><</if>>
 		<<npcincr Poppy patience 1>><<if C.npc.Poppy.patience gte 0>><<gpatience>><<else>><<langer>><</if>>	
 	<<elseif (effectiveTransformationLevel("bunny") gte 6)>>
-		You butt your head against Poppy's arm to get <<his>> attention. 
+		당신은 포피의 주의를 끌려고 <<his>> 팔에 머리를 들이받는다.
 		<br><br>
-		"Oh my, it seems like the bunny is feeling affectionate today." <<He>> smiles. "You have such beautiful ears." <<He>> reaches out to stroke them, and you shiver in delight.
+		"어머나, 오늘은 토끼가 애정 표현을 하고 싶은가 보네." <<He>>【은는】 미소 짓는다. "귀가 정말 예쁘다." <<He>>【은는】 손을 뻗어 귀를 쓰다듬고, 당신은 기쁨에 몸을 떤다.
 		<<ltrauma>><<trauma -3>><<lstress>><<stress -5>><<if T.poppyLoveGainAllowed>><<npcincr Poppy love 1>><<glove>><</if>>
 		<<npcincr Poppy patience 1>><<if C.npc.Poppy.patience gte 0>><<gpatience>><<else>><<langer>><</if>>	
 	<<else>>
-		Poppy indulges your altered mannerisms with a fond smile, though there isn't much for either of you to do with them here.
+		포피는 달라진 당신의 몸짓을 다정한 미소로 받아 주지만, 여기서 둘이 그걸로 할 수 있는 일은 별로 없다.
 		<<ltrauma>><<trauma -3>><<lstress>><<stress -5>><<if T.poppyLoveGainAllowed>><<npcincr Poppy love 1>><<glove>><</if>>
 		<<npcincr Poppy patience 1>><<if C.npc.Poppy.patience gte 0>><<gpatience>><<else>><<langer>><</if>>
 	<</if>>
@@ -343,101 +343,101 @@ Poppy eyes you suggestively.<<npcincr Poppy lust 2>><<glust>>
 :: Lake Poppy Departure
 <<effects>><<lakeeffects>><<run poppySchedule()>>
 <<if T.poppyStatus.includes("LowPatience")>>
-	Poppy stood up wordlessly and walked into the forest without looking back.
+	포피가 말없이 일어나 뒤도 돌아보지 않고 숲속으로 걸어 들어간다.
 <<elseif Number($poppyromance) gte 0>>
-	"What a shame, time flies by whenever I'm with you." Poppy stands up with a sigh. "Thanks for keeping me company, my jewel."
+	"아쉽다, 너랑 있으면 시간이 금방 가네." 포피가 한숨을 쉬며 일어선다. "같이 있어 줘서 고마워, 내 보석."
 	<br><br>
-	<<He>> kisses you on the cheek. 
+	<<He>>【은는】 당신의 뺨에 키스한다.
 	<br><br>
-	"Remember to come see me again, I'll be waiting. Bye bye now." <<He>> whispers into your ear before leaving with a giggle.<<arousal 200>><<garousal>>
+	"또 보러 와, 기다리고 있을게. 잘 가." <<He>>【이가】 당신의 귀에 속삭이고는 킥킥 웃으며 떠난다.<<arousal 200>><<garousal>>
 <<else>>
-	"I think it's time for me to go." Poppy stands up with a grunt. "Thanks for hanging around, I enjoyed your company. See you later!"
+	"이제 가 봐야 할 것 같아." 포피가 끙 하고 일어선다. "같이 있어 줘서 고마워, 즐거웠어. 나중에 봐!"
 	<br><br>
-	<<He>> waves to you and skips off into the forest.
+	<<He>>【은는】 당신에게 손을 흔들고 깡충깡충 숲속으로 사라진다.
 <</if>>
 <<poppyOpiumPulse>>
-<<link [[Back to shore|Lake Shore]]>><<endevent>><<set $eventskip to 0>><</link>>
+<<link [[호숫가로 돌아간다|Lake Shore]]>><<endevent>><<set $eventskip to 0>><</link>>
 
 :: Lake Poppy Pass Out
 <<effects>><<lakeeffects>><<run poppySchedule()>>
-Your eyelids feel heavy and your vision blurs. Poppy tilts <<his>> head, looking at you with confusion. You want to warn <<him>> about your impending black out but you are too late.
+눈꺼풀이 무겁고 시야가 흐려진다. 포피가 고개를 갸웃하며 당황한 눈으로 당신을 본다. 곧 정신을 잃을 거라고 포피에게 알리고 싶지만 너무 늦었다.
 <br><br>
-<span class="red">You pass out.</span>
+<span class="red">당신은 정신을 잃는다.</span>
 <br><br>
-<<link [[Next|Lake Poppy Wake]]>><<pass 40>><<tiredness -100>><</link>>
+<<link [[다음|Lake Poppy Wake]]>><<pass 40>><<tiredness -100>><</link>>
 
 :: Lake Poppy Wake
 <<effects>><<lakeeffects>><<run poppySchedule()>>
-Your eyes flutter open after your unwelcomed nap. 
+원치 않은 낮잠에서 깨어난 당신이 눈을 깜빡이며 뜬다.
 <br><br>
-<<if T.poppyStatus.includes("LowPatience")>>You see an impatient Poppy staring down at you. "How nice of you to just fall asleep like that." <<He>> remarks in a sarcastic tone. It seems like <<he>> wanted to say more but held <<his>> tongue instead.
-<<else>>Poppy smiles down at you. "You must've been really tired huh? I'm glad that you got some well needed rest. Be sure to take care of yourself properly." <<He>> reminds you gently.<</if>>
+<<if T.poppyStatus.includes("LowPatience")>>짜증이 난 포피가 당신을 내려다보고 있다. "그렇게 대놓고 자 버리다니 참 잘하는 짓이네." <<He>>【이가】 비꼬는 어조로 말한다. 더 하고 싶은 말이 있어 보이지만 <<he>>【은는】 입을 다문다.
+<<else>>포피가 당신을 내려다보며 미소 짓는다. "많이 피곤했나 보네? 푹 쉬었다니 다행이야. 몸 잘 챙겨야 해." <<He>>【이가】 다정하게 일러 준다.<</if>>
 <<poppyOpiumPulse>>
 <<poppyLakeReturn>>
 
 :: Lake Poppy Doze
 <<effects>><<lakeeffects>><<run poppySchedule()>>
-As you are chatting with Poppy, <<his>> head starts to nod and <<his>> posture slumps slightly. You take a closer look to find that <<he>> had dozed off.
+포피와 이야기를 나누던 중, <<his>> 고개가 꾸벅거리고 자세가 살짝 무너진다. 가까이 살펴보니 <<he>>【이가】 졸고 있다.
 <<poppyOpiumPulse>>
-<<link [[Wake Poppy gently|Lake Poppy Doze Gentle]]>><</link>>
+<<link [[포피를 살살 깨운다|Lake Poppy Doze Gentle]]>><</link>>
 <br>
-<<link [[Scare Poppy|Lake Poppy Doze Scare]]>><</link>>
+<<link [[포피를 깜짝 놀라게 한다|Lake Poppy Doze Scare]]>><</link>>
 
 :: Lake Poppy Doze Gentle
 <<effects>><<lakeeffects>>
-You rest a hand on Poppy's shoulder and gently shake <<him>> awake while calling <<his>> name. 
+당신은 포피의 어깨에 손을 얹고 이름을 부르며 살살 흔들어 깨운다.
 <br><br>
-When <<he>> awoke, <<his>> cheeks are flushed with embarrassment.
+잠에서 깬 <<he>>【은는】 쑥스러워서 뺨이 붉어진다.
 <br><br>
-"Sorry for dozing off like that in the middle of the conversation, that was rude of me. I should be more mindful of my sleep schedule..." <<He>> laughs bashfully.
+"대화 도중에 졸다니, 실례였네. 잠자는 시간 좀 더 신경 써야겠다..." <<He>>【이가】 겸연쩍게 웃는다.
 <<npcincr Poppy love 1>><<glove>><<poppyOpiumPulse>>
 <<poppyLakeReturn>>
 
 :: Lake Poppy Doze Scare
 <<effects>><<lakeeffects>>
-You stand up and loom over <<him>> from behind. You ready yourself and slap both your hands on <<his>> shoulders, shouting <<his>> name loudly.
+당신은 일어나 포피의 뒤에서 몸을 드리운다. 마음의 준비를 하고 두 손으로 <<his>> 어깨를 탁 치며 이름을 크게 외친다.
 <br><br>
-Poppy's ears pin back as <<he>> lets out a loud scream similar to a fox. You are sure that <<his>> scream can be heard from all four corners of the forest.
+포피의 귀가 뒤로 젖혀지더니 <<he>>【이가】 여우 같은 큰 비명을 지른다. 그 비명이 숲의 사방 구석까지 들렸을 거라고 당신은 확신한다.
 <br><br>
-When Poppy realised it was you, <<he>> let out a shaky exhale and pressed a hand to <<his>> chest. "Oh, it's just you... don't scare me like that. I thought the hunter caught me..." Poppy's expression has gone sour after your little prank.
+당신인 걸 알아본 포피는 떨리는 숨을 내쉬며 <<his>> 손을 가슴에 얹는다. "아, 너였구나... 그렇게 놀라게 하지 마. 사냥꾼한테 잡힌 줄 알았잖아..." 당신의 짓궂은 장난에 포피의 표정이 시무룩해진다.
 <<npcincr Poppy patience -4>><<if C.npc.Poppy.patience gte 0>><<llpatience>><<else>><<gganger>><</if>>
 <<poppyOpiumPulse>>
 <<if $awarelevel lt 5 and !$poppySeen.includes("poppy_tf_revealed")>>
-	<<link [[Ask Poppy about the scream|Lake Poppy Doze Ask]]>><</link>>
+	<<link [[비명에 대해 포피에게 묻는다|Lake Poppy Doze Ask]]>><</link>>
 	<br>
 <</if>>
 <<poppyLakeReturn>>
 
 :: Lake Poppy Doze Ask
 <<effects>><<lakeeffects>>
-"Why does your scream sound like that?" you ask. "It's very foxlike."
+"비명이 왜 그래?" 당신이 묻는다. "되게 여우 같아."
 <br><br>
-Poppy pouts, unwilling to answer at first. "Isn't it a bit obvious? Come on now, <span class="blue">clear your vision</span>." <<He>> covers your eyes with <<his>> hand.
+포피가 입을 삐죽이며 처음에는 대답하려 하지 않는다. "꽤 뻔하지 않아? 자, <span class="blue">눈을 맑게 떠 봐</span>." <<He>>【은는】 <<his>> 손으로 당신의 눈을 가린다.
 <br><br>
-"<span class="navy">See what you're meant to see, what you want to see</span>."
+"<span class="navy">네가 봐야 할 것, 보고 싶은 것을 봐</span>."
 <<poppyOpiumPulse>><<if !$poppySeen.includes("poppy_tf_revealed")>><<set $poppySeen.push("poppy_tf_revealed")>><</if>>
-<<link [[Next|Lake Poppy Doze Ask 2]]>><</link>>
+<<link [[다음|Lake Poppy Doze Ask 2]]>><</link>>
 
 :: Lake Poppy Doze Ask 2
 <<effects>><<lakeeffects>>
-You blink a few times when Poppy moves <<his>> hand away. You see a pair of fox ears on <<him>> as well as a floating halo that has been shattered. A fluffy fox tail is suddenly resting on your lap. You also see a pair of ink black wings that are folded neatly behind <<him>>.
+포피가 손을 치우자 당신은 눈을 몇 번 깜빡인다. 포피의 머리에 여우 귀 한 쌍이 보이고, 깨진 후광이 둥둥 떠 있다. 폭신한 여우 꼬리가 어느새 당신의 무릎 위에 놓여 있다. 먹물처럼 새까만 날개 한 쌍이 <<his>> 등 뒤에 가지런히 접혀 있는 것도 보인다.
 <br><br>
-"You're a... fallen fox?" you ask, your expression one of bewilderment.
+"너, 타락한... 여우야?" 당신이 어리둥절한 표정으로 묻는다.
 <br><br>
-Poppy grins at you. "<span class="green">There we go</span>. Don't you think that's less straining on your eyes?" <<His>> tail wags proudly.
+포피가 당신을 보고 씩 웃는다. "<span class="green">이제 됐네</span>. 이게 눈이 덜 피곤하지 않아?" <<His>> 꼬리가 자랑스럽게 흔들린다.
 <<if !$poppySeen.includes("poppy_tf_revealed")>><<set $poppySeen.push("poppy_tf_revealed")>><</if>><<poppyOpiumPulse>>
 <<poppyLakeReturn>>
 
 :: Lake Poppy Claim Accept
 <<effects>><<lakeeffects>><<run poppySchedule()>>
-You give Poppy's hands a squeeze and lean forward to kiss <<him>> on the nose. <<if $awarelevel gte 5>><<His>> ears perk in response.<<else>><<He>> perks up in response.<</if>> Surprise fills <<his>> eyes.<<takeHandholdingVirginity "Poppy" "loveInterest">>
+당신은 포피의 손을 꼭 쥐고 몸을 숙여 포피의 코에 입을 맞춘다. <<if $awarelevel gte 5>><<His>> 귀가 그에 반응해 쫑긋 선다.<<else>><<He>>【은는】 그에 반응해 몸을 곧추세운다.<</if>> <<His>> 눈에 놀라움이 가득 찬다.<<takeHandholdingVirginity "Poppy" "loveInterest">>
 <br><br>
-"I feel the same. I want to be yours... and I hope I could fill you with glee for the rest of our relationship." you say. You wrap your arms around Poppy's waist and pull <<him>> into a kiss. <<He>> presses <<his>> body against yours, trying to deepen the kiss.
+"나도 같은 마음이야. 네 사람이 되고 싶어... 그리고 우리가 함께하는 내내 널 기쁨으로 채워 줄 수 있으면 좋겠어." 당신이 말한다. 당신은 포피의 허리에 팔을 두르고 포피를 끌어당겨 입을 맞춘다. <<He>>【은는】 <<his>> 몸을 당신에게 밀착시키며 키스를 더 깊게 하려 한다.
 <<takeKissVirginity "Poppy" "loveInterest">><<arousal 300>><<garousal>>
 <br><br>
-When the both of you pull away, you are left panting. 
+두 사람이 입술을 떼자 당신은 숨이 가쁘다.
 <br><br>
-"I'm... I'm so happy." Poppy flashes you a tearful smile.
+"나... 나 너무 행복해." 포피가 눈물 어린 미소를 당신에게 지어 보인다.
 <br><br>
 <<loveInterestAdd "Poppy">><<set $poppyromance to 0>><<run poppyGrantPavlovIfNeeded()>>
 <<poppyOpiumPulse>>
@@ -445,52 +445,52 @@ When the both of you pull away, you are left panting.
 
 :: Lake Poppy Claim Decline
 <<effects>><<lakeeffects>>
-"I'm sorry, but I don't feel the same way." you say as you slowly let go of Poppy's hands. 
+"미안, 나는 같은 마음이 아니야." 당신이 말하며 천천히 포피의 손을 놓는다.
 <br><br>
-<<He>> blinks at you, then <<if $awarelevel gte 5>><<his>> ears droop as <</if>><<he>> lowers <<his>> gaze.
+<<He>>【은는】 당신을 보며 눈을 깜빡이더니, <<if $awarelevel gte 5>><<his>> 귀가 축 처지며 <</if>><<he>>【은는】 시선을 떨군다.
 <br><br>
-"Ah... that's alright. We can still be friends, right?" Poppy lifts <<his>> head to look you in the eyes. You can see the hurt in <<his>> eyes, making you feel somewhat guilty. 
+"아... 괜찮아. 그래도 우린 친구로 지낼 수 있지?" 포피가 고개를 들어 당신의 눈을 바라본다. <<His>> 눈에 서린 상처가 보여, 당신은 조금 죄책감이 든다.
 <br><br>
-"I should get going... sorry for bothering you." <<He>> gives you a bittersweet smile and turns on <<his>> heel to leave.
+"이만 가 봐야겠다... 방해해서 미안해." <<He>>【은는】 씁쓸한 미소를 지어 보이고 돌아서서 자리를 뜬다.
 <<if !$poppySeen.includes("lake_claim_declined")>><<set $poppySeen.push("lake_claim_declined")>><</if>>
 <<poppyOpiumPulse>>
-<<link [[Back to shore|Lake Shore]]>><<endevent>><<set $eventskip to 0>><</link>>
+<<link [[호숫가로 돌아간다|Lake Shore]]>><<endevent>><<set $eventskip to 0>><</link>>
 
 :: Lake Poppy Take Further
 <<effects>><<lakeeffects>><<run poppySchedule()>>
 <<if T.poppyStatus.includes("LowPatience")>>
-	You feel like you shouldn't test <<his>> patience.
+	<<his>> 인내심을 시험해서는 안 될 것 같다.
 	<<poppyOpiumPulse>>
 	<<poppyLakeReturn>>
 <<elseif (Number(C.npc.Poppy.lust) || 0) lt 40>>
-	You slide your hand beneath Poppy's shirt, caressing the skin underneath.
+	당신은 포피의 셔츠 안으로 손을 밀어 넣어 맨살을 쓰다듬는다.
 	<br><br>
-	<<He>> grasps your wrist gently and pulls you away. "Not right now, darling." <<He>> flashes you a courteous smile.
+	<<He>>【은는】 당신의 손목을 부드럽게 잡아 떼어 낸다. "지금은 안 돼, 자기야." <<He>>【은는】 예의 바른 미소를 지어 보인다.
 	<<npcincr Poppy patience -2>><<if C.npc.Poppy.patience gte 0>><<lpatience>><<else>><<ganger>><</if>>
 	<br><br>
-	You feel like you shouldn't test <<his>> patience.
+	<<his>> 인내심을 시험해서는 안 될 것 같다.
 	<<poppyOpiumPulse>>
 	<<poppyLakeReturn>>
 <<else>>
-	You wrap your arms around Poppy's waist, pulling <<him>> flush against your body. "Do you... want to take this to the orphanage?" you ask.
+	당신은 포피의 허리에 팔을 두르고 몸을 바짝 끌어당긴다. "우리... 고아원으로 가서 이어서 할래?" 당신이 묻는다.
 	<br><br>
-	Poppy grins and <<his>> tail starts to wag.
+	포피가 씩 웃고 <<his>> 꼬리가 흔들리기 시작한다.
 	<br><br>
-	"Do you really feel the need to ask? Come on, what are you waiting for?" <<He>> springs to <<his>> feet, pulling you up by the hand.
+	"굳이 물어봐야 알겠어? 자, 뭘 기다려?" <<He>>【은는】 벌떡 일어서며 당신의 손을 잡아 끌어 일으킨다.
 	<<arousal 400>><<ggarousal>>
 	<br><br>
-	Poppy drags you into the forest and makes <<his>> way through it with ease. There are no visible tracks to guide you, yet <<he>> moves as though <<he>> knows the forest like the back of <<his>> hand.
+	포피는 당신을 숲으로 끌고 들어가 거침없이 길을 헤쳐 나간다. 길잡이가 될 만한 흔적은 보이지 않는데도 <<he>>【은는】 손바닥 들여다보듯 숲을 훤히 아는 사람처럼 움직인다.
 	<<poppyOpiumPulse>>
-	<<link [[Next (0:20)|Poppy Take Further Return Home]]>><<pass 20>><</link>>
+	<<link [[다음 (0:20)|Poppy Take Further Return Home]]>><<pass 20>><</link>>
 <</if>>
 
 :: Poppy Take Further Return Home
 <<set $bus to "home">><<set $location to "home">><<effects>>
-With a cheeky giggle, Poppy drags you into the orphanage in a hurry and runs up to your room. The moment the two of you step foot into your room, Poppy pounces at you with a <<if $awarelevel gte 5>>yip<<else>>squeal<</if>>, tackling you onto your bed. 
+포피가 장난스럽게 킥킥거리며 급히 당신을 고아원 안으로 끌고 들어가 당신의 방으로 뛰어 올라간다. 둘이 방에 발을 들이는 순간, 포피가 <<if $awarelevel gte 5>>깽 하고 짖으며<<else>>꺅 하고 소리치며<</if>> 당신에게 덮쳐 침대 위로 쓰러뜨린다.
 <br><br>
-"Finally." <<He>> giggles.<<arousal 300>><<garousal>>
+"드디어." <<He>>【이가】 킥킥 웃는다.<<arousal 300>><<garousal>>
 <<poppyOpiumPulse>>
-<<link [[Next|Lake Poppy Take Further Handoff]]>><<set $sexstart to 1>><</link>>
+<<link [[다음|Lake Poppy Take Further Handoff]]>><<set $sexstart to 1>><</link>>
 
 :: Lake Poppy Take Further Handoff
 <<if $sexstart is 1>>
@@ -507,27 +507,27 @@ With a cheeky giggle, Poppy drags you into the orphanage in a hurry and runs up 
 <br>
 <<actionsman>>
 <<if _combatend>>
-	<span id="next"><<link [[Next|Lake Poppy Take Further Handoff Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Lake Poppy Take Further Handoff Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Lake Poppy Take Further Handoff]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Lake Poppy Take Further Handoff]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Lake Poppy Take Further Handoff Finish
 <<effects>><<set $location to "orphanage">>
 <<ejaculation>>
-Poppy slumps against your shoulder to catch <<his>> breath. "You've made me see heaven, my love... we should spend time like this more often."
+포피가 숨을 고르려고 당신의 어깨에 기댄다. "네 덕분에 천국을 봤어, 내 사랑... 우리 이런 시간 더 자주 보내자."
 <<npcincr Poppy lust -20>><<llust>>
 <br><br>
-Both of you snuggle for a while before Poppy gets off you and puts <<his>> clothes back on.
+둘은 한동안 서로 껴안고 있다가 포피가 당신에게서 내려와 <<his>> 옷을 다시 입는다.
 <br><br>
-"See you soon, my jewel. Don't leave me waiting too long. Love you." <<He>> winks at you before leaving your room.
+"곧 보자, 내 보석. 너무 오래 기다리게 하지 마. 사랑해." <<He>>【은는】 당신에게 윙크하고 당신의 방을 나선다.
 <br><br>
 <<clotheson>><<endcombat>>
-<<link [[Next|Bedroom]]>><</link>>
+<<link [[다음|Bedroom]]>><</link>>
 
 :: Poppy Lake Gifts List
 <<effects>><<lakeeffects>><<run poppySchedule()>>
-What would you like to give Poppy?
+포피에게 무엇을 주고 싶으신가요?
 <br><br>
 <<food_gift_list>>
 <<if _food_gift_found is true>>
@@ -537,11 +537,11 @@ What would you like to give Poppy?
 	You don't have any suitable food to give right now.
 	<br><br>
 <</if>>
-<<refuseicon>><<link [[Reconsider|Poppy Lake Gifts Reconsider]]>><</link>>
+<<refuseicon>><<link [[재고한다|Poppy Lake Gifts Reconsider]]>><</link>>
 
 :: Poppy Lake Gifts Reconsider
 <<effects>><<lakeeffects>><<run poppySchedule()>>
-Poppy keeps gazing at the lake while waiting for you to speak.
+포피는 당신이 말을 꺼내기를 기다리며 계속 호수를 바라본다.
 <<poppyOpiumPulse>>
 <<poppyLakeReturn>>
 
@@ -549,47 +549,47 @@ Poppy keeps gazing at the lake while waiting for you to speak.
 <<effects>><<lakeeffects>><<run poppySchedule()>>
 <<set _gift to setup.foodstuff[$gift].name + (setup.foodstuff[$gift].food.handheld_gift ? " gift" : "")>><<wearProp _gift>>
 <<if T.poppyStatus and T.poppyStatus.includes("LowPatience")>>
-	Poppy glances at the gift in your hands, then pointedly looks away.
+	포피가 당신 손의 선물을 힐끗 보더니 일부러 시선을 돌린다.
 	<br><br>
-	"I'm not in the mood for gifts right now," <<he>> says flatly.
+	"지금은 선물 받을 기분이 아니야." <<he>>【이가】 무뚝뚝하게 말한다.
 	<<poppyOpiumPulse>><<handheldon>>
 	<<poppyLakeReturn>>
 <<else>>
-	"I've made you a gift," you say. "I hope you like it."
+	"선물을 만들었어." 당신이 말한다. "마음에 들었으면 좋겠다."
 	<br><br>
 	<<if ["jammie_dodger", "rich_biscuit", "quiche"].includes($gift)>>
-		Before you can hold out the <<recipe_name $gift>>, Poppy is already giving you a knowing smirk. "I could smell it from a mile away."
+		<<recipe_name $gift>>【을를】 내밀기도 전에 포피가 이미 다 안다는 듯 능글맞게 웃는다. "한참 전부터 냄새가 났어."
 		<br><br>
 		When you present the <<recipe_name $gift>> to <<him>>, <<he>> thanks you as <<he>> takes it from your hand.
 		<br><br>
-		Poppy takes a bite and groans in delight as the food hits <<his>> tastebuds. "This is delicious! How'd you know this is my favourite?"<<gglove>><<npcincr Poppy love 3>><<saveFavoriteFood "Poppy" $gift>><<if T.poppyLustUnlocked>><<glust>><<npcincr Poppy lust 2>><</if>>
+		포피가 한 입 베어 물고, 음식이 혀끝에 닿자 기쁨에 낮게 신음한다. "맛있어! 이게 내가 제일 좋아하는 건 줄 어떻게 알았어?"<<gglove>><<npcincr Poppy love 3>><<saveFavoriteFood "Poppy" $gift>><<if T.poppyLustUnlocked>><<glust>><<npcincr Poppy lust 2>><</if>>
 		<<earnFeat "Hungry Fox">>
 	<<elseif $gift is "valentines_chocolate" and $valentines>>
 		<<earnFeat "Be My Valentine">>
-		You take out the box of Valentine's Day chocolate you made, and hold it out to Poppy.
+		당신은 직접 만든 발렌타인데이 초콜릿 상자를 꺼내 포피에게 내민다.
 		<br><br>
-		Poppy gasps. "For me?! Oh my~" <<He>> takes the box from you.
+		포피가 숨을 들이켠다. "나한테?! 어머나." <<He>>【은는】 당신에게서 상자를 받아 든다.
 		<br><br>
-		"Happy Valentine's Day," You smile. "I made them myself."
+		"발렌타인데이 축하해." 당신이 미소 짓는다. "내가 직접 만들었어."
 		<br><br>
-		You watch as Poppy opens the box and pops a chocolate into <<his>> mouth. As soon as <<he>> bites into it, a big smile forms on <<his>> lips. "These are way better than those overpriced chocolates you can find in stores.
+		당신은 포피가 상자를 열고 초콜릿 하나를 입에 넣는 모습을 지켜본다. 베어 무는 순간 <<his>> 입가에 큰 미소가 번진다. "가게에서 파는 터무니없이 비싼 초콜릿보다 훨씬 맛있어.
 		<<if Number($poppyromance) gte 0>>
-			Thank you, my jewel."
+			고마워, 내 보석."
 			<br><br>
-			Poppy leans in and gives you a kiss on the cheek. <<lstress>><<stress -5>><<ltrauma>><<trauma -3>><<arousal 250>><<garousal>>
+			포피가 몸을 기울여 당신의 뺨에 입을 맞춘다. <<lstress>><<stress -5>><<ltrauma>><<trauma -3>><<arousal 250>><<garousal>>
 		<<else>>
-			Thank you."
+			고마워."
 			<br><br>
-			Poppy wraps <<his>> arms around you and gives you a tight hug. <<lstress>><<stress -5>>
+			포피가 두 팔로 당신을 감싸 꼭 껴안는다. <<lstress>><<stress -5>>
 		<</if>>
 	<<elseif setup.foodstuff[$gift].food.tags.includes("drink")>>
 		You hold out the <<recipe_name $gift>>. Poppy's eyes widen in surprise. <<He>> quickly recovers from the shock and takes the drink from your hands with a smile.
 		<br><br>
-		"Oh my, this smells wonderful! Did you make this yourself?" Poppy takes a sip and hums in appreciation. "Delicious... thank you for sharing this with me."<<glove>><<npcincr Poppy love 1>>
+		"어머나, 냄새가 정말 좋다! 이거 직접 만든 거야?" 포피가 한 모금 마시고 감탄하며 음, 하고 소리를 낸다. "맛있어... 나눠 줘서 고마워."<<glove>><<npcincr Poppy love 1>>
 	<<else>>
 		You hold out the <<recipe_name $gift>>. Poppy's eyes widen in surprise. <<He>> quickly recovers from the shock and takes the food from your hands with a smile.
 		<br><br>
-		"Oh my, this looks delicious! Did you make this yourself?" Poppy takes a bite and nods as <<he>> chews. "Yummy... thank you for sharing this with me."<<glove>><<npcincr Poppy love 1>>
+		"어머나, 맛있어 보이네! 이거 직접 만든 거야?" 포피가 한 입 베어 물고 씹으며 고개를 끄덕인다. "음, 맛있다... 나눠 줘서 고마워."<<glove>><<npcincr Poppy love 1>>
 	<</if>>
 	<<poppyOpiumPulse>><<handheldon>>
 	<<poppyLakeReturn>>

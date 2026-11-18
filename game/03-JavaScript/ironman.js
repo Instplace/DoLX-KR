@@ -128,7 +128,7 @@ var IronMan = (Save => {
 		if (saveSignature === metaSignature) return true;
 		// Last part for error checking. Returns false to indicate failure and to not load the game. Implies cheating.
 		if (V.debug) {
-			Errors.report("Ironman signatures failed to match.", {
+			Errors.report("아이언맨 서명이 일치하지 않습니다.", {
 				saveSig: saveSignature,
 				internalSig: metaSignature,
 				saveObj,
@@ -271,7 +271,7 @@ var IronMan = (Save => {
 		const details = DoLSave.SaveDetails.get(slot);
 		if (data == null) {
 			/* Output error response, stating the save slot is invalid. */
-			const msg = `IronMan::exportDebug(slot: ${slot}): save file is empty.`;
+			const msg = `IronMan::exportDebug(slot: ${slot}): 세이브 파일이 비어 있습니다.`;
 			console.debug(msg);
 			Errors.report(msg);
 			return undefined;
@@ -295,7 +295,7 @@ var IronMan = (Save => {
 		const saveObj = importDebug(data);
 		if (typeof saveObj !== "object") {
 			/* Output error response, stating the save slot is invalid. */
-			const msg = "importAndLoadDebug failed.";
+			const msg = "importAndLoadDebug에 실패했습니다.";
 			console.debug(msg, data);
 			Errors.report(msg);
 			return false;

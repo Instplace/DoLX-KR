@@ -1998,6 +1998,6 @@ const DoLCompressorDictionaries = (() => {
 })();
 for (const k in DoLCompressorDictionaries) {
 	const dict = DoLCompressorDictionaries[k];
-	if (dict.length !== new Set(dict).size) throw new Error("DoLCompressorDictionaries[" + JSON.stringify(k) + "] has duplicate elements.");
+	if (dict.length !== new Set(dict).size) throw new Error("DoLCompressorDictionaries[" + JSON.stringify(k) + "]에 중복 요소가 있습니다.");
 }
 window.DoLCompressorDictionaries = DoLCompressorDictionaries;

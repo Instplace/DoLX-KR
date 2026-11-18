@@ -107,11 +107,11 @@ function masturbationSlimeControl() {
 	if (V.corruptionMasturbation) {
 		if (V.earSlime.event.includes("get your own sperm into your")) {
 			fragment.append(
-				Wikifier.wikifyEval("<span class='red'>It continues to force you to play with yourself, but limits its control so you can do your task.</span>")
+				Wikifier.wikifyEval("<span class='red'>그것은 계속 당신에게 자위를 강요하지만, 당신이 일을 할 수 있도록 통제는 제한한다.</span>")
 			);
 			fragment.append(" ");
 		} else {
-			fragment.append(Wikifier.wikifyEval("<span class='red'>It continues to force you to play with yourself.</span>"));
+			fragment.append(Wikifier.wikifyEval("<span class='red'>그것은 계속 당신에게 자위를 강요한다.</span>"));
 			fragment.append(" ");
 		}
 	}
@@ -139,6 +139,7 @@ function masturbationSlimeControl() {
 		const armCap = arm.toUpperFirst();
 		const armAction = arm + "action";
 		const otherArm = arm === "left" ? "right" : "left";
+		const armk = arm === "left" ? "왼" : "오른";
 		const otherArmCap = otherArm.toUpperFirst();
 		const otherArmAction = otherArm + "action";
 		if (

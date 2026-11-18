@@ -310,7 +310,7 @@ class CloseCombatMapper {
 
 		if (playerHasStrapon()) {
 			const strapon = setup.sextoys.find(strap => strap.name === (V.worn.under_lower.name || "strap-on"));
-			if (!strapon) throw new Error("no strap-on found in setup.sextoys");
+			if (!strapon) throw new Error("setup.sextoys에서 페니스 밴드를 찾을 수 없습니다");
 			options.penis.type = `strapon-${strapon.shape?.replace(/\s/g, "-")}`;
 			options.penis.size = strapon.size;
 		}

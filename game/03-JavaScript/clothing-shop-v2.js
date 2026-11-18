@@ -197,7 +197,7 @@ function saveCustomColourPreset(slot = "primary") {
 		const setName = presetName.trim();
 		if (!setName) return;
 		if (Object.keys(V.customColors.presets).includes(setName)) {
-			alert("Preset '" + setName + "' already exists!");
+			alert("'" + setName + "' 프리셋이 이미 존재합니다!");
 			return;
 		}
 
@@ -256,8 +256,8 @@ window.loadCustomColourPreset = loadCustomColourPreset;
 
 // adjusts available options for reveal dropdowns (makes sure upper bound is not below lower bound and vice versa)
 function getFilterRevealOptions(type, filter = V.shopClothingFilter) {
-	const optionsFrom = { unassuming: 0, smart: 100, tasteful: 200, comfy: 300, seductive: 500, risqué: 700, lewd: 900 };
-	const optionsTo = { unassuming: 100, smart: 200, tasteful: 300, comfy: 500, seductive: 700, risqué: 900, lewd: 9999 };
+	const optionsFrom = { "평범함": 0, "단정함": 100, "품위있음": 200, "편안함": 300, "매혹적": 500, "아슬아슬": 700, "음란함": 900 };
+	const optionsTo = { "평범함": 100, "단정함": 200, "품위있음": 300, "편안함": 500, "매혹적": 700, "아슬아슬": 900, "음란함": 9999 };
 
 	if (type === "from") {
 		// this line removes values that are larger than reveal.to
@@ -280,7 +280,7 @@ function getFilterRevealOptions(type, filter = V.shopClothingFilter) {
 window.getFilterRevealOptions = getFilterRevealOptions;
 
 function getFilterOutfitOptions() {
-	const options = { None: "none" };
+	const options = { "없음": "none" };
 	for (let i = 0; i < V.outfit.length; i++) {
 		const outfit = V.outfit[i];
 		let name = outfit.name;
@@ -405,7 +405,7 @@ function applyClothingShopFilters(items) {
 window.applyClothingShopFilters = applyClothingShopFilters;
 
 function shopSearchReplacer(name) {
-	return name.replace(/[^a-zA-Z0-9\u4e00-\u9fa5' -]+/g, "");
+	return name.replace(/[^a-zA-Z0-9\u4e00-\u9fa5\uac00-\ud7a3\u3131-\u318e' -]+/g, "");
 }
 window.shopSearchReplacer = shopSearchReplacer;
 
@@ -420,7 +420,7 @@ function getOwnedClothingCount(index, type, wardrobeName) {
 window.getOwnedClothingCount = getOwnedClothingCount;
 
 function importCustomColour(acc) {
-	const setName = prompt("Enter custom code", "");
+	const setName = prompt("커스텀 코드를 입력하세요", "");
 	if (setName != null) {
 		let color;
 		try {
@@ -428,7 +428,7 @@ function importCustomColour(acc) {
 		} catch (e) {
 			document.getElementById("export-custom-colour-box").outerHTML = `
 			<div id="export-custom-colour-box">
-				<span class="export-custom-colour-error">Invalid string, make sure you copied it correctly without any spaces around it.</span>
+				<span class="export-custom-colour-error">잘못된 문자열입니다. 앞뒤 공백 없이 정확하게 복사했는지 확인하세요.</span>
 			</div>`;
 			return;
 		}
@@ -447,7 +447,7 @@ function importCustomColour(acc) {
 			document.getElementById("numberslider-value-customcolorscontrastprimary").innerText = color.contrast.toString();
 			document.getElementById("export-custom-colour-box").outerHTML = `
 			<div id="export-custom-colour-box">
-				<span class="export-custom-colour-alert">Imported!</span>
+				<span class="export-custom-colour-alert">가져오기 완료.</span>
 			</div>`;
 			window.setTimeout(() => {
 				if (document.getElementById("export-custom-colour-box")) document.getElementById("export-custom-colour-box").classList.add("successfully-exported");
@@ -456,7 +456,7 @@ function importCustomColour(acc) {
 		} else {
 			document.getElementById("export-custom-colour-box").outerHTML = `
 			<div id="export-custom-colour-box">
-				<span class="export-custom-colour-error">Invalid code.</span>
+				<span class="export-custom-colour-error">잘못된 코드입니다.</span>
 			</div>`;
 		}
 	}
@@ -475,7 +475,7 @@ function exportCustomColour(acc) {
 	navigator.clipboard.writeText(window.btoa(JSON.stringify(obj)));
 	document.getElementById("export-custom-colour-box").outerHTML = `
 	<div id="export-custom-colour-box">
-		<span class="export-custom-colour-alert">Copied to clipboard!</span>
+		<span class="export-custom-colour-alert">클립보드에 복사되었습니다.</span>
 	</div>`;
 	window.setTimeout(() => {
 		if (document.getElementById("export-custom-colour-box")) document.getElementById("export-custom-colour-box").classList.add("successfully-exported");
@@ -614,7 +614,7 @@ DefineMacro("updatewarmthscale", () => {
 		const currentWarmth = Weather.BodyTemperature.getWarmth();
 		clothingWarmthScale(indicator, Weather.BodyTemperature.getRestingPoint(8, currentWarmth, 37, true));
 		indicator.tooltip({
-			message: "Warmth: " + currentWarmth,
+			message: "보온성: " + currentWarmth,
 			delay: 200,
 			position: "cursor",
 		});
@@ -624,7 +624,7 @@ DefineMacro("updatewarmthscale", () => {
 				indicatorNew.show();
 				clothingWarmthScale(indicatorNew, Weather.BodyTemperature.getRestingPoint(8, newWarmth, 37, true));
 				indicator.tooltip({
-					message: "New warmth: " + newWarmth,
+					message: "변경 후 보온성: " + newWarmth,
 					delay: 200,
 					position: "cursor",
 				});

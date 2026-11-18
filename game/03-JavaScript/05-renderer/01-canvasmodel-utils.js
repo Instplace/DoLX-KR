@@ -16,7 +16,7 @@
  */
 function canvaslayer() {
 	const layers = T.CanvasLayers;
-	if (!layers) throw new Error("'canvaslayer()' without 'canvasstart'");
+	if (!layers) throw new Error("'canvasstart' 없이 'canvaslayer()'가 호출되었습니다");
 
 	let theOptions = {};
 	for (let i = arguments.length - 1; i >= 0; i--) {
@@ -32,13 +32,13 @@ function canvaslayer() {
 				theOptions.z = arg;
 				break;
 			default:
-				throw new Error("Invalid canvaslayer() argument " + i + ": " + typeof arg);
+				throw new Error("잘못된 canvaslayer() 인수 " + i + ": " + typeof arg);
 		}
 	}
 
 	if (typeof theOptions.src !== "string") {
 		console.error(arguments);
-		throw new Error("canvaslayer() options missing 'src'");
+		throw new Error("canvaslayer() 옵션에 'src'가 누락되었습니다");
 	}
 	layers.push(theOptions);
 }
@@ -213,7 +213,7 @@ Renderer.defaultListener = {
 	composeLayers(layers) {
 		Renderer.Stats.loadErrors = 0;
 		if (Renderer.Stats.trace) {
-			console.log(performance.now().toFixed(3), "Composing " + layers.length + " layers...");
+			console.log(performance.now().toFixed(3), layers.length + "개 레이어 합성 중...");
 		}
 	},
 	processingStep(layer, processing, canvas, dt) {
@@ -222,12 +222,12 @@ Renderer.defaultListener = {
 	loadError(layer, src) {
 		// logged to console by Renderer itself
 		Renderer.Stats.loadErrors++;
-		Errors.report("Failed to load image " + src + " for layer " + layer);
+		Errors.report("레이어 " + layer + "의 이미지 로드에 실패했습니다: " + src);
 	},
 	loadingDone(time, layersLoaded) {
 		Renderer.Stats.lastLoadTime = time;
-		let msg = "Loaded " + layersLoaded + " images in " + time.toFixed(3) + " ms";
-		if (Renderer.Stats.loadErrors > 0) msg += " (" + Renderer.Stats.loadErrors + " failed)";
+		let msg = layersLoaded + "개 이미지를 " + time.toFixed(3) + "ms 만에 로드했습니다";
+		if (Renderer.Stats.loadErrors > 0) msg += " (" + Renderer.Stats.loadErrors + "개 실패)";
 		Renderer.Stats.logmsgLoad.value = msg;
 		if (Renderer.Stats.trace) {
 			console.log(performance.now().toFixed(3), msg);
@@ -242,7 +242,7 @@ Renderer.defaultListener = {
 	},
 	renderingDone(time) {
 		Renderer.Stats.lastRenderTime = time;
-		const msg = "Rendered " + Renderer.Stats.nlayers + " layers" + " (" + Renderer.Stats.ncached + " cached)" + " in " + time.toFixed(3) + " ms";
+		const msg = Renderer.Stats.nlayers + "개 레이어 렌더링 완료 (" + Renderer.Stats.ncached + "개 캐시됨), " + time.toFixed(3) + "ms";
 		if (Renderer.Stats.trace) {
 			console.log(performance.now().toFixed(3), msg);
 		}
@@ -257,18 +257,18 @@ Renderer.defaultListener = {
 		if (Renderer.Stats.traceAnim) {
 			console.log(
 				performance.now().toFixed(3),
-				"KeyframeRender",
+				"키프레임 렌더링",
 				spec,
-				cacheHit ? "cache hit, render time " + cacheRenderTime.toFixed(3) + " ms" : "cache miss"
+				cacheHit ? "캐시 적중, 렌더링 시간 " + cacheRenderTime.toFixed(3) + "ms" : "캐시 미스"
 			);
 		}
 		if (cacheHit && Renderer.Stats.logmsgAnimate) {
-			Renderer.Stats.logmsgAnimate.value = "Cached keyframe rendered in " + cacheRenderTime.toFixed(3) + " ms";
+			Renderer.Stats.logmsgAnimate.value = "캐시된 키프레임을 " + cacheRenderTime.toFixed(3) + "ms 만에 렌더링했습니다";
 		}
 	},
 	animationStop() {
 		if (Renderer.Stats.traceAnim) {
-			console.log(performance.now().toFixed(3), "Animation stopped");
+			console.log(performance.now().toFixed(3), "애니메이션 정지");
 		}
 	},
 };

@@ -8,7 +8,7 @@ Weather.Renderer.Effects = (() => {
 		params = { ...optionalParams, ...params };
 
 		if (effects.has(params.name)) {
-			console.error("Effects", `Effect with name '${params.name}', already exists and will be overwritten.`);
+			console.error("Effects", `이름이 '${params.name}'인 효과가 이미 존재하며 덮어씁니다.`);
 		}
 		effects.set(params.name, params);
 	}

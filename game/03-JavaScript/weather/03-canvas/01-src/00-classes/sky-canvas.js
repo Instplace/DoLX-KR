@@ -11,7 +11,7 @@ Weather.Renderer.Sky = class {
 		const requiredParams = ["id", "setup", "layers"];
 		requiredParams.forEach(param => {
 			if (!settings || !settings[param]) {
-				throw new Error(`Error creating new Sky instance: Missing parameter: '${param}'`);
+				throw new Error(`새 Sky 인스턴스 생성 오류: 누락된 매개변수: '${param}'`);
 			}
 		});
 
@@ -217,10 +217,10 @@ Weather.Renderer.Sky = class {
 				try {
 					const errors = await layer.drawEffects(tempCanvas);
 					if (errors && errors.length > 0) {
-						console.error(`Errors drawing layer '${layer.name}':`, errors);
+						console.error(`레이어 '${layer.name}' 그리기 중 오류:`, errors);
 					}
 				} catch (error) {
-					console.error(`Error drawing layer '${layer.name}':`, error.message);
+					console.error(`레이어 '${layer.name}' 그리기 오류:`, error.message);
 				}
 			}
 			layer.drawLayer(tempCanvas);

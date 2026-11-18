@@ -4,10 +4,10 @@ function getToyName(index, capitalise = false) {
 		let msg = "Could not find the player's toy name.";
 		if (index === "none") msg = "An attempt to access a toy with the wrong hand was made.";
 		Errors.report(msg, { index });
-		return "toy duck";
+		return "장난감 오리";
 	}
 	const name = capitalise ? toy.namecap : toy.name;
-	return toy.colour ? toy.colour + " " + name : name;
+	return toy.colour ? setup.colourName(toy.colour) + " " + name : name;
 }
 window.getToyName = getToyName;
 DefineMacroS("toyName", getToyName);

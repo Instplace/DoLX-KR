@@ -78,7 +78,7 @@ function sexToyWearButtonText(toy, setupToy) {
 
 function sexToysInventoryOnItemClick(index, category) {
 	const setupItem = setup.sextoys.find(t => t.name === category);
-	if (!setupItem) throw new Error(`Sex toy not found! index: ${index}, category: ${category}`);
+	if (!setupItem) throw new Error(`섹스 토이를 찾을 수 없습니다. index: ${index}, category: ${category}`);
 
 	const invItem = V.player.inventory.sextoys[category][index];
 
@@ -100,7 +100,7 @@ function sexToysInventoryOnItemClick(index, category) {
 	const closeBtn = $("<div>", {
 		id: "sti_close1",
 		class: "sti_close",
-		title: "close",
+		title: "닫기",
 		text: "x",
 		click: () => window.sextoysOnCloseDesc("stiDescPillContainer"),
 	});
@@ -116,7 +116,7 @@ function sexToysInventoryOnItemClick(index, category) {
 	const carryButton = $("<a>", {
 		id: "stiCarryButton",
 		class: "sti_carry_button",
-		text: invItem.carried ? "Put it back" : "Carry it",
+		text: invItem.carried ? "수납장에 다시 넣기" : "소지하기",
 		click: () => window.sexToysInventoryOnCarryClick(index, category),
 	});
 
@@ -131,7 +131,7 @@ function sexToysInventoryOnItemClick(index, category) {
 	const throwButton = $("<a>", {
 		id: "stiThrowButton",
 		class: "sti_throw_button",
-		text: "Throw it away",
+		text: "버리기",
 		click: () => window.sexToysInventoryOnThrowClick(index, category),
 	});
 
@@ -426,7 +426,7 @@ function updateNumberInString(element, indexMin, category) {
 	// extract the index from the element's ID and force it into a number.
 	const index = parseInt(match[0], 10);
 
-	if (isNaN(index)) throw new Error(`Misconfigured sex toy ID: ${element.id}`);
+	if (isNaN(index)) throw new Error(`섹스 토이 ID 설정이 잘못되었습니다: ${element.id}`);
 	// No need to update, this element comes BEFORE the removed item, so its index is unaffected.
 	if (index < indexMin || index <= 0) return;
 
@@ -441,7 +441,7 @@ function updateNumberInString(element, indexMin, category) {
 function checkSextoysGift(npcName) {
 	const npc = V.NPCName.find(n => n.nam === npcName);
 	if (!npc) {
-		throw new Error("Invalid NPC name given!");
+		throw new Error("잘못된 NPC 이름입니다.");
 	} else {
 		return Object.values(npc.sextoys || {}).some(category => category?.some(item => item.gift_state === "held"));
 	}
@@ -511,14 +511,14 @@ window.dropClothingSetGenitals = dropClothingSetGenitals;
 function checkIfNPCHasCategorySextoy(npcName, category) {
 	const npc = V.NPCName.find(n => n.nam === npcName);
 	if (!npc) {
-		throw new Error("Invalid NPC name given!");
+		throw new Error("잘못된 NPC 이름입니다.");
 	}
 
 	const categoryToyNames = Object.values(setup.sextoys)
 		.filter(n => n.category === category)
 		.map(n => n.name);
 	if (categoryToyNames.length === 0) {
-		throw new Error("Invalid sex toy category given!");
+		throw new Error("잘못된 섹스 토이 카테고리입니다.");
 	}
 
 	const npcSexToys = [];
@@ -534,7 +534,7 @@ window.checkIfNPCHasCategorySextoy = checkIfNPCHasCategorySextoy;
 function handSextoysGiftToNPC(npcName) {
 	const npc = V.NPCName.find(n => n.nam === npcName);
 	if (!npc) {
-		throw new Error("Invalid NPC name given!");
+		throw new Error("잘못된 NPC 이름입니다.");
 	}
 	Object.values(npc.sextoys).forEach(category => {
 		category.forEach(item => {
@@ -587,7 +587,7 @@ function updateCarryCountUI() {
 	if (!document.getElementById("carryCount")) return;
 	const colour = countCarriedSextoys() >= maxCarried ? "red" : "";
 	document.getElementById("carryCount").outerHTML = `<div id="carryCount" class="sti_grid_carried_count">
-		Items carried: <span class="${colour}">${countCarriedSextoys()}/${maxCarried}</span>
+		소지 중인 물건: <span class="${colour}">${countCarriedSextoys()}/${maxCarried}</span>
 	</div>`;
 }
 window.updateCarryCountUI = updateCarryCountUI;
@@ -621,7 +621,7 @@ function setLowerVisibility(desiredVisibility) {
 	}
 
 	const elem = document.querySelector("#stiShowUnderwear > .link-internal");
-	if (elem !== null) elem.text = !T.lowerVisible ? "Show lower clothing" : "Hide lower clothing";
+	if (elem !== null) elem.text = !T.lowerVisible ? "하의 보이기" : "하의 숨기기";
 
 	Links.generateLinkNumbers($(".passage"));
 }

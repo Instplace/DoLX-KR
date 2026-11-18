@@ -1,5 +1,4 @@
 :: Forest Shop Hunt Widgets [widget]
-
 /* Todo: Gwylan hunt, organise widgets in file so they make sense, not just order they were written */
 
 <!-- Location special traits:
@@ -227,7 +226,7 @@
 
 <<widget "shopHuntShuffle">>
 	<<if $shopHunt.shop.shuffle.count gte $shopHunt.shop.shuffle.max and _args[0] isnot "init">>
-		<span class="red">ERROR: shopHuntShuffle called more than max allotted times! Shuffled <<print $shopHunt.shop.shuffle.count + 1>> times in $shopHunt.context event ($shopHunt.shop.shuffle.max shuffles permitted)</span>
+		<span class="red">오류: shopHuntShuffle이 허용된 최대 호출 횟수를 초과했다. $shopHunt.context 이벤트에서 <<print $shopHunt.shop.shuffle.count + 1>>회 셔플되었다. (허용 횟수: $shopHunt.shop.shuffle.max회)</span>
 		<br><br>
 	<</if>>
 
@@ -249,29 +248,29 @@
 		<</for>>
 		<<switch _args[0]>>
 			<<case "gardenKey">>
-				<span class="black">The shop rumbles.</span> You look around as the shelves rattle and the few lights flicker. In the confusion, you bump into <<shopHuntActorName $shopHunt.item.key>>. Its wooden face is the last thing you see as the gloom envelops you.
+				<span class="black">가게가 진동한다.</span> 선반이 요동치고 몇 안 되는 조명들이 깜빡거릴 때, 당신은 주위를 둘러본다. 이 혼란 속에서 당신은 <<shopHuntActorName $shopHunt.item.key>>에게 부딪힌다. 그 나무 얼굴이 당신이 어둠에 휩싸이기 전에 본 마지막 모습이다.
 			<<case "edenDoor">>
 				<<set $_eden to $shopHunt.actors.find(x => x.type === "eden").id>>
 				<<shopHuntActorSetState $_eden "roam">>
-				<span class="black">The shop rumbles.</span> The gloom closes in on you and <<shopHuntActorName $_eden>>. <<shopHuntPronoun "His">> grip on your arm tightens painfully, before suddenly vanishing. <<shopHuntPronoun "His">> shout becomes muffled, as if you're hearing through wool.
+				<span class="black">가게가 진동한다.</span> 당신과 <<shopHuntActorName $_eden>> 주변으로 어둠이 조여든다. 당신의 팔을 잡은 <<shopHuntPronoun "his">> 손아귀가 고통스러울 정도로 꽉 조여지더니 갑자기 사라진다. 마치 양털을 통해 듣는 것처럼, <<shopHuntPronoun "his">> 외침이 웅얼거리듯 먹먹해진다.
 			<<case "gameCaught" "gameAmbush">>
 				<span class="black">The shop rumbles.</span> The shelves slide and swap places around you like cards being shuffled.
 			<<case "gameFall">>
-				<<shopHuntPronoun "He">> yelps, rubbing <<shopHuntPronoun "his">> head.
+				<<shopHuntPronoun "He">>【은는】 <<shopHuntPronoun "his">> 머리를 비비며 비명을 지른다.
 				<<if $gwylanSeen.includes("shopHunt_fallPoint")>>
-					"<<pcPetname "Gwylan" "naughty">>, just tag me normally!" <<shopHuntPronoun "he">> complains <span class="black">as the gloom closes in on you</span>.
+					"<<pcPetname "Gwylan" "naughty">>, 평소처럼 잡기나 해!" <span class="black">주변으로 어둠이 조여들자</span> <<shopHuntPronoun "he">>【은는】 불평한다.
 				<<else>>
 					<<set $gwylanSeen.pushUnique("shopHunt_fallPoint")>>
-					"That doesn't count as a point," <<shopHuntPronoun "he">> pouts. <span class="black">The shop rumbles.</span> The gloom closes in on you. "Wait, what do you mean that co—" <<shopHuntPronoun "His">> protest becomes muffled, as if you're hearing through wool.
+					"그건 점수로 칠 수 없어," <<shopHuntPronoun "he">>【이가】 입술을 삐죽 내민다. <span class="black">가게가 진동한다.</span> 당신에게 어둠이 조여든다. "잠깐, 점수로 칠 수 없다는 게 무슨—" 마치 솜으로 막힌 것처럼, <<shopHuntPronoun "His">> 항의하는 소리가 먹먹해진다.
 				<</if>>
 			<<default>>
-				<span class="black">The shop rumbles.</span> The gloom closes in on you.
+				<span class="black">가게가 진동한다.</span> 당신에게 어둠이 조여든다.
 		<</switch>>
 		<br><br>
 		<<if $shopHunt.context is "game">>
 			When the shelves settle, you're still by the <<shopHuntLocName $_playerLoc>>, but <span class="pink">your surroundings seem entirely different</span>.
 		<<else>>
-			When the gloom clears away, you open your eyes. You're still by the <<shopHuntLocName $_playerLoc>>, but <span class="pink">your surroundings seem entirely different</span>.
+			어둠이 걷히고 나서, 당신은 눈을 뜬다. 아직 <<shopHuntLocName $_playerLoc>> 옆에 있지만, <span class="pink">주변 환경이 완전히 다르게 느껴진다</span>.
 		<</if>>
 		<br><br>
 	<</if>>
@@ -460,9 +459,9 @@
 
 		<<if _args.includes("options")>>
 			<br><br>
-			<span class="orange">DEBUG OPTIONS</span>
+			<span class="orange">디버그 옵션</span>
 			<br>
-			<<link [[Mark every location as seen|Forest Shop Hunt]]>>
+			<<link [[모든 위치를 발견한 것으로 표시|Forest Shop Hunt]]>>
 				<<shopHuntAction "debug">>
 				<<for _x to 0; _x lt 7; _x++>>
 					<<for _y to 0; _y lt 7; _y++>>
@@ -475,7 +474,7 @@
 				<</for>>
 			<</link>>
 			<br>
-			<<link [[Mark every location as unseen|Forest Shop Hunt]]>>
+			<<link [[모든 위치를 미발견으로 표시|Forest Shop Hunt]]>>
 				<<shopHuntAction "debug">>
 				<<for _x to 0; _x lt 7; _x++>>
 					<<for _y to 0; _y lt 7; _y++>>
@@ -519,12 +518,12 @@
 				<<optionsfrom $_debugStates>>
 			<</listbox>>
 			<br><br>
-			<<link [[Send actor to location|Forest Shop Hunt]]>>
+			<<link [[액터를 위치로 보낸다|Forest Shop Hunt]]>>
 				<<shopHuntActorSetState $shopHuntDebug.actors.indexOf($shopHuntDebug.actorSelected) "march" $shopHuntDebug.location>>
 				<<unset $shopHuntDebug>>
 			<</link>>
 			<br>
-			<<link [[Set actor to state|Forest Shop Hunt]]>>
+			<<link [[액터 상태를 설정한다|Forest Shop Hunt]]>>
 				<<set $shopHunt.actors[$shopHuntDebug.actors.indexOf($shopHuntDebug.actorSelected)].state to $shopHuntDebug.state>>
 				<<if $shopHuntDebug.state is "chase">>
 					<<set $shopHunt.actors[$shopHuntDebug.actors.indexOf($shopHuntDebug.actorSelected)].chaseTimer to 4>>
@@ -537,11 +536,11 @@
 			<br><br>
 
 			<<if $gridConsoleEnable>>
-				<<link [[Disable browser console messages|Forest Shop Hunt]]>><<unset $gridConsoleEnable>><<shopHuntAction "debug">><</link>>
+				<<link [[브라우저 콘솔 메시지 비활성화|Forest Shop Hunt]]>><<unset $gridConsoleEnable>><<shopHuntAction "debug">><</link>>
 				<<run console.log("END OF TURN ", $shopHunt.turns)>>
 				<<run console.log("=================================================")>>
 			<<else>>
-				<<link [[Enable browser console messages|Forest Shop Hunt]]>><<set $gridConsoleEnable to true>><<shopHuntAction "debug">><</link>>
+				<<link [[브라우저 콘솔 메시지 활성화|Forest Shop Hunt]]>><<set $gridConsoleEnable to true>><<shopHuntAction "debug">><</link>>
 			<</if>>
 			<br>
 		<</if>>
@@ -605,7 +604,7 @@
 		<<case "march" "ambush" "fight" "flee" "hide" "drag" "hold" null>>
 			<<exit>>
 		<<default>>
-			<span class="red">Error: Invalid state for actor _args[0]: $shopHunt.actors[_args[0]].state. Please report this!</span>
+			<span class="red">오류: 액터 _args[0]의 상태가 잘못되었습니다: $shopHunt.actors[_args[0]].state. 이 문제를 제보해 주세요!</span>
 			<<exit>>
 	<</switch>>
 
@@ -670,6 +669,7 @@
 			<<set $shopHunt.actors[$_actorNum].title to true>>
 			<<set $shopHunt.actors[$_actorNum].grip.max to 5000>>
 			<<if _args[3] is "masked">>
+				<<set $shopHunt.actors[$_actorNum].name to "masked mannequin">>
 				<<set $shopHunt.actors[$_actorNum].health to 2>>
 				<<set $shopHunt.actors[$_actorNum].obstaclePass to 1>>
 				<<set $shopHunt.actors[$_actorNum].footsteps to 0>>
@@ -717,24 +717,37 @@
 	<<if _args[1] isnot undefined>>
 		<<set $shopHuntActive to _args[1]>>
 	<</if>>
-	<<set $_word to _args[0]>>
+	<<set $_word to _args[0].toLowerCase()>>
+	<<set _pronoun to $shopHunt.actors[$shopHuntActive].pronoun>>
 
-	<<if $_word[0] isnot $_word[0].toLowerCase()>>
-		<<set $_cap to true>>
-		<<set $_word to $_word.toLowerCase()>>
+	<!-- KR: 기존엔 pronouns[word]에 저장된 영문 원본("it" 등)을 그대로 출력해서
+	     마네킹(pronoun "i")이 "It가"처럼 미번역으로 새고 있었음. text.twee의
+	     he/his/him/hers 위젯과 같은 방식으로 pronoun 마커 기준 한글 매핑으로 교체. -->
+	<<set _krPronounMap to {
+		he:      { m: "그",     f: "그녀",     i: "그것",     n: "그들",     t: "그들" },
+		his:     { m: "그의",   f: "그녀의",   i: "그것의",   n: "그의",     t: "그들의" },
+		hers:    { m: "그",     f: "그녀",     i: "그",       n: "그들",     t: "그들" },
+		him:     { m: "그",     f: "그녀",     i: "그것",     n: "그들",     t: "그들" },
+		himself: { m: "자기 자신", f: "자기 자신", i: "자기 자신", n: "자기 자신", t: "자기 자신" },
+		man:     { m: "남자",   f: "여자",     i: "그것",     n: "사람",     t: "사람들" },
+		boy:     { m: "소년",   f: "소녀",     i: "그것",     n: "아이",     t: "아이들" },
+		men:     { m: "남자들", f: "여자들",   i: "그것들",   n: "사람들",   t: "사람들" },
+	}>>
+
+	<<if _krPronounMap[$_word] and _krPronounMap[$_word][_pronoun]>>
+		<<set _text_output to _krPronounMap[$_word][_pronoun]>>
+	<<else>>
+		<<set _text_output to `<span class="red">[에러: "shopHuntPronoun"에서 알 수 없는 조합 ${$_word}/${_pronoun}]</span>`>>
 	<</if>>
-
-	<<set _text_output to $shopHunt.actors[$shopHuntActive].pronouns[$_word]>>
-	<<if $_cap>><<capitalise>><</if>>
 
 	<<exit _text_output>>
 <</widget>>
 
 <<widget "shopHuntDoor">>
 	<<if $shopHunt.context is "garden">>
-		<<set _text_output to "door to the garden">>
+		<<set _text_output to "정원으로 가는 문">>
 	<<else>>
-		<<set _text_output to "front door">>
+		<<set _text_output to "정문">>
 	<</if>>
 	<<exit _text_output>>
 <</widget>>
@@ -818,35 +831,35 @@
 
 	<<switch $_actor.points>>
 		<<case 1>>
-			<<shopHuntActorName $_actor.id "cap">> cups your face with one hand and looks into your eyes.
+			<<shopHuntActorName $_actor.id "cap">>【은는】 한 손으로 당신의 얼굴을 감싸 쥐고 눈을 들여다본다.
 			<<if $shopHunt.actors.some(x => x.type is "eden" and x.team isnot $_actor.team)>>
 				<<set $shopHunt.commands.pushUnique("towardEden")>>
-				"<span class="witch">Stay away from the <<nnpc_title 'Eden'>></span>, <<pcpetname "Gwylan">>," <<shopHuntPronoun "he">> croons. <<hypnosisText "Your mind accepts <<shopHuntPronoun 'his'>> words.">> Staying away from Eden is such a reasonable request.
+				"<span class="witch"><<nnpc_title 'Eden'>>에게서 멀리 떨어져</span>, <<pcpetname "Gwylan">>." <<shopHuntPronoun "he">>【이가】 나직이 말한다. <<hypnosisText "당신의 정신은 <<shopHuntPronoun 'his'>> 말을 받아들인다.">> 에덴에게서 떨어지라는 것은 너무나 합당한 요구다.
 			<<else>>
-				<<shopHuntActorName $_actor.id "cap">> says nothing. <<shopHuntPronoun "He">> doesn't need to. <<hypnosisText "Your will falters before <<shopHuntPronoun 'his'>>.">>
+				<<shopHuntActorName $_actor.id "cap">>【은는】 아무 말도 하지 않는다. <<shopHuntPronoun "He">>【은는】 그럴 필요가 없다. <<hypnosisText "당신의 의지는 <<shopHuntPronoun 'his'>> 의지 앞에서 흔들린다.">>
 			<</if>>
 		<<case 2>>
-			<<shopHuntActorName $_actor.id "cap">> curls a finger in your collar and whispers in your ear. <<shopHuntPronoun 'His'>> words pass right through you without comprehension, <<hypnosisText "but the meaning lingers.">>
+			<<shopHuntActorName $_actor.id "cap">>【은는】 당신의 목줄에 손가락을 걸고 귀에 속삭인다. <<shopHuntPronoun 'His'>> 말은 당신이 채 이해하기도 전에 스쳐 지나가지만, <<hypnosisText "그 의미는 머릿속에 맴돈다.">>
 		<<case 3>>
-			<<shopHuntActorName $_actor.id "cap">> cups <<shopHuntPronoun "his">> hands together. Your body moves on reflex, resting your chin in <<shopHuntPronoun "his">> palms. <<shopHuntPronoun "He">> smiles sweetly,
+			<<shopHuntActorName $_actor.id "cap">>【은는】 두 손을 오므려 감싼다. 당신의 몸은 반사적으로 움직여 턱을 <<shopHuntPronoun "his">> 손바닥에 얹는다. <<shopHuntPronoun "He">>【은는】 다정하게 미소지으며,
 			<<if $gwylanSeen.includes("partners")>>
-				leaning in and whispering against your lips.
+				가까이 몸을 기울여 입술을 맞대고 속삭인다.
 			<<else>>
-				<<shopHuntPronoun "his">> breath ghosting over your ear.
+				<<shopHuntPronoun "his">> 숨결이 당신의 귓가에 희미하게 스친다.
 			<</if>>
-			"<span class="witch">One, two, three.</span>"
+			"<span class="witch">하나, 둘, 셋.</span>"
 			<br><br>
 
-			<<hypnosisText "You're <<shopHuntPronoun 'hers'>>.">>
+			<<hypnosisText "당신은 <<shopHuntPronoun 'hers'>> 것이다.">>
 			<br><br>
 			<<include "Forest Shop Hunt Eden Torment">>
 			<<exitAll>>
 	<</switch>>
 	<br><br>
 
-	<<shopHuntPronoun "He">> disappears into the gloom before you can get your bearings.
+	<<shopHuntPronoun "He">>【은는】 당신이 상황을 파악하기도 전에 어둠 속으로 사라진다.
 	<<if $_holding.length gte 1>>
-		<span class="blue"><<pluralise $_holding.length "" "The">> <<shopHuntActorList $_holding>> holding you <<pluralise $_holding.length "withdraws" "all withdraw">> from you as well.</span>
+		<span class="blue">당신을 붙잡고 있던 <<shopHuntActorList $_holding>>【이가】 <<if $_holding.length is 1>>당신에게서 물러난다<<else>>당신에게서 모두 물러난다<</if>>.</span>
 	<</if>>
 <</widget>>
 
@@ -872,100 +885,100 @@
 				<<case "mirror">>
 					<<shopHuntActorSetState _args[0] "check" "player">>
 					<<if $_actor.role is "enemy">>
-						"There you are," <<shopHuntActorName _args[0]>> growls. <<shopHuntPronoun "He">> marches towards you. "Enough games. You're coming home."
+						"여기 있었군." <<shopHuntActorName _args[0]>>【이가】 으르렁거린다. <<shopHuntPronoun "He">>【은는】 당신을 향해 성큼성큼 다가온다. "장난은 그쯤 해둬. 넌 집으로 갈 거니까."
 					<<else>>
 						<<if $shopHunt.shop.shuffle.count gte 1>>
-							"There you are," <<shopHuntActorName _args[0]>> huffs. <<shopHuntPronoun "He">> marches towards you. "Don't get separated this time."
+							"거기 있었구나." <<shopHuntActorName _args[0]>>【이가】 헐떡인다. <<shopHuntPronoun "He">>【은는】 당신을 향해 걸어온다. "이번엔 떨어지지 마."
 						<<else>>
-							"There you are," <<shopHuntActorName _args[0]>> huffs. <<shopHuntPronoun "He">> marches towards you. "Smart thinking, with the light. Come on. You're coming home."
+							"여기 있었네." <<shopHuntActorName _args[0]>>【이가】 헐떡인다. <<shopHuntPronoun "He">>【은는】 당신을 향해 걸어온다. "빛을 쓰다니, 머리 잘 썼어. 가자. 넌 이제 집으로 돌아간다."
 						<</if>>
 					<</if>>
 				<<case "inside">>
 					<<shopHuntActorSetState _args[0] "drag" "door">>
 					<<if $_actor.footsteps>>
-						Footsteps stop in front of the <<shopHuntLocName _locRaw>>, before a pair of large hands force the doors open.
+						<<shopHuntLocName _locRaw>> 앞에서 발소리가 멈추더니, 이내 큰 두 손이 강제로 문을 열어젖힌다.
 					<<else>>
-						A pair of large hands force the <<shopHuntLocName _locRaw>> doors open.
+						큰 두 손이 강제로 <<shopHuntLocName _locRaw>> 문을 열어젖힌다.
 					<</if>>
-					It's <<shopHuntActorName _args[0]>>.
+					<<shopHuntActorName _args[0]>>【이】다.
 					<<if $_actor.role is "enemy">>
-						"There you are," <<shopHuntPronoun "he">> growls, <span class="red">grabbing your arm and pulling you out of the <<shopHuntLocName _locRaw>>.</span> "Enough games. You're coming home."
+						"여기 있었군," <<shopHuntPronoun "he">>【이가】 으르렁거리며 <span class="red">당신의 팔을 잡아채어 <<shopHuntLocName _locRaw>> 밖으로 끌어낸다.</span> "장난은 그쯤 해둬. 넌 집으로 갈 거니까."
 					<<else>>
 						<<if $shopHunt.shop.shuffle.count gte 1>>
-							"There you are," <<shopHuntPronoun "he">> huffs, grabbing your arm. "Don't get separated this time."
+							"거기 있었구나," <<shopHuntPronoun "he">>【이가】 숨을 몰아쉬며 당신의 팔을 붙잡는다. "이번엔 떨어지지 마."
 						<<else>>
-							"There you are," <<shopHuntPronoun "he">> huffs, grabbing your arm. "Could've spoken up when you saw me. Come on. You're coming home."
+							"여기 있었네," <<shopHuntPronoun "he">>【이가】 헐떡이며 당신의 팔을 붙잡는다. "날 봤으면 소리라도 치지 그랬어. 가자. 집으로 돌아갈 시간이야."
 						<</if>>
 					<</if>>
 				<<case "insideExit">>
 					<<shopHuntActorSetState _args[0] "drag" "door">>
-					<<shopHuntActorName _args[0] "cap">> is there, and spots you as soon as you exit.
+					그곳엔 <<shopHuntActorName _args[0] "cap">>【이가】 있었고, 당신이 나오자마자 발견한다.
 					<<if $_actor.role is "enemy">>
-						"There you are," <<shopHuntPronoun "he">> growls, <span class="red">grabbing your arm.</span> "Enough games. You're coming home."
+						"여기 있었군," <<shopHuntPronoun "he">>【이가】 으르렁거리며 <span class="red">당신의 팔을 꽉 쥔다.</span> "장난은 여기까지야. 넌 집으로 돌아간다."
 					<<else>>
 						<<if $shopHunt.shop.shuffle.count gte 1>>
-							"There you are," <<shopHuntPronoun "he">> huffs, grabbing your arm. "Don't get separated this time."
+							"거기 있었구나," <<shopHuntPronoun "he">>【이가】 헐떡이며 당신의 팔을 잡는다. "이번엔 떨어지지 마."
 						<<else>>
-							"There you are," <<shopHuntPronoun "he">> huffs, grabbing your arm. "Could've spoken up when you saw me. Come on. You're coming home."
+							"여기 있었네," <<shopHuntPronoun "he">>【이가】 헐떡이며 당신의 팔을 잡는다. "날 봤으면 소리라도 쳤어야지. 가자. 집으로 갈 시간이야."
 						<</if>>
 					<</if>>
 				<<case "hat">>
 					<<shopHuntActorSetState _args[0] "drag" "door">>
-					<<shopHuntActorName _args[0] "cap">> walks past the hat stand, but pauses. <<shopHuntPronoun "He">> scowls, <span class="red">snapping <<shopHuntPronoun "his">> arm to the side to grab your shoulder</span>.
+					<<shopHuntActorName _args[0] "cap">>【은는】 모자 걸이를 지나치다 걸음을 멈춘다. <<shopHuntPronoun "He">>【은는】 얼굴을 찌푸리더니, <span class="red">휙 하고 <<shopHuntPronoun "his">> 팔을 옆으로 뻗어 당신의 어깨를 낚아챈다</span>.
 					<<if $_random is 5>>
-						"I knew that hat looked familiar," <<shopHuntPronoun "he">> says. "Enough games. You're coming home."
+						"그 모자 어딘가 낯이 익다 했지." <<shopHuntPronoun "he">>【이가】 말한다. "장난은 여기까지야. 넌 집으로 돌아간다."
 					<<else>>
-						"I knew I saw you earlier," <<shopHuntPronoun "he">> says. "Should've listened to my gut. Enough games. You're coming home."
+						"아까 너를 본 것 같더라니." <<shopHuntPronoun "he">>【이가】 말한다. "내 직감을 믿었어야 했는데. 장난은 여기까지야. 넌 집으로 간다."
 					<</if>>
 				<<case "hide">>
 					<<shopHuntActorSetState _args[0] "drag" "door">>
-					<<shopHuntActorName _args[0] "cap">> walks past the <<shopHuntLocName _locRaw "simple">>, but pauses.
+					<<shopHuntActorName _args[0] "cap">>【은는】 <<shopHuntLocName _locRaw "simple">>【을를】 지나치려다 멈칫한다.
 					<<if $_actor.role is "enemy">>
-						<<shopHuntPronoun "He">> scowls, <span class="red">snapping <<shopHuntPronoun "his">> arm down to grab your shoulder</span>. "Enough games. You're coming home."
+						<<shopHuntPronoun "He">>【은는】 험악하게 얼굴을 찌푸리며, <span class="red"><<shopHuntPronoun "his">> 팔을 확 뻗어 당신의 어깨를 움켜쥔다</span>. "장난은 여기까지야. 넌 집으로 돌아간다."
 					<<else>>
 						<<if $shopHunt.shop.shuffle.count gte 1>>
-							"There you are," <<shopHuntPronoun "he">> huffs, turning <<shopHuntPronoun "his">> head to look at you. <<shopHuntPronoun "He">> grabs your arm. "Don't get separated this time."
+							거기 있었구나, <<shopHuntPronoun "he">>【이가】 숨을 헐떡이며 <<shopHuntPronoun "his">> 고개를 돌려 당신을 쳐다본다. <<shopHuntPronoun "He">>【은는】 당신의 팔을 잡는다. "이번엔 떨어지지 마."
 						<<else>>
-							"There you are," <<shopHuntPronoun "he">> huffs, turning <<shopHuntPronoun "his">> head to look at you. <<shopHuntPronoun "He">> grabs your arm. "Could've spoken up when you saw me. Come on. You're coming home."
+							여기 있었네, <<shopHuntPronoun "he">>【이가】 <<shopHuntPronoun "his">> 고개를 돌려 당신을 보며 헐떡인다. <<shopHuntPronoun "He">>【은는】 당신의 팔을 잡는다. "날 봤으면 말이라도 하지 그랬어. 가자. 집으로 가야지."
 						<</if>>
 					<</if>>
 				<<case "search">>
 					<<set $_direction to shopHuntDirectionGet(applyArrays($shopHunt.actors[_args[0]].position, $shopHunt.player.position, "subtraction"))>>
-					"There you are!" You hear a voice from the $_direction. It's <<shopHuntActorName _args[0]>>.
+					"저기 있군!" <<shopHuntDirKr $_direction>>에서 목소리가 들린다. <<shopHuntActorName _args[0]>>【이】다.
 					<<shopHuntActorSetState _args[0] "chase" "player">>
 					<<if $_actor.role is "enemy">>
-						"Enough games. You're coming home."
+						"장난은 여기까지. 넌 집으로 돌아간다."
 					<<else>>
 						<<if $shopHunt.shop.shuffle.count gte 1>>
-							"Don't get separated this time."
+							"이번엔 흩어지지 마."
 						<<else>>
-							"Could've spoken up when you saw me. Come on. You're coming home."
+							"날 봤으면 말이라도 하지 그랬어. 자, 집으로 가자꾸나."
 						<</if>>
 					<</if>>
-					<<shopHuntPronoun "He">> marches your way.
+					<<shopHuntPronoun "He">>【은는】 당신을 향해 성큼성큼 다가온다.
 				<<case "chase">>
 					<<set $shopHunt.actors[_args[0]].position to $shopHunt.player.position>>
 					<<shopHuntActorSetState _args[0] "drag" "door">>
 					<<if $_actor.role is "enemy">>
-						<<shopHuntActorName _args[0] "cap">> closes the distance and <span class="red">grabs your arm.</span> "Enough games. You're coming home."
+						<<shopHuntActorName _args[0] "cap">>【은는】 거리를 좁히더니 <span class="red">당신의 팔을 잡아챈다.</span> "장난은 여기까지. 집으로 갈 시간이야."
 					<<else>>
-						<<shopHuntActorName _args[0] "cap">> closes the distance and grabs your arm. <<shopHuntPronoun "He">> huffs. "What are you doing, getting some exercise?
+						<<shopHuntActorName _args[0] "cap">>【은는】 거리를 좁히더니 당신의 팔을 잡는다. <<shopHuntPronoun "He">>【은는】 숨을 몰아쉰다. "뭐하는 거야, 운동이라도 해?
 						<<if $shopHunt.shop.shuffle.count gte 1>>
-							Don't get separated this time."
+							이번엔 떨어지지 마."
 						<<else>>
-							Come on. You're coming home."
+							"가자. 집으로 가야지."
 						<</if>>
 					<</if>>
 					<br><br>
 				<<default>>
 					<<shopHuntActorSetState _args[0] "drag" "door">>
 					<<if $_actor.role is "enemy">>
-						"There you are," <<shopHuntActorName _args[0]>> growls, <span class="red">grabbing your arm.</span> "Enough games. You're coming home."
+						"여기 있었군," <<shopHuntActorName _args[0]>>【이가】 으르렁거리며 <span class="red">당신의 팔을 잡아챈다.</span> "장난은 여기까지야. 집으로 돌아간다."
 					<<else>>
 						<<if $shopHunt.shop.shuffle.count gte 1>>
-							"There you are," <<shopHuntActorName _args[0]>> huffs, grabbing your arm. "Don't get separated this time."
+							"거기 있었구나," <<shopHuntActorName _args[0]>>【이가】 숨을 몰아쉬며 당신의 팔을 잡는다. "이번엔 흩어지지 말자."
 						<<else>>
-							"There you are," <<shopHuntActorName _args[0]>> huffs, grabbing your arm. "Could've spoken up when you saw me. Come on. You're coming home."
+							"여기 있었네," <<shopHuntActorName _args[0]>>【이가】 숨을 헐떡이며 당신의 팔을 잡는다. "날 봤으면 소리라도 치지 그랬어. 가자. 집으로 갈 시간이야."
 						<</if>>
 					<</if>>
 			<</switch>>
@@ -983,54 +996,54 @@
 					<<if $_actor.role is "enemy">>
 						<<if _gwylanStatus.includes("heat")>>
 							<<shopHuntActorSetState _args[0] "rush" "player">>
-							<<shopHuntActorName _args[0] "cap">>'s head snaps to your direction the instant the light shines on <<shopHuntPronoun "him">>. <<shopHuntPronoun "He">> lowers <<shopHuntPronoun "his">> stance and <span class="red">sprints towards you on all fours</span>.
+							빛이 <<shopHuntPronoun "him">>【을를】 비추는 순간, <<shopHuntActorName _args[0] "cap">>【이가】 고개를 홱 돌려 당신을 쳐다본다. <<shopHuntPronoun "He">>【은는】 <<shopHuntPronoun "his">> 자세를 낮추더니 <span class="red">네 발로 당신을 향해 무섭게 질주한다</span>.
 						<<else>>
 							<<shopHuntActorSetState _args[0] "check" "player">>
 							<<switch $_random>>
 								<<case 1 2>>
-									The light catches <<shopHuntActorName _args[0]>>'s eyes for just a moment before <<shopHuntPronoun "he">> lowers <<shopHuntPronoun "his">> hat over <<shopHuntPronoun "his">> eyes. <<shopHuntPronoun "He">> walks towards you.
+									잠깐 동안 <<shopHuntActorName _args[0]>>【이가】 눈에 불빛이 반사되더니, 이내 <<shopHuntPronoun "he">>【은는】 <<shopHuntPronoun "his">> 모자를 푹 눌러 <<shopHuntPronoun "his">> 눈을 가린다. <<shopHuntPronoun "He">>【은는】 당신을 향해 걸어온다.
 								<<case 3 4>>
-									<<shopHuntActorName _args[0] "cap">> giggles, tilting <<shopHuntPronoun "his">> head and walking towards you. "Leading me right to you? What a <i>bright</i> idea, <<pcpetname "Gwylan" "simple">>."
+									<<shopHuntActorName _args[0] "cap">>【은는】 킬킬대며 <<shopHuntPronoun "his">> 고개를 갸웃거리더니 당신을 향해 걸어온다. "스스로 위치를 알려주다니? 참으로 <i>눈부신</i> 아이디어네, <<pcpetname "Gwylan" "simple">>."
 								<<case 5>>
-									<<shopHuntActorName _args[0] "cap">>'s head snaps to your direction the instant the light shines on <<shopHuntPronoun "him">>. <<shopHuntPronoun "He">> ducks out of the light's path, but you know <<shopHuntPronoun "he">>'s tracking you.
+									빛이 <<shopHuntPronoun "him">>【을를】 비추는 순간, <<shopHuntActorName _args[0] "cap">>【이가】 고개를 홱 돌려 당신을 노려본다. <<shopHuntPronoun "He">>【은는】 황급히 빛의 경로에서 몸을 숙여 피하지만, 당신은 이미 <<shopHuntPronoun "he">>【이가】 당신을 추적하고 있다는 걸 안다.
 							<</switch>>
 						<</if>>
 					<<else>>
 						/* Todo: Gwylan hunt, would Gwylan ever guide the PC somewhere? */
-						<<shopHuntActorName _args[0] "cap">> glances over at you with a grin.
+						<<shopHuntActorName _args[0] "cap">>【은는】 씩 웃으며 당신을 힐끗 바라본다.
 					<</if>>
 				<<case "inside">>
 					<<if $_actor.state is "rush">>
-						Rapid, skittering footsteps approach, and the doors of the <<shopHuntLocName _locRaw>> fly open. Two green eyes glow in the darkness.
+						빠르고 가벼운 발소리가 다가오더니, <<shopHuntLocName _locRaw>> 문이 확 열린다. 어둠 속에서 두 개의 녹색 눈동자가 빛난다.
 					<<elseif $_actor.footsteps>>
-						Shuffling footsteps stop in front of the <<shopHuntLocName _locRaw>>, before the doors creak open.
+						질질 끄는 발소리가 <<shopHuntLocName _locRaw>> 앞에서 멈추고, 삐걱거리며 문이 열린다.
 					<<else>>
-						The <<shopHuntLocName _locRaw>> doors creak open.
+						<<shopHuntLocName _locRaw>> 문이 삐걱거리며 열린다.
 					<</if>>
-					It's <<shopHuntActorName _args[0]>>.
+					<<shopHuntActorName _args[0]>>【이】다.
 					<<if $_actor.role is "enemy">>
 						<<shopHuntGwylanHypnotise>>
 					<<else>>
-						<<He>> smiles at you, and slowly closes the doors again.
+						<<He>>【은는】 당신에게 미소를 지으며, 다시 천천히 문을 닫는다.
 						<<shopHuntActorSetState _args[0] "roam">>
 					<</if>>
 				<<case "insideExit">>
-					The first thing you see is a pointy hat. You look down at the <<nnpc_gendery "Gwylan">> it's attached to. It's <<shopHuntActorName _args[0]>>.
+					가장 먼저 보이는 것은 뾰족한 모자다. 그 모자를 쓴 <<nnpc_gendery "Gwylan">>【을를】 내려다본다. 바로 <<shopHuntActorName _args[0]>>【이】다.
 					<<if $_actor.role is "enemy">>
 						<<shopHuntGwylanHypnotise>>
 					<<else>>
-						<<He>> smiles at you. "Had enough hiding?"
+						<<He>>【이가】 당신에게 미소 짓는다. "이제 숨바꼭질은 충분해?"
 					<</if>>
 				<<case "rush" "chase">>
 					<<if $_actor.role is "enemy">>
-						<<shopHuntActorName _args[0] "cap">> bounds up to you and <span class="red">tackles you to the floor</span>. <<shopHuntPronoun "He">> smiles proudly.
+						<<shopHuntActorName _args[0] "cap">>【은는】 당신에게 펄쩍 뛰어올라 <span class="red">당신을 바닥에 넘어뜨린다</span>. <<shopHuntPronoun "He">>【은는】 자랑스러운 듯 미소 짓는다.
 						<<shopHuntGwylanHypnotise>>
 					<<else>>
 						<<set $_skip to true>>
 					<</if>>
 				<<case "hat" "hide">>
 					<<if $_actor.role is "enemy">>
-						<<shopHuntActorName _args[0] "cap">> walks past the <<shopHuntLocName _locRaw "simple">>, before twirling and <span class="red">looking right at you</span>.
+						<<shopHuntActorName _args[0] "cap">>【은는】 <<shopHuntLocName _locRaw "simple">>【을를】 지나치려다 빙그르르 돌며 <span class="red">당신을 똑바로 응시한다</span>.
 						<<shopHuntGwylanHypnotise>>
 					<<else>>
 						<<set $_skip to true>>
@@ -1038,7 +1051,7 @@
 				<<case "search">>
 					<<if $_actor.role is "enemy">>
 						<<set $_direction to shopHuntDirectionGet(applyArrays($shopHunt.actors[_args[0]].position, $shopHunt.player.position, "subtraction"))>>
-						Two green eyes glimmer from the $_direction. It's <<shopHuntActorName _args[0]>>. <<shopHuntPronoun "He">> tilts <<shopHuntPronoun "his">> head with a smile and walks towards you, <<shopHuntPronoun "his">> pace steady.
+						<<shopHuntDirKr $_direction>>에서 초록빛 눈동자 두 개가 일렁인다. <<shopHuntActorName _args[0]>>【이】다. <<shopHuntPronoun "He">>【은는】 미소를 머금은 채 <<shopHuntPronoun "his">> 고개를 까딱하고는, 흔들림 없는 걸음걸이로 당신을 향해 걸어온다.
 						<<shopHuntActorSetState _args[0] "chase" "player">>
 					<<else>>
 						<<set $_skip to true>>
@@ -1062,43 +1075,43 @@
 					<br>
 					<<set $shopHunt.actors[_args[0]].position to $shopHunt.player.position>>
 					<<shopHuntActorSetState _args[0] "drag" "door">>
-					<<shopHuntActorName _args[0] "cap">> dissipates into mist as the light passes over <<shopHuntPronoun "him">>, cackling. "<span class="wraith">The gloom hides. It binds. It clips my wings.</span>" The voice doesn't sound like it's coming from the hall. <span class="red">It's coming from your mirror.</span> "<span class="wraith">And yet, you cut me free.</span>"
+					빛이 <<shopHuntPronoun "him">>【을를】 스치자 <<shopHuntActorName _args[0] "cap">>【은는】 킬킬대며 안개 속으로 흩어진다. "<span class="wraith">어둠이 숨긴다. 어둠이 얽어맨다. 내 날개를 자른다.</span>" 복도에서 들리는 목소리가 아니다. <span class="red">당신의 거울 속에서 나는 소리다.</span> "<span class="wraith">그런데 네가, 나를 풀어주었구나.</span>"
 					<br><br>
 
-					An arm bursts from the mirror, white as ivory, grabbing your face. You drop the mirror, but the arm hangs in midair, a thick white mist trailing off it. Its fingers pry your mouth open as the rest of the arm turns into the same mist. You can't feel anything.
+					상아처럼 새하얀 팔이 거울 속에서 튀어나와 당신의 얼굴을 움켜쥔다. 당신은 거울을 떨어뜨리지만, 짙은 하얀 안개를 뿜어내는 팔은 허공에 그대로 멈춰 있다. 그 손가락들이 당신의 입을 억지로 벌리는 동안, 팔의 나머지 부분도 안개로 변해간다. 당신은 아무 감각도 느끼지 못한다.
 					<br><br>
 
-					<span class="red">The mist trails into your mouth, making your entire body feel cold and rigid.</span> The figure is gone. You stand up, but can't feel your legs.
+					<span class="red">그 안개가 당신의 입속으로 흘러들어오며, 전신이 차갑게 굳어지는 느낌이 든다.</span> 형체는 사라졌다. 일어서 보지만, 다리의 감각이 느껴지지 않는다.
 				<<case "inside">>
 					<<shopHuntActorSetState _args[0] "drag" "door">>
-					The inside of the <<shopHuntLocName _locRaw "simple">> drops by a few degrees. Something flickers out of the corner of your eye, and you look to the side.
+					<<shopHuntLocName _locRaw "simple">> 내부의 온도가 뚝 떨어진다. 시야 한구석에서 무언가 일렁이는 기척에 고개를 돌린다.
 					<br><br>
 
-					<span class="red">A pale face stares back at you.</span> <<shopHuntActorName _args[0] "cap">> grins wickedly, before dissipating into white mist from the bottom up. You find your mouth hanging open. You can't feel anything.
+					<span class="red">창백한 얼굴이 당신을 마주보고 있다.</span> <<shopHuntActorName _args[0] "cap">>【은는】 사악하게 씨익 웃고는 밑에서부터 하얀 안개로 흩어지기 시작한다. 당신은 자신도 모르게 입을 떡 벌리고 있다. 당신은 아무 감각도 느끼지 못한다.
 					<br><br>
 
-					<span class="red">The mist trails into your mouth, making your entire body feel cold and rigid.</span> The figure is gone. You stand up, but can't feel your legs.
+					<span class="red">그 안개가 당신의 입속으로 흘러들어오며, 전신이 차갑게 굳어지는 느낌이 든다.</span> 형체는 사라졌다. 일어서 보지만, 다리의 감각이 느껴지지 않는다.
 				<<case "insideExit">>
 					<<shopHuntActorSetState _args[0] "drag" "door">>
-					Your whole body feels cold as you emerge from the <<shopHuntLocName _locRaw "simple">>, directly into a pale mist.
+					<<shopHuntLocName _locRaw "simple">> 밖으로 나서자마자, 옅은 안개에 휘감기며 온몸이 차갑게 식는 것을 느낀다.
 					<br><br>
 
-					<span class="red">A pale face takes form within.</span> <<shopHuntActorName _args[0] "cap">> grins wickedly. You find your mouth hanging open. You can't feel anything.
+					<span class="red">안개 속에서 창백한 얼굴이 형상을 갖춘다.</span> <<shopHuntActorName _args[0] "cap">>【은는】 사악하게 씨익 웃는다. 당신은 자신도 모르게 입을 떡 벌리고 있다. 당신은 아무 감각도 느끼지 못한다.
 					<br><br>
 
-					<span class="red">The mist trails into your mouth, making your entire body feel cold and rigid.</span> The figure is gone. You stand up, but can't feel your legs.
+					<span class="red">그 안개가 당신의 입속으로 흘러들어오며, 전신이 차갑게 굳어지는 느낌이 든다.</span> 형체는 사라졌다. 일어서 보지만, 다리의 감각이 느껴지지 않는다.
 				<<case "hat">>
 					<<shopHuntActorSetState _args[0] "drag" "door">>
-					A dim glow slowly passes the hat stand. You don't dare look to see if it's really gone.
+					은은한 빛이 천천히 모자 걸이를 스쳐 지나간다. 당신은 그것이 정말로 사라졌는지 확인할 엄두조차 내지 못한다.
 					<br><br>
 
-					Your body freezes as you feel a hand caress your neck. You look down. <span class="red">A single pale arm is sticking out of the inside of one of the hats.</span> Another emerges from another hat, covering your mouth before you can even think of screaming.
+					누군가의 손이 당신의 목을 어루만지는 느낌에 온몸이 얼어붙는다. 고개를 숙여 내려다본다. <span class="red">모자 중 하나의 안쪽에서 창백한 팔 하나가 튀어나와 있다.</span> 비명을 지를 생각조차 하기 전에 다른 모자에서 나온 또 다른 팔이 당신의 입을 틀어막는다.
 					<br><br>
 
-					Countless more arms emerge from each as a laugh echoes between your ears. The arms all dissipate into white mist. You find your mouth hanging open. You can't feel anything.
+					수도 없이 많은 팔이 튀어나오고 귓가에 웃음소리가 메아리친다. 팔들은 모두 하얀 안개로 흩어진다. 당신은 자신도 모르게 입을 떡 벌리고 있다. 당신은 아무 감각도 느끼지 못한다.
 					<br><br>
 
-					<span class="red">The mist trails into your mouth, making your entire body feel cold and rigid.</span> The figure is gone. You stand up, but can't feel your legs.
+					<span class="red">그 안개가 당신의 입속으로 흘러들어오며, 전신이 차갑게 굳어지는 느낌이 든다.</span> 형체는 사라졌다. 일어서 보지만, 다리의 감각이 느껴지지 않는다.
 				<<case "hide">>
 				<<default>>
 			<</switch>>
@@ -1114,7 +1127,7 @@
 				<<case "hide">>
 				<<default>>
 			<</switch>>
-			<span class="orange">Elkspawn found the player. No conditions are written for this, but Elkspawn's reaction takes priority over all other actors in this case, so that's why the other actors didn't have text for finding you.</span>
+			<span class="orange">엘크 스폰이 플레이어를 찾아냈습니다. 이를 위한 조건이 명시되어 있지 않지만, 엘크 스폰의 반응이 다른 모든 캐릭터의 반응보다 우선시되기 때문에 다른 캐릭터에게는 당신을 찾아내는 텍스트가 표시되지 않았습니다.</span>
 
 		<<case "nobody">>
 			<!-- Does nothing -->
@@ -1122,7 +1135,7 @@
 		<<case "mannequin">>
 			<<if $_actor.role is "neutral">>
 				<<if $shopHunt.context is "garden" and $_actor.state is "statue" and random(1,8) is 8 and !_slap>>
-					<span class="pink">Something slaps your ass.</span> You turn around, but all you see is <<shopHuntActorName _args[0]>>, in the same pose as it was before.
+					<span class="pink">무언가 당신의 엉덩이를 찰싹 때린다.</span> 당신은 뒤를 돌아보지만, 보이는 것이라곤 예전과 똑같은 자세를 하고 있는 <<shopHuntActorName _args[0]>>뿐이다.
 					<<pain 2>><<arousal 600 "bottom">><<gpain>><<garousal>>
 					<<set _slap to true>>
 				<<else>>
@@ -1135,12 +1148,12 @@
 						<<set $_mannequins to $_fullList.filter(x => $shopHunt.actors[x].type === "mannequin")>>
 						<<if $_actor.role is "ally">>
 							<<if $_mannequins.length gte 1>>
-								<<shopHuntActorList $_mannequins "cap">> give you a nod of recognition.
+								<<shopHuntActorList $_mannequins "cap">>【이가】 당신을 알아보았다는 듯 끄덕인다.
 							<<else>>
-								<<shopHuntActorName $_mannequins[0] "cap">> gives you a nod of recognition.
+								<<shopHuntActorName $_mannequins[0] "cap">>【이가】 당신을 알아보았다는 듯 끄덕인다.
 							<</if>>
 							<<if $shopHunt.actors.filter(x => x.type is "mannequin" and ["toPlayer","follow"].includes(x.state)).length is 0>>
-								<<= $_mannequins.length gte 1 ? "One of them" : "It">> begins to make its way towards you.
+								<<= $_mannequins.length gte 1 ? "그들 중 하나" : "그것">>【이가】 당신을 향해 다가오기 시작한다.
 								<<shopHuntActorSetState _args[0] "follow">>
 							<</if>>
 						<<else>>
@@ -1148,49 +1161,49 @@
 								<<shopHuntActorSetState $_i "check" "player">>
 							<</for>>
 							<<if $_mannequins.length gte 1>>
-								<<shopHuntActorList $_mannequins "cap">> turn to you in unison. As one, they begin to make their way towards you.
+								<<shopHuntActorList $_mannequins "cap">>【이가】 일제히 당신 쪽으로 고개를 돌린다. 그들은 한 몸처럼 움직이며 당신을 향해 다가오기 시작한다.
 							<<else>>
-								<<shopHuntActorName $_mannequins[0] "cap">> turns to you, and begins to make its way towards you.
+								<<shopHuntActorName $_mannequins[0] "cap">>【이가】 당신을 향해 돌아보고는 다가오기 시작한다.
 							<</if>>
 						<</if>>
 					<</if>>
 					<<set _mannequinFound.concat($_fullList.filter(x => $shopHunt.actors[x].type === "mannequin"))>>
 				<<case "inside">>
 					<<if $_actor.footsteps>>
-						Wooden footsteps stop in front of the <<shopHuntLocName _locRaw>>, before the doors creak open.
+						나무가 부딪히는 발소리가 <<shopHuntLocName _locRaw>> 앞에서 멈추고, 이내 문이 삐걱거리며 열린다.
 					<<else>>
-						The <<shopHuntLocName _locRaw>> doors creak open.
+						<<shopHuntLocName _locRaw>> 문이 삐걱거리며 열린다.
 					<</if>>
-					It's <<shopHuntActorName _args[0]>>.
+					<<shopHuntActorName _args[0]>>【이】다.
 					<<if $_actor.role is "enemy">>
-						It reaches inside and <span class="red">pulls you out of the <<shopHuntLocName _locRaw "simple">></span>, holding you firmly.
+						그것은 안으로 손을 뻗어 <span class="red"><<shopHuntLocName _locRaw "simple">> 밖으로 당신을 끌어낸 뒤</span>, 꽉 붙잡는다.
 						<<shopHuntActorSetState $_actor.id "hold">>
 					<<else>>
 						<<if $_actor.name is "giant fox plushie">>
-							It leans in and quickly hugs you, before closing the doors once more.
+							그것은 몸을 숙여 재빨리 당신을 끌어안고는, 다시 한번 문을 닫는다.
 							<<trauma -6>><<ltrauma>>
 						<<else>>
-							It tilts its head in recognition, raising a hand to where its lips would be, before closing the doors.
+							그것은 당신을 알아본 듯 고개를 갸웃하더니, 입술이 있을 만한 곳에 손을 올리고 문을 닫는다.
 						<</if>>
 					<</if>>
 				<<case "insideExit">>
-					A <<= $_actor.name is "giant fox plushie" ? "fluffy face" : $_actor.name is "masked mannequin" ? "white mask" : "wooden face">> greets you. It's <<shopHuntActorName _args[0]>>.
+					<<= $_actor.name is "giant fox plushie" ? "복슬복슬한 얼굴" : $_actor.name is "masked mannequin" ? "하얀 가면" : "나무로 된 얼굴">>【이가】 당신을 맞이한다. 바로 <<shopHuntActorName _args[0]>>【이】다.
 					<<if $_actor.role is "enemy">>
-						It <span class="red">pulls you fully out of the <<shopHuntLocName _locRaw "simple">></span>, holding you firmly.
+						그것은 <span class="red"><<shopHuntLocName _locRaw "simple">> 밖으로 당신을 완전히 끄집어낸 뒤</span>, 단단히 붙잡는다.
 						<<shopHuntActorSetState $_actor.id "hold">>
 					<<else>>
-						It tilts its head.
+						그것이 고개를 갸웃한다.
 					<</if>>
 				<<case "hat" "hide">>
 					<<if $_actor.role is "enemy">>
-						<<shopHuntActorName _args[0] "cap">> <span class="red">looks right at your hiding spot</span>. It grabs you, holding you firmly.
+						<<shopHuntActorName _args[0] "cap">>【은는】 <span class="red">당신이 숨은 곳을 똑바로 쳐다본다</span>. 그것은 당신을 꽉 움켜쥔 채 놓아주지 않는다.
 						<<shopHuntActorSetState $_actor.id "hold">>
 					<<else>>
 						<<set $_skip to true>>
 					<</if>>
 				<<default>>
 					<<if $_actor.role is "enemy">>
-						<<shopHuntActorName _args[0] "cap">> <span class="red">grabs you</span>, holding you firmly.
+						<<shopHuntActorName _args[0] "cap">>【이가】 <span class="red">당신을 붙잡고</span>, 단단히 옥죈다.
 						<<shopHuntActorSetState $_actor.id "hold">>
 					<<else>>
 						<<set $_skip to true>>
@@ -1216,7 +1229,7 @@
 			<<set $_actors to $shopHunt.actors.filter(x => x.type is _args[1]).map(x => x.id)>>
 		<<else>>
 			<<error {
-				message	: `shopHuntDecoy error: argument 0 is invalid string.`,
+				message	: `shopHuntDecoy 오류: 인수 0이 유효하지 않은 문자열입니다.`,
 				source	: Utils.GetStack()
 			}>>
 			<<exit>>
@@ -1325,7 +1338,7 @@
 		<<if _act is "light">>
 			<<if $shopHunt.lightTarget is "here">>
 				<<shopHuntDecoy>>
-				You hold up the glowing box, letting its light shine over the shelves. <span class="blue">Anyone in the shop would have had their attention turned to it.</span>
+				당신은 빛나는 상자를 들어올려, 그 빛이 선반 위로 비치게 한다. <span class="blue">가게 안에 있는 누구라도 주의를 기울였을 것이다.</span>
 			<<else>>
 				<<set $_lightDest to shopHuntUntilWall(shopHuntCoords(shopHuntFind("player")), $shopHunt.lightTarget)>>
 				<<set $_lightDestName to shopHuntLoc($_lightDest)>>
@@ -1342,18 +1355,18 @@
 					<</if>>
 					<<set $_actorsPresent[$_l] to shopHuntContains(shopHuntLoc($_lightPath[$_l])).filter(z => typeof z is "number" and $shopHunt.actors[z].type isnot "nobody" and !["ambush","hide"].includes($shopHunt.actors[z].state))>>
 				<</for>>
-				You reflect the box's light to the $shopHunt.lightTarget.
+				당신은 상자의 빛을 <<shopHuntDirKr $shopHunt.lightTarget>>【으로로】 반사시킨다.
 				<<if $_actorsPresent.flat().length gte 1>>
 					<<if $_actorsPresent[$_actorsPresent.length - 1].length is $_actorsPresent.flat().length>>
-						It shines down the shop, until it stops at a wall and <span class="gold">illuminates the <<shopHuntLocName $_lightDestName>></span>. It also illuminates <<shopHuntActorList $_actorsPresent[$_actorsPresent.length-1]>> at the <<shopHuntLocName $_lightDestName "simple">>.
+						그것은 가게 안을 비추다가 벽에 멈추어 <span class="gold"><<shopHuntLocName $_lightDestName>>【을를】 비춘다</span>. 그것은 또한 <<shopHuntLocName $_lightDestName "simple">>에 있는 <<shopHuntActorList $_actorsPresent[$_actorsPresent.length-1]>>【을를】 비춘다.
 					<<elseif $_actorsPresent[$_actorsPresent.length - 1].length gte 1>>
 						<<set $_actorHalls to arrayIntersect($_actorsPresent.flat(), $_actorsPresent[$_actorsPresent.length - 1], 0, true)>>
-						It shines down the shop, illuminating <<shopHuntActorList $_actorHalls>> on the way. The light stops at a wall, <span class="gold">illuminating the <<shopHuntLocName $_lightDestName>></span>, as well as <<shopHuntActorList $_actorsPresent[$_actorsPresent.length-1]>> at the <<shopHuntLocName $_lightDestName "simple">>.
+						그것은 가게 안을 비추며, 가는 길에 <<shopHuntActorList $_actorHalls>>【을를】 조명한다. 빛은 벽에 멈추어, <span class="gold"><<shopHuntLocName $_lightDestName>>【을를】 비추고</span>, <<shopHuntLocName $_lightDestName "simple">>에 있는 <<shopHuntActorList $_actorsPresent[$_actorsPresent.length-1]>>도 함께 비춘다.
 					<<else>>
-						It shines down the shop, illuminating <<shopHuntActorList $_actorsPresent.flat()>> on the way. The light stops at a wall, <span class="gold">illuminating the <<shopHuntLocName $_lightDestName>></span>.
+						그것은 가게 안을 비추며, 가는 길에 <<shopHuntActorList $_actorsPresent.flat()>>【을를】 조명한다. 빛은 벽에 멈추어, <span class="gold"><<shopHuntLocName $_lightDestName>>【을를】 비춘다</span>.
 					<</if>>
 				<<else>>
-					It shines down the shop, until it stops at a wall and <span class="gold">illuminates the <<shopHuntLocName $_lightDestName>></span>.
+					그것은 가게 안을 비추다가 벽에 멈추어 <span class="gold"><<shopHuntLocName $_lightDestName>>【을를】 비춘다</span>.
 				<</if>>
 				<<for $_i to 0; $_i lt $shopHunt.actors.length; $_i++>>
 					<<if !!$shopHunt.actors[$_i].state>>
@@ -1367,7 +1380,7 @@
 			<</if>>
 			<<set $shopHunt.lightTarget to false>>
 		<<elseif _act is "insideExit">>
-			You open the doors to the <<shopHuntLocName _locRaw>>.
+			당신은 <<shopHuntLocName _locRaw>>의 문을 연다.
 			<<for $_i to 0; $_i lt $shopHunt.actors.length; $_i++>>
 				<<if doArraysMatch($shopHunt.player.position, $shopHunt.actors[$_i].history[0].position) and !$shopHunt.actors[$_i].stun.move>>
 					<<shopHuntStun $_i 1 "move">>
@@ -1375,11 +1388,11 @@
 			<</for>>
 		<<elseif _act is "fall">>
 			<<shopHuntMess 5 `_locRaw + "Fall"`>>
-			You <<= _locRaw is "hangingBasket" ? "jump up and unhook" : "tip over">> the <<shopHuntLocName _locRaw>>,
+			당신은 <<shopHuntLocName _locRaw>>【을를】 <<= _locRaw is "hangingBasket" ? "위로 뛰어올라 고리를 푼다" : "넘어뜨린다">>,
 			<<if $_target is undefined>> /* no actors present */
-				causing it to fall to the floor. The way it topples across the hall of shelves would make it very easy for someone to trip over.
+				바닥으로 떨어지게 한다. 선반 홀을 가로질러 넘어지는 모양새가 누군가 걸려 넘어지기 딱 좋게 생겼다.
 			<<else>> /* dropping it on an actor */
-				<span class="green">causing it to fall down on <<shopHuntActorName $_target>></span>.
+				<span class="green"><<shopHuntActorName $_target>> 위로 떨어지게 만든다</span>.
 				<<shopHuntDamageActor $_target>>
 				<<set $shopHunt.actors[$_target].seen.pushUnique(_locRaw + "Trip")>>
 				<<if $shopHunt.context isnot "game">>
@@ -1391,7 +1404,7 @@
 							<<if $shopHunt.context is "game">>
 								/* Unreachable in the game version: Gwylan has 999 health there */
 							<<else>>
-								<<shopHuntPronoun "He">> cries out in pain, falling to the floor. The shop itself trembles.
+								<<shopHuntPronoun "He">>【은는】 고통스럽게 소리치며 바닥으로 쓰러진다. 가게 자체가 흔들린다.
 								<<set $phase to "defeatGwylan">>
 								<<set $_end to $shopHunt.context is "rescue" ? "edenKidnap" : "escape">>
 								<<include "Forest Shop Hunt Escape Eden">>
@@ -1399,12 +1412,12 @@
 								<<exitAll>>
 							<</if>>
 						<<case "eden">>
-							<<shopHuntPronoun "He">> swears, staggering back, before stumbling to the floor. <<shopHuntPronoun "He">> lets out a low groan, <span class="green">exhausted</span>.
+							<<shopHuntPronoun "He">>【은는】 욕설을 내뱉으며 뒤로 비틀거리다 바닥에 넘어진다. <<shopHuntPronoun "He">>【은는】 <span class="green">지친 채</span> 낮은 신음소리를 낸다.
 							<<set $phase to "defeatEden">>
 							<<include "Forest Shop Hunt Eden Torment">>
 							<<exitAll>>
 						<<case "mannequin">>
-							<span class="green"><<shopHuntPronoun "He">> falls inert.</span>
+							<span class="green"><<shopHuntPronoun "He">>【은는】 힘없이 쓰러진다.</span>
 						<<case "wraith">>
 							/* Todo: Gwylan hunt, defeating the Wraith */
 					<</switch>>
@@ -1414,20 +1427,20 @@
 							<<if $shopHunt.context is "game">>
 								<<shopHuntShuffle "gameFall">>
 							<<else>>
-								<<shopHuntPronoun "He">> yelps, rubbing <<shopHuntPronoun "his">> head. "<<pcPetname "Gwylan" "naughty">>!" <<shopHuntPronoun "he">> complains.
+								<<shopHuntPronoun "He">>【은는】 <<shopHuntPronoun "his">> 머리를 문지르며 비명을 지른다. "<<pcPetname "Gwylan" "naughty">>!" <<shopHuntPronoun "he">>【은는】 불평한다.
 							<</if>>
 						<<case "eden">>
-							<<shopHuntPronoun "He">> swears, staggering back. "You ungrateful brat!"
+							<<shopHuntPronoun "He">>【은는】 욕설을 내뱉으며 뒤로 비틀거린다. "배은망덕한 녀석!"
 							<<set $shopHunt.actors[$_target].damaged to true>>
 						<<case "mannequin">>
-							<<shopHuntPronoun "He">> staggers, <span class="blue">but doesn't break</span>.
+							<<shopHuntPronoun "He">>【은는】 비틀거리지만, <span class="blue">부러지지는 않는다</span>.
 						<<case "wraith">>
-							<<shopHuntPronoun "He">> partially dissipates, hissing.
+							<<shopHuntPronoun "He">>【은는】 쉭쉭거리며 부분적으로 소멸한다.
 							<<if $shopHunt.actors[$_target].seen.includes("fall")>>
-								"<span class="wraith">You tear down your home once more.</span>"
+								"<span class="wraith">넌 다시 한 번 네 집을 허물어뜨리는구나.</span>"
 							<<else>>
 								<<set $shopHunt.actors[$_target].seen.pushUnique("fall")>>
-								"<span class="wraith">Your lover invited you within <<nnpc_his "Gwylan">> walls. You would demolish them?</span>"
+								"<span class="wraith">네 연인이 <<nnpc_his "Gwylan">> 벽 안으로 널 초대했다. 그걸 부술 셈이냐?</span>"
 							<</if>>
 						<<case "nobody">>
 							<!-- Do nothing -->
@@ -1442,36 +1455,36 @@
 				<<set $shopHunt.player.seen.pushUnique(_locRaw + "Item")>>
 				<br>
 				<<if $shopHunt.context is "game">>
-					With the ironing board collapsed,
+					다리미판이 무너지면서,
 				<<else>>
-					As the ironing board collapses,
+					다리미판이 무너지면서,
 				<</if>>
-				<span class="gold">you spot a <<shopHuntItemsPresent _locRaw true>> fall to the floor</span>.
+				<span class="gold"><<shopHuntItemsPresent _locRaw true>>【이가】 바닥으로 떨어지는 것을 발견한다</span>.
 			<</if>>
 		<<elseif _act is "scatter">>
 			<<switch _locRaw>>
 				<<case "hangingBasket">>
 					<<if _loc.state.includes("fallen")>>
-						You grab handfuls of oversized hoods and novelty hats from the basket,
+						당신은 바구니에서 너무 큰 후드와 독특한 모자들을 한 움큼 움켜쥐고,
 						<<set $_them to "them">>
 					<<else>>
 						<<set $_scatterFailed to true>><<set $shopHunt.player.seen.pushUnique("basketFail")>>
-						With the basket above you, <span class="red">you can't effectively reach high enough to scatter anything</span>. If it was on the ground, you'd have an easier time.
+						바구니가 당신 위쪽에 있어서, <span class="red">무엇을 흩뿌릴 만큼 높이 손을 뻗을 수가 없다</span>. 만약 그것이 땅에 있었다면 더 쉬웠을 것이다.
 					<</if>>
 				<<case "gnarledWall">>
-					You grab handfuls of accessories from the wall,
+					당신은 벽에서 장신구들을 한 움큼 움켜쥐고,
 					<<set $_them to "them">>
 				<<case "wornStocking">>
-					You pick up the stocking from its hook and upend it,
+					당신은 갈고리에서 스타킹을 집어들고 거꾸로 털어,
 					<<set $_them to "socks">>
 				<<case "decayingShelf">>
-					You sweep your arms along the shelf,
+					당신은 선반을 따라 팔을 쓸어내려,
 					<<set $_them to "various pieces of merchcandise">>
 			<</switch>>
 			<<if !$_scatterFailed>>
-				scattering $_them across the floor. It would be very easy for someone to trip over the new obstacles.
+				$_them【을를】 바닥에 흩뿌린다. 누군가 이 새로운 장애물에 걸려 넘어지기 아주 쉬울 것이다.
 				<<if _locRaw is "wornStocking">>
-					You hang the stocking back up on its hook.
+					당신은 스타킹을 다시 갈고리에 걸어놓는다.
 				<</if>>
 				<<shopHuntMess 3 `_locRaw + "Scatter"`>>
 				<<set _loc.state.pushUnique("scattered")>>
@@ -1479,13 +1492,13 @@
 			<</if>>
 		<<elseif _act is "sound">>
 			<<if $shopHunt.player.target is "location">>
-				You shake the <<shopHuntLocName _locRaw>>, <span class="blue">making it <<shopHuntLocName _locRaw "sound">> loudly</span>. Everyone in the shop must have heard it.
+				당신은 <<shopHuntLocName _locRaw>>【을를】 흔들어, <span class="blue">크게 <<shopHuntLocName _locRaw "sound">>【을를】 낸다</span>. 가게 안에 있는 모든 사람이 들었을 것이다.
 				<<shopHuntMess 1 `_locRaw + "Sound"`>>
 			<<else>>
 				<<if $shopHunt.context is "game">>
 					You cup your hands round your mouth and call "Over here!", the sound <span class="blue">carrying through the shelves</span>. Gwylan must have heard it.
 				<<else>>
-					You throw your head back and scream, the sound <span class="blue">echoing throughout the shop</span>. Everyone in the shop must have heard it.
+					당신은 고개를 뒤로 젖히고 비명을 지른다, 그 소리가 <span class="blue">가게 전체에 울려 퍼진다</span>. 가게 안에 있는 모든 사람이 들었을 것이다.
 				<</if>>
 			<</if>>
 			<<set $shopHunt.player.target to null>>
@@ -1495,23 +1508,23 @@
 			<<shopHuntGameTag>>
 		<<elseif _act is "ambush">>
 			<<set $_target to $shopHunt.ambushTarget>>
-			You spring out from your hiding spot and leap at <<shopHuntActorName $_target>>.
+			당신은 숨어있던 곳에서 튀어나와 <<shopHuntActorName $_target>>에게 뛰어든다.
 			<<if $shopHunt.actors[$_target].seen.includes("ambush")>>
 				<<switch $shopHunt.actors[$_target].type>>
 					<<case "gwylan">>
 						/* Todo: Gwylan hunt, Gwylan counter-catching PC */
 					<<case "eden">>
 						<<shopHuntActorSetState $_target "drag" "door">>
-						<<shopHuntPronoun "He">> grunts, but <span class="red">wraps a hand around your arm before you can retreat</span>. "You think you're funny?" <<shopHuntPronoun "he">> growls, squeezing painfully. "Come on. We're going home." <<shopHuntPronoun "He">> starts dragging you off.
+						<<shopHuntPronoun "He">>【은는】 끙 앓는 소리를 내지만, <span class="red">당신이 도망치기 전에 당신의 팔을 손으로 감싸쥔다</span>. "재밌다고 생각하나?" <<shopHuntPronoun "he">>【은는】 으르렁거리며 아플 정도로 세게 쥔다. "이리 와. 우린 집에 간다." <<shopHuntPronoun "He">>【은는】 당신을 끌고 가기 시작한다.
 					<<case "mannequin">>
 						<<shopHuntDamageActor $_target>>
-						<<shopHuntPronoun "He">> staggers, collapsing to the floor.
+						<<shopHuntPronoun "He">>【은는】 비틀거리며 바닥에 쓰러진다.
 					<<case "wraith">>
 						<<shopHuntActorSetState $_target "drag" "door">>
-						This time, you impact <<shopHuntPronoun "him">>, tackling <<shopHuntPronoun "him">> to the floor. <span class="pink">That's not a good thing.</span> <<shopHuntPronoun "He">> cackles, many pale arms wrapping around you. You find your mouth hanging open. You can't feel anything.
+						이번에는 당신이 <<shopHuntPronoun "him">>에게 부딪혀, <<shopHuntPronoun "him">>【을를】 덮쳐 바닥에 쓰러뜨린다. <span class="pink">이건 좋은 일이 아니다.</span> <<shopHuntPronoun "He">>【은는】 낄낄거리고, 수많은 창백한 팔들이 당신을 휘감는다. 당신의 입이 벌어진 채 있는 것을 발견한다. 아무것도 느낄 수 없다.
 						<br><br>
 
-						<<shopHuntPronoun "He">> begins to dissipate into mist, <<shopHuntPronoun "his">> arms quickly becoming the only solid parts of <<shopHuntPronoun "it">>. <span class="red">The mist trails into your mouth, making your entire body feel cold and rigid.</span> The figure is gone, <<shopHuntPronoun "his">> arms finally fading. You stand up, but can't feel your legs.
+						<<shopHuntPronoun "He">>【은는】 안개 속으로 흩어지기 시작하고, <<shopHuntPronoun "his">> 팔만이 빠르게 <<shopHuntPronoun "it">>의 유일한 단단한 부분이 된다. <span class="red">안개가 당신의 입 안으로 흘러들어와, 당신의 몸 전체를 차갑고 뻣뻣하게 만든다.</span> 형체는 사라졌고, <<shopHuntPronoun "his">> 팔들도 마침내 희미해진다. 당신은 일어서려 하지만, 다리에 감각이 없다.
 					<<case "nobody">>
 						<!-- Do nothing -->
 					<<case "elkspawn">>
@@ -1523,15 +1536,15 @@
 				<<set $shopHunt.actors[$_target].seen.pushUnique("ambush")>>
 				<<switch $shopHunt.actors[$_target].type>>
 					<<case "gwylan">>
-						<<shopHuntPronoun "He">> yelps as you tackle <<shopHuntPronoun "him">>.
+						<<shopHuntPronoun "He">>【은는】 당신이 <<shopHuntPronoun "him">>【을를】 덮치자 비명을 지른다.
 					<<case "eden">>
-						<<shopHuntPronoun "He">> swears as you tackle <<shopHuntPronoun "him">>, staggering back. You flee out of range before <<shopHuntPronoun "he">> can grab you.
+						<<shopHuntPronoun "He">>【은는】 당신이 <<shopHuntPronoun "him">>【을를】 덮치자 욕설을 내뱉으며 뒤로 비틀거린다. 당신은 <<shopHuntPronoun "he">>【이가】 당신을 잡기 전에 범위 밖으로 달아난다.
 						<<set $shopHunt.actors[$_target].damaged to true>>
 					<<case "mannequin">>
-						<<shopHuntPronoun "He">> staggers, collapsing to the floor.
+						<<shopHuntPronoun "He">>【은는】 비틀거리며 바닥에 쓰러진다.
 					<<case "wraith">>
 						<<set $shopHunt.actors[$_target].health++>>
-						<span class="blue">You pass right through <<shopHuntPronoun "him">>, landing on the floor.</span> <<shopHuntPronoun "He">>'s unharmed, but disoriented. You put distance between you and <<shopHuntPronoun "him">>.
+						<span class="blue">당신은 <<shopHuntPronoun "him">>【을를】 그대로 통과하여 바닥에 착지한다.</span> <<shopHuntPronoun "He">>【은는】 무사하지만, 혼란스러워한다. 당신은 <<shopHuntPronoun "him">>【와과】 거리를 둔다.
 					<<case "nobody">>
 						<!-- Do nothing -->
 					<<case "elkspawn">>
@@ -1545,7 +1558,7 @@
 						<<if $shopHunt.context is "game">>
 							/* Unreachable in the game version: Gwylan has 999 health there */
 						<<else>>
-							<<shopHuntPronoun "He">> cries out in pain, falling to the floor. The shop itself trembles.
+							<<shopHuntPronoun "He">>【은는】 고통스럽게 소리치며 바닥으로 쓰러진다. 가게 자체가 흔들린다.
 							<<set $phase to "defeatGwylan">>
 							<<set $_end to $shopHunt.context is "rescue" ? "edenKidnap" : "escape">>
 							<<include "Forest Shop Hunt Escape Eden">>
@@ -1553,12 +1566,12 @@
 							<<exitAll>>
 						<</if>>
 					<<case "eden">>
-						<<shopHuntPronoun "He">> doesn't try to, though. <<shopHuntPronoun "He">> lets out a low groan, <span class="green">exhausted</span>.
+						하지만 <<shopHuntPronoun "He">>【은는】 그러려 하지 않는다. <<shopHuntPronoun "He">>【은는】 <span class="green">지친 채</span> 낮은 신음소리를 낸다.
 						<<set $phase to "defeatEden">>
 						<<include "Forest Shop Hunt Eden Torment">>
 						<<exitAll>>
 					<<case "mannequin">>
-						<span class="green"><<shopHuntPronoun "He">> falls inert.</span>
+						<span class="green"><<shopHuntPronoun "He">>【은는】 힘없이 쓰러진다.</span>
 				<</switch>>
 			<</if>>
 			<<set $shopHunt.ambushTarget to false>>
@@ -1566,10 +1579,10 @@
 			<<if $_actorDrag>>
 				<<switch $_actorDrag.type>>
 					<<case "eden">>
-						You pull against <<shopHuntActorName $_actorDrag.id>>'s iron grip.
+						당신은 <<shopHuntActorName $_actorDrag.id>>의 강철 같은 악력에 맞서 당긴다.
 						<<if $physiqueSuccess>>
 							<<if $_actorDrag.grip.stages gte 1>>
-								With a mighty yank, <span class="green">you pull your arm free.</span> <<shopHuntActorName $_actorDrag.id "cap">> is left off-balance. You put distance between you and <<shopHuntPronoun "him">>.
+								강하게 확 잡아당겨, <span class="green">당신의 팔을 빼낸다.</span> <<shopHuntActorName $_actorDrag.id "cap">>【은는】 균형을 잃고 비틀거린다. 당신은 <<shopHuntPronoun "him">>【와과】 거리를 둔다.
 								<<shopHuntActorSetState $_actorDrag.id "roam">>
 								<<shopHuntStun $_actorDrag.id 1 "all">>
 								<<set $_actorDrag.grip.max += $_actorDrag.grip.step>>
@@ -1578,40 +1591,40 @@
 								<<unset _actorDrag>>
 							<<else>>
 								<<set $_actorDrag.grip.stages to 1>>
-								<span class="blue"><<shopHuntPronoun "His">> grip falters, but doesn't break.</span>
+								<span class="blue"><<shopHuntPronoun "His">> 손아귀 힘이 흔들리지만, 끊어지지는 않는다.</span>
 							<</if>>
 						<<else>>
-							You feel <<shopHuntPronoun "his">> grip loosen, but <span class="red"><<shopHuntPronoun "he">> holds fast</span>.
+							<<shopHuntPronoun "his">> 꽉 쥔 손이 느슨해지는 것을 느끼지만, <span class="red"><<shopHuntPronoun "he">>【은는】 여전히 단단히 붙잡고 있다</span>.
 							<<set $_actorDrag.grip.progress++>>
 						<</if>>
 				<</switch>>
 			<<else>>
 				<<set $_gripActors to $shopHunt.actors.filter(x => x.state === "hold").map(x => x.id)>>
-				You struggle against the <<shopHuntActorList $_gripActors>> holding you down.
+				당신은 당신을 짓누르는 <<shopHuntActorList $_gripActors>>에게 맞서 몸부림친다.
 				<<set $_holdVictim to $shopHunt.actors[$_gripActors.random()]>>
 				<<if $physiqueSuccess>>
-					<span class="green">You manage to shove <<shopHuntActorName $_holdVictim.id>> off.</span>
+					<span class="green">가까스로 <<shopHuntActorName $_holdVictim.id>>【을를】 밀쳐낸다.</span>
 					<<switch $_holdVictim.name>>
 						<<case "giant fox plushie">>
-							It stumbles back, falling over with a very soft <i>thump</i>. It looks sad, laying on its side.
+							그것은 뒤로 비틀거리다 아주 부드러운 <i>쿵</i> 소리와 함께 넘어진다. 옆으로 누워 있는 모습이 슬퍼 보인다.
 							<<if $_gripActors.length gte 2>>
-								You almost feel guilty, but <span class="purple">you're not free yet</span>.
+								조금 죄책감이 들 뻔했지만, <span class="purple">아직 자유롭지 않다</span>.
 							<<else>>
-								You feel a little guilty.
+								조금 죄책감이 든다.
 							<</if>>
 						<<case "masked mannequin">>
-							It staggers back, the chains on its tunic rattling as it falls over.
+							그것은 뒤로 비틀거리고, 넘어지면서 튜닉에 달린 쇠사슬이 덜컹거린다.
 							<<if $_gripActors.length gte 2>>
-								That's one down, but <span class="purple">you're not free yet</span>.
+								하나는 처리했지만, <span class="purple">아직 자유롭지 않다</span>.
 							<<else>>
-								You shake yourself off.
+								당신은 몸을 턴다.
 							<</if>>
 						<<default>>
-							It stumbles to the floor with a wooden rattle.
+							그것은 나무 부딪히는 소리를 내며 바닥에 쓰러진다.
 							<<if $_gripActors.length gte 2>>
-								That's one down, but <span class="purple">you're not free yet</span>.
+								하나는 처리했지만, <span class="purple">아직 자유롭지 않다</span>.
 							<<else>>
-								You shake yourself off.
+								당신은 몸을 턴다.
 							<</if>>
 					<</switch>>
 					<<set $_holdVictim.grip.max += $_holdVictim.grip.step>>
@@ -1620,15 +1633,15 @@
 					<<shopHuntStun $_holdVictim.id 5 `["all,ambush"]`>>
 				<<else>>
 					<<set $_holdVictim.grip.progress++>>
-					You feel one of them falter, but <span class="red">you can't quite break free from <<pluralise $_gripActors.length "its" "their">> grasp</span>.
+					그들 중 하나의 힘이 풀리는 것이 느껴지지만, <span class="red"><<pluralise $_gripActors.length "그것의" "그들의">> 손아귀에서 완전히 벗어나지는 못한다</span>.
 				<</if>>
 			<</if>>
 		<<elseif _act is "key">>
 			<<wearProp "key" "steel">>
 			<<if $_actorDrag and $_actorDrag.id is $_target>>
-				You offer <<shopHuntActorName $_target>> the key to the <<shopHuntDoor>>.
+				당신은 <<shopHuntActorName $_target>>에게 <<shopHuntDoor>>의 열쇠를 건넨다.
 				<<if $_actorDrag.type is "eden">>
-					<<shopHuntPronoun "He">> takes it and turns it in the lock. After a few seconds of stubborn twisting, <span class="green">the door swings open</span>.
+					<<shopHuntPronoun "He">>【은는】 그것을 받아 자물쇠에 넣고 돌린다. 몇 초 동안 억지로 돌리려 애쓴 후, <span class="green">문이 열린다</span>.
 					<<set $phase to "key">>
 					<<set $_end to "escape">>
 					<<include "Forest Shop Hunt Escape Eden">>
@@ -1641,7 +1654,7 @@
 					<<exitAll>>
 				<</if>>
 			<<else>>
-				You put the key in the <<shopHuntDoor>>. <span class="green">The door swings open.</span>
+				당신은 <<shopHuntDoor>>에 열쇠를 꽂는다. <span class="green">문이 열린다.</span>
 				<<if $shopHunt.context is "garden">>
 					<<include "Forest Shop Caught">>
 					<<shopHuntEnd>>
@@ -1654,12 +1667,12 @@
 			<<exitAll>>
 		<<elseif _act is "searchActor">>
 			<<set $_target to $shopHunt.searchTarget>>
-			You search <<shopHuntActorName $_target>>, walking around <<shopHuntPronoun "him">> and patting <<shopHuntPronoun "him">> down.
+			당신은 <<shopHuntActorName $_target>>【을를】 수색하며, <<shopHuntPronoun "him">> 주변을 돌며 <<shopHuntPronoun "him">>【을를】 두드려 확인한다.
 			<<if $shopHunt.item.key is $_target>>
 				<<set $shopHunt.item.key to "player">>
-				<span class="green"><<shopHuntPronoun "He">> had the key.</span> You take it, making sure to keep a firm grip on it this time.
+				<span class="green"><<shopHuntPronoun "He">>에게 열쇠가 있었다.</span> 당신은 이번에는 단단히 쥐고 챙긴다.
 			<<else>>
-				<span class="red"><<shopHuntPronoun "He">> did not have the key.</span>
+				<span class="red"><<shopHuntPronoun "He">>에게는 열쇠가 없었다.</span>
 			<</if>>
 			<<set $shopHunt.actors[$_target].seen.pushUnique("searchKey")>>
 			<<unset $shopHunt.searchTarget>>
@@ -1667,147 +1680,147 @@
 	<<elseif $_specialEvent>>
 		<<switch $_specialEvent>>
 			<<case "mannequinAmbush">>
-				You open the doors to the <<shopHuntLocName _locRaw>>, planning to <<= _act is "hideInside" ? "hide" : _act>> inside. <span class="red"><<shopHuntActorName $_manId "cap">> is waiting inside.</span> It leaps out and accosts you!
+				당신은 안에 <<= _act is "hideInside" ? "숨을" : _act>> 생각으로 <<shopHuntLocName _locRaw>>의 문을 연다. <span class="red"><<shopHuntActorName $_manId "cap">>【이가】 안에서 기다리고 있었다.</span> 그것이 튀어나와 당신을 덮친다!
 				<<shopHuntActorSetState $_manId "hold">>
 		<</switch>>
 	<<else>>
 		<<if $_actorDrag and _act is "wait" and !doArraysMatch($_actorDrag.position, $_actorDrag.history[0].position)>>
-			<<shopHuntActorName $_actorDrag.id "cap">> <<= _actorDrag.role is "enemy" ? "drags" : "leads">> you to the <<shopHuntLocName _locRaw>>.
+			<<shopHuntActorName $_actorDrag.id "cap">>【은는】 당신을 <<shopHuntLocName _locRaw>>【으로로】 <<= _actorDrag.role is "enemy" ? "끌고 간다" : "이끈다">>.
 		<<else>>
-			You $_areBy the <<shopHuntLocName _locRaw>>.
+			옆에 있는 <<shopHuntLocName _locRaw>>【은는】
 		<</if>>
 		<<if _act is "search">>
 			<<switch _locRaw>>
 				<<case "overspillingChest">>
-					You throw outfits aside, digging through without a thought.
+					당신은 아무 생각 없이 옷들을 옆으로 내던지며 파헤친다.
 				<<case "hangingBasket">>
 					<<if _loc.state.includes("fallen")>>
-						It's much easier to reach inside with the basket on the floor.
+						바닥에 바구니가 있으니 손을 뻗어 안을 살피기가 훨씬 수월하다.
 					<<else>>
 						<<set $_searchFailed to true>><<set $shopHunt.player.seen.pushUnique("basketFail")>>
 						<<set $_searched to shopHuntCoords(_locRaw)>>
 						<<set $shopHunt.player.map[$_searched[0]][$_searched[1]].searched to false>>
-						With the basket above you, <span class="red">you can't effectively search it in the gloom</span>. If it was on the ground, you'd have an easier time.
+						바구니가 당신 위쪽에 있어서, <span class="red">어둠 속에서 제대로 수색할 수가 없다</span>. 만약 그것이 땅에 있었다면 더 쉬웠을 것이다.
 					<</if>>
 				<<case "rottingCloset">>
-					You gingerly open the doors to avoid damage.
+					당신은 손상을 피하기 위해 조심스럽게 문을 연다.
 				<<case "squeakyRotatingRack">>
 					<<shopHuntDecoy>>
-					It <span @class="$shopHunt.context isnot 'garden' ? 'red' : ''">squeaks loudly</span> as you search through it.
+					당신이 그 안을 수색할 때 <span @class="$shopHunt.context isnot 'garden' ? 'red' : ''">시끄럽게 삐걱거린다</span>.
 				<<case "darkScreen">>
-					There's even less light than normal, so you have to resort to feeling around.
+					평소보다 빛이 더 없어서 손으로 더듬으며 찾을 수밖에 없다.
 				<<case "antiqueWardrobe">>
-					After a few seconds, you determine there's nothing inside, so you check the base.
+					몇 초 후, 안에 아무것도 없다는 걸 확인하고 받침대를 살펴본다.
 				<<case "strangeIroningBoard">>
 					<<if _loc.state.includes("fallen")>>
-						You already know what you're grabbing.
+						당신은 무엇을 잡아야 할지 이미 알고 있다.
 					<<else>>
-						Your eyes scan the board's surface.
+						당신의 시선이 보드의 표면을 훑는다.
 					<</if>>
 				<<case "molderingHutch">>
-					One of the drawers nearly falls out when you pull it open.
+					당신이 서랍을 열자 하나가 떨어질 뻔했다.
 				<<case "rustedHangers">>
-					There's nothing of interest on the hangers themselves, so you look under the rack.
+					옷걸이 자체에는 흥미로운 것이 없어서 거치대 아래를 살펴본다.
 				<<case "duskyDrawer">>
-					Boxers, panties, scraps of fabric too small to be underwear. Nothing you're looking for, so you shift them aside to look under them.
+					사각 팬티, 속옷, 속옷이라고 하기엔 너무 작은 천 조각들뿐이다. 당신이 찾는 것이 없어서 옆으로 치우고 그 아래를 확인한다.
 				<<case "spindlyHatStand" "bentUmbrellaStand">>
-					There's nothing on the stand itself, so you crouch down to look around the floor.
+					진열대 자체에는 아무것도 없어서 쭈그려 앉아 바닥 주위를 살펴본다.
 				<<case "gnarledWall">>
-					You feel along the grooves and knots in the wall for anything in an alcove.
+					움푹 패인 곳에 뭔가가 있는지 찾기 위해 벽의 틈새와 옹이를 더듬어본다.
 				<<case "glowingBox">>
-					You already know what you're grabbing.
+					당신은 무엇을 잡아야 할지 이미 알고 있다.
 				<<case "tiltedVanity">>
 					<<shopHuntMess 1 "mirror">>
 					<<if shopHuntItemsPresent(_locRaw).length gte 2>>
-						You reach for a hand mirror to take with you, but as you do, something else catches your eye.
+						가지고 갈 손거울을 잡으려고 손을 뻗는데, 무언가 다른 것이 당신의 시선을 끈다.
 					<<else>>
-						You don't find anything special, but you're at a vanity. You can think of something to take.
+						특별한 건 없지만, 지금 화장대 앞에 있으니 뭔가 가져갈 만한 걸 생각해 낼 수 있을 거다.
 					<</if>>
 				<<case "wornStocking">>
-					You reach in up to the elbow, feeling around inside.
+					당신은 팔꿈치까지 집어넣어 안을 더듬거린다.
 				<<case "decayingShelf">>
-					You look through trinkets and souvenirs for anything of use.
+					당신은 장신구와 기념품들 사이에서 쓸모있는 게 있는지 찾아본다.
 				<<case "creakyCabinet">>
 					<<shopHuntDecoy>>
-					The doors <span @class="$shopHunt.context isnot 'garden' ? 'red' : ''">creak loudly</span> when you look inside it.
+					안을 들여다볼 때 문이 <span @class="$shopHunt.context isnot 'garden' ? 'red' : ''">크게 삐걱거린다</span>.
 			<</switch>>
 			<br>
 			<<if !$_searchFailed>>
 				<<if shopHuntItemsPresent(_locRaw).length gte 1>>
-					<span class="green">You find a <<shopHuntItemsPresent _locRaw true>>.</span>
+					<span class="green"><<shopHuntItemsPresent _locRaw true>>【을를】 발견했다.</span>
 					<<for $_i range shopHuntItemsPresent(_locRaw)>>
 						<<set $shopHunt.item[$_i] to "player">>
 					<</for>>
 				<<else>>
-					<span class="red">You do not find anything.</span>
+					<span class="red">아무것도 찾지 못했다.</span>
 				<</if>>
 			<</if>>
 		<<elseif _act isnot "hide">>
 			<<switch _locRaw>>
 				<<case "overspillingChest">>
-					It's so stuffed with outfits, the lid is forced open.
+					옷으로 너무 꽉 차 있어서 뚜껑이 억지로 열려 있다.
 					<<if random(1,250) is 1>>
-						Maybe one day you'll get to wear one of these overwear outfits, but not today.
+						언젠가 이 겉옷들 중 하나를 입을 날이 올지도 모르지만, 오늘은 아니다.
 					<</if>>
 				<<case "hangingBasket">>
 					<<if _loc.state.includes("fallen")>>
-						It's disconnected from the ceiling hook, lying on its side on the ground.
+						그것은 천장 고리에서 분리되어 바닥에 옆으로 누워 있다.
 					<<else>>
-						A ceiling hook suspends it above you, just barely within reach.
+						천장 고리에 매달려 당신 위로 살짝 손이 닿을 거리에 떠 있다.
 					<</if>>
 				<<case "rottingCloset">>
 					<<if $shopHunt.player.hide is 4>>
-						One of the doors threatens to fall off, but it holds together.
+						문 중 하나가 떨어져 나갈 것 같지만 겨우 매달려 있다.
 					<<else>>
-						The wood is unpleasantly soggy and smells of mildew.
+						나무는 불쾌할 정도로 축축하고 곰팡내를 풍긴다.
 					<</if>>
 				<<case "squeakyRotatingRack">>
-					Large pairs of pants hang off a circular display.
+					커다란 바지들이 원형 진열대에 걸려 있다.
 				<<case "darkScreen">>
-					Not an inch is uncovered by fabric on display.
+					진열된 천 조각들이 한 치의 빈틈도 없이 덮고 있다.
 				<<case "antiqueWardrobe">>
 					<<if $shopHunt.player.hide is 4>>
-						Despite the various shirts and jackets hanging up, there's a comfortable amount of room.
+						여러 셔츠와 재킷이 걸려 있음에도 꽤 아늑한 공간이 있다.
 					<<else>>
-						The carvings on the door must have been beautiful in its prime.
+						문에 새겨진 조각들은 전성기 시절엔 아름다웠을 것이 분명하다.
 					<</if>>
 				<<case "strangeIroningBoard">>
 					<<if _loc.state.includes("fallen")>>
-						It certainly can't be used for ironing in its current condition.
+						현재 상태로는 다림질하는 데 쓸 수 없을 것이 확실하다.
 					<<else>>
-						It doesn't look like it's been used for ironing very frequently.
+						다림질에 자주 쓰였던 것 같지는 않다.
 					<</if>>
 				<<case "molderingHutch">>
-					Half of the cabinets are missing their glass, and the counter is cracked.
+					수납장의 유리가 절반쯤 없어졌고 계산대는 금이 가 있다.
 				<<case "rustedHangers">>
-					Some of the hangers are adorned with shirts and bras. Many more hold various knick-knacks in pouches.
+					어떤 옷걸이들에는 셔츠나 브래지어가 장식되어 있다. 다른 많은 곳에는 잡다한 작은 물건들이 담긴 파우치가 걸려 있다.
 				<<case "duskyDrawer">>
-					You almost didn't see it in the gloom, given the dark wood grain.
+					어두운 나뭇결 탓에 하마터면 어둠 속에서 보지 못할 뻔했다.
 				<<case "spindlyHatStand">>
 					<<if _loc.state.includes("fallen")>>
-						The way the prongs jut out almost makes it look like a person sprawled on the ground.
+						튀어나온 뿔 모양새가 마치 바닥에 큰대자로 뻗은 사람처럼 보이게 한다.
 					<<else>>
-						The way the prongs jut out almost makes it look like a flailing person juggling hats.
+						튀어나온 뿔 모양새가 마치 허둥지둥 모자를 저글링하는 사람처럼 보이게 한다.
 					<</if>>
 				<<case "gnarledWall">>
-					Stubby branches stick out, some of which are resourcefully fitted with accessories on display.
+					짧고 뭉툭한 나뭇가지들이 튀어나와 있으며, 그중 몇몇에는 기발하게 장신구들이 진열되어 있다.
 				<<case "glowingBox">>
-					You avoid looking directly at it, not wanting to ruin your eyes' adaptation to the dark.
+					당신은 어둠에 적응한 눈이 부시지 않도록 그것을 똑바로 쳐다보는 것을 피한다.
 				<<case "bentUmbrellaStand">>
-					It looks like was once rusted, but the rust was cleaned away. Perhaps too vigorously, judging by the curve.
+					한때 녹슬었던 것으로 보이지만, 누군가 깨끗이 닦아낸 것 같다. 곡선을 보면 너무 힘을 주어 닦았을지도 모르겠다.
 				<<case "tiltedVanity">>
-					Mirrors sit on a slant, just barely not falling off.
+					거울들은 비스듬하게 놓여서 간신히 떨어지지 않고 있다.
 					<<if $shopHunt.item.mirror isnot "tiltedVanity">>
-						One of the mirrors is missing, thanks to you.
+						당신 때문에 거울 하나가 비어 있다.
 					<<else>>
-						No makeup is available. Gwylan must not want the artificial products in <<nnpc_his "Gwylan">> shop.
+						화장품은 전혀 없다. 그윌란은 <<nnpc_his "Gwylan">> 가게에 인위적인 제품이 있는 것을 원치 않는 모양이다.
 					<</if>>
 				<<case "wornStocking">>
-					A large sock that contains socks. Very resourceful.
+					양말이 들어 있는 커다란 양말이다. 아주 기발하다.
 				<<case "decayingShelf">>
-					It's so burdened with merchandise, it's a miracle the shelf hasn't collapsed.
+					상품들로 너무 꽉 차 있어서, 선반이 아직 무너지지 않은 것이 기적일 정도다.
 				<<case "creakyCabinet">>
-					A paper on the back boasts of the health benefits the sex toys within apparently offer.
+					뒤쪽에 붙은 종이는 안의 섹스 토이들이 주는 명백한 건강상 이점을 자랑하고 있다.
 			<</switch>>
 		<</if>>
 		<<if _act is "hide">>
@@ -1815,26 +1828,26 @@
 				<<set $shopHunt.player.seen.pushUnique("hideNoisy")>>
 				<<set $shopHunt.player.hide to 0>>
 				<<shopHuntDecoy>>
-				It <span class="red"><<shopHuntLocName _locRaw "sound">>s loudly</span> as you crouch next to it.
+				당신이 그 옆에 웅크리자 그것은 <span class="red">시끄럽게 <<shopHuntLocName _locRaw "sound">>【을를】 낸다</span>.
 			<<else>>
 				/* Todo: Gwylan hunt, Gwylan tossing you their hat to hide. shopHuntLineOfSight("gwylan", true).includes("player") */
 				<<switch $shopHunt.player.hide>>
 					<<case 4>>
 						<<if _loc.special.includes("hat")>>
-							You bend forward a bit, keeping your body behind the hat stand. <span class="green">Your $worn.head.name draws all the attention.</span>
+							모자걸이 뒤로 몸을 숨긴 채, 몸을 살짝 앞으로 숙인다. <span class="green">당신의 $worn.head.name【이가】 모든 주의를 끈다.</span>
 						<<else>>
-							<span class="green">The <<shopHuntLocName _locRaw "simple">> doors conceal you from sight entirely.</span>
+							<span class="green"><<shopHuntLocName _locRaw "simple">> 문이 당신을 완전히 시야에서 숨겨준다.</span>
 						<</if>>
 					<<case 3>>
-						<span class="lblue">The <<shopHuntLocName _locRaw "simple">> <<pluralise $_locPlural "hide">> you rather well, though not perfectly.</span>
+						<span class="lblue"><<shopHuntLocName _locRaw "simple">>【은는】 완벽하지는 않더라도 당신을 <<pluralise $_locPlural "꽤 잘 숨겨준다" "꽤 잘 숨겨준다">>.</span>
 					<<case 2>>
-						<span class="blue">The <<shopHuntLocName _locRaw "simple">> <<pluralise $_locPlural "don't" "doesn't">> offer much protection.</span>
+						<span class="blue"><<shopHuntLocName _locRaw "simple">>【은는】 <<pluralise $_locPlural "보호 효과가 크지 않다" "보호 효과가 크지 않다">>.</span>
 					<<case 1>>
-						<span class="purple">The <<shopHuntLocName _locRaw "simple">> <<pluralise $_locPlural "offer">> very little protection.</span>
+						<span class="purple"><<shopHuntLocName _locRaw "simple">>【은는】 보호 효과가 <<pluralise $_locPlural "거의 없다" "거의 없다">>.</span>
 					<<case 0>>
-						<span class="red">The <<shopHuntLocName _locRaw "simple">> <<pluralise $_locPlural "don't" "doesn't">> hide you at all. You're entirely exposed.</span>
+						<span class="red"><<shopHuntLocName _locRaw "simple">>【은는】 당신을 <<pluralise $_locPlural "전혀 숨겨주지 않는다" "전혀 숨겨주지 않는다">>. 당신은 완전히 노출되어 있다.</span>
 					<<default>>
-						<span class="black">ERROR: invalid hide state $shopHunt.player.hide at <<shopHuntLocName _locRaw>>. Please report this!</span>
+						<span class="black">오류: <<shopHuntLocName _locRaw>>에서 잘못된 은신 상태($shopHunt.player.hide)가 감지되었습니다. 이 문제를 제보해 주세요!</span>
 				<</switch>>
 			<</if>>
 		<</if>>
@@ -1846,33 +1859,39 @@
 			<</if>>
 			<<set $_defeatText to $shopHunt.actors[$_defeatedActorsHere[$_d]].role is "enemy" ? "green" : "red">>
 			<<if $shopHunt.actors[$_defeatedActorsHere[$_d]].name is "giant fox plushie">>
-				<<shopHuntActorName $_defeatedActorsHere[$_d] "cap">> lies here,
+				<<shopHuntActorName $_defeatedActorsHere[$_d] "cap">>【이가】 이곳에 쓰러져 있다,
 				<<if $shopHuntMess.events.includes("foxPlushieShot")>>
-					<span @class="$_defeatText">cotton guts spilled over the floor</span>.
+					<span @class="$_defeatText">솜으로 된 내장이 바닥에 쏟아져 내렸다</span>.
 				<<else>>
-					<span @class="$_defeatText">inert but no less fluffy</span>.
+					<span @class="$_defeatText">가만히 늘어져 있지만 푹신함은 여전하다</span>.
 				<</if>>
 			<<elseif $shopHunt.actors[$_defeatedActorsHere[$_d]].name is "masked mannequin">>
-				<<shopHuntActorName $_defeatedActorsHere[$_d] "cap">> kneels here, <span @class="$_defeatText">entirely still</span>.
+				<<shopHuntActorName $_defeatedActorsHere[$_d] "cap">>【이가】 이곳에 무릎을 꿇고, <span @class="$_defeatText">완전히 미동도 하지 않는다</span>.
 			<<else>>
-				<<shopHuntActorName $_defeatedActorsHere[$_d] "cap">> lies here, <span @class="$_defeatText">defeated</span>.
+				<<shopHuntActorName $_defeatedActorsHere[$_d] "cap">>【이가】 <span @class="$_defeatText">쓰러져</span> 이곳에 누워 있다.
 			<</if>>
 		<</for>>
 	<</if>>
 	<br><br>
 <</widget>>
 
+/* 한글판 전용: 사냥 대상 마네킹/인형 이름(_text_output)을 한글로 변환 */
+<<widget "mannequinNameKr">>
+	<<set _mannequinDescKr to {"hatted": "모자 쓴", "bespectacled": "안경 쓴", "fashionable": "멋쟁이", "chic": "세련된", "slick": "매끈한", "dapper": "댄디한", "natty": "말쑥한", "trendy": "유행에 민감한", "swimsuit-wearing": "수영복 차림의", "undies-wearing": "속옷 차림의", "cloaked": "망토를 두른", "varnished": "광택 나는", "comfortable": "편안해 보이는", "gangly": "호리호리한", "giant": "거대한", "masked": "가면 쓴"}>>
+	<<if _text_output is "giant fox plushie">>
+		<<set _text_output to "거대 여우 인형">>
+	<<elseif _text_output.endsWith(" mannequin")>>
+		<<set _desc to _text_output.replace(" mannequin", "").toLowerCase()>>
+		<<set _text_output to (_mannequinDescKr[_desc] or _desc) + " 마네킹">>
+	<</if>>
+<</widget>>
+
 <<widget "shopHuntActorName">>
 	<<set $shopHuntActive to _args[0]>>
 
 	<<set _text_output to $shopHunt.actors[_args[0]].name>>
-	<<if $shopHunt.actors[_args[0]].title>>
-		<<set $_the to "the ">>
-		<<if _args.includes("cap")>><<set $_the to "The ">><</if>>
-	<<else>>
-		<<set $_the to "">>
-		<<if _args.includes("cap")>><<capitalise>><</if>>
-	<</if>>
+	<<set $_the to "">>
+	<<if !$shopHunt.actors[_args[0]].title and _args.includes("cap")>><<capitalise>><</if>>
 
 	<<set $_color to shopHuntActorColor(_args[0])>>
 	<<switch $shopHunt.actors[_args[0]].type>>
@@ -1891,10 +1910,12 @@
 				<</if>>
 			<</if>>
 		<<case "wraith">>
+			<<set _text_output to window.KR.gatPersonNameDictKR(_text_output)>>
 			<<set $_color to "wraith">>
 		<<case "elkspawn">>
 			<<set $_color to "tentacle">>
 		<<case "mannequin">>
+			<<mannequinNameKr>>
 			<<if $shopHunt.actors[_args[0]].name is "giant fox plushie" and $shopHunt.actors[_args[0]].role isnot "enemy">>
 				<<set $_color to "orange">>
 			<</if>>
@@ -1906,13 +1927,13 @@
 <<widget "shopHuntActorList">>
 	<<if !(_args[0] instanceof Array)>>
 		<<error {
-				message	: `shopHuntActorList error: argument 0 is not array.`,
+				message	: `shopHuntActorList 오류: 인수 0이 배열이 아닙니다.`,
 				source	: Utils.GetStack()
 			}>>
 		<<exit>>
 	<<elseif _args[0].length is 0>>
 		<<error {
-				message	: `shopHuntActorList error: argument 0 length is zero, no actors involved.`,
+				message	: `shopHuntActorList 오류: 인수 0의 길이가 0입니다, 관련된 행위자가 없습니다.`,
 				source	: Utils.GetStack()
 			}>>
 		<<exit>>
@@ -1937,12 +1958,7 @@
 		<<set $_name to $shopHunt.actors[_args[0][$_i]].name>>
 		<<set $_color to shopHuntActorColor(_args[0][$_i])>>
 
-		<<if $shopHunt.actors[_args[0][$_i]].title>>
-			<<set $_the to "the ">>
-			<<if _args.includes("cap") and $_i is 0>><<set $_the to "The ">><</if>>
-		<<else>>
-			<<set $_the to "">>
-		<</if>>
+		<<set $_the to "">>
 
 		<<switch $shopHunt.actors[_args[0][$_i]].type>>
 			<<case "gwylan">>
@@ -1960,6 +1976,7 @@
 					<</if>>
 				<</if>>
 			<<case "wraith">>
+				<<set $_name to window.KR.gatPersonNameDictKR($_name)>>
 				<<set $_color to "wraith">>
 			<<case "elkspawn">>
 				<<set $_color to "tentacle">>
@@ -1972,16 +1989,16 @@
 					<<set $_mannequinDone to true>>
 					<<if _args.includes("singleMannequin")>>
 						<<if $_mannequinCount gte 2>>
-							<<set $_name to "one of the mannequins">>
+							<<set $_name to "마네킹 중 하나">>
 							<<set $_the to "">>
 						<</if>>
 					<<else>>
 						<<if $_mannequinCount gte 2>>
 							<<set $_the to "">>
 							<<if _args.includes("cap") and $_i is 0>>
-								<<set $_name to "<<Number $_mannequinCount>> mannequins">>
+								<<set $_name to "마네킹 <<Number $_mannequinCount>>개">>
 							<<else>>
-								<<set $_name to "<<number $_mannequinCount>> mannequins">>
+								<<set $_name to "마네킹 <<number $_mannequinCount>>개">>
 							<</if>>
 						<</if>>
 					<</if>>
@@ -2009,87 +2026,87 @@
 	<!-- Custom section for glowing box because it's so so special and unique -->
 	<<if _locRaw is "glowingBox">>
 		<<if $shopHunt.context is "garden">>
-			The box emits light.
+			상자가 빛을 발산한다.
 			<<if shopHuntLocsSearched().includes(_locRaw)>>
-				Even without the light, you would know there's nothing here. You've already searched here.
+				빛이 없어도 여기에 아무것도 없다는 걸 알 수 있을 것이다. 당신은 이미 이곳을 찾았다.
 			<<elseif shopHuntItemsPresent(_locRaw).length gte 1>>
-				In the glow, <span class="green">you can already see a <<shopHuntItemsPresent _locRaw true>>.</span>
+				그 불빛 속에서, <span class="green">당신은 벌써 <<shopHuntItemsPresent _locRaw true>>【을를】 볼 수 있다.</span>
 				<br>
-				<<link [[Pick up the <<shopHuntItemsPresent _locRaw true>>|Forest Shop Hunt]]>><<shopHuntAction "search">><</link>>
+				<<link [[<<shopHuntItemsPresent _locRaw true>>【을를】 줍는다|Forest Shop Hunt]]>><<shopHuntAction "search">><</link>>
 			<<else>>
-				In the glow, <span class="blue">you can see there's nothing here.</span>
+				그 불빛 속에서, <span class="blue">당신은 이곳에 아무것도 없다는 것을 볼 수 있다.</span>
 			<</if>>
 		<<else>>
 			<<set $shopHunt.lightTarget to "here">>
-			The box emits too much light. Hiding near it <span class="red">will be impossible.</span>
+			상자에서 너무 많은 빛이 난다. 근처에 숨는 것은 <span class="red">불가능할 것이다.</span>
 			<br>
 			<<if shopHuntLocsSearched().includes(_locRaw)>>
-				Even without the light, you would know there's nothing here. You've already searched here.
+				빛이 없어도 여기에 아무것도 없다는 걸 알 수 있을 것이다. 당신은 이미 이곳을 찾았다.
 			<<else>>
-				However, in the glow of the light, you don't need to waste time searching.
+				하지만 불빛 덕분에 수색하는 데 시간을 낭비할 필요가 없다.
 				<<if shopHuntItemsPresent(_locRaw).length gte 1>>
-					<span class="green">You can already see a <<shopHuntItemsPresent _locRaw true>>.</span>
+					<span class="green">당신은 벌써 <<shopHuntItemsPresent _locRaw true>>【을를】 볼 수 있다.</span>
 					<br>
-					<<link [[Pick up the <<shopHuntItemsPresent _locRaw true>>|Forest Shop Hunt]]>><<shopHuntAction "search">><</link>>
+					<<link [[<<shopHuntItemsPresent _locRaw true>>【을를】 줍는다|Forest Shop Hunt]]>><<shopHuntAction "search">><</link>>
 				<<else>>
-					<span class="blue">You can see there's nothing here.</span>
+					<span class="blue">당신은 이곳에 아무것도 없다는 것을 볼 수 있다.</span>
 				<</if>>
 			<</if>>
 
 			<<if _act isnot "light">>
 				<br><br>
-				If you were to lift up the box, everyone in the shop would be able to see it.
+				당신이 상자를 들어올린다면, 가게 안에 있는 모든 사람이 그걸 볼 수 있을 것이다.
 				<<if $shopHunt.item.mirror is "player">>
 					<<set $_icon to "mirror">>
-					Alternatively, <span class="gold">you could use the mirror to shine light somewhere else</span> and draw their attention that way.
+					아니면, <span class="gold">거울을 사용해 빛을 다른 곳으로 반사시켜서</span> 사람들의 주의를 끌 수도 있다.
 				<<else>>
 					<<set $_icon to "light">>
 				<</if>>
 				<br>
 				<<if $shopHunt.item.mirror is "player">>
-					Direct the light...
+					빛을 향하게 한다...
 					<br>
 					<<for $_m range Object.keys(_bordering)>>
-						<label><<print $_m.toUpperFirst()>> <<radiobutton "$shopHunt.lightTarget" $_m autocheck>></label> |
+						<label><<print shopHuntDirKr($_m)>> <<radiobutton "$shopHunt.lightTarget" $_m autocheck>></label> |
 					<</for>>
-					<label>Here <<radiobutton "$shopHunt.lightTarget" "here" autocheck>></label>
+					<label>여기로 <<radiobutton "$shopHunt.lightTarget" "here" autocheck>></label>
 					<br>
 				<</if>>
-				<<shopHuntIcon $_icon "action">><<link [[Attract attention with light|Forest Shop Hunt]]>><<set $shopHunt.player.action to "light">><</link>>
+				<<shopHuntIcon $_icon "action">><<link [[빛으로 주의를 끈다|Forest Shop Hunt]]>><<set $shopHunt.player.action to "light">><</link>>
 			<</if>>
 		<</if>>
 	<<else>>
 		<!-- Hide options -->
 		<<if $shopHunt.context isnot "garden">>
 			<<if _loc.state.includes("fallen")>>
-				With the <<shopHuntLocName _locRaw "simple">> fallen, hiding near it <span class="red">will be impossible</span>.
+				<<shopHuntLocName _locRaw "simple">>【이가】 넘어져 있어 근처에 숨는 것은 <span class="red">불가능할 것이다</span>.
 			<<else>>
 				<<if _loc.special.includes("noisy") and $shopHunt.player.seen.includes("hideNoisy")>>
-					You know by now that the <<shopHuntLocName _locRaw>> is <span class="red">too noisy</span> to be an effective hiding spot.
+					당신은 이제 <<shopHuntLocName _locRaw>>【이가】 은신처로 쓰기엔 <span class="red">너무 시끄럽다</span>는 걸 안다.
 				<<elseif _loc.special.includes("hat") and $worn.head.type.includes("hat")>>
-					The <<shopHuntLocName _locRaw "simple">> would normally make for a <<print ["poor","decent","good"][_loc.hide]>> hiding spot. However, if you use your $worn.head.name to blend in, <span class="green">it will be an excellent hiding spot</span>.
+					<<shopHuntLocName _locRaw "simple">>【은는】 보통이라면 <<print ["형편없는","별로 좋지 않은","꽤 괜찮은","훌륭한"][_loc.hide]>> 은신처가 되었을 것이다. 하지만 $worn.head.name【을를】 이용해 주변과 어우러지게 한다면 <span class="green">훌륭한 은신처가 될 것이다</span>.
 					<<set $_hatSeen to $shopHunt.actors.filter(x => !!x.state and x.seen.includes("hat") and !["nobody","mannequin"].includes(x.type))>>
 					<<if $_hatSeen.length gte 1>>
 						<br>
-						You've pulled this trick on <<shopHuntActorList $_hatSeen>>. It won't work twice.
+						당신은 이미 이 속임수를 <<shopHuntActorList $_hatSeen>>에게 썼다. 두 번은 안 통할 것이다.
 					<</if>>
 					<<set _loc.hide to 4>>
 				<<else>>
-					The <<shopHuntLocName _locRaw "simple">> would make for a
-					<span @class="['pink','purple','blue','lblue'][_loc.hide]"><<print ["horrible","poor","decent","good"][_loc.hide]>></span>
-					hiding spot.
+					<<shopHuntLocName _locRaw "simple">>【은는】 
+					<span @class="['pink','purple','blue','lblue'][_loc.hide]"><<print ["끔찍한","형편없는","괜찮은","좋은"][_loc.hide]>></span>
+					은신처가 될 것이다.
 				<</if>>
 				<<if _loc.special.includes("inside")>>
-					However, <span class="green">it would be an excellent hiding spot</span> if you hid inside.
+					하지만, 만약 당신이 안에 숨는다면 <span class="green">아주 훌륭한 은신처가 될 것이다</span>.
 				<</if>>
 				<br>
 				<<capture _loc>>
 					<<if _loc.special.includes("inside")>>
-						<<shopHuntIcon "hide">><<link [[Hide outside|Forest Shop Hunt]]>><<shopHuntAction "hide" _loc.hide>><</link>>
+						<<shopHuntIcon "hide">><<link [[밖에 숨는다|Forest Shop Hunt]]>><<shopHuntAction "hide" _loc.hide>><</link>>
 						<br>
-						<<shopHuntIcon _locRaw "hide">><<link [[Hide inside|Forest Shop Hunt]]>><<shopHuntAction "hide" 4>><</link>>
+						<<shopHuntIcon _locRaw "hide">><<link [[안에 숨는다|Forest Shop Hunt]]>><<shopHuntAction "hide" 4>><</link>>
 					<<else>>
-						<<shopHuntIcon "hide">><<link [[Hide|Forest Shop Hunt]]>><<shopHuntAction "hide" _loc.hide>><</link>>
+						<<shopHuntIcon "hide">><<link [[숨는다|Forest Shop Hunt]]>><<shopHuntAction "hide" _loc.hide>><</link>>
 					<</if>>
 				<</capture>>
 			<</if>>
@@ -2103,35 +2120,35 @@
 			<<set $_actorsPresent to shopHuntContains(_locRaw).filter(x => typeof x is "number" and !$shopHunt.actors[x].seen.includes("searchKey"))>>
 			<<if $_actorsPresent.length gte 1 and $shopHunt.item.key isnot "player">>
 				<<set $shopHunt.searchTarget to $_actorsPresent[0]>>
-				Search...
+				조사하기
 				<br>
 				<<for $_m range $_actorsPresent>>
 					<<if $_m isnot $_actorsPresent[0]>> | <</if>>
 					<label><<shopHuntActorName $_m "cap">> <<radiobutton "$shopHunt.searchTarget" $_m autocheck>></label>
 				<</for>>
 				<br>
-				<<shopHuntIcon "search">><<link [[Search|Forest Shop Hunt]]>><<shopHuntAction "searchActor">><</link>>
+				<<shopHuntIcon "search">><<link [[조사한다|Forest Shop Hunt]]>><<shopHuntAction "searchActor">><</link>>
 			<</if>>
 		<<else>>
 			<<if shopHuntLocsSearched().includes(_locRaw)>>
 				<<if $shopHunt.shop.shuffle.history[0] gt $shopHunt.player.map[shopHuntCoords(_locRaw)[0]][shopHuntCoords(_locRaw)[1]].searched and !$shopHunt.player.seen.includes("shuffleSearch")>>
 					<<set $shopHunt.player.seen.pushUnique("shuffleSearch")>>
-					The <<shopHuntLocName _locRaw>> isn't where you remember it, but the area itself looks unchanged.
+					<<shopHuntLocName _locRaw>>【은는】 당신이 기억하는 위치에 있지 않지만, 주변 환경은 변하지 않은 것 같다.
 				<</if>>
-				You've already searched here. There's nothing here.
+				이곳은 이미 수색했다. 아무것도 없다.
 			<<elseif _locRaw is "hangingBasket" and !_loc.state.includes("fallen") and $shopHunt.player.seen.includes("basketFail")>>
-				<span class="purple">There's no point in trying to search the basket while it's still hanging above you.</span>
+				<span class="purple">바구니가 위에 매달려 있을 때는 안을 찾아봐도 소용이 없다.</span>
 			<<else>>
 				<<if $shopHunt.player.seen.includes(_locRaw + "Item")>>
-					<span class="gold">You already know what's here.</span>
+					<span class="gold">당신은 이곳에 뭐가 있는지 이미 안다.</span>
 					<br>
-					<<shopHuntIcon "search">><<link [[Search for <<shopHuntItemsPresent _locRaw true>>|Forest Shop Hunt]]>><<shopHuntAction "search">><</link>>
+					<<shopHuntIcon "search">><<link [[<<shopHuntItemsPresent _locRaw true>>【을를】 수색한다|Forest Shop Hunt]]>><<shopHuntAction "search">><</link>>
 				<<elseif $shopHunt.context is "garden">>
 					<<if $shopHunt.item.key isnot "player">>
-						<<shopHuntIcon "search">><<link [[Search for key|Forest Shop Hunt]]>><<shopHuntAction "search">><</link>>
+						<<shopHuntIcon "search">><<link [[열쇠를 찾는다|Forest Shop Hunt]]>><<shopHuntAction "search">><</link>>
 					<</if>>
 				<<else>>
-					<<shopHuntIcon "search">><<link [[Search for items|Forest Shop Hunt]]>><<shopHuntAction "search">><</link>>
+					<<shopHuntIcon "search">><<link [[아이템을 찾는다|Forest Shop Hunt]]>><<shopHuntAction "search">><</link>>
 				<</if>>
 			<</if>>
 			<br>
@@ -2145,24 +2162,24 @@
 				<<if !$shopHunt.player.seen.includes("voiceStolenLoc")>>
 					<<set $shopHunt.player.seen.pushUnique("voiceStolenLoc")>>
 					<br>
-					Your voice has been stolen, but <span class="blue">you could get someone's attention by making the <<shopHuntLocName _locRaw "simple">> <<shopHuntLocName _locRaw "sound">></span>.
+					당신의 목소리를 빼앗겼지만, <span class="blue"><<shopHuntLocName _locRaw "simple">>【을를】 이용해 <<shopHuntLocName _locRaw "sound">>【을를】 내면 다른 사람의 주의를 끌 수 있다</span>.
 				<</if>>
 			<</if>>
 			<br>
-			<<shopHuntIcon _locRaw>><<link [[Make noise with the <<shopHuntLocName _locRaw>>|Forest Shop Hunt]]>><<shopHuntAction "sound" "location">><</link>>
+			<<shopHuntIcon _locRaw>><<link [[<<shopHuntLocName _locRaw>>【으로로】 소음을 낸다|Forest Shop Hunt]]>><<shopHuntAction "sound" "location">><</link>>
 		<<elseif _act isnot "sound">>
 			<<if $shopHunt.commands.includes("voice")>>
 				<<if !$shopHunt.player.seen.includes("voiceStolen")>>
 					<<set $shopHunt.player.seen.pushUnique("voiceStolen")>>
 					<br>
-					Your voice has been stolen. <span class="purple">You can't get attention by screaming.</span>
+					당신의 목소리를 빼앗겼다. <span class="purple">소리를 질러 주의를 끌 수는 없다.</span>
 				<</if>>
 			<<else>>
 				<br>
 				<<if $shopHunt.context is "game">>
 					<<shopHuntIcon "yell">><<link [[Call out|Forest Shop Hunt]]>><<shopHuntAction "sound" "yell">><</link>>
 				<<else>>
-					<<shopHuntIcon "yell">><<link [[Scream|Forest Shop Hunt]]>><<shopHuntAction "sound" "yell">><</link>>
+					<<shopHuntIcon "yell">><<link [[비명을 지른다|Forest Shop Hunt]]>><<shopHuntAction "sound" "yell">><</link>>
 				<</if>>
 			<</if>>
 		<</if>>
@@ -2173,46 +2190,46 @@
 		<<if $_hasNotFound.length gte 1 and _act isnot "ambush">>
 			<<set $shopHunt.ambushTarget to $_hasNotFound[0]>>
 			<br><br>
-			<<shopHuntActorList $_hasNotFound "cap">> <<= $_hasNotFound.length is 1 ? "hasn't" : "haven't">> noticed you. You could ambush <<= $_hasNotFound.length is 1 ? "<<shopHuntPronoun 'him' $_hasNotFound[0]>>" : "one of them">>.
+			<<shopHuntActorList $_hasNotFound "cap">>【은는】 당신을 알아차리지 못했다. 당신은 <<= $_hasNotFound.length is 1 ? "<<shopHuntPronoun 'him' $_hasNotFound[0]>>" : "그들 중 한 명">>【을를】 기습할 수 있다.
 			<br>
 			<<for $_m range $_hasNotFound>>
 				<<if $_m isnot $_hasNotFound[0]>> | <</if>>
 				<label><<shopHuntActorName $_m "cap" "trueName">> <<radiobutton "$shopHunt.ambushTarget" $_m autocheck>></label>
 			<</for>>
 			<br>
-			<<shopHuntIcon "ambush">><<link [[Ambush|Forest Shop Hunt]]>><<shopHuntAction "ambush">><</link>>
+			<<shopHuntIcon "ambush">><<link [[기습한다|Forest Shop Hunt]]>><<shopHuntAction "ambush">><</link>>
 		<</if>>
 
 		<<if _loc.special.includes("fall") and !_loc.state.includes("fallen")>>
 			<br><br>
-			The <<shopHuntLocName _locRaw "simple">> <<= _locRaw is "hangingBasket" ? "hangs" : "stands">> precariously.
+			<<shopHuntLocName _locRaw "simple">>【이가】 위태롭게 <<= _locRaw is "hangingBasket" ? "매달려" : "서">> 있다.
 			<<if shopHuntActorsPresent(false, "enemy").length gte 1>>
 				<<set $_present to shopHuntActorsPresent("id", "enemy")>>
-				<span class="gold">You could make it fall on <<shopHuntActorList $_present "singleMannequin" "or">>.</span>
+				<span class="gold">이것을 <<shopHuntActorList $_present "singleMannequin" "or">> 위로 떨어뜨릴 수 있다.</span>
 				<<if shopHuntActorsPresent(false, "enemy").length gte 2>>
-					<span class="red">However, that will leave you wide open to the <<= shopHuntActorsPresent(false, "enemy").length is 2 ? "other" : "others">>.</span>
+					<span class="red">하지만 그렇게 하면 남은 <<= shopHuntActorsPresent(false, "enemy").length is 2 ? "한 명" : "사람들">>에게 무방비 상태가 될 것이다.</span>
 				<</if>>
 				<br>
 				<<for $_i to 0; $_i lt shopHuntActorsPresent(false, "enemy").length; $_i++>>
 					<<capture $_i>>
-						<<shopHuntIcon _locRaw "fallen">><<link [[Drop the <<shopHuntLocName _locRaw "simple">> on <<shopHuntActorName $_present[$_i] "trueName">>|Forest Shop Hunt]]>><<shopHuntAction "fall" `shopHuntActorsPresent(false, "enemy")[$_i].id`>><</link>>
+						<<shopHuntIcon _locRaw "fallen">><<link [[<<shopHuntLocName _locRaw "simple">>【을를】 <<shopHuntActorName $_present[$_i] "trueName">> 위로 떨어뜨린다|Forest Shop Hunt]]>><<shopHuntAction "fall" `shopHuntActorsPresent(false, "enemy")[$_i].id`>><</link>>
 						<br>
 					<</capture>>
 				<</for>>
 			<<else>>
 				<br>
-				<<shopHuntIcon _locRaw "fallen">><<link [[Knock the <<shopHuntLocName _locRaw "simple">> down|Forest Shop Hunt]]>><<shopHuntAction "fall">><</link>>
+				<<shopHuntIcon _locRaw "fallen">><<link [[<<shopHuntLocName _locRaw "simple">>【을를】 넘어뜨린다|Forest Shop Hunt]]>><<shopHuntAction "fall">><</link>>
 			<</if>>
 		<</if>>
 
 		<<if _loc.special.includes("scatter") and !_loc.state.includes("scattered")>>
 			<br>
 			<<if _locRaw is "hangingBasket" and !_loc.state.includes("fallen") and $shopHunt.player.seen.includes("basketFail")>>
-				<span class="purple">There's no point in trying to scatter the basket's contents while it's still hanging above you.</span>
+				<span class="purple">바구니가 당신 위쪽에 매달려 있는 동안 내용물을 흩뿌리려고 시도하는 것은 소용없는 일이다.</span>
 			<<else>>
-				The <<shopHuntLocName _locRaw "simple">> has plenty of things you could scatter on the floor.
+				<<shopHuntLocName _locRaw "simple">>에는 당신이 바닥에 흩뿌릴 수 있는 물건들이 많다.
 				<br>
-				<<shopHuntIcon "scatter">><<link [[Scatter items from the <<shopHuntLocName _locRaw "simple">>|Forest Shop Hunt]]>><<shopHuntAction "scatter">><</link>>
+				<<shopHuntIcon "scatter">><<link [[<<shopHuntLocName _locRaw "simple">>의 물건들을 흩뿌린다|Forest Shop Hunt]]>><<shopHuntAction "scatter">><</link>>
 			<</if>>
 		<</if>>
 	<</if>>
@@ -2225,26 +2242,26 @@
 			<<set $shopHunt.item.key to Object.values(_playerFound).flat().random()>>
 			<<shopHuntShuffle "gardenKey">>
 
-			<span class="gold">The <<shopHuntDoor>> is here.</span> You reach to grab the key, but freeze. <span class="red">You lost the key.</span>
+			<span class="gold">이곳에 <<shopHuntDoor>>【이가】 있다.</span> 당신은 열쇠를 쥐려고 손을 뻗지만, 그 자리에 얼어붙는다. <span class="red">열쇠를 잃어버렸다.</span>
 		<<else>>
 			<br><br>
-			<span class="gold">The <<shopHuntDoor>> is here.</span>
+			<span class="gold">이곳에 <<shopHuntDoor>>【이가】 있다.</span>
 			<<if $shopHunt.item.key is "player">>
 				<<if $shopHunt.actors.filter(x => ["eden","gwylan"].includes(x.type)).length is 2 and $shopHunt.actors.filter(x => ["eden","gwylan"].includes(x.type) and x.role is "enemy").length isnot 2>>
-					You have the key, but <span class="blue">escaping would mean
+					당신에게 열쇠가 있지만, <span class="blue">여기서 탈출하면 곧
 					<<if $shopHunt.context is "rescue">>
-						leaving Gwylan
+						그윌란을
 					<<else>>
-						leaving Eden
+						에덴을
 					<</if>>
-					behind.</span>
+					뒤에 남겨두게 된다.</span>
 				<<else>>
-					<span class="green">You have the key!</span>
+					<span class="green">당신에게 열쇠가 있다!</span>
 				<</if>>
 				<br>
-				<<shopHuntIcon "key">><<link [[Unlock the <<shopHuntDoor>>|Forest Shop Hunt]]>><<shopHuntAction "key">><</link>>
+				<<shopHuntIcon "key">><<link [[<<shopHuntDoor>>의 자물쇠를 연다|Forest Shop Hunt]]>><<shopHuntAction "key">><</link>>
 			<<else>>
-				<span class="red">You do not have the key.</span>
+				<span class="red">열쇠가 없다.</span>
 			<</if>>
 		<</if>>
 	<</if>>
@@ -2253,26 +2270,26 @@
 	<<shopHuntMap>>
 
 	<!-- Movement -->
-	<b><u>Locations:</u></b><br>
-	<<set $_go to $shopHunt.actors.filter(x => x.state is "chase").length gte 1 ? "Run" : "Go">>
+	<b><u>위치:</u></b><br>
+	<<set $_go to $shopHunt.actors.filter(x => x.state is "chase").length gte 1 ? "달린다" : "간다">>
 
 	<<if Object.values(_bordering).length is 1 and _act is "move" and $shopHunt.shop.shuffle.history[0] isnot $shopHunt.turns>>
 		<<set $_backLoc to Object.values(_bordering)[0]>>
-		<span class="purple">It's a dead end.</span> The only way to go is back to the <<shopHuntLocName $_backLoc>>.
+		<span class="purple">막다른 길이다.</span> 갈 수 있는 길은 <<shopHuntLocName $_backLoc>>【으로로】 되돌아가는 것뿐이다.
 		<br>
 	<</if>>
 	<<for $_i range Object.keys(_bordering)>>
 		<<capture $_i>>
-			<<set $_direction to shopHuntPlayerKnownMap(2).tiles.flat().includes(_bordering[$_i]) ? $_i + " to the <<shopHuntLocName _bordering[$_i]>>" : $_i>>
+			<<set $_direction to shopHuntPlayerKnownMap(2).tiles.flat().includes(_bordering[$_i]) ? shopHuntDirKr($_i) + " 방향, " + shopHuntLocName(_bordering[$_i]) + " 쪽으로" : shopHuntDirKr($_i) + " 방향으로">>
 			<<if $shopHunt.commands.includes("towardEden") and shopHuntFind("eden") is _bordering[$_i]>>
-				<<shopHuntIcon _bordering[$_i] $_i>><span class="red">Gwylan has forbidden you from going toward Eden.</span>
+				<<shopHuntIcon _bordering[$_i] $_i>><span class="red">그윌란이 당신에게 에덴을 향해 가는 것을 금지했다.</span>
 			<<else>>
-				<<shopHuntIcon _bordering[$_i] $_i>><<link [[$_go $_direction|Forest Shop Hunt]]>><<shopHuntAction "move" $_i>><</link>>
+				<<shopHuntIcon _bordering[$_i] $_i>><<link [[$_direction $_go|Forest Shop Hunt]]>><<shopHuntAction "move" $_i>><</link>>
 			<</if>>
 		<</capture>>
 		<br>
 	<</for>>
-	<<shopHuntIcon _locRaw>><<link [[Wait here|Forest Shop Hunt]]>><<set $shopHunt.player.action to "wait">><</link>>
+	<<shopHuntIcon _locRaw>><<link [[여기서 기다린다|Forest Shop Hunt]]>><<set $shopHunt.player.action to "wait">><</link>>
 	<br>
 	<<set $shopHunt.player.hide to 0>>
 <</widget>>
@@ -2368,17 +2385,17 @@
 <</widget>>
 
 <<widget "shopHuntEmergencyExit">>
-	<span class="red bold">WARNING! I apologise, but this encounter is bugged and unplayable.</span>
-	Please take the emergency exit link to safely return to the forest. Your save file will be unaffected, but this encounter will immediately end without consequence.
+	<span class="red bold">경고! 죄송하지만, 이 조우는 버그로 인해 진행할 수 없습니다.</span>
+	긴급 탈출 링크를 사용해 안전하게 숲으로 돌아가십시오. 세이브 파일에는 영향이 없지만, 이 조우는 아무런 불이익 없이 즉시 종료됩니다.
 	<br>
 	<<if ["0.5.6.6"].includes($saveVersion)>>
-		<span class="green">This bug has already been reported and fixed in the latest version,</span> so you don't need to worry about reporting this.
+		<span class="green">이 버그는 이미 보고되어 최신 버전에서 수정되었으므로,</span> 따로 제보하지 않아도 됩니다.
 	<<else>>
-		Please export your save file and report this as a bug to the developers. Encounter context: $shopHunt.context
+		세이브 파일을 내보낸 뒤, 이 문제를 버그로 개발자에게 제보해 주십시오. 조우 상황: $shopHunt.context
 	<</if>>
 	<br><br>
 
-	<<link [[Emergency exit|Forest]]>><<set $forest to 0>><<set $eventskip to 1>><<endcombat>><<shopHuntEnd>><</link>>
+	<<link [[비상 탈출|Forest]]>><<set $forest to 0>><<set $eventskip to 1>><<endcombat>><<shopHuntEnd>><</link>>
 	<br><br><br><br>
 <</widget>>
 
@@ -2817,15 +2834,15 @@
 	<<for $_i to 0; $_i lt _shopHuntMessage.length; $_i++>>
 		<<switch _shopHuntMessage[$_i].type>>
 			<<case "chaseLost">>
-				<span class="green"><<shopHuntActorName _shopHuntMessage[$_i].actor "cap">> lost your trail.</span>
+				<span class="green"><<shopHuntActorName _shopHuntMessage[$_i].actor "cap">>【이가】 당신의 흔적을 놓쳤다.</span>
 			<<case "chaseProgress">>
 				<<switch $shopHunt.actors[_shopHuntMessage[$_i].actor].chaseTimer>>
 					<<case 3>>
-						<span class="blue"><<shopHuntActorName _shopHuntMessage[$_i].actor "cap">> is chasing you.</span>
+						<span class="blue"><<shopHuntActorName _shopHuntMessage[$_i].actor "cap">>【이가】 당신을 쫓고 있다.</span>
 					<<case 2>>
-						<span class="purple"><<shopHuntActorName _shopHuntMessage[$_i].actor "cap">> is closing in.</span>
+						<span class="purple"><<shopHuntActorName _shopHuntMessage[$_i].actor "cap">>【이가】 가까워지고 있다.</span>
 					<<case 1>>
-						<span class="pink"><<shopHuntActorName _shopHuntMessage[$_i].actor "cap">> is right on your heels!</span>
+						<span class="pink"><<shopHuntActorName _shopHuntMessage[$_i].actor "cap">>【이가】 당신의 바로 뒤에 있다!</span>
 				<</switch>>
 		<</switch>>
 	<</for>>
@@ -2842,19 +2859,19 @@
 			<<for $_o to 0; $_o lt Object.values($_footsteps)[$_i][$_r].length; $_o++>>
 				<<switch shopHuntActorMakesFootsteps(Object.values($_footsteps)[$_i][$_r][$_o])>>
 					<<case "vague">>
-						<<set $_footstepTypes[$_r].pushUnique("movement")>>
+						<<set $_footstepTypes[$_r].pushUnique("움직이는 소리")>>
 					<<case "rush">>
-						<<set $_footstepTypes[$_r].pushUnique("stampeding footsteps")>>
+						<<set $_footstepTypes[$_r].pushUnique("질주하는 발소리")>>
 					<<case true>>
 						<<switch $shopHunt.actors[Object.values($_footsteps)[$_i][$_r][$_o]].type>>
 							<<case "eden">>
-								<<set $_footstepTypes[$_r].pushUnique("creaky footsteps")>>
+								<<set $_footstepTypes[$_r].pushUnique("삐걱거리는 발소리")>>
 							<<case "gwylan">>
 								<<set $_footstepTypes[$_r].pushUnique("soft humming")>>
 							<<case "mannequin">>
-								<<set $_footstepTypes[$_r].pushUnique("wooden footsteps")>>
+								<<set $_footstepTypes[$_r].pushUnique("나무 발소리")>>
 							<<case "elkspawn">>
-								<<set $_footstepTypes[$_r].pushUnique("cacophonous stomps")>>
+								<<set $_footstepTypes[$_r].pushUnique("귀청이 떨어질 것 같은 발소리")>>
 						<</switch>>
 				<</switch>>
 			<</for>>
@@ -2863,23 +2880,23 @@
 		<<if $shopHunt.context is "garden">>
 			<<if $_footstepTypes.close.length gte 1>>
 				<<set $_footstepsPrinted to true>>
-				You hear <<formatList $_footstepTypes.close>> to the $_direction.
+				당신은 <<shopHuntDirKr $_direction>>에서 들려오는 <<formatList $_footstepTypes.close>>【을를】 듣는다.
 			<</if>>
 		<<else>>
 			<<if $_footstepTypes.close.length gte 1>>
 				<<set $_footstepsPrinted to true>>
-				You hear <<formatList $_footstepTypes.close>> close by,
+				가까이에서 들리는 <<formatList $_footstepTypes.close>>【와과】
 				<<if $_footstepTypes.distant.length gte 1>>
-					and more distant <<formatList $_footstepTypes.distant>>,
+					멀리서 들려오는 <<formatList $_footstepTypes.distant>>【이가】 들린다,
 				<</if>>
 				<<if $_direction is "here">>
-					<span class="pink">right outside the <<shopHuntLocName _locRaw "simple">></span>.
+					<span class="pink"><<shopHuntLocName _locRaw "simple">> 바로 밖이다</span>.
 				<<else>>
-					to the $_direction.
+					<<shopHuntDirKr $_direction>>으로.
 				<</if>>
 			<<elseif $_footstepTypes.distant.length gte 1>>
 				<<set $_footstepsPrinted to true>>
-				You hear distant <<formatList $_footstepTypes.distant>>, to the $_direction.
+				당신은 <<shopHuntDirKr $_direction>> 방향에서 멀리 들려오는 <<formatList $_footstepTypes.distant>>【을를】 듣는다.
 			<</if>>
 		<</if>>
 	<</for>>
@@ -2901,9 +2918,9 @@
 				<<set $shopHunt.actors[$_actor].seen.pushUnique($_tripLoc + "Fall")>>
 				<<switch $shopHunt.actors[$_actor].type>>
 					<<case "gwylan">>
-						You hear <<shopHuntActorName $_actor>> yelp from the $_direction. You think <span @class="$_color"><<shopHuntPronoun "he">> tripped</span>.
+						<<shopHuntDirKr $_direction>> 방향에서 <<shopHuntActorName $_actor>>【이가】 꽥 비명을 지르는 소리가 들린다. <span @class="$_color"><<shopHuntPronoun "he">>【이가】 걸려 넘어진 것</span> 같다.
 					<<case "eden">>
-						You hear a thud from the $_direction, followed by <<shopHuntActorName $_actor>> cursing. You think <span @class="$_color"><<shopHuntPronoun "he">> tripped</span>.
+						<<shopHuntDirKr $_direction>> 방향에서 쿵 하는 소리가 들리고, 이어서 <<shopHuntActorName $_actor>>【이가】 욕설을 내뱉는다. <span @class="$_color"><<shopHuntPronoun "he">>【이가】 걸려 넘어진 것</span> 같다.
 						<<set $shopHunt.actors[$_actor].tripped to true>>
 					<<case "mannequin">>
 						<<if $shopHunt.actors[$_actor].name is "giant fox plushie">>
@@ -2920,9 +2937,9 @@
 				<<set $shopHunt.actors[$_actor].seen.pushUnique($_tripLoc + "Scatter")>>
 				<<switch $shopHunt.actors[$_actor].type>>
 					<<case "gwylan">>
-						You hear <<shopHuntActorName $_actor>> yelp from the $_direction. You think <span @class="$_color"><<shopHuntPronoun "he">> tripped</span>.
+						<<shopHuntDirKr $_direction>> 방향에서 <<shopHuntActorName $_actor>>【이가】 꽥 비명을 지르는 소리가 들린다. <span @class="$_color"><<shopHuntPronoun "he">>【이가】 걸려 넘어진 것</span> 같다.
 					<<case "eden">>
-						You hear a thud from the $_direction, followed by <<shopHuntActorName $_actor>> cursing. You think <span @class="$_color"><<shopHuntPronoun "he">> tripped</span>.
+						<<shopHuntDirKr $_direction>> 방향에서 쿵 하는 소리가 들리고, 이어서 <<shopHuntActorName $_actor>>【이가】 욕설을 내뱉는다. <span @class="$_color"><<shopHuntPronoun "he">>【이가】 걸려 넘어진 것</span> 같다.
 						<<set $shopHunt.actors[$_actor].tripped to true>>
 					<<case "mannequin">>
 						<<if $shopHunt.actors[$_actor].name is "giant fox plushie">>
@@ -2938,8 +2955,8 @@
 		<</if>>
 	<</for>>
 	<<if Object.values($_mannequinsTripped).reduce((a, b) => a + b) gte 1>>
-		<<set $_mannequinDirections to Object.keys($_mannequinsTripped).filter(x => $_mannequinsTripped[x] gte 1)>>
-		You hear the faint <<pluralise `Object.values($_mannequinsTripped).reduce((a, b) => a + b)` "sound">> of wood falling over from the <<formatList $_mannequinDirections>>. You think <span @class="$_color"><<number `Object.values($_mannequinsTripped).reduce((a, b) => a + b)`>> of the mannequins tripped</span>.
+		<<set $_mannequinDirections to Object.keys($_mannequinsTripped).filter(x => $_mannequinsTripped[x] gte 1).map(x => shopHuntDirKr(x))>>
+		<<formatList $_mannequinDirections>> 방향에서 나무가 넘어지는 희미한 <<pluralise `Object.values($_mannequinsTripped).reduce((a, b) => a + b)` "소리" "소리">>【이가】 들린다. 당신은 <span @class="$_color">마네킹 <<number `Object.values($_mannequinsTripped).reduce((a, b) => a + b)`>>개가 걸려 넘어진 것</span>이라고 생각한다.
 	<</if>>
 	<<if $_silentTrip>>
 		<<set $_silentTrip to false>>
@@ -2956,11 +2973,11 @@
 			<<if !Object.values(_playerFound).flat().includes($_scentActor)>>
 				<<set $_direction to shopHuntRelativeDirection(_locRaw, Object.values(_shopHuntScent)[$_i])>>
 				<<if !$_scentPrinted>>
-					With your <span class="green"><<print hasSharpSenses("instincts")>></span>, you
+					<span class="green"><<print hasSharpSenses("instincts")>></span> 덕분에, 당신은
 				<<else>>
-					You
+					당신은
 				<</if>>
-				catch <<shopHuntActorName $_scentActor>>'s scent to the $_direction.
+				<<shopHuntDirKr $_direction>> 방향에서 <<shopHuntActorName $_scentActor>>의 냄새를 맡는다.
 				<<set $_scentPrinted to true>>
 			<</if>>
 		<</for>>
@@ -2980,9 +2997,9 @@
 						<<set $_presentClosePrinted to true>>
 						<<if shopHuntFind($_o) is $shopHunt.actors[$_o].history[0].location>>
 							<<if $shopHunt.actors[$_o].state is "hold">>
-								<<shopHuntActorName $_o "cap">> holds you tight.
+								<<shopHuntActorName $_o "cap">>【이가】 당신을 꽉 붙잡는다.
 							<<elseif _act isnot "insideExit">>
-								<<shopHuntActorName $_o "cap">> is here.
+								<<shopHuntActorName $_o "cap">>【이가】 여기에 있다.
 							<<else>>
 								<<set $_presentPrinted-->>
 							<</if>>
@@ -2991,12 +3008,12 @@
 							<<set $_origin to applyArrays($shopHunt.player.position, $_direction)>>
 							<<if shopHuntObstacles().includes($_origin)>>
 								<<if $shopHunt.actors[$_o].type is "wraith">>
-									<<shopHuntActorName $_o "cap">> <span class="purple">emerges from the $_direction wall</span>.
+									<<shopHuntActorName $_o "cap">>【이가】 <span class="purple"><<shopHuntDirKr $_direction>> 벽에서 나타난다</span>.
 								<<else>>
-									<<shopHuntActorName $_o "cap">> <span class="purple">emerges from a hidden doorway in the $_direction wall</span>.
+									<<shopHuntActorName $_o "cap">>【이가】 <span class="purple"><<shopHuntDirKr $_direction>> 벽에 있는 숨겨진 문에서 나타난다</span>.
 								<</if>>
 							<<else>>
-								<<shopHuntActorName $_o "cap">> arrives from the $_direction.
+								<<shopHuntActorName $_o "cap">>【이가】 <<shopHuntDirKr $_direction>>에서 도착한다.
 							<</if>>
 							<<if $shopHunt.locations[Object.keys(_playerFound)[$_i]].state.includes("fallen") and !$shopHunt.actors[$_o].seen.includes(Object.keys(_playerFound)[$_i] + "Fall") and !["wraith","nobody"].includes($shopHunt.actors[$_o].type)>>
 								<<set $_color to shopHuntActorColor($_o, true)>>
@@ -3004,15 +3021,15 @@
 								<<set $shopHunt.actors[$_o].seen.pushUnique(Object.keys(_playerFound)[$_i] + "Fall")>>
 								<<switch $shopHunt.actors[$_o].type>>
 									<<case "gwylan">>
-										<<shopHuntPronoun "He">> yelps as <span @class="$_color"><<shopHuntPronoun "he">> trips on the <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>></span>.
+										<span @class="$_color"><<shopHuntPronoun "he">>【이가】 <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>에 걸려 넘어지면서</span> <<shopHuntPronoun "He">>【이가】 꽥 비명을 지른다.
 									<<case "eden">>
-										<<shopHuntPronoun "He">> curses as <span @class="$_color"><<shopHuntPronoun "he">> trips on the <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>></span>.
+										<span @class="$_color"><<shopHuntPronoun "he">>【이가】 <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>에 걸려 넘어지면서</span> <<shopHuntPronoun "He">>【이가】 욕을 한다.
 										<<set $shopHunt.actors[$_o].tripped to true>>
 									<<case "mannequin">>
-										<<shopHuntPronoun "He">> flails as <span @class="$_color"><<shopHuntPronoun "he">> trips on the <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>></span>.
+										<span @class="$_color"><<shopHuntPronoun "he">>【이가】 <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>에 걸려 넘어지며</span> <<shopHuntPronoun "He">>【이가】 허우적댄다.
 									<<case "elkspawn">>
 										<<shopHuntDamageActor $_o 1 true>>
-										<span class="orange">The elkspawn trips at the <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>.</span>
+										<span class="orange">엘크 마물이 <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>에 걸려 넘어진다.</span>
 										/* Todo: Gwylan hunt elkspawn, how would it react here? I have it set that it takes damage from tripping because it's more cumbersome than the other actors */
 								<</switch>>
 							<<elseif $shopHunt.locations[Object.keys(_playerFound)[$_i]].state.includes("scattered") and !$shopHunt.actors[$_o].seen.includes(Object.keys(_playerFound)[$_i] + "Scatter") and !["wraith","nobody"].includes($shopHunt.actors[$_o].type) and shopHuntFind($_o)>>
@@ -3021,26 +3038,26 @@
 								<<set $shopHunt.actors[$_o].seen.pushUnique(Object.keys(_playerFound)[$_i] + "Scatter")>>
 								<<switch $shopHunt.actors[$_o].type>>
 									<<case "gwylan">>
-										<<shopHuntPronoun "He">> yelps as <span @class="$_color"><<shopHuntPronoun "he">> trips on the <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>></span>.
+										<span @class="$_color"><<shopHuntPronoun "he">>【이가】 <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>에 걸려 넘어지면서</span> <<shopHuntPronoun "He">>【이가】 꽥 비명을 지른다.
 									<<case "eden">>
-										<<shopHuntPronoun "He">> curses as <span @class="$_color"><<shopHuntPronoun "he">> trips on the <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>></span>.
+										<span @class="$_color"><<shopHuntPronoun "he">>【이가】 <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>에 걸려 넘어지면서</span> <<shopHuntPronoun "He">>【이가】 욕을 한다.
 										<<set $shopHunt.actors[$_o].tripped to true>>
 									<<case "mannequin">>
-										<<shopHuntPronoun "He">> flails as <span @class="$_color"><<shopHuntPronoun "he">> trips on the <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>></span>.
+										<span @class="$_color"><<shopHuntPronoun "he">>【이가】 <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>에 걸려 넘어지며</span> <<shopHuntPronoun "He">>【이가】 허우적댄다.
 									<<case "elkspawn">>
 										<<shopHuntDamageActor $_o 1 true>>
-										<span class="orange">The elkspawn trips at the scattered <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>.</span>
+										<span class="orange">엘크 마물이 흩어진 <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>에 걸려 넘어진다.</span>
 										/* Todo: Gwylan hunt elkspawn, how would it react here? I have it set that it takes damage from tripping because it's more cumbersome than the other actors */
 								<</switch>>
 							<</if>>
 						<</if>>
 						<<if $shopHunt.actors[$_o].state is "guard" and $shopHunt.actors[$_o].role is "neutral" and $shopHunt.actors[$_o].target>>
 							<<if $shopHunt.actors[$_o].target is "here">>
-								<<shopHuntPronoun "He">> gestures <span @class="$shopHunt.item.key isnot 'player' ? 'gold' : ''">to the <<shopHuntLocName _locRaw "simple">></span>.
+								<<shopHuntPronoun "He">>【이가】 <span @class="$shopHunt.item.key isnot 'player' ? 'gold' : ''"><<shopHuntLocName _locRaw "simple">> 쪽을 향해</span> 손짓한다.
 							<<elseif $shopHunt.actors[$_o].target>>
-								<<shopHuntPronoun "He">> points towards the <span @class="$shopHunt.item.key isnot 'player' ? 'lblue' : ''"><<print $shopHunt.actors[$_o].target>></span>.
+								<<shopHuntPronoun "He">>【이가】 <span @class="$shopHunt.item.key isnot 'player' ? 'lblue' : ''"><<print shopHuntDirKr($shopHunt.actors[$_o].target)>></span> 쪽을 가리킨다.
 								<<if shopHuntLoc(applyArrays($shopHunt.player.position, shopHuntDirectionApply($shopHunt.actors[$_o].target))) is $shopHunt.item.key>>
-									<span class="gold">This one seems more urgent than the others.</span>
+									<span class="gold">이것은 다른 것들보다 더 시급해 보인다.</span>
 								<</if>>
 							<</if>>
 						<</if>>
@@ -3051,11 +3068,11 @@
 						<<set $_presentClosePrinted to false>>
 					<</if>>
 					<<set $_direction to shopHuntRelativeDirection(_locRaw, Object.keys(_playerFound)[$_i])>>
-					<<shopHuntActorList `Object.values(_playerFound)[$_i]` "cap">> <<= _actorCount gt 1 ? "are" : "is">> to the
+					<<shopHuntActorList `Object.values(_playerFound)[$_i]` "cap">>【이가】 있는 곳은
 					<<if shopHuntSeenValue(_locRaw, $_direction) is 2>>
-						$_direction, by the <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>.
+						<<shopHuntLocName `Object.keys(_playerFound)[$_i]`>> 근처, <<shopHuntDirKr $_direction>>【이】다.
 					<<else>>
-						$_direction.
+						<<shopHuntDirKr $_direction>>.
 					<</if>>
 					<<for $_o range Object.values(_playerFound)[$_i]>>
 						<<if $shopHunt.locations[Object.keys(_playerFound)[$_i]].state.includes("fallen") and !$shopHunt.actors[$_o].seen.includes(Object.keys(_playerFound)[$_i] + "Fall") and !["wraith","nobody"].includes($shopHunt.actors[$_o].type) and shopHuntFind($_o) isnot $shopHunt.actors[$_o].history[0].location>>
@@ -3064,15 +3081,15 @@
 							<<set $shopHunt.actors[$_o].seen.pushUnique(Object.keys(_playerFound)[$_i] + "Fall")>>
 							<<switch $shopHunt.actors[$_o].type>>
 								<<case "gwylan">>
-									<<shopHuntActorName $_o "cap">> yelps as <span @class="$_color"><<shopHuntPronoun "he">> trips on the <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>></span>.
+									<span @class="$_color"><<shopHuntPronoun "he">>【이가】 <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>에 걸려 넘어지면서</span> <<shopHuntActorName $_o "cap">>【이가】 꽥 비명을 지른다.
 								<<case "eden">>
-									<<shopHuntActorName $_o "cap">> curses as <span @class="$_color"><<shopHuntPronoun "he">> trips on the <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>></span>.
+									<span @class="$_color"><<shopHuntPronoun "he">>【이가】 <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>에 걸려 넘어지면서</span> <<shopHuntActorName $_o "cap">>【이가】 욕을 한다.
 									<<set $shopHunt.actors[$_o].tripped to true>>
 								<<case "mannequin">>
-									<<shopHuntActorName $_o "cap">> flails as <span @class="$_color"><<shopHuntPronoun "he">> trips on the <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>></span>.
+									<span @class="$_color"><<shopHuntPronoun "he">>【이가】 <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>에 걸려 넘어지며</span> <<shopHuntActorName $_o "cap">>【이가】 허우적댄다.
 								<<case "elkspawn">>
 									<<shopHuntDamageActor $_o 1 true>>
-									<span class="orange">The elkspawn trips at the <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>.</span>
+									<span class="orange">엘크 마물이 <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>에 걸려 넘어진다.</span>
 									/* Todo: Gwylan hunt elkspawn, how would it react here? I have it set that it takes damage from tripping because it's more cumbersome than the other actors */
 							<</switch>>
 						<<elseif $shopHunt.locations[Object.keys(_playerFound)[$_i]].state.includes("scattered") and !$shopHunt.actors[$_o].seen.includes(Object.keys(_playerFound)[$_i] + "Scatter") and !["wraith","nobody"].includes($shopHunt.actors[$_o].type) and shopHuntFind($_o) isnot $shopHunt.actors[$_o].history[0].location>>
@@ -3081,15 +3098,15 @@
 							<<set $shopHunt.actors[$_o].seen.pushUnique(Object.keys(_playerFound)[$_i] + "Scatter")>>
 							<<switch $shopHunt.actors[$_o].type>>
 								<<case "gwylan">>
-									<<shopHuntActorName $_o "cap">> yelps as <span @class="$_color"><<shopHuntPronoun "he">> trips on the <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>></span>.
+									<span @class="$_color"><<shopHuntPronoun "he">>【이가】 <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>에 걸려 넘어지면서</span> <<shopHuntActorName $_o "cap">>【이가】 꽥 비명을 지른다.
 								<<case "eden">>
-									<<shopHuntActorName $_o "cap">> curses as <span @class="$_color"><<shopHuntPronoun "he">> trips on the <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>></span>.
+									<span @class="$_color"><<shopHuntPronoun "he">>【이가】 <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>에 걸려 넘어지면서</span> <<shopHuntActorName $_o "cap">>【이가】 욕을 한다.
 									<<set $shopHunt.actors[$_o].tripped to true>>
 								<<case "mannequin">>
-									<<shopHuntActorName $_o "cap">> flails as <span @class="$_color"><<shopHuntPronoun "he">> trips on the <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>></span>.
+									<span @class="$_color"><<shopHuntPronoun "he">>【이가】 <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>에 걸려 넘어지며</span> <<shopHuntActorName $_o "cap">>【이가】 허우적댄다.
 								<<case "elkspawn">>
 									<<shopHuntDamageActor $_o 1 true>>
-									<span class="orange">The elkspawn trips at the scattered <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>.</span>
+									<span class="orange">엘크 마물이 흩어진 <<shopHuntLocName `Object.keys(_playerFound)[$_i]`>>에 걸려 넘어진다.</span>
 									/* Todo: Gwylan hunt elkspawn, how would it react here? I have it set that it takes damage from tripping because it's more cumbersome than the other actors */
 							<</switch>>
 						<</if>>
@@ -3106,7 +3123,7 @@
 	<<if $shopHunt.actors.some(x => x.type is "eden" and x.state isnot null)>>
 		<<set $_eden to $shopHunt.actors.find(x => x.type === "eden")>>
 		<<set $_edenDirection to shopHuntRelativeDirection(_locRaw, $_eden.position)>>
-		<<set $_edenDirectionPrint to $_edenDirection is "here" ? $shopHunt.player.hide is 4 and _loc.special.includes("inside") ? "outside the <<shopHuntLocName _locRaw 'simple'>>" : "here" : "the " + $_edenDirection>>
+		<<set $_edenDirectionPrint to $_edenDirection is "here" ? $shopHunt.player.hide is 4 and _loc.special.includes("inside") ? "<<shopHuntLocName _locRaw 'simple'>> 바로 밖" : "여기" : shopHuntDirKr($_edenDirection) + " 방향">>
 		<<set $_edenLoc to shopHuntFind("eden")>>
 		<<set $_playerSeesEden to shopHuntLineOfSight("player", true).includes($_eden.id) and ($shopHunt.player.hide lte 3 or !_loc.special.includes("inside"))>>
 		<<if $shopHunt.turns % 15 is 0 and $shopHunt.turns isnot 0 or $_eden.damaged or $_eden.tripped or $_eden.health lte 0>>
@@ -3116,53 +3133,53 @@
 			<<switch $shopHunt.illusion>>
 				<<case 0>>
 					<<if $_playerSeesEden>>
-						A phantasmal voice echoes from around <<shopHuntActorName $_eden.id>>. "<span class="witch">Do you think the forest has forgotten? It never does.</span>"
+						<<shopHuntActorName $_eden.id>> 주위에서 유령 같은 목소리가 메아리친다. "<span class="witch">숲이 잊었을 거라 생각해? 절대 잊지 않아.</span>"
 						<br>
-						<<shopHuntPronoun "He">> looks around as the voice is replaced with the sound of skittering.
+						목소리 대신 바스락거리는 소리가 들리자 <<shopHuntPronoun "He">>【은는】 주위를 둘러본다.
 					<<else>>
-						A phantasmal voice echoes from the $_edenDirection. "<span class="witch">Do you think the forest has forgotten? It never does.</span>"
+						<<shopHuntDirKr $_edenDirection>> 방향에서 유령 같은 목소리가 메아리친다. "<span class="witch">숲이 잊었을 거라 생각해? 절대 잊지 않아.</span>"
 						<br>
-						<<shopHuntActorName $_eden.id "cap">> growls. You hear hundreds of skittering footsteps from the same direction.
+						<<shopHuntActorName $_eden.id "cap">>【이가】 으르렁거린다. 같은 방향에서 수백 번의 바스락거리는 발소리가 들려온다.
 					<</if>>
 				<<case 1>>
 					<<if $_playerSeesEden>>
-						A phantasmal voice echoes from around <<shopHuntActorName $_eden.id>>. "<span class="witch">You could never run far enough.</span>"
+						<<shopHuntActorName $_eden.id>> 주위에서 유령 같은 목소리가 메아리친다. "<span class="witch">너는 결코 멀리 도망칠 수 없어.</span>"
 						<br>
-						<<shopHuntPronoun "He">> spins on the spot, pointing <<shopHuntPronoun "his">> gun this way and that. "I'm not the one hiding."
+						<<shopHuntPronoun "He">>【은는】 제자리에서 휙 돌며 <<shopHuntPronoun "his">> 총을 이리저리 겨눈다. "숨는 건 내가 아니야."
 					<<else>>
-						A phantasmal voice echoes from the $_edenDirection. "<span class="witch">You could never run far enough.</span>"
+						<<shopHuntDirKr $_edenDirection>> 방향에서 유령 같은 목소리가 메아리친다. "<span class="witch">너는 결코 멀리 도망칠 수 없어.</span>"
 						<br>
-						<<shopHuntActorName $_eden.id "cap">> scoffs. "I'm not the one hiding."
+						<<shopHuntActorName $_eden.id "cap">>【이가】 비웃는다. "숨는 건 내가 아니야."
 					<</if>>
 				<<case 2>>
 					<<if $_playerSeesEden>>
 						A phantasmal voice echoes from around <<shopHuntActorName $_eden.id>>. "<span class="witch">You're terrified of your inability to keep <<phim "Gwylan">> safe. That feeling is so familiar, isn't it?</span>"
 						<br>
-						<<shopHuntPronoun "He">> yells into the gloom. "Are you speaking from experience?" A chorus of laughs answers <<shopHuntPronoun "him">>.
+						<<shopHuntPronoun "He">>【은는】 어둠을 향해 소리친다. "경험에서 우러나온 말이냐?" 웃음소리가 모여들어 <<shopHuntPronoun "him">>에게 대답한다.
 					<<else>>
 						A phantasmal voice echoes from the $_edenDirection. "<span class="witch">You're terrified of your inability to keep <<phim "Gwylan">> safe. That feeling is so familiar, isn't it?</span>"
 						<br>
-						<<shopHuntActorName $_eden.id "cap">> yells. "Are you speaking from experience?" A chorus of laughs answers <<shopHuntPronoun "him">>.
+						<<shopHuntActorName $_eden.id "cap">>【이가】 소리친다. "경험에서 우러나온 말이냐?" 웃음소리가 모여들어 <<shopHuntPronoun "him">>에게 대답한다.
 					<</if>>
 				<<case 3>>
 					<<if $_playerSeesEden>>
-						A phantasmal voice echoes from around <<shopHuntActorName $_eden.id>>. "<span class="witch">Every tree you've struck with a stray bullet. Every carcass you've left to rot. Your crimes are remembered.</span>"
+						<<shopHuntActorName $_eden.id>> 주위에서 유령 같은 목소리가 메아리친다. "<span class="witch">네가 빗나간 총알로 맞힌 모든 나무들. 네가 썩도록 내버려 둔 모든 시체들. 너의 죄는 기억되고 있어.</span>"
 						<br>
-						"I'll give you one to really remember," <<shopHuntPronoun "he">> says as footsteps echo all around <<shopHuntPronoun "him">>.
+						<<shopHuntPronoun "him">> 주위로 발소리가 메아리치자 "정말 기억에 남을 만한 걸 하나 주지." 하고 <<shopHuntPronoun "he">>【이가】 말한다.
 					<<else>>
-						A phantasmal voice echoes from the $_edenDirection. "<span class="witch">Every tree you've struck with a stray bullet. Every carcass you've left to rot. Your crimes are remembered.</span>"
+						<<shopHuntDirKr $_edenDirection>> 방향에서 유령 같은 목소리가 메아리친다. "<span class="witch">네가 빗나간 총알로 맞힌 모든 나무들. 네가 썩도록 내버려 둔 모든 시체들. 너의 죄는 기억되고 있어.</span>"
 						<br>
-						"I'll give you one to really remember," <<shopHuntPronoun "he">> says. You hear stampeding footsteps from the same direction.
+						"정말 기억에 남을 만한 걸 하나 주지." 하고 <<shopHuntPronoun "he">>【이가】 말한다. 같은 방향에서 질주하는 발소리가 들린다.
 					<</if>>
 				<<default>>
 					<<if $_playerSeesEden>>
-						A phantasmal voice echoes from around <<shopHuntActorName $_eden.id>>. "<span class="witch">I still remember the day. The day you damned more than one soul with your selfishness. Do you?</span>" There's a laugh. "<span class="witch">Oh my, that's right. That doesn't narrow it down at all, does it?</span>"
+						<<shopHuntActorName $_eden.id>> 주위에서 유령 같은 목소리가 메아리친다. "<span class="witch">난 아직도 그날을 기억해. 네 이기심으로 한 명 이상의 영혼을 저주했던 날. 넌 기억해?</span>" 웃음소리가 들린다. "<span class="witch">오 이런, 맞아. 그것만으로는 전혀 좁혀지지 않지, 안 그래?</span>"
 						<br>
-						<<shopHuntPronoun "He">> brings up <<shopHuntPronoun "his">> guns as if to parry as a shadow leaps from the darkness. It fades before it strikes <<shopHuntPronoun "him">>. <span class="red">A screech pierces the gloom, and the darkness becomes tangible. It's suffocating.</span>
+						어둠 속에서 그림자가 뛰어오르자 <<shopHuntPronoun "He">>【은는】 막아내려는 듯 <<shopHuntPronoun "his">> 총을 들어올린다. 그것은 <<shopHuntPronoun "him">>【을를】 공격하기 전에 희미해진다. <span class="red">비명 소리가 어둠을 뚫고 지나가고, 어둠은 실체화된다. 숨이 막힐 것 같다.</span>
 					<<else>>
-						A phantasmal voice echoes from the $_edenDirection. "<span class="witch">I still remember the day. The day you damned more than one soul with your selfishness. Do you?</span>" There's a laugh. "<span class="witch">Oh my, that's right. That doesn't narrow it down at all, does it?</span>"
+						<<shopHuntDirKr $_edenDirection>> 방향에서 유령 같은 목소리가 메아리친다. "<span class="witch">난 아직도 그날을 기억해. 네 이기심으로 한 명 이상의 영혼을 저주했던 날. 넌 기억해?</span>" 웃음소리가 들린다. "<span class="witch">오 이런, 맞아. 그것만으로는 전혀 좁혀지지 않지, 안 그래?</span>"
 						<br>
-						<span class="red">A screech pierces the gloom, and the darkness becomes tangible. It's suffocating.</span>
+						<span class="red">비명 소리가 어둠을 뚫고 지나가고, 어둠은 실체화된다. 숨이 막힐 것 같다.</span>
 					<</if>>
 			<</switch>>
 			<br><br>
@@ -3179,9 +3196,9 @@
 			<<set $_eden.ammo to 10>>
 			<<set $_eden.target to false>>
 			<<if $_playerSeesEden>>
-				<span class="purple">You see <<shopHuntActorName $_eden.id>> pause to reload <<shopHuntPronoun "his">> rifle.</span>
+				<span class="purple">당신은 <<shopHuntActorName $_eden.id>>【이가】 <<shopHuntPronoun "his">> 소총을 재장전하기 위해 잠시 멈추는 것을 본다.</span>
 			<<else>>
-				You hear a series of sharp clicks from $_edenDirectionPrint. <span class="purple">Like a gun being reloaded.</span>
+				$_edenDirectionPrint에서 날카로운 찰칵거리는 소리들을 연이어 듣는다. <span class="purple">마치 총을 재장전하는 듯한 소리다.</span>
 			<</if>>
 			<br><br>
 		<<elseif !$_eden.stun.all and !$_eden.stun.shoot and $_eden.target isnot "reload">>
@@ -3206,61 +3223,61 @@
 				<<if !$_eden.ammo>>
 					<<set $_eden.target to "reload">>
 					<<if $_playerSeesEden>>
-						<<shopHuntActorName $_eden.id "cap">> takes aim at
+						<<shopHuntActorName $_eden.id "cap">>【이가】 겨냥한다.
 						<<if $_playerSeesTarget>>
 							<<shopHuntActorName $_edenTarget.id>>,
 						<<else>>
-							something to <<shopHuntPronoun "his">> $_bulletDirection,
+							<<shopHuntPronoun "his">> <<shopHuntDirKr $_bulletDirection>> 방향에 있는 어떤 것에,
 						<</if>>
-						and pulls the trigger. <span class="blue">A dull click is the only result.</span> <<shopHuntPronoun "He" $_eden.id>> curses.
+						그리고 방아쇠를 당긴다. <span class="blue">둔탁한 찰칵 소리가 날 뿐이다.</span> <<shopHuntPronoun "He" $_eden.id>>【이가】 욕을 한다.
 					<<else>>
-						You hear a <span class="blue">dull click</span> from $_edenDirectionPrint, followed by <<shopHuntActorName $_eden.id>>'s voice cursing.
+						$_edenDirectionPrint에서 <span class="blue">둔탁한 찰칵 소리</span>를 듣고, 뒤이어 <<shopHuntActorName $_eden.id>>【이가】 욕을 하는 소리를 듣는다.
 					<</if>>
 					<<switch $_edenTarget.type>>
 						<<case "gwylan">>
 							<br>
 							<<if $_playerSeesTarget>>
-								<<shopHuntActorName $_edenTarget.id "cap">> giggles.
+								<<shopHuntActorName $_edenTarget.id "cap">>【이가】 킥킥 웃는다.
 							<<else>>
-								You hear <<shopHuntActorName $_edenTarget.id>> giggle <<if $_edenTargetDirection is "here">>right in front of you<<else>>from the $_edenTargetDirection<</if>>.
+								당신은 <<shopHuntActorName $_edenTarget.id>>【이가】 <<if $_edenTargetDirection is "here">>당신 바로 앞에서<<else>><<shopHuntDirKr $_edenTargetDirection>> 방향에서<</if>> 킥킥 웃는 소리를 듣는다.
 							<</if>>
 							<<switch random(1,4)>>
-								<<case 1>>"Forgetting to count your shots?"
-								<<case 2>>"Oh my, you were really about to shoot me." <<shopHuntPronoun "He">> tuts. "How lucky for us both."
-								<<case 3>>"Having trouble?"
-								<<case 4>>"Run dry. If only your temper would follow."
+								<<case 1>>"총알 수 세는 걸 깜빡했나?"
+								<<case 2>>"오 이런, 정말 날 쏘려고 했구나." <<shopHuntPronoun "He">>【이가】 쯧쯧 혀를 찬다. "우리 둘 다 얼마나 운이 좋은지."
+								<<case 3>>"문제가 생겼나?"
+								<<case 4>>"바닥났군. 네 성질머리도 좀 그렇게 되면 좋으련만."
 							<</switch>>
 						<<case "mannequin">>
 							<br>
 							<<if $_playerSeesTarget>>
 								<<if $_edenTarget.name is "giant fox plushie">>
-									You hear what sounds like the faintest high-pitched giggle in response.
+									당신은 대답으로 아주 희미하고 높은 톤의 킥킥거리는 소리 같은 것을 듣는다.
 								<<else>>
-									<<shopHuntActorName $_edenTarget.id "cap">> claps mockingly.
+									<<shopHuntActorName $_edenTarget.id "cap">>【이가】 비웃듯이 손뼉을 친다.
 								<</if>>
 							<<else>>
 								<<if $_edenTarget.name is "giant fox plushie">>
-									You hear what sounds like the faintest high-pitched giggle in response.
+									당신은 대답으로 아주 희미하고 높은 톤의 킥킥거리는 소리 같은 것을 듣는다.
 								<<else>>
-									You hear what sounds like wooden hands clapping from the $_edenTargetDirection in response.
+									당신은 대답으로 <<shopHuntDirKr $_edenTargetDirection>> 방향에서 나무 손이 박수를 치는 듯한 소리를 듣는다.
 								<</if>>
 							<</if>>
 						<<case "wraith">>
 							<br>
 							<<if $_playerSeesTarget>>
-								<<shopHuntActorName $_edenTarget.id "cap">> smiles.
+								<<shopHuntActorName $_edenTarget.id "cap">>【이가】 미소 짓는다.
 							<<else>>
-								You hear <<shopHuntActorName $_edenTarget.id>> laugh in response.
+								당신은 대답으로 <<shopHuntActorName $_edenTarget.id>>【이가】 웃는 소리를 듣는다.
 							<</if>>
-							"<span class="wraith">The venomous sting of futility.</span>"
+							"<span class="wraith">무익함의 독침이로구나.</span>"
 						<<case "elkspawn">>
 							<br>
 							<<if $_playerSeesTarget>>
-								<<shopHuntActorName $_edenTarget.id "cap">> lets out a strained, bestial laugh.
+								<<shopHuntActorName $_edenTarget.id "cap">>【이가】 억눌린 짐승 같은 웃음소리를 낸다.
 							<<else>>
-								You hear strained, bestial laughter in response.
+								당신은 대답으로 억눌린 짐승 같은 웃음소리를 듣는다.
 							<</if>>
-							"Your hands tremble. Your heart pounds."
+							"너의 손은 떨리고, 심장은 뛰고 있지."
 						<<default>>
 							/* No response */
 					<</switch>>
@@ -3269,21 +3286,21 @@
 					<<shopHuntMess 1 `$_edenLoc + "BulletCasing"`>>
 
 					<<if $_playerSeesEden>>
-						<<shopHuntActorName $_eden.id "cap">> takes aim at
+						<<shopHuntActorName $_eden.id "cap">>【이가】 겨냥한다.
 						<<if $_playerSeesTarget>>
 							<<shopHuntActorName $_edenTarget.id>>,
 						<<else>>
-							something to <<shopHuntPronoun "his">> $_bulletDirection,
+							<<shopHuntPronoun "his">> <<shopHuntDirKr $_bulletDirection>> 방향에 있는 어떤 것에,
 						<</if>>
-						and pulls the trigger.
+						그리고 방아쇠를 당긴다.
 					<</if>>
 					<<if $_edenTarget.type is "gwylan" and shopHuntContains(shopHuntLoc($_edenTarget.position)).includes("player") and !$shopHunt.player.hide>>
-						<<shopHuntActorName $_edenTarget.id "cap">> grabs you and pulls you out of the way.
+						<<shopHuntActorName $_edenTarget.id "cap">>【이가】 당신을 잡고 옆으로 당긴다.
 					<</if>>
 					<<if $_playerSeesEden>>
-						<span class="red">A deafening crack echoes through the shop.</span>
+						<span class="red">귀청이 터질 듯한 총성이 가게 안에 울려 퍼진다.</span>
 					<<else>>
-						You hear a <span class="red">gunshot</span> from $_edenDirectionPrint.
+						$_edenDirectionPrint에서 <span class="red">총성</span>을 듣는다.
 					<</if>>
 					<<if ["elkspawn","mannequin"].includes($_edenTarget.type) and !!$_edenTarget.state>>
 						<<set $_edenTargetHit to $_edenTarget>>
@@ -3303,7 +3320,7 @@
 								/* ToDo: Gwylan hunt - have adjacent mannequins also jump in front of the player if the player is in the path? */
 								<<if $_actorsAtBullet.includes("player") and !($shopHunt.player.hide is 4 and _loc.special.includes("inside"))>>
 									<<if $_playerSeesTarget>>
-										<<shopHuntActorName $_edenTargetHit.id "cap">> leaps in front of you, <span class="red">shielding you from the bullet</span>.
+										<<shopHuntActorName $_edenTargetHit.id "cap">>【이가】 당신 앞으로 뛰어들어, <span class="red">총알로부터 당신을 막아선다</span>.
 									<<else>>
 										Something wooden leaps in front of you, <span class="red">shielding you from the bullet</span>.
 									<</if>>
@@ -3311,65 +3328,65 @@
 								<</if>>
 								<<if $_edenTargetHit.state is "hold">>
 									<<if $_edenTargetHit.name is "giant fox plushie">>
-										<span class="red">A spray of cotton flies from <<shopHuntActorName $_edenTargetHit.id>>, its grip faltering.</span>
+										<span class="red"><<shopHuntActorName $_edenTargetHit.id>>에게서 솜이 튀어나오고, 녀석의 악력이 약해진다.</span>
 										<<if $_edenTargetHit.health lte 0>>
-											<span class="red">It sags and goes limp on the floor.</span>
+											<span class="red">그것은 축 늘어져 바닥에 쓰러진다.</span>
 										<</if>>
 										<<trauma 50>><<gggtrauma>>
 									<<elseif $_edenTargetHit.name is "masked mannequin">>
 										<<if $_edenTargetHit.health lte 0>>
-											<span class="red"><<shopHuntActorName $_edenTargetHit.id "cap">> lets go of you, and falls to its hands and knees in a disturbingly human way. Links of chain fall from its tunic.</span> <<trauma 24>><<ggtrauma>>
+											<span class="red"><<shopHuntActorName $_edenTargetHit.id "cap">>【은는】 당신을 놓고 소름 끼칠 정도로 사람처럼 양손과 무릎을 꿇고 쓰러진다. 튜닉에서 사슬 고리들이 떨어진다.</span> <<trauma 24>><<ggtrauma>>
 										<<else>>
-											<<shopHuntActorName $_edenTargetHit.id "cap">> recoils, <span class="pink">briefly falling to one knee before standing back up and grabbing hold of you once more.</span>
+											<<shopHuntActorName $_edenTargetHit.id "cap">>【이가】 뒤로 주춤하더니, <span class="pink">잠깐 한쪽 무릎을 꿇고 넘어졌다가 다시 일어나 당신을 한 번 더 붙잡는다.</span>
 										<</if>>
 									<<else>>
 										<<if $_edenTargetHit.health lte 0>>
-											<span class="red"><<shopHuntActorName $_edenTargetHit.id "cap">> is blown to the ground in front of you. It reaches towards you, one wooden hand tapping your leg desperately, before falling lifeless.</span> <<trauma 24>><<ggtrauma>>
+											<span class="red"><<shopHuntActorName $_edenTargetHit.id "cap">>【이가】 당신 앞에서 날아가 바닥에 쓰러진다. 그것은 나무 손 하나로 당신 다리를 절박하게 두드리며 당신에게 손을 뻗더니, 생명력을 잃고 쓰러진다.</span> <<trauma 24>><<ggtrauma>>
 										<<else>>
-											<<shopHuntActorName $_edenTargetHit.id "cap">> recoils, <span class="pink">briefly falling to one knee before standing back up and grabbing hold of you once more.</span>
+											<<shopHuntActorName $_edenTargetHit.id "cap">>【이가】 뒤로 주춤하더니, <span class="pink">잠깐 한쪽 무릎을 꿇고 넘어졌다가 다시 일어나 당신을 한 번 더 붙잡는다.</span>
 										<</if>>
 									<</if>>
 								<<elseif $_playerSeesTarget>>
 									<<if $_edenTargetHit.name is "giant fox plushie">>
-										<span class="red">A spray of cotton flies from <<shopHuntActorName $_edenTargetHit.id>>.</span>
+										<span class="red"><<shopHuntActorName $_edenTargetHit.id>>에게서 솜 조각들이 흩날린다.</span>
 										<<if $_edenTargetHit.health lte 0>>
-											<span class="red">It sags and goes limp on the floor.</span>
+											<span class="red">그것은 축 늘어져 바닥에 쓰러진다.</span>
 										<</if>>
 										<<trauma 50>><<gggtrauma>>
 									<<elseif $_edenTargetHit.name is "masked mannequin">>
 										<<if $_edenTargetHit.health lte 0>>
-											<span class="red"><<shopHuntActorName $_edenTargetHit.id "cap">> recoils, and falls to its hands and knees in a disturbingly human way. Links of chain fall from its tunic.</span> <<trauma 24>><<ggtrauma>>
+											<span class="red"><<shopHuntActorName $_edenTargetHit.id "cap">>【이가】 뒤로 물러서더니, 소름 끼치게 사람 같은 동작으로 두 손과 무릎을 꿇고 쓰러진다. 녀석의 튜닉에서 사슬 고리들이 떨어진다.</span> <<trauma 24>><<ggtrauma>>
 										<<else>>
-											<<shopHuntActorName $_edenTargetHit.id "cap">> recoils, <span class="pink">briefly falling to one knee before standing back up.</span>
+											<<shopHuntActorName $_edenTargetHit.id "cap">>【이가】 주춤하더니, <span class="pink">잠깐 한쪽 무릎을 꿇고 넘어졌다가 다시 일어선다.</span>
 										<</if>>
 									<<else>>
 										<<if $_edenTargetHit.health lte 0>>
 											<<switch random(1, 5)>>
-												<<case 1>><<shopHuntActorName $_edenTargetHit.id "cap">> does a mock swoon, appearing to faint. <span class="red">It clatters to the floor lifelessly.</span>
-												<<case 2>><<shopHuntActorName $_edenTargetHit.id "cap">> is blown backwards, <span class="red">clattering to the floor lifelessly.</span>
-												<<case 3>><<shopHuntActorName $_edenTargetHit.id "cap">>'s arm is blown clean off. It looks down at the remains, before slowly tipping forward. <span class="red">It clatters to the floor lifelessly.</span>
-												<<case 4>><<shopHuntActorName $_edenTargetHit.id "cap">>'s head is blown clean off. It spreads its arms wide, gesturing at Eden as if personally affronted, before <span class="red">clattering to the floor lifelessly.</span>
-												<<case 5>><span class="red"><<shopHuntActorName $_edenTargetHit.id "cap">> falls to the ground and starts writhing, as if in pain. After an agonising moment of struggle, it becomes lifeless.</span> <<trauma 24>><<ggtrauma>>
+												<<case 1>><<shopHuntActorName $_edenTargetHit.id "cap">>【이가】 기절하는 척 과장된 몸짓을 한다. <span class="red">그것은 힘없이 덜그럭거리며 바닥에 쓰러진다.</span>
+												<<case 2>><<shopHuntActorName $_edenTargetHit.id "cap">>【이가】 뒤로 튕겨나가, <span class="red">생기 없이 바닥에 나뒹군다.</span>
+												<<case 3>><<shopHuntActorName $_edenTargetHit.id "cap">>의 팔이 통째로 날아간다. 그것은 남은 부위를 내려다보더니, 천천히 앞으로 쓰러진다. <span class="red">그것은 힘없이 덜그럭거리며 바닥에 쓰러진다.</span>
+												<<case 4>><<shopHuntActorName $_edenTargetHit.id "cap">>의 머리가 통째로 날아간다. 그것은 마치 개인적으로 모욕을 당한 것처럼 양팔을 크게 벌려 에덴에게 항의하는 제스처를 취하더니, <span class="red">힘없이 바닥에 나뒹군다.</span>
+												<<case 5>><span class="red"><<shopHuntActorName $_edenTargetHit.id "cap">>【이가】 바닥에 쓰러져 마치 고통받는 것처럼 몸부림치기 시작한다. 끔찍하게 몸부림치는 순간이 지나고, 생명을 잃는다.</span> <<trauma 24>><<ggtrauma>>
 											<</switch>>
 										<<else>>
-											<<shopHuntActorName $_edenTargetHit.id "cap">> recoils, <span class="pink">briefly falling to one knee before standing back up.</span>
+											<<shopHuntActorName $_edenTargetHit.id "cap">>【이가】 주춤하더니, <span class="pink">잠깐 한쪽 무릎을 꿇고 넘어졌다가 다시 일어선다.</span>
 										<</if>>
 									<</if>>
 								<<else>>
 									<<if $_edenTargetHit.name is "giant fox plushie">>
 										<<set $_silentShot to true>>
-										Strangely, <span class="purple">you don't hear it hit anything</span>.
+										이상하게도, <span class="purple">총알이 무언가에 맞는 소리가 들리지 않는다</span>.
 									<<elseif $_edenTargetHit.name is "masked mannequin">>
 										<<if $_edenTargetHit.health lte 0>>
-											<span class="pink">The sound of something wooden collapsing to the floor follows, along with a soft metallic clanking.</span>
+											<span class="pink">나무로 된 무언가가 바닥에 쓰러지는 소리와 함께 둔탁한 쇳소리가 들려온다.</span>
 										<<else>>
-											<span class="purple">The sound of something wooden falling over, and then standing back up, follows.</span>
+											<span class="purple">나무로 된 무언가가 쓰러졌다가 다시 일어서는 소리가 뒤따른다.</span>
 										<</if>>
 									<<else>>
 										<<if $_edenTargetHit.health lte 0>>
-											<span class="pink">The sound of something wooden collapsing to the floor follows.</span>
+											<span class="pink">나무로 된 무언가가 바닥에 무너지는 소리가 뒤따른다.</span>
 										<<else>>
-											<span class="purple">The sound of something wooden falling over, and then standing back up, follows.</span>
+											<span class="purple">나무로 된 무언가가 쓰러졌다가 다시 일어서는 소리가 뒤따른다.</span>
 										<</if>>
 									<</if>>
 									<<if !$_silentshot and $_edenTargetDirection isnot $_edenDirection>>It came from $_edenTargetDirectionPrint.<</if>>
@@ -3384,36 +3401,36 @@
 						<<switch shopHuntLocName($_bulletDest)>>
 							<<case "creakyCabinet">>
 								<<if $_actorsAtBullet.includes("player")>>
-									<span class="red">A bullet flies right by you,</span> striking the creaky cabinet. <<stress 24>><<trauma 12>><<ggstress>><<ggtrauma>>
+									<span class="red">총알 하나가 당신 곁을 스쳐 지나가며,</span> 삐걱거리는 캐비닛을 맞춘다. <<stress 24>><<trauma 12>><<ggstress>><<ggtrauma>>
 								<<elseif $_actorsBorderingBullet.includes("player")>>
-									<span class="red">A bullet hisses through the air nearby,</span> striking the creaky cabinet. <<stress 12>><<ggstress>>
+									<span class="red">총알 하나가 쉭 소리를 내며 근처를 날아가,</span> 삐걱거리는 캐비닛을 맞춘다. <<stress 12>><<ggstress>>
 								<<else>>
-									It's followed by a dull creak from the<<if !$_silentshot and $_bulletDestDirection isnot $_edenDirection>> to the $_bulletDestDirection<</if>>. <<stress 6>><<gstress>>
+									이어<<if !$_silentshot and $_bulletDestDirection isnot $_edenDirection>> <<shopHuntDirKr $_bulletDestDirection>> 방향에서<</if>> 둔탁한 삐걱 소리가 난다. <<stress 6>><<gstress>>
 								<</if>>
 							<<case "squeakyRotatingRack">>
 								<<if $_actorsAtBullet.includes("player")>>
-									<span class="red">A bullet flies right by you,</span> striking the rotating rack. <<stress 24>><<trauma 12>><<ggstress>><<ggtrauma>>
+									<span class="red">총알 하나가 당신 곁을 스쳐 지나가며,</span> 회전식 진열대를 맞춘다. <<stress 24>><<trauma 12>><<ggstress>><<ggtrauma>>
 								<<elseif $_actorsBorderingBullet.includes("player")>>
-									<span class="red">A bullet hisses through the air nearby,</span> striking the rotating rack. <<stress 12>><<ggstress>>
+									<span class="red">총알 하나가 쉭 소리를 내며 근처를 날아가,</span> 회전식 진열대를 맞춘다. <<stress 12>><<ggstress>>
 								<<else>>
-									It's followed by the droning squeak of the rotating rack<<if !$_silentshot and $_bulletDestDirection isnot $_edenDirection>> to the $_bulletDestDirection<</if>>. <<stress 6>><<gstress>>
+									이어<<if !$_silentshot and $_bulletDestDirection isnot $_edenDirection>> <<shopHuntDirKr $_bulletDestDirection>> 방향에서<</if>> 회전식 진열대가 낮게 끽끽대는 소리가 난다. <<stress 6>><<gstress>>
 								<</if>>
 							<<case "tiltedVanity">>
 								/* ToDo: Gwylan - vanity gets shattered. Becomes hazard? */
 								<<if $_actorsAtBullet.includes("player")>>
-									<span class="red">A bullet flies right by you,</span> shattering the tilted vanity's mirror and sending a shower of glass raining down on you. <<stress 24>><<trauma 12>><<ggstress>><<ggtrauma>>
+									<span class="red">총알 하나가 당신 곁을 스쳐 지나가며,</span> 기울어진 화장대 거울을 깨뜨리고 당신의 위로 유리 파편이 소나기처럼 쏟아진다. <<stress 24>><<trauma 12>><<ggstress>><<ggtrauma>>
 								<<elseif $_actorsBorderingBullet.includes("player")>>
-									<span class="red">A bullet hisses through the air nearby,</span> shattering the tilted vanity's mirror. <<stress 12>><<ggstress>>
+									<span class="red">총알 하나가 쉭 소리를 내며 근처를 날아가,</span> 기울어진 화장대 거울을 산산조각 낸다. <<stress 12>><<ggstress>>
 								<<else>>
-									It's followed by the shattering of glass<<if !$_silentshot and $_bulletDestDirection isnot $_edenDirection>> to the $_bulletDestDirection<</if>>. <<stress 6>><<gstress>>
+									이어<<if !$_silentshot and $_bulletDestDirection isnot $_edenDirection>> <<shopHuntDirKr $_bulletDestDirection>> 방향에서<</if>> 유리가 깨지는 소리가 난다. <<stress 6>><<gstress>>
 								<</if>>
 							<<default>>
 								<<if $_actorsAtBullet.includes("player")>>
-									<span class="red">A bullet flies right by you,</span> striking the wall. <<stress 24>><<trauma 12>><<ggstress>><<ggtrauma>>
+									<span class="red">총알 하나가 당신 곁을 스쳐 지나가며,</span> 벽을 맞춘다. <<stress 24>><<trauma 12>><<ggstress>><<ggtrauma>>
 								<<elseif $_actorsBorderingBullet.includes("player")>>
-									<span class="red">A bullet hisses through the air nearby,</span> striking the wall. <<stress 12>><<ggstress>>
+									<span class="red">총알 하나가 쉭 소리를 내며 근처를 날아가,</span> 벽을 맞춘다. <<stress 12>><<ggstress>>
 								<<else>>
-									It's followed by the faint rattle of a bullet coming to rest on the floor<<if !$_silentshot and $_bulletDestDirection isnot $_edenDirection>> to the $_bulletDestDirection<</if>>. <<stress 6>><<gstress>>
+									이어<<if !$_silentshot and $_bulletDestDirection isnot $_edenDirection>> <<shopHuntDirKr $_bulletDestDirection>> 방향에서<</if>> 총알이 바닥에 떨어지며 작게 달그락거리는 소리가 난다. <<stress 6>><<gstress>>
 								<</if>>
 						<</switch>>
 					<</if>>
@@ -3427,56 +3444,56 @@
 						/* ToDo: Gwylan hunt - if Gwylan see the giant fox plushie or masked mannequin get destroyed, Gwylan moves to defeated actor, then attacks Eden  */
 						<br>
 						<<set $shopHuntActive to $shopHunt.actors.find(x => x.type is "gwylan").id>>
-						<<shopHuntActorName $shopHuntActive "cap">> gasps.
+						<<shopHuntActorName $shopHuntActive "cap">>【이가】 숨을 헐떡인다.
 						<<if $_edenTargetHit.name is "giant fox plushie">>
 							"No! That was a gift from <<phim "Gwylan">>!"
 						<<else>>
-							"No!"
+							"안 돼!"
 						<</if>>
 					<<else>>
 						<<switch $_edenTarget.type>>
 							<<case "gwylan">>
 								<br>
 								<<if $_playerSeesTarget>>
-									<<shopHuntActorName $_edenTarget.id "cap">> puts a hand to <<shopHuntPronoun "his" $_edenTarget.id>> mouth and giggles.
+									<<shopHuntActorName $_edenTarget.id "cap">>【이가】 <<shopHuntPronoun "his" $_edenTarget.id>> 입에 손을 얹고 킥킥 웃는다.
 								<<else>>
-									You then hear <<shopHuntActorName $_edenTarget.id>> giggle from the darkness.
+									그러고 나서 당신은 어둠 속에서 <<shopHuntActorName $_edenTarget.id>>【이가】 킥킥 웃는 소리를 듣는다.
 								<</if>>
 								<<if !$_edenTargetHit and $_bulletDest is "tiltedVanity">>
 									<br>
 									<<if shopHuntWithinPlayerSight("gwylan")>>
-										<<shopHuntActorName $_edenTarget.id "cap">> giggles.
+										<<shopHuntActorName $_edenTarget.id "cap">>【이가】 킥킥 웃는다.
 									<<else>>
-										You hear <<shopHuntActorName $_edenTarget.id>> giggle from the darkness.
+										어둠 속에서 <<shopHuntActorName $_edenTarget.id>>【이가】 킥킥 웃는 소리가 들린다.
 									<</if>>
-									"That's another seven years of rotten luck for you."
+									"또 7년 동안 끔찍한 불운을 겪겠네."
 								<<elseif $_edenTargetHit?.health lte 0>>
 									<<switch random(1,4)>>
-										<<case 1>>"Is destruction all you know?"
-										<<case 2>>"It will all crumble on top of you."
-										<<case 3>>"You're a cancer on this forest."
-										<<case 4>>"Ooh, you got me! Just kidding. You'll be paying for that mannequin, though."
+										<<case 1>>"넌 파괴하는 것밖에 모르지?"
+										<<case 2>>"그건 모두 네 위로 무너져 내릴 거야."
+										<<case 3>>"넌 이 숲의 암적인 존재야."
+										<<case 4>>"오오, 날 맞췄네! 농담이야. 그래도 저 마네킹 값은 네가 내야 할걸."
 									<</switch>>
 								<<else>>
 									<<switch random(1,4)>>
-										<<case 1>>"You missed."
-										<<case 2>>"Ooh, another unlucky miss."
-										<<case 3>>"Surely your luck will turn around one of these times."
-										<<case 4>>"What were you even aiming at? Jumping at shadows?"
+										<<case 1>>"빗나갔어."
+										<<case 2>>"오 이런, 또 운 없게 빗나갔네."
+										<<case 3>>"언젠가는 그 운도 돌아서겠지."
+										<<case 4>>"도대체 어딜 겨누고 있는 거야? 그림자를 보고 놀랐어?"
 									<</switch>>
 								<</if>>
 							<<case "wraith">>
 								<br>
 								<<if $_playerSeesTarget>>
-									<<shopHuntActorName $_edenTarget.id "cap">> laughs.
+									<<shopHuntActorName $_edenTarget.id "cap">>【이가】 웃는다.
 								<<else>>
-									You then hear <<shopHuntActorName $_edenTarget.id>> laugh from the darkness.
+									그러고 나서 당신은 어둠 속에서 <<shopHuntActorName $_edenTarget.id>>【이가】 웃는 소리를 듣는다.
 								<</if>>
 								<<switch random(1,4)>>
-									<<case 1>>"<span class="wraith">Your violence is nothing.</span>"
-									<<case 2>>"<span class="wraith">Throw stones in a house of ashes.</span>"
-									<<case 3>>"<span class="wraith">Like a parasite in the gut.</span>"
-									<<case 4>>"<span class="wraith">Eden. Eden. Eden. Eden. Eden. Eden. Eden. Eden. Eden.</span>"
+									<<case 1>>"<span class="wraith">너의 폭력은 아무것도 아니야.</span>"
+									<<case 2>>"<span class="wraith">재투성이 집에서 돌이나 던져라.</span>"
+									<<case 3>>"<span class="wraith">뱃속의 기생충 같구나.</span>"
+									<<case 4>>"<span class="wraith">에덴. 에덴. 에덴. 에덴. 에덴. 에덴. 에덴. 에덴. 에덴.</span>"
 								<</switch>>
 							<<default>>
 								/* No response */
@@ -3612,7 +3629,7 @@
 		<</if>>
 	<</if>>
 	<<if $_forgot>>
-		You've been in the <<shopHuntLocName _locRaw "simple">> for a while. <span class="red">You're starting to forget the layout of the shop.</span>
+		당신은 <<shopHuntLocName _locRaw "simple">>에 한동안 머물렀다. <span class="red">가게 구조가 점점 기억에서 희미해지기 시작한다.</span>
 		<br><br>
 	<</if>>
 <</widget>>
@@ -3638,13 +3655,13 @@
 <<widget "shopHuntHoldOptions">>
 	<<if _holdStarted>>
 		<<shopHuntActorSetState "gwylan" "check" _locRaw>>
-		<<shopHuntActorName `$shopHunt.actors.find(x => x.state is "hold").id` "cap">> taps the floor rhythmically. <span class="red">You hear <<shopHuntActorName `$shopHunt.actors.find(x => x.type is "gwylan").id`>> giggle.</span> "Oh, so that's where you are. Coming!"
+		<<shopHuntActorName `$shopHunt.actors.find(x => x.state is "hold").id` "cap">>【이가】 리듬에 맞춰 바닥을 두드린다. <span class="red"><<shopHuntActorName `$shopHunt.actors.find(x => x.type is "gwylan").id`>>【이가】 낄낄거리는 소리가 들린다.</span> "오, 거기 있었네. 갈게!"
 		<br><br>
 	<</if>>
 	<<shopHuntMap>>
-	<<ind>><<link [[Resist|Forest Shop Hunt]]>><<shopHuntAction "resist">><</link>><<shopHuntResistGrip "hold">>
+	<<ind>><<link [[저항한다|Forest Shop Hunt]]>><<shopHuntAction "resist">><</link>><<shopHuntResistGrip "hold">>
 	<br>
-	<<ind>><<link [[Wait|Forest Shop Hunt]]>><<shopHuntAction "wait">><</link>>
+	<<ind>><<link [[기다린다|Forest Shop Hunt]]>><<shopHuntAction "wait">><</link>>
 <</widget>>
 
 <<widget "shopHuntDragOptions">>
@@ -3655,7 +3672,7 @@
 	<<if _actorDrag.type is "eden">>
 		<<if _locRaw is shopHuntFind("door")>>
 			<<if $shopHunt.shop.shuffle.count lt $shopHunt.shop.shuffle.max>>
-				<span class="gold">You're at the <<shopHuntDoor>>.</span> <<shopHuntActorName _actorDrag.id "cap">> tries the handle. It's locked.
+				<span class="gold">당신은 <<shopHuntDoor>>에 있다.</span> <<shopHuntActorName _actorDrag.id "cap">>【은는】 손잡이를 당겨본다. 잠겨있다.
 				<br><br>
 				<<shopHuntShuffle "edenDoor">>
 				<<shopHuntOptions>>
@@ -3663,7 +3680,7 @@
 			<<elseif !_actorDrag.stun.door>>
 				<<if _actorDrag.points is 3>>
 					<<shopHuntMess "door" 15>>
-					<span @class="shopHuntActorColor(_actorDrag.id)">The door breaks open.</span> The shop groans as if in terrible pain.
+					<span @class="shopHuntActorColor(_actorDrag.id)">문이 부서지며 열린다.</span> 상점이 고통스러운 듯 신음 소리를 낸다.
 					<<set $phase to "door">>
 					<<set $_end to $shopHunt.context is "rescue" ? "edenKidnap" : "escape">>
 					<<include "Forest Shop Hunt Escape Eden">>
@@ -3671,11 +3688,11 @@
 					<<exitAll>>
 				<<else>>
 					<<if _actorDrag.points is 2>>
-						<<shopHuntActorName _actorDrag.id "cap">> continues kicking the door. <span class="blue">It creaks in protest. One more kick will do it.</span>
+						<<shopHuntActorName _actorDrag.id "cap">>【은는】 계속 문을 걷어찬다. <span class="blue">문이 거세게 항의하듯 삐걱거린다. 한 번만 더 차면 열릴 것이다.</span>
 					<<elseif _actorDrag.points is 1>>
-						<<shopHuntActorName _actorDrag.id "cap">> continues kicking the door.
+						<<shopHuntActorName _actorDrag.id "cap">>【은는】 계속 문을 걷어찬다.
 					<<else>>
-						<span class="gold">You're at the <<shopHuntDoor>>.</span> <<shopHuntActorName _actorDrag.id "cap">> tries the handle. It's locked. <<shopHuntPronoun "He">> starts kicking the door, gritting <<shopHuntPronoun "his">> teeth. "Let us out!"
+						<span class="gold">당신은 <<shopHuntDoor>>에 있다.</span> <<shopHuntActorName _actorDrag.id "cap">>【은는】 손잡이를 당겨본다. 잠겨있다. <<shopHuntPronoun "He">>【은는】 <<shopHuntPronoun "his">> 이를 악물고 문을 걷어차기 시작한다. "우릴 내보내!"
 					<</if>>
 					<<set $shopHunt.actors.find(x => x.state is "drag").points++>><<shopHuntDecoy>>
 					<br><br>
@@ -3683,36 +3700,36 @@
 			<</if>>
 			<<shopHuntMap>>
 			<<if _actorDrag.role is "enemy">>
-				<<ind>><<link [[Resist|Forest Shop Hunt]]>><<shopHuntAction "resist">><</link>>
+				<<ind>><<link [[저항한다|Forest Shop Hunt]]>><<shopHuntAction "resist">><</link>>
 				<br>
-				<<ind>><<link [[Wait|Forest Shop Hunt]]>><<shopHuntAction "wait">><</link>>
+				<<ind>><<link [[기다린다|Forest Shop Hunt]]>><<shopHuntAction "wait">><</link>>
 			<<else>>
 				<<if shopHuntFind("key") is "player">>
-					<<shopHuntIcon "key">><<link [[Offer key|Forest Shop Hunt]]>><<shopHuntAction "key" _actorDrag.id>><</link>>
+					<<shopHuntIcon "key">><<link [[열쇠를 내민다|Forest Shop Hunt]]>><<shopHuntAction "key" _actorDrag.id>><</link>>
 					<br>
 				<</if>>
-				<<ind>><<link [[Wait|Forest Shop Hunt]]>><<shopHuntAction "wait">><</link>>
+				<<ind>><<link [[기다린다|Forest Shop Hunt]]>><<shopHuntAction "wait">><</link>>
 			<</if>>
 		<<else>>
 			<<if !_actorDrag.stun.move and _actorDrag.movement.length gte 1>>
-				<<shopHuntActorName _actorDrag.id "cap">> starts <<= _actorDrag.role is "enemy" ? "dragging" : "taking">> you to the <<print shopHuntDirectionGet(_actorDrag.movement[0])>>.
+				<<shopHuntActorName _actorDrag.id "cap">>【은는】 <<print shopHuntDirKr(shopHuntDirectionGet(_actorDrag.movement[0]))>>으로 당신을 <<= _actorDrag.role is "enemy" ? "끌고 가기" : "데려가기">> 시작한다.
 				<br><br>
 			<</if>>
 			<<shopHuntMap>>
 			<<if _args[0]>>
-				<<ind>><<link [[Next|Forest Shop Hunt]]>><<shopHuntAction "wait">><</link>>
+				<<ind>><<link [[다음|Forest Shop Hunt]]>><<shopHuntAction "wait">><</link>>
 			<<elseif _actorDrag.role is "enemy">>
-				<<ind>><<link [[Resist|Forest Shop Hunt]]>><<shopHuntAction "resist">><</link>><<shopHuntResistGrip _actorDrag.id>>
+				<<ind>><<link [[저항한다|Forest Shop Hunt]]>><<shopHuntAction "resist">><</link>><<shopHuntResistGrip _actorDrag.id>>
 				<br>
-				<<ind>><<link [[Let <<shopHuntPronoun "him">> take you|Forest Shop Hunt]]>><<shopHuntAction "wait">><</link>>
+				<<ind>><<link [[<<shopHuntPronoun "him">>【이가】 당신을 데려가게 내버려 둔다|Forest Shop Hunt]]>><<shopHuntAction "wait">><</link>>
 			<<else>>
-				<<ind>><<link [[Go with <<shopHuntPronoun "him">>|Forest Shop Hunt]]>><<shopHuntAction "wait">><</link>>
+				<<ind>><<link [[<<shopHuntPronoun "him">>【와과】 함께 간다|Forest Shop Hunt]]>><<shopHuntAction "wait">><</link>>
 			<</if>>
 		<</if>>
 	<<elseif _actorDrag.type is "wraith">>
 		/* Todo: shop hunt, Wraith possessing player and making them walk to the exit */
 	<<else>>
-		<span class="red">ERROR: unsupported actor type "_actorDrag.type" in drag state. Please report this!</span>
+		<span class="red">오류: drag 상태에서 지원되지 않는 액터 유형 "_actorDrag.type"이다. 이 문제를 제보해 달라!</span>
 	<</if>>
 <</widget>>
 
@@ -3790,19 +3807,19 @@
 <<set $location to "forest_shop">><<set $outside to 0>><<effects>>
 <br><br>
 
-<<link [[Find the key to the garden|Forest Shop Hunt Intro]]>><<set $phase to "garden">><</link>><<note "Complete!" "green">>
+<<link [[정원 열쇠를 찾는다|Forest Shop Hunt Intro]]>><<set $phase to "garden">><</link>><<note "완료!" "green">>
 <br>
 <<link [[Hide and seek game|Forest Shop Hunt Intro]]>><<npc Gwylan>><<person1>><<set $phase to "game">><</link>><<note "Complete!" "green">>
 <br>
-<<link [[Rescue from Eden|Forest Shop Hunt Intro]]>><<set $phase to "rescue">><</link>><<note "Complete!" "green">>
+<<link [[에덴에게서 구출|Forest Shop Hunt Intro]]>><<set $phase to "rescue">><</link>><<note "완료!" "green">>
 <br>
-<<link [[Rescue from Gwylan|Forest Shop Hunt Intro]]>><<set $phase to "kidnap">><<set $phase2 to "ally">><</link>><<note "Theoretically complete" "lblue">>
+<<link [[그윌란에게서 구출|Forest Shop Hunt Intro]]>><<set $phase to "kidnap">><<set $phase2 to "ally">><</link>><<note "이론상 완료" "lblue">>
 <br>
-<<link [[Escape from both|Forest Shop Hunt Intro]]>><<set $phase to "kidnap">><<set $phase2 to "enemy">><</link>><<note "Complete!" "green">>
+<<link [[둘 모두에게서 탈출|Forest Shop Hunt Intro]]>><<set $phase to "kidnap">><<set $phase2 to "enemy">><</link>><<note "완료!" "green">>
 <br>
-<<link [[Wraith|Forest Shop Hunt Intro]]>><<npc Gwylan>><<person1>><<set $phase to "wraith">><</link>><<note "Only partially supported" "orange">>
+<<link [[원혼|Forest Shop Hunt Intro]]>><<npc Gwylan>><<person1>><<set $phase to "wraith">><</link>><<note "일부 구현됨" "orange">>
 <br>
-<<link [[Elkspawn|Forest Shop Hunt Intro]]>><<set $phase to "elkspawn">><</link>><<note "Only partially supported" "orange">>
+<<link [[엘크스폰|Forest Shop Hunt Intro]]>><<set $phase to "elkspawn">><</link>><<note "일부 구현됨" "orange">>
 <br>
 
 :: Forest Shop Hunt Intro
@@ -3829,24 +3846,24 @@
 		<<shopHuntCreateActorMannequin 6 "neutral">>
 		<<run shopHuntSeeLoc($shopHunt.shop.door.position)>>
 
-		You follow where the mannequin is pointing, navigating through the gloom.
+		당신은 마네킹이 가리키는 곳을 따라 어둠 속을 헤쳐 나아간다.
 		<br><br>
 
-		Before long, you find another mannequin. It's pointing off in another direction.
+		얼마 지나지 않아, 또 다른 마네킹을 발견한다. 마네킹은 다른 방향을 가리키고 있다.
 	<<case "game">>
 		<<set $shopHunt.shop.mannequins to 0>>
 		<<shopHuntCreateActor "Gwylan">>
 		<<shopHuntStun 0 4 "all">>
 		<<if Time.isBloodMoon()>>
-			"Let's play hide-and-seek," Gwylan says.
+			"숨바꼭질하자." 그윌란이 말한다.
 			<br>
-			"Okay," you say. "Who's going to be 'it' first?"
+			"좋아." 당신은 대답한다. "누가 먼저 '술래' 할래?"
 			<br>
-			Gwylan laughs.
+			그윌란이 웃는다.
 			<br>
-			"...Gwylan?"
+			"...그윌란?"
 			<br>
-			Gwylan laughs louder.
+			그윌란이 더 크게 웃는다.
 			<<stress 6>><<gstress>>
 			<br><br>
 
@@ -3861,77 +3878,77 @@
 		<<npc Gwylan>><<npc Eden -1>><<person1>>
 		<<shopHuntCreateActor "Gwylan" "ally">>
 		<<shopHuntCreateActor "Eden" "enemy" "door">>
-		The interior seems darker than usual, the shelves looming over you.
+		가게 내부는 평소보다 더 어둡게 느껴지고, 선반들이 당신을 압도하듯 서 있다.
 		<br><br>
 
 		Gwylan locks the door. A moment later, the door pounds. Eden's voice comes through the door. "Open up, <<witch>>! Give <<phim "Eden">> back!"
 		<br><br>
 
-		Gwylan looks at the door, narrowing <<his>> eyes in thought. "Find somewhere to hide. I have an idea."
+		그윌란은 문을 보며 생각에 잠겨 <<his>> 눈을 가늘게 뜬다. "숨을 곳을 찾아. 좋은 생각이 있어."
 		<br><br>
 
-		You hurry deeper into the shop. You hear the front door swing open once you're inside.
+		당신은 서둘러 가게 안쪽으로 들어간다. 안으로 들어가자마자 정문이 활짝 열리는 소리가 들린다.
 	<<case "kidnap">>
 		<<npc Gwylan>><<npc Eden -1>><<person1>>
 		<<shopHuntCreateActor "Gwylan">>
 		<<shopHuntCreateActor "Eden" $phase2 "door">>
 		<<set $shopHunt.commands.pushUnique("voice")>>
-		The interior seems darker than usual, the shelves looming over you.
+		가게 내부는 평소보다 더 어둡게 느껴지고, 선반들이 당신을 압도하듯 서 있다.
 		<<if $gwylanSeen.includes("partners")>>
-			Gwylan curls a finger into your collar and pulls you into a kiss, <<his>> finger trailing up your neck. <<gwylanKiss>>
+			그윌란이 당신의 옷깃에 손가락을 걸어 키스하며 끌어당긴다. <<his>> 손가락이 당신의 목을 타고 올라온다. <<gwylanKiss>>
 			<br><br>
 
 			<<if $hallucinations gte 2>>
-				<<He>> pulls away an inch, <<his>> lips still parted. <span class="red">A faint blue mist leaves your mouth, sucked into <<hers>>.</span> <<He>> swallows and smiles again.
+				<<He>>【은는】 1인치 정도 물러선다. <<his>> 입술은 여전히 벌어져 있다. <span class="red">희미한 푸른 안개가 당신의 입에서 나와 <<hers>> 입으로 빨려 들어간다.</span> <<He>>【은는】 침을 삼키고 다시 미소 짓는다.
 			<<else>>
-				<<He>> pulls away an inch, smiling at you. <span class="red">Your voice catches in your throat. Try as you might, you can't say anything.</span>
+				<<He>>【은는】 1인치 정도 물러나 당신을 보며 미소 짓는다. <span class="red">목소리가 목구멍에 걸린다. 아무리 애를 써도 아무 말도 할 수 없다.</span>
 			<</if>>
 		<<else>>
-			Gwylan traces a finger up your neck.
+			그윌란이 손가락으로 당신의 목을 쓸어 올린다.
 			<<if $hallucinations gte 2>>
-				<span class="red">A faint blue mist leaves your mouth, twirling around <<his>> fingers.</span>
+				<span class="red">희미한 푸른 안개가 당신의 입에서 나와 <<his>> 손가락 주위를 맴돈다.</span>
 			<<else>>
-				<span class="red">Your voice catches in your throat. Try as you might, you can't say anything.</span>
+				<span class="red">목소리가 목구멍에 걸린다. 아무리 애를 써도 아무 말도 할 수 없다.</span>
 			<</if>>
 		<</if>>
-		"We can't have you screaming for that <<person2>><<personsimple>>, can we? Now be a <<pcpetname "Gwylan" "good">> and—"
+		"저 <<person2>><<personsimple>> 때문에 소리 지르게 둘 순 없지, 안 그래? 자, <<pcpetname "Gwylan" "good">>답게 굴어, 그리고—"
 		<br><br>
 
 		The door pounds. Eden's voice comes through the door. "Open up, <<witch>>! Give <<phim "Eden">> back!"
 		<br><br>
 
-		Gwylan looks at the door, narrowing <<person1>><<his>> eyes in thought. "<span class="witch">Find somewhere to hide.</span> I have an idea."
+		그윌란은 문을 보며 생각에 잠겨 <<person1>><<his>> 눈을 가늘게 뜬다. "<span class="witch">숨을 곳을 찾아.</span> 좋은 생각이 있어."
 		<br><br>
 
-		Your legs take you deeper into the shop. You hear the front door swing open once you're inside.
+		당신은 가게 안쪽으로 더 깊이 들어간다. 안으로 들어가자마자 정문이 활짝 열리는 소리가 들린다.
 	<<case "wraith">>
 		<<shopHuntCreateActor "Gwylan" "ally">>
 		<<shopHuntCreateActor "Wraith" "enemy">>
-		<span class="orange">Unfinished.</span>
+		<span class="orange">미완성.</span>
 		<br><br>
 
-		"<span class="wraith">Every year, many birds are caught in netting,</span>" the pale figure says. "<span class="wraith">Ropes and rubbish entwined around their legs, chaining them to the ground. Condemning them to a slow end.</span>"
+		"<span class="wraith">매년, 많은 새들이 그물에 걸리지,</span>" 창백한 형체가 말한다. "<span class="wraith">밧줄과 쓰레기가 다리에 얽혀, 땅에 묶어버리지. 서서히 죽음을 맞이하도록 선고하는 거야.</span>"
 		<br><br>
 
-		It points a <<= $wraith.state is "haunt" ? "blackened" : "">> finger at Gwylan. "<span class="wraith">The seabird falls to this same fate. You are enchained to the <<pcpetname "Wraith">>, in red strings.</span>"
+		그것은 <<= $wraith.state is "haunt" ? "blackened" : "">> 손가락으로 그윌란을 가리킨다. "<span class="wraith">바닷새도 같은 운명에 처하는 법. 너는 붉은 실로 <<pcpetname "Wraith">>에게 묶여 있다.</span>"
 		<br><br>
 
-		Gwylan purses <<his>> lips. "See, I get what you were going for by saying that, but it just came off as clunky. There was too much buildup to have much impact."
+		그윌란이 <<his>> 입술을 오므린다. "이봐, 무슨 말을 하려는지 알겠는데, 그냥 좀 촌스럽게 들렸어. 임팩트를 주기엔 서론이 너무 길었다고."
 		<br><br>
 
-		"<span class="wraith">The line will be workshopped,</span>" the pale figure acknowledges. It tilts its head. "<span class="wraith">I am going to harm you now.</span>"
+		"<span class="wraith">그 대사는 다시 다듬도록 하지,</span>" 창백한 형체가 인정한다. 그것은 고개를 갸웃거린다. "<span class="wraith">이제부터 너를 해칠 것이다.</span>"
 	<<case "elkspawn">>
 		<<set $shopHunt.shop.mannequins to $mannequinDescs.length>>
 		<<shopHuntCreateActorMannequin 2 "ally">>
 		<<shopHuntCreateActor "Elkspawn" "enemy">>
-		<span class="orange">Unfinished.</span>
+		<span class="orange">미완성.</span>
 		<br><br>
 
-		There's an unauthorized fucking creature in the shop.
+		허가받지 않은 빌어먹을 생물이 가게 안에 있다.
 <</switch>>
 <br><br>
 
-<<link [[Next|Forest Shop Hunt]]>><</link>>
+<<link [[다음|Forest Shop Hunt]]>><</link>>
 <br><br>
 
 :: Forest Shop Hunt
@@ -3955,9 +3972,9 @@
 	<!-- Hiding inside the rotting closet/antique wardrobe -->
 	<<shopHuntMapForget>>
 
-	<<shopHuntIcon _locRaw "hide">><<link [[Keep hiding|Forest Shop Hunt]]>><<set $shopHunt.player.action to "hide">><</link>>
+	<<shopHuntIcon _locRaw "hide">><<link [[계속 숨어있는다|Forest Shop Hunt]]>><<set $shopHunt.player.action to "hide">><</link>>
 	<br>
-	<<shopHuntIcon _locRaw>><<link [[Leave the <<shopHuntLocName shopHuntFind("player") "simple">>|Forest Shop Hunt]]>><<set $shopHunt.player.hide to 0>><<set $shopHunt.player.action to "insideExit">><</link>>
+	<<shopHuntIcon _locRaw>><<link [[<<shopHuntLocName shopHuntFind("player") "simple">>【을를】 떠난다|Forest Shop Hunt]]>><<set $shopHunt.player.hide to 0>><<set $shopHunt.player.action to "insideExit">><</link>>
 <<elseif _actorDrag or _dragStarted>>
 	<<shopHuntDragOptions _dragStarted>>
 <<elseif $shopHunt.actors.filter(x => x.state is "hold").length gte 1>>
@@ -3971,234 +3988,234 @@
 :: Forest Shop Hunt Escape Eden
 <<run statusCheck("Gwylan")>>
 <<if $phase is "key">>
-	Light banishes the gloom around you. You and Eden both cover your eyes. <<person2>><<He>> doesn't slow down, though. <<He>> drags you from the shop.
+	빛이 주위의 어둠을 몰아낸다. 당신과 에덴은 둘 다 눈을 가린다. 하지만 <<person2>><<He>>【은는】 속도를 늦추지 않는다. <<He>>【은는】 당신을 가게 밖으로 끌고 나간다.
 	<br><br>
 
-	You hear a mournful rattle from the doorframe. As you look back, it seems like the light halts just before entering the shop. Two bright green eyes stare at you from within.
+	문틀에서 애처로운 덜컹거림이 들려온다. 뒤를 돌아보자, 빛이 가게 안으로 들어오기 직전에 멈추는 것 같다. 안에서 밝은 녹색 눈 두 개가 당신을 응시한다.
 	<br><br>
 
 	<<person1>>
 	<<if $shopHunt.context is "kidnap">>
 		<<if $gwylanSeen.includes("romance")>>
-			Black tears drop onto the grass. "<<pcPetname "Gwylan" "simple">>. You promised." <<His>> tone is eerily neutral. "You will return."
+			검은 눈물이 풀 위로 떨어진다. "<<pcPetname "Gwylan" "simple">>. 약속했잖아." <<His>> 목소리는 섬뜩할 정도로 무미건조하다. "넌 돌아올 거야."
 		<<else>>
-			You hear a slow clapping. "Well hunted," Gwylan's voice comes.
+			느릿한 박수 소리가 들린다. "사냥 잘했네," 그윌란의 목소리가 들려온다.
 		<</if>>
-		<<His>> eyes close, and the door slams shut. <<npcincr Gwylan dom -30>><<lllyearning>>
+		<<His>> 눈이 감기고, 문이 쾅 닫힌다. <<npcincr Gwylan dom -30>><<lllyearning>>
 	<<else>>
-		Eden continues dragging you along. The green eyes fade away, and the door slams shut. <<npcincr Gwylan dom -30>><<lllyearning>>
+		에덴은 계속해서 당신을 끌고 간다. 녹색 눈이 사라지고, 문이 쾅 닫힌다. <<npcincr Gwylan dom -30>><<lllyearning>>
 	<</if>>
 <<elseif $phase is "defeatGwylan">>
-	Gwylan gasps. "No! No, I'm alright, I—" <br>
-	The floor shakes underneath you. <br>
-	"No, don't! I can—"<br>
-	<span class="green">The door to the forest shop flies open, momentarily flooding it with light and banishing the gloom.</span>
+	그윌란이 숨을 헐떡인다. "안 돼! 안 돼, 난 괜찮아, 난—" <br>
+	발밑의 바닥이 흔들린다. <br>
+	"안 돼, 하지 마! 난 할 수—"<br>
+	<span class="green">숲속 상점의 문이 활짝 열리며, 순간적으로 빛이 쏟아져 들어와 어둠을 몰아낸다.</span>
 	<br><br>
 
-	Eden sees you and marches up to you, grabbing your arm. <<person2>><<He>> looks down at Gwylan with disgust, and drags you to the entrance.
+	에덴이 당신을 보고 다가와 팔을 붙잡는다. <<person2>><<He>>【은는】 혐오스럽다는 듯 그윌란을 내려다보고는 당신을 입구로 끌고 간다.
 	<br><br>
 
 	<<person1>>
 	<<if $shopHunt.context is "kidnap">>
 		<<if $gwylanSeen.includes("romance")>>
-			"<<pcPetname "Gwylan" "simple">>." Gwylan, says softly. You look back. Black tears trail down <<his>> face. "You promised."
+			"<<pcPetname "Gwylan" "simple">>." 그윌란이 부드럽게 말한다. 뒤를 돌아본다. 검은 눈물이 <<his>> 얼굴을 타고 흐른다. "약속했잖아."
 		<<else>>
-			Gwylan unsteadily stands, and claps. "Well hunted." <<He>> chuckles.
+			그윌란이 비틀거리며 일어서서 박수를 친다. "사냥 잘했네." <<He>>【은는】 낄낄거린다.
 		<</if>>
-		Eden pulls you across the threshold, and the door slams shut. <<npcincr Gwylan dom -30>><<lllyearning>>
+		에덴이 당신을 문턱 너머로 끌어당기자, 문이 쾅 닫힌다. <<npcincr Gwylan dom -30>><<lllyearning>>
 	<<else>>
-		The door slams shut behind you. <<npcincr Gwylan dom -30>><<lllyearning>>
+		당신 뒤로 문이 쾅 닫힌다. <<npcincr Gwylan dom -30>><<lllyearning>>
 	<</if>>
 <<else>>
-	Light banishes the gloom around you. You and Eden both cover your eyes. <<person2>><<He>> doesn't slow down, though. <<He>> drags you from the shop.
+	빛이 주위의 어둠을 몰아낸다. 당신과 에덴은 둘 다 눈을 가린다. 하지만 <<person2>><<He>>【은는】 속도를 늦추지 않는다. <<He>>【은는】 당신을 가게 밖으로 끌고 나간다.
 	<br><br>
 
 	<<person1>>
-	You hear a rattle from the doorframe, like strained breathing. Gwylan emerges from the darkness, frantically inspecting the remains of the door. <<He>> rubs the frame as if <<he>> were comforting a hurt child. <<He>> turns and glares at Eden.
+	문틀에서 힘겹게 숨을 쉬는 듯한 덜컹거리는 소리가 들린다. 어둠 속에서 그윌란이 나타나 부서진 문 잔해를 미친 듯이 살핀다. <<He>>【은는】 마치 다친 아이를 위로하듯 문틀을 문지른다. <<He>>【은는】 몸을 돌려 에덴을 노려본다.
 	<<if $shopHunt.context is "kidnap" and $gwylanSeen.includes("romance")>>
-		"You wish to take and destroy all I hold dear," <<he>> says in an eerily calm tone. "Soon, I'll have nothing to lose. You must know how that feels, Eden."
+		"내가 소중히 여기는 모든 것을 빼앗고 파괴하려 하는군." <<he>>【이가】 섬뜩할 정도로 차분한 어조로 말한다. "머지않아 난 잃을 게 없어지겠지. 그게 어떤 기분인지 너도 알아야 할 거다, 에덴."
 	<<else>>
-		"All you do is destroy! You wish to drag everything down to be just as ugly as you are on the inside!" <<he>> yells. "Begone!"
+		"네놈은 파괴만 일삼는군! 모든 것을 끌어내려 네 속내만큼이나 추악하게 만들고 싶은 거겠지!" <<he>>【이가】 소리친다. "사라져라!"
 	<</if>>
 	<br><br>
 
-	Eden doesn't give any indication of having heard Gwylan.
+	에덴은 그윌란의 말을 들었다는 기색도 보이지 않는다.
 <</if>>
 <br><br>
 
-You're dragged deeper into the forest. <<npcincr Eden dom 5>><<ggdom "Eden">>
+당신은 숲 더 깊은 곳으로 끌려간다. <<npcincr Eden dom 5>><<ggdom "Eden">>
 <br><br>
 
 <<set $daily.gwylan.cafeSkip to true>><<set $daily.gwylan.noTalk to true>><<set $daily.gwylan.locked to true>><<set $daily.gwylan.noHunt to true>>
 <<endevent>><<npc Eden>><<person1>>
 
-<<link [[Next (0:30)|Eden Caged Caught]]>><<set $phase to 0>><<pass 30>><</link>>
+<<link [[다음 (0:30)|Eden Caged Caught]]>><<set $phase to 0>><<pass 30>><</link>>
 <br>
-
 
 :: Forest Shop Hunt Escape Alone
 <<run statusCheck("Gwylan")>>
-Light floods the shop and banishes the gloom for a brief moment. You cover your eyes, but you don't stop. You run, and leave both Gwylan and Eden behind. <<npcincr Gwylan dom -15>><<npcincr Eden dom -10>><<llyearning>><<lldom "Eden">>
+빛이 가게 안으로 쏟아져 들어와 잠시 어둠을 몰아낸다. 눈을 가리면서도 멈추지 않고, 그윌란과 에덴을 모두 뒤로한 채 달린다. <<npcincr Gwylan dom -15>><<npcincr Eden dom -10>><<llyearning>><<lldom "Eden">>
 <br><br>
 
 <<set $daily.gwylan.cafeSkip to true>><<set $daily.gwylan.noTalk to true>><<set $daily.gwylan.locked to true>><<set $daily.gwylan.noHunt to true>>
 
-<<link [[Next|Forest]]>><<endevent>><</link>>
+<<link [[다음|Forest]]>><<endevent>><</link>>
 <br>
 
 :: Forest Shop Hunt Eden Torment
 <<run statusCheck("Gwylan")>>
-<<set _edenName to C.npc.Eden.name_known ? "Eden" : "the <<= C.npc.Eden.title>>">>
+<<set _edenName to C.npc.Eden.name_known ? "에덴" : "<<= window.KR.getNpcTitleKr(C.npc.Eden.title)>>">>
 <<if $phase is "defeatEden" or shopHuntContains(shopHuntFind("eden")).includes("player")>>
-	One of the shop's lights flickers on overhead, illuminating you and <<= _edenName>>, but not the darkness beyond.
+	가게의 조명 중 하나가 머리 위에서 깜박이며 켜져 당신과 <<= _edenName>>【을를】 비추지만, 그 너머의 어둠까지는 밝히지 못한다.
 	<br><br>
 
-	Something collides with you from behind, and drags you away. You don't see what it is, though. You can only see <<= _edenName>><<if $phase is "defeatEden">>, who struggles to <<nnpc_his "Eden">> feet<</if>>.
+	무언가가 뒤에서 부딪혀 당신을 끌고 간다. 그게 무엇인지는 보이지 않는다. 보이는 것은 오직 <<= _edenName>>뿐이다<<if $phase is "defeatEden">>. <<nnpc_his "Eden">> 발로 힘겹게 일어서려 애쓰는 모습이다<</if>>.
 <<else>>
-	Suddenly, a blinding light shines from somewhere else.
+	갑자기, 다른 곳에서 눈부신 빛이 비친다.
 	<<if $shopHunt.player.hide>>
-		You emerge from your hiding place.
+		숨어 있던 곳에서 나온다.
 	<</if>>
 	<<if shopHuntLineOfSight("player", true).includes($shopHunt.actors.find(x => x.type === "eden").id)>>
-		A spotlight from above illuminates <<= _edenName>>, and a small area around <<nnpc_him "Eden">>.
+		위에서 비춘 스포트라이트가 <<= _edenName>>【와과】 <<nnpc_him "Eden">> 주변의 작은 공간을 밝힌다.
 	<<else>>
-		A spotlight from above illuminates <<= _edenName>> in the darkness, and a small area around <<nnpc_him "Eden">>.
+		위에서 비춘 스포트라이트가 어둠 속의 <<= _edenName>>【와과】 <<nnpc_him "Eden">> 주변의 작은 공간을 밝힌다.
 	<</if>>
 <</if>>
 <br><br>
 
-The shop trembles.
+가게가 흔들린다.
 <br><br>
 
-"<span class="witch">Aimless.</span>"
+"<span class="witch">목표 없이.</span>"
 <br><br>
 
-The shadows become jagged like teeth. The light appears like a maw, ready to swallow <<= _edenName>> in the centre.
+그림자가 이빨처럼 뾰족해진다. 빛은 마치 중앙에 있는 <<= _edenName>>【을를】 삼킬 준비가 된 아귀처럼 보인다.
 <br><br>
 
-You don't dare open your own mouth. The gloom presses against your lips.
+감히 입을 열지 못한다. 어둠이 입술을 짓누른다.
 <br><br>
 
-<<link [[Next|Forest Shop Hunt Eden Torment 2]]>><<endevent>><</link>>
+<<link [[다음|Forest Shop Hunt Eden Torment 2]]>><<endevent>><</link>>
 <br>
 
 :: Forest Shop Hunt Eden Torment 2
 <<effects>><<run statusCheck("Gwylan")>>
-<<set _edenName to C.npc.Eden.name_known ? "Eden" : "the <<= C.npc.Eden.title>>">>
+<<set _edenName to C.npc.Eden.name_known ? "에덴" : "<<= window.KR.getNpcTitleKr(C.npc.Eden.title)>>">>
 <<npc Eden 1>><<npc Gwylan 2>><<person1>>
-Laughter echoes all around <<him>>.
+웃음소리가 <<him>> 주변으로 울려 퍼진다.
 <br><br>
 
-<<Hes>> surrounded. You can't see the assailants, but you know they're there. <<= _edenName.toUpperFirst()>> knows too. <<He>> takes aim, and fires.
+<<He>>【은는】 포위되었다. 공격자들은 보이지 않지만, 거기 있다는 것을 안다. <<= _edenName.toUpperFirst()>>도 알고 있다. <<He>>【이가】 조준하고, 발사한다.
 <br><br>
 
-"<span class="witch">Every careless bullet an atrocity without reason. How can one so reliant on aim be aimless?</span>"
+"<span class="witch">부주의한 총알 하나하나가 이유 없는 잔혹 행위로구나. 어찌 조준에 그토록 의지하는 자가 이리도 목적이 없을까?</span>"
 <br><br>
 
-The shadows bite at <<him>>. <<He>> turns and fires again. The bullet never lands.
+그림자들이 <<him>>에게 달려든다. <<He>>【은는】 몸을 돌려 다시 발사한다. 총알은 아무 데도 맞지 않는다.
 <br><br>
 
-"<span class="witch">I know how many bodies you've left behind. You kill. You consume. You discard. Aimlessly.</span>"
+"<span class="witch">네가 얼마나 많은 시체를 남겼는지 안다. 너는 죽이고. 집어삼키고. 버리지. 목적도 없이.</span>"
 <br><br>
 
-More laughter echoes. The word repeats like a curse. "<span class="witch">Aimless. Aimless. Aimless.</span>"
+더 많은 웃음소리가 울려 퍼진다. 그 단어가 저주처럼 반복된다. "<span class="witch">목적 없이. 목적 없이. 목적 없이.</span>"
 <br><br>
 
-<<= _edenName.toUpperFirst()>> shouts, and shoves the barrel of <<his>> rifle into a shadow as it strikes. <<He>> pulls the trigger. <span class="red">You hear a cry of pain, followed by something slumping over.</span>
+<<= _edenName.toUpperFirst()>>【이가】 소리치며, 덮쳐오는 그림자 속으로 <<his>> 소총의 총구를 쑤셔 넣는다. <<He>>【이가】 방아쇠를 당긴다. <span class="red">고통스러운 비명이 들리고, 무언가 쓰러지는 소리가 이어진다.</span>
 <br><br>
 
-<<= _edenName.toUpperFirst()>> grins, panting. "Got you."
+<<= _edenName.toUpperFirst()>>【이가】 숨을 헐떡이며 히죽 웃는다. "잡았다."
 <br><br>
 
-<<link [[Next|Forest Shop Hunt Eden Torment 3]]>><</link>>
+<<link [[다음|Forest Shop Hunt Eden Torment 3]]>><</link>>
 <br>
 
 :: Forest Shop Hunt Eden Torment 3
 <<effects>><<run statusCheck("Gwylan")>>
-<<set _edenName to C.npc.Eden.name_known ? "Eden" : "the <<= C.npc.Eden.title>>">>
+<<set _edenName to C.npc.Eden.name_known ? "에덴" : "<<= window.KR.getNpcTitleKr(C.npc.Eden.title)>>">>
 
-<<= _edenName.toUpperFirst()>>'s pupils shrink, and <<his>> grin fades. Something crawls into the light.
+<<= _edenName.toUpperFirst()>>의 눈동자가 움츠러들고, <<his>> 웃음기가 사라진다. 무언가가 빛 속으로 기어 들어온다.
 <br><br>
 
-<span class="red">A brown fox, struck by <<his>> bullet. Blood trails behind it. It's motionless.</span>
+<span class="red">그의 총알에 맞은 갈색 여우. 핏자국이 뒤로 길게 늘어져 있다. 미동조차 없다.</span>
 <br><br>
 
-"No." <<= _edenName.toUpperFirst()>> reaches down, picking up the fox. "No!"
+"안 돼." <<= _edenName.toUpperFirst()>>【이가】 손을 뻗어 여우를 안아 든다. "안 돼!"
 <br><br>
 
-The blood washes down <<= _edenName>>'s hands. <<He>> breathes heavily, lightly shaking the fox. "No, no, this isn't what I wanted."
+피가 <<= _edenName>>의 손을 타고 흘러내린다. <<He>>【은는】 가쁜 숨을 몰아쉬며, 여우를 가볍게 흔든다. "아냐, 아냐, 이건 내가 원했던 게 아니야."
+
 <br><br>
 
-The fox isn't a fox anymore. It's a person, being held in <<= _edenName>>'s arms, but no less still and bloody. <<= _edenName.toUpperFirst()>> jumps back in shock. A red smile is painted on the figure's neck. It flickers back and forth, between being a fox and a person.
-It's head snaps into an upright position and stares at <<= _edenName>>. It speaks.
+여우는 더 이상 여우가 아니다. <<= _edenName>>의 품에 안겨 있는 건 사람이다. 그런데도 미동조차 없이 피투성이인 채다. <<= _edenName.toUpperFirst()>>【이가】 화들짝 놀라 뒤로 물러난다. 그 형체의 목에는 새빨간 미소가 그려져 있다. 여우와 사람 사이를 오가듯 깜빡거린다.
+그 고개가 갑자기 똑바로 치켜들리며 <<= _edenName>>【을를】 응시한다. 그것이 입을 연다.
 <br><br>
 
-"<span class="witch">Aimless.</span>"
+"<span class="witch">목적을 잃었다.</span>"
 <br><br>
 
-<<= _edenName.toUpperFirst()>> reaches for <<his>> gun, but its body extends, becoming a snake that trails up <<his>> arm. No matter how <<he>> struggles, <<he>> can't shake it off.
-It wraps around <<his>> neck, becoming a fox once more and hanging limp about <<his>> shoulders. A blaring voice echoes through the darkness.
+<<= _edenName.toUpperFirst()>>【이가】 총을 향해 손을 뻗지만, 그 몸이 길게 늘어나며 뱀이 되어 그의 팔을 타고 오른다. 아무리 발버둥 쳐도 떨쳐낼 수가 없다.
+그것은 그의 목을 휘감으며 다시 여우로 변해 어깨 위로 축 늘어진다. 어둠 속에서 쩌렁쩌렁한 목소리가 울려 퍼진다.
 <br><br>
 
-<b>"<span class="witch">An orphan's curse would drag to hell a spirit from on high!<br>
-Ever deeper, foxbane mine, is the curse in a dead mother's eye!<br>
-Unscored years since the day of sin, yet you still live this rotten lie!</span>"</b>
+<b>"<span class="witch">고아의 저주가 높은 곳의 영혼을 지옥으로 끌고 가리니!<br>
+더욱더 깊이, 나의 여우살이, 죽은 어미의 눈 속에 저주가 서리네!<br>
+죄를 지은 그날로부터 헤아릴 수 없는 세월이 흘렀어도, 너는 여전히 이 썩은 거짓을 살아가는구나!</span>"</b>
 <br><br>
 
-<span class="red">Strands of brown fur flutter down from above. High pitched screams, full of longing, fill the emptiness. The dead fox becomes a length of rope around <<= _edenName>>'s neck.</span>
+<span class="red">갈색 털 가닥들이 위에서 흩날려 내려온다. 갈망으로 가득한 새된 비명이 공허를 가득 채운다. 죽은 여우가 <<= _edenName>>의 목에 감긴 밧줄이 된다.</span>
 <br><br>
 
-The rope leads up into the darkness, which swirls. The head of a colossal, three-eyed fox screams, its tongue the rope. <<= _edenName.toUpperFirst()>> struggles to break free, <<his>> voice drowned out by the scream.
+밧줄은 소용돌이치는 어둠 속으로 이어져 있다. 눈이 셋 달린 거대한 여우의 머리가 비명을 지르고, 그 혀가 곧 밧줄이다. <<= _edenName.toUpperFirst()>>【이가】 벗어나려 발버둥 치지만, 그의 목소리는 비명 속에 묻혀버린다.
 <br><br>
 
-<b>"<span class="witch">Hid away in solitude, my self-made coffin-box!<br>
-Oblivious to the world I left as the Elk gnaws at the locks!<br>
-Faceless, fateless, restless, aimless, I shot the mother fox!</span>"</b>
+<b>"<span class="witch">고독 속에 스스로 몸을 숨긴, 내 손으로 만든 관 속 상자여!<br>
+엘크가 그 자물쇠를 갉아먹는 동안에도, 나는 세상을 등진 채 아무것도 몰랐네!<br>
+얼굴도 없이, 운명도 없이, 안식도 없이, 목적도 없이, 나는 어미 여우를 쏘았노라!</span>"</b>
 <br><br>
 
-<<link [[Next|Forest Shop Hunt Eden Torment 4]]>><</link>>
+<<link [[다음|Forest Shop Hunt Eden Torment 4]]>><</link>>
 <br>
 
 :: Forest Shop Hunt Eden Torment 4
 <<effects>><<run statusCheck("Gwylan")>>
-<<set _edenName to C.npc.Eden.name_known ? "Eden" : "the <<= C.npc.Eden.title>>">>
+<<set _edenName to C.npc.Eden.name_known ? "에덴" : "<<= window.KR.getNpcTitleKr(C.npc.Eden.title)>>">>
 /* ToDo: Gwylan - account for reunion and bad end start here. */
 
-<span class="teal">Then, suddenly, it all stops.</span> The door of the shop flies open, banishing the gloom. <<= _edenName.toUpperFirst()>> stands still, panting and clutching <<his>> neck.
+<span class="teal">그러다 갑자기, 모든 것이 멈춘다.</span> 상점 문이 활짝 열리며 어둠을 몰아낸다. <<= _edenName.toUpperFirst()>>【은는】 숨을 헐떡이며 <<his>> 목을 움켜쥔 채 가만히 서 있다.
 <br><br>
 
-Below <<him>>, a mannequin lays with a bullet lodged in its torso.
+<<him>> 아래에는 몸통에 총알이 박힌 마네킹이 쓰러져 있다.
 <br><br>
 
-<<He>> stumbles towards the door, and steps outside.<<npcincr Eden dom -20>><<llldom "Eden">>
+<<He>>【은는】 문 쪽으로 비틀거리며 걸어가 밖으로 나선다. <<npcincr Eden dom -20>><<llldom "Eden">>
 <br><br>
 
 <<if $shopHunt.context is "rescue">>
-	Gwylan shuffles out from behind a shelf. <<person2>><<He>> smiles sadly. "I'm sorry you had to see that. One day, perhaps <<person1>><<he>> will understand. It's a path only <<he>> can walk."
+	그윌란이 선반 뒤에서 어슬렁거리며 나온다. <<person2>><<He>>【이가】 슬프게 미소 짓는다. "그런 모습을 보게 해서 미안하구나. 언젠가, 아마 <<person1>><<he>>【은는】 도 이해하게 되겠지. 그건 <<he>>만이 걸을 수 있는 길이야."
 	<br><br>
 
-	<<person2>><<He>> pets your head. "The shop knows much. Remembers much. Just look at how much it remembers about you." <<He>> gestures around to the clothes all around the shop. "It remembers triumphs and troubles in equal part, and Eden has much of both."
+	<<person2>><<He>>【이가】 당신의 머리를 쓰다듬는다. "이 가게는 많은 것을 알고 있단다. 많은 것을 기억하지. 너에 대해 얼마나 많이 기억하는지 봐." <<He>>【이가】 가게 곳곳의 옷들을 가리킨다. "성공과 고난을 똑같이 기억하는데, 에덴은 둘 다 많이 겪었지."
 <<else>>
 	Gwylan shuffles out from behind a shelf. <<person2>><<He>> smiles sadly. "I'm sorry you had to see that. I hope you understand how terrible <<person1>><<hes>> by now." <<person2>><<He>> tuts. "You were a <<pcpetname "Gwylan" "naughty">>, but I can forgive that."
 	<br><br>
 
 	<<if $worn.neck.name is "familiar collar" and $worn.neck.cursed is 1>>
-		<<He>> grabs your collar and pulls you into a kiss. <<gwylanKiss 10>>
+		<<He>>【이가】 당신의 목걸이를 잡고 키스를 한다. <<gwylanKiss 10>>
 		<br><br>
 	<</if>>
 
-	<<He>> pets your head. "The shop knows much. Remembers much. Just look at how much it remembers about you." <<He>> gestures around to the clothes all around the shop. "It remembers triumphs and troubles in equal part, and Eden has much of both."
+	<<He>>【은는】 당신의 머리를 쓰다듬는다. "이 가게는 많은 것을 알고 있단다. 많은 것을 기억하지. 너에 대해 얼마나 많이 기억하는지 봐." <<He>>【이가】 가게 곳곳의 옷들을 가리킨다. "성공과 고난을 똑같이 기억하는데, 에덴은 둘 다 많이 겪었지."
 <</if>>
 <br><br>
 
-<<He>> looks around at the damage caused by <<= _edenName.toUpperFirst()>>'s rampage, and frowns. "I may need some time to clean up." <<He>> looks back to you with another smile.
+<<He>>【은는】 <<= _edenName.toUpperFirst()>>의 난동으로 인한 피해를 둘러보며 얼굴을 찌푸린다. "정리하는 데 시간이 좀 걸릴지도 모르겠구나." <<He>>【이가】 다시 미소를 지으며 당신을 돌아본다.
 <<if $gwylanSeen.includes("romance")>>
-	"Welcome home."
+	"집에 온 걸 환영해."
 <</if>>
 <br><br>
 
 <<shopHuntEnd `$shopHunt.context is "rescue" ? "gwylanRescue" : "gwylanKidnap"`>>
 <<earnFeat "Foxbane">>
 
-<<link [[Next|Forest Shop Entrance]]>><<endevent>><</link>>
+<<link [[다음|Forest Shop Entrance]]>><<endevent>><</link>>
 <br>

@@ -23,11 +23,11 @@ function gainSchoolStar(variable) {
 		}
 	} else {
 		if (V[variable] + 1 === 3) {
-			fragment.appendChild(createElement("span", "gold", "Gold Star"));
+			fragment.appendChild(createElement("span", "gold", "금별"));
 		} else if (V[variable] + 1 === 2) {
-			fragment.appendChild(createElement("span", "platinum", "Silver Star"));
+			fragment.appendChild(createElement("span", "platinum", "은별"));
 		} else if (V[variable] + 1 === 1) {
-			fragment.appendChild(createElement("span", "brown", "Bronze Star"));
+			fragment.appendChild(createElement("span", "brown", "동별"));
 		}
 	}
 	return fragment;
@@ -57,7 +57,7 @@ function schoolStar(variable) {
 			fragment.appendChild(createElement("img", "icon", "img/ui/star-empty.png"));
 		}
 	} else {
-		fragment.appendChild(createElement("span", "platinum", `${V[variable]} / 3 stars`));
+		fragment.appendChild(createElement("span", "platinum", `별 ${V[variable]} / 3`));
 	}
 	return fragment;
 }

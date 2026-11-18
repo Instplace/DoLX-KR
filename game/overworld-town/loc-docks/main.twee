@@ -3,25 +3,25 @@
 <<set $outside to 1>><<set $location to "docks">><<effects>>
 <<skul_dock_init>>
 
-You are on the docks.
+당신은 부두에 있다.
 <<if Time.dayState is "dawn">>
-	They're already busy with activity as vehicles arrive to transfer cargo and shipments.
+	차량들이 화물과 배송품을 나르기 위해 도착하여 벌써부터 활기를 띠고 있다.
 <<elseif Time.dayState is "day">>
-	They're busy with activity as dockers work the moored ships.
+	항만 노동자들이 정박한 배에서 일하며 분주하게 움직이고 있다.
 <<elseif Time.dayState is "night">>
-	They're closed off at night. The lights of patrolling security light up the stacked cargo containers.
+	밤에는 폐쇄된다. 순찰 중인 경비원의 불빛이 쌓여 있는 화물 컨테이너를 비춘다.
 <<elseif Time.dayState is "dusk">>
-	The last ships are leaving, while others remain moored for the night.
+	마지막 배들이 떠나고, 다른 배들은 밤을 보내기 위해 정박해 있다.
 <</if>>
 <br><br>
 
 <<if ($docks.askedForWork or $docks.hired) and Time.schoolDay and (Time.hour is 6 or Time.hour is 7) and $docks.fakeID isnot "shown">>
-	You approach the other workers, but a manager stops you. "Sorry, no can do, <<girl>>. You know the rules: no students on weekdays."
+	당신은 다른 노동자들에게 다가가지만, 관리자가 당신을 막아선다. "미안하지만, 안 돼, <<girl>>. 규칙 알잖아. 평일엔 학생 출입 금지야."
 
 	<<if $id is 1>>
 		<<set $docks.fakeID to "idea">>
 		<br>
-		<span class="blue">Maybe they'd let you work on school days if you showed them the ID you purchased from Briar?</span>
+		<span class="blue">브라이어에게서 산 신분증을 보여주면 평일에도 일하게 해줄지도 모른다?</span>
 		<br>
 	<</if>>
 <</if>>
@@ -30,21 +30,21 @@ You are on the docks.
 	<<orgasmLocation "docks">>
 <</if>>
 <<if $docks.hired and Time.schoolDay and (Time.hour is 6 or Time.hour is 7) and $docks.fakeID is "not considered">>
-	Dockers arrive for work. They won't let you join them on a school day.
+	항만 노동자들이 일을 하러 도착했다. 그들은 평일에 당신이 일에 끼어드는 것을 허락하지 않을 것이다.
 	<br><br>
 <</if>>
 <<if $robindebtevent gte 1 and $docksrobinintro isnot 1 and $robinmissing is "docks">>
-	<<investigateicon>><<link [[Look for Robin (0:20)|Docks_Robin]]>><<pass 20>><</link>>
+	<<investigateicon>><<link [[로빈을 찾는다 (0:20)|Docks_Robin]]>><<pass 20>><</link>>
 	<br>
 <</if>>
 <<if $docks.askedForWork and !$docks.hired and Time.dayState isnot "night" and $exposed lte 0>>
-	<<docksicon>><<link [[Take job (0:30)|Docks Take Job]]>><<pass 30>><<set $docks.hired to true>><</link>>
+	<<docksicon>><<link [[일자리를 잡는다 (0:30)|Docks Take Job]]>><<pass 30>><<set $docks.hired to true>><</link>>
 	<br>
 <<elseif $docks.hired and ((Time.hour is 6 or (Time.hour is 7 and (Time.minute lt 15 or $docks.fakeID is "shown"))) or ($daily.docksLunchLeft and (Time.hour is 11 or (Time.hour is 12 and Time.minute lt 3)))) and !$daily.docksLeftEarly and $exposed lte 0 and (!Time.schoolDay or $docks.fakeID is "shown")>>
 	<<if pcAreArmsBound("both")>>
-		<span class="red">Both of your arms are bound</span>, so you are unable to work as a docker.
+		<span class="red">당신의 양팔이 묶여 있어</span> 항만 노동자로 일할 수 없다.
 	<<elseif $daily.docksLunchLeft and (Time.hour is 11 or (Time.hour is 12 and Time.minute lt 3))>>
-		<<icon "cargo-stack.png">><<link [[Return to work|Docks Lunch Return]]>><</link>>
+		<<icon "cargo-stack.png">><<link [[일터로 돌아간다|Docks Lunch Return]]>><</link>>
 	<<else>>
 		<<if Time.minute is 0>>
 			<<set _time_to_display to (16 - Time.hour) + ":00">>
@@ -55,44 +55,44 @@ You are on the docks.
 		<</if>>
 
 		<<if Time.hour is 6>>
-			<<icon "cargo-stack.png">><<link [["Work as a docker (" + _time_to_display + ")"|Docks Start Early]]>><<set $phase to 0>><</link>> /* started early, phase used in Docks Start */
+			<<icon "cargo-stack.png">><<link [["항만 노동자로 일한다 (" + _time_to_display + ")"|Docks Start Early]]>><<set $phase to 0>><</link>> /* started early, phase used in Docks Start */
 		<<elseif Time.hour is 7 and (Time.minute lt 15 or $docks.fakeID is "shown")>>
-			<<icon "cargo-stack.png">><<link [["Work as a docker (" + _time_to_display + ")"|Docks Start]]>><<set $phase to 1>><</link>> /* started exactly on time or late, phase used in Docks Start */
+			<<icon "cargo-stack.png">><<link [["항만 노동자로 일한다 (" + _time_to_display + ")"|Docks Start]]>><<set $phase to 1>><</link>> /* started exactly on time or late, phase used in Docks Start */
 		<<else>>
 			You shouldn't see this passage! Please report this to the developer
 		<</if>>
 	<</if>>
 	<br>
 <<elseif !$docks.askedForWork and !$docks.hired and Time.dayState isnot "night" and $exposed lte 0>>
-	<<socialiseicon "ask">><<link [[Ask for work (0:05)|Docks Ask]]>><<pass 5>><<set $docks.askedForWork to true>><</link>>
+	<<socialiseicon "ask">><<link [[일자리를 묻는다 (0:05)|Docks Ask]]>><<pass 5>><<set $docks.askedForWork to true>><</link>>
 	<br>
 <</if>>
 <<if $exposed lte 0 and Time.dayState isnot "night" and $docks.status gte 80 and $docks.wage lt 3000>>
-	<<socialiseicon "ask">><<link [[Ask for raise (0:05)|Docks Raise]]>><<pass 5>><<set $docks.wage to Math.clamp($docks.wage + 150, 0, 3000)>><<dockstatus -20>><</link>><<lllcool>>
+	<<socialiseicon "ask">><<link [[임금 인상을 요구한다 (0:05)|Docks Raise]]>><<pass 5>><<set $docks.wage to Math.clamp($docks.wage + 150, 0, 3000)>><<dockstatus -20>><</link>><<lllcool>>
 	<br>
 <</if>>
 <<if Time.dayState is "night">>
-	<<sneakicon>><<link [[Sneak inside (0:05)|Docks Sneak Start]]>><<set $bus to "S">><</link>>
+	<<sneakicon>><<link [[몰래 들어간다 (0:05)|Docks Sneak Start]]>><<set $bus to "S">><</link>>
 	<br>
 <</if>>
 <<storeon "docks" "check">>
 <<if _store_check is 1>>
-	<<dressasyouwereicon>><<link [[Get dressed|Docks]]>><<storeon "docks">><</link>>
+	<<dressasyouwereicon>><<link [[옷을 입는다|Docks]]>><<storeon "docks">><</link>>
 	<br>
 <</if>>
 <<if $id is 1 and ($docks.askedForWork or $docks.hired) and (Time.hour is 6 or Time.hour is 7) and $docks.fakeID is "idea">>
-	<<icon "access-card.png">><<link [[Use fake ID (0:02)|Docks Fake ID]]>><</link>>
+	<<icon "access-card.png">><<link [[위조 신분증을 사용한다 (0:02)|Docks Fake ID]]>><</link>>
 	<br>
 <</if>>
 <br>
 <<silverStrangerDocks>>
-<<mericon>><<link [[Leave|Mer Street]]>><</link>>
+<<mericon>><<link [[떠난다|Mer Street]]>><</link>>
 <br>
 
 <<if $debug>>
-	<<icon "small-up-arrow.png" "infront">><<mericon>><<link [[(debug) Max dock status|Docks]]>><<set $docks.status to 100>><</link>>
+	<<icon "small-up-arrow.png" "infront">><<mericon>><<link [[(debug) 부두 평판 최대|Docks]]>><<set $docks.status to 100>><</link>>
 	<br>
-	<<icon "small-down-arrow.png" "infront">><<mericon>><<link [[(debug) Min dock status|Docks]]>><<set $docks.status to 0>><</link>>
+	<<icon "small-down-arrow.png" "infront">><<mericon>><<link [[(debug) 부두 평판 최소|Docks]]>><<set $docks.status to 0>><</link>>
 	<br>
 <</if>>
 
@@ -100,28 +100,28 @@ You are on the docks.
 <<set $outside to 0>><<effects>>
 <<generate1>><<person1>>
 
-You ask a manager for a raise. "Well..." <<He>> adjusts <<his>> glasses and taps something into <<his>> computer. "You have been pulling your weight around here. Fine. You're on <span class="gold">£<<print (($docks.wage * 8) / 100)>></span> a shift now, plus <span class="gold">£<<print (($docks.wage / 100) * 1.5)>></span> for every hour of overtime."
+당신은 관리자에게 임금 인상을 요구한다. "음..." <<He>>【은는】 <<his>> 안경을 고쳐 쓰고 컴퓨터에 무언가를 입력한다. "여기서 제 몫은 다 하고 있군. 좋아. 이제 교대 근무당 <span class="gold">£<<print (($docks.wage * 8) / 100)>></span>, 초과 근무 시간당 <span class="gold">£<<print (($docks.wage / 100) * 1.5)>></span>를 추가로 받게 될 걸세."
 <<trauma -18>><<stress -18>><<lltrauma>><<llstress>>
 <br><br>
 
 <<if $docks.wage gte 2500>>
-	"That's more than any other worker," <<he>> adds.
+	"다른 어떤 노동자보다 많은 금액이야." <<he>>【이가】 덧붙인다.
 	<br><br>
 <</if>>
 
-The other dockers overheard and grumble as you leave. They're just jealous.
+다른 부두 노동자들이 엿듣고 당신이 떠날 때 투덜거린다. 그저 질투하는 것뿐이다.
 <br><br>
 
 <<endevent>>
 
-<<link [[Next|Docks]]>><</link>>
+<<link [[다음|Docks]]>><</link>>
 <br>
 
 :: Docks Ask
 <<set $outside to 0>><<effects>>
 <<speechresolve>>
 
-You approach a <<generate1>><<person1>><<person>> standing on a raised platform. <<He>> jots something on <<his>> clipboard while observing the workers.
+당신은 높은 단상 위에 서 있는 <<generate1>><<person1>><<person>>에게 다가간다. <<He>>【은는】 노동자들을 관찰하며 <<his>> 클립보드에 무언가를 적는다.
 <br><br>
 
 <<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
@@ -135,34 +135,34 @@ You approach a <<generate1>><<person1>><<person>> standing on a raised platform.
 <<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
 	"Hey," you call. "I'm after a job. Who do I talk to?"
 <<else>>
-	"Hello," you say. "Are you hiring?"
+	"안녕하세요." 당신이 말한다. "사람 구하시나요?"
 <</if>>
 <br><br>
 
-<<He>> doesn't look up from <<his>> clipboard, but points <<his>> pen in the direction of a small building a little closer to the water.
+<<He>>【은는】 <<his>> 클립보드에서 눈을 떼지 않고, <<his>> 펜으로 물가에 좀 더 가까운 작은 건물을 가리킨다.
 <br><br>
 
-The door is open. A <<generate2>><<person2>><<person>> looks up from <<his>> desk as you enter. "Ah," <<he>> says, pushing <<his>> glasses up <<his>> nose. "Looking for work?" You nod. <<He>> stands and squeezes between <<his>> desk and the wall until <<he>> stands in front of you. <<He>> holds out <<his>> hand.
+문이 열려 있다. 당신이 들어가자 <<generate2>><<person2>><<person>>【이가】 <<his>> 책상에서 고개를 든다. "아." <<he>>【이가】 <<his>> 안경을 <<his>> 코 위로 밀어 올리며 말한다. "일자리 찾으러 왔나?" 당신은 고개를 끄덕인다. <<He>>【은는】 일어나 <<his>> 책상과 벽 사이를 비집고 나와 당신 앞에 선다. <<He>>【은는】 <<his>> 손을 내민다.
 <br><br>
 
-<<link [[Next|Docks Ask 2]]>><</link>>
+<<link [[다음|Docks Ask 2]]>><</link>>
 <br>
 
 :: Docks Ask 2
 <<speechresolve>>
-"We're looking for more hands," the <<person>> says. "So many ships come and go nowadays. You'll want details." <<He>> sits back behind <<his>> desk.
+"일손이 더 필요해." <<person>>【이가】 말한다. "요즘엔 배가 너무 많이 드나들어서 말이야. 자세한 내용을 원하겠지." <<He>>【은는】 <<his>> 책상 뒤에 다시 앉는다.
 <br><br>
 
-"<<printmoney 1500>> an hour is the starting wage. Perform well and you might get a raise. The docks open at <span class="gold"><<ampm 6 00>></span>, and work starts at <span class="gold"><<ampm 7 00>></span>. You'll be working a full eight-hour shift until <span class="gold"><<ampm 16 00>></span>."
+"시간당 <<printmoney 1500>>【이가】 시작 임금이야. 일을 잘하면 임금 인상을 받을 수도 있고. 부두는 <span class="gold"><<ampm 6 00>></span>에 열리고, 일은 <span class="gold"><<ampm 7 00>></span>에 시작해. <span class="gold"><<ampm 16 00>></span>까지 8시간 교대 근무를 하게 될 거야."
 <br><br>
 
-<span class="teal">"You need to stay the whole shift if you want to get paid."</span>
+<span class="teal">"급여를 받으려면 교대 근무 시간 내내 머물러야 해."</span>
 <br><br>
 
-"If you think you can handle it, we need some extra help until <span class="gold"><<ampm 19 00>></span>. It's overtime, so we'll pay 50% extra an hour, <span class="gold"><<printmoney 2250>></span>, and you can leave at any time."
+"감당할 수 있다고 생각되면, <span class="gold"><<ampm 19 00>></span>까지 추가 인력이 필요해. 초과 근무니까 시간당 50% 추가로 쳐서 <span class="gold"><<printmoney 2250>></span>이고, 언제든지 퇴근할 수 있어."
 <br><br>
 
-"Oh, and don't be late," <<he>> adds. "We can't just have workers show up throughout the day. Security reasons. No work for you on school days, either, or I'll get in trouble."
+"아, 그리고 늦지 마." <<he>>【이가】 덧붙인다. "하루 종일 노동자들이 들락날락하게 할 수는 없어. 보안 문제야. 학교 가는 날에도 일할 수 없고, 안 그러면 내가 곤란해져."
 <br><br>
 
 <<if $id is 1>>
@@ -183,75 +183,75 @@ The door is open. A <<generate2>><<person2>><<person>> looks up from <<his>> des
 	<</if>>
 	<br><br>
 
-	<<He>> glances at it, then hands it back. "Can't be too careful. Everything else still applies, except for the 'no working on school days' part."
+	<<He>>【은는】 그것을 힐끗 보더니 다시 건네준다. "조심해서 나쁠 건 없지. '학교 가는 날 근무 금지' 부분만 빼면 다른 건 다 그대로 적용돼."
 	<br><br>
 <</if>>
 
-<<link [[Next|Docks Ask 3]]>><</link>>
+<<link [[다음|Docks Ask 3]]>><</link>>
 <br>
 
 :: Docks Ask 3
-<<He>> runs <<his>> eyes up and down your body.
+<<He>>【은는】 당신의 몸을 위아래로 훑어본다.
 
 <<if currentSkillValue('physique') gte 14000>>
-	"You're a strapping <<lass>>, aren't you? It's a physical job, but you won't have any problems."
+	"건장한 <<lass>>【으로로】군, 그렇지? 육체적인 일이지만, 아무 문제 없을 거야."
 <<elseif currentSkillValue('physique') gte 8000>>
-	"You look good and fit. It's a physical job, but you should be fine."
+	"몸이 좋아 보이는군. 육체적인 일이지만, 괜찮을 거야."
 <<elseif currentSkillValue('physique') gte 6000>>
-	"This is a physically demanding job. You look like you can handle yourself, but be careful."
+	"이건 육체적으로 힘든 일이야. 스스로를 감당할 수 있을 것 같지만, 조심해."
 <<else>>
-	<<He>> sighs. "This is a physically demanding job, and, well." <<He>> pauses. "You're not the strongest <<girl>> I've seen, let me put it that way. I won't stop you, but you might be in for a rough time."
+	<<He>>【은는】 한숨을 쉰다. "이건 육체적으로 힘든 일인데, 음." <<He>>【은는】 잠시 멈춘다. "내가 본 <<girl>> 중에 가장 힘이 센 편은 아니군, 그렇게 말해두지. 막지는 않겠지만, 힘든 시간을 보낼 수도 있어."
 <</if>>
 <br><br>
 
-"I think that's everything. I can give you a rundown of the more technical aspects, the rest you can learn on the job. So, interested?"
+"이게 전부인 것 같군. 더 기술적인 측면은 간단히 설명해줄 수 있고, 나머지는 일하면서 배우면 돼. 그래서, 관심 있나?"
 <br><br>
 
-<<link [[Yes (0:30)|Docks Take Job]]>><<pass 30>><<set $docks.hired to true>><<endevent>><</link>>
+<<link [[네 (0:30)|Docks Take Job]]>><<pass 30>><<set $docks.hired to true>><<endevent>><</link>>
 <br>
-<<link [[No|Docks Refuse Job]]>><</link>>
+<<link [[아니요|Docks Refuse Job]]>><</link>>
 <br>
 
 :: Docks Refuse Job
-"That's a shame," the <<person>> sighs. "Come back if you change your mind."
+"아쉽군." <<person>>【이가】 한숨을 쉰다. "마음이 바뀌면 다시 와."
 <br><br>
 
 <<endevent>>
-<<link [[Next|Docks]]>><</link>>
+<<link [[다음|Docks]]>><</link>>
 <br>
 
 :: Docks Take Job
 <<effects>>
 
-"Remember," the manager says.
+"명심해라." 관리자가 말한다.
 <<if $docks.fakeID is "shown">>
-	"You're expected to show up by <span class="gold"><<ampm 7 00>></span>, but security can check your ID to let you in late before <<ampm 8 00>>. Also, you won't be paid for your first hour if you show up halfway through."
-	<br><br>
+    "출근 시간은 <span class="gold"><<ampm 7 00>></span>까지지만, 지각하더라도 <<ampm 8 00>> 전이라면 경비원이 신분증을 확인하고 들여보내 줄 거다. 아, 그리고 7시 반을 넘겨서 오면 첫 한 시간 치 급여는 깎일 거다."
+    <br><br>
 
-	"You can also leave for your lunch break. Just don't come back more than two minutes late or security won't let you in again. Yes, that means you won't get paid for the day if you lose track of time. Sorry, it's harsh, but it's company policy."
-	<br><br>
+    "점심시간에는 밖에 나갔다 올 수도 있다. 단, 2분 이상 늦게 돌아오면 경비원이 다시 들여보내 주지 않을 거다. 그래, 시간 가는 줄 모르고 늦으면 그날 일당은 날아간다는 뜻이지. 가혹하겠지만 회사 방침이니 어쩔 수 없어."
+    <br><br>
 <<else>>
-	"No work on school days. You're expected to show up by <span class="gold"><<ampm 7 00>></span>, but security can let you in late before <<ampm 7 15>>. Company policy says we need to verify an ID to let you in any later."
-	<br><br>
+    "등교일에는 일할 수 없다. 출근 시간은 <span class="gold"><<ampm 7 00>></span>까지지만, 지각하더라도 <<ampm 7 15>> 전이라면 경비원이 들여보내 줄 거다. 그보다 늦게 온다면 신분증을 확인해야 들여보낼 수 있다는 게 회사 방침이거든."
+    <br><br>
 <</if>>
-"Work ends at <span class="gold"><<ampm 16 00>></span>. Welcome to the team."
+"업무는 <span class="gold"><<ampm 16 00>></span>에 끝난다. 우리 팀에 온 걸 환영한다."
 <br><br>
 
-<<link [[Next|Docks]]>><</link>>
+<<link [[다음|Docks]]>><</link>>
 <br>
 
 :: Docks Start Early
 <<effects>>
 
 <<if Time.minute lt 55>>
-	You pass security and wait for work to begin. Dockers talk amongst themselves while passing the time.
+	당신은 경비를 통과하고 일이 시작되기를 기다린다. 부두 노동자들은 시간을 보내며 서로 이야기를 나눈다.
 	<br><br>
 
 	<<if !$docks.firstDay>>
 		<<dockoverhear>>
 	<</if>>
 <<else>>
-	You pass security and join the other dockers. You barely have time to get settled before your shift begins.
+	당신은 경비를 통과하고 다른 부두 노동자들과 합류한다. 자리를 잡을 시간도 없이 교대 근무가 시작된다.
 	<br><br>
 <</if>>
 
@@ -264,7 +264,7 @@ The door is open. A <<generate2>><<person2>><<person>> looks up from <<his>> des
 	<<set _time_to_display to "0:" + _time_to_pass>>
 <</if>>
 
-<<link [["Next (" + _time_to_display + ")"|Docks Start]]>><<pass _time_to_pass>><</link>>
+<<link [["다음 (" + _time_to_display + ")"|Docks Start]]>><<pass _time_to_pass>><</link>>
 
 :: Docks Start
 <<effects>>
@@ -273,32 +273,32 @@ The door is open. A <<generate2>><<person2>><<person>> looks up from <<his>> des
 <<set $docks.dailyHours.overtime.total to 0>><<set $docks.dailyHours.overtime.workedHard to 0>><<set $docks.dailyHours.overtime.slacked to 0>><<set $docks.dailyHours.overtime.unpaid to 0>>
 
 <<if $docks.firstDay>> /* this is set to false later in this passage */
-	You <<if $phase is 1>>pass security and <</if>>report to a manager for work.
+	당신은 <<if $phase is 1>>보안 검색을 통과하고 <</if>>업무를 위해 관리자에게 보고한다.
 	<br><br>
-	"First day on the job?" the <<generate1>><<person1>><<person>> asks. You nod. <<He>> writes something on a clipboard.
+	"오늘 처음 출근인가?" <<generate1>><<person1>><<person>>【이가】 묻는다. 당신은 고개를 끄덕인다. <<He>>【은는】 클립보드에 무언가를 적는다.
 	<<if Time.hour is 7 and Time.minute is 0>>
-		"And on time at <span class="gold"><<ampm 7 00>></span> sharp. Good. Let's keep it that way."
+		"게다가 <span class="gold"><<ampm 7 00>></span> 정시에 맞춰 왔군. 좋아. 앞으로도 계속 그렇게 해."
 	<<elseif Time.hour is 7 and Time.minute lt 15>>
-		"A little late, but not too bad. Try to be here by <span class="gold"><<ampm 7 00>></span> in the future."
+		"조금 늦었지만, 그리 나쁘진 않군. 다음부턴 <span class="gold"><<ampm 7 00>></span>까지 오도록 해."
 	<<else>>
-		"You're late. That's alright, you're fresh from orientation. Try to be here by <span class="gold"><<ampm 7 00>></span> in the future. You won't be paid for your first hour if you show up at <<ampm 7 30>> or later."
+       "지각이군. 괜찮아, 오리엔테이션에서 막 왔으니 그럴 수 있지. 앞으로는 <span class="gold"><<ampm 7 00>></span>까지 오도록 해. <<ampm 7 30>> 이후에 도착하면 첫 한 시간은 무급 처리될 거다."
 	<</if>>
 <<elseif Time.hour is 7>>
 	<<if $phase is 0>> /* arrived early, set in docks passage */
-		You report to a manager for work.
+		당신은 업무를 위해 관리자에게 보고한다.
 	<<elseif Time.minute is 0>>
-		You pass security and report to a manager for work.
+		당신은 보안 검색을 통과하고 업무를 위해 관리자에게 보고한다.
 	<<elseif Time.minute lt 3>>
-		You pass security and report to a manager for work. <<generate1>><<person1>><<He>> doesn't seem to care that you're a couple minutes late.
+		당신은 보안 검색을 통과하고 업무를 위해 관리자에게 보고한다. <<generate1>><<person1>><<He>>【은는】 당신이 몇 분 늦은 것에 대해 신경 쓰지 않는 것 같다.
 	<<elseif Time.minute lt 15>>
-		You pass security and report to a manager for work. <<generate1>><<person1>><<He>> pointedly reminds you to show up on time.<<stress 6>><<gstress>>
-	<<elseif $docks.fakeID is "shown">>
-		<<if Time.minute lt 30>>
-			Security stops you to check your ID. When you're allowed entry, a <<generate1>><<person1>><<person>> pointedly reminds you to show up on time.<<stress 6>><<gstress>>
-		<<else>>
-			Security stops you to check your ID. When you're allowed entry, a <<generate1>><<person1>><<person>> glares at you. "You're late," <<he>> says. "The first hour is coming out of your pay. Try to show up on time in the future."<<stress 6>><<gstress>>
-			<<set $docks.dailyHours.shift.unpaid to 1>>
-		<</if>>
+		당신은 보안 검색을 통과하고 업무를 위해 관리자에게 보고한다. <<generate1>><<person1>><<He>>【은는】 정시에 출근하라고 날카롭게 상기시킨다.<<stress 6>><<gstress>>
+   <<elseif $docks.fakeID is "shown">>
+       <<if Time.minute lt 30>>
+           경비원이 당신의 신분증을 확인하기 위해 멈춰 세운다. 입장이 허가되자, <<generate1>><<person1>><<person>>【이가】 제시간에 출근하라고 콕 집어 충고한다.<<stress 6>><<gstress>>
+       <<else>>
+           경비원이 당신의 신분증을 확인하기 위해 멈춰 세운다. 입장이 허가되자, <<generate1>><<person1>><<person>>【이가】 당신을 노려본다. "지각이군." <<he>>【이가】 말한다. "첫 한 시간 치 급여는 깎일 거다. 앞으로는 제시간에 맞춰 오도록."<<stress 6>><<gstress>>
+           <<set $docks.dailyHours.shift.unpaid to 1>>
+       <</if>>
 	<<else>>
 		You shouldn't see this passage! Please report this to the developer
 	<</if>>
@@ -316,23 +316,23 @@ The door is open. A <<generate2>><<person2>><<person>> looks up from <<his>> des
 <<else>>
 	<<if $christmas is 1>>
 		<<if Time.monthDay is 25>>
-			<span class="green">It's Christmas day.</span> A manager thanks the few dockers who are present and says that they will receive overtime rates all day and a <span class="gold">£100</span> bonus at the end of their shift.
+			<span class="green">크리스마스다.</span> 한 관리자가 출근한 몇 안 되는 부두 노동자들에게 감사를 표하며, 오늘 하루 종일 초과 근무 수당을 적용하고 교대 근무가 끝날 때 <span class="gold">£100</span>의 보너스를 지급할 것이라고 말한다.
 		<<else>>
-			<span class="lblue">It's the week before Christmas.</span> A manager states that all employees who work this week will receive a <span class="gold">£25</span> bonus at the end of the day.
+			<span class="lblue">크리스마스 전 주다.</span> 한 관리자가 이번 주에 일하는 모든 직원에게 하루 일과가 끝날 때 <span class="gold">£25</span>의 보너스를 지급할 것이라고 말한다.
 		<</if>>
 		<br><br>
 	<</if>>
 	<<if $rng gte 86>> /* 15% chance */
-		<span class="red">The docks are busy today.</span> Work will be tiring. A manager announces that the overtime rate is raised from 150% to 200% for the day.
+		<span class="red">오늘 부두는 분주하다.</span> 일이 고될 것이다. 한 관리자가 오늘 하루 초과 근무 수당이 150%에서 200%로 인상된다고 발표한다.
 		<<set $docks.dayType to "busy">>
 	<<elseif $rng gte 71>> /* 15% chance */
-		<span class="blue">Few ships are coming in today.</span> Work will be easy, but there won't be enough work to stay overtime.
+		<span class="blue">오늘 들어오는 배가 거의 없다.</span> 일은 쉽겠지만, 초과 근무를 할 만큼의 일거리는 없을 것이다.
 		<<set $docks.dayType to "slow">>
 	<<elseif $rng lte Math.floor($world_corruption_soft/5)>> /* 0-20% chance based on soft world corruption */
-		<span class="lewd">Strange shipments are coming in today.</span> The crew that normally handles them asked for help with the overflow. A manager announces that the overtime rate is raised from 150% to 200% for the day.
+		<span class="lewd">오늘 이상한 화물이 들어오고 있다.</span> 평소 그 화물을 처리하던 팀이 넘치는 물량 때문에 도움을 요청했다. 한 관리자가 오늘 하루 초과 근무 수당이 150%에서 200%로 인상된다고 발표한다.
 		<<set $docks.dayType to "lewd">>
 	<<else>> /* remaining chance, 50-70% */
-		The usual number of ships are coming through the docks today.
+		오늘 부두를 통과하는 배의 수는 평소와 같다.
 		<<set $docks.dayType to "normal">>
 	<</if>>
 	<br><br>
@@ -354,6 +354,7 @@ The door is open. A <<generate2>><<person2>><<person>> looks up from <<his>> des
 <<docklunchoptions>>
 
 /* In the Docks Work passage, $phase determines action: 0 is working, 1 is slacking  */
+
 :: Docks Work
 <<set $outside to 1>><<effects>>
 
@@ -362,101 +363,101 @@ The door is open. A <<generate2>><<person2>><<person>> looks up from <<his>> des
 <</if>>
 
 <<if $phase is 0>>
-	You work hard. It's
+	당신은 열심히 일한다. 이건
 	<<if $docks.dayType is "busy">>
-		exhausting.
+		지치는 일이다.
 		<<physique 6>>
 	<<elseif $docks.dayType is "slow">>
-		a slow day, leaving plenty of time to take breaks when you're not needed.
+		일이 없는 한가한 날이라, 당신이 필요 없을 땐 쉴 시간이 많다.
 		<<physique 2>>
 	<<elseif $docks.dayType is "lewd">>
-		tiring, and you feel strangely heated.
+		피곤한 일이고, 이상하게 몸이 달아오르는 것을 느낀다.
 		<<physique 4>>
 	<<else>>
-		tiring.
+		피곤한 일이다.
 		<<physique 4>>
 	<</if>>
 
 	<<if $upperwetstage gte 3 or $lowerwetstage gte 3>>
 		<br><br>
-		You feel the other dockers ogling your body through your wet clothing.
+		다른 부두 노동자들이 젖은 옷 너머로 당신의 몸을 훑어보는 것이 느껴진다.
 		<<gstress>><<garousal>><<stress 6>><<arousal 600>>
 	<</if>>
 <<elseif $phase is 1>>
 	<<if $docks.dayType is "lewd">>
-		You try to avoid handling the unusual cargo.
+		당신은 이상한 화물을 다루는 것을 피하려고 한다.
 	<<else>>
-		You do as little work as you can get away with.
+		당신은 들키지 않을 만큼만 최소한으로 일한다.
 	<</if>>
 	<<set _daily_slacked to ($docks.dailyHours.shift.slacked + $docks.dailyHours.overtime.slacked)>>
 	<<if $docks.dayType is "slow">>
-		Your colleagues <span class="teal">don't mind you slacking today.</span>
+		동료들은 <span class="teal">오늘 당신이 농땡이 피우는 것을 신경 쓰지 않는다.</span>
 	<<else>>
 		<<if $docks.status gte 80>>
 			<<if _daily_slacked is 1>>
-				Your colleagues <span class="green">don't mind.</span>
+				동료들은 <span class="green">신경 쓰지 않는다.</span>
 			<<elseif _daily_slacked is 2>>
-				Your colleagues <span class="lblue">cover for you.</span>
+				동료들이 <span class="lblue">당신을 감싸준다.</span>
 			<<elseif _daily_slacked is 3>>
-				Your colleagues <span class="blue">let it slide.</span>
+				동료들이 <span class="blue">넘어가 준다.</span>
 			<<elseif _daily_slacked is 4>>
-				Your colleagues <span class="purple">are getting impatient.</span>
+				동료들이 <span class="purple">점점 참을성을 잃어가고 있다.</span>
 			<<elseif $docks.dayType is "busy">>
-				Your colleagues <span class="red">are angry that you're not helping on a busy day.</span><<dockstatus -2>><<llcool>>
+				동료들은 <span class="red">바쁜 날에 당신이 돕지 않아 화가 났다.</span><<dockstatus -2>><<llcool>>
 			<<else>>
-				Your colleagues <span class="red">grumble about you.</span><<dockstatus -1>><<lcool>>
+				동료들이 <span class="red">당신에 대해 불평한다.</span><<dockstatus -1>><<lcool>>
 			<</if>>
 		<<elseif $docks.status gte 60>>
 			<<if _daily_slacked is 1>>
-				Your colleagues <span class="lblue">cover for you.</span>
+				동료들이 <span class="lblue">당신을 감싸준다.</span>
 			<<elseif _daily_slacked is 2>>
-				Your colleagues <span class="blue">let it slide.</span>
+				동료들이 <span class="blue">넘어가 준다.</span>
 			<<elseif _daily_slacked is 3>>
-				Your colleagues <span class="purple">are getting impatient.</span>
+				동료들이 <span class="purple">점점 참을성을 잃어가고 있다.</span>
 			<<elseif $docks.dayType is "busy">>
-				Your colleagues <span class="red">are angry that you're not helping on a busy day.</span><<dockstatus -2>><<llcool>>
+				동료들은 <span class="red">바쁜 날에 당신이 돕지 않아 화가 났다.</span><<dockstatus -2>><<llcool>>
 			<<else>>
-				Your colleagues <span class="red">grumble about you.</span><<dockstatus -1>><<lcool>>
+				동료들이 <span class="red">당신에 대해 불평한다.</span><<dockstatus -1>><<lcool>>
 			<</if>>
 		<<elseif $docks.status gte 40>>
 			<<if _daily_slacked is 1>>
-				Your colleagues <span class="blue">let it slide.</span>
+				동료들이 <span class="blue">넘어가 준다.</span>
 			<<elseif _daily_slacked is 2>>
-				Your colleagues <span class="purple">are getting impatient.</span>
+				동료들이 <span class="purple">점점 참을성을 잃어가고 있다.</span>
 			<<elseif $docks.dayType is "busy">>
-				Your colleagues <span class="red">are angry that you're not helping on a busy day.</span><<dockstatus -2>><<llcool>>
+				동료들은 <span class="red">바쁜 날에 당신이 돕지 않아 화가 났다.</span><<dockstatus -2>><<llcool>>
 			<<else>>
-				Your colleagues <span class="red">grumble about you.</span><<dockstatus -1>><<lcool>>
+				동료들이 <span class="red">당신에 대해 불평한다.</span><<dockstatus -1>><<lcool>>
 			<</if>>
 		<<elseif $docks.status gte 20>>
 			<<if _daily_slacked is 1>>
-				Your colleagues <span class="purple">are getting impatient.</span>
+				동료들이 <span class="purple">점점 참을성을 잃어가고 있다.</span>
 			<<elseif $docks.dayType is "busy">>
-				Your colleagues <span class="red">are angry that you're not helping on a busy day.</span><<dockstatus -2>><<llcool>>
+				동료들은 <span class="red">바쁜 날에 당신이 돕지 않아 화가 났다.</span><<dockstatus -2>><<llcool>>
 			<<else>>
-				Your colleagues <span class="red">grumble about you.</span><<dockstatus -1>><<lcool>>
+				동료들이 <span class="red">당신에 대해 불평한다.</span><<dockstatus -1>><<lcool>>
 			<</if>>
 		<<else>>
 			<<if $docks.dayType is "busy">>
-				Your colleagues <span class="red">are angry that you're not helping on a busy day.</span><<dockstatus -2>><<llcool>>
+				동료들은 <span class="red">바쁜 날에 당신이 돕지 않아 화가 났다.</span><<dockstatus -2>><<llcool>>
 			<<else>>
-				Your colleagues <span class="red">grumble about you.</span><<dockstatus -1>><<lcool>>
+				동료들이 <span class="red">당신에 대해 불평한다.</span><<dockstatus -1>><<lcool>>
 			<</if>>
 		<</if>>
 	<</if>>
 	<<if $docks.suspicion gte 4>>
 		<br><br>
-		A supervisor follows you and <<if $docks.status gte 20>>says<<else>>sneers<</if>>,
+		감독관이 당신을 따라와 <<if $docks.status gte 20>>말한다<<else>>비웃는다<</if>>,
 		<<if $rng gte 81>>
-			"Stop slacking, <<girl>>. No work, no pay<<if $docks.dayType is "busy">>, and there's no shortage of work for you today<<elseif $docks.dayType is "slow">>, even on slow days<</if>>."
+			"농땡이 그만 피워, <<girl>>. 일 안 하면 돈도 없어<<if $docks.dayType is "busy">>, 오늘 너한테 시킬 일은 산더미 같으니까<<elseif $docks.dayType is "slow">>, 한가한 날이라도 말이야<</if>>."
 		<<elseif $rng gte 61>>
-			"We don't pay you to sit idle<<if $docks.dayType is "busy">>, especially not on days like these<</if>>. Get back to work."
+			"가만히 앉아 있으라고 돈 주는 거 아니야<<if $docks.dayType is "busy">>, 특히 오늘 같은 날에는 더더욱<</if>>. 어서 일해."
 		<<elseif $rng gte 41>>
-			"You think you're special? No pay for slackers.<<if $docks.dayType is "busy">> We need all hands on-board today.<</if>>"
+			"네가 뭐 특별한 줄 알아? 농땡이꾼한테 줄 돈은 없어.<<if $docks.dayType is "busy">> 오늘은 모두가 일해야 한다고.<</if>>"
 		<<elseif $rng gte 21>>
-			"Back in my day, we fired slackers. Now we just don't pay them."
+			"나 때는 농땡이꾼들을 해고했지. 지금은 그냥 돈을 안 줄 뿐이야."
 		<<else>>
-			"A little birdie told me you've not been pulling your weight around here. We only pay for hours worked."
+			"어떤 꼬마 새가 네가 여기서 제 몫을 안 하고 있다고 알려주더군. 우리는 일한 시간만큼만 돈을 줘."
 		<</if>>
 		<<stress 6>><<gstress>>
 		<<if Time.hour gte 17>>
@@ -468,18 +469,18 @@ The door is open. A <<generate2>><<person2>><<person>> looks up from <<his>> des
 
 	<<if $upperwetstage gte 3 or $lowerwetstage gte 3>>
 		<br><br>
-		You feel the other dockers ogling your body through your wet clothing.
+		다른 부두 노동자들이 젖은 옷 너머로 당신의 몸을 훑어보는 것이 느껴진다.
 		<<gstress>><<garousal>><<stress 6>><<arousal 600>>
 	<</if>>
 <<elseif $phase is 2>>
-	You strip naked behind some cargo containers. <<flaunting>> you take a deep breath and step out onto the dock.
+	화물 컨테이너 뒤에서 알몸이 된다. <<flaunting>> 당신은 심호흡을 하고 부두로 나선다.
 	<<set $daily.docksExhibitionism to true>>
 	<<exhibitionism5>>
 
-	<<covered>> Few notice at first, until someone whistles at you and attracts attention. More and more dockers stop what they're doing to cheer and whistle at you. Each new onlooker renews your thrill.
+	<<covered>> 처음에는 아무도 눈치채지 못했지만, 누군가 당신에게 휘파람을 불어 시선을 끈다. 점점 더 많은 부두 노동자들이 하던 일을 멈추고 당신에게 환호하며 휘파람을 분다. 새로운 구경꾼이 생길 때마다 당신의 스릴은 새로워진다.
 	<br><br>
 
-	A supervisor tells everyone to get back to work. They do so, though reluctant to take their eyes off you. <<generate1>><<person1>>The supervisor doesn't tell you to get dressed. The longing look <<he>> gives your body suggests why.<<endevent>>
+	감독관이 모두에게 일하라고 말한다. 그들은 마지못해 당신에게서 눈을 떼고 일터로 돌아간다. <<generate1>><<person1>>감독관은 당신에게 옷을 입으라고 말하지 않는다. <<he>>【이가】 당신의 몸에 보내는 갈망 어린 시선이 그 이유를 말해주는 듯하다.<<endevent>>
 <</if>>
 <br><br>
 
@@ -498,39 +499,39 @@ The door is open. A <<generate2>><<person2>><<person>> looks up from <<his>> des
 <<effects>>
 <<run autismSocialDemand(1)>>
 
-You sit down with the other workers and talk over lunch.
+당신은 다른 노동자들과 함께 앉아 점심을 먹으며 이야기를 나눈다.
 
 <<if $docks.status gte 100>>
-	You quickly become the centre of attention. A <<generate1>><<person1>><<person>> offers a toast to you and thanks you for all the help you've been<<if $dockwage lt 2500>>, while a <<generate2>><<person2>><<person>> jokes that you should ask for a raise already<</if>>.<<stress -6>><<trauma -6>><<lstress>><<ltrauma>><<endevent>>
+	당신은 금세 주목의 중심이 된다. <<generate1>><<person1>><<person>>【이가】 당신을 위해 건배를 제안하며, 당신이 해준 모든 도움에 감사 인사를 전한다<<if $dockwage lt 2500>>. 한편, <<generate2>><<person2>><<person>>【은는】 벌써 임금 인상을 요구해야 하는 것 아니냐고 농담한다<</if>>.<<stress -6>><<trauma -6>><<lstress>><<ltrauma>><<endevent>>
 <<elseif $docks.status gte 80>>
-	They enjoy your company and listen when you talk. A <<generate1>><<person1>><<person>> offers to share <<his>> food with you.<<stress -6>><<trauma -3>><<dockstatus 1>><<lstress>><<ltrauma>><<gcool>><<endevent>>
+	그들은 당신과 함께 있는 것을 즐기며 당신이 말할 때 귀를 기울인다. <<generate1>><<person1>><<person>>【이가】 <<his>> 음식을 나눠주겠다고 제안한다.<<stress -6>><<trauma -3>><<dockstatus 1>><<lstress>><<ltrauma>><<gcool>><<endevent>>
 <<elseif $docks.status gte 60>>
-	They enjoy your company and listen when you talk.<<stress -6>><<dockstatus 1>><<lstress>><<gcool>>
+	그들은 당신과 함께 있는 것을 즐기며 당신이 말할 때 귀를 기울인다.<<stress -6>><<dockstatus 1>><<lstress>><<gcool>>
 <<elseif $docks.status gte 40>>
-	Some workers eye you with suspicion. Others make small talk with you. You don't feel like they trust you yet.<<dockstatus 1>><<gcool>>
+	몇몇 노동자들은 의심의 눈초리로 당신을 본다. 다른 이들은 당신에게 말을 건다. 아직 그들이 당신을 완전히 신뢰하지는 않는 것 같다.<<dockstatus 1>><<gcool>>
 <<elseif $docks.status gte 20>>
-	You do your best to ingratiate yourself with the other workers. Many of them give you suspicious looks or ignore you, but you think you're gaining their trust.<<dockstatus 1>><<gcool>>
+	당신은 다른 노동자들의 환심을 사기 위해 최선을 다한다. 많은 이들이 의심스러운 눈초리를 보내거나 당신을 무시하지만, 그들의 신뢰를 얻어가고 있다고 생각한다.<<dockstatus 1>><<gcool>>
 <<else>>
 	<<if $rng gte 51>>
 		<<generate1>><<person1>>
 
-		You have trouble finding dockers willing to talk to you. Most of them ignore you or move away when you approach. Eventually, you manage to strike up a conversation with
+		당신과 대화하려는 부두 노동자를 찾기 힘들다. 대부분 당신을 무시하거나, 당신이 다가가면 자리를 피한다. 결국 겨우 대화를 시작한다.
 		<<rng>>
 		<<if $rng gte 76>>
 			<<if Time.isWeekEnd()>>
-				another student working weekends
+				주말에 일하는 다른 학생과
 			<<else>>
-				a delinquent who is skipping school
+				학교를 빼먹은 불량 학생과
 			<</if>>
 		<<elseif $rng gte 51>>
-			a drunk <<personsimple>>
+			술에 취한 <<personsimple>>【와과】
 		<<else>>
-			a <<person>> who is sitting alone
+			혼자 앉아 있는 <<person>>【와과】
 		<</if>>
-		and build a rapport with <<him>>.<<dockstatus 1>><<gcool>>
+		<<him>>【와과】 유대감을 쌓는다.<<dockstatus 1>><<gcool>>
 		<<endevent>>
 	<<else>>
-		The workers move away when you try to talk with them. Some of them spread rumours about you. Others joke about tossing you into the ocean.<<stress 6>><<trauma 6>><<gstress>><<gtrauma>>
+		당신이 말을 걸려고 하면 노동자들이 자리를 피한다. 몇몇은 당신에 대한 소문을 퍼뜨린다. 다른 이들은 당신을 바다에 던져버리겠다고 농담한다.<<stress 6>><<trauma 6>><<gstress>><<gtrauma>>
 	<</if>>
 <</if>>
 <br><br>
@@ -542,73 +543,73 @@ You sit down with the other workers and talk over lunch.
 
 <<generate1>><<person1>>
 
-You <<print either("approach", "get comfortable next to", "sidle up to", "sit down next to")>> a <<person>> and flirt with <<him>>.
+당신은 <<print either("다가가", "편히 옆에 다가가", "곁으로 슬며시 다가가", "옆에 앉아")>> <<person>>에게 말을 붙이고, <<him>>에게 추파를 던진다.
 <<promiscuity1>>
 
 <<if $docks.status gte 40 and random(1, 3) is 1>>
 	<<if $rng gte $world_corruption_soft>>
-		<<He>> <<print either("shakes <<his>> head", "gives you a wistful smile", "sighs")>>.
+		<<He>>【은는】 <<print either("<<his>> 고개를 젓는다", "아련한 미소를 짓는다", "한숨을 쉰다")>>.
 		<<rng>>
 		<<if $rng gte 81>>
-			"<<print either("Sorry, but I'm faithfully married. You could try the pub? Me and mine found love over a couple of pints.", "I'm married, but I'm sure you'll find someone who can please you.")>>"
+			"<<print either("미안하지만 난 결혼 생활에 충실해. 술집에 가보는 건 어때? 나랑 내 사람도 맥주 몇 잔 마시다 사랑에 빠졌거든.", "난 결혼했지만, 널 만족시켜줄 사람을 찾을 수 있을 거야.")>>"
 		<<elseif $rng gte 61>>
-			"I swore an oath to the temple that I intend to keep."
+			"저는 신전에 맹세한 몸이라, 그걸 지킬 생각입니다."
 		<<elseif $rng gte 41>>
-			"I don't swing that way."
+			"저는 그쪽 취향이 아닙니다."
 		<<elseif $rng gte 21>>
-			"I don't do one-night stands. If you're looking for a hookup, try the pub."
+			"원나잇은 안 합니다. 하룻밤 상대를 찾는다면 술집에 가보세요."
 		<<else>>
-			"You're cute, but I'm hungry and just want to eat."
+			"귀엽긴 한데, 배가 고파서 밥이나 먹고 싶네요."
 		<</if>>
 		<br><br>
 
-		<<link [[Next|Docks Lunch]]>><<endevent>><</link>>
+		<<link [[다음|Docks Lunch]]>><<endevent>><</link>>
 	<<else>>
-		<<He>> <<print either("eyes you for a long moment", "fidgets in <<his>> seat", "tries to hide <<his>> growing arousal")>>.
+		<<He>>【은는】 <<print either("한참 동안 당신을 쳐다본다", "자리에서 안절부절못한다", "점점 커지는 흥분을 감추려 애쓴다")>>.
 		<<rng>>
 		<<if $rng gte 81>>
-			"<<print either("I'm faithfully married, but...", "Tempting, but I don't know if my <<spouse>> would forgive me.")>>"<<set $docks.flirtTarget to 3>>
+			"<<print either("저는 충실한 기혼자입니다만...", "솔깃하긴 한데, 제 <<spouse>>【이가】 용서해 줄지 모르겠네요.")>>"<<set $docks.flirtTarget to 3>>
 		<<elseif $rng gte 61>>
-			"Maybe the temple wouldn't know...?"<<set $docks.flirtTarget to 4>>
+			"신전에서는 모를 수도 있지 않을까요...?"<<set $docks.flirtTarget to 4>>
 		<<elseif $rng gte 41>>
 			"I don't normally go for <<girls>>."<<set $docks.flirtTarget to 5>>
 		<<elseif $rng gte 21>>
-			"I don't normally go for one-night stands."<<set $docks.flirtTarget to 6>>
+			"원래 원나잇은 잘 안 합니다만."<<set $docks.flirtTarget to 6>>
 		<<else>>
-			"I'm still eating."<<set $docks.flirtTarget to 7>>
+			"아직 식사 중이라서요."<<set $docks.flirtTarget to 7>>
 		<</if>>
-		It's not clear if <<hes>> serious yet, but you didn't hear a no.
+		<<he>>【이가】 진심인지는 아직 확실하지 않지만, 거절은 듣지 못했다.
 		<br><br>
 
 		<<docklunchseduce>>
 	<</if>>
 <<elseif $docks.status gte 60 and random(1, 2) is 1>>
-	<<He>> <<print either("tells you you're cute and likes seeing you around", "smiles and playfully flirts back", "fidgets in <<his>> seat and starts breathing more quickly")>>.<<set $docks.flirtTarget to 1>>
+	<<He>>【은는】 <<print either("당신이 귀엽고, 주변에서 보는 게 좋다고 말한다", "미소를 지으며 장난스럽게 맞받아친다", "자리에서 안절부절못하며 숨을 더 가쁘게 쉬기 시작한다")>>.<<set $docks.flirtTarget to 1>>
 	<br><br>
 
 	<<docklunchseduce>>
 <<elseif $docks.status gte 40>>
-	<<He>> <<print either("says that <<he>> appreciates the company", "looks you over with a slight smile", "seems receptive to your advances")>>, but it's hard to get a read on <<him>>.<<set $docks.flirtTarget to 2>>
+	<<He>>【은는】 <<print either("함께 있어 줘서 고맙다고 말한다", "옅은 미소를 지으며 당신을 훑어본다", "당신의 접근에 긍정적인 반응을 보이는 것 같다")>>. 하지만 <<him>>의 속을 읽기는 어렵다.<<set $docks.flirtTarget to 2>>
 	<br><br>
 
 	<<docklunchseduce>>
 <<elseif $docks.status gte 20>>
-	<<He>> <<print either("glances at you, but shakes <<his>> head.", "opens <<his>> mouth as if to respond, but decides against it.", "doesn't even look up from <<his>> meal.", "regards you with a level stare. \"Make yourself useful around here first.\"")>>
+	<<He>>【은는】 <<print either("당신을 힐끗 보더니 고개를 젓는다.", "대답하려는 듯 입을 열었지만, 이내 그만둔다.", "식사에서 눈조차 떼지 않는다.", "평온한 시선으로 당신을 바라본다. \"여기서 쓸모 있는 사람이 먼저 되도록 해.\"")>>
 	<br><br>
 
-	<<link [[Next|Docks Lunch]]>><<endevent>><</link>>
+	<<link [[다음|Docks Lunch]]>><<endevent>><</link>>
 <<else>>
-	"<<print either("Fuck off,", "Go away,", "Buzz off,", "Don't bother me,", "Can't you see that I'm busy?")>>" <<he>> says. "<<print either("You're not worth my time.", "I'm trying to enjoy my lunch.", "Go be a whore somewhere else.", "If you want a sucker, try the pub.", "If I wanted a whore, I'd go to the brothel.", "I'm starving and just want to eat.", "Try making yourself useful around here before slutting it up.")>>"<<stress 6>><<gstress>>
+	"<<print either("꺼져,", "저리 가,", "사라져,", "귀찮게 하지 마,", "바쁜 거 안 보여?")>>" <<he>>【이가】 말한다. "<<print either("넌 내 시간 쓸 가치도 없어.", "점심 좀 즐기려는데 말이야.", "딴 데 가서 몸이나 팔아.", "호구 찾으려면 술집에나 가봐.", "창녀가 필요했으면 창관에 갔겠지.", "배고파 죽겠으니까 밥이나 먹자.", "몸이나 굴리기 전에 여기서 쓸모 있는 인간이나 돼 봐.")>>"<<stress 6>><<gstress>>
 	<br><br>
 
-	<<link [[Next|Docks Lunch]]>><<endevent>><</link>>
+	<<link [[다음|Docks Lunch]]>><<endevent>><</link>>
 <</if>>
 <br><br>
 
 :: Docks Lunch Seduce
 <<effects>>
 
-You lean over and whisper something into the <<persons>> ear.
+당신은 몸을 숙여 <<persons>> 귀에 무언가 속삭인다.
 <<promiscuity2>>
 
 <<if $docks.flirtTarget is 1>> /* Easyish target, requires 60+ status */
@@ -629,76 +630,76 @@ You lean over and whisper something into the <<persons>> ear.
 
 <<if $seductionrating gte $seductionrequired>>
 	<<if $docks.flirtTarget is 1 or $docks.flirtTarget is 2>>
-		The <<person>> <<print either("breathes faster", "shivers with anticipation", "squirms in <<his>> seat")>> and <<print either("checks the time", "looks around to see if anyone's watching")>>. "<<if Time.minute gte 50>><<print either("Alright, but let's make this quick", "We better be quick. Work starts soon")>><<else>><<print either("Let's get out of here", "We can slip away for a while")>><</if>>. I know just the spot."
+		<<person>>【은는】 <<print either("숨을 가쁘게 쉬거나", "기대감에 몸을 떨거나", "<<his>> 자리에서 몸을 뒤척인다")>>. 그리고 <<print either("시간을 확인하거나", "누가 보는지 주위를 둘러본다")>>. "<<if Time.minute gte 50>><<print either("좋아, 하지만 빨리 끝내자", "서둘러야겠어. 곧 일이 시작돼")>><<else>><<print either("여기서 나가자", "잠깐 빠져나갈 수 있겠어")>><</if>>. 내가 딱 좋은 장소를 알아."
 		<br><br>
-		You're led to a more secluded area of the docks, away from view of the others. The <<personsimple>> embraces you.
+		당신은 다른 사람들의 시선이 닿지 않는, 부두의 더 외진 곳으로 이끌려간다. <<personsimple>>【이가】 당신을 껴안는다.
 	<<else>>
 		<<if $docks.flirtTarget is 3>> /* married */
-			"Yeah. You're right. It's just been us, right? Our little secret." <<His>> breath grows faster as <<he>> looks you up and down. "I know a spot we can go. Nice and secluded, where nobody else can see. Follow me."
+			"그래. 네 말이 맞아. 우리끼리만 아는 거지, 안 그래? 우리만의 작은 비밀." <<he>>【은는】 당신을 위아래로 훑어보며 숨을 가쁘게 내쉰다. "우리가 갈 만한 곳을 알아. 아무도 볼 수 없는, 멋지고 외진 곳이야. 따라와."
 			<br><br>
-			You follow the <<person>> toward a secluded area of the docks, away from view. There is a wild look in <<his>> eyes. "Don't tell anyone, you understand?" <<he>> warns. "This is between you and me. No one else. Loose lips sink ships." Not giving you a chance to respond, <<he>> embraces you.
+			당신은 <<person>>【을를】 따라 시야에서 벗어난 부두의 외진 곳으로 향한다. <<his>> 눈에는 야성적인 빛이 감돈다. "아무한테도 말하지 마, 알겠어?" <<he>>【이가】 경고한다. "이건 너와 나 사이의 일이야. 다른 사람은 안 돼. 입이 가벼우면 배가 가라앉는 법이지." 당신이 대답할 틈도 주지 않고, <<he>>【은는】 당신을 껴안는다.
 		<<elseif $docks.flirtTarget is 4>> /* temple oath */
 			"I..." <<He>> looks down in shame. "I'm not strong enough. I need to purge these urges, and I need someone to help me. Someone like you." <<He>> smiles weakly. "Come. I know just the place."
 			<br><br>
-			You follow <<him>> toward a secluded area of the docks, away from view. "I need this," <<he>> says. "I need you. Purge me." There is one last moment of fleeting hesitation before <<he>> presses in close to embrace you.
+			당신은 <<him>>【을를】 따라 시야에서 벗어난 부두의 외진 곳으로 향한다. "이게 필요해." <<he>>【이가】 말한다. "네가 필요해. 날 정화해 줘." 마지막 순간 스쳐 지나가는 망설임 끝에, <<he>>【은는】 당신에게 바싹 다가와 껴안는다.
 		<<elseif $docks.flirtTarget is 5>> /* different orientation */
-			"I understand. There are so many holes in the world, why not try them all?" <<He>> gives you an odd look. "Let's get going before anyone finds out, okay?"
+			"이해해. 세상에 구멍은 많잖아, 전부 다 시도해보면 어때?" <<He>>【은는】 당신에게 묘한 시선을 보낸다. "누가 알아채기 전에 어서 가자, 알았지?"
 			<br><br>
 			The <<person>> leads you to a secluded area of the docks, then turns to face you. "This is my first time with <<aGirl>>. I— I don't know why, but it's exciting. Come here and show me what you can do." <<He>> embraces you.
 		<<elseif $docks.flirtTarget is 6>> /* no hookups */
-			"Well, I— I suppose it couldn't hurt?" <<he>> says. "You have such a... way with words." <<He>> swallows. "I know a spot. Follow me, and stay close. You don't want to get caught by yourself out here."
+			"음, 나— 나쁘진 않을 것 같은데?" <<he>>【이가】 말한다. "넌 정말... 말주변이 좋구나." <<He>>【은는】 침을 삼킨다. "내가 아는 장소가 있어. 날 따라와, 그리고 바싹 붙어. 여기서 혼자 다니다가 잡히고 싶진 않을 거 아냐."
 			<br><br>
-			The <<person>> leads you to a secluded area of the docks. "This isn't my first time, not by a long shot. I hoped this part of my life was over, but you're just so..." <<his>> voice trails off. <<He>> stares at you for a moment, then embraces you.
+			<<person>>【은는】 당신을 부두의 외진 곳으로 이끈다. "이번이 처음은 아니야, 절대 아니지. 내 인생에서 이런 부분은 끝났다고 바랐는데, 넌 정말 너무..." <<his>> 목소리가 잦아든다. <<He>>【은는】 잠시 당신을 빤히 쳐다보다가, 이내 껴안는다.
 		<<else>> /* just hungry */
-			"Maybe you can help satisfy a different kind of hunger, eh?" The <<person>> looks you over. "Alright, slut. Follow me. I can show you a good time."
+			"어쩌면 다른 종류의 허기를 채워줄 수 있을지도 모르겠네, 응?" <<person>>【은는】 당신을 훑어본다. "좋아, 걸레야. 따라와. 내가 좋은 시간을 보내게 해줄게."
 			<br><br>
-			You're led to a secluded area of the docks, out of view of the others. The <<personsimple>> embraces you.
+			당신은 다른 사람들의 시야에서 벗어난 부두의 외진 곳으로 이끌려간다. <<personsimple>>【이가】 당신을 껴안는다.
 		<</if>>
 	<</if>>
 	<br><br>
 
-	<<link [[Next|Docks Lunch Sex]]>><<set $sexstart to 1>><</link>>
+	<<link [[다음|Docks Lunch Sex]]>><<set $sexstart to 1>><</link>>
 <<else>>
 	<<if $docks.flirtTarget is 1>>
-		The <<person>> <<print either("hesitates", "looks conflicted", "looks unsure")>>.
+		<<person>>【은는】 <<print either("망설인다", "갈등하는 듯 보인다", "확신이 없는 듯 보인다")>>.
 		<<rng>>
 		<<if $rng gte 76>>
-			"Where would we even sneak off to? The docks are crowded, and we can't just leave. They wouldn't let us back in." <<He>> gives you a sympathetic smile. "Maybe we'll see each other at the pub later?"
+			"어디로 몰래 빠져나간단 말이야? 부두는 붐비고, 그냥 떠날 수도 없어. 다시 들여보내 주지 않을 거야." <<He>>【은는】 당신에게 동정적인 미소를 짓는다. "나중에 술집에서 볼 수 있을지도?"
 		<<elseif $rng gte 51>>
-			"You're cute, but I'm worried that a supervisor might catch wind of this. Wouldn't want to get in trouble, now would we?" <<He>> gives you a pat on the back.
+			"귀엽긴 한데, 감독관이 이걸 알아챌까 봐 걱정이야. 곤란해지고 싶진 않잖아, 안 그래?" <<He>>【은는】 당신의 등을 토닥인다.
 		<<elseif $rng gte 26>>
-			"You're good company, but I don't want to risk my job over this. Don't take it personally, you're sweet and all, just not worth the risk."
+			"넌 좋은 친구지만, 이것 때문에 내 직업을 걸고 싶진 않아. 개인적으로 받아들이진 마, 넌 다정하고 그렇지만, 위험을 감수할 가치는 없어."
 		<<else>>
-			"I mean, I like you, but I don't <i>know</i> know you, you know? I'm looking for something more serious."
+			"내 말은, 널 좋아하긴 하지만, 널 <i>아는</i> 건 아니잖아, 알지? 난 좀 더 진지한 관계를 찾고 있어."
 		<</if>>
 	<<elseif $docks.flirtTarget is 2>>
-		The <<person>> <<print either("hesitates", "looks conflicted", "looks unsure")>>.
+		<<person>>【은는】 <<print either("망설인다", "갈등하는 듯 보인다", "확신이 없는 듯 보인다")>>.
 		<<if $rng gte 76>>
-			"I don't know about this. This feels like a bad idea. I don't want to get in trouble with the boss."
+			"잘 모르겠어. 이건 나쁜 생각 같아. 사장님한테 찍히고 싶지 않아."
 		<<elseif $rng gte 51>>
-			"We really shouldn't be fooling around on the job."
+			"근무 중에 장난치면 정말 안 돼."
 		<<elseif $rng gte 26>>
-			"I'm not interested."
+			"관심 없어."
 		<<else>>
-			"Sorry, I don't want to want to have sex with you. It's not personal."
+			"미안, 너랑 섹스하고 싶지 않아. 개인적인 감정은 없어."
 		<</if>>
 	<<else>>
-		The <<person>> <<print either("jerks away", "pulls back", "recoils")>> from you, as if woken from a <<print either("dream", "fugue")>>.
+		<<person>>【은는】 마치 <<print either("꿈", "몽롱한 상태")>>에서 깨어난 것처럼 당신에게서 <<print either("홱 몸을 뺀다", "뒤로 물러선다", "움찔하며 물러난다")>>.
 		<<if $docks.flirtTarget is 3>> /* married */
 			"N-no, I can't do this. This is wrong. What am I doing?" <<He>> looks uneasy as <<he>> walks away.
 		<<elseif $docks.flirtTarget is 4>> /* temple oath */
-			"I— I can't break my vow. The temple would know. I—" <<His>> breath catches in <<his>> throat. "I have to go!" <<He>> gets up and hurries away.
+			"나... 내 서약을 깰 순 없어. 신전에서 알게 될 거야. 나..." <<His>> 숨이 목구멍에서 막힌다. "가봐야겠어!" <<He>>【은는】 일어나 서둘러 가버린다.
 		<<elseif $docks.flirtTarget is 5>> /* different orientation */
-			"I'm sorry, but this feels... wrong, somehow. Like there's something wrong with me." <<He>> looks uneasy. "Sorry, but I need to go."
+			"미안하지만, 이건... 어쩐지 잘못된 것 같아. 마치 나한테 뭔가 문제가 있는 것처럼." <<He>>【은는】 불안해 보인다. "미안, 가봐야겠어."
 		<<elseif $docks.flirtTarget is 6>> /* no hookups */
 			"I... I'm not interested. I'm looking for something more steady. There's just these... holes in my thoughts lately. Lapses of judgment. I don't mean to offend." <<He>> gives you an apologetic look before turning away.
 		<<else>> /* just hungry */
-			"Hmm. Nope. Still hungry. Sorry, but maybe after I've had my lunch."
+			"흠. 아니. 아직 배고파. 미안하지만, 점심 먹고 나면 모를까."
 		<</if>>
 	<</if>>
 	<br><br>
 
-	<<link [[Next|Docks Lunch]]>><<endevent>><</link>>
+	<<link [[다음|Docks Lunch]]>><<endevent>><</link>>
 <</if>>
 
 :: Docks Lunch Sex
@@ -730,82 +731,82 @@ You lean over and whisper something into the <<persons>> ear.
 <<actionsman>>
 
 <<if _combatend>>
-	<span id="next"><<link [[Next|Docks Lunch Sex Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Docks Lunch Sex Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Docks Lunch Sex]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Docks Lunch Sex]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Docks Lunch Sex Finish
 <<effects>>
 
 <<if $enemyhealth lte 0>>
-	<<tearful>> you shove the <<person>> away from you.
+	<<tearful>> 당신은 <<person>>【을를】 밀쳐낸다.
 	<<if $docks.flirtTarget is 3>>
-		"Keep your mouth shut about this!" <<he>> yells after you, though <<he>> doesn't pursue.
+		"이 일에 대해 입 다물어!" <<he>>【이가】 당신 뒤에 소리치지만, 쫓아오지는 않는다.
 	<<elseif $docks.flirtTarget is 4>>
-		"Don't tell the temple!" <<he>> yells after you, though <<he>> doesn't pursue.
+		"신전에 말하지 마!" <<he>>【이가】 당신 뒤에 소리치지만, 쫓아오지는 않는다.
 	<<else>>
-		<<He>> doesn't pursue. You're sure the others will hear about this.<<dockstatus -1>><<lcool>>
+		<<He>>【은는】 쫓아오지 않는다. 다른 사람들이 이 일에 대해 듣게 될 것이 분명하다.<<dockstatus -1>><<lcool>>
 	<</if>>
 <<elseif $enemypleasure gte $enemypleasuremax>>
 	<<ejaculation>>
 
 	<<if $docks.flirtTarget is 3>>
-		The <<person>> groans as <<he>> collects <<himself>>. "I needed that," <<he>> says. "Just don't go telling anyone, you got it? Now let's go, they'll be suspicious if we aren't back soon."
+		<<person>>【은는】 몸을 추스르며 신음한다. "이게 필요했어." <<he>>【이가】 말한다. "아무한테도 말하지 마, 알았지? 이제 가자, 곧 돌아가지 않으면 의심할 거야."
 	<<elseif $docks.flirtTarget is 4>>
-		"Purged," <<he>> breathes out, shivering. "Thank you. Thank you, thank you, thank you, thank you." You give the <<person>> a moment to collect <<himself>>. "Jordan will be angry.
+		"정화됐어." <<he>>【이가】 몸을 떨며 숨을 내쉰다. "고마워. 고마워, 고마워, 고마워, 고마워." 당신은 <<person>>【이가】 정신을 차릴 시간을 준다. "조던이 화낼 거야.
 		<<if $rng gte 51>>
-			So be it. I accept my punishment." <<He>> looks resolved, but you see a hint of fear in <<his>> eyes.
+			그렇게 되도록 해. 내 벌을 받아들이겠어." <<He>>【은는】 결심한 듯 보이지만, <<his>> 눈에는 두려움이 살짝 비친다.
 		<<else>>
-			Maybe I should stay away from the temple for a while. They'll forget, right?" <<He>> looks worried.
+			당분간 신전에서 멀리 떨어져 있어야 할지도 몰라. 다들 잊어버리겠지, 그렇지?" <<He>>【은는】 걱정스러워 보인다.
 		<</if>>
 	<<elseif $docks.flirtTarget is 5>>
-		"I can't believe it was this good," the <<person>> says. <<Hes>> still panting. "I hope I wasn't too rough or anything. Let's do this again sometime."
+		"이렇게 좋았을 줄은 몰랐어." <<person>>【이가】 말한다. <<He>>【은는】 아직도 헐떡이고 있다. "내가 너무 거칠거나 그러진 않았으면 좋겠네. 다음에 또 하자."
 	<<elseif $docks.flirtTarget is 6>>
-		The <<person>> looks spent. <<Hes>> still breathing heavily as <<he>> gets up and puts <<his>> clothes back on. "Thanks for that. Maybe this'll be my last fling, for real this time." <<He>> smiles at you. "Or maybe we can meet up again. I'd be open to it."
+		<<person>>【은는】 지쳐 보인다. <<He>>【은는】 아직도 거친 숨을 몰아쉬며 일어나 옷을 다시 입는다. "고마웠어. 어쩌면 이번이 내 마지막 바람일지도 몰라, 이번엔 진짜로." <<He>>【이가】 당신에게 미소 짓는다. "아니면 우리 다시 만날 수도 있고. 난 괜찮아."
 	<<elseif $docks.flirtTarget is 7>>
-		"Oh, that hit the spot," <<he>> says. "Don't suppose you're up for seconds? Dessert, maybe?" <<He>> gives you a hungry look.
+		"오, 딱 좋았어." <<he>>【이가】 말한다. "혹시 두 번째 판은 어때? 디저트 같은 거 말이야?" <<He>>【이가】 굶주린 눈으로 당신을 쳐다본다.
 	<<else>>
 		<<rng>>
 		<<if $rng gte 76>>
-			The <<person>> <<print either("squeezes your ass", "squeezes your hips", "strokes your face", "strokes your thighs")>>. "You're a <<print either("nice", "good", "great")>> <<print either("fuck", "lay")>>," <<he>> says. "<<if Time.minute gte 50>>Let's going before we're late.<<if $docks.status gte 80>> I'm sure everyone misses you.<</if>><<else>>I need to get going. See you again soon?<</if>>"
+			<<person>>【이가】 <<print either("당신 엉덩이를 꽉 쥐거나", "당신 허리를 꽉 쥐거나", "당신 얼굴을 쓰다듬거나", "당신 허벅지를 쓰다듬는다")>>. "너 <<print either("괜찮은", "좋은", "훌륭한")>> <<print either("상대", "파트너")>>【아야】." <<he>>【이가】 말한다. "<<if Time.minute gte 50>>늦기 전에 가자.<<if $docks.status gte 80>> 다들 널 보고 싶어 할 거야.<</if>><<else>>난 이만 가봐야겠어. 곧 다시 볼 수 있을까?<</if>>"
 		<<elseif $rng gte 51>>
-			The <<person>> moans softly and smiles at you. "That was <<print either("amazing", "incredible", "wonderful")>>! You're so <<print either("adorable", "cute")>>. Let's do this again sometime."
+			<<person>>【은는】 부드럽게 신음하며 당신에게 미소 짓는다. "<<print either("놀라웠어", "믿을 수 없을 정도였어", "훌륭했어")>>! 넌 정말 <<print either("사랑스러워", "귀여워")>>. 다음에 또 하자."
 		<<elseif $rng gte 26>>
-			The <<person>> stumbles back to <<his>> feet to put <<his>> clothes back on. "That was fun, but let's get going. <<if Time.minute gte 50>>I don't want to be late<<elseif Time.minute gte 30>>There's still some free time before we have to go back to work<<else>>I still haven't finished my lunch<</if>>."
+			<<person>>【은는】 비틀거리며 일어나 옷을 다시 입는다. "재미있었지만, 이제 가자. <<if Time.minute gte 50>>늦고 싶지 않아<<elseif Time.minute gte 30>>일하러 돌아가기 전에 아직 자유 시간이 좀 있어<<else>>아직 점심도 다 못 먹었어<</if>>."
 		<<else>>
-			With a wistful sigh, the <<person>> gets up and starts dressing <<himself>> again. "I hope to do this again soon. You were <<print either("great", "wonderful")>>."
+			아쉬운 한숨과 함께, <<person>>【은는】 일어나 다시 옷을 입기 시작한다. "곧 다시 할 수 있기를 바라. 넌 <<print either("훌륭했어", "멋졌어")>>."
 		<</if>>
 	<</if>>
 <<else>>
 	<<if $finish is 1>><<encounterEndViolence>><</if>>
-	"Did I do something wrong? Are you alright?" <<he>> asks. The <<person>> looks you up and down, worried, then shakes <<his>> head. "Let's get going. We don't want to be late.<<if $docks.flirtTarget is 3>> And not a word about this to anyone, got it?<<elseif $docks.flirtTarget is 4>> Oh, and please don't tell the temple, okay?<</if>>"
+	"내가 뭐 잘못했어? 괜찮아?" <<he>>【이가】 묻는다. <<person>>【은는】 걱정스럽게 당신을 위아래로 훑어보더니, 고개를 젓는다. "가자. 늦으면 안 돼.<<if $docks.flirtTarget is 3>> 그리고 이 일에 대해선 아무한테도 한마디도 하지 마, 알았지?<<elseif $docks.flirtTarget is 4>> 아, 그리고 신전에는 말하지 말아 줘, 응?<</if>>"
 <</if>>
 <br><br>
 
 <<clotheson>>
 
-<<tearful>> you return to the main area of the docks.
+<<tearful>> 당신은 부두의 중앙 구역으로 돌아간다.
 <<if ($docks.flirtTarget is 1 or $docks.flirtTarget is 2 or $docks.flirtTarget is 7) and random(1, 3) is 1>>
-	The <<person>> immediately tells <<his>> friends about you. You see them give you lustful glances.<<famesex 2>><<stress 6>><<dockstatus 1>><<gstress>><<gcool>>
+	<<person>>【은는】 즉시 <<his>> 친구들에게 당신에 대해 이야기한다. 그들이 당신에게 음탕한 시선을 보내는 것이 보인다.<<famesex 2>><<stress 6>><<dockstatus 1>><<gstress>><<gcool>>
 <</if>>
 <br><br>
 
-<<link [[Next|Docks Lunch]]>><<endcombat>><</link>>
+<<link [[다음|Docks Lunch]]>><<endcombat>><</link>>
 
 :: Docks Lunch Sleep
 <<effects>>
 
-You search for a quiet spot to lie down and take a nap. It's not very
+당신은 누워서 낮잠을 잘 조용한 장소를 찾는다. 그다지
 <<if Time.hour gte 12>> /* Will only be true if sleeping bleeds into the next hour */
-	comfortable.
+	편안하지는 않다.
 	<<if $docks.status gte 40>>
-		After a while, you're awoken by a worker gently shaking your shoulder to inform you that lunch is over.<<tiredness -6>><<ltiredness>>
+		얼마 후, 한 인부가 당신의 어깨를 부드럽게 흔들어 점심시간이 끝났다고 알려주며 당신을 깨운다.<<tiredness -6>><<ltiredness>>
 	<<else>>
-		You almost oversleep, but you're awoken by a supervisor warning you to get back to work.<<stress 6>><<tiredness -6>><<gstress>><<ltiredness>>
+		하마터면 늦잠을 잘 뻔했지만, 감독관이 어서 일하러 가라고 경고하는 소리에 잠에서 깬다.<<stress 6>><<tiredness -6>><<gstress>><<ltiredness>>
 	<</if>>
 <<else>>
-	comfortable, but you feel a little more rested by the time you wake up again.<<tiredness -6>><<ltiredness>>
+	편안하지는 않았지만, 다시 깨어났을 때는 조금 더 쉰 기분이 든다.<<tiredness -6>><<ltiredness>>
 <</if>>
 <br><br>
 
@@ -815,89 +816,88 @@ You search for a quiet spot to lie down and take a nap. It's not very
 <<effects>>
 <<set $daily.docksLunchLeft to true>>
 
-You walk to the security checkpoint, where a surly <<generate1>><<person1>><<personsimple>> addresses you.
+당신은 보안 검색대로 걸어갔고, 그곳에서 무뚝뚝한 <<generate1>><<person1>><<personsimple>>【이가】 당신에게 말을 걸었다.
 <br><br>
 
-"Leaving for break? I'll need to see your ID." You hand <<him>> your fake ID. <<He>> stares at it for a moment, then hands it back to you. "Alright. Be back by <<ampm 12 00>>, give or take two minutes. You won't be paid if you don't show up again."
+"휴식하러 가는 건가? 신분증을 확인해야겠다." 당신은 <<him>>에게 가짜 신분증을 건넸다. <<He>>【은는】 잠시 그것을 쳐다보더니 다시 당신에게 돌려주었다. "좋아. 1~2분 정도의 오차는 봐줄 테니 <<ampm 12 00>>까지 돌아오도록. 다시 안 나타나면 일당은 없다."
 <br><br>
 
-<<link [[Next|Docks]]>><<endevent>><</link>>
+<<link [[다음|Docks]]>><<endevent>><</link>>
 <br>
 
 
 :: Docks Lunch Return
 <<effects>>
 
-Security stops you to check for ID. After a moment, you're let back in.<<if Time.hour is 12>> Nobody seems to care that you're a little late.<</if>>
+보안 요원이 신분증을 확인하기 위해 당신을 멈춰 세웠다. 잠시 후, 당신은 다시 안으로 들어갈 수 있었다.<<if Time.hour is 12>> 당신이 조금 늦은 것에 신경 쓰는 사람은 아무도 없는 듯했다.<</if>>
 <br><br>
 
-<<link [[Next|Docks Lunch]]>><</link>>
+<<link [[다음|Docks Lunch]]>><</link>>
 <br>
-
 
 :: Docks Lunch Stroll
 <<effects>>
 
-You take a stroll near the ocean.
+당신은 바다 근처를 산책한다.
 <<if Weather.precipitation is "snow">>
-	Snow blankets the area.
+	눈이 이 지역을 뒤덮고 있다.
 <<elseif Weather.precipitation is "rain">>
-	Rain patters across the ground.
+	비가 땅 위로 후두둑 떨어진다.
 <</if>>
 <<outfitChecks>>
 <<if Weather.temperature lte -15>>
-	The extreme cold is carried on an ocean breeze and
+	극한의 추위가 바닷바람에 실려와
 	<<if _fullyNaked>>
-		batters your bare <<chest>> and <<genitals>>.<<pain 12>><<stress 12>><<ggpain>><<ggstress>>
+		당신의 맨 <<chest>>【와과】 <<genitals>>【을를】 때린다.<<pain 12>><<stress 12>><<ggpain>><<ggstress>>
 	<<elseif _bottomless>>
-		sends painful chills through your exposed <<genitals>>.<<pain 6>><<stress 12>><<gpain>><<ggstress>>
+		당신의 노출된 <<genitals>> 사이로 고통스러운 냉기를 보낸다.<<pain 6>><<stress 12>><<gpain>><<ggstress>>
 	<<elseif _topless>>
-		whips painfully against your exposed <<chest>>.<<pain 6>><<stress 12>><<gpain>><<ggstress>>
+		당신의 노출된 <<chest>>【을를】 고통스럽게 후려친다.<<pain 6>><<stress 12>><<gpain>><<ggstress>>
 	<<else>>
-		gets under your clothes. You shiver.<<stress 6>><<gstress>>
+		옷 속으로 파고든다. 당신은 몸을 떤다.<<stress 6>><<gstress>>
 	<</if>>
 <<elseif Weather.temperature lte 0>>
-	It's freezing out.
+	밖은 꽁꽁 얼어붙을 듯 춥다.
 	<<if _fullynaked>>
-		The cold feels biting against your bare <<chest>> and <<genitals>>.<<pain 6>><<stress 6>><<gpain>><<gstress>>
+		맨 <<chest>>【와과】 <<genitals>>에 닿는 추위가 살을 에는 듯하다.<<pain 6>><<stress 6>><<gpain>><<gstress>>
 	<<elseif _bottomless>>
-		The cold feels almost painful against your exposed <<genitals>>.<<stress 6>><<gstress>>
+		노출된 <<genitals>>에 닿는 추위가 거의 고통스럽게 느껴진다.<<stress 6>><<gstress>>
 	<<elseif _topless>>
-		You cross your arms in an effort to keep your bare <<chest>> warm.<<stress 6>><<gstress>>
+		당신은 맨 <<chest>>【을를】 따뜻하게 유지하기 위해 팔짱을 낀다.<<stress 6>><<gstress>>
 	<<else>>
-		You try to stay warm.
+		당신은 체온을 유지하려고 노력한다.
 	<</if>>
 <<elseif Weather.temperature lte 15>>
 	<<if Weather.precipitation is "rain">>
-		<<set _rain_or_air to "rain">>
+		<<set _rain_or_air to "비">>
 	<<else>>
-		<<set _rain_or_air to "air">>
+		<<set _rain_or_air to "공기">>
 	<</if>>
 	<<if _fullyNaked>>
-		The cool _rain_or_air feels arousing against your <<chest>> and <<genitals>>.<<stress -6>><<arousal 600>><<lstress>><<garousal>>
+		시원한 _rain_or_air【이가】 당신의 <<chest>>【와과】 <<genitals>>에 닿자 흥분된다.<<stress -6>><<arousal 600>><<lstress>><<garousal>>
 	<<elseif _bottomless>>
-		The cool _rain_or_air feels oddly pleasant against your <<genitals>>.<<stress -6>><<arousal 300>><<lstress>><<garousal>>
+		시원한 _rain_or_air【이가】 당신의 <<genitals>>에 닿자 이상하게 기분이 좋아진다.<<stress -6>><<arousal 300>><<lstress>><<garousal>>
 	<<elseif _topless>>
-		The cool _rain_or_air feels oddly pleasant against your <<chest>>.<<stress -6>><<arousal 300>><<lstress>><<garousal>>
+		시원한 _rain_or_air【이가】 당신의 <<chest>>에 닿자 이상하게 기분이 좋아진다.<<stress -6>><<arousal 300>><<lstress>><<garousal>>
 	<<else>>
-		The cool _rain_or_air is refreshing.<<stress -6>><<lstress>>
+		시원한 _rain_or_air【이가】 상쾌하다.<<stress -6>><<lstress>>
 	<</if>>
 <<elseif Weather.temperature lte 25>>
-	The temperature is perfect for a walk. It's relaxing, and your mind has time to wander.<<stress -6>><<lstress>>
+	산책하기에 완벽한 온도다. 편안하고, 마음이 여유로워진다.<<stress -6>><<lstress>>
 <<elseif Weather.temperature lte 30>>
-	It's quite warm out, but not overwhelming. Your mind has time to wander.<<stress -6>><<lstress>>
+	밖은 꽤 따뜻하지만, 압도적일 정도는 아니다. 마음이 여유로워진다.<<stress -6>><<lstress>>
 <<else>>
-	It's extremely hot out. The heat wears down on you.<<stress 6>><<gstress>>
+	밖은 극도로 덥다. 더위가 당신을 지치게 한다.<<stress 6>><<gstress>>
 <</if>>
 <br><br>
 <<if (Weather.precipitation is "none") and (Weather.temperature gte 1) and (Weather.temperature lte 30) and (($docks.status gte 60 and random(1, 3) is 1) or ($docks.status gte 80 and random(1, 2) is 1))>>
-	A <<generate1>><<person1>><<person>> joins you on your walk.
+	한 <<generate1>><<person1>><<person>>【이가】 당신의 산책에 동참한다.
 	<<if $rng gte 91>>
-		<<He>> talks about <<his>> experiences working at the docks, including some of the seedier details when you're out of earshot of the others. You learn more than you wanted to.<<dockstatus 1>><<awareness 1>><<stress 6>><<trauma 6>><<gcool>><<gawareness>><<gstress>><<gtrauma>>
+		<<He>>【은는】 다른 사람들이 듣지 못할 때 부두에서 일했던 경험에 대해 이야기하는데, 그중에는 좀 더 음침한 세부 사항도 포함되어 있다. 당신은 원했던 것보다 더 많은 것을 알게 된다.<<dockstatus 1>><<awareness 1>><<stress 6>><<trauma 6>><<gcool>><<gawareness>><<gstress>><<gtrauma>>
 	<<elseif $rng gte 76>>
-		<<He>> seems grateful for the company and tells you about some of the local history of the docks.<<dockstatus 1>><<gcool>><<ghistory>><<historyskill>>
+		<<He>>【은는】 동행에 감사해하며 부두의 지역 역사에 대해 이야기해준다.<<dockstatus 1>><<gcool>><<ghistory>><<historyskill>>
 	<<else>>
-		<<He>> seems grateful for the company, sharing details about <<his>> life and making small talk with you.<<dockstatus 1>><<gcool>>
+		<<He>>【은는】 동행에 감사해하며, <<his>> 삶에 대한 세부 사항을 공유하고 당신과 잡담을 나눈다.<<dockstatus 1>><<gcool>>
 	<</if>>
 	<br><br>
 
@@ -905,9 +905,9 @@ You take a stroll near the ocean.
 <</if>>
 <<if Time.hour gte 12>>
 	<<if $docks.status gte 40>>
-		A colleague informs you that work is starting up again shortly.
+		한 동료가 곧 작업이 다시 시작될 것이라고 알려준다.
 	<<else>>
-		Your walk is interrupted by a supervisor calling out for everyone to get back to work.<<stress 6>><<gstress>>
+		감독관이 모두에게 일터로 돌아가라고 외치는 소리에 산책이 중단된다.<<stress 6>><<gstress>>
 	<</if>>
 	<br><br>
 <</if>>
@@ -916,7 +916,7 @@ You take a stroll near the ocean.
 :: Docks Rape Capsize
 <<effects>>
 
-The <<person1>><<person>> gets closer. You press one leg into the side of the boat, making the vessel rock. They stumble forwards. "Don't you da—" <<he>> manages before you give the boat another shove, this time turning it over and sending all three of you overboard.
+<<person1>><<person>>【이가】 가까이 다가온다. 당신은 보트 옆면에 한쪽 다리를 눌러 배를 흔든다. 그들은 앞으로 비틀거린다. "감히..." <<he>>【이가】 말을 끝내기도 전에 당신은 보트를 한 번 더 밀어, 이번에는 배를 뒤집어 세 명 모두 물에 빠뜨린다.
 <br><br>
 
 You swim back to shore. "<<pShe stranger>> capsized it on purpose!" the <<person>> says to the amused dockers who help you from the water. Most think it was an accident, but some believe the pair.
@@ -934,7 +934,7 @@ You swim back to shore. "<<pShe stranger>> capsized it on purpose!" the <<person
 	<<molested>>
 	<<maninit>>
 	<<set $leftarm to "bound">><<set $rightarm to "bound">><<handheldruined>>
-	They push you onto the deck, flip you over, and bind your arms with tight knots.
+	그들은 당신을 갑판 위로 밀치고, 뒤집은 다음, 단단한 매듭으로 당신의 팔을 묶는다.
 	<br><br>
 	<<if $worn.upper.type.includes("naked") and $worn.lower.type.includes("naked")>><<set $phase to 1>><</if>>
 <<elseif $fightstart is 1>>
@@ -954,9 +954,9 @@ You swim back to shore. "<<pShe stranger>> capsized it on purpose!" the <<person
 <<actionsman>>
 
 <<if _combatend>>
-	<span id="next"><<link [[Next|Docks Rape Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Docks Rape Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Docks Rape]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Docks Rape]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Docks Rape Finish
@@ -964,14 +964,14 @@ You swim back to shore. "<<pShe stranger>> capsized it on purpose!" the <<person
 <<if $enemypleasure gte $enemypleasuremax>>
 	<<ejaculation>>
 
-	"That weren't so bad, were it?" the <<person>> laughs. <<He>> turns on the engine and continues the task.
+	"그렇게 나쁘진 않았지, 안 그래?" <<person>>【이가】 웃는다. <<He>>【은는】 엔진을 켜고 작업을 계속한다.
 	<br><br>
 	<<unbind>>
-	<<tearful>> you climb aboard the larger vessel. You help the crew manage the spring lines and swing the vessel around to a successful landing.
+	<<tearful>> 당신은 더 큰 배에 올라탄다. 당신은 선원들이 스프링 라인을 관리하고 배를 성공적으로 정박시키는 것을 돕는다.
 	<br><br>
 
 	<<if $pain gte 40>>
-		One of the sailors notices your tears and asks what's wrong, but you assure them you're fine.
+		선원 중 한 명이 당신의 눈물을 보고 무슨 일이냐고 묻지만, 당신은 괜찮다고 그들을 안심시킨다.
 		<br><br>
 	<</if>>
 
@@ -987,16 +987,16 @@ You swim back to shore. "<<pShe stranger>> capsized it on purpose!" the <<person
 	<<dockoptions>>
 <<else>>
 
-	You shove them off the boat, turn on the engine, and leave them to flounder. You'll finish the task yourself.
+	당신은 그들을 보트에서 밀어내고, 엔진을 켜고, 허우적거리도록 내버려 둔다. 당신은 혼자서 임무를 완수할 것이다.
 	<br><br>
 
 	<<if $phase is 1>><<clothesontowel>><<else>><<clotheson>><</if>>
 	<<endcombat>>
 
-	<<tearful>> you climb aboard the larger vessel. Feeling energised by your victory, you guide both the captain and crew to a successful landing.
+	<<tearful>> 당신은 더 큰 배에 올라탄다. 승리의 기운을 받아, 당신은 선장과 선원들을 성공적인 정박으로 이끈다.
 	<br><br>
 
-	<<generate1>><<person1>>A <<person>> asks where the other two are. You tell them they fell off the boat. Your colleagues are still laughing when the pair make it back to the docks, soaked and shivering.
+	<<generate1>><<person1>>한 <<person>>【이가】 다른 두 사람은 어디 있냐고 묻는다. 당신은 그들이 보트에서 떨어졌다고 말한다. 흠뻑 젖고 떨면서 그 두 사람이 부두로 돌아왔을 때, 당신의 동료들은 여전히 웃고 있다.
 	<br><br>
 	<<endevent>>
 	<<dockoptions>>
@@ -1007,7 +1007,7 @@ You swim back to shore. "<<pShe stranger>> capsized it on purpose!" the <<person
 <<effects>>
 
 <<unbind>>
-You turn your back to the <<person>>. <<He>> fiddles with the knots and sets you free. "There you go, <<lass>>. Be more careful in the future."
+당신은 <<person>>에게 등을 돌린다. <<He>>【은는】 매듭을 만지작거리더니 당신을 풀어준다. "자, 됐어, <<lass>>. 다음부턴 조심해."
 <br><br>
 
 <<endevent>>
@@ -1016,7 +1016,7 @@ You turn your back to the <<person>>. <<He>> fiddles with the knots and sets you
 :: Docks Binding Refuse
 <<effects>>
 
-<<He>> shrugs. "Suit yourself."
+<<He>>【이가】 어깨를 으쓱한다. "마음대로 해."
 <br><br>
 
 <<endevent>>
@@ -1025,7 +1025,7 @@ You turn your back to the <<person>>. <<He>> fiddles with the knots and sets you
 :: Docks Tourist Return
 <<set $outside to 1>><<effects>>
 
-<<generate2>><<person2>>You return to the dock. Your manager greets you. "Don't worry," <<he>> sighs. "Those types never listen to us."
+<<generate2>><<person2>>당신은 부두로 돌아온다. 당신의 매니저가 당신을 맞이한다. "걱정 마," <<he>>【이가】 한숨을 쉰다. "저런 놈들은 우리 말을 듣지 않아."
 <br><br>
 
 <<dockoptions>>
@@ -1038,23 +1038,23 @@ You turn your back to the <<person>>. <<He>> fiddles with the knots and sets you
 <<seductionskilluptext>>
 <<seductionskilluse>>
 
-You slip beneath the table. "What are you—" <<He>> cuts off when you unzip <<his>> trousers.
+당신은 테이블 아래로 미끄러져 들어간다. "뭐 하는 거야-" <<He>>【은는】 당신이 <<his>> 바지 지퍼를 내리자 말을 멈춘다.
 <<promiscuity4>>
 
 <<if $seductionrating gte $seductionrequired>>
 
-	<<He>> glances around. "Maybe there has been an error," <<he>> says. "Safety is of paramount importance."
+	<<He>>【이가】 주위를 둘러본다. "아마 실수가 있었나 보군." <<he>>【이가】 말한다. "안전이 가장 중요하지."
 	<br><br>
 
-	<<link [[Next|Docks Tourist Sex]]>><<set $sexstart to 1>><</link>>
+	<<link [[다음|Docks Tourist Sex]]>><<set $sexstart to 1>><</link>>
 	<br>
 
 <<else>>
 
-	<<He>> pulls away from you, then laughs and <<if $pronoun is "m">>strokes<<else>>twirls<</if>> <<his>> hair. "I have a ship full of hotties, all wanting to bed the captain. Take your charms to the docks where they might be worth a few scraps."
+	<<He>>【은는】 당신에게서 몸을 떼고는, 웃으며 <<if $pronoun is "m">>자신의 머리카락을 쓰다듬는다<<else>>자신의 머리카락을 배배 꼰다<</if>>. "내 배에는 선장과 자고 싶어 하는 섹시한 애들이 가득해. 네 매력은 부두에나 가서 팔아. 거기선 몇 푼이라도 받을 수 있을 테니."
 	<br><br>
 
-	<<generate2>><<person2>>You return to the dock. Your manager greets you. "Don't worry," <<he>> sighs. "Those types never listen to us."
+	<<generate2>><<person2>>당신은 부두로 돌아온다. 당신의 매니저가 당신을 맞이한다. "걱정 마," <<he>>【이가】 한숨을 쉰다. "저런 놈들은 우리 말을 듣지 않아."
 	<br><br>
 
 	<<dockoptions>>
@@ -1069,12 +1069,12 @@ You slip beneath the table. "What are you—" <<He>> cuts off when you unzip <<h
 	<<neutral 1>>
 	<<maninit>>
 	<<set $enemytrust += 100>>
-	You reward <<him>> with a playful lick.
+	당신은 장난스럽게 핥아주며 <<him>>에게 보상한다.
 	<br><br>
 	<<npcoral>>
 <</if>>
 
-The surrounding passengers socialise, unaware of what you're up to beneath the table.
+주변 승객들은 당신이 테이블 아래에서 무슨 짓을 하는지 모른 채 사교 활동을 하고 있다.
 <br><br>
 
 <<effects>>
@@ -1085,9 +1085,9 @@ The surrounding passengers socialise, unaware of what you're up to beneath the t
 <<actionsman>>
 
 <<if _combatend>>
-	<span id="next"><<link [[Next|Docks Tourist Sex Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Docks Tourist Sex Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Docks Tourist Sex]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Docks Tourist Sex]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Docks Tourist Sex Finish
@@ -1096,40 +1096,40 @@ The surrounding passengers socialise, unaware of what you're up to beneath the t
 <<if $enemypleasure gte $enemypleasuremax>>
 	<<ejaculation>>
 
-	<<He>> moans. The passengers give <<him>> odd looks, and <<he>> blushes. "I-I'll turn the ship," <<he>> whispers.
+	<<He>>【이가】 신음한다. 승객들이 <<him>>에게 이상한 눈초리를 보내자, <<he>>【은는】 얼굴을 붉힌다. "배... 배를 돌릴게." <<he>>【이가】 속삭인다.
 	<br><br>
 
 	<<clotheson>>
 	<<endcombat>>
 
-	<<tearful>> you descend to your boat. You steer away.
+	<<tearful>> 당신은 당신의 보트로 내려간다. 당신은 배를 몰아 멀어진다.
 	<br><br>
 
-	Soon after, the larger vessel starts to turn.
+	곧이어, 더 큰 배가 방향을 틀기 시작한다.
 	<br><br>
 
-	You arrive back at the docks. A manager greets you. <<generate2>><<person2>>"You did it," <<he>> says. "Didn't expect that. Those types are so full of themselves. Good job."
+	당신은 부두로 돌아온다. 매니저가 당신을 맞이한다. <<generate2>><<person2>>"해냈구나." <<he>>【이가】 말한다. "예상 못 했는데. 저런 놈들은 자기 잘난 맛에 사는데 말이야. 잘했어."
 	<<ggcool>><<dockstatus 3>>
 
 <<elseif $enemyhealth lte 0>>
 
-	You shove the <<person>> away from you, which attracts attention from the passengers. "J-just stretching," <<he>> says, covering <<his>> groin.
+	당신은 <<person>>【을를】 밀쳐내고, 이는 승객들의 주의를 끈다. "그... 그냥 스트레칭하는 거야." <<he>>【이가】 <<his>> 사타구니를 가리며 말한다.
 	<br><br>
 
 	<<clotheson>>
 	<<endcombat>>
 
-	<<tearful>> <<generate2>><<person2>>you return to the dock. Your manager greets you. "Don't worry," <<he>> sighs. "Those types never listen to us."
+	<<tearful>> <<generate2>><<person2>>당신은 부두로 돌아온다. 당신의 매니저가 당신을 맞이한다. "걱정 마," <<he>>【이가】 한숨을 쉰다. "저런 놈들은 우리 말을 듣지 않아."
 
 <<else>>
 	<<encounterEndViolence>>
-	The <<person>> steps away from you and fixes <<his>> fly.
+	<<person>>【이가】 당신에게서 물러나 <<his>> 바지 지퍼를 고친다.
 	<br><br>
 
 	<<clotheson>>
 	<<endcombat>>
 
-	<<tearful>> <<generate2>><<person2>>you return to the dock. Your manager greets you. "Don't worry," <<he>> sighs. "Those types never listen to us."
+	<<tearful>> <<generate2>><<person2>>당신은 부두로 돌아온다. 당신의 매니저가 당신을 맞이한다. "걱정 마," <<he>>【이가】 한숨을 쉰다. "저런 놈들은 우리 말을 듣지 않아."
 <</if>>
 <br><br>
 
@@ -1138,13 +1138,13 @@ The surrounding passengers socialise, unaware of what you're up to beneath the t
 :: Docks Tourist Intimidate
 <<effects>>
 
-"Attention everybody," you shout. The passengers fall silent. "This ship is on a collision course with another. You need to steer away from the docks. Or prepare to swim ashore." You turn and walk away. The crowd erupts into anxious babbling the moment you disappear from view. You descend to your ship and steer away.
+"여러분, 주목해 주십시오." 당신이 외친다. 승객들이 조용해진다. "이 배는 다른 배와 충돌할 경로에 있습니다. 부두에서 벗어나도록 조종해야 합니다. 아니면 해안까지 헤엄칠 준비를 하십시오." 당신은 돌아서서 걸어간다. 당신이 시야에서 사라지자마자 군중은 불안한 수다로 폭발한다. 당신은 당신의 배로 내려가 배를 몰아 멀어진다.
 <br><br>
 
-Soon after, the larger vessel starts to turn.
+곧이어, 더 큰 배가 방향을 틀기 시작한다.
 <br><br>
 
-You arrive back at the docks. A manager greets you. <<generate2>><<person2>>"You did it," <<he>> says. "Didn't expect that. Good job."
+당신은 부두로 돌아온다. 매니저가 당신을 맞이한다. <<generate2>><<person2>>"해냈구나." <<he>>【이가】 말한다. "예상 못 했는데. 잘했어."
 <br><br>
 
 <<dockoptions>>
@@ -1153,15 +1153,15 @@ You arrive back at the docks. A manager greets you. <<generate2>><<person2>>"You
 <<effects>>
 
 <<if $phase is 0>>
-	You compare the numbers,
+	당신은 숫자를 비교하고,
 	<<if currentSkillValue('maths') gte random(1, 1000)>>
-		<span class="green">and find that some valuable cargo disappeared at some point between arrival and departure.</span> What's more, someone tried to cover it up. You inform a manager, who seems impressed at your deduction.
+		<span class="green">도착과 출발 사이에 귀중한 화물이 사라졌다는 것을 발견한다.</span> 게다가, 누군가 그것을 은폐하려 했다. 당신은 매니저에게 알리고, 그는 당신의 추리에 감명받은 듯하다.
 		<<dockstatus 1>><<gcool>>
 	<<else>>
-		<span class="red">but find nothing wrong.</span> You finish recording the information.
+		<span class="red">아무런 문제도 발견하지 못한다.</span> 당신은 정보 기록을 마친다.
 	<</if>>
 <<else>>
-	You're sure it's fine. You finish recording the information.
+	괜찮을 거라고 확신한다. 당신은 정보 기록을 마친다.
 <</if>>
 <br><br>
 
@@ -1172,7 +1172,7 @@ You arrive back at the docks. A manager greets you. <<generate2>><<person2>>"You
 
 <<skul_dock_init>>
 
-You keep an eye out for anything valuable. There's a lot, but you need something small enough to carry.
+당신은 귀중한 것이 있는지 주시한다. 많은 것이 있지만, 운반할 수 있을 만큼 작은 것이 필요하다.
 <br><br>
 
 <<skulduggerycheck>>
@@ -1201,27 +1201,27 @@ You keep an eye out for anything valuable. There's a lot, but you need something
 		<</if>>
 
 		<<if _dock_contents is "gold">>
-			There's a bar of gold in a container at the <<skul_dock_location _dock_location>>. <span class="green">It would sell on the black market.</span> You make a mental note of its location.
+			<<skul_dock_location _dock_location>>에 있는 컨테이너에 금괴가 있다. <span class="green">암시장에서 팔릴 것이다.</span> 당신은 그 위치를 마음속에 새겨둔다.
 			<<set _dockCount += 1>>
 		<<elseif _dock_contents is "mechanisms">>
-			A local company has received a shipment of custom machine parts. They're being kept near the <<skul_dock_location _dock_location>>. <span class="teal">They would sell on the black market.</span> You make a mental note of their location.
+			한 지역 회사가 맞춤형 기계 부품을 선적받았다. 그것들은 <<skul_dock_location _dock_location>> 근처에 보관되어 있다. <span class="teal">암시장에서 팔릴 것이다.</span> 당신은 그 위치를 마음속에 새겨둔다.
 		<<elseif _dock_contents is "aphrodisiacs">>
-			A local company is moving something special through. It's being kept near the <<skul_dock_location _dock_location>>. <span class="teal">It would sell on the black market.</span> You make a mental note of its location.
+			한 지역 회사가 특별한 것을 옮기고 있다. 그것은 <<skul_dock_location _dock_location>> 근처에 보관되어 있다. <span class="teal">암시장에서 팔릴 것이다.</span> 당신은 그 위치를 마음속에 새겨둔다.
 			<<set _dockCount += 1>>
 		<<elseif _dock_contents is "electronics">>
-			There's a container full of goods, including valuable electronics, near the <<skul_dock_location _dock_location>>. <span class="lblue">They would sell on the black market.</span> You make a mental note of its location.
+			<<skul_dock_location _dock_location>> 근처에 귀중한 전자제품을 포함한 상품으로 가득 찬 컨테이너가 있다. <span class="lblue">암시장에서 팔릴 것이다.</span> 당신은 그 위치를 마음속에 새겨둔다.
 			<<set _dockCount += 1>>
 		<<elseif _dock_contents is "fertiliser">>
-			There's a container full of what looks like fertiliser near the <<skul_dock_location _dock_location>>. <span class="lblue">They might be useful to you.</span> You make a mental note of its location.
+			<<skul_dock_location _dock_location>> 근처에 비료처럼 보이는 것으로 가득 찬 컨테이너가 있다. <span class="lblue">당신에게 유용할지도 모른다.</span> 당신은 그 위치를 마음속에 새겨둔다.
 			<<set _dockCount += 1>>
 		<<elseif _dock_contents is "equipment">>
-			There's a container full of specialist equipment near the <<skul_dock_location _dock_location>>. <span class="teal">It might be useful to you.</span> You make a mental note of its location.
+			<<skul_dock_location _dock_location>> 근처에 전문 장비로 가득 찬 컨테이너가 있다. <span class="teal">당신에게 유용할지도 모른다.</span> 당신은 그 위치를 마음속에 새겨둔다.
 			<<set _dockCount += 1>>
 		<<elseif !_dock_contents>>
 			<<if _dockCount gte 2>>
-				You don't find anything else suitable. Useful to know.
+				당신은 더 이상 적당한 것을 찾지 못한다. 알아두면 유용하다.
 			<<else>>
-				You don't find anything suitable. Useful to know.
+				당신은 적당한 것을 찾지 못한다. 알아두면 유용하다.
 			<</if>>
 			<<set _skul_dock_keys to Object.keys($skul_dock)>>
 			<<for _i to 0; _i lt _skul_dock_keys.length; _i++>>
@@ -1237,7 +1237,7 @@ You keep an eye out for anything valuable. There's a lot, but you need something
 
 <<else>>
 
-	Your supervisor slaps your back. There was no sign you were doing anything illicit, but you almost jump from your seat all the same. You'll be teased for that later.<<lcool>><<dockstatus -1>>
+	당신의 감독관이 등을 철썩 때린다. 당신이 불법적인 일을 하고 있다는 징후는 없었지만, 당신은 그럼에도 불구하고 자리에서 거의 뛰어오를 뻔했다. 나중에 그것 때문에 놀림을 받을 것이다.<<lcool>><<dockstatus -1>>
 	<br><br>
 
 	<<skulduggeryuse>>
@@ -1246,33 +1246,32 @@ You keep an eye out for anything valuable. There's a lot, but you need something
 
 <<dockoptions>>
 
-
 :: Docks Compound
 <<set $outside to 0>><<effects>>
 
 <<skul_dock_init>>
 
-You sneak under a parked vehicle and peek out from beneath.
+당신은 주차된 차량 아래로 몰래 들어가 밑에서 엿본다.
 <br><br>
 
-One of the workers places a crate in front of you, blocking your view. There's a crack in the bottom. A sweet, heady smell leaks out. It relaxes and heats you.
+작업자 중 한 명이 당신 앞에 상자를 놓아 시야를 가린다. 바닥에 틈이 있다. 달콤하고 머리가 아찔해지는 냄새가 새어 나온다. 그것은 당신을 이완시키고 달아오르게 한다.
 <br><br>
 
-It's the last crate they load into the cargo container. The <<person1>><<person>> locks it, and they climb into the vehicle before driving away.
+그것은 그들이 화물 컨테이너에 싣는 마지막 상자다. <<person1>><<person>>【이가】 그것을 잠그고, 그들은 차량에 올라타 운전해 가버린다.
 <br><br>
 
 <<skul_dock_contents aphrodisiacs>>
 
 <<if _dock_location is "SW">>
-	The container looks like it's going to remain in the unloading area overnight.
+	컨테이너는 하역 구역에서 하룻밤 동안 머물 것처럼 보인다.
 	<<if currentSkillValue('skulduggery') gte 400>>
-		<span class="teal">The contents must be valuable.</span> You make a mental note of its location.
+		<span class="teal">내용물은 귀중한 것임에 틀림없다.</span> 당신은 그 위치를 마음속에 새겨둔다.
 	<</if>>
 	<br><br>
 <<elseif _dock_location>>
-	A crane lifts the container, and carries it towards the <<skul_dock_location _dock_location>>. It will remain there overnight.
+	크레인이 컨테이너를 들어 올려 <<skul_dock_location _dock_location>> 쪽으로 옮긴다. 그것은 거기서 하룻밤 동안 머물 것이다.
 	<<if currentSkillValue('skulduggery') gte 400>>
-		<span class="teal">The contents must be valuable.</span> You make a mental note of its location.
+		<span class="teal">내용물은 귀중한 것임에 틀림없다.</span> 당신은 그 위치를 마음속에 새겨둔다.
 	<</if>>
 	<br><br>
 <</if>>
@@ -1282,7 +1281,7 @@ It's the last crate they load into the cargo container. The <<person1>><<person>
 :: Docks Compound Ignore
 <<effects>>
 
-You ignore the strange vehicle and continue working.
+당신은 이상한 차량을 무시하고 계속 일한다.
 <br><br>
 
 <<dockoptions>>
@@ -1291,26 +1290,26 @@ You ignore the strange vehicle and continue working.
 <<effects>>
 
 <<if $phase is 0>>
-	You look more closely,
+	당신은 더 자세히 살펴보고,
 	<<if currentSkillValue('history') gte random(1, 1000)>>
-		<span class="green">and recognise the shape.</span> You <<generate1>><<person1>>inform a manager, who calls the captain in time. The ship steers around it.
+		<span class="green">그 모양을 알아본다.</span> 당신은 <<generate1>><<person1>>매니저에게 알리고, 그는 제때 선장에게 연락한다. 배는 그것을 피해 조종한다.
 		<br><br>
 
-		"Damned reef," the manager says. "I swear it just pops up where it pleases. Good job."
+		"빌어먹을 암초." 매니저가 말한다. "맹세컨대, 그건 그냥 제멋대로 나타나. 잘했어."
 		<<dockstatus 1>><<gcool>>
 
 	<<else>>
-		<span class="red">but the shape vanishes.</span>
+		<span class="red">하지만 그 모양은 사라진다.</span>
 		<br><br>
 
-		With a groan, the ship collides with something beneath the surface. Dockers rush to the moorings to assess the damage.
+		신음 소리와 함께, 배가 수면 아래의 무언가와 충돌한다. 부두 노동자들이 피해를 평가하기 위해 정박지로 달려간다.
 
 	<</if>>
 <<else>>
-	You're sure it's fine. You finish cleaning.
+	괜찮을 거라고 확신한다. 당신은 청소를 마친다.
 	<br><br>
 
-	A metallic tearing sound shudders the pier. Something tears a giant gash down the side of the approaching ship, though it still makes it to the dock.
+	금속이 찢어지는 소리가 부두를 흔든다. 무언가가 다가오는 배의 측면에 거대한 상처를 내지만, 배는 여전히 부두에 도착한다.
 
 <</if>>
 <br><br>
@@ -1329,13 +1328,13 @@ You ignore the strange vehicle and continue working.
 <<elseif _speechAttitudeResolved is "confident">>
 	"Pack it in," you say. "I'm here to work."
 <<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
-	"Fuck you," you say. "You're supposed to be working."
+	"엿 먹어." 당신이 말한다. "넌 일해야 하잖아."
 <<else>>
-	"This is cruel," you say. "I'll report you."
+	"이건 잔인해요." 당신이 말한다. "신고할 거예요."
 <</if>>
 <br><br>
 
-"We're just having fun," the <<person>> says. "Your kind rarely sticks with it anyway." The other dockers nod.
+"우린 그냥 재미있게 노는 거야." <<person>>【이가】 말한다. "어차피 너 같은 애들은 오래 버티지도 못하잖아." 다른 부두 노동자들이 고개를 끄덕인다.
 <br><br>
 
 <<dockoptions>>
@@ -1343,7 +1342,7 @@ You ignore the strange vehicle and continue working.
 :: Docks Walk
 <<effects>>
 
-You walk away from the crowd. You try to ignore the jeers.
+당신은 군중에게서 멀어진다. 당신은 야유를 무시하려고 노력한다.
 <br><br>
 
 <<dockoptions>>
@@ -1351,7 +1350,7 @@ You walk away from the crowd. You try to ignore the jeers.
 :: Docks Steal
 <<effects>>
 
-It's a watch. It should be worth something. You mark it down as missing.
+시계다. 가치가 있을 것이다. 당신은 그것을 분실물로 기록한다.
 <br><br>
 
 <<dockoptions>>
@@ -1359,7 +1358,7 @@ It's a watch. It should be worth something. You mark it down as missing.
 :: Docks Don't Steal
 <<effects>>
 
-You mark down that a package is damaged, and continue working.
+당신은 포장이 손상되었다고 기록하고, 계속 일한다.
 <br><br>
 
 <<dockoptions>>
@@ -1369,11 +1368,11 @@ You mark down that a package is damaged, and continue working.
 <<effects>>
 
 <<if $lock lt 400>>
-	There's nothing you can do. You move on to the next container.
+	당신이 할 수 있는 것은 아무것도 없다. 당신은 다음 컨테이너로 이동한다.
 <<else>>
-	You ignore the voice, and move on to the next container.
+	당신은 그 목소리를 무시하고, 다음 컨테이너로 이동한다.
 <</if>>
-The <<person>> seems relieved.
+<<person>>【은는】 안도하는 것 같다.
 <br><br>
 
 <<endevent>>
@@ -1383,25 +1382,25 @@ The <<person>> seems relieved.
 :: Docks Slave Open
 <<set $outside to 0>><<effects>>
 
-You successfully pick the lock and open the container. The <<person>> glances around. "I didn't see anything," <<he>> says. "I need this job." <<He>> walks away.
+당신은 성공적으로 자물쇠를 따고 컨테이너를 연다. <<person>>【이가】 주위를 둘러본다. "아무것도 못 봤어요." <<he>>【이가】 말한다. "전 이 일이 필요해요." <<He>>【은는】 걸어간다.
 <br><br>
 
 <<skulduggeryuse 500 "locks">>
 
-<<person1>>There are sacks full of potatoes inside. You hear the voice again, from the back. One of the sacks moves. You find a <<person>> beneath, gagged and bound. Bruising surrounds <<his>> right eye. <<He>> starts crying.
+<<person1>>안에는 감자로 가득 찬 자루들이 있다. 당신은 뒤쪽에서 다시 그 목소리를 듣는다. 자루 중 하나가 움직인다. 당신은 그 아래에서 재갈이 물리고 묶인 <<person>>【을를】 발견한다. <<his>> 오른쪽 눈 주위에 멍이 들어 있다. <<He>>【은는】 울기 시작한다.
 <<gstress>><<stress 6>>
 <br><br>
 
-<<link [[Get help|Docks Slave Help]]>><</link>>
+<<link [[도움을 요청한다|Docks Slave Help]]>><</link>>
 <br>
-<<link [[Comfort and untie|Docks Slave Untie]]>><</link>>
+<<link [[위로하고 풀어준다|Docks Slave Untie]]>><</link>>
 <br>
 
 :: Docks Slave Help
 <<set $outside to 1>><<effects>>
 <<speechresolve>>
 
-You rush from the container, and find the <<person1>><<person>> who saw you open it.
+당신은 컨테이너에서 뛰쳐나와, 당신이 그것을 여는 것을 본 <<person1>><<person>>【을를】 찾는다.
 <br><br>
 
 <<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
@@ -1415,24 +1414,24 @@ You rush from the container, and find the <<person1>><<person>> who saw you open
 <<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
 	"What's wrong with you," you say. "There's a bound person in there and they're hurt."
 <<else>>
-	"I found a person inside," you say. "They're bound and hurt."
+	"안에서 사람을 찾았어요." 당신이 말한다. "묶여 있고 다쳤어요."
 <</if>>
 <br><br>
 
-<<He>> looks around before leaning in close. "Shut it, <<girl>>," <<he>> says. "I didn't see anything. Remember? Shut your gob before you get us both in trouble."
+<<He>>【은는】 주위를 둘러본 후 가까이 다가온다. "닥쳐, <<girl>>." <<he>>【이가】 말한다. "난 아무것도 못 봤어. 기억나? 우리 둘 다 곤경에 빠지기 전에 입 다물어."
 <br><br>
 
-You return to the container, and find the <<person1>><<person>> lying where you left <<him>>.
+당신은 컨테이너로 돌아가, 당신이 <<him>>【을를】 떠났던 곳에 누워 있는 <<person1>><<person>>【을를】 발견한다.
 <br><br>
 
-<<link [[Next|Docks Slave Untie]]>><</link>>
+<<link [[다음|Docks Slave Untie]]>><</link>>
 <br>
 
 :: Docks Slave Untie
 <<set $outside to 0>><<effects>>
 <<speechresolve>>
 
-You untie the bindings and remove the gag.
+당신은 밧줄을 풀고 재갈을 제거한다.
 
 <<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
 	"Please don't cry," you say. "You're all right now. I'll look after you. What's your name?"
@@ -1445,17 +1444,17 @@ You untie the bindings and remove the gag.
 <<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
 	"Don't cry," you say. "We need to move before someone nasty comes back. What's your name?"
 <<else>>
-	"It's okay," you say. "You're safe now. What's your name?"
+	"괜찮아." 당신이 말한다. "이제 안전해. 이름이 뭐야?"
 <</if>>
 <br><br>
 
-<<His>> sobs recede a little, but <<he>> doesn't respond. You feel <<his>> arm through <<his>> worn school uniform as you help <<him>> to <<his>> feet. <<Hes>> very thin.
+<<His>> 흐느낌이 조금 잦아들지만, <<he>>【은는】 대답하지 않는다. 당신이 <<him>>【을를】 일으켜 세울 때 <<his>> 낡은 교복 너머로 <<his>> 팔이 느껴진다. <<He>>【은는】 매우 말랐다.
 <br><br>
 
-<<He>> stares at you, cheeks still wet. You take <<his>> hand and lead <<him>> toward the road. <<dockclotheson>> Security watch as you pass, but don't stop you.
+<<He>>【은는】 여전히 뺨이 젖은 채로 당신을 쳐다본다. 당신은 <<his>> 손을 잡고 <<him>>【을를】 길 쪽으로 이끈다. <<dockclotheson>> 당신이 지나갈 때 경비원이 지켜보지만, 막지는 않는다.
 <br><br>
 
-<<harvesticon>><<link [[Take to train station (1:00)|Docks Slave Station]]>><<pass 60>><</link>>
+<<harvesticon>><<link [[기차역으로 데려간다 (1:00)|Docks Slave Station]]>><<pass 60>><</link>>
 <br>
 <<foodicon "eat">><<link [[Get food first (<<printprice 2000>>)|Docks Slave Cafe]]>><<pass 60>><<famegood 1>><<money -2000 "gift">><</link>>
 <br>
@@ -1463,42 +1462,42 @@ You untie the bindings and remove the gag.
 :: Docks Slave Cafe
 <<set $outside to 0>><<set $location to "cafe">><<effects>>
 
-You take <<him>> to a nearby cafe and sit at a table away from the window. <<His>> eyes light up when <<he>> sees the menu. <<He>> points at the picture of a burger, so you order one for <<him>> and one for yourself. <<He>> devours <<his>> meal, pausing only to drink the accompanying pop.
+당신은 <<him>>【을를】 근처 카페로 데려가 창가에서 떨어진 테이블에 앉힌다. <<His>> 눈은 <<he>>【이가】 메뉴를 보자 빛난다. <<He>>【은는】 햄버거 사진을 가리키고, 그래서 당신은 <<him>>【을를】 위해 하나, 자신을 위해 하나를 주문한다. <<He>>【은는】 함께 나온 탄산음료를 마시기 위해 잠시 멈출 뿐, <<his>> 식사를 게걸스럽게 먹어치운다.
 <br><br>
 
-You ask <<him>> <<his>> name and where <<hes>> from as <<he>> eats. <<He>> doesn't respond. You're not sure if <<he>> speaks English.
+당신은 <<he>>【이가】 먹는 동안 <<him>>에게 <<his>> 이름과 <<he>>【이가】 어디서 왔는지 묻는다. <<He>>【은는】 대답하지 않는다. 당신은 <<he>>【이가】 영어를 하는지 확신할 수 없다.
 <br><br>
 
-<<He>> licks the plate once finished, and stares at your food with longing. You push your plate over to <<him>>. <<He>> eats it just as fast.
+<<He>>【은는】 다 먹고 나면 접시를 핥고, 갈망하는 눈으로 당신의 음식을 쳐다본다. 당신은 당신의 접시를 <<him>>에게 밀어준다. <<He>>【은는】 그것을 똑같이 빨리 먹어치운다.
 <br><br>
 
-You leave the cafe together. <<He>> looks much happier.
+당신은 함께 카페를 떠난다. <<He>>【은는】 훨씬 더 행복해 보인다.
 <br><br>
 
-<<link [[Next|Docks Slave Station]]>><<pass 60>><</link>>
+<<link [[다음|Docks Slave Station]]>><<pass 60>><</link>>
 <br>
 
 :: Docks Slave Station
 <<set $outside to 0>><<set $location to "town">><<effects>><<wearProp "ticket">>
 
-You take the <<person>> to the train station on Harvest Street. <<He>> walks close, and keeps bumping into you. The station itself is busy. There's a map of the country on the wall, detailing the train network.
+당신은 <<person>>【을를】 하베스트 가의 기차역으로 데려간다. <<He>>【은는】 가까이 걸으며, 계속 당신에게 부딪힌다. 역 자체는 붐빈다. 벽에는 나라의 지도가 있고, 기차 네트워크가 상세히 그려져 있다.
 <br><br>
 
-<<He>> points at one town in particular and smiles. You look more closely. It matches the name beneath <<his>> uniform's logo. "Is this your home?" you ask. <<He>> just smiles.
+<<He>>【은는】 특히 한 마을을 가리키며 미소 짓는다. 당신은 더 자세히 본다. 그것은 <<his>> 교복 로고 아래의 이름과 일치한다. "여기가 네 집이야?" 당신이 묻는다. <<He>>【은는】 그저 미소만 짓는다.
 <br><br>
 
-You buy a ticket and walk onto the platform as the train arrives.
+당신은 표를 사고 기차가 도착하자 플랫폼으로 걸어간다.
 <<money -10000 "gift">>
-The <<person>> seems anxious.
+<<person>>【은는】 불안해 보인다.
 <br><br>
 
 <<if setup.inflation.canAfford(10000, "gift")>>
-	<<link [[Give nothing|Docks Slave Station 2]]>><<famegood 5>><<set $phase to 0>><</link>>
+	<<link [[아무것도 주지 않는다|Docks Slave Station 2]]>><<famegood 5>><<set $phase to 0>><</link>>
 	<br>
 	<<link [[Give <<printprice 10000>>|Docks Slave Station 2]]>><<set $docks.slave.money to 100>><<money -10000 "gift">><<famegood 10>><<set $phase to 1>><</link>>
 	<br>
 <<else>>
-	<<link [[Wave goodbye|Docks Slave Station 2]]>><<famegood 5>><<set $phase to 0>><</link>>
+	<<link [[작별 인사한다|Docks Slave Station 2]]>><<famegood 5>><<set $phase to 0>><</link>>
 	<br>
 <</if>>
 <<if setup.inflation.canAfford(30000, "gift")>>
@@ -1515,13 +1514,13 @@ The <<person>> seems anxious.
 <<speechresolve>>
 
 <<if $phase gte 1>>
-	You hand the <<person>> the ticket and £<<print $docks.slave.money>>.
+	당신은 <<person>>에게 표와 £<<print $docks.slave.money>>【을를】 건네준다.
 <<else>>
-	You hand the <<person>> the ticket.
+	당신은 <<person>>에게 표를 건네준다.
 <</if>>
 
 <<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
-	"It was nice to meet you," you say. "I hope you have a nice journey."
+	"만나서 반가웠어." 당신이 말한다. "좋은 여행이 되길 바라."
 <<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
 	"Take care of yourself," you say. "I hope you have a pleasant journey home."
 <<elseif _speechAttitudeResolved is "docile">>
@@ -1531,16 +1530,16 @@ The <<person>> seems anxious.
 <<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
 	"You should be okay from here," you say. "Try to stay out of trouble."
 <<else>>
-	"This train will take you home," you say.
+	"이 기차가 널 집으로 데려다줄 거야." 당신이 말한다.
 <</if>>
 
-<<He>> seems reluctant to leave you, but <<he>> understands and walks alone toward the waiting train. Before reaching it, however, <<he>> turns and runs back. <<He>> almost knocks you over with a hug.
+<<He>>【은는】 당신을 떠나기 꺼려하는 것 같지만, <<he>>【은는】 이해하고 기다리는 기차를 향해 혼자 걸어간다. 그러나 기차에 도착하기 전에, <<he>>【은는】 돌아서서 다시 달려온다. <<He>>【은는】 당신을 껴안으며 거의 넘어뜨릴 뻔한다.
 <br><br>
 
-<<He>> waves from the window as the train departs.
+<<He>>【은는】 기차가 출발할 때 창문에서 손을 흔든다.
 <br><br>
 
-<<link [[Next|Harvest Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<<link [[다음|Harvest Street]]>><<endevent>><<set $eventskip to 1>><</link>>
 <br>
 
 :: Passout Docks
@@ -1548,23 +1547,23 @@ The <<person>> seems anxious.
 
 <<upperruined>><<lowerruined>><<underruined>><<handheldruined>>
 <<set $leftarm to "bound">><<set $rightarm to "bound">><<handheldruined>>
-You awaken naked on a chair. Lengths of rope criss-cross your body and tie you down. A round board sits on your knees and leans against your chest, giving you some cover from prying eyes. You can't move an inch. Walls of corrugated metal suggest you're inside a cargo container. You're not alone.
+당신은 의자에 알몸으로 앉은 채 깨어난다. 여러 가닥의 밧줄이 당신의 몸을 가로질러 묶고 있다. 둥근 판자가 당신의 무릎 위에 놓여 가슴에 기대어 있어, 엿보는 눈으로부터 어느 정도 가려준다. 당신은 꼼짝도 할 수 없다. 골판지 금속 벽은 당신이 화물 컨테이너 안에 있음을 암시한다. 당신은 혼자가 아니다.
 <br><br>
 
-<<generate1>><<generate2>><<generate3>><<person2>>"It's not fair," a <<person>> says. <<He>> sits opposite you with <<his>> arms folded. "You set it up wrong."
+<<generate1>><<generate2>><<generate3>><<person2>>"불공평해." 한 <<person>>【이가】 말한다. <<He>>【은는】 팔짱을 낀 채 당신 맞은편에 앉아 있다. "네가 잘못 설치했어."
 <br><br>
 
-A dart thuds into the board. The <<person1>><<person>> who threw it laughs. "Yeah yeah," <<he>> says. "We're all using the same board, if you haven't noticed." <<He>> throws another dart. "I win." <<He>> turns to a <<person3>><<person>>. "Unless you score perfect."
+다트 하나가 판자에 쿵 하고 박힌다. 그것을 던진 <<person1>><<person>>【이가】 웃는다. "그래 그래." <<he>>【이가】 말한다. "우리 모두 같은 판을 쓰고 있잖아, 못 봤어?" <<He>>【은는】 또 다른 다트를 던진다. "내가 이겼어." <<He>>【은는】 <<person3>><<person>>에게로 돌아선다. "네가 만점을 받지 않는 한."
 <br><br>
 
 The <<person>> stands and takes <<his>> position in front of the board as the <<person1>><<person>> approaches to retrieve <<his>> darts. "Hey," <<he>> says. "<<pShes stranger>> awake."
 <br><br>
 
-<<link [[Insult|Passout Docks 2]]>><<set $phase to 0>><<def 1>><<trauma -6>><</link>><<ltrauma>>
+<<link [[모욕한다|Passout Docks 2]]>><<set $phase to 0>><<def 1>><<trauma -6>><</link>><<ltrauma>>
 <br>
-<<link [[Plead|Passout Docks 2]]>><<set $phase to 1>><<sub 1>><<stress -6>><</link>><<lstress>>
+<<link [[애원한다|Passout Docks 2]]>><<set $phase to 1>><<sub 1>><<stress -6>><</link>><<lstress>>
 <br>
-<<link [[Remain silent|Passout Docks 2]]>><<set $phase to 2>><</link>>
+<<link [[침묵한다|Passout Docks 2]]>><<set $phase to 2>><</link>>
 <br>
 
 :: Passout Docks 2
@@ -1581,44 +1580,44 @@ The <<person>> stands and takes <<his>> position in front of the board as the <<
 	<<elseif _speechAttitudeResolved is "confident">>
 		"Untie me scum," you say. "Now."
 	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
-		"Untie me at once," you say. "Or I'll throw you into the sea with the other scum."
+		"당장 날 풀어." 당신이 말한다. "아니면 다른 쓰레기들과 함께 바다에 던져버릴 거야."
 	<<else>>
-		"You scum," you say. "Let me go."
+		"이 쓰레기들아." 당신이 말한다. "날 풀어줘."
 	<</if>>
 	<br><br>
-	The <<person1>><<person>> laughs. "Let you go? Sure. After I've had my fun."
+	<<person1>><<person>>【이가】 웃는다. "풀어달라고? 물론이지. 내 재미를 다 본 후에."
 <<elseif $phase is 1>>
 	<<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
-		"Please don't hurt me," you say. "I promise I won't tell anyone."
+		"제발 해치지 마세요." 당신이 말한다. "아무에게도 말하지 않겠다고 약속할게요."
 	<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
 		"Please don't do this," you say. "Let me go and you'll never hear from me again."
 	<<elseif _speechAttitudeResolved is "docile">>
 		"Please let me go," you say softly. "I won't tell a soul."
 	<<elseif _speechAttitudeResolved is "confident">>
-		"This is childish," you say. "Let me go now and I won't tell anyone."
+		"이건 유치해." 당신이 말한다. "지금 날 풀어주면 아무에게도 말하지 않을게."
 	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
 		"This is pathetic," you say. "Untie me now and maybe I won't have you dragged off in chains."
 	<<else>>
-		"Please let me go," you say. "I won't tell anyone."
+		"제발 풀어주세요." 당신이 말한다. "아무에게도 말하지 않을게요."
 	<</if>>
 	<br><br>
-	The <<person1>><<person>> laughs. "Sure. After I've had my fun."
+	<<person1>><<person>>【이가】 웃는다. "물론이지. 내 재미를 다 본 후에."
 <<else>>
 <</if>>
 
-<<He>> returns to <<his>> seat as the <<person3>><<person>> prepares to throw.
+<<He>>【은는】 <<person>><<person3>>【이가】 던질 준비를 하는 동안 <<his>> 자리로 돌아간다.
 <br><br>
 
-The dart flies over your shoulder. "Fuck," the <<person>> says as <<he>> sits in defeat. The <<person1>><<person>> raises <<his>> fists. "I win! Now clear off you two. I want privacy."
+다트가 당신의 어깨 위로 날아간다. "젠장." <<person>>【이가】 패배하여 앉으며 말한다. <<person1>><<person>>【이가】 주먹을 들어 올린다. "내가 이겼다! 이제 너희 둘은 꺼져. 프라이버시가 필요해."
 <br><br>
 
-The <<person2>><<person>> shakes <<his>> head. "That wasn't agreed." <<He>> opens a beer. "We're watching. I wanna see what you do to this <<girl>>."
+<<person2>><<person>>【이가】 고개를 젓는다. "그건 합의된 게 아니었어." <<He>>【은는】 맥주를 딴다. "우린 볼 거야. 네가 이 <<girl>>에게 무슨 짓을 하는지 보고 싶어."
 <br><br>
 
-The <<person1>><<person>> sighs, but doesn't protest. <<He>> pulls the board away from you. Their eyes feast on your <<lewdness>>.
+<<person1>><<person>>【이가】 한숨을 쉬지만, 항의하지는 않는다. <<He>>【은는】 당신에게서 판자를 치운다. 그들의 눈이 당신의 <<lewdness>>【을를】 탐욕스럽게 훑는다.
 <br><br>
 
-<<link [[Next|Passout Docks Rape]]>><<set $enemyno to 1>><<set $enemynomax to 1>><<set $molestationstart to 1>><</link>>
+<<link [[다음|Passout Docks Rape]]>><<set $enemyno to 1>><<set $enemynomax to 1>><<set $molestationstart to 1>><</link>>
 <br>
 
 :: Passout Docks Rape
@@ -1635,7 +1634,7 @@ The <<person1>><<person>> sighs, but doesn't protest. <<He>> pulls the board awa
 <<effectsman>>
 <<man>>
 
-The pair cheer their colleague on.
+두 사람은 동료를 응원한다.
 <br><br>
 
 <<stateman>>
@@ -1643,9 +1642,9 @@ The pair cheer their colleague on.
 <<actionsman>>
 
 <<if _combatend>>
-	<span id="next"><<link [[Next|Passout Docks Rape Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Passout Docks Rape Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Passout Docks Rape]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Passout Docks Rape]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Passout Docks Rape Finish
@@ -1653,35 +1652,35 @@ The pair cheer their colleague on.
 <<if $enemypleasure gte $enemypleasuremax>>
 	<<ejaculation>>
 
-	The pair applaud. "I think I've learned something intimate about you," the <<person2>><<person>> says.
+	두 사람이 박수를 친다. "너에 대해 은밀한 걸 알게 된 것 같군." <<person2>><<person>>【이가】 말한다.
 	<br><br>
 
-	"Sh-shut it," the <<person1>><<person>> responds. <<He>> unties you from the chair, but leaves the rope around you. "You keep it shut too. Not that anyone will care." <<He>> opens the container and kicks you out.
+	"닥쳐." <<person1>><<person>>【이가】 대꾸한다. <<He>>【은는】 당신을 의자에서 풀어주지만, 밧줄은 그대로 몸에 남겨둔다. "너도 입 다물어. 어차피 아무도 신경 안 쓸 테지만." <<He>>【은는】 컨테이너를 열고 당신을 밖으로 걷어찬다.
 	<br><br>
 
-	<<tearful>> you climb to your feet.
+	<<tearful>> 당신은 자리에서 일어선다.
 <<elseif $finish is 1>>
 	<<encounterEndViolence>>
 	"Shut it," the <<person1>><<person>> responds. <<He>> unties you from the chair, but leaves the rope around you. "You keep it shut too. Not that anyone will care." <<He>> opens the container and kicks you out.
 	<<lcool>><<dockstatus -1>>
 	<br><br>
 
-	<<tearful>> you climb to your feet.
+	<<tearful>> 당신은 자리에서 일어선다.
 <<else>>
-	You kick the <<person>> against the metal wall. <<He>> cries out in pain and clutches <<his>> back.
+	당신은 <<person>>【을를】 걷어차 철제 벽에 부딪히게 한다. <<He>>【은는】 고통에 찬 비명을 지르며 <<his>> 등을 움켜쥔다.
 	<br><br>
 
 	"<<pShes stranger>> tied up mate!" the <<person2>><<person>> says as the <<person3>><<person>> keels over with laughter.
 	<br><br>
 
-	<<tearful>> you kick open the door and leave the container. The pair don't stop you, but continue to mock their colleague.
+	<<tearful>> 당신은 문을 걷어차고 컨테이너를 나간다. 두 사람은 당신을 막지 않고, 동료를 계속 놀려댄다.
 <</if>>
 <br><br>
 
 <<clotheson>>
 <<endcombat>>
 
-<<link [[Next|Docks]]>><</link>>
+<<link [[다음|Docks]]>><</link>>
 
 <<set $stress -= 2000>>
 
@@ -1691,7 +1690,7 @@ The pair cheer their colleague on.
 <<set $docks.pub.count += 1>>
 <<if Time.hour gte 3 and Time.hour lte 16>>
 
-	Your colleagues pat your back, congratulating your endurance. They separate and stagger home.
+	동료들이 당신의 등을 두드리며 인내심을 칭찬한다. 그들은 흩어져 각자 비틀거리며 집으로 향한다.
 	<<gcool>><<dockstatus 5>>
 	<br><br>
 
@@ -1702,23 +1701,23 @@ The pair cheer their colleague on.
 	Accompanying your colleagues, you <<if effectiveDrunk() gte 360>>stagger<<else>>walk<</if>> into a pub on Mer Street. It's busy. Sailors from the moored ships are unwinding here.
 	<br><br>
 
-	"Pub quiz in ten minutes," the jovial owner shouts. "Winning team gets a round on the house." Your colleagues sign up at once. The sailors scoff. "You got no chance," one of them, a <<person>>, says. Your colleagues throw colourful insults in response.
+	"10분 뒤에 술집 퀴즈 시작합니다!" 쾌활한 주인이 소리친다. "이기는 팀은 술 한 잔씩 공짜입니다." 당신의 동료들은 즉시 참가 신청을 한다. 선원들은 비웃는다. "너희한텐 승산 없어." 그들 중 한 명인 <<person>>【이가】 말한다. 당신의 동료들은 온갖 욕설로 응수한다.
 	<br><br>
 
-	"You lot talk big," the <<person>> says after much back and forth. <<He>> pulls £60 from <<his>> pocket. <<His>> fellow sailors do likewise. "That's £360 says we win the quiz." Despite their previous bluster, the dockers seem unsure.
+	한참 실랑이를 벌인 후, <<person>>【이가】 말한다. "말만 번지르르하군." <<He>>【은는】 주머니에서 £60를 꺼낸다. <<His>> 동료 선원들도 똑같이 한다. "우리가 퀴즈에서 이긴다는 데 £360 걸지." 이전의 허세에도 불구하고, 부두 노동자들은 확신이 없어 보인다.
 	<br><br>
 
 	<<if hasSexStat("promiscuity", 3)>>
-		<<link [[Bet your body|Docks Pub Crawl Body]]>><<dockstatus 1>><</link>><<promiscuous3>><<gcool>>
+		<<link [[몸을 건다|Docks Pub Crawl Body]]>><<dockstatus 1>><</link>><<promiscuous3>><<gcool>>
 		<br>
 	<</if>>
 	<<if $money gte 6000>>
 		<<link [[Match their bet (<<printmoney 6000>>)|Docks Pub Crawl Bet]]>><<set $money -= 6000>><</link>>
 		<br>
 		<</if>>
-	<<link [[Don't bet anything|Docks Pub Crawl Quiz Refuse]]>><<set $phase to 0>><</link>>
+	<<link [[아무것도 걸지 않는다|Docks Pub Crawl Quiz Refuse]]>><<set $phase to 0>><</link>>
 	<br>
-	<<link [[Don't take part|Docks Pub Crawl Quiz Refuse]]>><<set $phase to 1>><</link>>
+	<<link [[참가하지 않는다|Docks Pub Crawl Quiz Refuse]]>><<set $phase to 1>><</link>>
 	<br>
 
 <<elseif $rng gte 61>>
@@ -1726,18 +1725,17 @@ The pair cheer their colleague on.
 	Accompanying your colleagues, you <<if effectiveDrunk() gte 360>>stagger<<else>>walk<</if>> into a pub on Harvest Street. Some rough looking patrons eye you up as you enter.
 	<br><br>
 
-
 	<<if dangerEvent()>>
-		<<generate1>><<person1>>A <<person>> sits beside you and places <<his>> hand on your thigh. "Fancy disappearing together for a few minutes?" <<he>> says.
+		<<generate1>><<person1>>한 <<person>>【이가】 당신 옆에 앉아 <<his>> 손을 당신의 허벅지에 올린다. "잠깐 같이 사라지는 거 어때?" <<he>>【이가】 말한다.
 		<br><br>
 
-		<<link [[Accept|Docks Pub Crawl Sex]]>><<set $sexstart to 1>><</link>><<promiscuous1>>
+		<<link [[수락한다|Docks Pub Crawl Sex]]>><<set $sexstart to 1>><</link>><<promiscuous1>>
 		<br>
-		<<refuseicon>><<link [[Refuse|Docks Pub Crawl Sex Refuse]]>><</link>>
+		<<refuseicon>><<link [[거절한다|Docks Pub Crawl Sex Refuse]]>><</link>>
 		<br>
 	<<else>>
 		<<wearProp "beer mug">>
-		You drink a couple of rounds together, ignoring evil looks from the regular patrons. You leave with the other dockers.
+		당신은 단골 손님들의 사나운 눈초리를 무시하며 함께 몇 잔을 마신다. 다른 부두 노동자들과 함께 떠난다.
 		<br><br>
 
 		<<dockpuboptions>>
@@ -1748,18 +1746,17 @@ The pair cheer their colleague on.
 	Accompanying your colleagues, you <<if effectiveDrunk() gte 360>>stagger<<else>>walk<</if>> into a pub on Barb Street.
 	<br><br>
 
-
 	<<if dangerEvent()>>
 		You overhear one of the other dockers talking about you. <<generate1>><<person1>>"You sure the <<girl>> can handle it?" <<he>> says. "The drinking, I mean. I don't want to get in trouble with <<pher stranger>> parents or nothing."
 		<br><br>
 
-		<<link [[Challenge to drinking contest|Docks Pub Crawl Contest]]>><<dockstatus 1>><<set $phase to 0>><</link>><<gcool>>
+		<<link [[술 마시기 시합을 건다|Docks Pub Crawl Contest]]>><<dockstatus 1>><<set $phase to 0>><</link>><<gcool>>
 		<br>
-		<<link [[Remain silent|Docks Pub Crawl Silent]]>><<dockstatus -1>><</link>><<lcool>>
+		<<link [[조용히 있는다|Docks Pub Crawl Silent]]>><<dockstatus -1>><</link>><<lcool>>
 		<br>
 
 	<<else>>
-		People pay you and the other dockers no mind. You drink a few rounds and leave together.
+		사람들은 당신과 다른 부두 노동자들에게 신경 쓰지 않는다. 당신은 몇 잔 마시고 함께 떠난다.
 		<br><br>
 
 		<<dockpuboptions>>
@@ -1770,12 +1767,12 @@ The pair cheer their colleague on.
 	Accompanying your colleagues, you <<if effectiveDrunk() gte 360>>stagger<<else>>walk<</if>> into a pub on Connudatus Street.
 	<br><br>
 
-	<<generate1>><<generatep2>><<person2>>You notice a docker eyeing up a <<person>> on the other side of the room.
+	<<generate1>><<generatep2>><<person2>>한 부두 노동자가 방 건너편에 있는 <<person>>【을를】 훑어보는 것을 발견한다.
 	<br><br>
 
-	<<link [[Encourage|Docks Pub Crawl Eyeing Encourage]]>><</link>>
+	<<link [[부추긴다|Docks Pub Crawl Eyeing Encourage]]>><</link>>
 	<br>
-	<<link [[Ignore|Docks Pub Crawl Eyeing Ignore]]>><</link>>
+	<<link [[무시한다|Docks Pub Crawl Eyeing Ignore]]>><</link>>
 	<br>
 
 <<else>>
@@ -1783,23 +1780,22 @@ The pair cheer their colleague on.
 	Accompanying your colleagues, you <<if effectiveDrunk() gte 360>>stagger<<else>>walk<</if>> into a pub on High Street.
 	<br><br>
 
-
 	<<if dangerEvent()>>
-		You attract attention. Other patrons keep trying to flirt with you.
+		당신은 주목을 끈다. 다른 손님들이 계속해서 당신에게 추파를 던진다.
 		<br><br>
 
-		<<link [[Flirt|Docks Pub Crawl Flirt]]>><</link>><<promiscuous1>>
+		<<link [[추파를 던진다|Docks Pub Crawl Flirt]]>><</link>><<promiscuous1>>
 		<br>
 			<<if wornSetupClothes("lower").skirt is 1>>
-			<<link [[Tease|Docks Pub Crawl Tease]]>><</link>><<exhibitionist1>>
+			<<link [[유혹한다|Docks Pub Crawl Tease]]>><</link>><<exhibitionist1>>
 			<br>
 			<</if>>
-		<<link [[Ignore|Docks Pub Crawl Flirt Ignore]]>><</link>>
+		<<link [[무시한다|Docks Pub Crawl Flirt Ignore]]>><</link>>
 		<br>
 
 	<<else>>
 		<<wearProp "beer mug">>
-		No one pays you or the other dockers much mind. You drink a few rounds and leave together.
+		아무도 당신이나 다른 부두 노동자들에게 별 관심을 보이지 않는다. 당신은 몇 잔 마시고 함께 떠난다.
 		<br><br>
 
 		<<dockpuboptions>>
@@ -1813,33 +1809,33 @@ The pair cheer their colleague on.
 <<speechresolve>>
 
 <<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
-	"You should talk to <<him>>," you say. "Just be yourself."
+	"<<him>>에게 말을 걸어봐." 당신이 말한다. "그냥 평소처럼 해."
 <<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
 	"You should talk to <<him>>," you say. "A little charm might take you further than staring from across the room."
 <<elseif _speechAttitudeResolved is "docile">>
 	"You could try speaking to <<him>>," you say softly. "It might go better than you think."
 <<elseif _speechAttitudeResolved is "confident">>
-	"Talk to <<him>>," you say. "<<He>> will appreciate the assertiveness."
+	"<<him>>에게 말을 걸어봐." 당신이 말한다. "<<He>>도 적극적인 태도를 좋아할 거야."
 <<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
 	"Stop gawping and talk to <<him>>," you say. "You'll get nowhere sulking into your drink."
 <<else>>
-	"You should talk to <<him>>," you say. "You'll regret it if you don't."
+	"<<him>>에게 말을 걸어봐." 당신이 말한다. "안 그러면 후회할걸."
 <</if>>
 <br><br>
-The docker finishes their drink, takes a deep breath and marches over. The <<person>> looks up. You can't hear them over the din of the pub, but <<he>> seems to respond well.
+부두 노동자가 술을 다 마시고, 심호흡을 한 뒤 그쪽으로 걸어간다. <<person>>【이가】 고개를 든다. 술집의 소음 때문에 대화는 들리지 않지만, <<he>>의 반응은 좋아 보인다.
 
 <<if $rng gte 51>>
-	<<He>> takes the docker's hand and together they walk outside. The docker gives you a grateful smile before disappearing.
+	<<He>>【은는】 부두 노동자의 손을 잡고 함께 밖으로 나간다. 부두 노동자는 사라지기 전 당신에게 고맙다는 듯 미소를 짓는다.
 	<<gcool>><<dockstatus 1>>
 <<else>>
-	Until <<he>> sneers and throws <<his>> drink in the docker's face.
+	하지만 <<he>>【은는】 비웃으며 부두 노동자의 얼굴에 <<his>> 술을 끼얹는다.
 	<br><br>
 
-	The docker returns, eyes downcast and hair dripping.
+	부두 노동자는 고개를 숙인 채 머리에서 물을 뚝뚝 흘리며 돌아온다.
 <</if>>
 <br><br>
 
-You finish your drink and leave with your colleagues.
+당신은 술을 다 마시고 동료들과 함께 자리를 뜬다.
 <br><br>
 
 <<dockpuboptions>>
@@ -1847,7 +1843,7 @@ You finish your drink and leave with your colleagues.
 :: Docks Pub Crawl Eyeing Ignore
 <<effects>><<wearProp "beer mug">>
 
-You decide to keep to yourself. You finish your drink and leave with your colleagues.
+당신은 혼자 있기로 한다. 술을 다 마시고 동료들과 함께 자리를 뜬다.
 <br><br>
 
 <<dockpuboptions>>
@@ -1855,12 +1851,12 @@ You decide to keep to yourself. You finish your drink and leave with your collea
 :: Docks Pub Crawl Flirt
 <<effects>><<wearProp "beer mug">>
 
-You flirt back, revelling in the attention. You manage to convince someone to pay for drinks for you and your colleagues.
+당신은 관심을 즐기며 추파를 되받아친다. 당신은 누군가를 설득해 당신과 동료들의 술값을 내게 하는 데 성공한다.
 <<dockstatus 1>><<gcool>>
 <br><br>
 <<promiscuity1>><<money 500 "prostitution">>
 
-You and the dockers finish your drinks and leave together.
+당신과 부두 노동자들은 술을 다 마시고 함께 자리를 뜬다.
 <br><br>
 
 <<dockpuboptions>>
@@ -1868,11 +1864,11 @@ You and the dockers finish your drinks and leave together.
 :: Docks Pub Crawl Tease
 <<effects>><<wearProp "beer mug">>
 
-You hike your skirt up, giving them a tantalising glimpse of your upper thighs just short of your <<undies>>. One of your colleagues, a <<generate1>><<person1>><<person>>, spoils the fun and pulls your $worn.lower.name over your thighs proper. "Sorry," <<he>> says. "But you're working them up a bit too well. I don't want to lose teeth protecting you."
+당신은 치마를 들어 올려 <<undies>> 바로 아래까지 허벅지 윗부분을 아슬아슬하게 보여준다. 동료 중 한 명인 <<generate1>><<person1>><<person>>【이가】 당신의 $worn.lower.name【을를】 허벅지 위로 제대로 끌어내려 재미를 망친다. "미안." <<he>>【이가】 말한다. "근데 네가 쟤들을 너무 잘 달아오르게 하잖아. 널 지키다가 이빨 나가고 싶진 않다고."
 
 <<exhibitionism1>>
 
-You and the dockers finish your drinks and leave together.
+당신과 부두 노동자들은 술을 다 마시고 함께 자리를 뜬다.
 <br><br>
 
 <<dockpuboptions>>
@@ -1880,7 +1876,7 @@ You and the dockers finish your drinks and leave together.
 :: Docks Pub Crawl Flirt Ignore
 <<effects>><<wearProp "beer mug">>
 
-You ignore the flirters, finish your drink and leave with your colleagues.
+당신은 추파를 던지는 사람들을 무시하고, 술을 다 마신 뒤 동료들과 함께 자리를 뜬다.
 <br><br>
 
 <<dockpuboptions>>
@@ -1899,106 +1895,106 @@ You ignore the flirters, finish your drink and leave with your colleagues.
 	<<elseif _speechAttitudeResolved is "confident">>
 		"I can handle myself," you say. Everyone turns to you. "In fact, I can drink better than you."
 	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
-		You laugh. Everyone turns to you. "It's you I'm worried about," you say to the <<person>>. "You'll be out cold within an hour."
+		당신은 웃는다. 모두가 당신을 돌아본다. "내가 걱정하는 건 너야." 당신은 <<person>>에게 말한다. "한 시간도 안 돼서 뻗어버릴걸."
 	<<else>>
-		"I can handle myself," you say. Everyone turns to you. "In fact, I can handle drink better than you."
+		"내 몸은 내가 알아서 해." 당신이 말한다. 모두가 당신을 돌아본다. "사실, 너보다는 내가 술을 더 잘 마셔."
 	<</if>>
 	<br><br>
 
-	The <<generate2>><<person2>><<person>> jabs the <<person1>><<person>> with <<his>> elbow. "That's a challenge," <<person2>><<he>> says. The <<person1>><<person>> sighs and takes the seat in front of you as the other dockers rearrange themselves to watch. They're so enthused they offer to pay for the drinks.
+	<<generate2>><<person2>><<person>>【은는】 <<his>> 팔꿈치로 <<person1>><<person>>【을를】 툭 친다. "이건 도전장이네." <<person2>><<he>>【이가】 말한다. <<person1>><<person>>【은는】 한숨을 쉬며 당신 앞자리에 앉고, 다른 부두 노동자들은 구경하기 위해 자리를 재배치한다. 그들은 너무 신이 난 나머지 술값을 내주겠다고 제안한다.
 	<br><br>
 
-	<<link [[Next|Docks Pub Crawl Contest]]>><</link>>
+	<<link [[다음|Docks Pub Crawl Contest]]>><</link>>
 	<br>
 
 <<elseif $phase is 1>><<set $phase += 1>>
 	<<wearProp "whisky">>
-	<<generate3>><<person3>>The bartender arrives with two glasses. "Scotch," <<he>> says. "Let's start you off easy."
+	<<generate3>><<person3>>바텐더가 두 잔을 들고 온다. "스카치입니다." <<he>>【이가】 말한다. "가볍게 시작해 보죠."
 	<br><br>
 
 	<<if $docks.pub.count gte 4>>
-		<<person1>>"I don't think this'll take long," the <<person>> says. "We've had more than a few already."
+		<<person1>>"이거 오래 걸릴 것 같진 않은데," <<person>>【이가】 말한다. "우리 이미 몇 잔 했잖아."
 		<br><br>
 	<</if>>
 
-	<<foodicon "whisky">><<link [[Drink|Docks Pub Crawl Contest]]>><<drunk 180>><</link>><<ggdrunk>>
+	<<foodicon "whisky">><<link [[마신다|Docks Pub Crawl Contest]]>><<drunk 180>><</link>><<ggdrunk>>
 	<br>
-	<<getouticon>><<link [[Stop|Docks Pub Crawl Contest Stop]]>><<dockstatus -1>><</link>><<lcool>>
+	<<getouticon>><<link [[그만둔다|Docks Pub Crawl Contest Stop]]>><<dockstatus -1>><</link>><<lcool>>
 	<br>
 
 <<elseif $phase is 2>><<set $phase += 1>>
 	<<wearProp "whisky">>
-	You drink the scotch as the audience cheers. It burns your throat.
+	관중들이 환호하는 가운데 당신은 스카치를 마신다. 목이 타들어 가는 것 같다.
 	<br><br>
 
-	The <<person1>><<person>> coughs. "No shame in quitting," <<he>> says. "I'm a seasoned drinker, and I don't want to carry you home after."
+	<<person1>><<person>>【이가】 기침한다. "그만둬도 창피한 거 아니야." <<he>>【이가】 말한다. "난 술고래라서, 나중에 널 집에 업고 가고 싶진 않거든."
 	<br><br>
 
-	The <<person3>>bartender returns, holding two more glasses. "Vodka," <<he>> says. "But stronger than you're used to, I reckon."
+	<<person3>>바텐더가 두 잔을 더 들고 돌아온다. "보드카입니다." <<he>>【이가】 말한다. "하지만 당신이 마시던 것보다는 독할 겁니다, 아마도."
 	<br><br>
 
-	<<foodicon "whisky">><<link [[Drink|Docks Pub Crawl Contest]]>><<drunk 180>><</link>><<ggdrunk>>
+	<<foodicon "whisky">><<link [[마신다|Docks Pub Crawl Contest]]>><<drunk 180>><</link>><<ggdrunk>>
 	<br>
-	<<getouticon>><<link [[Stop|Docks Pub Crawl Contest Stop]]>><<dockstatus -1>><</link>><<lcool>>
+	<<getouticon>><<link [[그만둔다|Docks Pub Crawl Contest Stop]]>><<dockstatus -1>><</link>><<lcool>>
 	<br>
 
 <<elseif $phase is 3>><<set $phase += 1>>
 	<<wearProp "absinthe">>
-	You drink the vodka as the audience cheers once more. You feel a bit nauseous.
+	관중들이 다시 한번 환호하는 가운데 당신은 보드카를 마신다. 약간 메스꺼움이 느껴진다.
 	<br><br>
 
-	"That tasted foul," the <<person1>><<person>> says. "I must be pretty pissed already if I'm doing this."
+	"맛이 역겹네." <<person1>><<person>>【이가】 말한다. "이런 걸 마시는 걸 보니 나도 꽤 취했나 봐."
 	<br><br>
 
-	The <<person3>>bartender returns, holding two more glasses. "Absinthe," <<he>> says. "Made locally. This was illegal not long ago."
+	<<person3>>바텐더가 두 잔을 더 들고 돌아온다. "압생트입니다." <<he>>【이가】 말한다. "여기서 직접 만든 거죠. 얼마 전까지만 해도 불법이었어요."
 	<br><br>
 
-	The <<person1>><<person>> sways slightly as <<he>> takes the drink.
+	<<person1>><<person>>【은는】 술잔을 받아들며 살짝 비틀거린다.
 	<br><br>
 
-	<<foodicon "absinthe">><<link [[Drink|Docks Pub Crawl Contest]]>><<drunk 120>><<hallucinogen 120>><</link>><<ggdrunk>><<gghallucinogens>>
+	<<foodicon "absinthe">><<link [[마신다|Docks Pub Crawl Contest]]>><<drunk 120>><<hallucinogen 120>><</link>><<ggdrunk>><<gghallucinogens>>
 	<br>
-	<<getouticon>><<link [[Stop|Docks Pub Crawl Contest Stop]]>><<dockstatus -1>><</link>><<lcool>>
+	<<getouticon>><<link [[그만둔다|Docks Pub Crawl Contest Stop]]>><<dockstatus -1>><</link>><<lcool>>
 	<br>
 
 <<elseif $phase is 4>><<set $phase += 1>>
 	<<wearProp "shot">>
-	You drink the absinthe. You almost gag. The <<person1>><<person>> does, but <<he>> manages to keep it down. <<He>> doesn't say anything.
+	당신은 압생트를 마신다. 거의 구역질이 날 뻔한다. <<person1>><<person>>【은는】 헛구역질을 하지만, 간신히 참아낸다. <<He>>【은는】 아무 말도 하지 않는다.
 	<br><br>
 
-	The bartender returns with another two glasses. The liquid is bright and colourful. "Local special." <<He>> smiles. "Not on the menu."
+	바텐더가 또 다른 두 잔을 들고 돌아온다. 액체는 밝고 화려한 색이다. "이곳의 특별 메뉴죠." <<He>>【이가】 미소 짓는다. "메뉴판에는 없어요."
 	<br><br>
 
-	<<foodicon "purplehaze">><<link [[Drink|Docks Pub Crawl Contest]]>><<drunk 120>><<drugs 120>><<arousal 1800>><</link>><<ggarousal>><<ggdrunk>>
+	<<foodicon "purplehaze">><<link [[마신다|Docks Pub Crawl Contest]]>><<drunk 120>><<drugs 120>><<arousal 1800>><</link>><<ggarousal>><<ggdrunk>>
 	<br>
-	<<getouticon>><<link [[Stop|Docks Pub Crawl Contest Stop]]>><<dockstatus -1>><</link>><<lcool>>
+	<<getouticon>><<link [[그만둔다|Docks Pub Crawl Contest Stop]]>><<dockstatus -1>><</link>><<lcool>>
 	<br>
 
 <<else>>
 	<<wearProp "purple haze">>
-	You drink the colourful liquid. It's sweet, and makes you feel warm.
+	당신은 화려한 색의 액체를 마신다. 달콤하고, 몸이 따뜻해지는 기분이다.
 	<br><br>
 
-	The <<person1>><<person>> lifts <<his>> drink. "I prom—" <<He>> hiccups. "I promised myself. Never again." <<He>> places the glass on the table. "You win." The audience cheers with more vigour than before. Someone raises your arm and several others pat your back. "Now," the <<person>> continues. "I need a piss."
+	<<person1>><<person>>【이가】 <<his>> 잔을 들어 올린다. "난 약속..." <<He>>【이가】 딸꾹질한다. "스스로 약속했어. 다신 안 마시겠다고." <<He>>【은는】 잔을 테이블에 내려놓는다. "네가 이겼어." 관중들이 전보다 더 힘차게 환호한다. 누군가 당신의 팔을 들어 올리고, 다른 몇몇은 당신의 등을 두드려준다. "이제." <<person>>【이가】 말을 잇는다. "오줌 좀 싸고 와야겠어."
 	<<gcool>><<dockstatus 1>>
 	<br><br>
 	<<earnFeat "Under the Table">>
 	<<if $pleasure gte $pleasuremax>>
 
-		The warmth in you continues to build, and build, until your whole body shakes. You pass the point of no return.
+		몸속의 온기가 계속해서 차오르더니, 온몸이 떨릴 때까지 이어진다. 당신은 돌이킬 수 없는 지점을 넘어선다.
 		<br><br>
 
 		<<orgasm>>
 		<br><br>
 
-		You fall to the ground, writhing and moaning in front of your astonished colleagues. The <<person>> returns as you regain control. <<He>> shakes <<his>> head.
+		당신은 바닥에 쓰러져, 놀란 동료들 앞에서 몸부림치며 신음한다. 당신이 간신히 정신을 차렸을 때 <<person>>【이가】 돌아온다. <<He>>【은는】 <<his>> 고개를 젓는다.
 		<br><br>
 
-		You leave the pub with the other dockers, feeling spent and flushed. They don't mention what happened, but something has them smiling.
+		당신은 기진맥진하고 얼굴이 상기된 채 다른 부두 노동자들과 함께 술집을 나선다. 그들은 무슨 일이 있었는지 언급하지 않지만, 무언가 그들을 미소 짓게 만든다.
 
 	<<else>>
 
-		Your colleagues finish their drinks, the <<person>> returns, and you leave the pub together.
+		동료들이 술을 다 마시고, <<person>>【이가】 돌아오자, 당신은 함께 술집을 나선다.
 
 	<</if>>
 	<br><br>
@@ -2011,27 +2007,26 @@ You ignore the flirters, finish your drink and leave with your colleagues.
 <<effects>>
 
 <<if $phase is 4>>
-	You shake your head and push the glass away from you. All eyes turn to the <<person>>, who lifts <<his>> and smells it. <<He>> places it back on the table. "I prom—" <<He>> hiccups. "I promised myself. Never again." It's a draw. The dockers are disappointed.
+	당신은 고개를 저으며 유리잔을 밀어낸다. 모두의 시선이 <<person>>에게로 향하고, <<he>>【은는】 <<his>> 잔을 들어 냄새를 맡는다. <<He>>【은는】 잔을 다시 테이블에 내려놓는다. "나 약속..." <<He>>【은는】 딸꾹질을 한다. "나 자신과 약속했어. 다시는 안 마시기로." 무승부다. 부두 노동자들은 실망한다.
 	<<lcool>><<dockstatus -1>>
 <<else>>
-	You shake your head and push the glass away from you. All eyes turn to the <<person>>, who lifts <<his>> and smells it. <<He>> downs it in one motion, and the dockers cheer. One raises <<his>> arm and several others pat <<his>> back.
+	당신은 고개를 저으며 유리잔을 밀어낸다. 모두의 시선이 <<person>>에게로 향하고, <<he>>【은는】 <<his>> 잔을 들어 냄새를 맡는다. <<He>>【은는】 단숨에 잔을 비우고, 부두 노동자들은 환호한다. 한 명이 <<his>> 팔을 들어 올리자 다른 몇몇이 <<his>> 등을 두드려준다.
 	<<lcool>><<dockstatus -1>>
 <</if>>
 <br><br>
 
-Your colleagues finish their drinks and you leave the pub together.
+동료들이 술을 다 마시자 당신은 함께 술집을 나선다.
 <br><br>
 
 <<dockpuboptions>>
 
-
 :: Docks Pub Crawl Silent
 <<effects>>
 
-You don't interject.
+당신은 끼어들지 않는다.
 <br><br>
 
-You finish drinking and leave the pub with your colleagues.
+당신은 술을 다 마시고 동료들과 함께 술집을 나선다.
 <br><br>
 
 <<dockpuboptions>>
@@ -2044,7 +2039,7 @@ You finish drinking and leave the pub with your colleagues.
 	<<neutral 1>>
 	<<maninit>>
 	<<set $enemytrust -= 20>>
-	<<He>> takes your hand and leads you to the <<women_npc>>'s toilets. <<He>> pushes you against the sinks and grasps at your clothing.
+	<<He>>【이가】 당신의 손을 잡고 <<women_npc>> 화장실로 이끈다. <<He>>【은는】 당신을 세면대에 밀어붙이고 옷을 움켜쥔다.
 	<<promiscuity1>>
 <</if>>
 
@@ -2056,9 +2051,9 @@ You finish drinking and leave the pub with your colleagues.
 <<actionsman>>
 
 <<if _combatend>>
-	<span id="next"><<link [[Next|Docks Pub Crawl Sex Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Docks Pub Crawl Sex Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Docks Pub Crawl Sex]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Docks Pub Crawl Sex]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Docks Pub Crawl Sex Finish
@@ -2067,54 +2062,53 @@ You finish drinking and leave the pub with your colleagues.
 <<if $enemypleasure gte $enemypleasuremax>>
 	<<ejaculation>>
 
-	"You dockers aren't usually so cute," <<he>> says as <<he>> adjusts <<his>> clothes.
+	"부두 노동자들이 보통 이렇게 귀엽진 않은데," <<he>>【이가】 <<his>> 옷을 정돈하며 말한다.
 <<elseif $enemyhealth lte 0>>
-	You shove the <<person>> into a cubicle and escape the toilets.
+	당신은 <<person>>【을를】 화장실 칸으로 밀어 넣고 탈출한다.
 <<else>>
 	<<encounterEndViolence>>
-	"Fine," <<he>> says. "You're lucky I don't just take you anyway."
+	"알았어." <<he>>【이가】 말한다. "그냥 덮치지 않은 걸 다행으로 알아."
 <</if>>
 <br><br>
 
 <<clotheson>>
 <<endcombat>>
 
-<<tearful>> you return to the pub to find your colleagues finishing their drinks. You leave together.
+<<tearful>> 당신은 술집으로 돌아와 동료들이 술을 마저 마시는 것을 본다. 당신들은 함께 떠난다.
 <br><br>
 
 <<dockpuboptions>>
 
-
 :: Docks Pub Crawl Sex Refuse
 <<effects>>
 
-The <<person>> grasps your neck and leans in. "I tried asking nicely," <<he>> whispers. "Now how abouts you come with me, and I won't need to hurt you."
+<<person>>【이가】 당신의 목을 잡고 몸을 기울인다. "좋게 말로 하려고 했는데," <<he>>【이가】 속삭인다. "이제 나랑 같이 가는 게 어때, 그럼 다치게 할 필요는 없을 테니."
 <<gtrauma>><<gstress>><<trauma 1>><<stress 1>>
 <br><br>
 
 <<if $submissive lte 500>>
-	"You're gonna regret touching me," you say. You smash your glass over the <<persons>> head. <<He>> tries to dodge the blow, but loses balance and falls off <<his>> chair. Your colleagues cheer.
+	"날 건드린 걸 후회하게 될 거야." 당신이 말한다. 당신은 <<persons>> 머리에 유리잔을 내리친다. <<He>>【이가】 그 일격을 피하려 하지만, 균형을 잃고 <<his>> 의자에서 떨어진다. 당신의 동료들이 환호한다.
 	<br><br>
 
-	"Unprovoked!" the <<person>> says as <<he>> nurses <<his>> scalp.
+	"이유 없는 폭력이잖아!" <<person>>【이가】 <<his>> 두피를 어루만지며 말한다.
 	<br><br>
 
-	The pub owner rushes over. <<generate2>><<person2>>"Last thing I need is a brawl," <<he>> says. "You dockers always bring trouble. Get out."
+	술집 주인이 달려온다. <<generate2>><<person2>>"난장판은 딱 질색이야." <<he>>【이가】 말한다. "너희 부두 노동자들은 항상 문제를 일으키지. 나가."
 	<br><br>
 
-	"That was self-defence," you argue, but <<he>> won't hear it. Your colleagues down the last of their drink and together you leave the pub. They don't seem to mind.
+	"정당방위였어요." 당신이 항변하지만, <<he>>【은는】 들으려 하지 않는다. 당신의 동료들은 남은 술을 마저 들이켜고 함께 술집을 나선다. 그들은 별로 개의치 않는 것 같다.
 	<<gcool>><<dockstatus 1>>
 <<else>>
-	One of your colleagues notices, and smashes a glass over the <<persons>> head. <<He>> tries to dodge the blow, but loses balance and falls off <<his>> chair.
+	당신의 동료 중 한 명이 눈치채고, <<persons>> 머리에 유리잔을 내리친다. <<He>>【이가】 그 일격을 피하려 하지만, 균형을 잃고 <<his>> 의자에서 떨어진다.
 	<br><br>
 
-	"Unprovoked!" the <<person>> says as <<he>> nurses <<his>> scalp.
+	"이유 없는 폭력이잖아!" <<person>>【이가】 <<his>> 두피를 어루만지며 말한다.
 	<br><br>
 
-	The pub owner rushes over. <<generate2>><<person2>>"Last thing I need is a brawl," <<he>> says. "You dockers always bring trouble. Get out."
+	술집 주인이 달려온다. <<generate2>><<person2>>"난장판은 딱 질색이야." <<he>>【이가】 말한다. "너희 부두 노동자들은 항상 문제를 일으키지. 나가."
 	<br><br>
 
-	Your colleagues argue that it was justified, but <<he>> won't hear it. They down the last of their drink and together you leave the pub.
+	당신의 동료들은 정당한 행동이었다고 주장하지만, <<he>>【은는】 들으려 하지 않는다. 그들은 남은 술을 마저 들이켜고 함께 술집을 나선다.
 <</if>>
 <br><br>
 
@@ -2138,36 +2132,36 @@ The <<person>> grasps your neck and leans in. "I tried asking nicely," <<he>> wh
 <<elseif _speechAttitudeResolved is "confident">>
 	"Instead of money," you say. "I bet my body. If you win, you can have me."
 <<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
-	It's your turn to scoff. "That all?" you say. "Fine. I bet my body. If you win, you can do whatever you want to me."
+	이번엔 당신이 비웃을 차례다. "그게 다야?" 당신이 말한다. "좋아. 내 몸을 걸지. 당신들이 이기면, 나한테 뭐든지 할 수 있어."
 <<else>>
-	"Instead of money," you say. "If you win, you can have me."
+	"돈 대신에요." 당신이 말한다. "당신들이 이기면, 날 가져도 좋아요."
 <</if>>
 <<promiscuity3>>
 
 <<if $seductionrating gte $seductionrequired>>
 
-	The sailors look at each other, excited. "Free drinks," the <<person>> says. "And a free <<girl>>. It's our lucky night."
+	선원들은 흥분해서 서로를 쳐다본다. "술은 공짜." <<person>>【이가】 말한다. "그리고 공짜 <<girl>>까지. 오늘 운 좋은 밤이네."
 	<br><br>
 
-	"Dream on," one of your colleagues says, though they seem happy that they don't stand to lose anything.
+	"꿈 깨시지." 동료 중 한 명이 말하지만, 잃을 게 없다는 사실에 기뻐하는 것 같다.
 	<br><br>
 
-	The pub owner steps up to a microphone in the corner of the room, preparing to read the first question.
+	술집 주인이 방구석에 있는 마이크로 다가가 첫 번째 문제를 읽을 준비를 한다.
 	<br><br>
 	<<set $docks.quiz.bet to "body">>
-	<<link [[Next|Docks Pub Crawl Quiz]]>><<set $phase to 0>><<set $docks.quiz.home to 0>><<set $docks.quiz.away to 0>><</link>>
+	<<link [[다음|Docks Pub Crawl Quiz]]>><<set $phase to 0>><<set $docks.quiz.home to 0>><<set $docks.quiz.away to 0>><</link>>
 	<br>
 
 <<else>>
 
-	"Nope," the <<person>> says. "We could get a whore cheaper than that." <<person2>>The <<person>> sat beside <<him>> looks crestfallen, and eyes you up<<person1>>.
+	"싫어." <<person>>【이가】 말한다. "그 돈이면 더 싼 창녀를 살 수 있겠어." <<person2>><<him>> 옆에 앉아 있던 <<person>>【은는】 풀이 죽은 표정으로, 당신을 훑어본다<<person1>>.
 	<br><br>
 
 	<<if $money gte 6000>>
 		<<link [[Match their bet (<<printmoney 6000>>)|Docks Pub Crawl Bet]]>><<set $money -= 6000>><</link>>
 		<br>
 	<</if>>
-	<<link [[Don't bet anything|Docks Pub Crawl Quiz Refuse]]>><</link>>
+	<<link [[아무것도 걸지 않는다|Docks Pub Crawl Quiz Refuse]]>><</link>>
 	<br>
 
 <</if>>
@@ -2178,10 +2172,10 @@ The <<person>> grasps your neck and leans in. "I tried asking nicely," <<he>> wh
 You put <<printmoney 6000>> on the table. Your colleagues follow suit, though some with a grumble. "Thanks for your contribution," the <<person>> says. "That's our night paid for."
 <br><br>
 
-The pub owner steps up to a microphone in the corner of the room, preparing to read the first question.
+술집 주인이 방구석에 있는 마이크로 다가가 첫 번째 문제를 읽을 준비를 한다.
 <br><br>
 <<set $docks.quiz.bet to "money">>
-<<link [[Next|Docks Pub Crawl Quiz]]>><<set $phase to 0>><<set $docks.quiz.home to 0>><<set $docks.quiz.away to 0>><</link>>
+<<link [[다음|Docks Pub Crawl Quiz]]>><<set $phase to 0>><<set $docks.quiz.home to 0>><<set $docks.quiz.away to 0>><</link>>
 <br>
 
 :: Docks Pub Crawl Quiz Refuse
@@ -2189,21 +2183,21 @@ The pub owner steps up to a microphone in the corner of the room, preparing to r
 
 <<if $phase is 0>>
 
-	You do nothing, and nor do any of your colleagues. "Thought so," the <<person>> says as the other sailors laugh. "You lot are all talk."
+	당신도, 동료들도 아무것도 하지 않는다. "그럴 줄 알았지." 다른 선원들이 웃는 동안 <<person>>【이가】 말한다. "너희들은 말뿐이야."
 	<br><br>
 
-	The pub owner steps up to a microphone in the corner of the room, preparing to read the first question.
+	술집 주인이 방구석에 있는 마이크로 다가가 첫 번째 문제를 읽을 준비를 한다.
 	<br><br>
 	<<set $docks.quiz.bet to "nothing">>
-	<<link [[Next|Docks Pub Crawl Quiz]]>><<set $phase to 0>><<set $docks.quiz.home to 0>><<set $docks.quiz.away to 0>><</link>>
+	<<link [[다음|Docks Pub Crawl Quiz]]>><<set $phase to 0>><<set $docks.quiz.home to 0>><<set $docks.quiz.away to 0>><</link>>
 	<br>
 
 <<else>>
 
-	You do nothing, and nor do any of your colleagues. "Thought so," the <<person>> says as the other sailors laugh. "You lot are all talk."
+	당신도, 동료들도 아무것도 하지 않는다. "그럴 줄 알았지." 다른 선원들이 웃는 동안 <<person>>【이가】 말한다. "너희들은 말뿐이야."
 	<br><br>
 
-	You don't pay attention to the quiz, and your colleagues lose to the sailors. You leave together in a sour mood.
+	당신은 퀴즈에 집중하지 않고, 동료들은 선원들에게 패배한다. 당신들은 언짢은 기분으로 함께 떠난다.
 	<br><br>
 
 	<<dockpuboptions>>
@@ -2214,46 +2208,46 @@ The pub owner steps up to a microphone in the corner of the room, preparing to r
 <<effects>>
 
 <<if $phase is 0>><<set $phase += 1>>
-	The first category <<dockpubquiz>>
+	첫 번째 카테고리 <<dockpubquiz>>
 <<elseif $phase is 1>><<set $phase += 1>>
-	The second category <<dockpubquiz>>
+	두 번째 카테고리 <<dockpubquiz>>
 <<elseif $phase is 2>><<set $phase += 1>>
-	The third category <<dockpubquiz>>
+	세 번째 카테고리 <<dockpubquiz>>
 <<elseif $phase is 3>><<set $phase += 1>>
-	The fourth category <<dockpubquiz>>
+	네 번째 카테고리 <<dockpubquiz>>
 <<elseif $phase is 4>><<set $phase += 1>>
-	The fifth category <<dockpubquiz>>
+	다섯 번째 카테고리 <<dockpubquiz>>
 <<else>>
 
 	<<if $docks.quiz.home gt $docks.quiz.away>>
 
-		"And the winners are," the owner announces. "The dockers!" You cheer and drum the table with your colleagues, until the owner convinces you to settle down.
+		"그리고 승자는," 주인이 발표한다. "부두 노동자들입니다!" 당신은 동료들과 함께 환호하며 테이블을 두드리다가, 주인이 진정시키자 조용해진다.
 		<br><br>
 		<<earnFeat "Pub Crawl Victors">>
 		<<if $docks.quiz.bet is "money">>
-			The sailors aren't impressed. "Rigged," the <<person>> says, but they hand over the cash. You've gained <<moneyGainDisplay 60>>.
+			선원들은 감명받지 않은 표정이다. "조작이야." <<person>>【이가】 말하지만, 그들은 현금을 건네준다. 당신은 <<moneyGainDisplay 60>>【을를】 얻었다.
 			<<money 6000>>
 			<br><br>
 
-			You and your colleagues enjoy your free drinks and leave in an elevated mood.
+			당신과 동료들은 공짜 술을 즐기고 들뜬 기분으로 떠난다.
 			<<lstress>><<stress -6>>
 			<br><br>
 
 			<<dockpuboptions>>
 		<<elseif $docks.quiz.bet is "body">>
-			The sailors aren't impressed. "Rigged," the <<person>> says, but they hand over the cash.
+			선원들은 감명받지 않은 표정이다. "조작이야." <<person>>【이가】 말하지만, 그들은 현금을 건네준다.
 			<br><br>
 
-			<<link [[Take the money for yourself|Docks Pub Crawl Take]]>><<dockstatus -1>><</link>><<lcool>><<gdrunk>>
+			<<link [[돈을 혼자 챙긴다|Docks Pub Crawl Take]]>><<dockstatus -1>><</link>><<lcool>><<gdrunk>>
 			<br>
-			<<link [[Share the money with your colleagues|Docks Pub Crawl Share]]>><<dockstatus 1>><</link>><<gcool>><<gdrunk>>
+			<<link [[동료들과 돈을 나눈다|Docks Pub Crawl Share]]>><<dockstatus 1>><</link>><<gcool>><<gdrunk>>
 			<br>
 		<<else>>
 
-			The sailors aren't impressed. "Rigged," the <<person>> says.
+			선원들은 감명받지 않은 표정이다. "조작이야." <<person>>【이가】 말한다.
 			<br><br>
 
-			You and your colleagues enjoy your free drinks and leave in an elevated mood.
+			당신과 동료들은 공짜 술을 즐기고 들뜬 기분으로 떠난다.
 			<<lstress>><<stress -6>>
 			<br><br>
 
@@ -2262,37 +2256,37 @@ The pub owner steps up to a microphone in the corner of the room, preparing to r
 		<</if>>
 
 	<<elseif $docks.quiz.home is $docks.quiz.away>>
-		"And the winners are," the owner announces. "No one! It's a draw." The dockers and sailors seem equally upset.
+		"그리고 승자는," 주인이 발표한다. "아무도 없습니다! 무승부입니다." 부두 노동자들과 선원들 모두 똑같이 언짢아하는 것 같다.
 		<br><br>
-		You and your colleagues leave soon after.
+		당신과 동료들은 곧 떠난다.
 		<<if $docks.quiz.bet is "money">><<set $money += 6000>><</if>>
 		<br><br>
 		<<dockpuboptions>>
 	<<else>>
-		"And the winners are," the owner announces. "The sailors!" They cheer and laugh until the owner convinces them to settle down.
+		"그리고 승자는," 주인이 발표한다. "선원들입니다!" 그들은 주인이 진정시킬 때까지 환호하고 웃는다.
 		<br><br>
 		<<if $docks.quiz.bet is "money">>
-			They take their money. "Sorry guys," the <<person>> says. "Shoulda known better than to challenge us."
+			그들은 돈을 가져간다. "미안하네, 친구들." <<person>>【이가】 말한다. "우리한테 도전하는 게 아니었어."
 			<<lcool>><<dockstatus -1>>
 			<br><br>
-			You and your colleagues leave in a sour mood.
+			당신과 동료들은 언짢은 기분으로 떠난다.
 			<<lstress>><<stress -6>>
 			<br><br>
 			<<dockpuboptions>>
 		<<elseif $docks.quiz.bet is "body">>
-			The <<person>> looks at you and makes a come-hither motion. <<His>> fellow sailors stare at you with ravenous eyes. "Time to pay up," <<he>> says. "Get that bum over here."
+			<<person>>【이가】 당신을 보며 이리 오라는 손짓을 한다. <<His>> 동료 선원들은 굶주린 눈으로 당신을 쳐다본다. "이제 값을 치를 시간이야." <<he>>【이가】 말한다. "그 엉덩이 이리 가져와."
 			<br><br>
-			<<link [[Walk over|Docks Pub Crawl Gangbang]]>><<set $sexstart to 1>><</link>>
+			<<link [[걸어간다|Docks Pub Crawl Gangbang]]>><<set $sexstart to 1>><</link>>
 			<br>
 			<<if $rng gte 81>>
-				<<refuseicon>><<link [[Refuse|Docks Pub Crawl Fight]]>><<dockstatus -1>><</link>><<lcool>>
+				<<refuseicon>><<link [[거절한다|Docks Pub Crawl Fight]]>><<dockstatus -1>><</link>><<lcool>>
 				<br>
 			<<else>>
-				<<refuseicon>><<link [[Refuse|Docks Pub Crawl Gangbang Refuse]]>><<dockstatus -1>><</link>><<lcool>>
+				<<refuseicon>><<link [[거절한다|Docks Pub Crawl Gangbang Refuse]]>><<dockstatus -1>><</link>><<lcool>>
 				<br>
 			<</if>>
 		<<else>>
-			You and your colleagues leave in a sour mood.
+			당신과 동료들은 언짢은 기분으로 떠난다.
 			<<lstress>><<stress -6>>
 			<br><br>
 			<<dockpuboptions>>
@@ -2308,7 +2302,7 @@ The pub owner steps up to a microphone in the corner of the room, preparing to r
 <<speechresolve>>
 
 <<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
-	"S-sorry," you say. "But I don't want to."
+	"죄-죄송해요." 당신이 말한다. "하지만 그러고 싶지 않아요."
 <<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
 	"No," you say. "That was a joke, not an invitation."
 <<elseif _speechAttitudeResolved is "docile">>
@@ -2316,16 +2310,16 @@ The pub owner steps up to a microphone in the corner of the room, preparing to r
 <<elseif _speechAttitudeResolved is "confident">>
 	"Tsk. I'm not paying up like that over a pub quiz," you say.
 <<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
-	"Fuck off," you say. "You didn't think I'd really bet myself for so little, right?"
+	"꺼져." 당신이 말한다. "설마 내가 정말 그깟 푼돈에 내 몸을 걸었을 거라고 생각했어?"
 <<else>>
-	"No." You shake your head. "I'm not doing that over a pub quiz."
+	"싫어요." 당신은 고개를 젓는다. "술집 퀴즈 때문에 그런 짓은 안 할 거예요."
 <</if>>
 <br><br>
 
-"Figures," the <<person>> says. <<He>> walks closer, but your colleagues form a protective barrier and <<he>> relents. "You're probably worn out after fucking half the docks."
+"그럴 줄 알았지." <<person>>【이가】 말한다. <<He>>【은는】 가까이 다가오지만, 당신의 동료들이 보호막을 형성하자 <<he>>【은는】 단념한다. "부두 절반이랑 떡치고 나니 지쳤나 보지."
 <br><br>
 
-You leave the pub with your colleagues.
+당신은 동료들과 함께 술집을 나선다.
 <br><br>
 
 <<dockpuboptions>>
@@ -2343,18 +2337,18 @@ You leave the pub with your colleagues.
 <<elseif _speechAttitudeResolved is "confident">>
 	"Fuck off," you say. "Try laying a hand on me and see what happens."
 <<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
-	"Fuck off," you say. "You didn't think I'd really bet myself for so little, right?"
+	"꺼져." 당신이 말한다. "설마 내가 정말 그깟 푼돈에 내 몸을 걸었을 거라고 생각했어?"
 <<else>>
-	"No." You shake your head. "I'm not doing that over a pub quiz."
+	"싫어요." 당신은 고개를 젓는다. "술집 퀴즈 때문에 그런 짓은 안 할 거예요."
 <</if>>
 <br><br>
 
-"Figures," the <<person>> says. <<He>> walks closer, but your colleagues form a protective barrier. <<He>> smacks one of them across the face, who then slaps <<him>> back. The other sailors rush to <<his>> defence as a brawl breaks out.
+"그럴 줄 알았지." <<person>>【이가】 말한다. <<He>>【은는】 가까이 다가오지만, 당신의 동료들이 보호막을 형성한다. <<He>>【은는】 그들 중 한 명의 얼굴을 후려치고, 그 사람은 <<him>>【을를】 다시 때린다. 다른 선원들이 <<his>> 편을 들며 달려들자 난투극이 벌어진다.
 <br><br>
 
-<<link [[Join in|Docks Pub Crawl Join]]>><<def 1>><<stress -6>><<pain 5>><<crimeUp 50 "assault">><<dockstatus 1>><</link>><<gcool>><<crime "assault">><<gpain>><<lstress>>
+<<link [[참가한다|Docks Pub Crawl Join]]>><<def 1>><<stress -6>><<pain 5>><<crimeUp 50 "assault">><<dockstatus 1>><</link>><<gcool>><<crime "assault">><<gpain>><<lstress>>
 <br>
-<<link [[Calm everyone down|Docks Pub Crawl Calm]]>><<dockstatus -1>><</link>><<lcool>>
+<<link [[모두를 진정시킨다|Docks Pub Crawl Calm]]>><<dockstatus -1>><</link>><<lcool>>
 <br>
 
 :: Docks Pub Crawl Join
@@ -2363,10 +2357,10 @@ You leave the pub with your colleagues.
 You pick up a bystander's drink and drench the <<persons>> hair. <<He>> sneers and lunges, clutching your throat and dragging you to the ground. One swift kick to the <<= npcGenitalWord(0, "cock", "pussy")>> and <<he>> releases you, and clutches <<his>> groin in agony.
 <br><br>
 
-You stand up as security separate your colleagues from the sailors. "Out!" the pub owner shouts, gesturing at you and the other dockers. "You lot first. Out!"
+당신이 일어서자 경비원들이 당신의 동료들과 선원들을 떼어놓는다. "나가!" 술집 주인이 당신과 다른 부두 노동자들을 가리키며 소리친다. "너희들부터. 나가!"
 <br><br>
 
-The owner glares at you as you leave with your laughing colleagues.
+당신이 웃고 있는 동료들과 함께 떠나자 주인이 당신을 쏘아본다.
 <br><br>
 
 <<dockpuboptions>>
@@ -2375,15 +2369,15 @@ The owner glares at you as you leave with your laughing colleagues.
 <<effects>>
 
 <<if currentSkillValue('physique') gte 12000>>
-	You stand in the middle of one of the fights and manage to hold a sailor and docker away from each other. A couple of the more level heads on both sides watch you and, inspired by your act, intervene themselves. They manage to calm things enough that security can form a line between the dockers and sailors.
+	당신은 싸움 한가운데에 서서 선원과 부두 노동자를 서로에게서 떼어놓는 데 성공한다. 양쪽의 좀 더 침착한 몇몇이 당신을 보고, 당신의 행동에 영감을 받아 직접 개입한다. 그들은 경비원들이 부두 노동자들과 선원들 사이에 줄을 설 수 있을 만큼 상황을 진정시킨다.
 <<else>>
-	You try separate one of the fights, but just get knocked aside. A couple of the more level heads on both sides watch you and, inspired by your act, intervene themselves. They manage to calm things enough that security can form a line between the dockers and sailors.
+	당신은 싸움 중 하나를 말리려 하지만, 옆으로 밀쳐질 뿐이다. 양쪽의 좀 더 침착한 몇몇이 당신을 보고, 당신의 행동에 영감을 받아 직접 개입한다. 그들은 경비원들이 부두 노동자들과 선원들 사이에 줄을 설 수 있을 만큼 상황을 진정시킨다.
 <</if>>
 
-"Out!" the pub owner shouts, gesturing at you and the other dockers. "You lot first. Out!"
+"나가!" 술집 주인이 당신과 다른 부두 노동자들을 가리키며 소리친다. "너희들부터. 나가!"
 <br><br>
 
-You leave with your laughing colleagues.
+당신은 웃고 있는 동료들과 함께 떠난다.
 <br><br>
 
 <<dockpuboptions>>
@@ -2395,10 +2389,10 @@ You leave with your laughing colleagues.
 	<<set $consensual to 1>>
 	<<neutral 1>>
 	<<maninit>>
-	You walk over to the sailor's table. They grasp your arms and pull you onto it. "Not in here!" the pub owner shouts, but they pay no heed.
+	당신은 선원들의 테이블로 걸어간다. 그들은 당신의 팔을 잡고 테이블 위로 끌어올린다. "여기선 안 돼!" 술집 주인이 소리치지만, 그들은 아랑곳하지 않는다.
 	<br><br>
 
-	You feel your colleagues watching, along with the rest of the pub.
+	당신은 동료들과 술집의 나머지 사람들이 지켜보는 것을 느낀다.
 	<br><br>
 <</if>>
 
@@ -2411,9 +2405,9 @@ You leave with your laughing colleagues.
 <<actionsman>>
 
 <<if _combatend>>
-	<span id="next"><<link [[Next|Docks Pub Crawl Gangbang Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Docks Pub Crawl Gangbang Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Docks Pub Crawl Gangbang]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Docks Pub Crawl Gangbang]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Docks Pub Crawl Gangbang Finish
@@ -2421,33 +2415,33 @@ You leave with your laughing colleagues.
 <<set $outside to 0>><<effects>>
 <<if $enemypleasure gte $enemypleasuremax>>
 	<<ejaculation>><<fameprostitution 30>>
-	Applause fills the pub. The sailors clink and swig their free drinks. "This is the life," the <<person>> sighs.
+	술집에 박수 소리가 가득 찬다. 선원들은 공짜 술을 들이키며 잔을 부딪친다. "이게 인생이지." <<person>>【이가】 한숨을 쉰다.
 	<br><br>
 	<<clothesontowel>>
 	<<endcombat>>
-	<<tearful>> you climb down from the table. Your colleagues pat your back. "Thanks for taking one for the team," a <<generate1>><<person1>><<person>> says.
+	<<tearful>> 당신은 테이블에서 내려온다. 동료들이 당신의 등을 두드려준다. "팀을 위해 희생해줘서 고마워." <<generate1>><<person1>><<person>>【이가】 말한다.
 	<br><br>
-	"One?" a <<generate2>><<person2>><<person>> interjects. "You mean six." The <<person1>><<person>> glares at <<person2>><<him>>.
+	"한 명?" <<generate2>><<person2>><<person>>【이가】 끼어든다. "여섯 명 말하는 거겠지." <<person1>><<person>>【은는】 <<person2>><<him>>【을를】 쏘아본다.
 	<br><br>
-	You leave the pub with your colleagues.
+	당신은 동료들과 함께 술집을 나선다.
 	<br><br>
 	<<dockpuboptions>>
 <<elseif $enemyhealth lte 0>>
-	You shove the <<person>> away from you. <<He>> stumbles into another patron, who punches <<him>> in the jaw. Someone throws a glass. Then, someone throws a table. The pub breaks into a brawl.
+	당신은 <<person>>【을를】 밀쳐낸다. <<He>>【은는】 다른 손님에게 비틀거리며 부딪히고, 그 손님은 <<him>>의 턱에 주먹을 날린다. 누군가 유리잔을 던진다. 그러자 누군가 테이블을 던진다. 술집은 난투극으로 변한다.
 	<br><br>
 	<<clothesontowel>>
 	<<endcombat>>
-	Someone grasps your shoulders and hauls you to your feet. It's one of your colleagues. <<generate1>><<person1>><<He>> looks amused. <<tearful>> you keep low and escape the chaos with your fellow dockers.
+	누군가 당신의 어깨를 잡고 일으켜 세운다. 당신의 동료 중 한 명이다. <<generate1>><<person1>><<He>>【은는】 재미있어 보인다. <<tearful>> 당신은 몸을 낮추고 동료 부두 노동자들과 함께 혼란을 빠져나간다.
 	<br><br>
 	<<dockpuboptions>>
 <<else>>
 	<<encounterEndViolence>>
-	The sailors seem reluctant to stop, but your colleagues arrive at your side and help you to your feet.
+	선원들은 멈추기를 꺼리는 것 같지만, 당신의 동료들이 옆으로 와서 당신을 일으켜 세워준다.
 	<<lcool>><<dockstatus -1>>
 	<br><br>
 	<<clothesontowel>>
 	<<endcombat>>
-	<<tearful>> you leave the pub with the other dockers. The sailors heckle you.
+	<<tearful>> 당신은 다른 부두 노동자들과 함께 술집을 나선다. 선원들이 당신에게 야유를 보낸다.
 	<br><br>
 	<<dockpuboptions>>
 <</if>>
@@ -2455,10 +2449,10 @@ You leave with your laughing colleagues.
 :: Docks Pub Crawl Take
 <<effects>><<wearProp "cash four">>
 
-Your colleagues reach for the money, but you snatch it away from them. You remind them whose butt was on the line. They grumble, but agree. You've gained <<moneyGain 360>>.
+동료들이 돈에 손을 뻗지만, 당신은 그들에게서 돈을 낚아챈다. 당신은 누구의 엉덩이가 걸려 있었는지 상기시킨다. 그들은 투덜거리지만 동의한다. 당신은 <<moneyGain 360>>【을를】 얻었다.
 <br><br>
 
-You and your colleagues enjoy your free drinks and leave in an elevated mood.
+당신과 동료들은 공짜 술을 즐기고 들뜬 기분으로 떠난다.
 <<drunk 60>><<lstress>><<stress -6>>
 <br><br>
 
@@ -2467,10 +2461,10 @@ You and your colleagues enjoy your free drinks and leave in an elevated mood.
 :: Docks Pub Crawl Share
 <<effects>><<wearProp "cash four">>
 
-You let your colleagues have their share. You've gained <<moneyGain 60>>.
+당신은 동료들에게 그들의 몫을 나눠준다. 당신은 <<moneyGain 60>>【을를】 얻었다.
 <br><br>
 
-You and your colleagues enjoy your free drinks and leave in an elevated mood.
+당신과 동료들은 공짜 술을 즐기고 들뜬 기분으로 떠난다.
 <<drunk 60>><<lstress>><<stress -6>>
 <br><br>
 
@@ -2483,54 +2477,54 @@ You and your colleagues enjoy your free drinks and leave in an elevated mood.
 	<<if random(1, 2) is 2>>
 		<<set $docks.quiz.home += 1>>
 
-		You let your colleagues answer the questions. They write them down, fold the paper and hand it to the pub owner. The sailors do likewise.
+		당신은 동료들이 문제에 답하게 둔다. 그들은 답을 적고, 종이를 접어 술집 주인에게 건넨다. 선원들도 마찬가지로 한다.
 		<br><br>
 
-		"That's a point to the dockers," the owner says. You cheer with your colleagues.
+		"부두 노동자들에게 1점입니다." 주인이 말한다. 당신은 동료들과 함께 환호한다.
 		<<lstress>><<stress -1>>
 	<<else>>
-		You let your colleagues answer the questions. They write them down, fold the paper and hand it to the pub owner. The sailors do likewise.
+		당신은 동료들이 문제에 답하게 둔다. 그들은 답을 적고, 종이를 접어 술집 주인에게 건넨다. 선원들도 마찬가지로 한다.
 		<br><br>
 
-		The owner reads your paper. "The dockers score zero." You grumble with your colleagues.
+		주인이 당신의 종이를 읽는다. "부두 노동자들은 0점입니다." 당신은 동료들과 함께 투덜거린다.
 	<</if>>
 <<elseif $phase2 is 1>>
 	<<wearProp "pencil">>
 	<<if currentSkillValue('science') gte random(1, 1000)>>
 		<<set $docks.quiz.home += 1>>
 
-		You write down the answers, fold the paper and hand it to the pub owner. The sailors do likewise.
+		당신은 답을 적고, 종이를 접어 술집 주인에게 건넨다. 선원들도 마찬가지로 한다.
 		<br><br>
 
-		"That's a point to the dockers," the owner says. You cheer with your colleagues.
+		"부두 노동자들에게 1점입니다." 주인이 말한다. 당신은 동료들과 함께 환호한다.
 		<<lstress>><<stress -1>>
 	<<else>>
-		<<if currentSkillValue('science') lte 300>>You're not confident, but you write down the answers, fold the paper and hand it to the pub owner.<<else>>You write down the answers, fold the paper and hand it to the pub owner.<</if>> The sailors do likewise.
+		<<if currentSkillValue('science') lte 300>>자신은 없지만, 당신은 답을 적고, 종이를 접어 술집 주인에게 건넨다.<<else>>당신은 답을 적고, 종이를 접어 술집 주인에게 건넨다.<</if>> 선원들도 마찬가지로 한다.
 		<br><br>
 
-		The owner reads your paper. "The dockers score zero." You grumble with your colleagues. <<if currentSkillValue('science') gte 700>>You were sure you got it right.<</if>>
+		주인이 당신의 종이를 읽는다. "부두 노동자들은 0점입니다." 당신은 동료들과 함께 투덜거린다. <<if currentSkillValue('science') gte 700>>정답이라고 확신했는데.<</if>>
 	<</if>>
 <<else>>
-	You convince your colleagues that you know your stuff, and write down nonsense answers. You fold the paper and hand it to the pub owner.
+	당신은 동료들에게 당신이 잘 안다고 설득하고, 엉터리 답을 적는다. 당신은 종이를 접어 술집 주인에게 건넨다.
 	<br><br>
 
-	The owner reads your paper. "The dockers score zero." You grumble with your colleagues. What a surprise.
+	주인이 당신의 종이를 읽는다. "부두 노동자들은 0점입니다." 당신은 동료들과 함께 투덜거린다. 놀랄 일도 아니지.
 <</if>>
 <br><br>
 
-The owner reads the sailor's answers.
+주인이 선원들의 답을 읽는다.
 <<if random(1, 2) is 2>>
 	<<set $docks.quiz.away += 1>>
-	"That's a point to the sailors." A cheer erupts from their table.
+	"선원들에게 1점입니다." 그들의 테이블에서 환호성이 터져 나온다.
 <<else>>
-	"Sorry guys. No points."
+	"미안하네, 친구들. 점수 없어."
 	<br><br>
 
 	The <<person>> shoves another sailor sat next to <<him>>. "I thought you were good at this shit."
 <</if>>
 <br><br>
 
-<<link [[Next|Docks Pub Crawl Quiz]]>><</link>>
+<<link [[다음|Docks Pub Crawl Quiz]]>><</link>>
 <br>
 
 :: Docks Pub Crawl Maths
@@ -2540,50 +2534,50 @@ The owner reads the sailor's answers.
 	<<if random(1, 2) is 2>>
 		<<set $docks.quiz.home += 1>>
 
-		You let your colleagues answer the questions. They write them down, fold the paper and hand it to the pub owner. The sailors do likewise.
+		당신은 동료들이 문제에 답하게 둔다. 그들은 답을 적고, 종이를 접어 술집 주인에게 건넨다. 선원들도 마찬가지로 한다.
 		<br><br>
 
-		"That's a point to the dockers," the owner says. You cheer with your colleagues.
+		"부두 노동자들에게 1점입니다." 주인이 말한다. 당신은 동료들과 함께 환호한다.
 		<<lstress>><<stress -1>>
 	<<else>>
 
-		You let your colleagues answer the questions. They write them down, fold the paper and hand it to the pub owner. The sailors do likewise.
+		당신은 동료들이 문제에 답하게 둔다. 그들은 답을 적고, 종이를 접어 술집 주인에게 건넨다. 선원들도 마찬가지로 한다.
 		<br><br>
 
-		The owner reads your paper. "The dockers score zero." You grumble with your colleagues.
+		주인이 당신의 종이를 읽는다. "부두 노동자들은 0점입니다." 당신은 동료들과 함께 투덜거린다.
 	<</if>>
 <<elseif $phase2 is 1>>
 	<<if currentSkillValue('maths') gte random(1, 1000)>>
 		<<set $docks.quiz.home += 1>>
 
-		You write down the answers, fold the paper and hand it to the pub owner. The sailors do likewise.
+		당신은 답을 적고, 종이를 접어 술집 주인에게 건넨다. 선원들도 마찬가지로 한다.
 		<br><br>
 
-		"That's a point to the dockers," the owner says. You cheer with your colleagues.
+		"부두 노동자들에게 1점입니다." 주인이 말한다. 당신은 동료들과 함께 환호한다.
 		<<lstress>><<stress -1>>
 	<<else>>
-		<<if currentSkillValue('maths') lte 300>>You're not confident, but you write down the answers, fold the paper and hand it to the pub owner.<<else>>You write down the answers, fold the paper and hand it to the pub owner.<</if>> The sailors do likewise.
+		<<if currentSkillValue('maths') lte 300>>자신은 없지만, 당신은 답을 적고, 종이를 접어 술집 주인에게 건넨다.<<else>>당신은 답을 적고, 종이를 접어 술집 주인에게 건넨다.<</if>> 선원들도 마찬가지로 한다.
 		<br><br>
 
-		The owner reads your paper. "The dockers score zero." You grumble with your colleagues. <<if currentSkillValue('maths') gte 700>>You were sure you got it right.<</if>>
+		주인이 당신의 종이를 읽는다. "부두 노동자들은 0점입니다." 당신은 동료들과 함께 투덜거린다. <<if currentSkillValue('maths') gte 700>>정답이라고 확신했는데.<</if>>
 	<</if>>
 <<else>>
-	You convince your colleagues that you know your stuff, and write down nonsense answers. You fold the paper and hand it to the pub owner.
+	당신은 동료들에게 당신이 잘 안다고 설득하고, 엉터리 답을 적는다. 당신은 종이를 접어 술집 주인에게 건넨다.
 	<br><br>
 
-	The owner reads your paper. "The dockers score zero." You grumble with your colleagues. What a surprise.
+	주인이 당신의 종이를 읽는다. "부두 노동자들은 0점입니다." 당신은 동료들과 함께 투덜거린다. 놀랄 일도 아니지.
 <</if>>
 <br><br>
 
-The owner reads the sailor's answers.
+주인이 선원들의 답을 읽는다.
 <<if random(1, 2) is 2>><<set $docks.quiz.away += 1>>
-	"That's a point to the sailors." A cheer erupts from their table.
+	"선원들에게 1점입니다." 그들의 테이블에서 환호성이 터져 나온다.
 <<else>>
-	"Sorry guys. No points." They groan.
+	"미안하네, 친구들. 점수 없어." 그들은 신음한다.
 <</if>>
 <br><br>
 
-<<link [[Next|Docks Pub Crawl Quiz]]>><</link>>
+<<link [[다음|Docks Pub Crawl Quiz]]>><</link>>
 <br>
 
 :: Docks Pub Crawl English
@@ -2593,50 +2587,50 @@ The owner reads the sailor's answers.
 	<<if random(1, 2) is 2>>
 		<<set $docks.quiz.home += 1>>
 
-		You let your colleagues answer the questions. They write them down, fold the paper and hand it to the pub owner. The sailors do likewise.
+		당신은 동료들이 문제에 답하게 둔다. 그들은 답을 적고, 종이를 접어 술집 주인에게 건넨다. 선원들도 마찬가지로 한다.
 		<br><br>
 
-		"That's a point to the dockers," the owner says. You cheer with your colleagues.
+		"부두 노동자들에게 1점입니다." 주인이 말한다. 당신은 동료들과 함께 환호한다.
 		<<lstress>><<stress -1>>
 	<<else>>
-		You let your colleagues answer the questions. They write them down, fold the paper and hand it to the pub owner. The sailors do likewise.
+		당신은 동료들이 문제에 답하게 둔다. 그들은 답을 적고, 종이를 접어 술집 주인에게 건넨다. 선원들도 마찬가지로 한다.
 		<br><br>
 
-		The owner reads your paper. "The dockers score zero." You grumble with your colleagues.
+		주인이 당신의 종이를 읽는다. "부두 노동자들은 0점입니다." 당신은 동료들과 함께 투덜거린다.
 	<</if>>
 <<elseif $phase2 is 1>>
 	<<if $englishSuccess>>
 		<<set $docks.quiz.home += 1>>
 
-		You write down the answers, fold the paper and hand it to the pub owner. The sailors do likewise.
+		당신은 답을 적고, 종이를 접어 술집 주인에게 건넨다. 선원들도 마찬가지로 한다.
 		<br><br>
 
-		"That's a point to the dockers," the owner says. You cheer with your colleagues.
+		"부두 노동자들에게 1점입니다." 주인이 말한다. 당신은 동료들과 함께 환호한다.
 		<<lstress>><<stress -1>>
 	<<else>>
-		<<if currentSkillValue('english') lte 300>>You're not confident, but you write down the answers, fold the paper and hand it to the pub owner.<<else>>You write down the answers, fold the paper and hand it to the pub owner.<</if>> The sailors do likewise.
+		<<if currentSkillValue('english') lte 300>>자신은 없지만, 당신은 답을 적고, 종이를 접어 술집 주인에게 건넨다.<<else>>당신은 답을 적고, 종이를 접어 술집 주인에게 건넨다.<</if>> 선원들도 마찬가지로 한다.
 		<br><br>
 
-		The owner reads your paper. "The dockers score zero." You grumble with your colleagues. <<if currentSkillValue('english') gte 700>>You were sure you got it right.<</if>>
+		주인이 당신의 종이를 읽는다. "부두 노동자들은 0점입니다." 당신은 동료들과 함께 투덜거린다. <<if currentSkillValue('english') gte 700>>정답이라고 확신했는데.<</if>>
 	<</if>>
 <<else>>
-	You convince your colleagues that you know your stuff, and write down nonsense answers. You fold the paper and hand it to the pub owner.
+	당신은 동료들에게 당신이 잘 안다고 설득하고, 엉터리 답을 적는다. 당신은 종이를 접어 술집 주인에게 건넨다.
 	<br><br>
 
-	The owner reads your paper. "The dockers score zero." You grumble with your colleagues. What a surprise.
+	주인이 당신의 종이를 읽는다. "부두 노동자들은 0점입니다." 당신은 동료들과 함께 투덜거린다. 놀랄 일도 아니지.
 <</if>>
 <br><br>
 
-The owner reads the sailor's answers.
+주인이 선원들의 답을 읽는다.
 <<if random(1, 2) is 2>>
 	<<set $docks.quiz.away += 1>>
-	"That's a point to the sailors." A cheer erupts from their table.
+	"선원들에게 1점입니다." 그들의 테이블에서 환호성이 터져 나온다.
 <<else>>
-	"Sorry guys. No points." They groan.
+	"미안하네, 친구들. 점수 없어." 그들은 신음한다.
 <</if>>
 <br><br>
 
-<<link [[Next|Docks Pub Crawl Quiz]]>><</link>>
+<<link [[다음|Docks Pub Crawl Quiz]]>><</link>>
 <br>
 
 :: Docks Pub Crawl History
@@ -2646,49 +2640,49 @@ The owner reads the sailor's answers.
 	<<if random(1, 2) is 2>>
 		<<set $docks.quiz.home += 1>>
 
-		You let your colleagues answer the questions. They write them down, fold the paper and hand it to the pub owner. The sailors do likewise.
+		당신은 동료들이 문제에 답하게 둔다. 그들은 답을 적고, 종이를 접어 술집 주인에게 건넨다. 선원들도 마찬가지로 한다.
 		<br><br>
 
-		"That's a point to the dockers," the owner says. You cheer with your colleagues.
+		"부두 노동자들에게 1점입니다." 주인이 말한다. 당신은 동료들과 함께 환호한다.
 		<<lstress>><<stress -1>>
 	<<else>>
-		You let your colleagues answer the questions. They write them down, fold the paper and hand it to the pub owner. The sailors do likewise.
+		당신은 동료들이 문제에 답하게 둔다. 그들은 답을 적고, 종이를 접어 술집 주인에게 건넨다. 선원들도 마찬가지로 한다.
 		<br><br>
 
-		The owner reads your paper. "The dockers score zero." You grumble with your colleagues.
+		주인이 당신의 종이를 읽는다. "부두 노동자들은 0점입니다." 당신은 동료들과 함께 투덜거린다.
 	<</if>>
 <<elseif $phase2 is 1>>
 	<<if currentSkillValue('history') gte random(1, 1000)>>
 		<<set $docks.quiz.home += 1>>
 
-		You write down the answers, fold the paper and hand it to the pub owner. The sailors do likewise.
+		당신은 답을 적고, 종이를 접어 술집 주인에게 건넨다. 선원들도 마찬가지로 한다.
 		<br><br>
 
-		"That's a point to the dockers," the owner says. You cheer with your colleagues.
+		"부두 노동자들에게 1점입니다." 주인이 말한다. 당신은 동료들과 함께 환호한다.
 		<<lstress>><<stress -1>>
 	<<else>>
-		<<if currentSkillValue('history') lte 300>>You're not confident, but you write down the answers, fold the paper and hand it to the pub owner.<<else>>You write down the answers, fold the paper and hand it to the pub owner.<</if>> The sailors do likewise.
+		<<if currentSkillValue('history') lte 300>>자신은 없지만, 당신은 답을 적고, 종이를 접어 술집 주인에게 건넨다.<<else>>당신은 답을 적고, 종이를 접어 술집 주인에게 건넨다.<</if>> 선원들도 마찬가지로 한다.
 		<br><br>
 
-		The owner reads your paper. "The dockers score zero." You grumble with your colleagues. <<if $historytrait gte 4>>You were sure you got it right.<</if>>
+		주인이 당신의 종이를 읽는다. "부두 노동자들은 0점입니다." 당신은 동료들과 함께 투덜거린다. <<if $historytrait gte 4>>정답이라고 확신했는데.<</if>>
 	<</if>>
 <<else>>
-	You convince your colleagues that you know your stuff, and write down nonsense answers. You fold the paper and hand it to the pub owner.
+	당신은 동료들에게 당신이 잘 안다고 설득하고, 엉터리 답을 적는다. 당신은 종이를 접어 술집 주인에게 건넨다.
 	<br><br>
 
-	The owner reads your paper. "The dockers score zero." You grumble with your colleagues. What a surprise.
+	주인이 당신의 종이를 읽는다. "부두 노동자들은 0점입니다." 당신은 동료들과 함께 투덜거린다. 놀랄 일도 아니지.
 <</if>>
 <br><br>
 
-The owner reads the sailor's answers.
+주인이 선원들의 답을 읽는다.
 <<if random(1, 2) is 2>><<set $docks.quiz.away += 1>>
-	"That's a point to the sailors." A cheer erupts from their table.
+	"선원들에게 1점입니다." 그들의 테이블에서 환호성이 터져 나온다.
 <<else>>
-	"Sorry guys. No points." They groan.
+	"미안하네, 친구들. 점수 없어." 그들은 신음한다.
 <</if>>
 <br><br>
 
-<<link [[Next|Docks Pub Crawl Quiz]]>><</link>>
+<<link [[다음|Docks Pub Crawl Quiz]]>><</link>>
 <br>
 
 :: Docks Pub Crawl Love
@@ -2698,50 +2692,50 @@ The owner reads the sailor's answers.
 	<<if random(1, 2) is 2>>
 		<<set $docks.quiz.home += 1>>
 
-		You let your colleagues answer the questions. They argue a bit, but write them down, fold the paper and hand it to the pub owner. The sailors do likewise.
+		당신은 동료들이 질문에 답하게 둔다. 그들은 잠시 논쟁하더니, 답을 적고 종이를 접어 술집 주인에게 건넨다. 선원들도 마찬가지로 한다.
 		<br><br>
 
-		"That's a point to the dockers," the owner says. You cheer with your colleagues. They make lewd gestures at the sailors, who return the display.
+		"부두 노동자들이 1점 획득." 주인이 말한다. 당신은 동료들과 함께 환호한다. 그들은 선원들에게 음란한 손짓을 하고, 선원들도 똑같이 되돌려준다.
 		<<lstress>><<stress -1>>
 	<<else>>
-		You let your colleagues answer the questions. They write them down, fold the paper and hand it to the pub owner. The sailors do likewise.
+		당신은 동료들이 질문에 답하게 둔다. 그들은 답을 적고 종이를 접어 술집 주인에게 건넨다. 선원들도 마찬가지로 한다.
 		<br><br>
 
-		The owner reads your paper. "The dockers score zero." You grumble with your colleagues. The sailors laugh. <<if $docks.quiz.bet is "body">>"Guess it's up to us to teach you the ropes," the <<person>> teases.<<else>>"Don't worry," the <<person>> teases. "We didn't expect better."<</if>>
+		주인이 당신의 종이를 읽는다. "부두 노동자들은 0점." 당신은 동료들과 함께 투덜거린다. 선원들은 웃는다. <<if $docks.quiz.bet is "body">>"아무래도 우리가 요령을 가르쳐줘야겠군." <<person>>【이가】 놀린다.<<else>>"걱정 마." <<person>>【이가】 놀린다. "더 잘할 거라 기대도 안 했어."<</if>>
 	<</if>>
 <<elseif $phase2 is 1>>
 	<<wearProp "pencil">>
 	<<if $promiscuity gte random(1, 100)>>
 		<<set $docks.quiz.home += 1>>
 
-		You write down the answers, fold the paper and hand it to the pub owner. The sailors do likewise.
+		당신은 답을 적고, 종이를 접어 술집 주인에게 건넨다. 선원들도 마찬가지로 한다.
 		<br><br>
 
-		"That's a point to the dockers," the owner says. You cheer with your colleagues.
+		"부두 노동자들이 1점 획득." 주인이 말한다. 당신은 동료들과 함께 환호한다.
 		<<lstress>><<stress -1>>
 	<<else>>
-		<<if $promiscuity lte 30>>You're not confident, but you write down the answers, fold the paper and hand it to the pub owner.<<else>>You write down the answers, fold the paper and hand it to the pub owner.<</if>> The sailors do likewise.
+		<<if $promiscuity lte 30>>자신은 없지만, 당신은 답을 적고 종이를 접어 술집 주인에게 건넨다.<<else>>당신은 답을 적고 종이를 접어 술집 주인에게 건넨다.<</if>> 선원들도 마찬가지로 한다.
 		<br><br>
 
-		The owner reads your paper. "The dockers score zero." You grumble with your colleagues. The sailors laugh. <<if $docks.quiz.bet is "body">>"Guess it's up to us to teach you the ropes," the <<person>> teases.<<else>>"Don't worry," the <<person>> teases. "We didn't expect better."<</if>>
+		주인이 당신의 종이를 읽는다. "부두 노동자들은 0점." 당신은 동료들과 함께 투덜거린다. 선원들은 웃는다. <<if $docks.quiz.bet is "body">>"아무래도 우리가 요령을 가르쳐줘야겠군." <<person>>【이가】 놀린다.<<else>>"걱정 마." <<person>>【이가】 놀린다. "더 잘할 거라 기대도 안 했어."<</if>>
 	<</if>>
 <<else>>
-	You convince your colleagues that you know your stuff, and write down nonsense answers. You fold the paper and hand it to the pub owner.
+	당신은 동료들에게 당신이 잘 안다고 설득하고, 엉터리 답을 적는다. 당신은 종이를 접어 술집 주인에게 건넨다.
 	<br><br>
 
-	The owner reads your paper. "The dockers score zero." You grumble with your colleagues. What a surprise.
+	주인이 당신의 종이를 읽는다. "부두 노동자들은 0점입니다." 당신은 동료들과 함께 투덜거린다. 놀랄 일도 아니지.
 <</if>>
 <br><br>
 
-The owner reads the sailor's answers.
+주인이 선원들의 답을 읽는다.
 <<if random(1, 2) is 2>><<set $docks.quiz.away += 1>>
-	"That's a point to the sailors." A cheer erupts from their table. "You learn a thing or two sailing between ports," the <<person>> says.
+	"선원들이 1점 획득." 그들의 테이블에서 환호성이 터져 나온다. "항구 사이를 항해하다 보면 한두 가지는 배우게 되지." <<person>>【이가】 말한다.
 <<else>>
-	"Sorry guys. No points." They boo. "You lot don't know nothing," the <<person>> says.
+	"미안하군, 친구들. 점수 없어." 그들은 야유를 보낸다. "너희들은 아무것도 모르는군." <<person>>【이가】 말한다.
 <</if>>
 <br><br>
 
-<<link [[Next|Docks Pub Crawl Quiz]]>><</link>>
+<<link [[다음|Docks Pub Crawl Quiz]]>><</link>>
 <br>
 
 :: Docks Fake ID
@@ -2749,10 +2743,10 @@ The owner reads the sailor's answers.
 <<speechresolve>>
 <<generate1>><<person1>>
 
-You flag down a manager.
+당신은 매니저 한 명을 불러 세운다.
 <br><br>
 
-"Need something?" <<he>> asks, only partially paying attention to you. "You know we can't let you work today."
+"뭐 필요한 거라도?" <<he>>【은는】 당신에게 반쯤만 신경 쓰며 묻는다. "오늘은 일 못 시켜주는 거 알잖아."
 <br><br>
 
 <<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
@@ -2769,13 +2763,13 @@ You flag down a manager.
 You hand <<him>> the fake ID you purchased from Briar.
 <br><br>
 
-<<He>> examines it briefly, then hands it back to you. "So you aren't," <<he>> says, making a note of something on <<his>> clipboard. "In that case, you're allowed to work during the week, starting now."
+<<He>>【은는】 그것을 잠시 살피더니 당신에게 돌려준다. "그렇군." <<he>>【은는】 <<his>> 클립보드에 무언가를 적으며 말한다. "그렇다면, 지금부터 주중에도 일할 수 있어."
 <br><br>
 
-The two of you hear a loud bang from across the docks. "Whoa, careful over there!" <<he>> yells as <<he>> jogs off towards the source of the noise. "Do you idiots have any idea how much that equipment costs?!"
+두 사람의 귀에 부두 건너편에서 큰 쾅 소리가 들린다. "워, 거기 조심해!" <<he>>【은는】 소음의 근원지를 향해 뛰어가며 소리친다. "이 멍청이들아, 그 장비가 얼마나 비싼지 알아?!
 <br><br>
 
-<<He>> doesn't look back, apparently done with you.
+<<He>>【은는】 당신과의 용무는 끝났다는 듯, 뒤도 돌아보지 않는다.
 <br><br>
 
-<<link [[Next|Docks]]>><<endevent>><<pass 2>><<set $docks.fakeID to "shown">><</link>>
+<<link [[다음|Docks]]>><<endevent>><<pass 2>><<set $docks.fakeID to "shown">><</link>>

@@ -42,7 +42,7 @@ class CanvasModel {
 	static create(id, slot) {
 		const template = Renderer.CanvasModels[id];
 		if (!template) {
-			Errors.report("Requested non-existing model " + id);
+			Errors.report("존재하지 않는 모델이 요청되었습니다: " + id);
 			return new CanvasModel({
 				name: "empty",
 				width: 1,
@@ -50,13 +50,13 @@ class CanvasModel {
 				layers: {},
 				frames: 1,
 				defaultOptions() {
-					console.debug("CanvasModel-defaultOptions not set.");
+					console.debug("CanvasModel-defaultOptions가 설정되지 않았습니다.");
 				},
 				generatedOptions() {
 					return [];
 				},
 				preprocess(options) {
-					console.debug("CanvasModel-preprocess not set.");
+					console.debug("CanvasModel-preprocess가 설정되지 않았습니다.");
 				},
 			});
 		}
@@ -147,14 +147,14 @@ class CanvasModel {
 	showLayer(name, filters) {
 		const layer = this.layers[name];
 		if (!layer) {
-			console.error("Layer not found: " + this.name + "/" + name);
+			console.error("레이어를 찾을 수 없습니다: " + this.name + "/" + name);
 			return;
 		}
 		layer.show = true;
 		for (const filter of filters) {
 			if (filter === null || filter === undefined) continue; // null & undefined are allowed as "empty filter"
 			if (typeof filter !== "object") {
-				console.error("Invalid layer " + name + " filter " + typeof filter, filter);
+				console.error("잘못된 레이어 필터: " + name + " / " + typeof filter, filter);
 				continue;
 			}
 			Object.assign(layer, filter);
@@ -164,7 +164,7 @@ class CanvasModel {
 	hideLayer(name) {
 		const layer = this.layers[name];
 		if (!layer) {
-			console.error("Layer not found: " + this.name + "/" + name);
+			console.error("레이어를 찾을 수 없습니다: " + this.name + "/" + name);
 			return;
 		}
 		layer.show = false;
@@ -207,7 +207,7 @@ class CanvasModel {
 	 */
 	redraw() {
 		if (!this.canvas) {
-			Errors.report("CanvasModel.redraw() called but model was never rendered!");
+			Errors.report("CanvasModel.redraw()가 호출되었지만 모델이 렌더링된 적이 없습니다.");
 			return;
 		}
 		Renderer.lastModel = this;
@@ -246,7 +246,7 @@ class CanvasModel {
 			this.preprocess(options);
 		} catch (e) {
 			console.error(e);
-			throw new Error("Error in model preprocessing: " + e.stack.slice(0, e.stack.indexOf(Browser.isGecko ? "@" : "(eval")));
+			throw new Error("모델 전처리 중 오류 발생: " + e.stack.slice(0, e.stack.indexOf(Browser.isGecko ? "@" : "(eval")));
 		}
 		for (const layer of this.layerList) {
 			// Reset some options
@@ -289,7 +289,7 @@ class CanvasModel {
 					layer[propname] = layer[fnkey](options);
 				} catch (e) {
 					if (layer.show) {
-						console.error("Error evaluating layer " + layer.name + " property " + propname);
+						console.error("레이어 " + layer.name + "의 속성 " + propname + " 평가 중 오류 발생");
 					}
 				}
 			}
@@ -308,7 +308,7 @@ class CanvasModel {
 			}
 			propeval(layer, "z");
 			if (typeof layer.z !== "number" && layer.show !== false) {
-				console.error("Layer " + layer.name + " missing property z");
+				console.error("레이어 " + layer.name + "에 z 속성이 누락되었습니다");
 			}
 			propeval(layer, "alpha");
 			propeval(layer, "maskAlpha");
@@ -382,7 +382,7 @@ Renderer.CanvasModelCaches = {};
 Renderer.locateModel = function (modelName, slot) {
 	const options = Renderer.CanvasModels[modelName];
 	if (!options) {
-		Errors.report("Requested non-existing model " + modelName);
+		Errors.report("존재하지 않는 모델이 요청되었습니다: " + modelName);
 		return new CanvasModel({ name: "empty", width: 1, height: 1, layers: {} });
 	}
 	if (!slot) {

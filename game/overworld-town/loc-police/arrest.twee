@@ -1,91 +1,87 @@
 :: Hospital Arrest
-
 <<set $outside to 0>><<set $location to "town">><<effects>>
-<<generatePolice 1>><<generatePolice 2>>Two police officers are sitting in the lobby. They stand when you approach. "You're under arrest. Please come quietly."
+<<generatePolice 1>><<generatePolice 2>>두 명의 경찰관이 로비에 앉아 있다. 당신이 다가가자 그들이 일어선다. "당신을 체포합니다. 조용히 따라오시죠."
 <<if $companion is "Robinrent">>
-	The <<person1>><<person>> gestures towards Robin. "Your friend can stay here."
+	<<person1>><<person>>【이가】 로빈을 가리킨다. "친구분은 여기 계셔도 됩니다."
 	<br><br>
 
-	"Please be careful," Robin whispers. <<nnpc_He "Robin">> steps away from you.
+	"조심해." 로빈이 속삭인다. <<nnpc_He "Robin">>【은는】 당신에게서 멀어진다.
 	<<unset $companion>>
 <</if>>
 <br><br>
-<<link [[Run|Hospital Arrest Run]]>><<crimeUp 100 "resisting">><</link>><<athleticsdifficulty 1 1000>><<crime "resisting">>
+<<link [[도망친다|Hospital Arrest Run]]>><<crimeUp 100 "resisting">><</link>><<athleticsdifficulty 1 1000>><<crime "resisting">>
 <br>
-<<link [[Go quietly|Hospital Arrest Journey]]>><</link>>
+<<link [[얌전히 따라간다|Hospital Arrest Journey]]>><</link>>
 <br>
 
 :: Hospital Arrest Run
-
 <<set $outside to 0>><<set $location to "town">><<effects>>
-You turn and run from the hospital.
+당신은 몸을 돌려 병원에서 도망친다.
 <<gathletics>><<athletics 1>><<pass 10>>
 <br><br>
 <<if $athleticsSuccess>>
 	<<rng>>
 	<<if $rng gte 81>>
-		With the police close on your heels you run down streets and alleys, but they're persistent. You <span class="green">succeed</span> in gaining distance on them, but round a corner and find yourself facing a dead end.
+		경찰이 바짝 뒤쫓는 가운데 당신은 거리와 골목을 달리지만, 그들은 끈질기다. 당신은 <span class="green">성공적으로</span> 그들과 거리를 벌리지만, 모퉁이를 돌자 막다른 길에 다다른다.
 		<br><br>
 		<<endevent>>
-		You're about to give up when a small hatch opens at the base of a nearby wall. You have no idea what's inside, but it's that or face the police.
+		포기하려던 찰나, 근처 벽 아래에서 작은 해치가 열린다. 안이 어떻게 생겼는지는 모르지만, 경찰에게 잡히는 것보다는 낫다.
 		<br><br>
-		<<link [[Go through the hatch|Hospital Arrest Molestation]]>><<set $molestationstart to 1>><</link>>
+		<<link [[해치로 들어간다|Hospital Arrest Molestation]]>><<set $molestationstart to 1>><</link>>
 		<br>
-		<<link [[Surrender to the police|Hospital Arrest Surrender]]>><<endevent>><</link>>
+		<<link [[경찰에게 항복한다|Hospital Arrest Surrender]]>><<endevent>><</link>>
 		<br>
 	<<else>>
-		With the police close on your heels you run down streets and alleys. The police aren't able to keep up, and you <span class="green">succeed</span> in escaping them.
+		경찰이 바짝 뒤쫓는 가운데 당신은 거리와 골목을 달린다. 경찰은 따라잡지 못하고, 당신은 <span class="green">성공적으로</span> 그들에게서 탈출한다.
 		<br><br>
-		<<link [[Next|Industrial Alleyways]]>><<endevent>><</link>>
+		<<link [[다음|Industrial Alleyways]]>><<endevent>><</link>>
 		<br>
 	<</if>>
 <<else>>
-	You try to run from the hospital, but <span class="red">fail</span> to outrun the police. They tackle you to the ground.
+	병원에서 도망치려 하지만, 경찰을 따돌리는 데 <span class="red">실패한다</span>. 그들이 당신을 땅으로 넘어뜨린다.
 	<br><br>
-	<<link [[Next|Hospital Arrest Journey]]>><</link>>
+	<<link [[다음|Hospital Arrest Journey]]>><</link>>
 	<br>
 <</if>>
 
 :: Hospital Arrest Journey
-
 <<set $outside to 0>><<set $location to "town">><<effects>>
-They cuff you and lead you to their waiting car. They put you in the back, climb in the front and set off.
+그들은 당신에게 수갑을 채우고 대기 중인 차로 이끈다. 그들은 당신을 뒷좌석에 태우고, 앞좌석에 올라타 출발한다.
 <<set $leftarm to "bound">><<set $rightarm to "bound">><<handheldruined>>
 <br><br>
 <<if crimeSumCurrent() gte 5000>>
 	The driver, a <<person1>><<person>>, looks back at you. "You've been a <<badgirl>> haven't you? Caused all sorts of problems."
 	<br><br>
-	<<His>> partner, a <<person2>><<person>>, interjects, "Watch the road."
+	<<His>> 파트너인 <<person2>><<person>>【이가】 끼어든다. "앞이나 봐."
 	<br><br>
 	The <<person1>><<persons>> about to say something, but thinks better of it and looks back at the road. No one says anything for a while.
 	<br><br>
 	<<if hasSexStat("promiscuity", 2)>>
-		<<link [[Offer your body in return for letting you go|Hospital Arrest Offer]]>><</link>><<promiscuous2>>
+		<<link [[풀어주는 대가로 몸을 제안한다|Hospital Arrest Offer]]>><</link>><<promiscuous2>>
 		<br>
 	<<elseif $uncomfortable.prostituting is false>>
 		<<set _desperateaction to 2>>
-		<<link [[Reluctantly offer your body in return for letting you go|Hospital Arrest Offer]]>><<set $desperateaction to _desperateaction>><</link>><<promiscuous2>>
+		<<link [[마지못해 풀어주는 대가로 몸을 제안한다|Hospital Arrest Offer]]>><<set $desperateaction to _desperateaction>><</link>><<promiscuous2>>
 		<br>
 	<</if>>
-	<<link [[Sit quietly|Hospital Arrest Sit]]>><</link>>
+	<<link [[조용히 앉아 있는다|Hospital Arrest Sit]]>><</link>>
 	<br>
 <<else>>
-	The driver, a <<person1>><<person>>, looks back at you. "If you cooperate, everything will be fine."
+	운전자인 <<person1>><<person>>【이가】 당신을 돌아본다. "협조하면 모든 게 순조로울 겁니다."
 	<br><br>
 	<<if hasSexStat("promiscuity", 2)>>
-		<<link [[Offer your body in return for letting you go|Hospital Arrest Offer]]>><</link>><<promiscuous2>>
+		<<link [[풀어주는 대가로 몸을 제안한다|Hospital Arrest Offer]]>><</link>><<promiscuous2>>
 		<br>
 	<<elseif $uncomfortable.prostituting is false>>
 		<<set _desperateaction to 2>>
-		<<link [[Reluctantly offer your body in return for letting you go|Hospital Arrest Offer]]>><<set $desperateaction to _desperateaction>><</link>><<promiscuous2>>
+		<<link [[마지못해 풀어주는 대가로 몸을 제안한다|Hospital Arrest Offer]]>><<set $desperateaction to _desperateaction>><</link>><<promiscuous2>>
 		<br>
 	<</if>>
-	<<link [[Sit quietly|Hospital Arrest Sit]]>><</link>>
+	<<link [[조용히 앉아 있는다|Hospital Arrest Sit]]>><</link>>
 	<br>
 <</if>>
 
 :: Hospital Arrest Molestation
-
 <<if $molestationstart is 1>>
 	<<set $molestationstart to 0>>
 	<<controlloss>>
@@ -109,23 +105,20 @@ They cuff you and lead you to their waiting car. They put you in the back, climb
 <<actionsman>>
 
 <<if _combatend or ($pain gte 100 and $phase is 1)>>
-	<span id="next"><<link [[Next|Hospital Arrest Molestation Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Hospital Arrest Molestation Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Hospital Arrest Molestation]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Hospital Arrest Molestation]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Hospital Arrest Surrender
-
 <<set $outside to 0>><<set $location to "town">><<effects>>
 <<generatePolice 1>><<generatePolice 2>>
-<<person1>>
-You decide against going through the strange hatch. The police arrive, panting. One of them threatens you with a taser. "We've got you," <<he>> says. "You're coming with us."
+<<person1>>당신은 이상한 해치로 들어가지 않기로 결정한다. 경찰들이 헐떡이며 도착한다. 그중 한 명이 테이저건으로 당신을 위협한다. "잡았다." <<he>>【이가】 말한다. "같이 가줘야겠어."
 <br><br>
-<<link [[Next|Hospital Arrest Journey]]>><</link>>
+<<link [[다음|Hospital Arrest Journey]]>><</link>>
 <br>
 
 :: Hospital Arrest Offer
-
 <<set $outside to 0>><<set $location to "town">><<effects>>
 <<if crimeSumCurrent() gte 5000>>
 	<<set $seductiondifficulty to 10000>>
@@ -134,37 +127,37 @@ You decide against going through the strange hatch. The police arrive, panting. 
 	<<seductionskilluse>>
 
 	<<if $seductionrating gte $seductionrequired>>
-		You look at the <<person1>><<person>> through the mirror. "I know I've been naughty," you say. "But I'd be very thankful if you let me go. Very thankful." You stretch out on the back seat, displaying your figure.
+		당신은 거울을 통해 <<person1>><<person>>【을를】 본다. "제가 못된 짓을 한 건 알아요." 당신이 말한다. "하지만 절 보내주시면 정말 감사할 거예요. 정말로요." 당신은 뒷좌석에 몸을 쭉 뻗어 몸매를 과시한다.
 		<<promiscuity2>>
 
 		The <<person2>><<person>> doesn't seem impressed, but the <<person1>><<person>> feels differently. "No one knows we have <<phim stranger>> anyway. It'll just be more paperwork."
 		<br><br>
-		"Stop," says the <<person2>><<person>>. "You're embarrassing yourself."
+		"그만해." <<person2>><<person>>【이가】 말한다. "창피한 줄 알아."
 		<br><br>
 		The <<person1>><<persons>> voice lowers. "We'll be able to do whatever we like to <<phim stranger>> though, it's not like <<pshe stranger>> can refuse."
 		<br><br>
-		The <<person2>><<person>> doesn't respond for a moment. The <<person1>><<person>> opens <<his>> mouth to argue again, but is interrupted. "Pull over."
+		<<person2>><<person>>【은는】 잠시 대답이 없다. <<person1>><<person>>【이가】 다시 입을 열어 반박하려 하지만, 말이 끊긴다. "차 세워."
 		<br><br>
 
-		The <<person2>><<person>> drags you from the car and down an alleyway. You come to a metal door which <<he>> shoves you through with enough force that you almost fall over. You think you're in an empty warehouse.
+		<<person2>><<person>>【은는】 당신을 차에서 끌어내려 골목으로 향한다. 당신은 철문 앞에 다다르고, <<he>>【은는】 당신이 거의 넘어질 정도로 세게 밀어 안으로 들여보낸다. 텅 빈 창고 안인 것 같다.
 		<br><br>
-		"Don't think you're getting off easy," <<he>> says. "Scum like you are treated far too leniently. No, you're getting what you deserve."
+		"쉽게 풀려날 거라 생각하지 마." <<he>>【이가】 말한다. "너 같은 쓰레기는 너무 관대하게 다뤄지고 있어. 아니, 넌 네가 받아 마땅한 대가를 치르게 될 거야."
 		<br><br>
-		<<link [[Next|Police Molestation]]>><<set $molestationstart to 1>><</link>>
+		<<link [[다음|Police Molestation]]>><<set $molestationstart to 1>><</link>>
 		<br>
 	<<else>>
-		You look at the <<person1>><<person>> through the mirror. "I know I've been naughty," you say. "But I'd be very thankful if you let me go. Very thankful." You stretch out on the back seat, displaying your figure.
+		당신은 거울을 통해 <<person1>><<person>>【을를】 바라본다. "제가 못된 짓을 한 건 알아요." 당신이 말한다. "하지만 절 보내주시면 정말 감사할 거예요. 정말로요." 당신은 뒷좌석에 몸을 뻗어 몸매를 과시한다.
 		<<promiscuity2>>
 
 		The <<person2>><<person>> doesn't seem impressed, but the <<person1>><<person>> feels differently. "No one knows we have <<phim stranger>> anyway. It'll just be more paperwork."
 		<br><br>
-		"Stop," says the <<person2>><<person>>. "You're embarrassing yourself."
+		"그만해." <<person2>><<person>>【이가】 말한다. "창피한 줄 알아."
 		<br><br>
 		The <<person1>><<persons>> voice lowers. "We'll be able to do whatever we like to <<phim stranger>> though, it's not like <<pshe stranger>> can refuse."
 		<br><br>
-		"I said no," the <<person2>><<person>> responds, <<his>> tone quelling any further argument. It was worth a try.
+		"안 된다고 했잖아." <<person2>><<person>>【이가】 대답하고, <<his>> 말투는 더 이상의 논쟁을 억누른다. 시도해 볼 가치는 있었다.
 		<br><br>
-		<<link [[Next|Hospital Arrest Sit]]>><</link>>
+		<<link [[다음|Hospital Arrest Sit]]>><</link>>
 		<br>
 	<</if>>
 <<else>>
@@ -174,32 +167,32 @@ You decide against going through the strange hatch. The police arrive, panting. 
 	<<seductionskilluse>>
 
 	<<if $seductionrating gte $seductionrequired>>
-		You look at the <<person1>><<person>> through the mirror. "I know I've been naughty," you say. "But I'd be very thankful if you let me go. Very thankful." You stretch out on the back seat, displaying your figure.
+		당신은 거울을 통해 <<person1>><<person>>【을를】 본다. "제가 못된 짓을 한 건 알아요." 당신이 말한다. "하지만 절 보내주시면 정말 감사할 거예요. 정말로요." 당신은 뒷좌석에 몸을 쭉 뻗어 몸매를 과시한다.
 		<<promiscuity2>>
 
 		The <<person2>><<person>> doesn't seem impressed, but the <<person1>><<person>> feels differently. "No one knows we have <<phim stranger>> anyway. It'll just be more paperwork."
 		<br><br>
-		"Stop," says the <<person2>><<person>>. "You're embarrassing yourself."
+		"그만해." <<person2>><<person>>【이가】 말한다. "창피한 줄 알아."
 		The <<person1>><<persons>> voice lowers. "We'll be able to do whatever we like to <<phim stranger>> though, it's not like <<pshe stranger>> can refuse."
 		<br><br>
-		The <<person2>><<person>> doesn't respond for a moment. The <<person1>><<person>> opens <<his>> mouth to argue again, but is interrupted. "Pull over."
+		<<person2>><<person>>【은는】 잠시 대답이 없다. <<person1>><<person>>【이가】 다시 입을 열어 반박하려 하지만, 말이 끊긴다. "차 세워."
 		<br><br>
-		The <<person2>><<person>> drags you from the car and down an alleyway. You come to a metal door which opens into a large open area. You think you're in an abandoned warehouse.
+		<<person2>><<person>>【은는】 당신을 차에서 끌어내려 골목으로 향한다. 당신은 철문 앞에 다다르고, 문은 넓은 공터로 이어진다. 버려진 창고 안인 것 같다.
 		<br><br>
-		<<link [[Next|Police Molestation]]>><<set $molestationstart to 1>><</link>>
+		<<link [[다음|Police Molestation]]>><<set $molestationstart to 1>><</link>>
 		<br>
 	<<else>>
-		You look at the <<person1>><<person>> through the mirror. "I know I've been naughty," you say. "But I'd be very thankful if you let me go. Very thankful." You stretch out on the back seat, displaying your figure.
+		당신은 거울을 통해 <<person1>><<person>>【을를】 바라본다. "제가 못된 짓을 한 건 알아요." 당신이 말한다. "하지만 절 보내주시면 정말 감사할 거예요. 정말로요." 당신은 뒷좌석에 몸을 뻗어 몸매를 과시한다.
 		<<promiscuity2>>
 
 		The <<person2>><<person>> doesn't seem impressed, but the <<person1>><<person>> feels differently. "No one knows we have <<phim stranger>> anyway. It'll just be more paperwork."
 		<br><br>
-		"Stop," says the <<person2>><<person>>. "You're embarrassing yourself."
+		"그만해." <<person2>><<person>>【이가】 말한다. "창피한 줄 알아."
 		The <<person1>><<persons>> voice lowers. "We'll be able to do whatever we like to <<phim stranger>> though, it's not like <<pshe stranger>> can refuse."
 		<br><br>
-		"I said no," the <<person2>><<person>> responds, <<his>> tone quelling any further argument. It was worth a try.
+		"안 된다고 했잖아." <<person2>><<person>>【이가】 대답하고, <<his>> 말투는 더 이상의 논쟁을 억누른다. 시도해 볼 가치는 있었다.
 		<br><br>
-		<<link [[Next|Hospital Arrest Sit]]>><</link>>
+		<<link [[다음|Hospital Arrest Sit]]>><</link>>
 		<br>
 	<</if>>
 <</if>>
@@ -214,13 +207,12 @@ You decide against going through the strange hatch. The police arrive, panting. 
 <</if>>
 <<unbind>>
 
-<<pass 5>>You sit quietly for the remainder of the journey. Before long you're pulling up to the police station on Barb Street, where other officers wait. Once out the car, they lead you inside. You walk down a flight of metal steps and down a grim-looking corridor. They shove you in one of the tiny cells. "Sit tight," the <<person1>><<person>> says. "We'll soon decide what to do with you."
+<<pass 5>>당신은 남은 여정 동안 조용히 앉아 있는다. 얼마 지나지 않아 차는 바브 가의 경찰서 앞에 멈춰 서고, 다른 경찰들이 기다리고 있다. 차에서 내리자 그들은 당신을 안으로 이끈다. 당신은 금속 계단을 내려가 삭막해 보이는 복도를 따라 걷는다. 그들은 당신을 작은 감옥 중 하나에 밀어 넣는다. "얌전히 있어." <<person1>><<person>>【이가】 말한다. "곧 어떻게 할지 결정할 테니."
 <br><br>
-<<link [[Wait (1:00)|Police Cell]]>><<pass 1 hour>><<endcombat>><</link>>
+<<link [[기다린다 (1:00)|Police Cell]]>><<pass 1 hour>><<endcombat>><</link>>
 <br>
 
 :: Police Molestation
-
 <<if $molestationstart is 1>>
 	<<set $molestationstart to 0>>
 	<<controlloss>>
@@ -241,30 +233,29 @@ You decide against going through the strange hatch. The police arrive, panting. 
 <br><br>
 <<actionsman>>
 <<if $enemypleasure gte $enemypleasuremax>>
-	<span id="next"><<link [[Next|Police Molestation Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Police Molestation Finish]]>><</link>></span><<nexttext>>
 <<elseif $enemyhealth lte 0>>
-	<span id="next"><<link [[Next|Police Molestation Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Police Molestation Finish]]>><</link>></span><<nexttext>>
 <<elseif $finish is 1>>
-	<span id="next"><<link [[Next|Police Molestation Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Police Molestation Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Police Molestation]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Police Molestation]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Police Molestation Finish
-
 <<if $enemyhealth lte 0>>
-	You shove the <<person1>><<person>> into the <<person2>><<person>>, causing them to trip over each other and fall to the ground. <<tearful>> you flee from the warehouse.
+	당신은 <<person1>><<person>>【을를】 <<person2>><<person>>에게 밀쳐, 서로에게 걸려 넘어져 바닥에 쓰러지게 만든다. <<tearful>> 당신은 창고에서 도망친다.
 	<br><br>
 	<<clotheson>>
 	<<endcombat>>
-	<<link [[Next|Industrial Alleyways]]>><<set $stress -= 1000>><<set $eventskip to 1>><</link>>
+	<<link [[다음|Industrial Alleyways]]>><<set $stress -= 1000>><<set $eventskip to 1>><</link>>
 <<elseif $enemypleasure gte $enemypleasuremax>>
 	<<ejaculation>><<set $prostitutionstat += 1>><<fameprostitution 1>>
-	"Come on," says the <<person2>><<person>>, "before we're missed." <<unbind>>They remove your cuffs and leave you lying on the warehouse floor. <<tearful>> you stand and stumble outside.
+	"자, 어서." <<person2>><<person>>【이가】 말한다. "들키기 전에." <<unbind>>그들은 당신의 수갑을 풀어주고 창고 바닥에 눕혀둔 채 떠난다. <<tearful>> 당신은 일어나 비틀거리며 밖으로 나간다.
 	<br><br>
 	<<clotheson>>
 	<<endcombat>>
-	<<link [[Next|Industrial Alleyways]]>><<set $stress -= 1000>><<set $eventskip to 1>><</link>>
+	<<link [[다음|Industrial Alleyways]]>><<set $stress -= 1000>><<set $eventskip to 1>><</link>>
 <<else>>
 	/* No decisive outcome, such as giving up the encounter. */
 	<<if $finish is 1>><<encounterEndViolence>><</if>>
@@ -286,20 +277,20 @@ Caught with crime lt 2500: Community service.
 Caught with crime lt 2500 while already performing community service: Pillory. */
 
 <<set $outside to 0>><<set $location to "police_station">><<effects>>
-You sit on the dingy bed and wait.
+당신은 지저분한 침대에 앉아 기다린다.
 <br><br>
-After an hour, a <<generatePolice 1>><<person1>><<person>> in a police uniform arrives beside the cell. "Come on, let's get you processed," <<he>> says, unlocking the cell door. "Turn around."
+한 시간 후, 경찰 제복을 입은 <<generatePolice 1>><<person1>><<person>>【이가】 감옥 옆으로 온다. "자, 이리 와. 처리 절차를 밟아야지." <<he>>【은는】 감옥 문을 열며 말한다. "뒤로 돌아."
 <br><br>
 <<if $worn.neck.name is "familiar collar" and $worn.neck.cursed is 1>>
-	You comply. "Oh," <<he>> says. "You're already collared." <<He>> walks right up behind you and examines the collar more closely. <<He>> runs <<his>> hands along it, and recoils upon touching the heart. "And the shock function appears to work." <<He>> tries to attach a leash, but can't seem to figure it out. "Whatever, this is above my pay grade."
+	당신은 따른다. "어라." <<he>>【이가】 말한다. "이미 목걸이를 차고 있군." <<He>>【은는】 당신 바로 뒤로 걸어와 목걸이를 더 자세히 살핀다. <<He>>【은는】 손으로 목걸이를 훑다가, 하트 모양을 만지고는 움찔한다. "충격 기능도 작동하는 것 같군." <<He>>【은는】 목줄을 채우려 하지만, 방법을 모르는 듯하다. "아무렴 어때, 내 알 바 아니지."
 	<br><br>
 <<elseif $worn.neck.collared isnot 1 or $worn.neck.name is "familiar collar">>
 	<<neckwear "collar with leash">>
 	<<set $worn.neck.collaredpolice to 1>>
-	You comply, and hear <<him>> remove something from <<his>> belt. <<He>> fastens it around your neck, and you hear it click shut. "This collar has a shock function, just to ensure your continued cooperation. We'll remove it once you've served your sentence."
+	당신은 따른다. <<him>>【이가】 허리띠에서 무언가를 빼는 소리가 들린다. <<He>>【은는】 그것을 당신의 목에 두르고, 딸깍 잠그는 소리가 들린다. "이 목걸이에는 충격 기능이 있다. 네가 계속 협조하도록 보장하기 위해서지. 형기를 다 채우면 풀어줄 거다."
 	<br><br>
 <<elseif $worn.neck.name is "Whitney's collar with leash" or $worn.neck.name is "Whitney's collar">>
-	You comply. "Oh," <<he>> says. "You're already collared, wait what does it say" <<he>> looks puzzled "Whitney huh" <<he>> smirks. "Makes sense that you hang out <<nnpc_his "Whitney">>"
+	당신은 따른다. "어라." <<he>>【이가】 말한다. "이미 목걸이를 차고 있네. 잠깐, 뭐라고 적혀 있지?" <<he>>【은는】 어리둥절한 표정을 짓는다. "휘트니라... 그렇군." <<he>>【은는】 씩 웃는다. "네가 <<nnpc_his "Whitney">> 곁에서 어울려 다닌다는 게 이해가 되는군."
 <<elseif $worn.neck.name is "Bailey's collar">>
 	You comply. "Oh," <<he>> says. "You're already collared." <<He>> leans forward to examine the collar, squinting at the lotus clasp.
 	<br><br>
@@ -310,88 +301,88 @@ After an hour, a <<generatePolice 1>><<person1>><<person>> in a police uniform a
 	<<include "Bailey Collar Police Release">>
 <<else>>
 	<<set $worn.neck.collaredpolice to 1>>
-	You comply. "Oh," <<he>> says. "You're already collared." <<He>> walks right up behind you and examines the collar more closely. "And the shock function appears to work." <<He>> attaches a leash. "Everything is in order. We'll remove it once you've served your sentence."
+	당신은 따른다. "어라." <<he>>【이가】 말한다. "이미 목걸이를 차고 있군." <<He>>【은는】 당신 바로 뒤로 걸어와 목걸이를 더 자세히 살핀다. "충격 기능도 작동하는 것 같군." <<He>>【은는】 목줄을 채운다. "모든 게 제대로 되어 있군. 형기를 다 채우면 풀어줄 거다."
 	<br><br>
 <</if>>
 <<if !_baileyCollarRelease>>
-<<He>> leads you up another flight of stairs and into a small room. Three people in suits sit at a table on the far side. In the middle, a <<generatePolice 2>><<person2>><<person>> gestures at the chair in front of <<him>>. "Take a seat," <<he>> says. "And don't tarry." The <<person1>><<person>> follows you in, and closes the door behind you.
+<<He>>【은는】 당신을 데리고 또 다른 계단을 올라 작은 방으로 들어간다. 방 저편 테이블에는 정장을 입은 세 사람이 앉아 있다. 가운데에 앉은 <<generatePolice 2>><<person2>><<person>>【이가】 <<him>> 앞의 의자를 가리킨다. "앉아라." <<he>>【이가】 말한다. "꾸물거리지 말고." <<person1>><<person>>【은는】 당신을 따라 들어와 등 뒤의 문을 닫는다.
 <br><br>
 
 <<if crimeSumCurrent() gte 5000>>
 	<<if $stat_police.pillory gte 1>>
 		Once seated, the <<person2>><<person>> continues. "You've been a <<naughtygirl>>. A repeat offender."
-		<<He>> reads off your crimes.
+		<<He>>【은는】 당신의 범죄 목록을 읽어 내려간다.
 		<br><br>
 		<<crimeParade>><<badEndTracking "Prison" { reason: "prisonSentenced", notes: _crimes_output }>>
 		<br>
 
-		"<span class="red">Perhaps a stint in prison will set you straight.</span> I sentence you to <span class="red"><<print Math.trunc(crimeSumCurrent() / 250)>></span> days." <<He>> stamps a document in front of <<him>>. "Get this wretch out of my sight."
+		"<span class="red">아마 감옥에서 좀 지내다 보면 정신을 차리겠지.</span> 너에게 <span class="red"><<print Math.trunc(crimeSumCurrent() / 250)>></span>일의 징역을 선고한다." <<He>>【은는】 <<him>> 앞의 서류에 도장을 찍는다. "이 쓸모없는 놈을 내 눈앞에서 치워라."
 		<br><br>
 
-		<<link [[Next|Police Prison Intro]]>><</link>>
+		<<link [[다음|Police Prison Intro]]>><</link>>
 		<br>
 	<<else>>
-		Once seated, the <<person2>><<person>> continues. "You didn't think you'd get away with it did you? You've been leaving traces of yourself all over."
-		<<He>> reads off your crimes.
+		자리에 앉자, <<person2>><<person>>【이가】 말을 잇는다. "빠져나갈 수 있을 거라 생각하진 않았겠지? 온 사방에 네 흔적을 남기고 다녔더군."
+		<<He>>【은는】 당신의 범죄 목록을 읽어 내려간다.
 		<br><br>
 		<<crimeParade>>
 		<br>
 		"These are only petty crimes however, so public humiliation is an appropriate punishment. Take <<phim stranger>> to the pillory."
 		<br><br>
-		<<link [[Next|Police Pillory Start]]>><<set $stat_police.pillory += 1>><</link>>
+		<<link [[다음|Police Pillory Start]]>><<set $stat_police.pillory += 1>><</link>>
 		<br>
 	<</if>>
 <<elseif crimeSumCurrent() gte 2500>>
 	<<if $community_service gte 1 and $stat_police.pillory gte 1>>
-		Once seated, the <<person2>><<person>> continues. "You were given the chance to give back to the community, but couldn't keep your nose clean, could you?"
-		<<He>> reads off your crimes.
+		자리에 앉자, <<person2>><<person>>【이가】 말을 잇는다. "지역 사회에 환원할 기회를 줬건만, 얌전히 지내질 못했군, 안 그런가?"
+		<<He>>【은는】 당신의 범죄 목록을 읽어 내려간다.
 		<br><br>
 		<<crimeParade>><<badEndTracking "Prison" { reason: "prisonSentenced", notes: _crimes_output }>>
 		<br>
 
-		"<span class="red">Perhaps a stint in prison will set you straight.</span> I sentence you to <span class="red"><<print Math.trunc(crimeSumCurrent() / 250)>></span> days." <<He>> stamps a document in front of <<him>>. "Get this wretch out of my sight."
+		"<span class="red">아마 감옥에서 좀 지내다 보면 정신을 차리겠지.</span> 너에게 <span class="red"><<print Math.trunc(crimeSumCurrent() / 250)>></span>일의 징역을 선고한다." <<He>>【은는】 <<him>> 앞의 서류에 도장을 찍는다. "이 쓸모없는 놈을 내 눈앞에서 치워라."
 		<br><br>
 
-		<<link [[Next|Police Prison Intro]]>><</link>>
+		<<link [[다음|Police Prison Intro]]>><</link>>
 		<br>
 	<<else>>
 		Once seated, the <<person2>><<person>> continues. "You've been a <<naughtygirl>>.<<if $stat_police.pillory gte 1>> A repeat offender.<</if>>"
-		<<He>> reads off your crimes.
+		<<He>>【은는】 당신의 범죄 목록을 읽어 내려간다.
 		<br><br>
 		<<crimeParade>>
 		<br>
 		"These are only petty crimes however, so public humiliation is an appropriate punishment. Take <<phim stranger>> to the pillory."
 		<br><br>
-		<<link [[Next|Police Pillory Start]]>><<set $stat_police.pillory += 1>><</link>>
+		<<link [[다음|Police Pillory Start]]>><<set $stat_police.pillory += 1>><</link>>
 		<br>
 	<</if>>
 <<else>>
 	<<if $community_service gte 1>>
-		Once seated, the <<person2>><<person>> continues. "You were given the chance to give back to the community, but couldn't keep your nose clean, could you?"
-		<<He>> reads off your crimes.
+		자리에 앉자, <<person2>><<person>>【이가】 말을 잇는다. "지역 사회에 환원할 기회를 줬건만, 얌전히 지내질 못했군, 안 그런가?"
+		<<He>>【은는】 당신의 범죄 목록을 읽어 내려간다.
 		<br><br>
 		<<crimeParade>>
 		<br>
 		"Public humiliation will teach you better. Take <<phim stranger>> to the pillory."
 		<br><br>
-		<<link [[Next|Police Pillory Start]]>><<set $stat_police.pillory += 1>><</link>>
+		<<link [[다음|Police Pillory Start]]>><<set $stat_police.pillory += 1>><</link>>
 		<br>
 	<<else>>
-		Once seated, the <<person2>><<person>> reads off your crimes.
+		자리에 앉자, <<person2>><<person>>【이가】 당신의 범죄 목록을 읽어 내려간다.
 		<br><br>
 		<<crimeParade>>
 		<br>
-		"These are only petty crimes. You'll be given the chance to make amends, and give back to the community. <span class="pink">You are to report to the police station every day, starting tomorrow.</span> There you will be assigned a service. It'll take about an hour. You can arrive anytime during daylight hours."
+		"이것들은 경범죄에 불과하다. 만회하고 지역 사회에 환원할 기회를 주겠다. <span class="pink">내일부터 매일 경찰서로 출두하도록.</span> 그곳에서 봉사 활동을 배정받을 것이다. 한 시간 정도 걸릴 거다. 낮 시간 동안 아무 때나 오면 된다."
 		<br><br>
-		"These crimes warrant
+		"이 범죄들은
 		<<set _service to Math.trunc(crimeSumCurrent() / 200)>>
-		<span class="pink">_service days</span> of community service. If you don't reform your ways, or don't turn up, the situation could get much worse for you. Take <<phim>> outside."
+		<span class="pink">_service일</span>의 사회봉사를 보증한다. 만약 네 행실을 고치지 않거나, 나타나지 않으면, 상황은 훨씬 더 나빠질 수 있다. <<phim>>【을를】 밖으로 데려가라."
 		<br><br>
 		<<set $community_service to _service>>
 		<<set $community_service_done to 1>>
 
 
-		<<link [[Next|Police Community Start]]>><<set $stat_police.community += 1>><</link>>
+		<<link [[다음|Police Community Start]]>><<set $stat_police.community += 1>><</link>>
 		<br>
 	<</if>>
 <</if>>
@@ -399,34 +390,33 @@ After an hour, a <<generatePolice 1>><<person1>><<person>> in a police uniform a
 
 
 :: Hospital Arrest Molestation Finish
-
 <<if $enemyhealth lte 0>>
-	They back off from you, surprised by your strength. <<tearful>> you open the hatch and escape outside before they can stop you.
+	당신의 힘에 놀란 그들은 뒤로 물러선다. <<tearful>> 당신은 그들이 막기 전에 해치를 열고 밖으로 탈출한다.
 	<br><br>
 	<<clotheson>>
 	<<endcombat>>
-	<<link [[Next|Industrial Alleyways]]>><<set $stress -= 1000>><<set $eventskip to 1>><</link>>
+	<<link [[다음|Industrial Alleyways]]>><<set $stress -= 1000>><<set $eventskip to 1>><</link>>
 <<elseif $enemypleasure gte $enemypleasuremax>>
 	<<if $phase is 1>>
 		<<ejaculation "short">>
-		The second orgasm is a bit much for them, and gives you a chance to escape through the hatch.
+		두 번째 절정은 그들에게 다소 과했고, 당신은 해치를 통해 탈출할 기회를 얻는다.
 		<br><br>
 		<<clotheson>>
 		<<endcombat>>
-		<<link [[Next|Industrial Alleyways]]>><<set $stress -= 1000>><<set $eventskip to 1>><</link>>
+		<<link [[다음|Industrial Alleyways]]>><<set $stress -= 1000>><<set $eventskip to 1>><</link>>
 	<<else>>
 		<<ejaculation>>
 		<<person2>>"<<pShe stranger>> should be worth something," says the <<person>>. "Be a good little fucktoy and come with us." <<He>> grabs your arm and tries to pull you deeper into the building.
 		<br><br>
-		<<link [[Go quietly|Underground Intro]]>><<badEndTracking "Underground Dungeon" { reason: "uDungeonPolice" }>><</link>>
+		<<link [[조용히 따라간다|Underground Intro]]>><<badEndTracking "Underground Dungeon" { reason: "uDungeonPolice" }>><</link>>
 		<br>
-		<<link [[Resist|Hospital Arrest Molestation]]>><<set $phase to 1>><<set $enemyanger += 120>><<set $enemytrust -= 40>><<set $enemyarousal to 0>><</link>>
+		<<link [[저항한다|Hospital Arrest Molestation]]>><<set $phase to 1>><<set $enemyanger += 120>><<set $enemytrust -= 40>><<set $enemyarousal to 0>><</link>>
 	<</if>>
 <<elseif $phase is 1>>
 	<<badEndTracking "Underground Dungeon" { reason: "uDungeonPolice" }>>
-	You're too hurt to fight any longer. The <<person1>><<person>> and <<person2>><<person>> drag your limp body deeper into the building.
+	당신은 너무 다쳐서 더 이상 싸울 수 없다. <<person1>><<person>>【와과】 <<person2>><<person>>【은는】 축 늘어진 당신의 몸을 건물 더 깊은 곳으로 끌고 간다.
 	<br><br>
-	<<link [[Next|Underground Intro]]>><<set $phase to 0>><</link>>
+	<<link [[다음|Underground Intro]]>><<set $phase to 0>><</link>>
 	<br>
 <<else>>
 	/* No decisive outcome, such as giving up the encounter. */
@@ -437,6 +427,6 @@ After an hour, a <<generatePolice 1>><<person1>><<person>> in a police uniform a
 	The <<person1>><<person>> and <<person2>><<person>> drag your limp body deeper into the building.
 	<<tearful>> you try to follow them.
 	<br><br>
-	<<link [[Next|Underground Intro]]>><<set $phase to 0>><</link>>
+	<<link [[다음|Underground Intro]]>><<set $phase to 0>><</link>>
 	<br>
 <</if>>

@@ -181,7 +181,7 @@ function pluralise(count, singular, plural) {
 		const key = singular.toLowerCase();
 		const irregularForm = Object.hasOwn(irregulars, key) ? irregulars[key] : undefined;
 
-		plural = irregularForm ?? singular + "s";
+		plural = irregularForm ?? singular + "";
 
 		if (singular[0] === singular[0].toUpperCase()) {
 			plural = plural.toUpperFirst();
@@ -224,23 +224,29 @@ function wetnessWord(slot) {
 	const kw = wetnessKeyword(slot);
 	if (!kw) return "";
 	let colorClass;
+	let displayWord;
 	switch (kw) {
 		case "dry":
 			colorClass = "green";
+			displayWord = "건조한";
 			break;
 		case "damp":
 			colorClass = "teal";
+			displayWord = "축축한";
 			break;
 		case "wet":
 			colorClass = "purple";
+			displayWord = "젖은";
 			break;
 		case "drenched":
 			colorClass = "red";
+			displayWord = "흠뻑 젖은";
 			break;
 		default:
 			colorClass = ""; // default without color
+			displayWord = kw.trim();
 	}
-	return `<span class="${colorClass}">${kw.trim()}</span> `;
+	return `<span class="${colorClass}">${displayWord}</span> `;
 }
 window.wetnessWord = wetnessWord;
 DefineMacroS("wetnessWord", wetnessWord);
@@ -280,13 +286,13 @@ function integrityWord(worn, slot) {
 	if (alt === "parasite") {
 		switch (kw) {
 			case "tattered":
-				T.text_output = "shredded ";
+				T.text_output = "찢겨 나간 ";
 				break;
 			case "torn":
-				T.text_output = "patchy ";
+				T.text_output = "군데군데 드러난 ";
 				break;
 			case "frayed":
-				T.text_output = "hurt ";
+				T.text_output = "상처 입은 ";
 				break;
 			case "full":
 			default:
@@ -295,13 +301,13 @@ function integrityWord(worn, slot) {
 	} else if (alt) {
 		switch (kw) {
 			case "tattered":
-				T.text_output = "cracked ";
+				T.text_output = "금이 간 ";
 				break;
 			case "torn":
-				T.text_output = "scratched ";
+				T.text_output = "긁힌 ";
 				break;
 			case "frayed":
-				T.text_output = alt === "metal" ? "tarnished " : "discoloured ";
+				T.text_output = alt === "metal" ? "녹슨 " : "변색된 ";
 				break;
 			case "full":
 			default:
@@ -310,9 +316,13 @@ function integrityWord(worn, slot) {
 	} else {
 		switch (kw) {
 			case "tattered":
+				T.text_output = "너덜너덜한 ";
+				break;
 			case "torn":
+				T.text_output = "찢어진 ";
+				break;
 			case "frayed":
-				T.text_output = kw + " ";
+				T.text_output = "해진 ";
 				break;
 			case "full":
 			default:
@@ -426,7 +436,7 @@ function clothesColour(worn) {
 	if (worn.colour_sidebar) {
 		// eslint-disable-next-line no-undef
 		if (worn.colour === "custom") return (T.text_output = getCustomColourName(worn.colourCustom)); // defined in clothing-shop-v2.js
-		return (T.text_output = worn.colour);
+		return (T.text_output = window.setup && setup.colourName ? setup.colourName(worn.colour) : worn.colour);
 	}
 	return (T.text_output = "");
 }
@@ -653,7 +663,7 @@ function weightedRandom(...options) {
 			return value;
 		}
 	}
-	console.error("weightedRandom: nothing to draw from. Weights must add up to more than 0. Returning " + options[0][0]);
+	console.error(`weightedRandom: 선택할 항목이 없습니다. 가중치의 합이 0보다 커야 합니다. ${options[0][0]}【을를】 반환합니다.`);
 	return options[0][0];
 }
 window.weightedRandom = weightedRandom;
@@ -811,6 +821,28 @@ Macro.add("carriedClear", {
 	},
 });
 
+// 맵 지점(거리/골목/공원) 이름 한글 표시. 저장값/ID는 영문 유지, 표시 시점에만 변환한다.
+const MAP_NAME_KR = {
+	"Barb Street": "바브 가",
+	"Cliff Street": "클리프 가",
+	"Connudatus Street": "콘누다투스 가",
+	"Danube Street": "다뉴브 가",
+	"Domus Street": "도무스 가",
+	"Elk Street": "엘크 가",
+	"Harvest Street": "하베스트 가",
+	"High Street": "하이 가",
+	"Mer Street": "메르 가",
+	"Nightingale Street": "나이팅게일 가",
+	"Oxford Street": "옥스퍼드 가",
+	"Starfish Street": "스타피쉬 가",
+	"Wolf Street": "울프 가",
+	"Residential Alleyways": "거주 지구 골목",
+	"Commercial Alleyways": "상업 지구 골목",
+	"Industrial Alleyways": "공업 지구 골목",
+	"Park": "공원",
+};
+window.getMapNameKr = (id) => MAP_NAME_KR[id] || id;
+
 // create text map link
 Macro.add("tml", {
 	handler() {
@@ -819,7 +851,7 @@ Macro.add("tml", {
 
 		const link = document.createElement("a");
 		link.classList.add("no-numberify");
-		link.title = target;
+		link.title = getMapNameKr(target);
 		// shorten street names to the first two letters
 		link.text = target.includes("Street") ? ` ${target.slice(0, 2)} ` : "─┼─";
 
@@ -830,7 +862,7 @@ Macro.add("tml", {
 		switch (type) {
 			case "current":
 				link.id = "currentLoc";
-				link.title += " (you are here)";
+				link.title += " (현재 위치)";
 				break;
 			case "possessed next":
 				link.classList.add("nextLink");

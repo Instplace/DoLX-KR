@@ -76,7 +76,7 @@ const DoLSave = ((Story, Save) => {
 		// an empty slot gives back null, which is not the same as an empty save. JavaScript treats null as an object.
 		// so checking the type alone would let an empty slot through and crash - isObject rules out null
 		if (!isObject(save)) {
-			Errors.report("Could not find a valid save at that slot.", {});
+			Errors.report("해당 슬롯에서 유효한 세이브를 찾을 수 없습니다.", {});
 			return;
 		}
 		const currVersion = parseVersion(StartConfig.version);
@@ -345,13 +345,13 @@ const DoLSave = ((Story, Save) => {
 		const zstate = compressor.compress(state);
 		zstate.dictionary = COMPRESSOR_CURRENT_DICTIONARY_ID;
 		zstate.title =
-			"This save is compressed and is not compatible with old versions of Degrees of Lewdity. If you want to load this save in an older game build, use exporting.";
+				"이 세이브는 압축되어 있어 이전 버전의 Degrees of Lewdity와 호환되지 않습니다. 더 오래된 게임 빌드에서 이 세이브를 불러오려면 내보내기 기능을 사용하세요.";
 		zstate.variables = {};
 		if (shouldVerifyCompression()) {
 			// Sanity check
 			const uzstate = decompressState(zstate);
 			if (JSON.stringify(state) !== JSON.stringify(uzstate)) {
-				throw new Error("Decompression check failed");
+					throw new Error("압축 해제 확인에 실패했습니다");
 			}
 		}
 		return zstate;
@@ -364,13 +364,13 @@ const DoLSave = ((Story, Save) => {
 	 * @param {object} zstate
 	 */
 	function decompressState(zstate) {
-		if (!("dictionary" in zstate)) throw new Error("Unable to load - compressed save has no dictionary");
+		if (!("dictionary" in zstate)) throw new Error("불러올 수 없습니다 - 압축된 세이브에 사전 정보가 없습니다");
 		const dicid = zstate.dictionary;
 		if (!(dicid in COMPRESSOR_DICTIONARIES))
 			throw new Error(
-				"Unable to decompress the save - the dictionary " +
+					"세이브 압축을 해제할 수 없습니다 - 사전 " +
 					JSON.stringify(dicid) +
-					" is unknown to this game version (trying to load newer save from older game?)"
+						"이 현재 게임 버전에서 알 수 없습니다. (구버전 게임에서 신버전 세이브를 불러오려는 건가요?)"
 			);
 		const dictionary = COMPRESSOR_DICTIONARIES[dicid];
 		const decompressor = new JsonDecompressor(dictionary);
@@ -403,7 +403,7 @@ const DoLSave = ((Story, Save) => {
 			saveObj.state.history = saveObj.state.history.map(state => compressState(state));
 			saveObj.metadata.jsoncompressed = 1;
 		} catch (e) {
-			DOL.Errors.report("Unable to compress - " + e);
+			DOL.Errors.report("압축할 수 없습니다 - " + e);
 			console.error(e);
 			// Just return, the saveObj won't be modified
 		}
@@ -441,7 +441,7 @@ const DoLSave = ((Story, Save) => {
 					if (decompressed) dictOverride = otherDicts[k];
 				}
 				if (!decompressed)
-					throw new Error("Unable to decompress the save with any of the game's dictionaries (save is labeled " + JSON.stringify(dictOverride) + ")");
+					throw new Error("게임의 어떤 사전으로도 저장 파일을 압축 해제할 수 없습니다 (저장 파일 이름은 " + JSON.stringify(dictOverride) + ") 입니다.)");
 				return decompressed;
 			} else return state;
 		});
@@ -508,7 +508,7 @@ window.loadSaveData = function () {
 	const input = document.getElementById("saveDataInput");
 	const result = Save.deserialize(input.value);
 	if (result === null) {
-		input.value = "Invalid Save.";
+		input.value = "유효하지 않은 세이브입니다.";
 	}
 };
 
@@ -535,8 +535,8 @@ window.copySavedata = function (id) {
 		document.execCommand("copy");
 	} catch (err) {
 		const copyTextArea = document.getElementById("CopyTextArea");
-		copyTextArea.value = "Copying Error";
-		console.log("Unable to copy: ", err);
+		copyTextArea.value = "복사 오류";
+		console.log("복사할 수 없습니다: ", err);
 	}
 };
 
@@ -2542,7 +2542,7 @@ window.loadExternalExportFile = function () {
 		.catch(function () {
 			// console.log(err);
 			const button = document.getElementById("LoadExternalExportFile");
-			button.value = "Error Loading";
+			button.value = "불러오기 오류";
 		});
 };
 

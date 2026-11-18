@@ -4,35 +4,35 @@
 
 <<if currentSkillValue('skulduggery') gte $lock>>
 	<<if pcAreArmsBound("both")>>
-		You think you'd be able to pick the lock, <span class="blue">if your arms weren't bound.</span>
+		자물쇠를 딸 수 있을 것 같지만, <span class="blue">팔이 묶여 있지 않다면 말이다.</span>
 	<<else>>
 		<<wearProp "lockpick">>
-		<span class="green">The lock looks easy to pick.</span>
+		<span class="green">자물쇠는 쉽게 딸 수 있을 것 같다.</span>
 		<br><br>
 
-		<<lockicon "pick">><<link [[Pick it (0:10)|Bike Depot]]>><<pass 10>><<crimeUp 5 "trespassing">><</link>><<crime "trespassing">>
+		<<lockicon "pick">><<link [[딴다 (0:10)|Bike Depot]]>><<pass 10>><<crimeUp 5 "trespassing">><</link>><<crime "trespassing">>
 	<</if>>
 	<br>
 <<else>>
-	<span class="red">The lock looks beyond your ability to pick.</span>
+	<span class="red">자물쇠는 당신의 실력으로 딸 수 없을 것 같다.</span>
 	<<skulduggeryrequired>>
 	<br><br>
 <</if>>
-<<getouticon>><<link [[Leave|Shopping Centre]]>><</link>>
+<<getouticon>><<link [[떠난다|Shopping Centre]]>><</link>>
 
 :: Bike Depot
 <<set $outside to 0>><<set $location to "shopping_centre">><<effects>>
 
-You are in the Bike Depot. It has quite the stock of bikes.
+당신은 자전거 매장 안에 있다. 자전거 재고가 꽤 많다.
 <br><br>
 <<if $phase is 5>>
-	You purchase a repair kit, making your current carried amount <span class="yellow"><<print $bicycle.durability.repair>></span>. You <<if $bicycle.durability.repair lt 5>>think you can carry <<print (5 - $bicycle.durability.repair)>><<else>> can't carry<</if>> more.
+	당신은 수리 키트를 구입했고, 현재 소지량은 <span class="yellow"><<print $bicycle.durability.repair>></span>개가 되었다. <<if $bicycle.durability.repair lt 5>><<print (5 - $bicycle.durability.repair)>>개는 더 들고 다닐 수 있을 것 같다<<else>>더는 들고 다닐 수 없다<</if>>.
 	<br><br>
 	<<set $phase to 0>>
 <<elseif $phase is 4>>
 	<<set _repairAmount to Math.round($bicycle.durability.max / 4)>>
 	<<set $bicycle.durability.current to Math.min($bicycle.durability.current + _repairAmount, $bicycle.durability.max)>>
-	Your bike has been given a tune-up, restoring _repairAmount minutes of usage time.
+	당신의 자전거는 정비를 받아 사용 가능 시간이 <<print _repairAmount>>분 회복되었다.
 	<br><br>
 	<<set $phase to 0>><<unset _repairAmount>>
 <<elseif $phase is 3>>
@@ -50,10 +50,10 @@ You are in the Bike Depot. It has quite the stock of bikes.
 <</if>>
 
 <<if Time.dayState is "night">>
-	You are alone in the darkness.
+	어둠 속에 당신 혼자 있다.
 	<br><br>
 <<elseif $exposed gte 1>>
-	You hide behind a rack of bikes to protect your dignity.
+	당신은 자존심을 지키려고 자전거 거치대 뒤에 숨는다.
 	<br><br>
 <</if>>
 
@@ -61,20 +61,20 @@ You are in the Bike Depot. It has quite the stock of bikes.
 	<<passoutshop>>
 <<else>>
 	<<if Time.hour is 21>>
-		It's closing time. Security is herding everyone outside.
+		폐점 시간이다. 경비원이 모든 사람을 밖으로 몰아내고 있다.
 		<<if $exposed gte 1>>
-			Panic swells within you as you realise how embarrassed you'll be should security find you exposed like this.
+			경비원이 이 옷차림을 본다면 얼마나 수치스러울지 깨닫고 공황 상태에 빠진다.
 		<</if>>
 		<br><br>
 		<<if $exposed lte 0>>
-			<<highicon>><<link [[Go outside|High Street]]>><</link>>
+			<<highicon>><<link [[밖으로 나간다|High Street]]>><</link>>
 			<br>
 		<<else>>
-			<<ind>><<link [["Hide until it's over (1:00)"|Bike Depot]]>><<pass 1 hour>><</link>>
+			<<ind>><<link [["끝날 때까지 숨는다 (1:00)"|Bike Depot]]>><<pass 1 hour>><</link>>
 		<</if>>
 	<<else>>
 		<<if Time.dayState is "night" and Time.hour isnot 21 and !$weekly.theft.bikeDepot>>
-			<<shopicon "register">><<link [[Examine the cash register|Bike Depot Register]]>><</link>>
+			<<shopicon "register">><<link [[계산대를 살펴본다|Bike Depot Register]]>><</link>>
 			<br><br>
 		<</if>>
 		<<if $exposed lte 0 and Time.dayState is "night" and Time.hour isnot 21>>
@@ -177,7 +177,7 @@ You are in the Bike Depot. It has quite the stock of bikes.
 			<</if>>
 			<br>
 		<</if>>
-		<<getouticon>><<link [[Leave|Shopping Centre]]>><</link>>
+		<<getouticon>><<link [[떠난다|Shopping Centre]]>><</link>>
 		<br>
 	<</if>>
 <</if>>
@@ -185,7 +185,7 @@ You are in the Bike Depot. It has quite the stock of bikes.
 :: Bike Depot Security Gear
 <<set $outside to 0>><<set $location to "shopping_centre">><<effects>>
 
-You browse through the selection of security gear.
+당신은 보안 장비를 둘러본다.
 <br><br>
 
 <<if $bicycle.security lt 0.99>>
@@ -244,7 +244,7 @@ You browse through the selection of security gear.
 	<br>
 <</if>>
 <br>
-<<getouticon>><<link [[Back|Bike Depot]]>><</link>>
+<<getouticon>><<link [[뒤로|Bike Depot]]>><</link>>
 
 :: Bike Depot Widgets [widget]
 <<widget "bikeDepotTrespassPayment">>

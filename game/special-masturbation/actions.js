@@ -18,8 +18,8 @@ function masturbationActions() {
 		return toy ? clone(toy) : 0;
 	};
 	const toyDisplay = (toy1, toy2) => {
-		if (toy1 && toy2) return (toy1.colour ? toy1.colour + " " : "") + toy1.name + " and " + (toy2.colour ? toy2.colour + " " : "") + toy2.name;
-		if (toy1) return (toy1.colour ? toy1.colour + " " : "") + toy1.name;
+		if (toy1 && toy2) return (toy1.colour ? setup.colourName(toy1.colour) + " " : "") + toy1.name + " 그리고 " + (toy2.colour ? setup.colourName(toy2.colour) + " " : "") + toy2.name;
+		if (toy1) return (toy1.colour ? setup.colourName(toy1.colour) + " " : "") + toy1.name;
 		return "";
 	};
 	const genitalsExposed = () => V.worn.over_lower.vagina_exposed >= 1 && V.worn.lower.vagina_exposed >= 1 && V.worn.under_lower.vagina_exposed >= 1;
@@ -164,12 +164,13 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 	const stop = action => {
 		return {
 			action,
-			text: "Move your hand away",
+			text: "손을 뗀다",
 		};
 	};
 
 	const actiondefault = arm + "actiondefault";
 	const otherArm = arm === "left" ? "right" : "left";
+	const armk = arm === "left" ? "왼" : "오른";
 	const altText = {};
 	const hasBreastPump = playerToys.some(toy => toy.type.includes("breastpump"));
 	const hasLowAwarenessBreastPumpReason =
@@ -183,7 +184,7 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 
 	switch (V[arm + "arm"]) {
 		case 0:
-			result.text = `Your ${arm} hand is free.`;
+			result.text = `당신의 ${armk}손은 자유롭다.`;
 			if (
 				arm === "left" &&
 				V.leftarm === 0 &&
@@ -210,7 +211,7 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 				) {
 					result.options.push({
 						action: "msemencover",
-						text: "Cover your fingers in semen",
+						text: "손가락에 정액을 묻힌다",
 						colour: "sub",
 						otherElements: V.earSlime.event.includes("get your own sperm into your") ? undefined : "<<combataware 5>>",
 					});
@@ -218,26 +219,26 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 				if (!playerChastity("penis")) {
 					result.options.push({
 						action: "mpenisentrance",
-						text: V.player.sex === "f" && V.parasite.clit.name === "parasite" ? "Fondle your parasitic penis" : "Fondle your penis",
+						text: V.player.sex === "f" && V.parasite.clit.name === "parasite" ? "기생충 음경을 만진다" : "자지를 만진다",
 						colour: "sub",
 					});
 				} else if (V.worn.genitals.name === "chastity parasite") {
 					result.options.push({
 						action: "mchastityparasiteentrance",
-						text: "Fondle your chastity parasite",
+						text: "정조대 기생충을 애무한다",
 						colour: "sub",
 					});
 				} else {
 					result.options.push({
 						action: "mpenischastity",
-						text: V.player.sex === "f" && V.parasite.clit.name === "parasite" ? "Try to fondle your parasitic penis" : "Try to fondle your penis",
+						text: V.player.sex === "f" && V.parasite.clit.name === "parasite" ? "기생충 음경을 만지려 한다" : "자지를 만지려 한다",
 						colour: "sub",
 					});
 				}
 				if (V.player.ballsExist && ballsExposed() && V.ballssize >= 0 && (V.ballssize >= 3 || V[otherArm + "arm"] !== "mballs")) {
 					result.options.push({
 						action: "mballsentrance",
-						text: "Fondle your balls",
+						text: "불알을 애무한다",
 						colour: "sub",
 					});
 				}
@@ -246,13 +247,13 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 				if (!playerChastity("vagina")) {
 					result.options.push({
 						action: "mvaginaentrance",
-						text: "Fondle your pussy",
+						text: "보지를 애무한다",
 						colour: "sub",
 					});
 				} else {
 					result.options.push({
 						action: "mvaginachastity",
-						text: "Try to fondle your pussy",
+						text: "보지를 애무하려 시도한다",
 						colour: "sub",
 					});
 				}
@@ -260,14 +261,14 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 			if (V.awareness >= 200 && V.player.breastsize >= 3) {
 				result.options.push({
 					action: "mbreasthold",
-					text: `Hold your${V[otherArm + "arm"] === "mbreasthold" ? " other" : ""} breast`,
+					text: `당신의${V[otherArm + "arm"] === "mbreasthold" ? " 다른" : ""} 가슴을 붙잡는다`,
 					colour: "sub",
 					otherElements: "<<combataware 3>>",
 				});
 			} else if (V.awareness >= 100) {
 				result.options.push({
 					action: "mchest",
-					text: "Fondle your chest",
+					text: "가슴을 애무한다",
 					colour: "sub",
 					otherElements: "<<combataware 2>>",
 				});
@@ -276,7 +277,7 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 				if (!playerChastity("anus")) {
 					result.options.push({
 						action: "manusentrance",
-						text: "Stroke your anus",
+						text: "항문을 쓰다듬는다",
 						colour: "sub",
 						otherElements: "<<combataware 3>>",
 					});
@@ -286,7 +287,7 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 					if (altText.toyDropDown) {
 						result.options.push({
 							action: "mpickupdildo",
-							text: "Use Toy:",
+							text: "장난감 사용:",
 							colour: "green",
 							otherElements: `${altText.toyDropDown} <<combataware 3>>`,
 						});
@@ -298,7 +299,7 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 				if (altText.toyDropDown) {
 					result.options.push({
 						action: "mpickupdildo",
-						text: "Use Breast Pump:",
+						text: "유축기 사용:",
 						colour: "green",
 						otherElements: `${altText.toyDropDown}`,
 					});
@@ -306,43 +307,43 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 			}
 			break;
 		case "mpenisentrance":
-			result.text = `You hold your <<penis>> ${V.player.penissize >= 2 ? `in your ${arm} hand.` : `with your ${arm} thumb and fingers.`}`;
+			result.text = `당신은 ${V.player.penissize >= 2 ? `${armk}손으로` : `${armk} 엄지와 손가락으로`} <<penis>>【을를】 쥔다.`;
 			if (V.mouth !== "mpenis") {
 				result.options.push({
 					action: "mpenisglans",
-					text: "Fondle the glans",
+					text: "귀두를 애무한다",
 					colour: "sub",
 				});
 			}
 			if (!(V.mouth === "mpenis" && V.selfsuckDepth === V.penisHeight)) {
 				result.options.push({
 					action: "mpenisshaft",
-					text: "Rub the shaft",
+					text: "기둥을 문지른다",
 					colour: "sub",
 				});
 			}
 			result.options.push(stop("mpenisstop"));
 			break;
 		case "mchastityparasiteentrance":
-			result.text = `You hold your chastity parasite ${V.player.penissize >= 2 ? `in your ${arm} hand.` : `with your ${arm} thumb and fingers.`}`;
+			result.text = `당신은 ${V.player.penissize >= 2 ? `${armk}손으로` : `${armk} 엄지와 손가락으로`} 정조대 기생충을 쥔다.`;
 			if (V.mouth !== "mpenis") {
 				result.options.push({
 					action: "mchastityparasiterub",
-					text: "Rub the parasite",
+					text: "기생충을 문지른다",
 					colour: "sub",
 				});
 			}
 			if (!(V.mouth === "mpenis")) {
 				result.options.push({
 					action: "mchastityparasitesqueeze",
-					text: "Squeeze the parasite",
+					text: "기생충을 쥐어짠다",
 					colour: "sub",
 				});
 			}
 			result.options.push(stop("mchastityparasitestop"));
 			break;
 		case "mvaginaentrance":
-			result.text = `You rub your <<pussy>> with your ${arm} hand.`;
+			result.text = `당신은 ${armk}손으로 <<pussy>>【을를】 문지른다.`;
 			if (genitalsExposed()) {
 				/* Can't recall the intention for this commented out piece, leaving it in for now in case I recall later */
 				if (
@@ -352,45 +353,45 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 					if (V.vaginaFingerLimit >= 3 && currentSkillValue("vaginalskill") >= 300) {
 						result.options.push({
 							action: "mvaginafingerstarttwo",
-							text: "Push two fingers in",
+							text: "손가락 두 개를 넣는다",
 							colour: "sub",
 						});
 					}
 					result.options.push({
 						action: "mvagina",
-						text: "Push a finger in",
+						text: "손가락을 넣는다",
 						colour: "sub",
 					});
 				}
 				if (!V.parasite.clit.name) {
 					result.options.push({
 						action: "mvaginaclit",
-						text: "Play with your clit",
+						text: "클리토리스를 희롱한다",
 						colour: "sub",
 					});
 				} else if (V.parasite.clit.name !== "parasite") {
 					result.options.push({
 						action: "mvaginaclitparasite",
-						text: `Play with the clitoral ${V.parasite.clit.name}`,
+						text: `클리토리스 ${V.parasite.clit.name}【을를】 가지고 논다`,
 						colour: "sub",
 					});
 				}
 			}
 			result.options.push({
 				action: "mvaginarub",
-				text: "Rub your vulva",
+				text: "외음부를 문지른다",
 				colour: "sub",
 			});
 			result.options.push(stop("mvaginastop"));
 			break;
 		case "mvagina":
-			result.text = `You have <<number $fingersInVagina>> <<pluralise $fingersInVagina "finger">> in your <<pussy>>.${
-				V.fingersInVagina === V.vaginaFingerLimit ? " You cannot fit any more." : ""
+			result.text = `당신은 <<pussy>> 안에 <<number $fingersInVagina>>개의 <<pluralise $fingersInVagina "손가락">>【을를】 넣고 있다.${
+				V.fingersInVagina === V.vaginaFingerLimit ? " 더는 들어가지 않는다." : ""
 			}`;
 			if (V.fingersInVagina < V.vaginaFingerLimit - 1 && V.fingersInVagina < 4 && currentSkillValue("vaginalskill") >= 300) {
 				result.options.push({
 					action: "mvaginafingeraddtwo",
-					text: "Push another two fingers in",
+					text: "손가락 두 개를 더 넣는다",
 					colour: "sub",
 				});
 			}
@@ -398,13 +399,13 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 				if (V.fingersInVagina === 4) {
 					result.options.push({
 						action: "mvaginafistadd",
-						text: "Push your hand in",
+						text: "손을 넣는다",
 						colour: "sub",
 					});
 				} else {
 					result.options.push({
 						action: "mvaginafingeradd",
-						text: "Push another finger in",
+						text: "손가락을 하나 더 넣는다",
 						colour: "sub",
 					});
 				}
@@ -412,52 +413,52 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 			if (V.fingersInVagina >= 1) {
 				result.options.push({
 					action: "mvaginafingerremove",
-					text: "Take one finger out",
+					text: "손가락 하나를 뺀다",
 					colour: "sub",
 				});
 			}
 			result.options.push({
 				action: "mvaginatease",
-				text: "Finger your vagina",
+				text: "보지를 손가락으로 희롱한다",
 				colour: "sub",
 			});
 			result.options.push(stop("mvaginastop"));
 			break;
 		case "mvaginafist":
-			result.text = "Your entire hand is inside your <<pussy>>. You can feel the tightness around your fist.";
+			result.text = "손 전체가 당신의 <<pussy>> 안에 있다. 주먹을 꽉 조이는 느낌이 든다.";
 			result.options.push({
 				action: "mvaginafist",
-				text: "Fist your vagina",
+				text: "보지에 주먹을 넣는다",
 				colour: "sub",
 			});
 			result.options.push({
 				action: "mvaginafingerremove",
-				text: "Take one finger out",
+				text: "손가락 하나를 뺀다",
 				colour: "sub",
 			});
 			if (currentSkillValue("vaginalskill") >= 700) {
 				result.options.push({
 					action: "mvaginafistremove",
-					text: "Pull your hand out",
+					text: "손을 뺀다",
 					colour: "sub",
 				});
 			}
 			break;
 		case "mvaginaentrancedildo":
 			if (!selectedToy(arm)) {
-				result.text = `Your ${arm} hand is free as you do not have a toy selected.`;
+				result.text = `선택한 장난감이 없어 ${armk}손은 자유롭다.`;
 				result.options.push(stop("mvaginastopdildo"));
 			} else if (playerChastity("vagina")) {
-				result.text = `Your ${V.worn.genitals.name} is in the way.`;
+				result.text = `${V.worn.genitals.name}【이가】 방해가 된다.`;
 				result.options.push(stop("mvaginastopdildo"));
 			} else {
-				result.text = `You rub your <<pussy>> with the ${toyDisplay(selectedToy(arm))} in your ${arm} hand.${
-					["anal beads", "butt plug"].includes(selectedToy(arm).name) ? " It feels unusual, but you enjoy it anyway." : ""
+				result.text = `당신은 ${armk}손에 든 ${toyDisplay(selectedToy(arm))}${V.worn.genitals.name ? "" : ""}【으로로】 <<pussy>>【을를】 문지른다.${
+					["anal beads", "butt plug"].includes(selectedToy(arm).name) ? " 낯선 감각이지만, 그래도 즐긴다." : ""
 				}`;
 				if (genitalsExposed() && !["mvagina", "mvaginadildo"].includes(V[otherArm + "arm"])) {
 					result.options.push({
 						action: "mvaginadildo",
-						text: `Push your ${toyDisplay(selectedToy(arm))} in`,
+						text: `${toyDisplay(selectedToy(arm))}【을를】 밀어 넣는다`,
 						colour: "sub",
 					});
 				}
@@ -465,13 +466,13 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 					if (!V.parasite.clit.name) {
 						result.options.push({
 							action: "mvaginaclitdildo",
-							text: "Play with your clit",
+							text: "클리토리스를 희롱한다",
 							colour: "sub",
 						});
 					}
 					result.options.push({
 						action: "mvaginarubdildo",
-						text: "Rub your vulva",
+						text: "외음부를 문지른다",
 						colour: "sub",
 					});
 				}
@@ -479,19 +480,19 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 			}
 			break;
 		case "mvaginadildo":
-			result.text = `You fuck your pussy with the ${toyDisplay(selectedToy(arm))} in your ${arm} hand.`;
+			result.text = `당신은 ${armk}손에 든 ${toyDisplay(selectedToy(arm))}【으로로】 보지를 쑤신다.`;
 			result.options.push({
 				action: "mvaginateasedildo",
-				text: "Tease",
+				text: "놀린다",
 				colour: "sub",
 			});
 			result.options.push(stop("mvaginastopdildo"));
 			break;
 		case "mbreasthold":
-			result.text = `You hold your ${arm} breast with your ${arm} hand.`;
+			result.text = `당신은 ${armk}손으로 ${armk} 가슴을 붙잡는다.`;
 			result.options.push({
 				action: "mbreastfondle",
-				text: "Fondle your breast",
+				text: "가슴을 애무한다",
 				colour: "sub",
 			});
 			if (
@@ -502,7 +503,7 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 			) {
 				result.options.push({
 					action: "mbreastpinch",
-					text: "Pinch your nipple",
+					text: "유두를 꼬집는다",
 					colour: "sub",
 				});
 			}
@@ -528,117 +529,117 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 			result.options.push(stop("mswelltitfuckstop"));
 			break;
 		case "manusentrance":
-			result.text = `You tease your anus with your ${arm} hand.`;
+			result.text = `당신은 ${armk}손으로 항문을 희롱한다.`;
 			if (genitalsExposed() && [0, "manus"].includes(V.anususe)) {
 				result.options.push({
 					action: "manus",
-					text: "Push a finger in",
+					text: "손가락을 넣는다",
 					colour: "sub",
 				});
 			}
 			result.options.push({
 				action: "manusrub",
-				text: "Tease your anus",
+				text: "항문을 애태운다",
 				colour: "sub",
 			});
 			result.options.push(stop("manusstop"));
 			break;
 		case "manus":
-			result.text = `You tease your anus with your ${arm} hand.`;
+			result.text = `당신은 ${armk}손으로 항문을 희롱한다.`;
 			result.options.push({
 				action: "manustease",
-				text: "Tease",
+				text: "놀린다",
 				colour: "sub",
 			});
 			if (V.player.sex !== "f") {
 				result.options.push({
 					action: "manusprostate",
-					text: "Tease your prostate",
+					text: "전립선을 애태운다",
 					colour: "sub",
 				});
 			}
 			result.options.push(stop("manusstop"));
 			break;
 		case "manusentrancedildo":
-			result.text = `You tease your anus with the ${toyDisplay(selectedToy(arm))} in your ${arm} hand.`;
+			result.text = `당신은 ${armk}손에 든 ${toyDisplay(selectedToy(arm))}【으로로】 항문을 희롱한다.`;
 			if (genitalsExposed() && !playerChastity("anus")) {
 				result.options.push({
 					action: "manusdildo",
-					text: `Push your ${toyDisplay(selectedToy(arm))} in`,
+					text: `${toyDisplay(selectedToy(arm))}【을를】 밀어 넣는다`,
 					colour: "sub",
 				});
 			}
 			result.options.push({
 				action: "manusrubdildo",
-				text: `Tease your anus with your ${toyDisplay(selectedToy(arm))}`,
+				text: `${toyDisplay(selectedToy(arm))}【으로로】 항문을 희롱한다`,
 				colour: "sub",
 			});
 			result.options.push(stop("manusstopdildo"));
 			break;
 		case "manusdildo":
-			result.text = `You tease your anus with the ${toyDisplay(selectedToy(arm))} in your ${arm} hand.`;
+			result.text = `당신은 ${armk}손에 든 ${toyDisplay(selectedToy(arm))}【으로로】 항문을 희롱한다.`;
 			result.options.push({
 				action: "manusteasedildo",
-				text: "Tease",
+				text: "놀린다",
 				colour: "sub",
 			});
 			if (V.player.sex !== "f") {
 				result.options.push({
 					action: "manusprostatedildo",
-					text: "Tease your prostate",
+					text: "전립선을 애태운다",
 					colour: "sub",
 				});
 			}
 			result.options.push(stop("manusstopdildo"));
 			break;
 		case "mpenisentrancestroker":
-			result.text = `You tease your glans with the ${toyDisplay(selectedToy(arm))} in your ${arm} hand.`;
+			result.text = `당신은 ${armk}손에 든 ${toyDisplay(selectedToy(arm))}【으로로】 귀두를 희롱한다.`;
 			if (genitalsExposed()) {
 				result.options.push({
 					action: "mpenisstroker",
-					text: `Penetrate your ${toyDisplay(selectedToy(arm))}`,
+					text: `${toyDisplay(selectedToy(arm))}에 삽입한다`,
 					colour: "sub",
 				});
 				result.options.push({
 					action: "mpenisstrokertease",
-					text: `Tease your glans with your ${toyDisplay(selectedToy(arm))}`,
+					text: `${toyDisplay(selectedToy(arm))}【으로로】 귀두를 희롱한다`,
 					colour: "sub",
 				});
 			}
 			result.options.push(stop("mpenisstopstroker"));
 			break;
 		case "mpenisstroker":
-			result.text = `Your <<penis>> penetrates the ${toyDisplay(selectedToy(arm))} in your ${arm} hand.`;
+			result.text = `당신의 <<penis>>【은는】 ${armk}손에 든 ${toyDisplay(selectedToy(arm))} 안으로 파고든다.`;
 			result.options.push({
 				action: "mpenisstroker",
-				text: "Masturbate",
+				text: "자위한다",
 				colour: "sub",
 			});
 			result.options.push(stop("mpenisstopstroker"));
 			break;
 		case "mbreastpump":
-			result.text = `You hold your ${toyDisplay(selectedToy(arm))} against your <<breasts>>.`;
+			result.text = `당신은 ${toyDisplay(selectedToy(arm))}【을를】 <<breasts>>에 가져다 댄다.`;
 			result.options.push({
 				action: "mbreastpumppump",
-				text: "Milk your <<breasts>>",
+				text: "당신의 <<breasts>>에서 착유한다",
 				colour: "sub",
 			});
 			result.options.push(stop("mstopbreastpump"));
 			break;
 		case "mdildomouthentrance":
-			result.text = `Your ${toyDisplay(selectedToy(arm))} is in your ${arm} hand by your mouth.`;
+			result.text = `당신의 ${toyDisplay(selectedToy(arm))}【은는】 ${armk}손에 들린 채 입가에 있다.`;
 			result.options.push({
 				action: "mdildomouth",
-				text: "Push into your mouth",
+				text: "입에 밀어 넣는다",
 				colour: "sub",
 			});
 			result.options.push(stop("mmouthstopdildo"));
 			break;
 		case "mdildomouth":
-			result.text = `Your ${arm} hand is holding your ${toyDisplay(selectedToy(arm))} in your mouth.`;
+			result.text = `당신의 ${armk}손이 ${toyDisplay(selectedToy(arm))}【을를】 입 안에 잡고 있다.`;
 			result.options.push({
 				action: "mdildopiston",
-				text: "Move it back and forward",
+				text: "앞뒤로 움직인다",
 				colour: "sub",
 			});
 			result.options.push(stop("mmouthstopdildo"));
@@ -646,16 +647,16 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 		case "mpickupdildo":
 			if (!selectedToy(arm)) {
 				// Selected toy no longer resolvable (stale slot / toy put back or thrown away)
-				result.text = `Your ${arm} hand is free as you do not have a toy selected.`;
+				result.text = `선택한 장난감이 없어 ${armk}손은 자유롭다.`;
 				result.options.push(stop("mdildostop"));
 				break;
 			}
-			result.text = `You hold your ${toyDisplay(selectedToy(arm))} in your ${arm} hand.`;
+			result.text = `당신은 ${toyDisplay(selectedToy(arm))}【을를】 ${armk}손에 쥐고 있다.`;
 			if (selectedToy(arm).type.includes("stroker")) {
 				if (V.player.penisExist && (V.penisuse === 0 || V.penisuse === "stroker")) {
 					result.options.push({
 						action: "mpenisentrancestroker",
-						text: "Move to your penis",
+						text: "자지로 옮긴다",
 						colour: "sub",
 					});
 				}
@@ -664,7 +665,7 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 				if (breastsExposed() && (V.player.breastsize >= 1 || V.settings.lactationFlatChestEnabled === true)) {
 					result.options.push({
 						action: "mbreastpump",
-						text: "Move to your <<breasts true>>",
+						text: "당신의 <<breasts true>>【으로로】 옮긴다",
 						colour: "sub",
 					});
 				}
@@ -674,14 +675,14 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 					if (V.vaginause !== "mdildopenetrate" && V.anususe !== "mdildopenetrate") {
 						result.options.push({
 							action: "mvaginaentrancedildo",
-							text: "Move to your vagina",
+							text: "보지로 옮긴다",
 							colour: "sub",
 						});
 					}
 					if (genitalsExposed() && V.awareness >= 300 && currentSkillValue("vaginalskill") >= 300 && !selectedToy(arm).name.includes("small")) {
 						result.options.push({
 							action: "mvaginaentrancedildofloor",
-							text: "Place on the floor by your vagina",
+							text: "보지 옆 바닥에 놓는다",
 							colour: "sub",
 							otherElements: "<<combataware 4>>",
 						});
@@ -691,14 +692,14 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 					if (V.vaginause !== "mdildopenetrate" && V.anususe !== "mdildopenetrate") {
 						result.options.push({
 							action: "manusentrancedildo",
-							text: "Move to your anus",
+							text: "항문으로 옮긴다",
 							colour: "sub",
 						});
 					}
 					if (genitalsExposed() && V.awareness >= 300 && currentSkillValue("analskill") >= 300 && !selectedToy(arm).name.includes("small")) {
 						result.options.push({
 							action: "manusentrancedildofloor",
-							text: "Place on the floor by your anus",
+							text: "항문 옆 바닥에 놓는다",
 							colour: "sub",
 							otherElements: "<<combataware 4>>",
 						});
@@ -710,7 +711,7 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 						if (V.player.penisExist && V.penisuse === 0 && !playerChastity("penis")) {
 							result.options.push({
 								action: "mpenisvibrate",
-								text: "Hold against your penis",
+								text: "자지에 대고 있는다",
 								colour: "sub",
 							});
 						}
@@ -718,20 +719,20 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 							if (!V.parasite.clit.name) {
 								result.options.push({
 									action: "mvaginaclitvibrate",
-									text: "Hold against your clit",
+									text: "클리토리스에 대고 있는다",
 									colour: "sub",
 								});
 							} else if (V.parasite.clit.name !== "parasite") {
 								result.options.push({
 									action: "mvaginaclitvibrateparasite",
-									text: `Hold against the clitoral ${V.parasite.clit.name}`,
+									text: `클리토리스 ${V.parasite.clit.name}에 가져다 댄다`,
 									colour: "sub",
 								});
 							}
 						}
 						result.options.push({
 							action: "mchestvibrate",
-							text: "Press against a nipple",
+							text: "유두에 누른다",
 							colour: "sub",
 						});
 						break;
@@ -740,7 +741,7 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 						if (V.mouth === 0) {
 							result.options.push({
 								action: "mdildomouthentrance",
-								text: "Hold against your mouth",
+								text: "입에 대고 있는다",
 								colour: "sub",
 							});
 							break;
@@ -750,36 +751,36 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 			}
 			break;
 		case "mballs":
-			result.text = `You hold ${V.ballssize >= 3 ? "one of " : ""} your ${V.ballsText} with your ${arm} hand.`;
+			result.text = `당신은 ${armk}손으로 ${V.ballssize >= 3 ? "" : ""}${V.ballsText}【을를】 쥔다.`;
 			result.options.push({
 				action: "mballsfondle",
-				text: "Fondle",
+				text: "애무한다",
 				colour: "sub",
 			});
 			result.options.push({
 				action: "mballssqueeze",
-				text: "Squeeze",
+				text: "쥐어짠다",
 				colour: "sub",
 			});
 			result.options.push(stop("mballsstop"));
 			break;
 		case "bound":
-			result.text = `Your ${arm} arm is bound.`;
+			result.text = `당신의 ${armk}팔은 묶여 있다.`;
 			break;
 		case "possessed":
 			if (V.lactating && V.settings.breastFeedingEnabled === true && arm === "right") {
 				result.text =
 					actiondefault === "mbreastW"
-						? `You pinch and squeeze your <<breasts>> with your ${arm} hand, unbidden.`
-						: `Your ${arm} hand hovers over your <<breasts>>.`;
+						? `당신은 저도 모르게 ${armk}손으로 <<breasts>>【을를】 꼬집고 주무른다.`
+						: `당신의 ${armk}손이 <<breasts>> 위에서 맴돈다.`;
 				result.options.push({
 					action: "mbreastW",
-					text: "Fondle your chest",
+					text: "가슴을 애무한다",
 					colour: "wraith",
 				});
 				result.options.push({
 					action: "mbreaststopW",
-					text: "Hold your arm still",
+					text: "팔을 가만히 둔다",
 					colour: "brat",
 				});
 			} else if (V.player.penisExist && (arm === "left" || !V.player.vaginaExist)) {
@@ -788,12 +789,12 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 						actiondefault === "mpenisW" ? `You tease your chastity with your ${arm} hand, unbidden.` : `Your ${arm} hand hovers over your chastity parasite.`;
 					result.options.push({
 						action: "mpenisW",
-						text: "Rub the parasite",
+						text: "기생충을 문지른다",
 						colour: "wraith",
 					});
 					result.options.push({
 						action: "mpenisstopW",
-						text: "Hold your arm still",
+						text: "팔을 가만히 둔다",
 						colour: "brat",
 					});
 				} else {
@@ -801,12 +802,12 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 						actiondefault === "mpenisW" ? `You stroke your <<penis>> with your ${arm} hand, unbidden.` : `Your ${arm} hand hovers over your <<penis>>.`;
 					result.options.push({
 						action: "mpenisW",
-						text: "Rub the shaft",
+						text: "기둥을 문지른다",
 						colour: "wraith",
 					});
 					result.options.push({
 						action: "mpenisstopW",
-						text: "Hold your arm still",
+						text: "팔을 가만히 둔다",
 						colour: "brat",
 					});
 				}
@@ -815,12 +816,12 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 					actiondefault === "mvaginaW" ? `You stroke your <<pussy>> with your ${arm} hand, unbidden.` : `Your ${arm} hand hovers over your <<pussy>>.`;
 				result.options.push({
 					action: "mvaginaW",
-					text: "Fondle your vagina",
+					text: "보지를 애무한다",
 					colour: "wraith",
 				});
 				result.options.push({
 					action: "mvaginastopW",
-					text: "Hold your arm still",
+					text: "팔을 가만히 둔다",
 					colour: "brat",
 				});
 			}
@@ -830,22 +831,22 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 	}
 
 	if (V[arm + "arm"] !== "bound") {
-		if (V.worn.over_upper.exposed <= 1) result.options.push({ action: "moverupper", text: `Displace your ${V.worn.over_upper.name}` });
-		if (V.worn.upper.exposed <= 1) result.options.push({ action: "mupper", text: `Displace your ${V.worn.upper.name}` });
-		if (V.worn.under_upper.exposed <= 0) result.options.push({ action: "munder_upper", text: `Displace your ${V.worn.under_upper.name}` });
+		if (V.worn.over_upper.exposed <= 1) result.options.push({ action: "moverupper", text: `${V.worn.over_upper.name}【을를】 비켜낸다` });
+		if (V.worn.upper.exposed <= 1) result.options.push({ action: "mupper", text: `${V.worn.upper.name}【을를】 비켜낸다` });
+		if (V.worn.under_upper.exposed <= 0) result.options.push({ action: "munder_upper", text: `${V.worn.under_upper.name}【을를】 비켜낸다` });
 
-		if (V.worn.over_lower.exposed <= 1) result.options.push({ action: "moverlower", text: `Displace your ${V.worn.over_lower.name}` });
-		if (V.worn.lower.exposed <= 1) result.options.push({ action: "mlower", text: `Displace your ${V.worn.lower.name}` });
+		if (V.worn.over_lower.exposed <= 1) result.options.push({ action: "moverlower", text: `${V.worn.over_lower.name}【을를】 비켜낸다` });
+		if (V.worn.lower.exposed <= 1) result.options.push({ action: "mlower", text: `${V.worn.lower.name}【을를】 비켜낸다` });
 
 		if (
 			V.worn.under_lower.exposed <= 0 &&
 			(V.worn.lower.state !== wornSetupClothes("lower").state_base || wornSetupClothes("lower").skirt === 1 || V.worn.lower.type.includes("naked"))
 		) {
-			result.options.push({ action: "munder", text: `Pull down your ${V.worn.under_lower.name}` });
+			result.options.push({ action: "munder", text: `${V.worn.under_lower.name}【을를】 내린다` });
 		}
 	}
 
-	if (!V.possessed) result.options.push({ action: "mrest", text: "Rest" });
+	if (!V.possessed) result.options.push({ action: "mrest", text: "쉰다" });
 
 	return result;
 }
@@ -862,13 +863,13 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 	const stop = action => {
 		return {
 			action,
-			text: "Move your mouth away",
+			text: "입을 뗀다",
 		};
 	};
 	const rest = () => {
 		return {
 			action: "mrest",
-			text: "Rest",
+			text: "쉰다",
 		};
 	};
 
@@ -882,23 +883,23 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 
 	switch (V.mouth) {
 		case "disabled":
-			result.text = "Your mouth is free.";
+			result.text = "입이 자유롭다.";
 			if (V.awareness >= 200 && hasAphrodisiac) {
 				result.options.push({
 					action: "maphropill",
-					text: "Swallow an aphrodisiac pill",
+					text: "최음제 알약을 삼킨다",
 					otherElements: "<<combataware 3>>",
 				});
 			}
 			result.options.push(rest());
 			break;
 		case 0:
-			result.text = "Your mouth is free.";
+			result.text = "입이 자유롭다.";
 			if (V.awareness >= 200) {
 				if (hasAphrodisiac) {
 					result.options.push({
 						action: "maphropill",
-						text: "Swallow an aphrodisiac pill",
+						text: "최음제 알약을 삼킨다",
 						otherElements: "<<combataware 3>>",
 					});
 				}
@@ -911,7 +912,7 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 				) {
 					result.options.push({
 						action: "mbreastentrance",
-						text: `Take your nipple${V.leftarm === "mbreasthold" && V.rightarm === "mbreasthold" ? "s" : ""} into your mouth`,
+						text: `유두${V.leftarm === "mbreasthold" && V.rightarm === "mbreasthold" ? "들" : ""}를 입에 문다`,
 						colour: "sub",
 						otherElements: "<<combataware 3>>",
 					});
@@ -929,14 +930,14 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 						if (V.worn.genitals.name === "chastity parasite") {
 							result.options.push({
 								action: "mchastityparasiteentrance",
-								text: "Lick your chastity parasite",
+								text: "정조대 기생충을 핥는다",
 								colour: "sub",
 								otherElements: "<<combataware 3>>",
 							});
 						} else {
 							result.options.push({
 								action: "mpenisentrance",
-								text: "Lick your penis",
+								text: "자지를 핥는다",
 								colour: "sub",
 								otherElements: "<<combataware 3>>",
 							});
@@ -945,7 +946,7 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 					if (V.canSelfSuckVagina && V.vaginause === 0 && V.fingersInVagina === 0) {
 						result.options.push({
 							action: "mvaginaentrance",
-							text: "Lick your pussy",
+							text: "보지를 핥는다",
 							colour: "sub",
 							otherElements: "<<combataware 3>>",
 						});
@@ -955,7 +956,7 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 			if (V.moorPhallusPlant === 1) {
 				result.options.push({
 					action: "mpenisflowerlick",
-					text: "Lick the phallus plant",
+					text: "남근 식물을 핥는다",
 					colour: "sub",
 				});
 			}
@@ -964,7 +965,7 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 		case "mpenisentrance":
 			result.text = corruptionCheck
 				? `<span class="red">The ${earSlimeNoun()} in your ear is forcing your mouth to be in front of your penis.</span>`
-				: "Your mouth is in front of your penis.";
+				: "입이 자지 앞에 있다.";
 			if (awarenessCheck) {
 				if (swellBodyEligible && genitalsExposed()) {
 					result.options.push({
@@ -976,13 +977,13 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 				}
 				result.options.push({
 					action: "mpenislick",
-					text: "Lick your penis",
+					text: "자지를 핥는다",
 					colour: "sub",
 					otherElements: !corruptionCheck ? "<<combataware 3>>" : undefined,
 				});
 				result.options.push({
 					action: "mpenistakein",
-					text: "Take it into your mouth",
+					text: "입에 넣는다",
 					colour: "sub",
 					otherElements: !corruptionCheck ? "<<combataware 3>>" : undefined,
 				});
@@ -993,11 +994,11 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 		case "mchastityparasiteentrance":
 			result.text = corruptionCheck
 				? `<span class="red">The ${earSlimeNoun()} in your ear is forcing your mouth to be in front of your chastity parasite.</span>`
-				: "Your mouth is in front of your chastity parasite.";
+				: "입이 정조대 기생충 앞에 있다.";
 			if (awarenessCheck) {
 				result.options.push({
 					action: "mchastityparasitelick",
-					text: "Lick your chastity parasite",
+					text: "정조대 기생충을 핥는다",
 					colour: "sub",
 					otherElements: !corruptionCheck ? "<<combataware 3>>" : undefined,
 				});
@@ -1008,11 +1009,11 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 		case "mvaginaentrance":
 			result.text = corruptionCheck
 				? `<span class="red">The ${earSlimeNoun()} in your ear is forcing you to lick your pussy.</span>`
-				: "Your mouth is in front of your pussy.";
+				: "입이 보지 앞에 있다.";
 			if (awarenessCheck) {
 				result.options.push({
 					action: "mvaginalick",
-					text: "Lick your pussy",
+					text: "보지를 핥는다",
 					colour: "sub",
 					otherElements: !corruptionCheck ? "<<combataware 3>>" : undefined,
 				});
@@ -1020,14 +1021,14 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 					if (!V.parasite.clit.name) {
 						result.options.push({
 							action: "mvaginaclit",
-							text: "Focus on your clit",
+							text: "클리토리스에 집중한다",
 							colour: "sub",
 							otherElements: !corruptionCheck ? "<<combataware 3>>" : undefined,
 						});
 					} else if (V.parasite.clit.name !== "parasite") {
 						result.options.push({
 							action: "mvaginaclitparasite",
-							text: `Focus on the clitoral ${V.parasite.clit.name}`,
+							text: `클리토리스 ${V.parasite.clit.name}에 집중한다`,
 							colour: "sub",
 							otherElements: !corruptionCheck ? "<<combataware 3>>" : undefined,
 						});
@@ -1039,14 +1040,14 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 		case "mpenis":
 			result.text = corruptionCheck
 				? `<span class="red">The ${earSlimeNoun()} in your ear is forcing you to suck on your penis.</span>`
-				: "You're sucking on your penis.";
+				: "당신은 자지를 빨고 있다.";
 			if (inSwellAutofellatio && !(swellBodyEligible && genitalsExposed())) {
 				result.text = "Your body can no longer maintain the position.";
 				result.options.push(stop("mpenisstop"));
 				break;
 			}
 			if (V.selfsuckDepth === V.selfsuckLimit) {
-				result.text += ` You have the whole thing in your mouth${V.selfsuckDepth >= 2 ? " and throat" : ""}.`;
+				result.text += ` 전체가 입${V.selfsuckDepth >= 2 ? "과 목구멍" : ""} 안에 들어와 있다.`;
 			} else if (inSwellAutofellatio && V.selfsuckDepth === 0) {
 				result.text = corruptionCheck
 					? `<span class="red">The ${earSlimeNoun()} in your ear is forcing your mouth around your swollen <<penis>>.</span>`
@@ -1054,17 +1055,17 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 			} else {
 				switch (V.selfsuckDepth) {
 					case 0:
-						result.text += " You have the head in your mouth.";
+						result.text += " 귀두가 입 안에 들어와 있다.";
 						break;
 					case 1:
-						result.text += " The head reaches the back of your mouth.";
+						result.text += " 귀두가 입 안 깊숙이 닿는다.";
 						break;
 					case 2:
-						result.text += " You have the head in your throat.";
+						result.text += " 귀두가 목구멍까지 들어와 있다.";
 						break;
 					default:
 						/* Max selfsuckDepth is 3 and is captured by the above condition */
-						result.text += '<span class="red">Error: Impossible condition.</span>';
+						result.text += '<span class="red">오류: 불가능한 조건입니다.</span>';
 						break;
 				}
 			}
@@ -1081,7 +1082,7 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 				if (!inSwellAutofellatio) {
 					result.options.push({
 						action: "mpenissuck",
-						text: "Suck on your penis",
+						text: "자지를 빤다",
 						colour: "sub",
 						otherElements: !corruptionCheck ? "<<combataware 3>>" : undefined,
 					});
@@ -1089,7 +1090,7 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 				if (V.selfsuckDepth < V.selfsuckLimit) {
 					result.options.push({
 						action: "mpenisdeepthroat",
-						text: "Take it deeper",
+						text: "더 깊이 넣는다",
 						colour: "sub",
 						otherElements: !corruptionCheck ? "<<combataware 3>>" : undefined,
 					});
@@ -1098,80 +1099,80 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 			if (V.selfsuckDepth >= 1) {
 				result.options.push({
 					action: "mpenispullback",
-					text: "Pull back",
+					text: "뒤로 뺀다",
 				});
 			} else {
 				result.options.push({
 					action: "mpenismouthoff",
-					text: "Take your mouth off it",
+					text: "입을 뗀다",
 				});
 			}
 			if (V.selfsuckDepth <= 1) result.options.push(stop("mpenisstop"));
 			break;
 		case "mdildomouthentrance":
-			result.text = `Your ${
+			result.text = `당신의 ${
 				V.leftarm === "mdildomouthentrance" ? toyDisplay(selectedToy("left")) : toyDisplay(selectedToy("right"))
-			} is in front of your mouth.`;
+			}【이가】 입가에 있다.`;
 			result.options.push({
 				action: "mdildolick",
-				text: "Lick",
+				text: "핥는다",
 				colour: "sub",
 			});
 			result.options.push({
 				action: "mdildokiss",
-				text: "Kiss",
+				text: "키스한다",
 				colour: "sub",
 			});
 			result.options.push(rest());
 			break;
 		case "mdildomouth":
-			result.text = `Your ${V.leftarm === "mdildomouth" ? toyDisplay(selectedToy("left")) : toyDisplay(selectedToy("right"))} is inside of your mouth.`;
+			result.text = `${V.leftarm === "mdildomouth" ? toyDisplay(selectedToy("left")) : toyDisplay(selectedToy("right"))}【이가】 입 안에 들어와 있다.`;
 			result.options.push({
 				action: "mdildolick",
-				text: "Lick",
+				text: "핥는다",
 				colour: "sub",
 			});
 			result.options.push({
 				action: "mdildosuck",
-				text: "Suck",
+				text: "빤다",
 				colour: "sub",
 			});
 			result.options.push(rest());
 			break;
 		case "mbreast":
-			result.text = `Your ${V.leftarm === "mbreastmouthhold" && V.rightarm === "mbreastmouthhold" ? "<<nipples>> are" : "<<nipple>> is"} in your mouth.`;
+			result.text = `${V.leftarm === "mbreastmouthhold" && V.rightarm === "mbreastmouthhold" ? "<<nipples>>【은는】" : "<<nipple>>【은는】"} 입 안에 있다.`;
 			result.options.push({
 				action: "mbreastlick",
-				text: "Lick",
+				text: "핥는다",
 				colour: "sub",
 			});
 			result.options.push({
 				action: "mbreastsuck",
-				text: "Suck",
+				text: "빤다",
 				colour: "sub",
 			});
 			result.options.push(rest());
 			break;
 		case "mpenisflowerlick":
-			result.text = "You're licking the phallus plant.";
+			result.text = "남근 식물을 핥고 있다.";
 			result.options.push({
 				action: "mpenisflowerlick",
-				text: "Lick",
+				text: "핥는다",
 				colour: "sub",
 			});
 			result.options.push({
 				action: "mpenisflowertakein",
-				text: "Take it into your mouth",
+				text: "입에 넣는다",
 				colour: "sub",
 				otherElements: "<<oralvirginitywarning>>",
 			});
 			result.options.push(stop("mpenisflowerstop"));
 			break;
 		case "mpenisflowersuck":
-			result.text = "You're sucking on the phallus plant.";
+			result.text = "남근 식물을 빨고 있다.";
 			result.options.push({
 				action: "mpenisflowersuck",
-				text: "Suck",
+				text: "빤다",
 				colour: "sub",
 			});
 			result.options.push(stop("mpenisflowersuckstop"));
@@ -1194,68 +1195,68 @@ function masturbationActionsVagina({ selectedToy, toyDisplay, genitalsExposed })
 
 	switch (V.vaginause) {
 		case 0:
-			result.text = `Your pussy is ${genitalsExposed() ? "free" : "free, but clothed"}.`;
+			result.text = `당신의 보지는 ${genitalsExposed() ? "드러나 있다" : "옷에 가려졌지만 자유롭다"}.`;
 			if (V.moorPhallusPlant === 1) {
 				result.options.push({
 					action: "mpenisflowerrub",
-					text: "Rub against the phallus plant",
+					text: "남근 식물에 비빈다",
 					colour: "sub",
 				});
 			}
 			if (result.options.length) {
 				result.options.push({
 					action: "mrest",
-					text: "Rest",
+					text: "쉰다",
 				});
 			}
 			break;
 		case "mpenisflowerrub":
-			result.text = `You're rubbing your ${genitalsExposed() ? "pussy" : "crotch"} against the phallus plant.`;
+			result.text = `당신은 ${genitalsExposed() ? "보지" : "사타구니"}를 남근 식물에 문지르고 있다.`;
 			result.options.push({
 				action: "mpenisflowerrub",
-				text: "Rub against the phallus plant",
+				text: "남근 식물에 비빈다",
 				colour: "sub",
 			});
 			if (genitalsExposed()) {
 				result.options.push({
 					action: "mpenisflowerpenetrate",
-					text: "Lower yourself onto the phallus plant",
+					text: "남근 식물 위로 몸을 낮춘다",
 					colour: "sub",
 					otherElements: "<<vaginalvirginitywarning>>",
 				});
 			}
 			result.options.push({
 				action: "mpenisflowerstop",
-				text: `Move your ${genitalsExposed() ? "pussy" : "crotch"} away`,
+				text: `${genitalsExposed() ? "보지" : "사타구니"}를 뗀다`,
 			});
 			break;
 		case "mpenisflowerpenetrate":
-			result.text = "You're bouncing on the phallus plant with your vagina.";
+			result.text = "보지로 남근 식물 위에서 뛰고 있다.";
 			result.options.push({
 				action: "mpenisflowerbounce",
-				text: "Ride the phallus plant",
+				text: "남근 식물에 올라탄다",
 				colour: "sub",
 			});
 			result.options.push({
 				action: "mpenisflowerpenetratestop",
-				text: "Move your pussy away",
+				text: "보지를 뗀다",
 			});
 			break;
 		case "mdildopenetrate":
-			result.text = `You're bouncing on the ${toyDisplay(selectedToy("vagina"))} with your vagina.`;
+			result.text = `당신은 보지로 ${toyDisplay(selectedToy("vagina"))} 위에서 들썩이고 있다.`;
 			result.options.push({
 				action: "mdildopenetratebounce",
-				text: `Ride the ${toyDisplay(selectedToy("vagina"))}`,
+				text: `${toyDisplay(selectedToy("vagina"))} 위에서 움직인다`,
 				colour: "sub",
 				otherElements: V.settings.toyVirginityEnabled && !selectedToy("vagina")?.type?.includes("vibrator") ? "<<vaginalvirginitywarning>>" : "",
 			});
 			result.options.push({
 				action: "mdildopenetratestop",
-				text: "Move your pussy away",
+				text: "보지를 뗀다",
 			});
 			result.options.push({
 				action: "mrest",
-				text: "Rest",
+				text: "쉰다",
 			});
 			break;
 		default:
@@ -1276,68 +1277,68 @@ function masturbationActionsAnus({ selectedToy, toyDisplay, genitalsExposed }) {
 
 	switch (V.anususe) {
 		case 0:
-			result.text = `Your ${genitalsExposed() ? "anus" : "ass"} is ${genitalsExposed() ? "free" : "free, but clothed"}.`;
+			result.text = `당신의 ${genitalsExposed() ? "항문" : "엉덩이"}【은는】 ${genitalsExposed() ? "드러나 있다" : "옷에 가려졌지만 자유롭다"}.`;
 			if (V.moorPhallusPlant === 1) {
 				result.options.push({
 					action: "mpenisflowerrub",
-					text: "Rub against the phallus plant",
+					text: "남근 식물에 비빈다",
 					colour: "sub",
 				});
 			}
 			if (result.options.length) {
 				result.options.push({
 					action: "mrest",
-					text: "Rest",
+					text: "쉰다",
 				});
 			}
 			break;
 		case "mpenisflowerrub":
-			result.text = `You're rubbing your ${genitalsExposed() ? "anus" : "ass"} against the phallus plant.`;
+			result.text = `당신은 ${genitalsExposed() ? "항문" : "엉덩이"}【을를】 남근 식물에 문지르고 있다.`;
 			result.options.push({
 				action: "mpenisflowerrub",
-				text: "Rub against the phallus plant",
+				text: "남근 식물에 비빈다",
 				colour: "sub",
 			});
 			if (genitalsExposed()) {
 				result.options.push({
 					action: "mpenisflowerpenetrate",
-					text: "Lower yourself onto the phallus plant",
+					text: "남근 식물 위로 몸을 낮춘다",
 					colour: "sub",
 					otherElements: "<<analvirginitywarning>>",
 				});
 			}
 			result.options.push({
 				action: "mpenisflowerstop",
-				text: `Move your ${genitalsExposed() ? "anus" : "ass"} away`,
+				text: `${genitalsExposed() ? "항문" : "엉덩이"}【을를】 뗀다`,
 			});
 			break;
 		case "mpenisflowerpenetrate":
-			result.text = "You're bouncing on the phallus plant with your anus.";
+			result.text = "항문으로 남근 식물 위에서 뛰고 있다.";
 			result.options.push({
 				action: "mpenisflowerbounce",
-				text: "Ride the phallus plant",
+				text: "남근 식물에 올라탄다",
 				colour: "sub",
 			});
 			result.options.push({
 				action: "mpenisflowerpenetratestop",
-				text: "Move your anus away",
+				text: "항문을 뗀다",
 			});
 			break;
 		case "mdildopenetrate":
-			result.text = `You're bouncing on the ${toyDisplay(selectedToy("anus"))} with your anus.`;
+			result.text = `당신은 항문으로 ${toyDisplay(selectedToy("anus"))} 위에서 들썩이고 있다.`;
 			result.options.push({
 				action: "mdildopenetratebounce",
-				text: `Ride the ${toyDisplay(selectedToy("anus"))}`,
+				text: `${toyDisplay(selectedToy("anus"))} 위에서 움직인다`,
 				colour: "sub",
 				otherElements: V.settings.toyVirginityEnabled && !selectedToy("anus")?.type?.includes("vibrator") ? "<<analvirginitywarning>>" : "",
 			});
 			result.options.push({
 				action: "mdildopenetratestop",
-				text: "Move your anus away",
+				text: "항문을 뗀다",
 			});
 			result.options.push({
 				action: "mrest",
-				text: "Rest",
+				text: "쉰다",
 			});
 			break;
 		default:

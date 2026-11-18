@@ -10,7 +10,7 @@
 Macro.add("radiovar", {
 	tags: null,
 	handler() {
-		if (this.args.length < 2) return this.error("missing <<radiovar>> arguments");
+		if (this.args.length < 2) return this.error("<<radiovar>> 인수가 누락되었습니다");
 		const varname = this.args[0];
 		const value = this.args[1];
 		const content = this.payload[0].contents;

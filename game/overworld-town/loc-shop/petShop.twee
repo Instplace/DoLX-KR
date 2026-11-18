@@ -3,74 +3,74 @@
 <<set $outside to 0>><<set $location to "shopping_centre">><<effects>><<set $lock to 200>>
 <<if currentSkillValue('skulduggery') gte $lock>>
 	<<if pcAreArmsBound("both")>>
-		You think you'd be able to pick the lock, <span class="blue">if your arms weren't bound.</span>
+		<span class="blue">팔이 묶여 있지만 않다면</span> 자물쇠를 딸 수 있을 것 같다.
 		<br><br>
 	<<else>>
 		<<wearProp "lockpick">>
-		<span class="green">The lock looks easy to pick.</span>
+		<span class="green">자물쇠는 쉽게 딸 수 있을 것 같다.</span>
 		<br><br>
-		<<lockicon "pick">><<link [[Pick it (0:10)|Pet Shop]]>><<pass 10>><<crimeUp 10 "trespassing">><</link>><<crime "trespassing">>
+		<<lockicon "pick">><<link [[자물쇠를 딴다 (0:10)|Pet Shop]]>><<pass 10>><<crimeUp 10 "trespassing">><</link>><<crime "trespassing">>
 		<br>
 	<</if>>
 <<else>>
-	<span class="red">The lock looks beyond your ability to pick.</span>
+	<span class="red">이 자물쇠는 당신의 실력으로 딸 수 없을 것 같다.</span>
 	<<skulduggeryrequired>>
 	<br><br>
 <</if>>
-<<getouticon>><<link [[Leave|Shopping Centre]]>><</link>>
+<<getouticon>><<link [[떠난다|Shopping Centre]]>><</link>>
 <br>
 
 :: Pet Shop
 
 <<set $outside to 0>><<set $location to "shopping_centre">><<effects>>
-You are in the pet shop. <<if Time.dayState is "night" and Time.hour isnot $closinghour>>Most of the animals are sleeping at the moment<<else>>A handful of the small animals turn to look in your direction<</if>>. They all look cute, but you doubt <<if $avery_mansion and C.npc.Avery.state isnot "dismissed">>Avery<<else>>Bailey<</if>> will let you keep any.
+당신은 애완동물 가게에 있다. <<if Time.dayState is "night" and Time.hour isnot $closinghour>>지금은 대부분의 동물이 잠들어 있다<<else>>작은 동물 몇 마리가 당신 쪽을 돌아본다<</if>>. 모두 귀여워 보이지만, <<if $avery_mansion and C.npc.Avery.state isnot "dismissed">>에이버리<<else>>베일리<</if>>【이가】 동물을 기르도록 허락해 줄지는 의문이다.
 <br><br>
 
 <<if Time.dayState is "night" and Time.hour isnot $closinghour>>
-	Aside from them, you are alone in the darkness.
+	그들 외에는, 어둠 속에 당신 혼자뿐이다.
 	<br><br>
 <<elseif $exposed gte 1>>
-	You duck behind a terrarium to protect your dignity. Its scaly occupant blinks curiously at you.
+	당신은 존엄성을 지키기 위해 테라리움 뒤로 몸을 숨긴다. 비늘 덮인 주인이 호기심 어린 눈으로 당신을 깜빡인다.
 	<br><br>
 <</if>>
 
 <<if $stress gte $stressmax>>
 	<<passoutshop "shop">>
 <<elseif Time.hour is $closinghour>>
-	It's closing time. Security is herding everyone outside.
+	폐점 시간이다. 경비원이 모든 사람을 밖으로 몰아내고 있다.
 	<<if $exposed gte 1>>
-		Panic swells within you as you realise how embarrassed you'll be should security find you exposed like this.
+		경비원이 이 옷차림을 본다면 얼마나 수치스러울지 깨닫고 공황 상태에 빠진다.
 	<</if>>
 	<br><br>
 	<<if $exposed lte 0>>
-		<<highicon>><<link [[Go outside|High Street]]>><</link>>
+		<<highicon>><<link [[밖으로 나간다|High Street]]>><</link>>
 		<br>
 	<<else>>
-		<<ind>><<link [["Hide until it's over (1:00)"|Pet Shop]]>><<pass 1 hour>><</link>>
+		<<ind>><<link [["끝날 때까지 숨는다 (1:00)"|Pet Shop]]>><<pass 1 hour>><</link>>
 	<</if>>
 <<else>>
 	<<if Time.dayState is "night" and !$weekly.theft.petShop>>
-		<<shopicon "register">><<link [[Examine the cash register|Pet Shop Register]]>><</link>>
+		<<shopicon "register">><<link [[금전 등록기를 살펴본다|Pet Shop Register]]>><</link>>
 		<br>
 	<</if>>
 	<<if Time.dayState isnot "night">>
 		<<if !$daily.seenPets and $fame.bestiality gte 200 and ["dog", "cat", "lizard"].some(type => animalSexEnabledForType(type))>>
 			<<set $daily.seenPets to true>><<generate1>><<person1>>
 			<<if $fame.bestiality gte 600>>
-				A <<person>> confronts you as you walk into the store. <<Hes>> wearing a nametag and the uniform of the place. <<His>> tone is polite, but firm.
-				"Those animals are under my responsibility, and I don't want you to touch them in any way. If you're not here to buy something, please leave." <<stress 12>><<ggstress>>
+				가게로 들어서자 <<person>>【이가】 당신을 막아선다. <<Hes>> 가게 유니폼을 입고 이름표를 달고 있다. <<His>> 말투는 정중하지만 단호하다.
+				"저 동물들은 제 책임하에 있으며, 어떤 식으로든 만지지 않으셨으면 합니다. 무언가 사러 오신 게 아니라면, 나가주세요." <<stress 12>><<ggstress>>
 				<br><br>
 			<<elseif $fame.bestiality gte 400>>
-				One of the workers has taken to following your every step. You can't evade <<his>> wary gaze. <<stress 6>><<gstress>>
+				직원 중 한 명이 당신의 모든 발걸음을 따라다니기 시작했다. <<his>> 경계하는 시선을 피할 수 없다. <<stress 6>><<gstress>>
 				<br><br>
 			<<else>>
-				The shopkeepers keep a close eye on you every time you get close to the animals. You're not sure why.
+				당신이 동물들에게 가까이 갈 때마다 가게 주인들이 예의주시한다. 이유는 잘 모르겠다.
 				<br><br>
 			<</if>>
 			<<endevent>>
 		<<elseif $daily.seenPets isnot true>>
 			<<set $daily.seenPets to true>>
-			You have a look around the shop, and pet some of the cats and dogs. <<stress -6>><<lstress>>
+			가게를 둘러보며 고양이와 개 몇 마리를 쓰다듬는다. <<stress -6>><<lstress>>
 			<br><br>
 		<</if>>
 		<<if $boughtItem isnot undefined>>
@@ -86,7 +86,7 @@ You are in the pet shop. <<if Time.dayState is "night" and Time.hour isnot $clos
 			<</if>>
 			<<if !$storedChildrenToys>><<set $storedChildrenToys to {}>><</if>>
 			<<toySelection>>
-			<<petshopicon "chew">> <<link [[Wolf chew toys|Pet Shop Item]]>><<set $selectedToy to clone(_toySelection["chewToy"])>><</link>>
+			<<petshopicon "chew">> <<link [[늑대용 씹는 장난감|Pet Shop Item]]>><<set $selectedToy to clone(_toySelection["chewToy"])>><</link>>
 			<br>
 		<</if>>
 		<<if $farm_stage gte 7>>
@@ -98,7 +98,7 @@ You are in the pet shop. <<if Time.dayState is "night" and Time.hour isnot $clos
 			<<set _container to $container.home>>
 			<br>
 			<<if (_motherStatus is 0 and _container.upgrades.capacity lt 1) or (_motherStatus gt 0 and _container.upgrades.capacity lt 4)>>
-				__Capacity upgrades:__
+				__수용량 업그레이드:__
 				<br>
 				<<if _motherStatus gte 0 and _container.upgrades.capacity is 0>>
 					<<if $money gte (setup.inflation ? setup.inflation.price(20000) : 20000)>>
@@ -137,7 +137,7 @@ You are in the pet shop. <<if Time.dayState is "night" and Time.hour isnot $clos
 			<<if _motherStatus gte 1 and _container.upgrades.capacity gt 1>>
 				<<if _container.upgrades.foodStorage lt 3>>
 					<br>
-					__Food upgrades:__
+					__먹이 업그레이드:__
 					<br>
 					<<if $money gte (setup.inflation ? setup.inflation.price(50000) : 50000) and _container.upgrades.foodStorage lt 1>>
 						<<petshopicon "feeder">><<link [[Buy small automatic feeder <<printprice 50000>>|$passage]]>><<set $boughtItem to "Small Automatic Feeder">><</link>>
@@ -166,7 +166,7 @@ You are in the pet shop. <<if Time.dayState is "night" and Time.hour isnot $clos
 			<<if _container.upgrades.capacity gt 2>>
 				<<if _container.upgrades.luxury lt 1 or (_container.upgrades.capacity gt 3 and _container.upgrades.luxury lt 2)>>
 					<br>
-					__Decoration upgrades:__
+					__장식 업그레이드:__
 					<br>
 					<<if $money gte (setup.inflation ? setup.inflation.price(500000) : 500000) and _container.upgrades.luxury lt 1>>
 						<<petshopicon "decor">><<link [[Buy standard decorations <<printprice 500000>>|$passage]]>><<set $boughtItem to "Standard Decorations">><</link>>
@@ -205,13 +205,13 @@ You are in the pet shop. <<if Time.dayState is "night" and Time.hour isnot $clos
 			<</if>>
 		<</if>>
 	<</if>>
-	<<getouticon>><<link [[Leave|Shopping Centre]]>><</link>>
+	<<getouticon>><<link [[떠난다|Shopping Centre]]>><</link>>
 <</if>>
 
 :: Pet Shop Treats
 <<effects>>
 
-You examine the range of dog treats on display.
+진열된 다양한 개 간식을 살펴본다.
 <br><br>
 
 <<if $kennel_treats is undefined>>
@@ -222,7 +222,7 @@ You examine the range of dog treats on display.
 	<<petshopicon "treat">><<link [[Buy 1 (<<printprice 100>>)|Pet Shop Treats Buy]]>><<money -100 "petShop">><<set $kennel_treats += 1>><</link>>
 	<br>
 <<else>>
-	<span class="blue">You can't afford any.</span>
+	<span class="blue">돈이 부족해서 살 수 없다.</span>
 	<br>
 <</if>>
 <<if $money gte (setup.inflation ? setup.inflation.price(1000) : 1000)>>
@@ -251,27 +251,27 @@ You examine the range of dog treats on display.
 <</if>>
 
 <br>
-<<getouticon>><<link [[Don't buy any|Pet Shop]]>><</link>>
+<<getouticon>><<link [[아무것도 사지 않는다|Pet Shop]]>><</link>>
 
 :: Pet Shop Treats Buy
 <<effects>><<wearProp "dog treat">>
 
-You buy the treats, and have them sent to the farm. You have <span class="gold">$kennel_treats</span> in total.
+당신은 간식을 구매하여 농장으로 보낸다. 총 <span class="gold">$kennel_treats</span>개를 보유하고 있다.
 <br><br>
 
-<<link [[Next|Pet Shop]]>><</link>>
+<<link [[다음|Pet Shop]]>><</link>>
 <br>
 
 :: Pet Shop Book
 <<effects>><<wearProp "notebook">>
 <<set $pregnancyStats.parasiteBook to 3>>
-You find a high-quality notebook available that you could use to collect info on your parasites. It has individual pages to fill out for scientific study on animal species in the wild, but it would work just fine for parasites, you think. You purchase it.
+기생충에 대한 정보를 수집하는 데 사용할 수 있는 고품질 공책을 발견한다. 야생 동물의 과학적 연구를 위해 개별 페이지를 채울 수 있도록 되어 있지만, 기생충에게도 잘 맞을 것 같다고 생각한다. 당신은 그것을 구매한다.
 <br><br>
 
-<i>You can now view info about the parasites you've birthed, at any location where you look after them.</i>
+<i>이제 당신이 낳은 기생충을 돌보는 장소 어디에서든 그들에 대한 정보를 볼 수 있습니다.</i>
 <br><br>
 
-<<link [[Next|Pet Shop]]>><</link>>
+<<link [[다음|Pet Shop]]>><</link>>
 <br>
 
 :: Widgets PetShopBoughtItem [widget]
@@ -309,7 +309,7 @@ You find a high-quality notebook available that you could use to collect info on
 <<toySelection>>
 <<dynamic "toyUpdate" "toy-update-container">>
 <br>
-<<getouticon>><<link [[Back|Pet Shop]]>><<run delete $selectedToy>><</link>>
+<<getouticon>><<link [[뒤로|Pet Shop]]>><<run delete $selectedToy>><</link>>
 <hr>
-<div class="settingsHeader">Wolf Chew Toys</div>
+<div class="settingsHeader">늑대용 씹는 장난감</div>
 <<dynamic "toyList" "toy-menu-container">>

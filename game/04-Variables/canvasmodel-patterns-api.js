@@ -27,6 +27,6 @@ Renderer.PatternProvider = function (spec, frameWidth, frameHeight) {
 	}
 
 	// Unknown pattern
-	console.warn("Unknown pattern spec " + JSON.stringify(spec));
+	console.warn("알 수 없는 패턴 사양 " + JSON.stringify(spec));
 	return null;
 };

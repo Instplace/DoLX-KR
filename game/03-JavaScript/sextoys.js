@@ -299,7 +299,7 @@ window.existsInSexToyInventory = existsInSexToyInventory;
 
 function sexToysInventoryDelete(name, colour) {
 	if (!existsInSexToyInventory(name, colour)) {
-		console.log("Item does not exist in the inventory.");
+		console.log("인벤토리에 해당 아이템이 없습니다.");
 		return;
 	}
 	if (colour && colour !== "any") {
@@ -312,7 +312,7 @@ function sexToysInventoryDelete(name, colour) {
 			}
 		}
 		if (foundIndex === -1) {
-			console.log(`Item ${name} ${colour} does not exist in the inventory.`);
+			console.log(`Item ${name} ${colour} 인벤토리에 없습니다.`);
 			return;
 		}
 		const item = V.player.inventory.sextoys[name][foundIndex];
@@ -329,7 +329,7 @@ function sexToysInventoryDelete(name, colour) {
 			setLowerVisibility(true);
 		}
 		V.player.inventory.sextoys[name].splice(foundIndex, 1);
-		console.log(`Deleted ${name} ${colour} from inventory.`);
+		console.log(`인벤토리에서 ${name} ${colour} 삭제됨.`);
 		return;
 	}
 	// If no specific colour is specified or colour is 'any', then remove the first item with the specified name
@@ -352,6 +352,6 @@ function sexToysInventoryDelete(name, colour) {
 		setLowerVisibility(true);
 	}
 	V.player.inventory.sextoys[name].splice(0, 1);
-	console.log(`Deleted ${name} from inventory.`);
+	console.log(`인벤토리에서 ${name} 삭제됨.`);
 }
 window.sexToysInventoryDelete = sexToysInventoryDelete;

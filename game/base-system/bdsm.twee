@@ -80,18 +80,27 @@
 
 <<widget "pull_leash">><<silently>>
 	<<set $_pull to _args[0] || "pulls">>
-	<<set $_text_output to $_pull + " your ">>
+	<<switch $_pull>>
+		<<case "pulls" "pull" "pulls on">><<set $_pullText to "잡아당긴다">>
+		<<case "grabs">><<set $_pullText to "붙잡고">>
+		<<case "give">><<set $_pullText to "살짝">>
+		<<case "tugs">><<set $_pullText to "확 잡아당긴다">>
+		<<case "yanks">><<set $_pullText to "거칠게 잡아당긴다">>
+		<<case "jerks">><<set $_pullText to "홱 잡아당긴다">>
+		<<case "yanking">><<set $_pullText to "잡아당기며">>
+		<<default>><<set $_pullText to $_pull>>
+	<</switch>>
 	<<if $worn.neck.type.includes("leash")>>
-		<<set $_text_output += "leash">>
+		<<set $_text_output to "당신의 목줄을 " + $_pullText>>
 	<<elseif $worn.neck.collared is 1>>
-		<<set $_text_output += "collar">>
+		<<set $_text_output to "당신의 목걸이를 " + $_pullText>>
 	<<elseif $worn.neck.has_collar>>
-		<<set $_text_output += $worn.neck.name>>
+		<<set $_text_output to "당신의 " + $worn.neck.name + " 쪽을 " + $_pullText>>
 	<<elseif $worn.upper.has_collar>>
-		<<set $_text_output to $_pull + " the collar of your " + $worn.upper.name>>
+		<<set $_text_output to "당신의 " + $worn.upper.name + " 깃을 " + $_pullText>>
 	<<elseif $worn.neck.name isnot "naked">>
-		<<set $_text_output += $worn.neck.name>>
+		<<set $_text_output to "당신의 " + $worn.neck.name + " 쪽을 " + $_pullText>>
 	<<else>>
-		<<set $_text_output to $_pull + " the nape of your neck">>
+		<<set $_text_output to "당신의 목덜미를 " + $_pullText>>
 	<</if>>
 <</silently>><<print $_text_output>><</widget>>

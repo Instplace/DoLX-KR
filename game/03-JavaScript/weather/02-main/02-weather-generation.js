@@ -50,7 +50,7 @@ Weather.WeatherGeneration = (() => {
 		if (minutes <= 0) minutes = 1;
 		const weatherTypeIndex = Weather.genSettings.weatherTypes.findIndex(wt => wt.name.toLowerCase() === weatherType.toLowerCase());
 		if (weatherTypeIndex === -1 || V.weatherObj.keypointsArr.length < 1) {
-			console.warn(`Could not set weather. ${weatherType} doesn't exist.`);
+			console.warn(`날씨를 설정할 수 없습니다. ${weatherType}【이가】 존재하지 않습니다.`);
 			return;
 		}
 		delete T.currentTemperature;

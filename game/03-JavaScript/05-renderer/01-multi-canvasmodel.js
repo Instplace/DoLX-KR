@@ -104,7 +104,7 @@ class MultiCanvasModel {
 	 */
 	redraw() {
 		if (!this.canvas) {
-			Errors.report("MultiCanvasModel.redraw() called but model was never rendered!");
+			Errors.report("MultiCanvasModel.redraw()가 호출되었지만 모델이 렌더링된 적이 없습니다.");
 			return;
 		}
 		if (this.animated) {
@@ -141,7 +141,7 @@ class MultiCanvasModel {
 	}
 }
 /** @type {string} */
-MultiCanvasModel.debugLastInit = "Unspecified";
+MultiCanvasModel.debugLastInit = "지정되지 않음";
 // @ts-ignore
 window.MultiCanvasModel = MultiCanvasModel;
 
@@ -152,7 +152,7 @@ Macro.add("setup-multi-canvas", {
 		const slot = this.args[2];
 		MultiCanvasModel.ensureStorage();
 		if (key in T.multiCombatModels) {
-			Errors.report("MultiCanvasModel already exists: Likely due to two animateCombat uses in the same passage", {
+			Errors.report("MultiCanvasModel이 이미 존재합니다. 같은 패시지에서 animateCombat을 두 번 사용했을 가능성이 있습니다.", {
 				key,
 				stack: Utils.GetStack(),
 				last: MultiCanvasModel.debugLastInit,
@@ -174,7 +174,7 @@ Macro.add("add-multi-canvas", {
 		MultiCanvasModel.ensureStorage();
 		const model = T.multiCombatModels[key];
 		if (model == null) {
-			Errors.report("No MultiCanvasModel found with given key.", {
+			Errors.report("지정된 키에 해당하는 MultiCanvasModel을 찾을 수 없습니다.", {
 				key,
 			});
 			return;
@@ -189,7 +189,7 @@ Macro.add("start-multi-canvas-rendering", {
 		MultiCanvasModel.ensureStorage();
 		const model = T.multiCombatModels[key];
 		if (model == null) {
-			Errors.report("No MultiCanvasModel found with given key.", {
+			Errors.report("지정된 키에 해당하는 MultiCanvasModel을 찾을 수 없습니다.", {
 				key,
 			});
 			return;
@@ -208,7 +208,7 @@ Macro.add("reset-multi-canvas", {
 		MultiCanvasModel.ensureStorage();
 		const model = T.multiCombatModels[key];
 		if (model == null) {
-			Errors.report("No MultiCanvasModel found with given key.", {
+			Errors.report("지정된 키에 해당하는 MultiCanvasModel을 찾을 수 없습니다.", {
 				key,
 			});
 			return;
@@ -223,7 +223,7 @@ Macro.add("refresh-multi-canvas", {
 		MultiCanvasModel.ensureStorage();
 		const model = T.multiCombatModels[key];
 		if (model == null) {
-			Errors.report("No MultiCanvasModel found with given key.", {
+			Errors.report("지정된 키에 해당하는 MultiCanvasModel을 찾을 수 없습니다.", {
 				key,
 			});
 			return;

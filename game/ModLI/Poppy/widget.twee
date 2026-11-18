@@ -30,7 +30,7 @@
 /* For cheat menu */
 <<widget "poppyTemper">>
 	<<if ((typeof T !== "undefined" && T && typeof T.poppyPatienceRaw !== "undefined" && T.poppyPatienceRaw !== null) ? (Number(T.poppyPatienceRaw) || 0) : (Number(C.npc?.Poppy?.patience) || 0)) gte 0>>
-		<<numberStepper "<img src='img/ui/sym-patience-100.png' class='icon'> Patience" `C.npc.Poppy.patience` {
+		<<numberStepper "<img src='img/ui/sym-patience-100.png' class='icon'> 인내심" `C.npc.Poppy.patience` {
 			callback: value => {
 				let v = Math.max(-100, Math.min(100, Number(value) || 0));
 				C.npc.Poppy.patience = v;
@@ -52,7 +52,7 @@
 			valueFormat: value => `<b>${Math.abs(Number(value) || 0)}%</b>`
 		}>>
 	<<else>>
-		<<numberStepper "<img src='img/ui/sym-poppy-rage.png' class='icon'> Anger" `C.npc.Poppy.patience` {
+		<<numberStepper "<img src='img/ui/sym-poppy-rage.png' class='icon'> 분노" `C.npc.Poppy.patience` {
 			callback: value => {
 				let v = Math.max(-100, Math.min(100, Number(value) || 0));
 				C.npc.Poppy.patience = v;
@@ -77,9 +77,9 @@
 <</widget>>
 <<widget "poppyTemperDesc">>
 	<<if (Number(C.npc?.Poppy?.patience) || 0) gte 0>>
-		Setting Poppy's patience below 0% will switch it to anger.
+		포피의 인내심을 0% 아래로 내리면 분노로 바뀝니다.
 	<<else>>
-		Raising it back to 0% switches to patience.
+		0%로 다시 올리면 인내심으로 돌아옵니다.
 	<</if>>
 <</widget>>
 
@@ -89,13 +89,13 @@
 	<<if _poppyOtherLI.includes($skin[_args[0]].special)>>
 		<<run if (typeof statusCheck === "function") statusCheck("Poppy")>>
 		<<if !$speechAdmired>><<set $speechAdmired to 1>>
-			Poppy narrows <<his>> eyes. "<<print $skin[_args[0]].writing>> huh... does that mean you belong to <<nnpc_him $skin[_args[0]].special>> too?" <<He>> presses <<his>> palm onto your <<bodypart _args[0]>> and sinks <<his>> sharp nails into your skin without breaking it.
+			포피가 눈을 가늘게 뜬다. "<<print window.KR.getBodywritingKr($skin[_args[0]].writing)>>라니... 그럼 너, <<nnpc_him $skin[_args[0]].special>>의 것이기도 하다는 뜻이야?" <<He>>【은는】 당신의 <<bodypart _args[0]>> 위에 손바닥을 얹고, 피부가 찢어지지 않을 만큼만 날카로운 손톱을 파고들게 한다.
 			<<npcincr Poppy love -2>><<llove>><<npcincr Poppy patience -4>><<if C.npc.Poppy.patience gte 0>><<llpatience>><<else>><<gganger>><</if>><<stress 300>><<gstress>><<pain 300>><<gpain>>
 		<</if>>
 	<<elseif $skin[_args[0]].pen is "tattoo">>
 		<<run if (typeof statusCheck === "function") statusCheck("Poppy")>>
 		<<if !$speechAdmired>><<set $speechAdmired to 1>>
-			"It looks good on you." <<He>> caresses your <<bodypart _args[0]>>. "Makes you all the more attractive..." <<He>> licks <<his>> lips. <<if Number($poppyromance) gte 0>><<npcincr Poppy lust 3>><<glust>><br><</if>>
+			"잘 어울려." <<He>>【은는】 당신의 <<bodypart _args[0]>>【을를】 어루만진다. "그래서 네가 더 매력적으로 보여..." <<He>>【은는】 입술을 핥는다. <<if Number($poppyromance) gte 0>><<npcincr Poppy lust 3>><<glust>><br><</if>>
 		<</if>>
 	<<else>>
 		<<bodypart_admire_generic _args[0]>>
@@ -230,23 +230,23 @@
 	<br><br>
 	<<if _poppyOpiumResult.relieved>>
 		<<if _poppyOpiumFirstTime>>
-			<span class="green"><i>You smell a powdery scent that makes you feel relieved.</i></span>
+			<span class="green"><i>가루 같은 향이 느껴지며 몸이 편안해진다.</i></span>
 		<<else>>
-			<span class="green"><i>You feel relieved.</i></span>
+			<span class="green"><i>몸이 편안해진다.</i></span>
 		<</if>>
 		<<lpain>><<pain -3>>
 	<<else>>
 		<<if _poppyOpiumFirstTime>>
-			<span class="lewd"><i>You smell a powdery scent that makes you feel drowsy.</i></span>
+			<span class="lewd"><i>가루 같은 향이 느껴지며 졸음이 몰려온다.</i></span>
 		<<else>>
-			<span class="lewd"><i>You feel drowsy.</i></span>
+			<span class="lewd"><i>졸음이 몰려온다.</i></span>
 		<</if>>
 		<<gtiredness>><<tiredness _poppyOpiumTiredGain>>
 	<</if>>
 
 	<<if _poppyOpiumResult.learnedKnowledge>>
 		<br>
-		<span class="red"><i>You realise that you've been inhaling opium all this time, resulting in drowsiness.</i></span>
+		<span class="red"><i>그동안 아편을 들이마시고 있었고, 그 때문에 졸음이 온다는 것을 깨닫는다.</i></span>
 	<</if>>
 	<br><br>
 <</widget>>
@@ -323,18 +323,18 @@
 	<<set T.poppyFlatBaileyLowPatience to !!(T.poppyStatus and T.poppyStatus.includes("LowPatience"))>>
 <</widget>>
 <<widget "poppyFlatContents">>
-	<<if $bus isnot "poppy_living_room">><<poppyicon "living_room">><<link [[Living room (0:01)|Flats Poppy Living Room]]>><<pass 1>><</link>><br><</if>>
-	<<if $bus isnot "poppy_kitchen">><<poppyicon "kitchen">><<link [[Kitchen (0:01)|Flats Poppy Kitchen]]>><<pass 1>><</link>><br><</if>>
-	<<if $bus isnot "poppy_bathroom">><<poppyicon "bathroom">><<link [[Bathroom (0:01)|Flats Poppy Bathroom]]>><<pass 1>><</link>><br><</if>>
-	<<if $bus isnot "poppy_bedroom">><<poppyicon "bed">><<link [[Bedroom (0:01)|Flats Poppy Bedroom]]>><<pass 1>><</link>><br><</if>>
-	<<getouticon>><<link [[Leave the flat|Flats]]>><<pass 1>><<endevent>><<set $eventskip to 0>><</link>>
+	<<if $bus isnot "poppy_living_room">><<poppyicon "living_room">><<link [[거실 (0:01)|Flats Poppy Living Room]]>><<pass 1>><</link>><br><</if>>
+	<<if $bus isnot "poppy_kitchen">><<poppyicon "kitchen">><<link [[부엌 (0:01)|Flats Poppy Kitchen]]>><<pass 1>><</link>><br><</if>>
+	<<if $bus isnot "poppy_bathroom">><<poppyicon "bathroom">><<link [[욕실 (0:01)|Flats Poppy Bathroom]]>><<pass 1>><</link>><br><</if>>
+	<<if $bus isnot "poppy_bedroom">><<poppyicon "bed">><<link [[침실 (0:01)|Flats Poppy Bedroom]]>><<pass 1>><</link>><br><</if>>
+	<<getouticon>><<link [[포피의 집에서 나간다|Flats]]>><<pass 1>><<endevent>><<set $eventskip to 0>><</link>>
 <</widget>>
 
 <<widget "poppyChristmasWrapOption">>
 	<<if $christmas_wrap is 1 and $christmas_gift_poppy isnot undefined and $christmas_gift_poppy.endsWith("_unwrapped")>>
 		<<set _poppyWrapRoom to ($bus or "").replace("poppy_", "")>>
 		<<if !$poppyFlat.home or $poppyFlat.room isnot _poppyWrapRoom>>
-			<<gifticon "wrapping">><<link [[Wrap Poppy's gift (0:10)|Flats Poppy Wrap Gift]]>><<pass 10>><<set $christmas_gift_poppy to $christmas_gift_poppy.replace("_unwrapped", "")>><<set $christmas_gift_poppy_wrapped to 1>><</link>>
+			<<gifticon "wrapping">><<link [[포피의 선물을 포장한다 (0:10)|Flats Poppy Wrap Gift]]>><<pass 10>><<set $christmas_gift_poppy to $christmas_gift_poppy.replace("_unwrapped", "")>><<set $christmas_gift_poppy_wrapped to 1>><</link>>
 			<br>
 		<</if>>
 	<</if>>
@@ -343,7 +343,7 @@
 /* Offers the one-per-bad-end heart to heart. _args[0] is "flat" or "lake". */
 <<widget "poppyComfortOption">>
 	<<if poppyBadEndComfortAvailable()>>
-		<<socialiseicon>><<link [[Tell Poppy where you've been (0:05)|Poppy Comfort Talk]]>><<pass 5>><<set $poppyComfortVenue to _args[0]>><<set $daily.poppy.lastAction to "chat">><</link>><<lstress>><<ltrauma>><<gpatience>>
+		<<socialiseicon>><<link [[포피에게 어디에 있었는지 이야기한다 (0:05)|Poppy Comfort Talk]]>><<pass 5>><<set $poppyComfortVenue to _args[0]>><<set $daily.poppy.lastAction to "chat">><</link>><<lstress>><<ltrauma>><<gpatience>>
 		<br>
 	<</if>>
 <</widget>>
@@ -370,7 +370,7 @@
 	<<elseif $perfumeryVenue is "poppy">>
 		<<link [[Leave the doorway|Flats]]>><</link>>
 	<<elseif $perfumeryVenue is "bedroom">>
-		<<link [[Back|Flats Poppy Bedroom]]>><</link>>
+		<<link [[뒤로|Flats Poppy Bedroom]]>><</link>>
 	<<else>>
 		<<link [[Return to the lakeside|Lake Shore]]>><</link>>
 	<</if>>
@@ -402,33 +402,33 @@
 
 	/* Post-action return: use Next links instead of include */
 	<<elseif _poppyPostAction and _poppyLeaveNow>>
-		Poppy glances at <<his>> watch. "Oh, look at the time."
+		포피가 <<his>> 손목시계를 힐끗 본다. "어머, 벌써 시간이 이렇게 됐네."
 		<br><br>
-		<<link [[Next|Lake Poppy Departure]]>><</link>>
+		<<link [[다음|Lake Poppy Departure]]>><</link>>
 	<<elseif _poppyPostAction and $tiredness gte C.tiredness.max>>
-		A sudden wave of exhaustion hits you.
+		갑작스러운 피로가 몰려온다.
 		<br><br>
-		<<link [[Next|Lake Poppy Pass Out]]>><</link>>
+		<<link [[다음|Lake Poppy Pass Out]]>><</link>>
 	<<elseif _poppyPostAction and !$daily.poppy.lakeNap and !$daily.poppy.forceNoNap and !_poppyLow and ($daily.poppy.lastAction is "chat" or $daily.poppy.lastAction is "flirt") and random(1,100) gte 82>>
 		<<set $daily.poppy.lakeNap to true>>
-		Poppy looks rather drowsy.
+		포피가 꽤 졸려 보인다.
 		<br><br>
-		<<link [[Next|Lake Poppy Doze]]>><</link>>
+		<<link [[다음|Lake Poppy Doze]]>><</link>>
 	<<else>>
 		<<if _poppyFreshEntry>>
 				<<if $awarelevel gte 5>>
-					Poppy's ears twitch as you get closer. 
+					당신이 가까이 다가가자 포피의 귀가 씰룩인다.
 					<br><br>
 					<<if _poppyLow>>But <<he>> doesn't acknowledge you.<<else>><<He>> turns <<his>> head towards you and smiles.<</if>> You sit down beside Poppy.
 				<<else>>
 					<<if _poppyLow>>Poppy doesn't acknowledge you.<<else>>Poppy turns <<his>> head towards you and smiles.<</if>>
 					<br><br>
-					You sit down beside Poppy.
+					당신은 포피 옆에 앉는다.
 				<</if>>
 
 				<<if !_poppyLow and !$poppySeen.includes("lake_meditation_intro") and !Weather.isFrozen("lake")>>
 					<br><br>
-					"Perfect weather to enjoy the beauty of nature, don't you think?" <<His>> smile widens as a duck swam by with its little ducklings. "I named that one Sei." <<He>> points at a duck from across the river and laughs.
+					"자연의 아름다움을 즐기기에 완벽한 날씨야, 그렇지 않아?" 새끼 오리들을 거느린 오리 한 마리가 헤엄쳐 지나가자 <<His>> 미소가 더 커진다. "저 애는 내가 세이라고 이름 붙였어." <<He>>【은는】 강 건너편의 오리를 가리키며 웃는다.
 					<<set $poppySeen.push("lake_meditation_intro")>>
 				<</if>>
 				<<poppyOpiumPulse>>
@@ -444,31 +444,31 @@
 		<<socialiseicon>><<link [[Flirt (0:15)|Lake Poppy Flirt]]>><<pass 15>><<set $daily.poppy.lastAction to "flirt">><</link>><<promiscuous1>><<if T.poppyLoveGainAllowed>><<glove>><</if>><<if _poppyRom gte 0 and !_poppyLow>><<glust>><</if>>
 		<br>
 		<<if effectiveTransformationLevel("wolf") gte 6>>
-			<<tficon "wolf">><<link [[Howl (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "wolf">><</link>>
+			<<tficon "wolf">><<link [[울부짖는다 (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "wolf">><</link>>
 			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
 			<br>
 		<<elseif effectiveTransformationLevel("fox") gte 6>>
-			<<tficon "fox">><<link [[Yip (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "fox">><</link>>
+			<<tficon "fox">><<link [[캥캥 짖는다 (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "fox">><</link>>
 			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
 			<br>
 		<<elseif effectiveTransformationLevel("cow") gte 6>>
-			<<tficon "cow">><<link [[Gently headbutt (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "cow">><</link>>
+			<<tficon "cow">><<link [[살며시 머리를 들이받는다 (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "cow">><</link>>
 			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
 			<br>
 		<<elseif effectiveTransformationLevel("bird") gte 6>>
-			<<birdicon "sing">><<link [[Sing (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "harpy">><</link>>
+			<<birdicon "sing">><<link [[노래한다 (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "harpy">><</link>>
 			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
 			<br>
 		<<elseif effectiveTransformationLevel("cat") gte 6>>
-			<<tficon "cat">><<link [[Nuzzle (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "cat">><</link>>
+			<<tficon "cat">><<link [[얼굴을 비빈다 (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "cat">><</link>>
 			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
 			<br>
 		<<elseif effectiveTransformationLevel("bear") gte 6>>
-			<<tficon "bear">><<link [[Lean (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "bear">><</link>>
+			<<tficon "bear">><<link [[기댄다 (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "bear">><</link>>
 			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
 			<br>
 		<<elseif effectiveTransformationLevel("bunny") gte 6>>
-			<<tficon "bunny">><<link [[Headbutt (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "bunny">><</link>>
+			<<tficon "bunny">><<link [[머리를 들이받는다 (0:20)|Lake Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "bunny">><</link>>
 			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
 			<br>
 		<</if>>
@@ -479,7 +479,7 @@
 			<<skinicon "give">><<link [[Gift food|Poppy Lake Gifts List]]>><<set $daily.poppy.lastAction to "gift">><</link>>
 		<</if>>
 		<br>
-		<<getouticon>><<link [[Leave|Lake Shore]]>><<endevent>><<set $eventskip to 0>><</link>>
+		<<getouticon>><<link [[떠난다|Lake Shore]]>><<endevent>><<set $eventskip to 0>><</link>>
 	<</if>>
 <</widget>>
 <<widget "poppyLakeReturn">>
@@ -487,9 +487,9 @@
 	<<set _poppyMins to Time.minutesSinceMidnight>>
 	<<set _poppyPrecip to Weather.precipitation>>
 	<<if !C.npc.Poppy or C.npc.Poppy.init isnot 1 or T.poppy_location isnot "lake" or _poppyMins lt 540 or _poppyMins gte 720 or _poppyPrecip is "rain" or _poppyPrecip is "snow">>
-		Poppy glances at <<his>> watch. "Oh, look at the time."
+		포피가 <<his>> 손목시계를 힐끗 본다. "어머, 벌써 시간이 이렇게 됐네."
 		<br><br>
-		<<link [[Next|Lake Poppy Departure]]>><<set $eventskip to 0>><</link>>
+		<<link [[다음|Lake Poppy Departure]]>><<set $eventskip to 0>><</link>>
 	<<else>>
 		<<set $eventskip to 1>>
 		<<poppyLakeMenu>>
@@ -517,31 +517,31 @@
 
 	/* Post-action return: use Next links instead of include */
 	<<elseif _poppyPostAction and _poppyLeaveNow>>
-		Poppy glances at <<his>> watch. "Oh, look at the time."
+		포피가 <<his>> 손목시계를 힐끗 본다. "어머, 벌써 시간이 이렇게 됐네."
 		<br><br>
-		<<link [[Next|Flats Poppy Departure]]>><</link>>
+		<<link [[다음|Flats Poppy Departure]]>><</link>>
 	<<elseif _poppyPostAction and $tiredness gte C.tiredness.max>>
-		A sudden wave of exhaustion hits you.
+		갑작스러운 피로가 몰려온다.
 		<br><br>
-		<<link [[Next|Flats Poppy Pass Out]]>><</link>>
+		<<link [[다음|Flats Poppy Pass Out]]>><</link>>
 	<<elseif _poppyPostAction and !$daily.poppy.flatsNap and !$daily.poppy.forceNoNap and !_poppyLow and ($daily.poppy.lastAction is "chat" or $daily.poppy.lastAction is "flirt") and random(1,100) gte 82>>
 		<<set $daily.poppy.flatsNap to true>>
-		Poppy looks rather drowsy.
+		포피가 꽤 졸려 보인다.
 		<br><br>
-		<<link [[Next|Flats Poppy Doze]]>><</link>>
+		<<link [[다음|Flats Poppy Doze]]>><</link>>
 	<<else>>
 		<<if _poppyFreshEntry>>
 				<<if $awarelevel gte 5>>
 					<<if _poppyLow>>
-						Poppy's fox ears twitch as you get closer. The cushion sinks as you sit down beside Poppy. <<He>> doesn't acknowledge you.
+						당신이 가까이 다가가자 포피의 여우 귀가 씰룩인다. 당신이 포피 옆에 앉자 쿠션이 푹 꺼진다. <<He>>【은는】 당신을 아는 체하지 않는다.
 					<<else>>
-						Poppy's fox ears twitch as you get closer. <<He>> turns <<his>> head towards you and smiles. The cushion sinks as you sit down beside Poppy.
+						당신이 가까이 다가가자 포피의 여우 귀가 씰룩인다. <<He>>【은는】 당신 쪽으로 고개를 돌리며 미소 짓는다. 당신이 포피 옆에 앉자 쿠션이 푹 꺼진다.
 					<</if>>
 				<<else>>
 					<<if _poppyLow>>
-						The cushion sinks as you sit down beside Poppy. <<He>> doesn't acknowledge you.
+						당신이 포피 옆에 앉자 쿠션이 푹 꺼진다. <<He>>【은는】 당신을 아는 체하지 않는다.
 					<<else>>
-						<<He>> turns <<his>> head towards you and smiles. The cushion sinks as you sit down beside Poppy.
+						<<He>>【은는】 당신 쪽으로 고개를 돌리며 미소 짓는다. 당신이 포피 옆에 앉자 쿠션이 푹 꺼진다.
 					<</if>>
 				<</if>>
 			<<poppyOpiumPulse>>
@@ -549,19 +549,19 @@
 		<<if playerAwareTheyArePregnant()>>
 			<<if C.npc.Poppy.pregnancy.test is true>>
 				/* PC came back with paternity proof */
-				<<procedureicon "paternity">><<link [[Show Poppy the paternity result (0:05)|Poppy Pregnancy Reveal]]>><<pass 5>><</link>>
+				<<procedureicon "paternity">><<link [[포피에게 친자 확인 결과를 보여 준다 (0:05)|Poppy Pregnancy Reveal]]>><<pass 5>><</link>>
 				<br><br>
 			<<elseif !knowsAboutPregnancy("pc", "Poppy")>>
 				/* PC has never told Poppy; show whatever PC has */
 				<<if getPlayerPregnancy()?.ultrasoundDone and C.npc.Poppy.pregnancy.ultraSound is "requested">>
 					/* Poppy already saw the test once and asked for proof */
-					<<pregnancyicon "player">><<link [[Show Poppy the ultrasound (0:05)|Poppy Pregnancy Reveal]]>>
+					<<pregnancyicon "player">><<link [[포피에게 초음파 사진을 보여 준다 (0:05)|Poppy Pregnancy Reveal]]>>
 						<<set C.npc.Poppy.pregnancy.ultraSound to "collected">><<pass 5>>
 					<</link>>
 					<br>
 				<<elseif getPlayerPregnancy()?.ultrasoundDone>>
 					/* PC has both test and ultrasound in hand, combined reveal */
-					<<pregnancyicon "player">><<link [[Show Poppy the pregnancy test and ultrasound (0:05)|Poppy Pregnancy Reveal]]>>
+					<<pregnancyicon "player">><<link [[포피에게 임신 테스트기와 초음파 사진을 보여 준다 (0:05)|Poppy Pregnancy Reveal]]>>
 						<<set C.npc.Poppy.pregnancy.ultraSound to "collected">><<pass 5>>
 					<</link>>
 					<br>
@@ -601,31 +601,31 @@
 			<br>
 		<</if>>
 		<<if effectiveTransformationLevel("wolf") gte 6>>
-			<<tficon "wolf">><<link [[Howl (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "wolf">><</link>>
+			<<tficon "wolf">><<link [[울부짖는다 (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "wolf">><</link>>
 			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
 			<br>
 		<<elseif effectiveTransformationLevel("fox") gte 6>>
-			<<tficon "fox">><<link [[Yip (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "fox">><</link>>
+			<<tficon "fox">><<link [[캥캥 짖는다 (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "fox">><</link>>
 			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
 			<br>
 		<<elseif effectiveTransformationLevel("cow") gte 6>>
-			<<tficon "cow">><<link [[Gently headbutt (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "cow">><</link>>
+			<<tficon "cow">><<link [[살며시 머리를 들이받는다 (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "cow">><</link>>
 			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
 			<br>
 		<<elseif effectiveTransformationLevel("bird") gte 6>>
-			<<birdicon "sing">><<link [[Sing (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "harpy">><</link>>
+			<<birdicon "sing">><<link [[노래한다 (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "harpy">><</link>>
 			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
 			<br>
 		<<elseif effectiveTransformationLevel("cat") gte 6>>
-			<<tficon "cat">><<link [[Nuzzle (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "cat">><</link>>
+			<<tficon "cat">><<link [[얼굴을 비빈다 (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "cat">><</link>>
 			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
 			<br>
 		<<elseif effectiveTransformationLevel("bear") gte 6>>
-			<<tficon "bear">><<link [[Lean (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "bear">><</link>>
+			<<tficon "bear">><<link [[기댄다 (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "bear">><</link>>
 			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
 			<br>
 		<<elseif effectiveTransformationLevel("bunny") gte 6>>
-			<<tficon "bunny">><<link [[Headbutt (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "bunny">><</link>>
+			<<tficon "bunny">><<link [[머리를 들이받는다 (0:20)|Flats Poppy TF]]>><<pass 20>><<set $daily.poppy.lastAction to "tf">><<set $daily.poppy.lastTFType to "bunny">><</link>>
 			<<if T.poppyLoveGainAllowed>><<glove>><</if>><<ltrauma>><<lstress>><<if _poppyAngerSide>><<langer>><<else>><<gpatience>><</if>>
 			<br>
 		<</if>>
@@ -636,18 +636,18 @@
 			<<skinicon "give">><<link [[Gift food|Flats Poppy Gift Food]]>><<set $daily.poppy.lastAction to "gift">><</link>>
 		<</if>>
 		<br>
-		<<getouticon>><<link [[Leave|Flats Poppy Living Room]]>><<set $eventskip to 0>><</link>>
+		<<getouticon>><<link [[떠난다|Flats Poppy Living Room]]>><<set $eventskip to 0>><</link>>
 	<</if>>
 <</widget>>
 
 <<widget "poppyChristmasGiftOption">>
 	<<if $christmas is 1 and $christmas_gift_poppy_wrapped is 1 and $christmas_gift_poppy_given is undefined>>
 		<<if _args[0] is "lake">>
-			<<gifticon "love">><<link [[Give Poppy Christmas gift (0:10)|Poppy Christmas Gift]]>><<pass 10>><<set $daily.poppy.lastAction to "gift">><<set $poppyGiftVenue to "lake">><</link>>
+			<<gifticon "love">><<link [[포피에게 크리스마스 선물을 준다 (0:10)|Poppy Christmas Gift]]>><<pass 10>><<set $daily.poppy.lastAction to "gift">><<set $poppyGiftVenue to "lake">><</link>>
 		<<else>>
-			You see Poppy adjusting some Christmas ornaments.
+			포피가 크리스마스 장식을 매만지고 있는 것이 보인다.
 			<br><br>
-			<<gifticon "love">><<link [[Give Poppy Christmas gift (0:10)|Poppy Christmas Gift]]>><<pass 10>><<set $daily.poppy.lastAction to "gift">><<set $poppyGiftVenue to "flat">><</link>>
+			<<gifticon "love">><<link [[포피에게 크리스마스 선물을 준다 (0:10)|Poppy Christmas Gift]]>><<pass 10>><<set $daily.poppy.lastAction to "gift">><<set $poppyGiftVenue to "flat">><</link>>
 		<</if>>
 		<br>
 	<</if>>
@@ -655,9 +655,9 @@
 
 <<widget "poppyChristmasTuxedoOpener">>
 	<<if C.npc.Poppy.pronoun is "f">>
-		Poppy pauses when <<he>> sees the suit. <<He>> glances up at you for a moment, then smirks. "If you want to see me in a suit, you could've just said so~" Poppy holds up the suit and sways it.
+		포피는 정장을 보고 잠시 멈칫한다. <<He>>【은는】 잠깐 당신을 올려다보더니 씩 웃는다. "내가 정장 입은 모습이 보고 싶었으면 그냥 말하지 그랬어." 포피가 정장을 들어 올려 이리저리 흔든다.
 	<<else>>
-		"Oh wow! This must have been expensive, isn't it?" Poppy feels the fabric of the suit, a smile starts to creep onto <<his>> face.
+		"와, 대박! 이거 비쌌겠는데, 그렇지?" 포피가 정장의 천을 손으로 만져 본다. <<his>> 얼굴에 미소가 슬며시 번지기 시작한다.
 	<</if>>
 	<br><br>
 <</widget>>
@@ -673,19 +673,19 @@
 <</widget>>
 
 <<widget "poppyChristmasBaileyPayment">>
-	While you're speaking to Poppy, you see the door to Bailey's office open behind <<him>> as Bailey comes out to investigate the hubbub caused by Poppy's gift of sweets. <<nnpc_He "Bailey">> doesn't look happy.
+	당신이 포피와 이야기하는 동안, <<his>> 뒤로 베일리 사무실의 문이 열리고 포피가 선물한 과자 때문에 일어난 소란을 살피러 베일리가 나오는 것이 보인다. <<nnpc_He "Bailey">>【은는】 기분이 좋아 보이지 않는다.
 	<br><br>
-	Poppy notices you looking over <<his>> shoulder and turns around to see Bailey. <<He>> approaches Bailey with something in <<his>> hand. 
+	포피가 당신이 <<his>> 어깨 너머를 보고 있다는 것을 알아채고 돌아서서 베일리를 본다. <<He>>【은는】 손에 무언가를 든 채 베일리에게 다가간다.
 	<br><br>
 	<<if currentSkillValue('skulduggery') gte 200>>
-		<span class="teal">With a thief's eye, you see what others miss.</span> Poppy is handing Bailey a small stack of cash.
+		<span class="teal">도둑의 눈으로 보면 남들이 놓치는 것이 보인다.</span> 포피가 베일리에게 작은 현금 뭉치를 건네고 있다.
 		<br><br>
 	<<elseif hasSharpSenses("sight") or hasSharpSenses("instincts")>>
 		Your <span class="green">sharp eyes</span> catch the movement of Poppy's fingers. <<Hes>> handing Bailey a small stack of cash.
 		<br><br>
 	<<else>>
-		Bailey's expression changes as Poppy approaches. Whatever Poppy says is too quiet for you to hear.
+		포피가 다가가자 베일리의 표정이 바뀐다. 포피가 무슨 말을 하든 너무 작아서 들리지 않는다.
 		<br><br>
 	<</if>>
-	Bailey takes it and nods <<nnpc_his "Bailey">> head. <<nnpc_He "Bailey">> heads out of the orphanage, likely wanting to get away from the noise.
+	베일리가 그것을 받아 <<nnpc_his "Bailey">> 고개를 끄덕인다. <<nnpc_He "Bailey">>【은는】 소란에서 벗어나려는 듯 고아원 밖으로 나간다.
 <</widget>>

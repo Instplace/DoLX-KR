@@ -8,62 +8,64 @@
 		<<set _fluid to "fluid">>
 		<<set _Slimy to "Slimy">>
 	<</if>>
-	<<set _The to ($abomination is 1 ? "<<His>>" : "The")>>
-	<<set _the to ($abomination is 1 ? "<<his>>" : "the")>>
+	<<set _fluidText to (_fluid is "nectar" ? "넥타르" : "액체")>>
+	<<set _slimyText to (_Slimy is "Sticky" ? "끈적한" : "미끈한")>>
+	<<set _The to ($abomination is 1 ? "<<His>>" : "그")>>
+	<<set _the to ($abomination is 1 ? "<<his>>" : "그")>>
 
 	<<if $abomination is 1 and $ejaculating is 1>>
-		<<statetentacles>>
-		<<if (_tentacle.head is "anus" or _tentacle.head is "anusdeep") and _tentacle.baby isnot 0>>
-			<<impregnateParasite _tentacle.baby _tentacle.babychance>>
-			<<fertiliseParasites>>
-			<<set _tentacleAnus to _impregnatedParasite is "anus" ? $tentacleAnus : 0>>
-		<</if>>
-		<<if (_tentacle.head is "vagina" or _tentacle.head is "vaginadeep") and _tentacle.baby isnot 0>>
-			<<impregnateParasite _tentacle.baby _tentacle.babychance "vagina">>
-			<<fertiliseParasites "vagina">>
-			<<set _tentacleVagina to _impregnatedParasite is "vagina" ? $tentacleVagina : 0>>
-		<</if>>
-		<<if _tentacle.shaft isnot "finished" and _tentacle.head isnot "finished">>
-			<<if _firsttentacle isnot 1>><<set _firsttentacle to 1>>_The<</if>>
-			<<if $tentacles.active is 1>>
-				<<if _retract isnot 3 and _retract isnot 2>><<set _retract to 1>><</if>>
-				<<if _retract is 1>>
-					_tentacle.fullDesc retracts
-				<<elseif _retract is 2>>
-					and <<print _tentacle.fullDesc>>s both retract
-				<<else>>
-					and <<print _tentacle.fullDesc>>s all retract
-				<</if>>
-				<<if _tentacleVagina and _tentacleAnus>>
-					away from you, the _tentacleVagina and _tentacleAnus <span class="red">pumping something into your vagina and anus</span> before leaving.
-				<<elseif _tentacleVagina>>
-					away from you,<<if _retract isnot 1>> the _tentacleVagina<</if>> <span class="red">pumping something into your vagina</span> before leaving.
-				<<elseif _tentacleAnus>>
-					away from you,<<if _retract isnot 1>> the _tentacleAnus<</if>> <span class="red">pumping something into your anus</span> before leaving.
-				<<else>>
-					away from you.
-				<</if>>
-				<br>
-			<<elseif $tentacles.active is 2>>
-				<<if _retract isnot 3>><<set _retract to 2>><</if>>
-				_tentacle.desc
-			<<else>>
-				<<set _retract to 3>>
-				_tentacle.desc,
-			<</if>>
-			<<tentacleadvdisable _tentacle>>
-			<<set _tentacle.shaft to "finished">><<set _tentacle.head to "finished">>
-		<</if>>
-	<</if>>
+        <<statetentacles>>
+        <<if (_tentacle.head is "anus" or _tentacle.head is "anusdeep") and _tentacle.baby isnot 0>>
+            <<impregnateParasite _tentacle.baby _tentacle.babychance>>
+            <<fertiliseParasites>>
+            <<set _tentacleAnus to _impregnatedParasite is "anus" ? $tentacleAnus : 0>>
+        <</if>>
+        <<if (_tentacle.head is "vagina" or _tentacle.head is "vaginadeep") and _tentacle.baby isnot 0>>
+            <<impregnateParasite _tentacle.baby _tentacle.babychance "vagina">>
+            <<fertiliseParasites "vagina">>
+            <<set _tentacleVagina to _impregnatedParasite is "vagina" ? $tentacleVagina : 0>>
+        <</if>>
+        <<if _tentacle.shaft isnot "finished" and _tentacle.head isnot "finished">>
+            <<if _firsttentacle isnot 1>><<set _firsttentacle to 1>>_The <</if>>
+            <<if $tentacles.active is 1>>
+                <<if _retract isnot 3 and _retract isnot 2>><<set _retract to 1>><</if>>
+                <<if _retract is 1>>
+                    <<print _tentacle.fullDesc>>【이가】
+                <<elseif _retract is 2>>
+                    그리고 <<print _tentacle.fullDesc>>【이가】 둘 다
+                <<else>>
+                    그리고 <<print _tentacle.fullDesc>>【이가】 전부
+                <</if>>
+                <<if _tentacleVagina and _tentacleAnus>>
+                    당신에게서 떨어져 나간다. _tentacleVagina【와과】 _tentacleAnus【은는】 떠나기 전 <span class="red">당신의 보지와 항문 안으로 무언가를 뿜어 넣는다.</span>
+                <<elseif _tentacleVagina>>
+                    당신에게서 떨어져 나간다.<<if _retract isnot 1>> _tentacleVagina【은는】 <</if>> 떠나기 전 <span class="red">당신의 보지 안으로 무언가를 뿜어 넣는다.</span>
+                <<elseif _tentacleAnus>>
+                    당신에게서 떨어져 나간다.<<if _retract isnot 1>> _tentacleAnus【은는】 <</if>> 떠나기 전 <span class="red">당신의 항문 안으로 무언가를 뿜어 넣는다.</span>
+                <<else>>
+                    당신에게서 떨어져 나간다.
+                <</if>>
+                <br>
+            <<elseif $tentacles.active is 2>>
+                <<if _retract isnot 3>><<set _retract to 2>><</if>>
+                <<print _tentacle.fullDesc>> 
+            <<else>>
+                <<set _retract to 3>>
+                <<print _tentacle.fullDesc>>, 
+            <</if>>
+            <<tentacleadvdisable _tentacle>>
+            <<set _tentacle.shaft to "finished">><<set _tentacle.head to "finished">>
+        <</if>>
+    <</if>>
 
 	<<if _tentacle.tentaclehealth lte 0 and _tentacle.shaft isnot "finished">>
 		<<if _tentacle.tentaclehealth lte -250>>
-			<span class="red">_The _tentacle.fullDesc crumbles to dust.</span>
+			<span class="red">_The _tentacle.fullDesc【은는】 먼지가 되어 바스러진다.</span>
 		<<elseif ["leftarm","rightarm"].includes(_tentacle.head)>>
-			<span class="green">Worn out, _the _tentacle.fullDesc writhes around your hand and squeezes, before retracting from you.</span>
+			<span class="green">기진맥진한 _the _tentacle.fullDesc【은는】 당신의 손 주변에서 꿈틀거리며 꽉 조인 뒤, 당신에게서 물러난다.</span>
 			<<takeHandholdingVirginity `$abomination is 1 ? $NPCList[0].fullDescription + "'s " + _tentacle.fullDesc : _tentacle.fullDesc` "tentacle" _tentacle.type true>>
 		<<else>>
-			<span class="green">Worn out, _the _tentacle.fullDesc retracts from you.</span>
+			<span class="green">기진맥진한 _the _tentacle.fullDesc【은는】 당신에게서 물러난다.</span>
 		<</if>>
 		<<tentacleadvdisable _tentacle>>
 		<<set _tentacle.shaft to "finished">><<set _tentacle.head to "finished">>
@@ -71,22 +73,22 @@
 	<</if>>
 
 	<<if $novaginal is 1 and (_tentacle.head is "vaginaentrance" or _tentacle.head is "vaginaimminent" or _tentacle.head is "vagina" or _tentacle.head is "vaginadeep")>>
-		The <<personsimple>> clicks <<his>> tongue, and <span class="lblue">_the _tentacle.fullDesc retracts from your <<pussy>>.</span>
+		<<personsimple>>【은는】 혀를 차고, <span class="lblue">_the _tentacle.fullDesc【은는】 당신의 <<pussy>>에서 물러난다.</span>
 		<<tentacleadvdisable _tentacle>>
 	<</if>>
 
 	<<if $noanal is 1 and (_tentacle.head is "anusentrance" or _tentacle.head is "anusimminent" or _tentacle.head is "anus" or _tentacle.head is "anusdeep")>>
-		The <<personsimple>> clicks <<his>> tongue, and <span class="lblue">_the _tentacle.fullDesc retracts from your <<bottom>>.</span>
+		<<personsimple>>【은는】 혀를 차고, <span class="lblue">_the _tentacle.fullDesc【은는】 당신의 <<bottom>>에서 물러난다.</span>
 		<<tentacleadvdisable _tentacle>>
 	<</if>>
 
 	<<if $nopenile is 1 and (_tentacle.head is "penisentrance" or _tentacle.head is "penisimminent" or _tentacle.head is "penis" or _tentacle.head is "penisdeep")>>
-		The <<personsimple>> clicks <<his>> tongue, and <span class="lblue">_the _tentacle.fullDesc retracts from your <<penis>>.</span>
+		<<personsimple>>【은는】 혀를 차고, <span class="lblue">_the _tentacle.fullDesc【은는】 당신의 <<penis>>에서 물러난다.</span>
 		<<tentacleadvdisable _tentacle>>
 	<</if>>
 
 	<<if $nochoke is 1 and _tentacle.shaft is "neck">>
-		The <<personsimple>> clicks <<his>> tongue, and <span class="lblue">_the _tentacle.fullDesc retracts from your neck</span>.
+		<<personsimple>>【은는】 혀를 차고, <span class="lblue">_the _tentacle.fullDesc【은는】 당신의 목에서 물러난다</span>.
 		<<tentacleadvdisable _tentacle>>
 	<</if>>
 
@@ -103,55 +105,59 @@
 		<<tentacleadvdisable _tentacle>>
 	<</if>>
 
-	<<if _tentacle.shaft is "tummy">>_The _tentacle.fullDesc <<slithers>> around your tummy,<</if>>
-	<<if _tentacle.shaft is "thighs">>_The _tentacle.fullDesc <<slithers>> between your thighs,<</if>>
-	<<if _tentacle.shaft is "breasts">>_The _tentacle.fullDesc squeezes your breasts together,<</if>>
-	<<if _tentacle.shaft is "chest">>_The _tentacle.fullDesc <<slithers>> around your chest,<</if>>
-	<<if _tentacle.shaft is "waist">>_The _tentacle.fullDesc <<slithers>> around your waist,<</if>>
-	<<if _tentacle.shaft is "neck">>_The _tentacle.fullDesc <<slithers>> around your neck,<</if>>
-	<<if _tentacle.shaft is "shoulders">>_The _tentacle.fullDesc <<slithers>> around your shoulders,<</if>>
-	<<if _tentacle.shaft is "leftleg">><span class="blue">_The _tentacle.fullDesc <<slithers>> around your left leg</span>,<</if>>
-	<<if _tentacle.shaft is "rightleg">><span class="blue">_The _tentacle.fullDesc <<slithers>> around your right leg</span>,<</if>>
-	<<if _tentacle.shaft is "leftarm">><span class="blue">_The _tentacle.fullDesc <<slithers>> around your left arm</span>,<</if>>
-	<<if _tentacle.shaft is "rightarm">><span class="blue">_The _tentacle.fullDesc <<slithers>> around your right arm</span>,<</if>>
+	<<if _tentacle.shaft is "tummy">>_The _tentacle.fullDesc【은는】 당신의 배 주변에서 <<slithers>><</if>>
+	<<if _tentacle.shaft is "thighs">>_The _tentacle.fullDesc【은는】 당신의 허벅지 사이로 <<slithers>><</if>>
+	<<if _tentacle.shaft is "breasts">>_The _tentacle.fullDesc【은는】 당신의 <<breasts>>【을를】 한데 모아 조인다.<</if>>
+	<<if _tentacle.shaft is "chest">>_The _tentacle.fullDesc【은는】 당신의 가슴 주변에서 <<slithers>><</if>>
+	<<if _tentacle.shaft is "waist">>_The _tentacle.fullDesc【은는】 당신의 허리 주변에서 <<slithers>><</if>>
+	<<if _tentacle.shaft is "neck">>_The _tentacle.fullDesc【은는】 당신의 목 주변에서 <<slithers>><</if>>
+	<<if _tentacle.shaft is "shoulders">>_The _tentacle.fullDesc【은는】 당신의 어깨 주변에서 <<slithers>><</if>>
+	<<if _tentacle.shaft is "leftleg">><span class="blue">_The _tentacle.fullDesc【은는】 당신의 왼쪽 다리 주변에서 <<slithers>></span><</if>>
+	<<if _tentacle.shaft is "rightleg">><span class="blue">_The _tentacle.fullDesc【은는】 당신의 오른쪽 다리 주변에서 <<slithers>></span><</if>>
+	<<if _tentacle.shaft is "leftarm">><span class="blue">_The _tentacle.fullDesc【은는】 당신의 왼팔 주변에서 <<slithers>></span><</if>>
+	<<if _tentacle.shaft is "rightarm">><span class="blue">_The _tentacle.fullDesc【은는】 당신의 오른팔 주변에서 <<slithers>></span><</if>>
 
 	<<if _tentacle.head is "leftarm">>
-		_The _tentacle.fullDesc writhes in your left hand.
+		_The _tentacle.fullDesc【은는】 당신의 왼손 안에서 꿈틀거린다.
 		<<neutral 5>>
 		<br>
 	<</if>>
 	<<if _tentacle.head is "rightarm">>
-		_The _tentacle.fullDesc writhes in your right hand.
+		_The _tentacle.fullDesc【은는】 당신의 오른손 안에서 꿈틀거린다.
 		<<neutral 5>>
 		<br>
 	<</if>>
 	<<if _tentacle.head is "feet">>
-		_The _tentacle.fullDesc writhes between your feet.
+		_The _tentacle.fullDesc【은는】 당신의 양발 사이에서 꿈틀거린다.
 		<<neutral 5>>
 		<br>
 	<</if>>
 
 	<<if _tentacle.head is "leftnipplesuck">>
-		and<<if _tentacle.shaft is "breasts">> <<slithers>><</if>> up to your <<breasts>>, where it suckles your left nipple.
+		<<if _tentacle.shaft is "breasts">>당신의 <<breasts>> 사이를 <<slithers>> <</if>>그리고 당신의 <<breasts>>까지 올라와서 왼쪽 유두를 빤다.
 		<<playWithBreasts>><<neutralbreast 3>>
 		<br>
 	<</if>>
 
 	<<if _tentacle.head is "rightnipplesuck">>
-		and<<if _tentacle.shaft is "breasts">> <<slithers>><</if>> up to your <<breasts>>, where it suckles your right nipple.
+		<<if _tentacle.shaft is "breasts">>당신의 <<breasts>> 사이를 <<slithers>> <</if>>그리고 당신의 <<breasts>>까지 올라와서 오른쪽 유두를 빤다.
 		<<playWithBreasts>><<neutralbreast 3>>
 		<br>
 	<</if>>
 
 	<<if _tentacle.head is "leftnipple">>
-		and continues teasing your left nipple. <span class="purple">The tip of the <<print _tentacle.type>> opens up, latches on, then begins sucking.</span>
+		그리고 계속해서 왼쪽 유두를 애무한다.
+		<span class="purple">
+			<<print window.KR.getCreatureTypeKr(_tentacle.type)>></span>의 끝부분이 열리더니 달라붙어 빨기 시작한다.
 		<<set _tentacle.head to "leftnipplesuck">><<set $leftnipple to "tentaclesuck">>
 		<<playWithBreasts>><<neutralbreast 3>>
 		<br>
 	<</if>>
 
 	<<if _tentacle.head is "rightnipple">>
-		and continues teasing your right nipple. <span class="purple">The tip of the <<print _tentacle.type>> opens up, latches on, then begins sucking.</span>
+		그리고 계속해서 오른쪽 유두를 애무한다.
+		<span class="purple">
+			<<print window.KR.getCreatureTypeKr(_tentacle.type)>></span>의 끝부분이 열리더니 달라붙어 빨기 시작한다.
 		<<set _tentacle.head to "rightnipplesuck">><<set $rightnipple to "tentaclesuck">>
 		<<playWithBreasts>><<neutralbreast 3>>
 		<br>
@@ -159,10 +165,10 @@
 
 	<<if _tentacle.head is "chest">>
 		<<if $chestuse is 0>>
-			moves away from your <<breasts>>
+			당신의 <<breasts>>에서 물러나,
 			<<set _tentacle.head to 0>>
 		<<else>>
-			then<<if _tentacle.shaft is "breasts">> <<slithers>><</if>> up between your <<breasts>>, rubbing itself between them.
+			<<if _tentacle.shaft is "breasts">>당신의 <<breasts>> 사이를 <<slithers>> <</if>>이내 당신의 <<breasts>> 사이로 올라와, 그 사이에서 스스로를 문지른다.
 			<<neutralbreast 2>>
 			<<tentacle_skin "breasts">>
 		<</if>>
@@ -170,9 +176,9 @@
 	<</if>>
 
 	<<if _tentacle.head is "mouthdeep">>
-		and<<if _tentacle.shaft is "breasts">> <<slithers>><</if>> up into your mouth where it spurts a sweet _fluid down your throat at the apex of each thrust.
+		<<if _tentacle.shaft is "breasts">>당신의 <<breasts>> 사이를 <<slithers>> <</if>>그리고 당신의 입안으로 파고들어, 찔러올 때마다 목구멍 아래로 달콤한 _fluidText【을를】 뿜어낸다.
 		<<if $ejactrait gte 1>>
-			The sensation of the thick liquid flowing down your throat makes you shiver.
+			목구멍으로 걸쭉한 액체가 흘러내리는 감각에 당신은 몸을 떤다.
 		<</if>>
 		<<tentacle_skin "mouth">>
 		<<purity -1>><<internalejac>><<sex 5 "mouth">>
@@ -188,7 +194,7 @@
 	<</if>>
 
 	<<if _tentacle.head is "mouth">>
-		and continues thrusting into your mouth. <span class="pink">The tip opens and begins oozing a sweet _fluid.</span>
+		그리고 당신의 입안으로 계속 들이박는다. <span class="pink">그 끝부분이 열리며 달콤한 _fluidText【을를】 흘리기 시작한다.</span>
 		<<tentacle_skin "mouth">>
 		<<purity -1>><<internalejac>><<sex 5 "mouth">>
 		<<set $mouthstate to "tentacledeep">><<set _tentacle.head to "mouthdeep">>
@@ -198,16 +204,16 @@
 
 	<<if _tentacle.head is "mouthimminent">>
 		<<if $worn.face.type.includes("face_covering") or $worn.face.type.includes("gag")>>
-			<span class="blue">and thrashes against your <<print $worn.face.name>>, trying to force itself inside.</span>
+			<span class="blue">그리고 당신의 <<print $worn.face.name>>에 몸을 짓이기며, 억지로 그 안으로 비집고 들어가려 한다.</span>
 			<<damageFaceCover 5>>
 		<<else>>
 			<<if $player.virginity.oral is true>>
 				<<switch _tentacle.size>>
 				<<case 3>>
-					<span class="pink">and thrusts between your lips forcing your mouth wide open, </span><span class="red">penetrating your mouth for the first time.</span>
+					<span class="pink">당신의 입술 사이로 밀고 들어와 입을 억지로 벌리게 하며, </span><span class="red">처음으로 당신의 입을 꿰뚫는다.</span>
 					<<violence 25>>
 				<<default>>
-					<span class="pink">and thrusts between your lips, </span><span class="red">penetrating your mouth for the first time.</span>
+					<span class="pink">당신의 입술 사이로 파고들며, </span><span class="red">처음으로 당신의 입을 꿰뚫는다.</span>
 				<</switch>>
 				<<takeVirginity `$abomination is 1 ? $NPCList[0].fullDescription + "'s " + _tentacle.fullDesc : _tentacle.fullDesc` "oral">><<violence 5>>
 				<<if $abomination is 1 and $NPCList[0].type is "plant">>
@@ -216,10 +222,10 @@
 			<<else>>
 				<<switch _tentacle.size>>
 				<<case 3>>
-					<span class="pink">and thrusts between your lips forcing your mouth wide open.</span>
+					<span class="pink">당신의 입술 사이로 밀고 들어와 억지로 입을 크게 벌린다.</span>
 					<<violence 25>>
 				<<default>>
-					<span class="pink">and thrusts between your lips.</span>
+					<span class="pink">당신의 입술 사이로 파고든다.</span>
 				<</switch>>
 			<</if>>
 			<<tentacle_skin "mouth">>
@@ -230,10 +236,10 @@
 
 	<<if _tentacle.head is "mouthentrance">>
 		<<if $worn.face.type.includes("face_covering") or $worn.face.type.includes("gag")>>
-			<span class="purple">and presses against your <<print $worn.face.name>>.</span>
+			<span class="purple">그리고 당신의 <<print $worn.face.name>>에 밀착한다.</span>
 			<<damageFaceCover 5>>
 		<<else>>
-			<span class="purple">and presses against your lips.</span>
+			<span class="purple">그리고 당신의 입술에 밀착한다.</span>
 			<<set $mouthstate to "tentacleimminent">><<set _tentacle.head to "mouthimminent">>
 			<<neutral 4 "mouth">>
 			<<set $tentacleMouth to _tentacle.fullDesc>>
@@ -243,15 +249,15 @@
 
 	<<if _tentacle.head is "vaginadeep">>
 		<<if _tentacle.baby isnot 0>>
-			and <<slithers>> into your <<pussy>> where it pumps a viscous _fluid <<if canImpregnateParasite("vagina")>><span class="red">alongside something else</span><</if>> at the apex of each thrust.
+			그리고 당신의 <<pussy>> 안으로 <<slithers>> 찔러올 때마다 끈적한 _fluidText<<if canImpregnateParasite("vagina")>> <span class="red">그리고 다른 무언가</span><</if>>【을를】 깊숙이 뿜어낸다.
 			<<impregnateParasite _tentacle.baby _tentacle.babychance "vagina">>
 			<<fertiliseParasites "vagina">>
 		<<else>>
-			and <<slithers>> into your <<pussy>> where it pumps a viscous _fluid at the apex of each thrust.
+			그리고 당신의 <<pussy>> 안으로 <<slithers>> 찔러올 때마다 끈적한 _fluidText【을를】 깊숙이 뿜어낸다.
 		<</if>>
 		<<if $tentacleVagina3 isnot undefined>>
 			<span class="pink">
-			<<print either(
+			"예쁜 돌을",
 				"It coils and writhes against the other two tentacles crammed inside you.",
 				"The three tentacles twist around each other inside you, each recoiling against the others.",
 				"You feel impossibly full as the three tentacles churn and grind within you."
@@ -259,7 +265,7 @@
 			</span>
 		<<elseif $tentacleVagina2 isnot undefined>>
 			<span class="pink">
-			<<print either(
+			"예쁜 돌을",
 				"It writhes and grinds against the other " + _tentacle.type + " stuffed inside you.",
 				"The pair of tentacles twist against each other inside you, thrusting out of rhythm.",
 				"It coils around the other tentacle within you, grinding together with each thrust."
@@ -281,10 +287,10 @@
 
 	<<if _tentacle.head is "vagina">>
 		<<if _tentacle.baby isnot 0 and canImpregnateParasite("vagina")>>
-			and continues thrusting into your <<pussy>>. <span class="pink">The tip opens and begins oozing a viscous _fluid <span class="red">alongside something else</span>.</span>
-			<span class="red">Something about it scares you.</span>
+			그리고 당신의 <<pussy>> 안으로 계속 들이박는다. <span class="pink">그 끝부분이 열리며 끈적한 _fluidText【와과】 <span class="red">다른 무언가</span>를 흘리기 시작한다.</span>
+			<span class="red">뭔가 당신을 두렵게 한다.</span>
 		<<else>>
-			and continues thrusting into your <<pussy>>. <span class="pink">The tip opens and begins oozing a viscous _fluid.</span>
+			그리고 당신의 <<pussy>> 안으로 계속 들이박는다. <span class="pink">그 끝부분이 열리며 끈적한 _fluidText【을를】 흘리기 시작한다.</span>
 		<</if>>
 		<<tentacle_skin "vagina">>
 		<<purity -1>><<internalejac>>
@@ -296,15 +302,15 @@
 	<<if _tentacle.head is "vaginaimminent">>
 		<<if $player.virginity.vaginal is true>>
 			<<if $sexStats.vagina.pregnancy.totalBirthEvents gt 0>>
-				<span class="pink">and thrusts into your <<pussy>>.</span> <span class="red">Despite your lack of a hymen, you feel something inside you change as your virginity and purity are taken.</span>
+				<span class="pink">당신의 <<pussy>> 안으로 쑤셔 넣는다.</span> <span class="red">처녀막이 없음에도 불구하고, 순결을 빼앗기며 내면에서 무언가가 변하는 것을 느낀다.</span>
 				<<violence 10>>
 			<<else>>
 				<<switch _tentacle.size>>
 					<<case 3>>
-						<span class="pink">and thrusts into your <<pussy>>, </span><span class="red">tearing your hymen and forever robbing you of your purity. You whimper as your <<pussy>> stretches to accommodate _the _tentacle.fullDesc.</span>
+						<span class="pink">당신의 <<pussy>> 안으로 들이박아, </span><span class="red">처녀막을 찢고 순결을 영원히 앗아간다. _the _tentacle.fullDesc【을를】 받아들이기 위해 당신의 <<pussy>>【이가】 벌어지자, 당신은 흐느낀다.</span>
 						<<violence 100>>
 					<<default>>
-						<span class="pink">and thrusts into your <<pussy>>, </span><span class="red">tearing your hymen and forever robbing you of your purity.</span>
+						<span class="pink">당신의 <<pussy>> 안으로 쑤셔 넣어, </span><span class="red">처녀막을 찢고 순결을 영원히 앗아간다.</span>
 				<</switch>>
 				<<violence 100>>
 				<<if $abomination is 1 and $NPCList[0].type is "plant">>
@@ -314,9 +320,9 @@
 		<<else>>
 			<<switch _tentacle.size>>
 			<<case 3>>
-				<span class="pink">and thrusts into your <<pussy>>.</span> <span class="red">You whimper as your <<pussy>> stretches to accommodate _the _tentacle.fullDesc.</span>
+				<span class="pink">당신의 <<pussy>> 안으로 들이박는다.</span> <span class="red">_the _tentacle.fullDesc【을를】 받아들이기 위해 당신의 <<pussy>>【이가】 벌어지자, 당신은 흐느낀다.</span>
 			<<default>>
-				<span class="pink">and thrusts into your <<pussy>>.</span>
+				<span class="pink">당신의 <<pussy>> 안으로 쑤셔 넣는다.</span>
 			<</switch>>
 		<</if>>
 		<<tentacle_skin "vagina">>
@@ -328,21 +334,21 @@
 	<<if _tentacle.head is "vaginaentrance">>
 		<<if !playerChastity("vagina")>>
 			<<if $vaginaWetness gte (_tentacle.size * 20) + random(1, 40) or random(1, 2) is 2>>
-				and presses into your <<pussy>>. <<vagina_lube_text>> <span class="pink">the tip presses into you, a thrust away from penetrating.</span>
+				그리고 당신의 <<pussy>>에 밀어붙인다. <<vagina_lube_text>> <span class="pink">그 끝부분이 당신을 내리누르며, 한 번만 더 찌르면 관통할 듯하다.</span>
 				<<set $vaginastate to "tentacleimminent">><<set _tentacle.head to "vaginaimminent">><<sex 10 "genitals">>
 				<<if setup.bodyliquid.combined("vagina") gte 1 or setup.bodyliquid.combined("vaginaoutside") gte 1>>
-					_Slimy _fluid oozes out.
+					_slimyText _fluidText【이가】 흘러나온다.
 				<</if>>
 			<<else>>
-				and presses against your <<pussy>>, <span class="blue">but fails to gain purchase.</span>
+				그리고 당신의 <<pussy>>에 밀착하지만, <span class="blue">제대로 자리를 잡지 못한다.</span>
 				<<sex 5 "genitals">>
 				<<if random(1, 3) gte 3>>
-					<span class="purple">_Slimy _fluid squirts from the tip, lubricating you</span>.
+					<span class="purple">끝부분에서 _slimyText _fluidText【이가】 뿜어져 나와 당신을 적신다.</span>
 					<<bodyliquid "vaginaoutside" _fluid>>
 				<</if>>
 			<</if>>
 		<<else>>
-			and tries to find a way inside to your <<pussy>>. Failing, it lashes the <<print setup.clothes.genitals[clothesIndex('genitals',$worn.genitals)].altDamage or "metal">>.
+			그리고 당신의 <<pussy>> 안으로 들어갈 길을 찾으려 한다. 실패하자, 그것은 <<print ({ metal: "금속", plastic: "플라스틱", parasite: "기생충" }[setup.clothes.genitals[clothesIndex('genitals',$worn.genitals)].altDamage] or "금속")>>【을를】 때린다.
 			<<set $worn.genitals.integrity -= 10>><<violence 1>>
 		<</if>>
 		<<set $tentacleVagina to _tentacle.fullDesc>>
@@ -350,7 +356,7 @@
 	<</if>>
 
 	<<if _tentacle.head is "penisdeep">>
-		and continues thrusting against your <<penis>>, caressing and kneading your length.
+		그리고 당신의 <<penis>>에 계속 들이박으며, 기둥을 쓰다듬고 주무른다.
 		<<sex 5 "genitals">><<set _tentacle.tentaclehealth -= 1>><<tentacle_record "arousal" 1>>
 		<<if $abomination is 1>>
 			<<enemypleasure 3>>
@@ -360,7 +366,7 @@
 	<</if>>
 
 	<<if _tentacle.head is "penis">>
-		and continues thrusting against your <<penis>>. <span class="pink">It sucks and kneads your length, trying to milk you of your cum.</span>
+		그리고 당신의 <<penis>>에 계속 들이박는다. <span class="pink">그것은 정액을 짜내려는 듯 당신의 기둥을 빨아들이고 주무른다.</span>
 		<<tentacle_skin "penis">>
 		<<set $penisstate to "tentacledeep">><<set _tentacle.head to "penisdeep">><<sex 5 "genitals">>
 		<br>
@@ -368,13 +374,13 @@
 
 	<<if _tentacle.head is "penisimminent">>
 		<<if $player.virginity.penile is true and !playerHasStrapon()>>
-			<span class="pink">and thrusts against your <<penis>>, swallowing you to the base and</span> <span class="red">tearing the membrane between your glans and foreskin, forever robbing you of your purity.</span>
+			<span class="pink">당신의 <<penis>>에 들이박으며, 뿌리까지 집어삼켜</span> <span class="red">귀두와 포피 사이의 점막을 찢고 순결을 영원히 앗아간다.</span>
 			<<violence 100>>
 			<<if $abomination is 1 and $NPCList[0].type is "plant">>
 				<<set $speechPenisVirgin to 2>>
 			<</if>>
 		<<else>>
-			<span class="pink">and thrusts against your <<penis>>, swallowing you to the base.</span>
+			<span class="pink">당신의 <<penis>>에 들이박으며, 뿌리까지 통째로 집어삼킨다.</span>
 		<</if>>
 		<<tentacle_skin "penis">>
 		<<takeVirginity `$abomination is 1 ? $NPCList[0].fullDescription + "'s " + _tentacle.fullDesc : _tentacle.fullDesc` "penile">>
@@ -389,22 +395,22 @@
 	<<if _tentacle.head is "penisentrance">>
 		<<if !playerChastity("penis")>>
 			<<if $penisWetness + (_tentacle.size * 10) gte (playerPenisSize() * 15) + random(1, 40) or random(1, 2) is 2>>
-				and <<slithers>> over to your <<penis>>. <<penis_lube_text>> <span class="pink">the tip opens and presses against your glans, a thrust away from enveloping.</span>
+				그리고 당신의 <<penis>> 쪽으로 <<slithers>> <<penis_lube_text>> <span class="pink">그 끝이 열리며 당신의 귀두를 내리누르고, 한 번만 더 들이박으면 집어삼킬 듯하다.</span>
 				<<set $penisstate to "tentacleimminent">><<set _tentacle.head to "penisimminent">><<neutralgenitals 4>>
 			<<else>>
-				and <<slithers>> over to your <<penis>>. The tip opens and presses against your glans, but <span class="blue">it fails to gain purchase.</span>
+				그리고 당신의 <<penis>> 쪽으로 <<slithers>> 그 끝이 열리며 당신의 귀두를 내리누르지만, <span class="blue">제대로 자리를 잡지 못한다.</span>
 				<<sex 5 "genitals">>
 				<<if random(1, 3) gte 3>>
-					<span class="purple">_Slimy _fluid squirts from the tip, lubricating you</span>.
+					<span class="purple">끝부분에서 _slimyText _fluidText【이가】 뿜어져 나와 당신을 적신다.</span>
 					<<bodyliquid "penis" _fluid>>
 				<</if>>
 			<</if>>
 			<<tentacle_skin "penis">>
 		<<elseif $worn.genitals.name is "chastity parasite">>
-			and worms round your $worn.genitals.name, rubbing and squeezing it in the process. <span class="lewd">Your clearly aroused reaction encourages it further.</span>
+			그리고 $worn.genitals.name 주위를 벌레처럼 감싸며 문지르고 꽉 쥔다. <span class="lewd">당신의 명백히 흥분한 반응이 그것을 더욱 부추긴다.</span>
 			<<arousal 200 "genitals">><<neutral 2 "genitals">><<set $worn.genitals.integrity -= 5>>
 		<<else>>
-			and tries to find a way inside to envelop your <<penis>>. Failing, it lashes the <<print setup.clothes.genitals[clothesIndex('genitals',$worn.genitals)].altDamage or "metal">>.
+			그리고 당신의 <<penis>>【을를】 감싸려고 안으로 들어갈 길을 찾으려 한다. 실패하자, 그것은 <<print ({ metal: "금속", plastic: "플라스틱", parasite: "기생충" }[setup.clothes.genitals[clothesIndex('genitals',$worn.genitals)].altDamage] or "금속")>>【을를】 때린다.
 			<<set $worn.genitals.integrity -= 10>><<violence 1>>
 		<</if>>
 		<<set $tentaclePenis to _tentacle.fullDesc>>
@@ -413,16 +419,16 @@
 
 	<<if _tentacle.head is "anusdeep">>
 		<<if _tentacle.baby isnot 0>>
-			and <<slithers>> into your <<bottom>> where it pumps a viscous _fluid <<if canImpregnateParasite("anus")>><span class="red">alongside something else</span><</if>> at the apex of each thrust.
+			그리고 당신의 <<bottom>> 안으로 <<slithers>> 찔러올 때마다 끈적한 _fluidText<<if canImpregnateParasite("anus")>> <span class="red">그리고 다른 무언가</span><</if>>【을를】 깊숙이 뿜어낸다.
 			<<impregnateParasite _tentacle.baby _tentacle.babychance>>
 			<<fertiliseParasites>>
 			<<set _tentacle.baby to 0>><<set $tentacleAnusBaby to _tentacle.baby>>
 		<<else>>
-			and <<slithers>> into your <<bottom>> where it pumps a viscous _fluid at the apex of each thrust.
+			그리고 당신의 <<bottom>> 안으로 <<slithers>> 찔러올 때마다 끈적한 _fluidText【을를】 깊숙이 뿜어낸다.
 		<</if>>
 		<<if $tentacleAnus3 isnot undefined>>
 			<span class="pink">
-			<<print either(
+			"예쁜 돌을",
 				"It coils and writhes against the other two tentacles crammed inside you.",
 				"The three tentacles twist around each other inside you, each recoiling against the others.",
 				"You feel impossibly full as the three tentacles churn and grind within you."
@@ -430,7 +436,7 @@
 			</span>
 		<<elseif $tentacleAnus2 isnot undefined>>
 			<span class="pink">
-			<<print either(
+			"예쁜 돌을",
 				"It writhes and grinds against the other " + _tentacle.type + " stuffed inside you.",
 				"The pair of tentacles twist against each other inside you, thrusting out of rhythm.",
 				"It coils around the other tentacle within you, grinding together with each thrust."
@@ -452,9 +458,9 @@
 
 	<<if _tentacle.head is "anus">>
 		<<if _tentacle.baby isnot 0 and canImpregnateParasite("anus")>>
-			and continues thrusting into your <<bottom>>. <span class="pink">The tip opens and begins oozing a viscous _fluid</span> <span class="red">alongside something else. Something about it scares you.</span>
+			그리고 당신의 <<bottom>> 안으로 계속 들이박는다. <span class="pink">그 끝부분이 열리며 끈적한 _fluidText【을를】 흘리기 시작한다.</span> <span class="red">그 안에 다른 무언가도 섞여 있다. 그 사실이 당신을 두렵게 한다.</span>
 		<<else>>
-			and continues thrusting into your <<bottom>>. <span class="pink">The tip opens and begins oozing a viscous _fluid.</span>
+			그리고 당신의 <<bottom>> 안으로 계속 들이박는다. <span class="pink">그 끝부분이 열리며 끈적한 _fluidText【을를】 흘리기 시작한다.</span>
 		<</if>>
 		<<purity -1>><<internalejac>><<sex 5 "anus">>
 		<<set $anusstate to "tentacledeep">><<set _tentacle.head to "anusdeep">>
@@ -467,10 +473,10 @@
 		<<if $player.virginity.anal is true>>
 			<<switch _tentacle.size>>
 			<<case 3>>
-				<span class="pink">and thrusts into your <<bottom>>, </span><span class="red">violating you in a way you hadn't conceived of. You shudder as your <<bottom>> stretches to accommodate _the _tentacle.fullDesc.</span>
+				<span class="pink">당신의 <<bottom>> 안으로 들이박으며, </span><span class="red">상상조차 해본 적 없는 방식으로 당신을 유린한다. _the _tentacle.fullDesc【을를】 받아들이기 위해 당신의 <<bottom>>【이가】 벌어지자, 당신은 몸을 떤다.</span>
 				<<violence 100>>
 			<<default>>
-				<span class="pink">and thrusts into your <<bottom>>, </span><span class="red">violating you in a way you hadn't conceived of.</span>
+				<span class="pink">당신의 <<bottom>> 안으로 들이박으며, </span><span class="red">생각지도 못했던 방식으로 당신을 유린한다.</span>
 			<</switch>>
 			<<takeVirginity `$abomination is 1 ? $NPCList[0].fullDescription + "'s " + _tentacle.fullDesc : _tentacle.fullDesc` "anal">><<violence 100>>
 			<<if $abomination is 1 and $NPCList[0].type is "plant">>
@@ -479,9 +485,9 @@
 		<<else>>
 			<<switch _tentacle.size>>
 			<<case 3>>
-				<span class="pink">and thrusts into your <<bottom>>. </span><span class="red"> You shudder as your <<bottom>> stretches to accommodate _the _tentacle.fullDesc.</span>
+				<span class="pink">당신의 <<bottom>> 안으로 들이박는다. </span><span class="red">_the _tentacle.fullDesc【을를】 받아들이기 위해 당신의 <<bottom>>【이가】 벌어지자, 당신은 몸을 떤다.</span>
 			<<default>>
-				<span class="pink">and thrusts into your <<bottom>>.</span>
+				<span class="pink">당신의 <<bottom>> 안으로 들이박는다.</span>
 			<</switch>>
 		<</if>>
 		<<set $anusstate to "tentacle">><<set _tentacle.head to "anus">>
@@ -493,21 +499,21 @@
 	<<if _tentacle.head is "anusentrance">>
 		<<if !playerChastity("anus")>>
 			<<if $anusWetness gte (_tentacle.size * 20) + random(1, 40) or random(1, 2) is 2>>
-				and presses against your <<bottom>>. <<anus_lube_text>> <span class="pink">the tip presses into you, a thrust away from penetrating.</span>
+				그리고 당신의 <<bottom>>에 내리누른다. <<anus_lube_text>> <span class="pink">그 끝부분이 당신을 파고들 듯 압박하며, 한 번만 더 찌르면 관통할 듯하다.</span>
 				<<set $anusstate to "tentacleimminent">><<set _tentacle.head to "anusimminent">><<neutral 4 "anus">>
 				<<if setup.bodyliquid.combined("bottom") gte 1 or setup.bodyliquid.combined("anus") gte 1>>
-					_Slimy _fluid oozes out.
+					_slimyText _fluidText【이가】 흘러나온다.
 				<</if>>
 			<<else>>
-				and presses against your <<bottom>>. <span class="blue">It fails to gain purchase.</span>
+				그리고 당신의 <<bottom>>에 내리누른다. <span class="blue">제대로 자리를 잡지 못한다.</span>
 				<<sex 5 "anus">>
 				<<if random(1, 3) gte 3>>
-					<span class="purple">_Slimy _fluid squirts from the tip, lubricating you</span>.
+					<span class="purple">끝부분에서 _slimyText _fluidText【이가】 뿜어져 나와 당신을 적신다.</span>
 					<<bodyliquid "bottom" _fluid>>
 				<</if>>
 			<</if>>
 		<<else>>
-			and tries to find a way inside to your <<bottom>>. Failing, it lashes the device.
+			그리고 당신의 <<bottom>> 안으로 들어갈 길을 찾으려 한다. 실패하자, 장치를 때린다.
 			<<set $worn.genitals.integrity -= 10>><<violence 1>>
 		<</if>>
 		<<set $tentacleAnus to _tentacle.fullDesc>><<set $tentacleAnusBaby to _tentacle.baby>>
@@ -518,27 +524,27 @@
 	<<if _tentacle.head is "vaginarub">>
 		<<if $rng gte 21>>
 			<<if _tentacle.shaft is "thighs">>
-				where it <<slithers>> against your <<pussy>>, pressing against your clit.
+				거기서 당신의 <<pussy>>에 닿아 <<slithers>> 당신의 클리토리스를 꾹 누른다.
 			<<else>>
-				and<<if _tentacle.shaft is "breasts">> <<slithers>><</if>> between your thighs where it <<slithers>> against your <<pussy>>, pressing against your clit.
+				<<if _tentacle.shaft is "breasts">>당신의 <<breasts>> 사이를 <<slithers>> <</if>>그리고 당신의 허벅지 사이로 들어와 당신의 <<pussy>>에 닿아 <<slithers>> 당신의 클리토리스를 꾹 누른다.
 			<</if>>
 			<<sex 3 "genitals">>
 		<<elseif $novaginal is 1>>
 			<<if _tentacle.shaft is "thighs">>
-				where it <<slithers>> toward your <<pussy>>.
+				거기서 당신의 <<pussy>> 쪽으로 <<slithers>>
 			<<else>>
-				and<<if _tentacle.shaft is "breasts">> <<slithers>><</if>> between your thighs where it <<slithers>> toward your <<pussy>>.
+				<<if _tentacle.shaft is "breasts">>당신의 <<breasts>> 사이를 <<slithers>> <</if>>그리고 허벅지 사이로 들어와 당신의 <<pussy>> 쪽으로 <<slithers>>
 			<</if>>
-			The <<personsimple>> clicks <<his>> tongue, and <span class="lblue">it retracts,</span> pressing against your clit instead.
+			<<personsimple>>【이가】 혀를 차자 <span class="lblue">그것이 물러나고,</span> 대신 당신의 클리토리스를 누른다.
 			<<sex 3 "genitals">>
 		<<else>>
 			<<if _tentacle.shaft is "thighs">>
-				<span class="blue">where it <<slithers>> toward your <<pussy>>.</span>
+				<span class="blue">거기서 당신의 <<pussy>> 쪽으로 <<slithers>></span>
 			<<else>>
-				and<<if _tentacle.shaft is "breasts">> <<slithers>><</if>> between your thighs <span class="blue">where it <<slithers>> toward your <<pussy>>.</span>
+				<<if _tentacle.shaft is "breasts">>당신의 <<breasts>> 사이를 <<slithers>> <</if>>그리고 허벅지 사이로 들어와 <span class="blue">당신의 <<pussy>> 쪽으로 <<slithers>></span>
 			<</if>>
 			<<if _tentacle.baby isnot 0 and canImpregnateParasite("vagina")>>
-				<span class="red"> Something about it scares you.</span>
+				<span class="red"> 뭔가 당신을 두렵게 한다.</span>
 			<</if>>
 			<<set $vaginause to "tentacle">><<set $vaginastate to "tentacleentrance">><<set _tentacle.head to "vaginaentrance">><<set $thighuse to 0>><<set $vaginatarget to "tentacles">>
 		<</if>>
@@ -549,24 +555,24 @@
 	<<if _tentacle.head is "penisrub">>
 		<<if $rng gte 21>>
 			<<if _tentacle.shaft is "thighs">>
-				where it <<slithers>> against your <<penis>>, coiling around it.
+				거기서 당신의 <<penis>>에 닿아 <<slithers>> 똬리를 틀듯 감싼다.
 			<<else>>
-				and<<if _tentacle.shaft is "breasts">> <<slithers>><</if>> between your thighs where it <<slithers>> against your <<penis>>, coiling around it.
+				<<if _tentacle.shaft is "breasts">>당신의 <<breasts>> 사이를 <<slithers>> <</if>>그리고 허벅지 사이로 들어와 당신의 <<penis>>에 닿아 <<slithers>> 똬리를 틀듯 감싼다.
 			<</if>>
 			<<sex 3 "genitals">>
 		<<elseif $nopenile is 1>>
 			<<if _tentacle.shaft is "thighs">>
-				where the tip opens as it <<slithers>> toward your <<penis>>.
+				거기서 당신의 <<penis>> 쪽으로 <<slithers>> 동시에 그 끝이 열린다.
 			<<else>>
-				and<<if _tentacle.shaft is "breasts">> <<slithers>><</if>> between your thighs where the tip opens as it <<slithers>> toward your <<penis>>.
+				<<if _tentacle.shaft is "breasts">>당신의 <<breasts>> 사이를 <<slithers>> <</if>>그리고 허벅지 사이로 들어와 당신의 <<penis>> 쪽으로 <<slithers>> 동시에 그 끝이 열린다.
 			<</if>>
-			The <<personsimple>> clicks <<his>> tongue, and <span class="lblue">it retracts,</span> coiling around your <<penis>> instead.
+			<<personsimple>>【이가】 혀를 차자 <span class="lblue">그것이 물러나고,</span> 대신 당신의 <<penis>>【을를】 감싼다.
 			<<sex 3 "genitals">>
 		<<else>>
 			<<if _tentacle.shaft is "thighs">>
-				<span class="blue">where the tip opens as it <<slithers>> toward your <<penis>>.</span>
+				<span class="blue">거기서 당신의 <<penis>> 쪽으로 <<slithers>> 동시에 그 끝이 열린다.</span>
 			<<else>>
-				and<<if _tentacle.shaft is "breasts">> <<slithers>><</if>> between your thighs <span class="blue">where the tip opens as it <<slithers>> toward your <<penis>>.</span>
+				<<if _tentacle.shaft is "breasts">>당신의 <<breasts>> 사이를 <<slithers>> <</if>>그리고 허벅지 사이로 들어와 <span class="blue">당신의 <<penis>> 쪽으로 <<slithers>> 동시에 그 끝이 열린다.</span>
 			<</if>>
 			<<set $penisuse to "tentacle">><<set $penisstate to "tentacleentrance">><<set _tentacle.head to "penisentrance">><<set $thighuse to 0>><<set $penistarget to "tentacles">><<set $tentaclePenis to _tentacle.fullDesc>>
 		<</if>>
@@ -576,15 +582,15 @@
 	<<rng>>
 	<<if _tentacle.head is "anusrub">>
 		<<if $rng gte 21>>
-			and<<if _tentacle.shaft is "breasts">> <<slithers>><</if>> between your <<bottom>> cheeks where it <<slithers>> against your back.
+			<<if _tentacle.shaft is "breasts">>당신의 <<breasts>> 사이를 <<slithers>> <</if>>그리고 당신의 <<bottom>> 계곡 사이를 파고들어 등을 따라 <<slithers>>
 			<<sex 3 "anus">>
 		<<elseif $noanal is 1>>
-			and <<slithers>> toward your <<bottom>>. The <<personsimple>> clicks <<his>> tongue, and <span class="lblue">it retracts,</span> <<slithering>> between your <<bottom>> cheeks instead.
+			그리고 당신의 <<bottom>> 쪽으로 <<slithers>> <<personsimple>>【이가】 혀를 차자 <span class="lblue">그것이 물러나고,</span> 대신 당신의 <<bottom>> 계곡 사이로 <<slithering>>.
 		<<else>>
 			<<if _tentacle.baby isnot 0 and canImpregnateParasite("anus")>>
-				<span class="blue">and <<slithers>> toward your <<bottom>>.</span> <span class="red">Something about it scares you.</span>
+				<span class="blue">그리고 당신의 <<bottom>> 쪽으로 <<slithers>></span> <span class="red">뭔가 당신을 두렵게 한다.</span>
 			<<else>>
-				and<<if _tentacle.shaft is "breasts">> <<slithers>><</if>> between your <<bottom>> cheeks, <span class="blue">toward your anus.</span>
+				<<if _tentacle.shaft is "breasts">>당신의 <<breasts>> 사이를 <<slithers>> <</if>>그리고 당신의 <<bottom>> 계곡 사이로 들어와, <span class="blue">항문 쪽을 향한다.</span>
 				<<neutral 3 "anus">>
 			<</if>>
 			<<set $anususe to "tentacle">>
@@ -595,22 +601,22 @@
 
 	<<rng>>
 	<<if _tentacle.head is "hypnosis_scream">>
-		and in front of your face
+		그리고 당신의 얼굴 앞으로 와서,
 		<<if ["vine","root","shoot"].includes(_tentacle.type)>>
-			<span class="pink">where it puffs glittering pollen in your face.</span>
+			<span class="pink">반짝이는 꽃가루를 얼굴에 흩뿌린다.</span>
 		<<elseif _tentacle.fullDesc.includes("metal")>>
-			<span class="pink">where a light flashes to a fascinating rhythm.</span>
+			<span class="pink">매혹적인 리듬에 맞춰 빛을 번쩍인다.</span>
 		<<else>>
-			<span class="pink">where it shines with eldritch light.</span>
+			<span class="pink">기괴한 빛으로 빛난다.</span>
 		<</if>>
-		<span class="pink">You feel something shift in your consciousness.</span>
+		<span class="pink">의식 속에서 무언가가 뒤틀리는 것이 느껴진다.</span>
 		<<if ($hypnosis_traits.devotion gte 5 or $hypnosis_traits.devotion is 4 and random(1, 100) gte 50) and $NPCList[0].fullDescription isnot "Gwylan">>
-			Whatever it is, it's blotted out by something else. <span class="forest-green">Instead, in your mind's eye, Gwylan gently holds your face in front of <<nnpc_his "Gwylan">> own. The slightest sting of a thorn keeps your mind focused.</span>
+			그것이 무엇이든, 다른 무언가에 의해 가려진다. <span class="forest-green">대신, 마음의 눈 속에서 그윌란이 자신의 얼굴 앞으로 부드럽게 당신의 얼굴을 맞댄다. 가시의 아주 미세한 따끔거림이 당신의 정신을 다잡아준다.</span>
 		<<elseif !$hypnosis_traits.scream or $hypnosis_traits.scream lte 0>>
-			You've gained the <span class="pink">Hypnotic Yearning</span> trait.
+			<span class="pink">최면의 갈망</span> 특성을 얻었습니다.
 			<<set $hypnosis_traits.scream to 1>>
 		<<elseif $hypnosis_traits.scream lt 5>>
-			Your hypnotic yearning has deepened.
+			최면의 갈망이 더 깊어졌습니다.
 			<<set $hypnosis_traits.scream += 1>>
 		<</if>>
 		<<hypnotised 1>><<set $combat_hypnosis to "scream">>
@@ -620,22 +626,22 @@
 
 	<<rng>>
 	<<if _tentacle.head is "hypnosis_cover">>
-		and in front of your face
+		그리고 당신의 얼굴 앞으로 와서,
 		<<if ["vine","root","shoot"].includes(_tentacle.type)>>
-			<span class="pink">where it puffs glittering pollen in your face.</span>
+			<span class="pink">반짝이는 꽃가루를 얼굴에 흩뿌린다.</span>
 		<<elseif _tentacle.fullDesc.includes("metal")>>
-			<span class="pink">where a light flashes to a fascinating rhythm.</span>
+			<span class="pink">매혹적인 리듬에 맞춰 빛을 번쩍인다.</span>
 		<<else>>
-			<span class="pink">where it shines with eldritch light.</span>
+			<span class="pink">기괴한 빛으로 빛난다.</span>
 		<</if>>
-		<span class="pink">You feel something shift in your consciousness.</span>
+		<span class="pink">의식 속에서 무언가가 뒤틀리는 것이 느껴진다.</span>
 		<<if ($hypnosis_traits.devotion gte 5 or $hypnosis_traits.devotion is 4 and random(1, 100) gte 50) and $NPCList[0].fullDescription isnot "Gwylan">>
-			Whatever it is, it's blotted out by something else. <span class="forest-green">Instead, in your mind's eye, Gwylan gently holds your face in front of <<nnpc_his "Gwylan">> own. The slightest sting of a thorn keeps your mind focused.</span>
+			그것이 무엇이든, 다른 무언가에 의해 가려진다. <span class="forest-green">대신, 마음의 눈 속에서 그윌란이 자신의 얼굴 앞으로 부드럽게 당신의 얼굴을 맞댄다. 가시의 아주 미세한 따끔거림이 당신의 정신을 다잡아준다.</span>
 		<<elseif !$hypnosis_traits.cover or $hypnosis_traits.cover lte 0>>
-			You've gained the <span class="pink">Hypnotic Flaunting</span> trait.
+			<span class="pink">최면의 과시</span> 특성을 얻었습니다.
 			<<set $hypnosis_traits.cover to 1>>
 		<<elseif $hypnosis_traits.cover lt 5>>
-			Your hypnotic flaunting has deepened.
+			최면의 과시가 더 깊어졌습니다.
 			<<set $hypnosis_traits.cover += 1>>
 		<</if>>
 		<<hypnotised 1>><<set $combat_hypnosis to "cover">>
@@ -645,59 +651,59 @@
 
 	<<rng>>
 	<<if _tentacle.head is "hypnosis_deviancy">>
-		and in front of your face
+		그리고 당신의 얼굴 앞으로 와서,
 		<<if ["vine","root","shoot"].includes(_tentacle.type)>>
-			<span class="pink">where it puffs glittering pollen in your face.</span>
+			<span class="pink">반짝이는 꽃가루를 얼굴에 흩뿌린다.</span>
 		<<elseif _tentacle.fullDesc.includes("metal")>>
-			<span class="pink">where a light flashes to a fascinating rhythm.</span>
+			<span class="pink">매혹적인 리듬에 맞춰 빛을 번쩍인다.</span>
 		<<else>>
-			<span class="pink">where it shines with eldritch light.</span>
+			<span class="pink">기괴한 빛으로 빛난다.</span>
 		<</if>>
-		<span class="pink">You feel something shift in your consciousness.</span> Alluring sensations of unspeakable matings fill your mind,
+		<span class="pink">의식 속에서 무언가가 뒤틀리는 것이 느껴진다.</span> 말로 형언할 수 없는 교미의 유혹적인 감각이 마음을 채우더니,
 		<<if $hypnosis_traits.devotion gte 5 and $NPCList[0].fullDescription isnot "Gwylan">>
-			<span class="lblue">only to be snuffed out</span>.<br>
-			<span class="forest-green">Instead, in your mind's eye, Gwylan's arms hold you in a naked embrace. Strange purple petals flutter around you.</span><br>
-			It feels so real, leaving you contented when the vision fades away. You yearn only for one mate in this brief moment.
+			<span class="lblue">이내 사그라든다</span>.<br>
+			<span class="forest-green">대신, 마음의 눈 속에서 그윌란의 두 팔이 발가벗은 당신을 껴안는다. 기이한 보라색 꽃잎들이 당신의 주위를 흩날린다.</span><br>
+			그 감각은 너무도 현실적이어서, 환상이 사라질 무렵엔 묘한 충만감을 남긴다. 이 짧은 순간, 당신은 오직 단 하나의 짝만을 갈망한다.
 			<<if ["vine","root","shoot"].includes(_tentacle.type)>>
-				<span class="red">_The _tentacle.fullDesc rapidly decays.</span>
+				<span class="red">_The _tentacle.fullDesc【은는】 빠르게 썩어 문드러진다.</span>
 			<<elseif _tentacle.fullDesc.includes("metal")>>
-				<span class="red">_The _tentacle.fullDesc rapidly rusts.</span>
+				<span class="red">_The _tentacle.fullDesc【은는】 빠르게 녹슬어간다.</span>
 			<<else>>
-				<span class="red">_The _tentacle.fullDesc rapidly withers.</span>
+				<span class="red">_The _tentacle.fullDesc【은는】 빠르게 시들어간다.</span>
 			<</if>>
 			<<if $abomination is 1>>
-				The <<person>> clutches <<his>> head in pain. <<defiance 5>>
+				<<person>>【이가】 고통스럽게 자신의 머리를 부여잡는다. <<defiance 5>>
 			<</if>>
 			<<arousal -500>><<pain -4>><<larousal>><<lpain>>
 			<<set _tentacle.tentaclehealth -= 300>><<tentacle_record "hypnosis_backlash" 300>><<tentacleadvdisable _tentacle>>
 		<<elseif $hypnosis_traits.devotion is 4 and random(1, 100) gte 50 and $NPCList[0].fullDescription isnot "Gwylan">>
-			<span class="forest-green">only to fade as you feel a pair of gentle hands cover your eyes, blocking out the compulsion</span>.
+			<span class="forest-green">부드러운 두 손이 당신의 눈을 가려 충동을 차단하는 것이 느껴지자, 이내 사그라든다</span>.
 			<<if $abomination is 1>>
 				<<if $NPCList[0].fullDescription is "Gwylan">>
-					Gwylan growls in an otherworldly tone.
+					그윌란이 기이한 목소리로 으르렁거린다.
 				<<else>>
-					The <<person>> looks irritated.
+					<<person>>【이가】 짜증난 표정을 짓는다.
 				<</if>>
 			<</if>>
 		<<elseif $uncomfortable.hypnosis is false>>
-			<span class="red">devouring all contrary thoughts.</span>
+			<span class="red">모든 저항 의지를 집어삼킨다.</span>
 			<<if !$hypnosis_traits.deviancy or $hypnosis_traits.deviancy lte 0>>
-				You've gained the <span class="pink">Hypnotic Deviancy</span> trait.
+				<span class="pink">최면의 이상성욕</span> 특성을 얻었습니다.
 				<<set $hypnosis_traits.deviancy to 1>>
 			<<elseif $hypnosis_traits.deviancy lt 5>>
-				Your hypnotic deviancy has deepened.
+				최면의 이상성욕이 더 깊어졌습니다.
 				<<set $hypnosis_traits.deviancy += 1>>
 			<</if>>
 			<<willpower 1>><<gwillpower>>
 		<<elseif currentSkillValue('willpower') gte random(1, 1000)>>
-			<span class="green">but you will them away.</span>
+			<span class="green">하지만 당신은 의지력으로 그것들을 떨쳐낸다.</span>
 		<<else>>
-			<span class="red">devouring all contrary thoughts.</span>
+			<span class="red">모든 저항 의지를 집어삼킨다.</span>
 			<<if !$hypnosis_traits.deviancy or $hypnosis_traits.deviancy lte 0>>
-				You've gained the <span class="pink">Hypnotic Deviancy</span> trait.
+				<span class="pink">최면의 이상성욕</span> 특성을 얻었습니다.
 				<<set $hypnosis_traits.deviancy to 1>>
 			<<elseif $hypnosis_traits.deviancy lt 5>>
-				Your hypnotic deviancy has deepened.
+				최면의 이상성욕이 더 깊어졌습니다.
 				<<set $hypnosis_traits.deviancy += 1>>
 			<</if>>
 			<<willpower 1>><<gwillpower>>
@@ -708,46 +714,46 @@
 
 	<<rng>>
 	<<if _tentacle.head is "hypnosis_sadism">>
-		and in front of your face
+		그리고 당신의 얼굴 앞으로 와서,
 		<<if ["vine","root","shoot"].includes(_tentacle.type)>>
-			<span class="pink">where it puffs glittering pollen in your face.</span>
+			<span class="pink">반짝이는 꽃가루를 얼굴에 흩뿌린다.</span>
 		<<elseif _tentacle.fullDesc.includes("metal")>>
-			<span class="pink">where a light flashes to a fascinating rhythm.</span>
+			<span class="pink">매혹적인 리듬에 맞춰 빛을 번쩍인다.</span>
 		<<else>>
-			<span class="pink">where it shines with eldritch light.</span>
+			<span class="pink">기괴한 빛으로 빛난다.</span>
 		<</if>>
-		A deep yearning blooms,
+		깊은 갈망이 피어나더니,
 		<<if $hypnosis_traits.devotion gte 5 and $NPCList[0].fullDescription isnot "Gwylan">>
-			<span class="lblue">only to be plucked</span>.<br>
-			<span class="forest-green">Instead, in your mind's eye, Gwylan gently holds both of your wrists together, before pulling you into an embrace. Red rose petals flutter around you.</span><br>
-			It feels so real, leaving you at peace when the vision fades away. You yearn only for <<nnpc_his "Gwylan">> comfort in this brief moment.<br>
+			<span class="lblue">이내 꺾여버린다</span>.<br>
+			<span class="forest-green">대신, 마음의 눈 속에서 그윌란이 당신의 양 손목을 부드럽게 붙잡아 자신의 품으로 끌어당긴다. 붉은 장미 꽃잎들이 당신 주위를 흩날린다.</span><br>
+			그 감각은 너무도 현실적이어서, 환상이 사라질 무렵엔 평온함을 남긴다. 이 짧은 순간, 당신은 오직 <<nnpc_his "Gwylan">> 위안만을 갈망한다.<br>
 			<<if ["vine","root","shoot"].includes(_tentacle.type)>>
-				<span class="red">_The _tentacle.fullDesc rapidly decays.</span>
+				<span class="red">_The _tentacle.fullDesc【은는】 빠르게 썩어 문드러진다.</span>
 			<<elseif _tentacle.fullDesc.includes("metal")>>
-				<span class="red">_The _tentacle.fullDesc rapidly rusts.</span>
+				<span class="red">_The _tentacle.fullDesc【은는】 빠르게 녹슬어간다.</span>
 			<<else>>
-				<span class="red">_The _tentacle.fullDesc rapidly withers.</span>
+				<span class="red">_The _tentacle.fullDesc【은는】 빠르게 시들어간다.</span>
 			<</if>>
 			<<if $abomination is 1>>
-				The <<person>> clutches <<his>> head in pain. <<defiance 5>>
+				<<person>>【이가】 고통스럽게 자신의 머리를 부여잡는다. <<defiance 5>>
 			<</if>>
 			<<arousal -500>><<pain -4>><<larousal>><<lpain>>
 			<<set _tentacle.tentaclehealth -= 300>><<tentacle_record "hypnosis_backlash" 300>><<tentacleadvdisable _tentacle>>
 		<<elseif $hypnosis_traits.devotion is 4 and random(1, 100) gte 50 and $NPCList[0].fullDescription isnot "Gwylan">>
-			<span class="forest-green">only to wither as you feel a pair of gentle hands cover your eyes, blocking out the compulsion</span>.
+			<span class="forest-green">부드러운 두 손이 당신의 눈을 가려 충동을 차단하는 것이 느껴지자, 이내 시들어버린다</span>.
 			<<if $abomination is 1>>
 				<<if $NPCList[0].fullDescription is "Gwylan">>
-					Gwylan growls in an otherworldly tone.
+					그윌란이 기이한 목소리로 으르렁거린다.
 				<<else>>
-					The <<person>> looks irritated.
+					<<person>>【이가】 짜증난 표정을 짓는다.
 				<</if>>
 			<</if>>
 		<<elseif $uncomfortable.hypnosis is false>>
-			nurtured by a lewd part of you. <span class="lewd">Your mind immediately accepts it.</span> You long for the suffering of others. <<sadism 10>>
+			당신 안의 음란한 부분에 의해 길러진다. <span class="lewd">당신의 마음은 즉시 그것을 받아들인다.</span> 당신은 타인의 고통을 갈망한다. <<sadism 10>>
 		<<elseif currentSkillValue('willpower') gte random(1, 1000)>>
-			nurtured by a traitorous part of you. <span class="lblue">You will it away.</span>
+			당신 안의 배반하는 부분에 의해 길러지지만, <span class="lblue">당신은 의지로 떨쳐낸다.</span>
 		<<else>>
-			unbeckoned. <span class="pink">You can't resist it.</span> You long for the suffering of others. <<sadism 10>><<willpower 1>><<gwillpower>>
+			초대받지 않은 충동이 인다. <span class="pink">저항할 수 없다.</span> 당신은 타인의 고통을 갈망한다. <<sadism 10>><<willpower 1>><<gwillpower>>
 		<</if>>
 		<<hypnotised 1>><<set $combat_hypnosis to "sadism">>
 		<<set _tentacle.tentaclehealth -= 6>><<tentacle_record "hypnosis" 6>><<set _tentacle.head to 0>><<set _tentacle.tempBusy to true>>
@@ -756,46 +762,46 @@
 
 	<<rng>>
 	<<if _tentacle.head is "hypnosis_orgasm">>
-		and in front of your face
+		그리고 당신의 얼굴 앞으로 와서,
 		<<if ["vine","root","shoot"].includes(_tentacle.type)>>
-			<span class="pink">where it puffs glittering pollen in your face.</span>
+			<span class="pink">반짝이는 꽃가루를 얼굴에 흩뿌린다.</span>
 		<<elseif _tentacle.fullDesc.includes("metal")>>
-			<span class="pink">where a light flashes to a fascinating rhythm.</span>
+			<span class="pink">매혹적인 리듬에 맞춰 빛을 번쩍인다.</span>
 		<<else>>
-			<span class="pink">where it shines with eldritch light.</span>
+			<span class="pink">기괴한 빛으로 빛난다.</span>
 		<</if>>
-		A deep yearning blooms,
+		깊은 갈망이 피어나더니,
 		<<if $hypnosis_traits.devotion gte 5 and $NPCList[0].fullDescription isnot "Gwylan">>
-			<span class="lblue">only to be plucked</span>.<br>
-			<span class="forest-green">Instead, in your mind's eye, Gwylan cups your cheeks with gentle hands and smiles down at you. Red rose petals flutter around you.</span><br>
-			It feels so real, leaving you empty when the vision fades away. You yearn only for <<nnpc_him "Gwylan">> in this brief moment.
+			<span class="lblue">이내 꺾여버린다</span>.<br>
+			<span class="forest-green">대신, 마음의 눈 속에서 그윌란이 부드러운 양손으로 당신의 두 뺨을 감싸 쥐고 내려다보며 미소 짓는다. 붉은 장미 꽃잎들이 당신 주위를 흩날린다.</span><br>
+			그 감각은 너무도 현실적이어서, 환상이 사라질 무렵엔 공허함을 남긴다. 이 짧은 순간, 당신은 오직 <<nnpc_him "Gwylan">>만을 갈망한다.
 			<<if ["vine","root","shoot"].includes(_tentacle.type)>>
-				<span class="red">_The _tentacle.fullDesc rapidly decays.</span>
+				<span class="red">_The _tentacle.fullDesc【은는】 빠르게 썩어 문드러진다.</span>
 			<<elseif _tentacle.fullDesc.includes("metal")>>
-				<span class="red">_The _tentacle.fullDesc rapidly rusts.</span>
+				<span class="red">_The _tentacle.fullDesc【은는】 빠르게 녹슬어간다.</span>
 			<<else>>
-				<span class="red">_The _tentacle.fullDesc rapidly withers.</span>
+				<span class="red">_The _tentacle.fullDesc【은는】 빠르게 시들어간다.</span>
 			<</if>>
 			<<if $abomination is 1>>
-				The <<person>> clutches <<his>> head in pain. <<defiance 5>>
+				<<person>>【이가】 고통스럽게 자신의 머리를 부여잡는다. <<defiance 5>>
 			<</if>>
 			<<arousal -500>><<pain -4>><<larousal>><<lpain>>
 			<<set _tentacle.tentaclehealth -= 300>><<tentacle_record "hypnosis_backlash" 300>><<tentacleadvdisable _tentacle>>
 		<<elseif $hypnosis_traits.devotion is 4 and random(1, 100) gte 50 and $NPCList[0].fullDescription isnot "Gwylan">>
-			<span class="forest-green">only to wither as you feel a pair of gentle hands cover your eyes, blocking out the compulsion</span>.
+			<span class="forest-green">부드러운 두 손이 당신의 눈을 가려 충동을 차단하는 것이 느껴지자, 이내 시들어버린다</span>.
 			<<if $abomination is 1>>
 				<<if $NPCList[0].fullDescription is "Gwylan">>
-					Gwylan growls in an otherworldly tone.
+					그윌란이 기이한 목소리로 으르렁거린다.
 				<<else>>
-					The <<person>> looks irritated.
+					<<person>>【이가】 짜증난 표정을 짓는다.
 				<</if>>
 			<</if>>
 		<<elseif $uncomfortable.hypnosis is false>>
-			nurtured by a lewd part of you. <span class="lewd">Your mind immediately accepts it.</span> Feelings of arousal overwhelm you. <<arousal 10000>>
+			당신 안의 음란한 부분에 의해 길러진다. <span class="lewd">당신의 마음은 즉시 그것을 받아들인다.</span> 엄청난 흥분감이 당신을 압도한다. <<arousal 10000>>
 		<<elseif currentSkillValue('willpower') gte random(1, 1000)>>
-			nurtured by a traitorous part of you. <span class="lblue">You will it away.</span>
+			당신 안의 배반하는 부분에 의해 길러지지만, <span class="lblue">당신은 의지로 떨쳐낸다.</span>
 		<<else>>
-			unbeckoned. <span class="pink">You can't resist it.</span> Feelings of arousal overwhelm you. <<arousal 10000>><<willpower 1>><<gwillpower>>
+			초대받지 않은 충동이 인다. <span class="pink">저항할 수 없다.</span> 엄청난 흥분감이 당신을 압도한다. <<arousal 10000>><<willpower 1>><<gwillpower>>
 		<</if>>
 		<<hypnotised 1>><<set $combat_hypnosis to "orgasm">>
 		<<set _tentacle.tentaclehealth -= 6>><<tentacle_record "hypnosis" 6>><<set _tentacle.head to 0>><<set _tentacle.tempBusy to true>>
@@ -804,29 +810,29 @@
 
 	<<rng>>
 	<<if _tentacle.head is "hypnosis">>
-		and in front of your face
+		그리고 당신의 얼굴 앞으로 와서,
 		<<if ["vine","root","shoot"].includes(_tentacle.type)>>
-			<span class="purple">where glittering pollen lingers on the tip.</span>
+			<span class="purple">그 끝에 반짝이는 꽃가루가 남아 머문다.</span>
 		<<elseif _tentacle.fullDesc.includes("metal")>>
-			<span class="purple">where a light blinks to a strange rhythm.</span>
+			<span class="purple">기묘한 리듬에 맞춰 빛이 깜빡인다.</span>
 		<<else>>
-			<span class="purple">where it glimmers with eldritch light.</span>
+			<span class="purple">기괴한 빛으로 은은하게 빛난다.</span>
 		<</if>>
 		<<rng 5>>
 		<<if $rng gte 5 and ($hypnosis_traits.scream is undefined or $hypnosis_traits.scream lt 5)>>
-			Confusing images swim through your mind, blending and reversing your thoughts.
+			혼란스러운 형상들이 마음속을 떠다니며, 당신의 생각들을 뒤섞고 뒤집어 놓는다.
 			<<set _tentacle.head to "hypnosis_scream">>
 		<<elseif $rng gte 4 and ($hypnosis_traits.cover is undefined or $hypnosis_traits.cover lt 5)>>
-			Confusing images swim through your mind, blending and reversing your thoughts.
+			혼란스러운 형상들이 마음속을 떠다니며, 당신의 생각들을 뒤섞고 뒤집어 놓는다.
 			<<set _tentacle.head to "hypnosis_cover">>
 		<<elseif $rng gte 3 and isBestialityOnForAnyCreature() and ($hypnosis_traits.deviancy is undefined or $hypnosis_traits.deviancy lt 5)>>
-			Unspeakable images fill your mind, luring you someplace alien.
+			형언할 수 없는 형상들이 마음을 채우며, 당신을 낯선 곳으로 유혹한다.
 			<<set _tentacle.head to "hypnosis_deviancy">>
 		<<elseif $rng gte 2>>
-			Sadistic images surge through your mind, accompanied by unholy delight.
+			사디스틱한 형상들이 마음속에 소용돌이치며, 불경한 환희가 뒤따른다.
 			<<set _tentacle.head to "hypnosis_sadism">>
 		<<else>>
-			A feeling of immense pleasure shivers through your scalp. A dangerous feeling.
+			엄청난 쾌락이 두피를 타고 흐르며 전율을 일으킨다. 위험한 감각이다.
 			<<set _tentacle.head to "hypnosis_orgasm">>
 		<</if>>
 		<br>
@@ -836,15 +842,15 @@
 		<<if _tentacle.traits.includes("pain")>>
 			<<violence 2>>
 			<<switch random(1, 3)>>
-				<<case 3>>_The _tentacle.fullDesc pries your left leg out of the way, <span class="purple">leaving you defenceless.</span>
-				<<case 2>>_The _tentacle.fullDesc gives your left leg a harsh tug, <span class="purple">painfully seizing it.</span>
-				<<case 1>>_The _tentacle.fullDesc wrings your left leg in a vice grip, <span class="purple">restraining it.</span>
+				<<case 3>>_The _tentacle.fullDesc【은는】 당신의 왼쪽 다리를 억지로 벌려, <span class="purple">무방비하게 만든다.</span>
+				<<case 2>>_The _tentacle.fullDesc【은는】 당신의 왼쪽 다리를 거칠게 잡아당겨, <span class="purple">고통스럽게 붙잡는다.</span>
+				<<case 1>>_The _tentacle.fullDesc【은는】 당신의 왼쪽 다리를 바이스처럼 비틀어 조이며, <span class="purple">움직이지 못하게 한다.</span>
 			<</switch>>
 		<<else>>
 			<<switch random(1, 3)>>
-				<<case 3>>_The _tentacle.fullDesc rings around your left leg, <span class="purple">trapping it in its coils.</span>
-				<<case 2>>_The _tentacle.fullDesc tightens around your left leg, <span class="purple">restraining it.</span>
-				<<case 1>>_The _tentacle.fullDesc squeezes tight, <span class="purple">until your left leg goes numb.</span>
+				<<case 3>>_The _tentacle.fullDesc【은는】 당신의 왼쪽 다리를 고리처럼 감아, <span class="purple">똬리 속에 가둔다.</span>
+				<<case 2>>_The _tentacle.fullDesc【은는】 당신의 왼쪽 다리를 조이며, <span class="purple">움직이지 못하게 한다.</span>
+				<<case 1>>_The _tentacle.fullDesc【은는】 왼쪽 다리가 저릴 때까지 <span class="purple">세게 조인다.</span>
 			<</switch>>
 		<</if>>
 		<<neutral 1>><<disablefeet>><<feettentacledisable>><<set _tentacle.shaft to "leftleg">><<set _tentacle.head to 0>>
@@ -860,15 +866,15 @@
 		<<if _tentacle.traits.includes("pain")>>
 			<<violence 2>>
 			<<switch random(1, 3)>>
-				<<case 3>>_The _tentacle.fullDesc pries your right leg out of the way, <span class="purple">leaving you defenceless.</span>
-				<<case 2>>_The _tentacle.fullDesc gives your right leg a harsh tug, <span class="purple">painfully seizing it.</span>
-				<<case 1>>_The _tentacle.fullDesc wrings your right leg in a vice grip, <span class="purple">restraining it.</span>
+				<<case 3>>_The _tentacle.fullDesc【은는】 당신의 오른쪽 다리를 억지로 벌려, <span class="purple">무방비하게 만든다.</span>
+				<<case 2>>_The _tentacle.fullDesc【은는】 당신의 오른쪽 다리를 거칠게 잡아당겨, <span class="purple">고통스럽게 붙잡는다.</span>
+				<<case 1>>_The _tentacle.fullDesc【은는】 당신의 오른쪽 다리를 바이스처럼 비틀어 조이며, <span class="purple">움직이지 못하게 한다.</span>
 			<</switch>>
 		<<else>>
 			<<switch random(1, 3)>>
-				<<case 3>>_The _tentacle.fullDesc rings around your right leg, <span class="purple">trapping it in its coils.</span>
-				<<case 2>>_The _tentacle.fullDesc tightens around your right leg, <span class="purple">restraining it.</span>
-				<<case 1>>_The _tentacle.fullDesc squeezes tight, <span class="purple">until your right leg goes numb.</span>
+				<<case 3>>_The _tentacle.fullDesc【은는】 당신의 오른쪽 다리를 고리처럼 감아, <span class="purple">똬리 속에 가둔다.</span>
+				<<case 2>>_The _tentacle.fullDesc【은는】 당신의 오른쪽 다리를 조이며, <span class="purple">움직이지 못하게 한다.</span>
+				<<case 1>>_The _tentacle.fullDesc【은는】 오른쪽 다리가 저릴 때까지 <span class="purple">세게 조인다.</span>
 			<</switch>>
 		<</if>>
 		<<neutral 1>><<disablefeet>><<feettentacledisable>><<set _tentacle.shaft to "rightleg">><<set _tentacle.head to 0>>
@@ -884,15 +890,15 @@
 		<<if _tentacle.traits.includes("pain")>>
 			<<violence 2>>
 			<<switch random(1, 3)>>
-				<<case 3>>_The _tentacle.fullDesc pries your left arm out of the way, <span class="purple">leaving you defenceless.</span>
-				<<case 2>>_The _tentacle.fullDesc twists your left arm behind your back, <span class="purple">painfully seizing it.</span>
-				<<case 1>>_The _tentacle.fullDesc wrings your left arm in a vice grip, <span class="purple">restraining it.</span>
+				<<case 3>>_The _tentacle.fullDesc【은는】 당신의 왼팔을 억지로 밀쳐내, <span class="purple">무방비하게 만든다.</span>
+				<<case 2>>_The _tentacle.fullDesc【은는】 당신의 왼팔을 등 뒤로 비틀어, <span class="purple">고통스럽게 붙잡는다.</span>
+				<<case 1>>_The _tentacle.fullDesc【은는】 당신의 왼팔을 바이스처럼 비틀어 조이며, <span class="purple">움직이지 못하게 한다.</span>
 			<</switch>>
 		<<else>>
 			<<switch random(1, 3)>>
-				<<case 3>>_The _tentacle.fullDesc rings around your left arm, <span class="purple">trapping it in its coils.</span>
-				<<case 2>>_The _tentacle.fullDesc tightens around your left arm, <span class="purple">restraining it.</span>
-				<<case 1>>_The _tentacle.fullDesc squeezes tight, <span class="purple">until your left arm goes numb.</span>
+				<<case 3>>_The _tentacle.fullDesc【은는】 당신의 왼팔을 고리처럼 감아, <span class="purple">똬리 속에 가둔다.</span>
+				<<case 2>>_The _tentacle.fullDesc【은는】 당신의 왼팔을 조이며, <span class="purple">움직이지 못하게 한다.</span>
+				<<case 1>>_The _tentacle.fullDesc【은는】 왼팔이 저릴 때까지 <span class="purple">세게 조인다.</span>
 			<</switch>>
 		<</if>>
 		<<neutral 1>><<leftarmtentacledisable>><<set _tentacle.shaft to "leftarm">><<set _tentacle.head to 0>>
@@ -905,15 +911,15 @@
 		<<if _tentacle.traits.includes("pain")>>
 			<<violence 2>>
 			<<switch random(1, 3)>>
-				<<case 3>>_The _tentacle.fullDesc pries your right arm out of the way, <span class="purple">leaving you defenceless.</span>
-				<<case 2>>_The _tentacle.fullDesc twists your right arm behind your back, <span class="purple">painfully seizing it.</span>
-				<<case 1>>_The _tentacle.fullDesc wrings your right arm in a vice grip, <span class="purple">restraining it.</span>
+				<<case 3>>_The _tentacle.fullDesc【은는】 당신의 오른팔을 억지로 밀쳐내, <span class="purple">무방비하게 만든다.</span>
+				<<case 2>>_The _tentacle.fullDesc【은는】 당신의 오른팔을 등 뒤로 비틀어, <span class="purple">고통스럽게 붙잡는다.</span>
+				<<case 1>>_The _tentacle.fullDesc【은는】 당신의 오른팔을 바이스처럼 비틀어 조이며, <span class="purple">움직이지 못하게 한다.</span>
 			<</switch>>
 		<<else>>
 			<<switch random(1, 3)>>
-				<<case 3>>_The _tentacle.fullDesc rings around your right arm, <span class="purple">trapping it in its coils.</span>
-				<<case 2>>_The _tentacle.fullDesc tightens around your right arm, <span class="purple">restraining it.</span>
-				<<case 1>>_The _tentacle.fullDesc squeezes tight, <span class="purple">until your right arm goes numb.</span>
+				<<case 3>>_The _tentacle.fullDesc【은는】 당신의 오른팔을 고리처럼 감아, <span class="purple">똬리 속에 가둔다.</span>
+				<<case 2>>_The _tentacle.fullDesc【은는】 당신의 오른팔을 조이며, <span class="purple">움직이지 못하게 한다.</span>
+				<<case 1>>_The _tentacle.fullDesc【은는】 오른팔이 저릴 때까지 <span class="purple">세게 조인다.</span>
 			<</switch>>
 		<</if>>
 		<<rightarmtentacledisable>><<neutral 1>><<set _tentacle.shaft to "rightarm">><<set _tentacle.head to 0>>
@@ -925,11 +931,11 @@
 	<<rng>>
 	<<if _tentacle.head is 0 and _tentacle.shaft isnot 0 and !_tentacle.tempBusy>>
 		<<if random(1, 2) is 2 and _tentacle.traits.includes("hypno") and $settings.hypnosisEnabled>>
-			<<upperslither>><span class="blue">and waves in front of your eyes.</span>
+			<<upperslither>><span class="blue">당신의 눈앞에서 흔들거린다.</span>
 			<<set _tentacle.head to "hypnosis">>
 		<<elseif $rng lte 10>>
 			<<if $chestuse is "squeezed">>
-				<<upperslither>><span class="blue">and<<if _tentacle.shaft is "breasts">> <<slithers>><</if>> up between your squeezed <<breasts>>.</span>
+				<<upperslither>><span class="blue"><<if _tentacle.shaft is "breasts">>당신의 <<breasts>> 사이를 <<slithers>> <</if>>그리고 꽉 눌린 <<breasts>> 사이로 올라온다.</span>
 				<<set _tentacle.head to "chest">><<neutralbreast 2>><<set $chestuse to "tentaclerub">><<cheststat>><<set $chesttarget to "tentacles">>
 				<<tentacle_skin "breasts">>
 			<<else>>
@@ -937,7 +943,7 @@
 			<</if>>
 		<<elseif $rng lte 20>>
 			<<if $leftnipple is 0>>
-				<<upperslither>> <<playWithBreasts>><span class="blue">and teases your left nipple.</span>
+				<<upperslither>> <<playWithBreasts>><span class="blue">그리고 왼쪽 유두를 희롱한다.</span>
 				<<neutralbreast 2>>
 				<<set _tentacle.head to "leftnipple">><<set $leftnipple to "tentacle">>
 				<<tentacle_skin "breasts">>
@@ -946,7 +952,7 @@
 			<</if>>
 		<<elseif $rng lte 30>>
 			<<if $rightnipple is 0>>
-				<<upperslither>> <<playWithBreasts>><span class="blue">and teases your right nipple.</span>
+				<<upperslither>> <<playWithBreasts>><span class="blue">그리고 오른쪽 유두를 희롱한다.</span>
 				<<neutralbreast 2>>
 				<<set _tentacle.head to "rightnipple">><<set $rightnipple to "tentacle">>
 				<<tentacle_skin "breasts">>
@@ -955,7 +961,7 @@
 			<</if>>
 		<<elseif $rng lte 40>>
 			<<if $mouthuse is 0>>
-				<<upperslither>> <span class="blue">and<<if _tentacle.shaft is "breasts">> <<slithers>><</if>> up toward your mouth.</span>
+				<<upperslither>> <span class="blue"><<if _tentacle.shaft is "breasts">>당신의 <<breasts>> 사이를 <<slithers>> <</if>>그리고 당신의 입 쪽으로 향한다.</span>
 				<<neutral 1 "breasts">><<neutral 1 "mouth">>
 				<<set $mouthuse to "tentacle">><<set $mouthstate to "tentacleentrance">><<set _tentacle.head to "mouthentrance">><<set $mouthtarget to "tentacles">>
 				<<tentacle_skin "left_cheek" "right_cheek">>
@@ -964,9 +970,9 @@
 			<</if>>
 		<<elseif $rng lte 50>>
 			<<if $anususe is 0 and $settings.analEnabled and $noanal is 0>>
-				<<underslither>> <span class="blue">and <<slithers>> toward your <<bottom>>.</span>
+				<<underslither>> <span class="blue">그리고 당신의 <<bottom>> 쪽으로 <<slithers>></span>
 				<<if _tentacle.baby isnot 0 and canImpregnateParasite("anus")>>
-					<span class="red">Something about it scares you.</span>
+					<span class="red">뭔가 당신을 두렵게 한다.</span>
 				<</if>>
 				<<neutral 2 "bottom">>
 				<<set $anususe to "tentacle">><<set $anusstate to "tentacleentrance">><<set _tentacle.head to "anusentrance">><<set $anustarget to "tentacles">>
@@ -987,9 +993,9 @@
 			<</if>>
 		<<elseif $rng lte 60>>
 			<<if $player.vaginaExist and $vaginause is 0 and $novaginal is 0>>
-				<<underslither>> <span class="blue">and <<slithers>> toward your <<pussy>>.</span>
+				<<underslither>> <span class="blue">그리고 당신의 <<pussy>> 쪽으로 <<slithers>></span>
 				<<if _tentacle.baby isnot 0 and canImpregnateParasite("vagina")>>
-					<span class="red">Something about it scares you.</span>
+					<span class="red">뭔가 당신을 두렵게 한다.</span>
 				<</if>>
 				<<neutralgenitals 2>>
 				<<set $vaginause to "tentacle">><<set $vaginastate to "tentacleentrance">><<set _tentacle.head to "vaginaentrance">><<set $vaginatarget to "tentacles">>
@@ -1010,7 +1016,7 @@
 			<</if>>
 		<<elseif $rng lte 70>>
 			<<if $player.penisExist and $penisuse is 0 and $nopenile is 0>>
-				<<underslither>> <span class="blue">and <<slithers>> toward your <<penis>>.</span>
+				<<underslither>> <span class="blue">그리고 당신의 <<penis>> 쪽으로 <<slithers>></span>
 				<<neutralgenitals 2>>
 				<<set $penisuse to "tentacle">><<set $penisstate to "tentacleentrance">><<set _tentacle.head to "penisentrance">><<set $penistarget to "tentacles">><<set $tentaclePenis to _tentacle.fullDesc>>
 				<<tentacle_skin "pubic">>
@@ -1020,16 +1026,16 @@
 		<<elseif $rng lte 80>>
 			<<if $player.penisExist and $penisuse is 0 and random(0,100) gte 50>>
 				<<if _tentacle.shaft is "thighs">>
-					<<underslither>> <span class="blue">where it <<slithers>> against your tummy and <<penis>>.</span>
+					<<underslither>> <span class="blue">거기서 배와 <<penis>>에 대고 <<slithers>></span>
 				<<else>>
-					<<underslither>> <span class="blue">where it <<slithers>> between your thighs and against your tummy and <<penis>>.</span>
+					<<underslither>> <span class="blue">거기서 허벅지 사이로 들어와 배와 <<penis>>에 대고 <<slithers>></span>
 				<</if>>
 				<<set $penisuse to "tentaclerub">><<set $thighuse to "tentaclerub">><<set _tentacle.head to "penisrub">><<sex 3 "genitals">><<thighstat>><<set $penistarget to "tentacles">><<set $tentaclePenis to _tentacle.fullDesc>>
 			<<elseif $player.vaginaExist and $vaginause is 0 and random(0,100) gte 50>>
 				<<if _tentacle.shaft is "thighs">>
-					<<underslither>> <span class="blue">where it <<slithers>> against your tummy and <<pussy>>.</span>
+					<<underslither>> <span class="blue">거기서 배와 <<pussy>>에 대고 <<slithers>></span>
 				<<else>>
-					<<underslither>> <span class="blue">where it <<slithers>> between your thighs and against your tummy and <<pussy>>.</span>
+					<<underslither>> <span class="blue">거기서 허벅지 사이로 들어와 배와 <<pussy>>에 대고 <<slithers>></span>
 				<</if>>
 				<<set $vaginause to "tentaclerub">><<set $thighuse to "tentaclerub">><<set _tentacle.head to "vaginarub">><<sex 3 "genitals">><<thighstat>><<set $vaginatarget to "tentacles">>
 				<<tentacle_skin "left_thigh" "right_thigh">>
@@ -1038,7 +1044,7 @@
 			<</if>>
 		<<elseif $rng lte 90>>
 			<<if $anusstate is 0 and $anususe is 0 and $settings.analEnabled>>
-				<<underslither>> <span class="blue">and <<slithers>> between your <<bottom>> cheeks and against your back.</span>
+				<<underslither>> <span class="blue">그리고 당신의 <<bottom>> 계곡 사이를 파고들어 등을 따라 <<slithers>></span>
 				<<set $anusstate to "tentaclerub">><<set $anususe to "tentaclerub">><<set _tentacle.head to "anusrub">><<sex 1 "anus">><<bottomstat>><<set $anustarget to "tentacles">>
 				<<tentacle_skin "back">>
 			<<else>>
@@ -1051,138 +1057,138 @@
 	<<elseif _tentacle.head is 0 and _tentacle.shaft is 0>>
 		<<if $rng lte 10>>
 			<<if $position isnot "wall">>
-				_The _tentacle.fullDesc winds around your tummy.
+				_The _tentacle.fullDesc【은는】 당신의 배 주변을 휘감는다.
 				<<neutral 1>>
 				<<set _tentacle.shaft to "tummy">>
 			<<else>>
-				_The _tentacle.fullDesc gently slaps your <<bottom>>.
+				_The _tentacle.fullDesc【은는】 당신의 <<bottom>>【을를】 가볍게 찰싹 때린다.
 				<<violence 1>><<hitstat>>
 			<</if>>
 		<<elseif $rng lte 20>>
-			_The _tentacle.fullDesc <<slithers>> between your thighs.
+			_The _tentacle.fullDesc【은는】 당신의 허벅지 사이로 <<slithers>>
 			<<neutral 1 "genitals">>
 			<<set _tentacle.shaft to "thighs">>
 			<<tentacle_skin "left_thigh" "right_thigh">>
 		<<elseif $rng lte 30>>
 			<<if $position isnot "wall">>
 				<<if $player.breastsize gte 2 and $chestuse is 0>>
-					_The _tentacle.fullDesc <<slithers>> around your <<breasts>>, <span class="blue">squeezing them together.</span>
+					_The _tentacle.fullDesc【은는】 당신의 <<breasts>> 주변을 <<slithers>> <span class="blue">한데 모아 조인다.</span>
 					<<neutralbreast 1>><<set _tentacle.shaft to "breasts">><<set $chestuse to "squeezed">>
 					<<tentacle_skin "breasts">>
 				<<else>>
-					_The _tentacle.fullDesc gently slaps your <<bottom>>.
+					_The _tentacle.fullDesc【은는】 당신의 <<bottom>>【을를】 가볍게 찰싹 때린다.
 					<<violence 1>><<hitstat>>
 					<<tentacle_skin "left_bottom" "right_bottom">>
 				<</if>>
 			<<else>>
-				_The _tentacle.fullDesc gently slaps your <<bottom>>.
+				_The _tentacle.fullDesc【은는】 당신의 <<bottom>>【을를】 가볍게 찰싹 때린다.
 				<<violence 1>><<hitstat>>
 				<<tentacle_skin "left_bottom" "right_bottom">>
 			<</if>>
 		<<elseif $rng lte 40>>
 			<<if $position isnot "wall">>
-				_The _tentacle.fullDesc winds its way around your chest, beneath your <<breasts>>.
+				_The _tentacle.fullDesc【은는】 당신의 <<breasts>> 아래, 가슴 주변을 휘감는다.
 				<<neutralbreast 1>><<set _tentacle.shaft to "chest">>
 				<<tentacle_skin "breasts">>
 			<<else>>
-				_The _tentacle.fullDesc gently slaps your <<bottom>>.
+				_The _tentacle.fullDesc【은는】 당신의 <<bottom>>【을를】 가볍게 찰싹 때린다.
 				<<violence 1>><<hitstat>>
 				<<tentacle_skin "left_bottom" "right_bottom">>
 			<</if>>
 		<<elseif $rng lte 50>>
-			_The _tentacle.fullDesc winds its way around your waist.
+			_The _tentacle.fullDesc【은는】 당신의 허리를 휘감는다.
 			<<neutral 1>><<set _tentacle.shaft to "waist">>
 		<<elseif $rng lte 60>>
 			<<if $position isnot "wall">>
 				<<if $head is 0 and $nochoke isnot 1 and $settings.asphyxiaLevel gte 1>>
 					<<if $worn.neck.name is "familiar collar" and $worn.neck.cursed is 1>>
 						<<set $nochoke to 1>>
-						_The _tentacle.fullDesc winds its way around your neck, <span class="green">but immediately recoils as the golden heart on your collar shocks it.</span>
+						_The _tentacle.fullDesc【은는】 당신의 목 주변을 휘감지만, <span class="green">목걸이의 황금 하트가 충격을 주자 곧바로 움찔 물러난다.</span>
 						<<tentacleadvdisable _tentacle>><<set _tentacle.tentaclehealth -= 3>><<tentacle_record "damage" 3>>
 					<<else>>
-						_The _tentacle.fullDesc winds its way around your neck, <span class="blue">restraining your head.</span>
+						_The _tentacle.fullDesc【은는】 당신의 목 주변을 휘감아, <span class="blue">머리를 붙잡는다.</span>
 						<<neutral 1>><<set _tentacle.shaft to "neck">><<set $head to "grappled">>
 						<<tentacle_skin "left_cheek" "right_cheek">>
 					<</if>>
 				<<else>>
-					_The _tentacle.fullDesc winds its way around your shoulders.
+					_The _tentacle.fullDesc【은는】 당신의 어깨 주변을 휘감는다.
 					<<neutral 1>><<set _tentacle.shaft to "shoulders">>
 				<</if>>
 			<<else>>
-				_The _tentacle.fullDesc gently slaps your <<bottom>>.
+				_The _tentacle.fullDesc【은는】 당신의 <<bottom>>【을를】 가볍게 찰싹 때린다.
 				<<tentacle_skin "left_bottom" "right_bottom">>
 				<<violence 1>><<hitstat>>
 			<</if>>
 		<<elseif $rng lte 70>>
-			_The _tentacle.fullDesc gently slaps your <<bottom>>.
+			_The _tentacle.fullDesc【은는】 당신의 <<bottom>>【을를】 가볍게 찰싹 때린다.
 			<<tentacle_skin "left_bottom" "right_bottom">>
 			<<violence 1>><<hitstat>>
 		<<elseif $rng lte 80>>
 			<<if $leftleg is 0>>
 				<<switch random(1, 3)>>
-					<<case 3>>_The _tentacle.fullDesc winds its way around your left leg, <span class="blue">wrapping around it.</span>
-					<<case 2>>_The _tentacle.fullDesc <span class="blue">prods your left leg,</span> probing for a response.
-					<<case 1>>_The _tentacle.fullDesc <span class="blue">curls up to your left leg.</span>
+					<<case 3>>_The _tentacle.fullDesc【은는】 당신의 왼쪽 다리 주변을 휘감아, <span class="blue">감아붙는다.</span>
+					<<case 2>>_The _tentacle.fullDesc【은는】 <span class="blue">당신의 왼쪽 다리를 쿡쿡 찌르며,</span> 반응을 살핀다.
+					<<case 1>>_The _tentacle.fullDesc【은는】 <span class="blue">당신의 왼쪽 다리까지 말려 올라온다.</span>
 				<</switch>>
 				<<neutral 1>><<set _tentacle.head to "leftlegentrance">><<tentacle_skin "left_thigh">>
 			<<else>>
 				<<switch random(1, 3)>>
-					<<case 3>>_The _tentacle.fullDesc tickles your feet.
-					<<case 2>>_The _tentacle.fullDesc squeezes your thigh.
-					<<case 1>>_The _tentacle.fullDesc <<slithers>> between your legs.
+					<<case 3>>_The _tentacle.fullDesc【은는】 당신의 발을 간질인다.
+					<<case 2>>_The _tentacle.fullDesc【은는】 당신의 허벅지를 조인다.
+					<<case 1>>_The _tentacle.fullDesc【은는】 당신의 다리 사이로 <<slithers>>
 				<</switch>>
 				<<neutral 1>>
 			<</if>>
 		<<elseif $rng lte 85>>
 			<<if $rightleg is 0>>
 				<<switch random(1, 3)>>
-					<<case 3>>_The _tentacle.fullDesc winds its way around your right leg, <span class="blue">wrapping around it.</span>
-					<<case 2>>_The _tentacle.fullDesc <span class="blue">prods your right leg,</span> probing for a response.
-					<<case 1>>_The _tentacle.fullDesc <span class="blue">curls up to your right leg.</span>
+					<<case 3>>_The _tentacle.fullDesc【은는】 당신의 오른쪽 다리 주변을 휘감아, <span class="blue">감아붙는다.</span>
+					<<case 2>>_The _tentacle.fullDesc【은는】 <span class="blue">당신의 오른쪽 다리를 쿡쿡 찌르며,</span> 반응을 살핀다.
+					<<case 1>>_The _tentacle.fullDesc【은는】 <span class="blue">당신의 오른쪽 다리까지 말려 올라온다.</span>
 				<</switch>>
 				<<neutral 1>><<set _tentacle.head to "rightlegentrance">><<tentacle_skin "right_thigh">>
 			<<else>>
 				<<switch random(1, 3)>>
-					<<case 3>>_The _tentacle.fullDesc tickles your feet.
-					<<case 2>>_The _tentacle.fullDesc squeezes your thigh.
-					<<case 1>>_The _tentacle.fullDesc <<slithers>> between your legs.
+					<<case 3>>_The _tentacle.fullDesc【은는】 당신의 발을 간질인다.
+					<<case 2>>_The _tentacle.fullDesc【은는】 당신의 허벅지를 조인다.
+					<<case 1>>_The _tentacle.fullDesc【은는】 당신의 다리 사이로 <<slithers>>
 				<</switch>>
 				<<neutral 1>>
 			<</if>>
 		<<elseif $rng lte 90>>
 			<<if $leftarm is 0>>
 				<<switch random(1, 3)>>
-					<<case 3>>_The _tentacle.fullDesc winds its way around your left arm, <span class="blue">wrapping around it.</span>
-					<<case 2>>_The _tentacle.fullDesc <span class="blue">prods your left arm,</span> probing for a response.
-					<<case 1>>_The _tentacle.fullDesc <span class="blue">curls up to your left arm.</span>
+					<<case 3>>_The _tentacle.fullDesc【은는】 당신의 왼팔 주변을 휘감아, <span class="blue">감아붙는다.</span>
+					<<case 2>>_The _tentacle.fullDesc【은는】 <span class="blue">당신의 왼팔을 쿡쿡 찌르며,</span> 반응을 살핀다.
+					<<case 1>>_The _tentacle.fullDesc【은는】 <span class="blue">당신의 왼팔까지 말려 올라온다.</span>
 				<</switch>>
 				<<neutral 1>><<set _tentacle.head to "leftarmentrance">><<tentacle_skin "left_shoulder">>
 			<<else>>
 				<<switch random(1, 3)>>
-					<<case 3>>_The _tentacle.fullDesc tickles your armpit.
-					<<case 2>>_The _tentacle.fullDesc <<slithers>> over your ribs.
-					<<case 1>>_The _tentacle.fullDesc slaps against your palm.
+					<<case 3>>_The _tentacle.fullDesc【은는】 당신의 겨드랑이를 간질인다.
+					<<case 2>>_The _tentacle.fullDesc【은는】 당신의 갈비뼈 위로 <<slithers>>
+					<<case 1>>_The _tentacle.fullDesc【은는】 당신의 손바닥을 찰싹 때린다.
 				<</switch>>
 				<<neutral 1>>
 			<</if>>
 		<<elseif $rng lte 95>>
 			<<if $rightarm is 0>>
 				<<switch random(1, 3)>>
-					<<case 3>>_The _tentacle.fullDesc winds its way around your right arm, <span class="blue">wrapping around it.</span>
-					<<case 2>>_The _tentacle.fullDesc <span class="blue">prods your right arm,</span> probing for a response.
-					<<case 1>>_The _tentacle.fullDesc <span class="blue">curls up to your right arm.</span>
+					<<case 3>>_The _tentacle.fullDesc【은는】 당신의 오른팔 주변을 휘감아, <span class="blue">감아붙는다.</span>
+					<<case 2>>_The _tentacle.fullDesc【은는】 <span class="blue">당신의 오른팔을 쿡쿡 찌르며,</span> 반응을 살핀다.
+					<<case 1>>_The _tentacle.fullDesc【은는】 <span class="blue">당신의 오른팔까지 말려 올라온다.</span>
 				<</switch>>
 				<<neutral 1>><<set _tentacle.head to "rightarmentrance">><<tentacle_skin "right_shoulder">>
 			<<else>>
 				<<switch random(1, 3)>>
-					<<case 3>>_The _tentacle.fullDesc tickles your armpit.
-					<<case 2>>_The _tentacle.fullDesc <<slithers>> over your ribs.
-					<<case 1>>_The _tentacle.fullDesc slaps against your palm.
+					<<case 3>>_The _tentacle.fullDesc【은는】 당신의 겨드랑이를 간질인다.
+					<<case 2>>_The _tentacle.fullDesc【은는】 당신의 갈비뼈 위로 <<slithers>>
+					<<case 1>>_The _tentacle.fullDesc【은는】 당신의 손바닥을 찰싹 때린다.
 				<</switch>>
 				<<neutral 1>>
 			<</if>>
 		<<elseif $rng lte 100>>
-			_The _tentacle.fullDesc <<slithers>> against your <<bottom>>.
+			_The _tentacle.fullDesc【은는】 당신의 <<bottom>>에 닿아 <<slithers>>
 			<<tentacle_skin "left_bottom" "right_bottom">>
 			<<neutral 1 "bottom">>
 		<</if>>
@@ -1195,34 +1201,34 @@
 	<<set _tentacle to _args[0]>>
 	<<rng>>
 	<<if $rng gte 91>>
-		then squirts a warm _fluid over your neck.
+		그러고는 따뜻한 _fluidText【을를】 당신의 목 위로 뿜어낸다.
 		<<bodyliquid "neck" _fluid>><<neckejacstat>>
 	<<elseif $rng gte 81>>
-		then squirts a warm _fluid over your right arm.
+		그러고는 따뜻한 _fluidText【을를】 당신의 오른팔 위로 뿜어낸다.
 		<<bodyliquid "rightarm" _fluid>><<handejacstat>>
 	<<elseif $rng gte 71>>
-		then squirts a warm _fluid over your left arm.
+		그러고는 따뜻한 _fluidText【을를】 당신의 왼팔 위로 뿜어낸다.
 		<<bodyliquid "leftarm" _fluid>><<handejacstat>>
 	<<elseif $rng gte 61>>
-		then squirts a warm _fluid over your thighs.
+		그러고는 따뜻한 _fluidText【을를】 당신의 허벅지 위로 뿜어낸다.
 		<<bodyliquid "thigh" _fluid>><<thighejacstat>>
 	<<elseif $rng gte 51>>
-		then squirts a warm _fluid over your <<bottom>>.
+		그러고는 따뜻한 _fluidText【을를】 당신의 <<bottom>> 위로 뿜어낸다.
 		<<bodyliquid "bottom" _fluid>><<bottomejacstat>>
 	<<elseif $rng gte 41>>
-		then squirts a warm _fluid over your tummy.
+		그러고는 따뜻한 _fluidText【을를】 당신의 배 위로 뿜어낸다.
 		<<bodyliquid "tummy" _fluid>><<tummyejacstat>>
 	<<elseif $rng gte 31>>
-		then squirts a warm _fluid over your chest.
+		그러고는 따뜻한 _fluidText【을를】 당신의 가슴 위로 뿜어낸다.
 		<<bodyliquid "chest" _fluid>><<chestejacstat>>
 	<<elseif $rng gte 21>>
-		then squirts a warm _fluid over your face.
+		그러고는 따뜻한 _fluidText【을를】 당신의 얼굴 위로 뿜어낸다.
 		<<bodyliquid "face" _fluid>><<faceejacstat>>
 	<<elseif $rng gte 11>>
-		then squirts a warm _fluid over your hair.
+		그러고는 따뜻한 _fluidText【을를】 당신의 머리카락 위로 뿜어낸다.
 		<<bodyliquid "hair" _fluid>><<hairejacstat>>
 	<<else>>
-		then squirts a warm _fluid over your feet.
+		그러고는 따뜻한 _fluidText【을를】 당신의 발 위로 뿜어낸다.
 		<<bodyliquid "feet" _fluid>><<feetejacstat>>
 	<</if>>
 	<<neutral 1>><<set _tentacle.tentaclehealth -= 1>><<tentacle_record "fluid" 1>><<ejacstat>>
@@ -1340,25 +1346,25 @@
 
 	<<if $leftarm is 0 and _tentacle.shaft isnot "finished">>
 		<<set _action to "lefthittentacle"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "def" "Strike the _tentacle.fullDesc" "$leftaction" _action $leftactiondefault>>
+		<<actionstentacleadvcheckbox "def" "_tentacle.fullDesc【을를】 때린다" "$leftaction" _action $leftactiondefault>>
 
 		<<set _action to "leftgrabtentacle"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "sub" "Grab the _tentacle.fullDesc" "$leftaction" _action $leftactiondefault>>
+		<<actionstentacleadvcheckbox "sub" "_tentacle.fullDesc【을를】 움켜쥔다" "$leftaction" _action $leftactiondefault>>
 
 		<<if canAngelBanish()>>
 			<<set _action to "leftbanish"+_tentacle.id>>
-			<<actionstentacleadvcheckbox "def" "Banish the _tentacle.fullDesc" "$leftaction" _action $leftactiondefault>>
+			<<actionstentacleadvcheckbox "def" "_tentacle.fullDesc【을를】 쫓아낸다" "$leftaction" _action $leftactiondefault>>
 		<</if>>
 
 		<br>
 	<<elseif $leftarm is _tentacle.id>>
-		You hold the _tentacle.fullDesc in your left hand.
+		당신은 _tentacle.fullDesc【을를】 왼손에 쥐고 있다.
 		<br>
 		<<set _action to "leftrub"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "sub" "Milk it" "$leftaction" _action $leftactiondefault>>
+		<<actionstentacleadvcheckbox "sub" "착유한다" "$leftaction" _action $leftactiondefault>>
 
 		<<set _action to "leftstop"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "neutral" "Let go" "$leftaction" _action $leftactiondefault>>
+		<<actionstentacleadvcheckbox "neutral" "놓아준다" "$leftaction" _action $leftactiondefault>>
 
 		<<if hasSexStat("deviancy", 5)>> /* Should i lock this behind consentacles? */
 			<<if ($anususe is 0 and $settings.analEnabled) or ($player.vaginaExist and $vaginause is 0 or $player.penisExist and $penisuse is 0) or $mouthuse is 0>>
@@ -1366,17 +1372,17 @@
 
 				<<if $anususe is 0 and $settings.analEnabled>>
 					<<set _action to "showbottom"+_tentacle.id>>
-					<<actionstentacleadvcheckbox "sub" "Guide to your <<bottom>>." "$leftaction" _action $leftactiondefault>>
+					<<actionstentacleadvcheckbox "sub" "당신의 <<bottom>>【으로로】 이끈다." "$leftaction" _action $leftactiondefault>>
 				<</if>>
 
 				<<if ($player.vaginaExist and $vaginause is 0) or ($player.penisExist and $penisuse is 0)>>
 					<<set _action to "showthighs"+_tentacle.id>>
-					<<actionstentacleadvcheckbox "sub" "Guide to your thighs." "$leftaction" _action $leftactiondefault>>
+					<<actionstentacleadvcheckbox "sub" "당신의 허벅지로 이끈다." "$leftaction" _action $leftactiondefault>>
 				<</if>>
 
 				<<if $mouthuse is 0>>
 					<<set _action to "showmouth"+_tentacle.id>>
-					<<actionstentacleadvcheckbox "sub" "Guide to your mouth." "$leftaction" _action $leftactiondefault>>
+					<<actionstentacleadvcheckbox "sub" "당신의 입으로 이끈다." "$leftaction" _action $leftactiondefault>>
 				<</if>>
 			<</if>>
 		<</if>>
@@ -1390,24 +1396,24 @@
 
 	<<if $rightarm is 0 and _tentacle.shaft isnot "finished">>
 		<<set _action to "righthittentacle"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "def" "Strike _the _tentacle.fullDesc" "$rightaction" _action $rightactiondefault>>
+		<<actionstentacleadvcheckbox "def" "_the _tentacle.fullDesc【을를】 때린다" "$rightaction" _action $rightactiondefault>>
 
 		<<set _action to "rightgrabtentacle"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "sub" "Grab _the _tentacle.fullDesc" "$rightaction" _action $rightactiondefault>>
+		<<actionstentacleadvcheckbox "sub" "_the _tentacle.fullDesc【을를】 움켜쥔다" "$rightaction" _action $rightactiondefault>>
 
 		<<if canAngelBanish()>>
 			<<set _action to "rightbanish"+_tentacle.id>>
-			<<actionstentacleadvcheckbox "def" "Banish _the _tentacle.fullDesc" "$rightaction" _action $rightactiondefault>>
+			<<actionstentacleadvcheckbox "def" "_the _tentacle.fullDesc【을를】 쫓아낸다" "$rightaction" _action $rightactiondefault>>
 		<</if>>
 		<br>
 	<<elseif $rightarm is _tentacle.id>>
-		You hold the _tentacle.fullDesc in your right hand.
+		당신은 _tentacle.fullDesc【을를】 오른손에 쥐고 있다.
 		<br>
 		<<set _action to "rightrub"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "sub" "Milk it" "$rightaction" _action $rightactiondefault>>
+		<<actionstentacleadvcheckbox "sub" "착유한다" "$rightaction" _action $rightactiondefault>>
 
 		<<set _action to "rightstop"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "neutral" "Let go" "$rightaction" _action $rightactiondefault>>
+		<<actionstentacleadvcheckbox "neutral" "놓아준다" "$rightaction" _action $rightactiondefault>>
 
 		<<if hasSexStat("deviancy", 5)>> /* Should i lock this behind consentacles? */
 			<<if ($anususe is 0 and $settings.analEnabled) or ($player.vaginaExist and $vaginause is 0 or $player.penisExist and $penisuse is 0) or $mouthuse is 0>>
@@ -1415,17 +1421,17 @@
 
 				<<if $anususe is 0 and $settings.analEnabled>>
 					<<set _action to "showbottom"+_tentacle.id>>
-					<<actionstentacleadvcheckbox "sub" "Guide to your <<bottom>>." "$rightaction" _action $rightactiondefault>>
+					<<actionstentacleadvcheckbox "sub" "당신의 <<bottom>>【으로로】 이끈다." "$rightaction" _action $rightactiondefault>>
 				<</if>>
 
 				<<if ($player.vaginaExist and $vaginause is 0) or ($player.penisExist and $penisuse is 0)>>
 					<<set _action to "showthighs"+_tentacle.id>>
-					<<actionstentacleadvcheckbox "sub" "Guide to your thighs." "$rightaction" _action $rightactiondefault>>
+					<<actionstentacleadvcheckbox "sub" "당신의 허벅지로 이끈다." "$rightaction" _action $rightactiondefault>>
 				<</if>>
 
 				<<if $mouthuse is 0>>
 					<<set _action to "showmouth"+_tentacle.id>>
-					<<actionstentacleadvcheckbox "sub" "Guide to your mouth." "$rightaction" _action $rightactiondefault>>
+					<<actionstentacleadvcheckbox "sub" "당신의 입으로 이끈다." "$rightaction" _action $rightactiondefault>>
 				<</if>>
 			<</if>>
 		<</if>>
@@ -1439,25 +1445,25 @@
 
 	<<if $leftleg is 0 and $rightleg is 0 and _tentacle.shaft isnot "finished">>
 		<<set _action to "feethit"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "def" "Kick _the _tentacle.fullDesc" "$feetaction" _action $feetactiondefault>>
+		<<actionstentacleadvcheckbox "def" "_the _tentacle.fullDesc【을를】 걷어찬다" "$feetaction" _action $feetactiondefault>>
 
 		<<set _action to "feetgrab"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "sub" "Grab _the _tentacle.fullDesc" "$feetaction" _action $feetactiondefault>>
+		<<actionstentacleadvcheckbox "sub" "_the _tentacle.fullDesc【을를】 움켜쥔다" "$feetaction" _action $feetactiondefault>>
 
 		<br>
 	<<elseif ($rightleg is 0 or $leftleg is 0) and _tentacle.shaft isnot "finished">>
 		<<set _action to "feethit"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "def" "Kick _the _tentacle.fullDesc" "$feetaction" _action $feetactiondefault>>
+		<<actionstentacleadvcheckbox "def" "_the _tentacle.fullDesc【을를】 걷어찬다" "$feetaction" _action $feetactiondefault>>
 
 		<br>
 	<<elseif $leftleg is _tentacle.id>>
-		You hold the _tentacle.fullDesc between your feet.
+		당신은 _tentacle.fullDesc【을를】 양발 사이에 끼우고 있다.
 		<br>
 		<<set _action to "feetrub"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "sub" "Milk it" "$feetaction" _action $feetactiondefault>>
+		<<actionstentacleadvcheckbox "sub" "착유한다" "$feetaction" _action $feetactiondefault>>
 
 		<<set _action to "feetstop"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "neutral" "Let go" "$feetaction" _action $feetactiondefault>>
+		<<actionstentacleadvcheckbox "neutral" "놓아준다" "$feetaction" _action $feetactiondefault>>
 
 		<<if hasSexStat("deviancy", 5)>> /* Should i lock this behind consentacles? */
 			<<if ($anususe is 0 and $settings.analEnabled) or ($player.vaginaExist and $vaginause is 0 or $player.penisExist and $penisuse is 0)>>
@@ -1465,12 +1471,12 @@
 
 				<<if $anususe is 0 and $settings.analEnabled>>
 					<<set _action to "showbottom"+_tentacle.id>>
-					<<actionstentacleadvcheckbox "sub" "Guide to your <<bottom>>." "$feetaction" _action $feetactiondefault>>
+					<<actionstentacleadvcheckbox "sub" "당신의 <<bottom>>【으로로】 이끈다." "$feetaction" _action $feetactiondefault>>
 				<</if>>
 
 				<<if ($player.vaginaExist and $vaginause is 0) or ($player.penisExist and $penisuse is 0)>>
 					<<set _action to "showthighs"+_tentacle.id>>
-					<<actionstentacleadvcheckbox "sub" "Guide to your thighs." "$feetaction" _action $feetactiondefault>>
+					<<actionstentacleadvcheckbox "sub" "당신의 허벅지로 이끈다." "$feetaction" _action $feetactiondefault>>
 				<</if>>
 
 			<</if>>
@@ -1484,40 +1490,40 @@
 	<<set _tentacle to _args[0]>>
 	<<if _tentacle.head is "mouthentrance">>
 		<<set _action to "mouthlick"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "sub" "Lick it" "$mouthaction" _action $mouthactiondefault>>
+		<<actionstentacleadvcheckbox "sub" "핥는다" "$mouthaction" _action $mouthactiondefault>>
 
 		<<if $head is "grappled">>
 		<<else>>
 			<<set _action to "mouthpullaway"+_tentacle.id>>
-			<<actionstentacleadvcheckbox "brat" "Pull away" "$mouthaction" _action $mouthactiondefault>>
+			<<actionstentacleadvcheckbox "brat" "떨어진다" "$mouthaction" _action $mouthactiondefault>>
 		<</if>>
 		<<if $tending gte 600 and !$combat_silenced>>
 			<<set _action to "mouthlull"+_tentacle.id>>
-			<<actionstentacleadvcheckbox "brat" "Lull" "$mouthaction" _action $mouthactiondefault>>
+			<<actionstentacleadvcheckbox "brat" "달랜다" "$mouthaction" _action $mouthactiondefault>>
 		<</if>>
 	<<elseif _tentacle.head is "mouthimminent">>
 		<<set _action to "mouthkiss"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "sub" "Kiss it" "$mouthaction" _action $mouthactiondefault>>
+		<<actionstentacleadvcheckbox "sub" "입을 맞춘다" "$mouthaction" _action $mouthactiondefault>>
 
 		<<if $head is "grappled">>
 		<<else>>
 			<<set _action to "mouthpullaway"+_tentacle.id>>
-			<<actionstentacleadvcheckbox "brat" "Pull away" "$mouthaction" _action $mouthactiondefault>>
+			<<actionstentacleadvcheckbox "brat" "떨어진다" "$mouthaction" _action $mouthactiondefault>>
 		<</if>>
 		<<if $tending gte 600 and !$combat_silenced>>
 			<<set _action to "mouthlull"+_tentacle.id>>
-			<<actionstentacleadvcheckbox "brat" "Lull" "$mouthaction" _action $mouthactiondefault>>
+			<<actionstentacleadvcheckbox "brat" "달랜다" "$mouthaction" _action $mouthactiondefault>>
 		<</if>>
 	<<elseif _tentacle.head is "mouth" or _tentacle.head is "mouthdeep">>
 		<<set _action to "mouthcooperate"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "sub" "Cooperate" "$mouthaction" _action $mouthactiondefault>>
+		<<actionstentacleadvcheckbox "sub" "협조한다" "$mouthaction" _action $mouthactiondefault>>
 
 		<<set _action to "mouthbite"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "def" "Bite" "$mouthaction" _action $mouthactiondefault>>
+		<<actionstentacleadvcheckbox "def" "문다" "$mouthaction" _action $mouthactiondefault>>
 	<<else>>
 		<<if $tending gte 600 and !$combat_silenced>>
 			<<set _action to "mouthlull"+_tentacle.id>>
-			<<actionstentacleadvcheckbox "brat" "Lull" "$mouthaction" _action $mouthactiondefault>>
+			<<actionstentacleadvcheckbox "brat" "달랜다" "$mouthaction" _action $mouthactiondefault>>
 		<</if>>
 	<</if>>
 <</widget>>
@@ -1527,17 +1533,17 @@
 
 	<<if _tentacle.head is "vaginaentrance" or _tentacle.head is "vaginaimminent">>
 		<<set _action to "vaginarub"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "sub" "Rub" "$vaginaaction" _action $vaginaactiondefault>>
+		<<actionstentacleadvcheckbox "sub" "문지른다" "$vaginaaction" _action $vaginaactiondefault>>
 
 		<<if $leftleg is "grappled" and $rightleg is "grappled">>
 		<<else>>
 			<<set _action to "vaginapullaway"+_tentacle.id>>
-			<<actionstentacleadvcheckbox "brat" "Pull away" "$vaginaaction" _action $vaginaactiondefault>>
+			<<actionstentacleadvcheckbox "brat" "떨어진다" "$vaginaaction" _action $vaginaactiondefault>>
 		<</if>>
 
 	<<elseif _tentacle.head is "vagina" or _tentacle.head is "vaginadeep">>
 		<<set _action to "vaginacooperate"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "sub" "Cooperate" "$vaginaaction" _action $vaginaactiondefault>>
+		<<actionstentacleadvcheckbox "sub" "협조한다" "$vaginaaction" _action $vaginaactiondefault>>
 
 	<</if>>
 <</widget>>
@@ -1547,18 +1553,18 @@
 
 	<<if _tentacle.head is "penisentrance" or _tentacle.head is "penisimminent">>
 		<<set _action to "penisrub"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "sub" "Rub" "$penisaction" _action $penisactiondefault>>
+		<<actionstentacleadvcheckbox "sub" "문지른다" "$penisaction" _action $penisactiondefault>>
 
 		<<if $leftleg is "grappled" and $rightleg is "grappled">>
 		<<else>>
 			<<set _action to "penispullaway"+_tentacle.id>>
-			<<actionstentacleadvcheckbox "brat" "Pull away" "$penisaction" _action $penisactiondefault>>
+			<<actionstentacleadvcheckbox "brat" "떨어진다" "$penisaction" _action $penisactiondefault>>
 
 		<</if>>
 
 	<<elseif _tentacle.head is "penis" or _tentacle.head is "penisdeep">>
 		<<set _action to "peniscooperate"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "sub" "Cooperate" "$penisaction" _action $penisactiondefault>>
+		<<actionstentacleadvcheckbox "sub" "협조한다" "$penisaction" _action $penisactiondefault>>
 
 	<</if>>
 <</widget>>
@@ -1568,18 +1574,18 @@
 
 	<<if _tentacle.head is "anusentrance" or _tentacle.head is "anusimminent">>
 		<<set _action to "anusrub"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "sub" "Rub" "$anusaction" _action $anusactiondefault>>
+		<<actionstentacleadvcheckbox "sub" "문지른다" "$anusaction" _action $anusactiondefault>>
 
 		<<if $leftleg is "grappled" and $rightleg is "grappled">>
 		<<else>>
 			<<set _action to "anuspullaway"+_tentacle.id>>
-			<<actionstentacleadvcheckbox "brat" "Pull away" "$anusaction" _action $anusactiondefault>>
+			<<actionstentacleadvcheckbox "brat" "떨어진다" "$anusaction" _action $anusactiondefault>>
 
 		<</if>>
 
 	<<elseif _tentacle.head is "anus" or _tentacle.head is "anusdeep">>
 		<<set _action to "anuscooperate"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "sub" "Cooperate" "$anusaction" _action $anusactiondefault>>
+		<<actionstentacleadvcheckbox "sub" "협조한다" "$anusaction" _action $anusactiondefault>>
 
 	<</if>>
 <</widget>>
@@ -1589,11 +1595,11 @@
 
 	<<if _tentacle.head is "penisrub">>
 		<<set _action to "penisrub"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "sub" "Rub" "$thighaction" _action $thighactiondefault>>
+		<<actionstentacleadvcheckbox "sub" "문지른다" "$thighaction" _action $thighactiondefault>>
 
 	<<elseif _tentacle.head is "vaginarub">>
 		<<set _action to "vaginarub"+_tentacle.id>>
-		<<actionstentacleadvcheckbox "sub" "Rub" "$thighaction" _action $thighactiondefault>>
+		<<actionstentacleadvcheckbox "sub" "문지른다" "$thighaction" _action $thighactiondefault>>
 
 	<</if>>
 <</widget>>
@@ -1602,14 +1608,14 @@
 	<<set _tentacle to _args[0]>>
 
 	<<set _action to "bottomrub"+_tentacle.id>>
-	<<actionstentacleadvcheckbox "sub" "Rub" "$bottomaction" _action $bottomactiondefault>>
+	<<actionstentacleadvcheckbox "sub" "문지른다" "$bottomaction" _action $bottomactiondefault>>
 <</widget>>
 
 <<widget "actionstentacleadvchest">> /* unused */
 	<<set _tentacle to _args[0]>>
 
 	<<set _action to "chestrub"+_tentacle.id>>
-	<<actionstentacleadvcheckbox "sub" "Rub" "$chestaction" _action $chestactiondefault>>
+	<<actionstentacleadvcheckbox "sub" "문지른다" "$chestaction" _action $chestactiondefault>>
 <</widget>>
 
 <<widget "effectstentacleadv">>
@@ -1621,31 +1627,33 @@
 		<<set _fluid to "fluid">>
 		<<set _Slimy to "Slimy">>
 	<</if>>
+	<<set _fluidText to (_fluid is "nectar" ? "넥타르" : "액체")>>
+	<<set _slimyText to (_Slimy is "Sticky" ? "끈적한" : "미끈한")>>
 	<<rng>>
-	<<set _The to ($abomination is 1 ? "<<His>>" : "The")>>
-	<<set _the to ($abomination is 1 ? "<<his>>" : "the")>>
+	<<set _The to ($abomination is 1 ? "<<His>>" : "")>>
+	<<set _the to ($abomination is 1 ? "<<his>>" : "")>>
 
 	/*New Controls*/
 	<<if ($leftaction is "lefthittentacle" and $leftactionTarget is _tentacle.id)
 	or ($rightaction is "righthittentacle" and $rightactionTarget is _tentacle.id)>>
 		<<if $leftaction is "lefthittentacle" and $rightaction is "righthittentacle" and $leftactionTarget is $rightactionTarget>>
-			You strike _the _tentacle.fullDesc with both hands and it reels away from you.
+			당신은 두 손으로 _the _tentacle.fullDesc【을를】 내리치고, 그것은 당신에게서 멀어지며 물러선다.
 			<<set _multi to 2>>
 			<<set $leftaction to 0>><<set $leftactiondefault to "lefthittentacle">>
 			<<set $rightaction to 0>><<set $rightactiondefault to "righthittentacle">>
 		<<elseif $leftaction is "lefthittentacle" and $leftactionTarget is _tentacle.id>>
-			You strike _the _tentacle.fullDesc with your left hand and it reels away from you.
+			당신은 왼손으로 _the _tentacle.fullDesc【을를】 내리치고, 그것은 당신에게서 멀어지며 물러선다.
 			<<set _multi to 1>><<set $leftaction to 0>>
 			<<set $leftactiondefault to "lefthittentacle">>
 		<<else>>
-			You strike _the _tentacle.fullDesc with your right hand and it reels away from you.
+			당신은 오른손으로 _the _tentacle.fullDesc【을를】 내리치고, 그것은 당신에게서 멀어지며 물러선다.
 			<<set _multi to 1>>
 			<<set $rightaction to 0>><<set $rightactiondefault to "righthittentacle">>
 		<</if>>
 		<<defiance `2 * _multi`>>
 		<<set $speechPlayerHits to 1 * _multi>><<set $attackstat += 1 * _multi>>
 		<<if $rng lte (currentSkillValue('physique') / 200)>>
-			<span class="green">It trembles before your strength.</span>
+			<span class="green">그것은 당신의 힘 앞에서 덜덜 떤다.</span>
 			<<if $combatExtended.strikingToggle is 1>>
 				<<set _tentacle.tentaclehealth -= Math.round(1 + (1 + (currentSkillValue('physique') / 8000)) + (1 + (combatExtendedSkillValue('striking') / 1000))) * _multi>><<tentacle_record "damage" Math.round(1 + (1 + (currentSkillValue('physique') / 8000)) + (1 + (combatExtendedSkillValue('striking') / 1000))) * _multi>>
 			<<else>>
@@ -1659,7 +1667,7 @@
 		<</if>>
 		<<tentacleadvdisable _tentacle>>
 		<<if $abomination is 1>>
-			The <<person>> winces in pain.
+			<<person>>【은는】 고통에 움찔한다.
 		<</if>>
 	<</if>>
 
@@ -1712,22 +1720,22 @@
 	or ($rightaction is "rightbanish" and $rightactionTarget is _tentacle.id)>>
 		<<if $leftaction is "leftbanish" and $rightaction is "rightbanish" and $leftactionTarget is $rightactionTarget and $angelBanish gte 2>>
 			<<set $angelBanish -= 2>>
-			You clasp your hands together in prayer. _The _tentacle.fullDesc shimmers brightly and is blasted away from you.
+			당신은 기도하듯 두 손을 모은다. _The _tentacle.fullDesc【이가】 눈부시게 빛나며 당신에게서 튕겨져 나간다.
 			<<set _multi to 2>>
 			<<set $leftaction to 0>><<set $leftactiondefault to "leftbanish">>
 			<<set $rightaction to 0>><<set $rightactiondefault to "rightbanish">>
 		<<elseif $leftaction is "leftbanish" and $angelBanish gte 1 and $leftactionTarget is _tentacle.id>>
 			<<set $angelBanish -->>
-			You make an intricate gesture with your left hand. _The _tentacle.fullDesc shimmers and recoils violently.
+			당신은 왼손으로 복잡한 손동작을 취한다. _The _tentacle.fullDesc【이가】 희미하게 빛나더니 격렬하게 움츠러든다.
 			<<set _multi to 1>><<set $leftaction to 0>>
 			<<set $leftactiondefault to "leftbanish">>
 		<<elseif $rightaction is "rightbanish" and $angelBanish gte 1 and $rightactionTarget is _tentacle.id>>
 			<<set $angelBanish -->>
-			You make an intricate gesture with your right hand. _The _tentacle.fullDesc shimmers and recoils violently.
+			당신은 오른손으로 복잡한 손동작을 취한다. _The _tentacle.fullDesc【이가】 희미하게 빛나더니 격렬하게 움츠러든다.
 			<<set _multi to 1>><<set $rightaction to 0>>
 			<<set $rightactiondefault to "rightbanish">>
 		<<else>>
-			You make an intricate gesture with your <<if $leftaction is "leftbanish">>left<<else>>right<</if>> hand, <span class="red">but nothing happens</span>.
+			당신은 <<if $leftaction is "leftbanish">>왼<<else>>오른<</if>>손으로 복잡한 손동작을 취하지만, <span class="red">아무 일도 일어나지 않는다</span>.
 		<</if>>
 		<<if $purity gte 1000>>
 			<<set _multi ++>>
@@ -1738,7 +1746,7 @@
 		<<set _tentacle.tentaclehealth -= 10 * _multi>><<tentacle_record "banish" 10 * _multi>>
 		<<tentacleadvdisable _tentacle>>
 		<<if $abomination is 1>>
-			<<combatPerson>> recoils from the light.
+			<<combatPerson>>【은는】 빛을 피해 뒷걸음질 친다.
 		<</if>>
 	<</if>>
 
@@ -1752,7 +1760,7 @@
 			<<set _hand to "right">><<set $rightaction to 0>><<set $rightactiondefault to "rightrub">>
 			<<set $rightarm to _tentacle.id>><<set _tentacle.head to "rightarm">><<set $rightarmstate to "tentacle">><<set $righttarget to "tentacles">>
 		<</if>>
-		<span class="lblue">You <<handtext>> grab _the _tentacle.fullDesc with your _hand hand.</span>
+		<span class="lblue">당신은 <<print _hand is "left" ? "왼" : "오른">>손으로 _the _tentacle.fullDesc【을를】 <<handtext>> 움켜쥔다.</span>
 		<<submission 1>><<handstat>>
 	<</if>>
 
@@ -1766,10 +1774,10 @@
 		<</if>>
 
 		<<handskilluse>><<submission 1>>
-		You <<handtext>> squeeze _the _tentacle.fullDesc in your _hand hand and rub up and down its length.
+		당신은 <<print _hand is "left" ? "왼" : "오른">>손으로 _the _tentacle.fullDesc【을를】 쥐고서 그 길이를 따라 <<handtext>> 위아래로 문지른다.
 
 		<<if currentSkillValue("handskill") gte (800 - ($rng * 10))>>
-			<span class="lblue">_Slimy _fluid erupts from the tip</span>.
+			<span class="lblue">끝부분에서 _slimyText _fluidText【이가】 뿜어져 나온다.</span>
 			<<set _tentacle.tentaclehealth -= 3>><<tentacle_record "fluid" 3>>
 			<<if $abomination is 1>>
 				<<enemypleasure 6>>
@@ -1782,9 +1790,9 @@
 	<<if $leftaction is "leftstruggle" or $rightaction is "rightstruggle">>
 		<<if !_struggletext>>
 			<<if $leftaction is "leftstruggle" and $rightaction is "rightstruggle">>
-				You struggle with all your might.
+				당신은 젖 먹던 힘까지 짜내어 버둥거린다.
 			<<else>>
-				You struggle.
+				당신은 버둥거린다.
 			<</if>>
 			<<set _struggletext to 1>>
 		<</if>>
@@ -1792,23 +1800,23 @@
 			<<if $leftaction is "leftstruggle" and $rightaction is "rightstruggle">>
 				<<set $leftaction to 0>><<set $rightaction to 0>><<set $leftactiondefault to "leftstruggle">><<set $rightactiondefault to "rightstruggle">>
 				<<if currentSkillValue('physique') gte random(1, 32000)>>
-					<span class="teal">You manage to twist your arms free.</span>
+					<span class="teal">당신은 어떻게든 몸을 비틀어 팔을 빼낸다.</span>
 					<<defiance 5>>
 					<<set $leftarm to 0>><<set $rightarm to 0>>
 					<<set $NPCList[0].lefthand to 0>>
 					<<set $NPCList[0].righthand to 0>>
 				<<else>>
-					<span class="purple">Your arms remain entangled.</span>
+					<span class="purple">당신의 팔은 여전히 얽혀 있다.</span>
 				<</if>>
 			<<else>>
 				<<if currentSkillValue('physique') gte random(1, 64000)>>
-					<span class="teal">You manage to twist your arms free.</span>
+					<span class="teal">당신은 어떻게든 몸을 비틀어 팔을 빼낸다.</span>
 					<<defiance 5>>
 					<<set $leftarm to 0>><<set $rightarm to 0>>
 					<<set $NPCList[0].lefthand to 0>>
 					<<set $NPCList[0].righthand to 0>>
 				<<else>>
-					<span class="purple">Your arms remain entangled.</span>
+					<span class="purple">당신의 팔은 여전히 얽혀 있다.</span>
 				<</if>>
 			<</if>>
 		<</if>>
@@ -1816,22 +1824,22 @@
 			<<set $leftaction to 0>><<set $leftactiondefault to "leftstruggle">>
 			<<set $speechStruggle to 1>><<defiance 1>>
 			<<if currentSkillValue('physique') gte random(1, 64000)>>
-				<span class="teal">You manage to twist your left arm free.</span>
+				<span class="teal">당신은 어떻게든 몸을 비틀어 왼팔을 빼낸다.</span>
 				<<defiance 5>><<tentacleadvdisable _tentacle>>
 				<<set $leftarm to 0>>
 			<<else>>
-				<span class="purple">Your left arm remains entangled.</span>
+				<span class="purple">당신의 왼팔은 여전히 얽혀 있다.</span>
 			<</if>>
 		<</if>>
 		<<if $rightaction is "rightstruggle" and _tentacle.shaft is "rightarm">>
 			<<set $rightaction to 0>><<set $rightactiondefault to "rightstruggle">>
 			<<defiance 1>><<set $speechStruggle to 1>>
 			<<if currentSkillValue('physique') gte random(1, 64000)>>
-				<span class="teal">You manage to twist your right arm free.</span>
+				<span class="teal">당신은 어떻게든 몸을 비틀어 오른팔을 빼낸다.</span>
 				<<defiance 5>><<tentacleadvdisable _tentacle>>
 				<<set $rightarm to 0>>
 			<<else>>
-				<span class="purple">Your right arm remains entangled.</span>
+				<span class="purple">당신의 오른팔은 여전히 얽혀 있다.</span>
 			<</if>>
 		<</if>>
 	<</if>>
@@ -1851,7 +1859,7 @@
 		<br>
 		<<combatdeviancy5>>
 		<br>
-		You <<handtext>> guide _the _tentacle.fullDesc with your _hand hand towards your <<bottom>>.
+		당신은 <<print _hand is "left" ? "왼" : "오른">>손으로 _the _tentacle.fullDesc【을를】 당신의 <<bottom>> 쪽으로 <<handtext>> 이끈다.
 
 		<<if $rng lte 30>> /* How common will the tentacle wrap around the arm guiding it */
 			<<if _hand is "left">>
@@ -1863,7 +1871,7 @@
 				<<set _tentacle.shaft to "rightarm">>
 				<<set $rightarm to "tentgrappled">><<set $rightarmstate to 0>><<set $righttarget to "tentacles">>
 			<</if>>
-			_The _tentacle.fullDesc winds its way around your _hand arm, <span class="blue">restraining it.</span>
+			_The _tentacle.fullDesc【이가】 당신의 <<print _hand is "left" ? "왼" : "오른">>팔을 칭칭 감아, <span class="blue">팔을 결박해 버린다.</span>
 			<<neutral 1>>
 		<<else>>
 			<<if _tentacle.shaft is 0>>
@@ -1890,7 +1898,7 @@
 		<br>
 		<<combatdeviancy5>>
 		<br>
-		You <<handtext>> guide _the _tentacle.fullDesc with your _hand hand up towards your mouth.
+		당신은 <<print _hand is "left" ? "왼" : "오른">>손으로 _the _tentacle.fullDesc【을를】 입가로 <<handtext>> 이끈다.
 
 		<<if $rng lte 30>> /* How common will the tentacle wrap around the arm guiding it */
 			<<if _hand is "left">>
@@ -1902,7 +1910,7 @@
 				<<set _tentacle.shaft to "rightarm">>
 				<<set $rightarm to "tentgrappled">><<set $rightarmstate to 0>><<set $righttarget to "tentacles">>
 			<</if>>
-			_The _tentacle.fullDesc winds its way around your _hand arm, <span class="blue">restraining it.</span>
+			_The _tentacle.fullDesc【이가】 당신의 <<print _hand is "left" ? "왼" : "오른">>팔을 칭칭 감아, <span class="blue">팔을 결박해 버린다.</span>
 			<<neutral 1>>
 		<<else>>
 			<<if _tentacle.shaft is 0>>
@@ -1933,7 +1941,7 @@
 		<br>
 		<<combatdeviancy5>>
 		<br>
-		You <<handtext>> guide _the _tentacle.fullDesc with your _hand hand between your thighs.
+		당신은 <<print _hand is "left" ? "왼" : "오른">>손으로 _the _tentacle.fullDesc【을를】 허벅지 사이로 <<handtext>> 이끈다.
 
 		<<if $rng lte 30>> /* How common will the tentacle wrap around the arm guiding it */
 			<<if _hand is "left">>
@@ -1945,7 +1953,7 @@
 				<<set _tentacle.shaft to "rightarm">>
 				<<set $rightarm to "tentgrappled">><<set $rightarmstate to 0>><<set $righttarget to "tentacles">>
 			<</if>>
-			_The _tentacle.fullDesc winds its way around your _hand arm, <span class="blue">restraining it.</span>
+			_The _tentacle.fullDesc【이가】 당신의 <<print _hand is "left" ? "왼" : "오른">>팔을 칭칭 감아, <span class="blue">팔을 결박해 버린다.</span>
 			<<neutral 1>>
 		<<else>>
 			<<if _tentacle.shaft is 0>>
@@ -1978,7 +1986,7 @@
 			<br>
 			<<combatdeviancy5>>
 			<br>
-			You <<handtext>> guide _the _tentacle.fullDesc with your _hand hand between your thighs close to your <<penisSimple>>.
+			당신은 <<print _hand is "left" ? "왼" : "오른">>손으로 _the _tentacle.fullDesc【을를】 당신의 허벅지 사이, <<penisSimple>> 쪽으로 <<handtext>> 이끈다.
 
 			<<if $rng lte 30>> /* How common will the tentacle wrap around the arm guiding it */
 				<<if _hand is "left">>
@@ -1990,7 +1998,7 @@
 					<<set _tentacle.shaft to "rightarm">>
 					<<set $rightarm to "tentgrappled">><<set $rightarmstate to 0>><<set $righttarget to "tentacles">>
 				<</if>>
-				_The _tentacle.fullDesc winds its way around your _hand arm, <span class="blue">restraining it.</span>
+				_The _tentacle.fullDesc【이가】 당신의 <<print _hand is "left" ? "왼" : "오른">>팔을 칭칭 감아, <span class="blue">팔을 결박해 버린다.</span>
 				<<neutral 1>>
 			<<else>>
 				<<if _tentacle.shaft is 0>>
@@ -2022,7 +2030,7 @@
 			<br>
 			<<combatdeviancy5>>
 			<br>
-			You <<handtext>> guide _the _tentacle.fullDesc with your _hand hand between your thighs close to your pussy.
+			당신은 <<print _hand is "left" ? "왼" : "오른">>손으로 _the _tentacle.fullDesc【을를】 당신의 허벅지 사이, 보지 쪽으로 <<handtext>> 이끈다.
 
 			<<if $rng lte 30>> /* How common will the tentacle wrap around the arm guiding it */
 				<<if _hand is "left">>
@@ -2034,7 +2042,7 @@
 					<<set _tentacle.shaft to "rightarm">>
 					<<set $rightarm to "tentgrappled">><<set $rightarmstate to 0>><<set $righttarget to "tentacles">>
 				<</if>>
-				_The _tentacle.fullDesc winds its way around your _hand arm, <span class="blue">restraining it.</span>
+				_The _tentacle.fullDesc【이가】 당신의 <<print _hand is "left" ? "왼" : "오른">>팔을 칭칭 감아, <span class="blue">팔을 결박해 버린다.</span>
 				<<neutral 1>>
 			<<else>>
 				<<if _tentacle.shaft is 0>>
@@ -2053,19 +2061,19 @@
 
 	<<if $leftaction is "leftstop"+_tentacle.id>>
 		<<set $leftaction to 0>><<set $leftactiondefault to "leftstop"+_tentacle.id>>
-		You release _the _tentacle.fullDesc from your left hand.
+		당신은 왼손에서 _the _tentacle.fullDesc【을를】 놓아준다.
 		<<tentacleadvdisable _tentacle>>
 	<</if>>
 
 	<<if $rightaction is "rightstop"+_tentacle.id>>
 		<<set $rightaction to 0>><<set $rightactiondefault to "rightstop"+_tentacle.id>>
-		You release _the _tentacle.fullDesc from your right hand.
+		당신은 오른손에서 _the _tentacle.fullDesc【을를】 놓아준다.
 		<<tentacleadvdisable _tentacle>>
 	<</if>>
 
 	<<if $leftaction is "leftstop"+_tentacle.id>>
 		<<set $leftaction to 0>><<set $leftactiondefault to "leftstop"+_tentacle.id>>
-		You release _the _tentacle.fullDesc from your left hand.
+		당신은 왼손에서 _the _tentacle.fullDesc【을를】 놓아준다.
 		<<tentacleadvdisable _tentacle>>
 	<</if>>
 
@@ -2083,11 +2091,11 @@
 
 	<<if $feetaction is "feethit" and $feetactionTarget is _tentacle.id>>
 		<<set $feetaction to 0>><<set $feetactiondefault to "feethit">>
-		You kick _the _tentacle.fullDesc and it reels away from you.
+		당신이 _the _tentacle.fullDesc【을를】 발로 걷어차자 그것은 비틀거리며 멀어진다.
 		<<defiance 2>><<set $speechPlayerHits to 1>><<tentacleadvdisable _tentacle>><<set $attackstat += 1>>
 		<<set _tentacle.tentaclehealth -= 1>><<tentacle_record "damage" 1>>
 		<<if $rng lte (currentSkillValue('physique') / 200)>>
-			<span class="green">It trembles before your strength.</span>
+			<span class="green">그것은 당신의 힘 앞에서 덜덜 떤다.</span>
 			<<if $combatExtended.kickingToggle is 1>>
 				<<set _tentacle.tentaclehealth -= Math.round(1 + (1 + (currentSkillValue('physique') / 8000)) + (1 + (combatExtendedSkillValue('kicking') / 1000)))>><<tentacle_record "damage" Math.round(1 + (1 + (currentSkillValue('physique') / 8000)) + (1 + (combatExtendedSkillValue('kicking') / 1000)))>>
 			<<else>>
@@ -2100,16 +2108,16 @@
 	<</if>>
 	<<if $feetaction is "feetgrab" and $feetactionTarget is _tentacle.id>>
 		<<set $feetaction to 0>><<set $feetactiondefault to "feetrub">><<submission 1>><<feetstat>>
-		<span class="lblue">You <<feettext>> grab _the _tentacle.fullDesc between your feet.</span>
+		<span class="lblue">당신은 두 발 사이로 _the _tentacle.fullDesc【을를】 <<feettext>> 붙잡는다.</span>
 		<<tentacleadvdisable _tentacle>><<set $leftleg to _tentacle.id>><<set $rightleg to _tentacle.id>><<set $feettarget to "tentacles">>
 		<<set _tentacle.head to "feet">><<feetstat>><<set $feetstate to "tentacle">>
 	<</if>>
 
 	<<if $feetaction is "feetrub"+_tentacle.id>>
 		<<set $feetaction to 0>><<set $feetactiondefault to "feetrub"+_tentacle.id>><<feetskilluse>><<submission 1>>
-		You <<feettext>> squeeze _the _tentacle.fullDesc between your feet and rub up and down its length.
+		당신은 두 발 사이에 _the _tentacle.fullDesc【을를】 조이고 그 길이를 따라 <<feettext>> 위아래로 문지른다.
 		<<if currentSkillValue("feetskill") gte (800 - ($rng * 10))>>
-			<span class="lblue">_Slimy _fluid erupts from the tip</span>.
+			<span class="lblue">끝부분에서 _slimyText _fluidText【이가】 뿜어져 나온다.</span>
 			<<bodyliquid "feet" _fluid>><<set _tentacle.tentaclehealth -= 3>><<tentacle_record "fluid" 3>><<feetejacstat>><<ejacstat>>
 			<<if $abomination is 1>>
 				<<enemypleasure 6>>
@@ -2128,20 +2136,20 @@
 
 		<<if $feetaction is "showthighs"+_tentacle.id>>
 			<<set _dir to "thighs">>
-			You <<feettext>> guide _the _tentacle.fullDesc with your feet between your thighs.
+			당신은 발을 사용하여 _the _tentacle.fullDesc【을를】 허벅지 사이로 <<feettext>> 이끈다.
 		<<else>>
 			<<set _dir to "bottom">>
-			You <<feettext>> guide _the _tentacle.fullDesc with your feet towards your <<bottom>>.
+			당신은 발을 사용하여 _the _tentacle.fullDesc【을를】 <<bottom>> 쪽으로 <<feettext>> 이끈다.
 		<</if>>
 
 		<<if $rng lte 30>> /* Leg grapple? */
 			<<if $rng gte 16>>
-				<<set _leg to "left">><<set _tentacle.shaft to "leftleg">><<set $leftleg to "grappled">><<set $feettarget to "tentacles">>
+				<<set _leg to "왼쪽">><<set _tentacle.shaft to "leftleg">><<set $leftleg to "grappled">><<set $feettarget to "tentacles">>
 			<<else>>
-				<<set _leg to "right">><<set _tentacle.shaft to "rightleg">><<set $rightleg to "grappled">><<set $feettarget to "tentacles">>
+				<<set _leg to "오른쪽">><<set _tentacle.shaft to "rightleg">><<set $rightleg to "grappled">><<set $feettarget to "tentacles">>
 			<</if>>
 			<<neutral 1>><<feettentacledisable>>
-			_The _tentacle.fullDesc winds its way around your _leg leg, <span class="blue">restraining it.</span>
+			_The _tentacle.fullDesc【이가】 당신의 _leg 다리를 감고 올라와, <span class="blue">구속해 버린다.</span>
 		<<else>>
 			<<if _tentacle.shaft is 0>>
 				<<if _dir is "thighs">>
@@ -2176,16 +2184,16 @@
 			<br>
 			<<combatdeviancy5>>
 			<br>
-			You <<feettext>> guide _the _tentacle.fullDesc with your feet between your thighs close to your pussy.
+			당신은 발을 사용하여 _the _tentacle.fullDesc【을를】 당신의 허벅지 사이, 보지 쪽으로 <<feettext>> 이끈다.
 
 			<<if $rng lte 30>>
 				<<if $rng gte 16>>
-					<<set _leg to "left">><<set _tentacle.shaft to "leftleg">><<set $leftleg to "grappled">><<set $feettarget to "tentacles">>
+					<<set _leg to "왼쪽">><<set _tentacle.shaft to "leftleg">><<set $leftleg to "grappled">><<set $feettarget to "tentacles">>
 				<<else>>
-					<<set _leg to "right">><<set _tentacle.shaft to "rightleg">><<set $rightleg to "grappled">><<set $feettarget to "tentacles">>
+					<<set _leg to "오른쪽">><<set _tentacle.shaft to "rightleg">><<set $rightleg to "grappled">><<set $feettarget to "tentacles">>
 				<</if>>
 				<<neutral 1>><<feettentacledisable>>
-				_The _tentacle.fullDesc winds its way around your _leg leg, <span class="blue">restraining it.</span>
+				_The _tentacle.fullDesc【이가】 당신의 _leg 다리를 감고 올라와, <span class="blue">구속해 버린다.</span>
 			<<else>>
 				<<if _tentacle.shaft is 0>>
 					<<set _tentacle.shaft to (either("tummy","waist"))>>
@@ -2210,16 +2218,16 @@
 			<br>
 			<<combatdeviancy5>>
 			<br>
-			You <<feettext>> guide _the _tentacle.fullDesc with your feet between your thighs close to your <<print playerHasStrapon() ? "strap-on" : "penis">>.
+			당신은 발을 사용하여 _the _tentacle.fullDesc【을를】 당신의 허벅지 사이, <<print playerHasStrapon() ? "페니스 밴드" : "자지">> 쪽으로 <<feettext>> 이끈다.
 
 			<<if $rng lte 30>>
 				<<if $rng gte 16>>
-					<<set _leg to "left">><<set _tentacle.shaft to "leftleg">><<set $leftleg to "grappled">><<set $feettarget to "tentacles">>
+					<<set _leg to "왼쪽">><<set _tentacle.shaft to "leftleg">><<set $leftleg to "grappled">><<set $feettarget to "tentacles">>
 				<<else>>
-					<<set _leg to "right">><<set _tentacle.shaft to "rightleg">><<set $rightleg to "grappled">><<set $feettarget to "tentacles">>
+					<<set _leg to "오른쪽">><<set _tentacle.shaft to "rightleg">><<set $rightleg to "grappled">><<set $feettarget to "tentacles">>
 				<</if>>
 				<<neutral 1>><<feettentacledisable>>
-				_The _tentacle.fullDesc winds its way around your _leg leg, <span class="blue">restraining it.</span>
+				_The _tentacle.fullDesc【이가】 당신의 _leg 다리를 감고 올라와, <span class="blue">구속해 버린다.</span>
 			<<else>>
 				<<if _tentacle.shaft is 0>>
 					<<set _tentacle.shaft to (either("tummy","waist"))>>
@@ -2237,7 +2245,7 @@
 
 	<<if $feetaction is "feetstop"+_tentacle.id>>
 		<<set $feetaction to 0>><<set $feetactiondefault to "feetstop"+_tentacle.id>>
-		You let go of the _tentacle.fullDesc between your feet.
+		당신은 두 발 사이에서 _tentacle.fullDesc【을를】 풀어준다.
 		<<tentacleadvdisable _tentacle>>
 	<</if>>
 
@@ -2249,10 +2257,10 @@
 	<<if $mouthaction is "mouthlull"+_tentacle.id>>
 		<<set $mouthaction to 0>><<set $mouthactiondefault to "mouthlull"+_tentacle.id>>
 		<<brat 1>>
-		You hum a soothing lullaby at _the _tentacle.fullDesc, sapping its strength. <span class="green">It recoils.</span>
+		당신은 _the _tentacle.fullDesc에게 달래는 듯한 자장가를 흥얼거려, 그 힘을 빼놓는다. <span class="green">그것은 움츠러든다.</span>
 		<<tentacleadvdisable _tentacle>><<set _tentacle.tentaclehealth -= 1>><<tentacle_record "soothe" 1>>
 		<<if $rng lte (currentSkillValue('willpower') / 10)>>
-			<span class="green">It trembles before your will.</span>
+			<span class="green">그것은 당신의 의지 앞에서 덜덜 떤다.</span>
 			<<set _tentacle.tentaclehealth -= 1>><<tentacle_record "soothe" 1>>
 		<</if>>
 	<</if>>
@@ -2260,9 +2268,9 @@
 	<<if $mouthaction is "mouthlick"+_tentacle.id>>
 		<<set $mouthaction to 0>><<set $mouthactiondefault to "mouthlick"+_tentacle.id>>
 		<<submission 2>><<oralskilluse>>
-		You <<oraltext>> lick the tip of _the _tentacle.fullDesc.
+		당신은 _the _tentacle.fullDesc의 끝부분을 <<oraltext>> 핥는다.
 		<<if currentSkillValue("oralskill") gte (800 - ($rng * 10))>>
-			<span class="lblue">_Slimy _fluid erupts from the tip, covering your face</span>.
+			<span class="lblue">끝부분에서 _slimyText _fluidText【이가】 분출하여 당신의 얼굴을 뒤덮는다.</span>
 			<<bodyliquid "face" _fluid>><<set _tentacle.tentaclehealth -= 3>><<tentacle_record "fluid" 3>><<faceejacstat>><<ejacstat>>
 			<<if $abomination is 1>>
 				<<enemypleasure 6>>
@@ -2273,9 +2281,9 @@
 	<<if $mouthaction is "mouthkiss"+_tentacle.id>>
 		<<set $mouthaction to 0>><<set $mouthactiondefault to "mouthkiss"+_tentacle.id>>
 		<<submission 3>><<oralskilluse>>
-		You <<oraltext>> kiss the tip of _the _tentacle.fullDesc.
+		당신은 _the _tentacle.fullDesc의 끝부분에 <<oraltext>> 입 맞춘다.
 		<<if currentSkillValue("oralskill") gte (800 - ($rng * 10))>>
-			<span class="lblue">_Slimy _fluid erupts from the tip, covering your face</span>.
+			<span class="lblue">끝부분에서 _slimyText _fluidText【이가】 분출하여 당신의 얼굴을 뒤덮는다.</span>
 			<<bodyliquid "face" _fluid>><<set _tentacle.tentaclehealth -= 3>><<tentacle_record "fluid" 3>><<faceejacstat>><<ejacstat>>
 			<<if $abomination is 1>>
 				<<enemypleasure 6>>
@@ -2291,9 +2299,9 @@
 	<<if $mouthaction is "mouthcooperate"+_tentacle.id>>
 		<<set $mouthaction to 0>><<set $mouthactiondefault to "mouthcooperate"+_tentacle.id>>
 		<<sex 5 "mouth">><<oralskilluse>>
-		You <<oraltext>> suck the _tentacle.fullDesc invading your mouth.
+		당신은 당신의 입안으로 파고드는 _tentacle.fullDesc【을를】 <<oraltext>> 빤다.
 		<<if currentSkillValue("oralskill") gte (800 - ($rng * 10))>>
-			<span class="lblue">_Slimy _fluid erupts from the tip and into your mouth</span>.
+			<span class="lblue">끝부분에서 _slimyText _fluidText【이가】 뿜어져 나와 당신의 입안으로 쏟아진다.</span>
 			<<set _tentacle.tentaclehealth -= 3>><<tentacle_record "fluid" 3>><<if _fluid is "nectar">><<nectarfed 5>><<else>><<drugs 3>><</if>><<bodyliquid "mouth" _fluid>><<oralejacstat>><<ejacstat>>
 			<<if _tentacle.desc.includes("pale")>>
 				<<hallucinogen 5>>
@@ -2308,30 +2316,30 @@
 		<<set _nectarDifficulty to Math.clamp($drugged, 0, 500) + Math.clamp($nectar_addiction, 0, 500)>>
 		<<willpowerdifficulty _nectarDifficulty $willpowermax "silent">>
 		<<if $NPCList[0].type is "plant" and _tentacle.head is "mouthdeep" and !$willpowerSuccess>>
-			You attempt to pull away from the _tentacle.fullDesc threatening your mouth.
-			<span class="red">However, you can't tear yourself from the sweet nectar,</span>
-			and desperately suck on the _tentacle.type.
+			당신은 당신의 입을 위협하는 _tentacle.fullDesc에게서 빠져나오려 시도한다.
+			<span class="red">하지만 당신은 그 달콤한 넥타르의 유혹을 뿌리치지 못하고,</span>
+			필사적으로 <<print window.KR.getCreatureTypeKr(_tentacle.type)>>【을를】 빨아들인다.
 			<<willpower 1>><<willpowerfailure>>
 		<<else>>
 			<<set $mouthaction to 0>><<set $mouthactiondefault to "mouthpullaway"+_tentacle.id>><<brat 1>>
-			<span class="teal">You pull away from the _tentacle.fullDesc threatening your mouth.</span>
+			<span class="teal">당신은 당신의 입을 위협하는 _tentacle.fullDesc에게서 벗어난다.</span>
 			<<tentacleadvdisable _tentacle>><<willpowersuccess>>
 		<</if>>
 	<</if>>
 
 	<<if $mouthaction is "mouthbite"+_tentacle.id>>
 		<<set $mouthaction to 0>><<set $mouthactiondefault to "mouthbite"+_tentacle.id>><<defiance 5>>
-		You bite down on the _tentacle.fullDesc invading your mouth. <span class="teal">It recoils immediately.</span>
+		당신은 당신의 입안으로 파고든 _tentacle.fullDesc【을를】 깨문다. <span class="teal">그것은 즉시 뒤로 움츠러든다.</span>
 		<<tentacleadvdisable _tentacle>><<set $attackstat += 1>><<set _tentacle.tentaclehealth -= 1>><<tentacle_record "damage" 1>>
 		<<if $rng lte (currentSkillValue('physique') / 200)>>
-			<span class="green">It trembles before your strength.</span>
+			<span class="green">그것은 당신의 힘 앞에서 덜덜 떤다.</span>
 			<<set _tentacle.tentaclehealth -= Math.round(1 + (1 + (currentSkillValue('physique') / 8000))) * _multi>><<tentacle_record "damage" Math.round(1 + (1 + (currentSkillValue('physique') / 8000))) * _multi>>
 		<</if>>
 		<<if $abomination is 1>>
-			The <<person>> grunts in pain. <<defiance 10>>
+			<<person>>【은는】 고통에 찬 신음을 흘린다. <<defiance 10>>
 			<<if $transformationParts.traits.fangs isnot "disabled">>
 				<<defiance 10>>
-				You lick your fangs clean.
+				당신은 송곳니를 핥아 깨끗하게 만든다.
 			<</if>>
 		<</if>>
 	<</if>>
@@ -2339,9 +2347,9 @@
 	<<if $vaginaaction is "vaginarub"+_tentacle.id>>
 		<<set $vaginaaction to 0>><<set $vaginaactiondefault to "vaginarub"+_tentacle.id>>
 		<<submission 2>><<vaginalskilluse>>
-		You <<vaginaltext>> rub the tip of _the _tentacle.fullDesc with your <<pussy>>.
+		당신은 <<pussy>>【으로로】 _the _tentacle.fullDesc의 끝부분을 <<vaginaltext>> 문지른다.
 		<<if currentSkillValue("vaginalskill") gte (800 - ($rng * 10))>>
-			<span class="lblue">_Slimy _fluid erupts from the tip</span>.
+			<span class="lblue">끝부분에서 _slimyText _fluidText【이가】 뿜어져 나온다.</span>
 			<<bodyliquid "vaginaoutside" _fluid>><<set _tentacle.tentaclehealth -= 3>><<tentacle_record "fluid" 3>><<vaginalentranceejacstat>><<ejacstat>>
 			<<if $abomination is 1>>
 				<<enemypleasure 6>>
@@ -2357,9 +2365,9 @@
 	<<if $vaginaaction is "vaginacooperate"+_tentacle.id>>
 		<<set $vaginaaction to 0>><<set $vaginaactiondefault to "vaginacooperate"+_tentacle.id>>
 		<<sex 5 "genitals">><<vaginalskilluse>>
-		You <<vaginaltext>> push back against the _tentacle.fullDesc invading your <<pussy>>.
+		당신은 당신의 <<pussy>> 안을 침범하는 _tentacle.fullDesc에 맞서 <<vaginaltext>> 튕겨낸다.
 		<<if currentSkillValue("vaginalskill") gte (800 - ($rng * 10))>>
-			<span class="lblue">_Slimy _fluid erupts from the tip, flooding your womb with its warmth</span>.
+			<span class="lblue">끝부분에서 _slimyText _fluidText【이가】 뿜어져 나와, 자궁을 그 따스함으로 가득 채운다</span>.
 			<<set _tentacle.tentaclehealth -= 3>><<tentacle_record "fluid" 3>><<drugs 3>><<bodyliquid "vagina" _fluid>><<vaginalejacstat>><<ejacstat>>
 			<<if _tentacle.desc.includes("pale")>>
 				<<hallucinogen 5>>
@@ -2372,16 +2380,16 @@
 
 	<<if $vaginaaction is "vaginapullaway"+_tentacle.id>>
 		<<set $vaginaaction to 0>><<set $vaginaactiondefault to "vaginapullaway"+_tentacle.id>><<brat 1>>
-		<span class="teal">You pull away from the _tentacle.fullDesc threatening your <<pussy>>.</span>
+		<span class="teal">당신은 당신의 <<pussy>>【을를】 위협하는 _tentacle.fullDesc에게서 물러난다.</span>
 		<<tentacleadvdisable _tentacle>>
 	<</if>>
 
 	<<if $penisaction is "penisrub"+_tentacle.id>>
 		<<set $penisaction to 0>><<set $penisactiondefault to "penisrub"+_tentacle.id>>
 		<<submission 2>><<penileskilluse>>
-		You <<peniletext>> rub the tip of the _tentacle.fullDesc with your <<penis>>.
+		당신은 <<penis>>【으로로】 _the _tentacle.fullDesc의 끝부분을 <<peniletext>> 문지른다.
 		<<if currentSkillValue("penileskill") gte (800 - ($rng * 10))>>
-			<span class="lblue">_Slimy _fluid erupts from the tip</span>.
+			<span class="lblue">끝부분에서 _slimyText _fluidText【이가】 뿜어져 나온다.</span>
 			<<bodyliquid "penis" _fluid>><<set _tentacle.tentaclehealth -= 3>><<tentacle_record "fluid" 3>>
 			<<if $abomination is 1>>
 				<<enemypleasure 6>>
@@ -2397,9 +2405,9 @@
 	<<if $penisaction is "peniscooperate"+_tentacle.id>>
 		<<set $penisaction to 0>><<set $penisactiondefault to "peniscooperate"+_tentacle.id>>
 		<<sex 5 "genitals">><<penileskilluse>>
-		You <<peniletext>> push back against the _tentacle.fullDesc engulfing your <<penis>>.
+		당신은 당신의 <<penis>>【을를】 집어삼키는 _tentacle.fullDesc에 맞서 <<peniletext>> 밀어붙인다.
 		<<if currentSkillValue("penileskill") gte (800 - ($rng * 10))>>
-			<span class="lblue">_Slimy _fluid erupts from the tip, covering your groin</span>.
+			<span class="lblue">끝부분에서 _slimyText _fluidText【이가】 뿜어져 나와 사타구니를 뒤덮는다.</span>
 			<<set _tentacle.tentaclehealth -= 3>><<tentacle_record "fluid" 3>><<bodyliquid "penis" _fluid>>
 			<<if $abomination is 1>>
 				<<enemypleasure 6>>
@@ -2409,16 +2417,16 @@
 
 	<<if $penisaction is "penispullaway"+_tentacle.id>>
 		<<set $penisaction to 0>><<set $penisactiondefault to "penispullaway"+_tentacle.id>><<brat 1>>
-		<span class="teal">You pull away from the _tentacle.fullDesc threatening your <<penis>>.</span>
+		<span class="teal">당신은 당신의 <<penis>>【을를】 위협하는 _tentacle.fullDesc에게서 물러난다.</span>
 		<<tentacleadvdisable _tentacle>>
 	<</if>>
 
 	<<if $anusaction is "anusrub"+_tentacle.id>>
 		<<set $anusaction to 0>><<set $anusactiondefault to "anusrub"+_tentacle.id>>
 		<<submission 2>><<analskilluse>>
-		You <<analtext>> rub the tip of _the _tentacle.fullDesc with your <<bottom>>.
+		당신은 <<bottom>>【으로로】 _the _tentacle.fullDesc의 끝부분을 <<analtext>> 비빈다.
 		<<if currentSkillValue("analskill") gte (800 - ($rng * 10))>>
-			<span class="lblue">_Slimy _fluid erupts from the tip, covering your <<bottom>>.</span>
+			<span class="lblue">끝부분에서 _slimyText _fluidText【이가】 뿜어져 나와, 당신의 <<bottom>>【을를】 뒤덮는다.</span>
 			<<bodyliquid "bottom" _fluid>><<set _tentacle.tentaclehealth -= 3>><<tentacle_record "fluid" 3>><<bottomejacstat>><<ejacstat>>
 			<<if $abomination is 1>>
 				<<enemypleasure 6>>
@@ -2434,9 +2442,9 @@
 	<<if $anusaction is "anuscooperate"+_tentacle.id>>
 		<<set $anusaction to 0>><<set $anusactiondefault to "anuscooperate"+_tentacle.id>>
 		<<sex 5 "anus">><<analskilluse>>
-		You <<analtext>> push back against the _tentacle.fullDesc invading your <<bottom>>.
+		당신은 당신의 <<bottom>> 안을 파고드는 _tentacle.fullDesc에 맞서 <<analtext>> 밀어붙인다.
 		<<if currentSkillValue("analskill") gte (800 - ($rng * 10))>>
-			<span class="lblue">_Slimy _fluid erupts from the tip, flooding your bowels with its warmth</span>.
+			<span class="lblue">끝부분에서 _slimyText _fluidText【이가】 뿜어져 나와, 장내를 그 따스함으로 가득 채운다</span>.
 			<<set _tentacle.tentaclehealth -= 3>><<tentacle_record "fluid" 3>><<drugs 3>><<bodyliquid "anus" _fluid>><<analejacstat>><<ejacstat>>
 			<<if _tentacle.desc.includes("pale")>>
 				<<hallucinogen 5>>
@@ -2449,16 +2457,16 @@
 
 	<<if $anusaction is "anuspullaway"+_tentacle.id>>
 		<<set $anusaction to 0>><<set $anusactiondefault to "anuspullaway"+_tentacle.id>><<brat 1>>
-		<span class="teal">You pull away from the _tentacle.fullDesc threatening your <<bottom>>.</span>
+		<span class="teal">당신은 당신의 <<bottom>>【을를】 위협하는 _tentacle.fullDesc에게서 벗어난다.</span>
 		<<tentacleadvdisable _tentacle>>
 	<</if>>
 
 	<<if $thighaction is "penisrub"+_tentacle.id>>
 		<<set $thighaction to 0>><<set $thighactiondefault to "penisrub"+_tentacle.id>>
 		<<submission 3>><<thighskilluse>>
-		You <<thightext>> rub _the _tentacle.fullDesc between your thighs.
+		당신은 두 허벅지 사이에 _the _tentacle.fullDesc【을를】 끼고 <<thightext>> 비빈다.
 		<<if currentSkillValue("thighskill") gte (800 - ($rng * 10))>>
-			<span class="lblue">_Slimy _fluid erupts from the tip, covering your tummy</span>.
+			<span class="lblue">끝부분에서 _slimyText _fluidText【이가】 뿜어져 나와 당신의 배를 뒤덮는다.</span>
 			<<set _tentacle.tentaclehealth -= 3>><<tentacle_record "fluid" 3>><<bodyliquid "tummy" _fluid>><<tummyejacstat>><<ejacstat>>
 			<<if $abomination is 1>>
 				<<enemypleasure 6>>
@@ -2468,9 +2476,9 @@
 
 	<<if $thighaction is "vaginarub"+_tentacle.id>>
 		<<set $thighaction to 0>><<set $thighactiondefault to "vaginarub"+_tentacle.id>>
-		<<submission 3>><<thighskilluse>>You <<thightext>> rub _the _tentacle.fullDesc between your thighs.
+		<<submission 3>><<thighskilluse>>당신은 허벅지 사이에 _the _tentacle.fullDesc【을를】 끼우고 <<thightext>> 문지른다.
 		<<if currentSkillValue("thighskill") gte (800 - ($rng * 10))>>
-			<span class="lblue">_Slimy _fluid erupts from the tip, covering your tummy</span>.
+			<span class="lblue">끝부분에서 _slimyText _fluidText【이가】 뿜어져 나와, 당신의 배를 뒤덮는다</span>.
 			<<set _tentacle.tentaclehealth -= 3>><<bodyliquid "tummy" _fluid>><<tummyejacstat>><<ejacstat>>
 			<<if $abomination is 1>>
 				<<enemypleasure 6>>
@@ -2481,9 +2489,9 @@
 	<<if $anusaction is "anusrub"+_tentacle.id>>
 		<<set $anusaction to 0>><<set $anusactiondefault to "anusrub"+_tentacle.id>>
 		<<submission 3>><<bottomskilluse>>
-		You <<bottomtext>> rub _the _tentacle.fullDesc between your cheeks.
+		당신은 양 엉덩이 뺨 사이에 _the _tentacle.fullDesc【을를】 끼고 <<bottomtext>> 비빈다.
 		<<if currentSkillValue("bottomskill") gte (800 - ($rng * 10))>>
-			<span class="lblue">_Slimy _fluid erupts from the tip, covering your <<bottom>>.</span>
+			<span class="lblue">끝부분에서 _slimyText _fluidText【이가】 뿜어져 나와, 당신의 <<bottom>>【을를】 뒤덮는다.</span>
 			<<set _tentacle.tentaclehealth -= 3>><<tentacle_record "fluid" 3>><<bodyliquid "bottom" _fluid>><<bottomejacstat>><<ejacstat>>
 			<<if $abomination is 1>>
 				<<enemypleasure 6>>
@@ -2494,9 +2502,9 @@
 	<<if $chestaction is "chestrub"+_tentacle.id>>
 		<<set $chestaction to 0>><<set $chestactiondefault to "chestrub"+_tentacle.id>>
 		<<submission 3>><<chestskilluse>>
-		You <<chesttext>> rub _the _tentacle.fullDesc between your <<breasts>>.
+		당신은 가슴골 사이에 _the _tentacle.fullDesc【을를】 끼고 <<chesttext>> 비빈다.
 		<<if currentSkillValue("chestskill") gte (800 - ($rng * 10))>>
-			<span class="lblue">_Slimy _fluid erupts from the tip, covering your chest</span>.
+			<span class="lblue">끝부분에서 _slimyText _fluidText【이가】 분출하여 가슴을 뒤덮는다.</span>
 			<<set _tentacle.tentaclehealth -= 3>><<tentacle_record "fluid" 3>><<bodyliquid "chest" _fluid>><<chestejacstat>><<ejacstat>>
 			<<if $abomination is 1>>
 				<<enemypleasure 6>>
@@ -2507,7 +2515,7 @@
 
 <<widget "tentacle_skin">>
 	<<if ($skin[_args[0]]?.special is "holy" or $skin[_args[1]]?.special is "holy") and !$banishDisable>>
-		The holy symbol on your skin burns with a white light, <span class="pink">searing you,</span> <span class="teal">and _the _tentacle.fullDesc.</span><<pain 8>><<set _tentacle.tentaclehealth -= 12>><<tentacle_record "banish" 12>><<tentacleadvdisable _tentacle>>
+		피부 위의 성스러운 문양이 하얀 빛으로 타오르며, <span class="pink">당신을 지지고,</span> <span class="teal">_the _tentacle.fullDesc까지 태운다.</span><<pain 8>><<set _tentacle.tentaclehealth -= 12>><<tentacle_record "banish" 12>><<tentacleadvdisable _tentacle>>
 		<<set $speechBanish to 1>>
 	<<elseif _tentacle.traits.includes("pain") and _args[0] isnot "pubic">>
 		<<if _args[0].includes("_")>>
@@ -2516,7 +2524,7 @@
 			<<set _bodypart to _args[0]>>
 		<</if>>
 		<<if !(playerHasStrapon() and _bodypart is "penis")>>
-			You <<print $masochism_level gte 3 ? "shiver" : "wince">> as _the _tentacle.fullDesc rubs against your _bodypart.
+			_the _tentacle.fullDesc【이가】 당신의 <<bodypart _bodypart>>에 문질러지자, 당신은 <<print $masochism_level gte 3 ? "몸을 떤" : "얼굴을 찡그린">>다.
 			<<pain 1>><<gpain>>
 		<</if>>
 	<</if>>

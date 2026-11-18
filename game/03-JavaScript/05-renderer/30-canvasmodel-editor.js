@@ -12,14 +12,14 @@ class CombatEditor {
 		const column = document.createElement("div");
 		column.classList.add("d-flex", "flex-column", "gap-1");
 		column.append(
-			CombatEditor.createButtonAsIcon("./img/ui/reload.png", "Reload - Use when animation breaks", () => {
+			CombatEditor.createButtonAsIcon("./img/ui/reload.png", "새로고침 - 애니메이션이 깨졌을 때 사용", () => {
 				CombatEditor.recompileCombatCanvas();
 			})
 		);
 
 		if (V.debug && V.options.showCombatTools) {
 			column.append(
-				CombatEditor.createButtonAsIcon("./img/ui/refresh.png", "Refresh", () => {
+				CombatEditor.createButtonAsIcon("./img/ui/refresh.png", "갱신", () => {
 					CombatEditor.refreshCombatCanvas();
 				})
 			);
@@ -174,7 +174,7 @@ class CombatEditor {
 		const layers = CombatEditor.getModelLayers(key);
 		const items = layers.map(function (layer) {
 			const btn = document.createElement("button");
-			btn.textContent = layer.name || "Unknown";
+			btn.textContent = layer.name || "알 수 없음";
 			if (layer.show !== true) {
 				btn.classList.add("faded");
 			}
@@ -220,7 +220,7 @@ class CombatEditor {
 		container.classList.add("d-flex", "flex-column", "gap-1", "p-2");
 
 		// Show
-		CombatEditor.CreateCheckboxControl(container, "cr-layer-show", "Show: ", !!layer.show, (control, layer) => {
+		CombatEditor.CreateCheckboxControl(container, "cr-layer-show", "표시: ", !!layer.show, (control, layer) => {
 			layer.show = control.checked;
 			if (layer.show) {
 				parent.classList.remove("faded");
@@ -231,7 +231,7 @@ class CombatEditor {
 
 		// Src
 		if (typeof layer.src === "string") {
-			CombatEditor.CreateTextboxControl(container, "cr-layer-src", "Src: ", layer.src, (control, layer) => {
+			CombatEditor.CreateTextboxControl(container, "cr-layer-src", "소스: ", layer.src, (control, layer) => {
 				layer.src = control.value;
 			});
 		}
@@ -265,21 +265,21 @@ class CombatEditor {
 
 		// Blend
 		if (typeof layer.blend === "string") {
-			CombatEditor.CreateTextboxControl(container, "cr-layer-blend", "Blend: ", layer.blend, (control, layer) => {
+			CombatEditor.CreateTextboxControl(container, "cr-layer-blend", "블렌드: ", layer.blend, (control, layer) => {
 				layer.blend = control.value;
 			});
 		}
 
 		// Blend mode
 		if (typeof layer.blendMode === "string") {
-			CombatEditor.CreateTextboxControl(container, "cr-layer-blendmode", "Blend mode: ", layer.blendMode, (control, layer) => {
+			CombatEditor.CreateTextboxControl(container, "cr-layer-blendmode", "블렌드 모드: ", layer.blendMode, (control, layer) => {
 				// @ts-ignore - Dev-User input
 				layer.blendMode = control.value;
 			});
 		}
 
 		// Alpha
-		CombatEditor.CreateNumericControl(container, "cr-layer-alpha", "Alpha: ", layer.alpha, (control, layer) => {
+		CombatEditor.CreateNumericControl(container, "cr-layer-alpha", "알파: ", layer.alpha, (control, layer) => {
 			if (!Number.isFinite(control.valueAsNumber)) {
 				control.value = layer.alpha?.toString() || "0";
 				return;
@@ -290,19 +290,19 @@ class CombatEditor {
 		// Filter list
 		const filterSpan = document.createElement("span");
 		// @ts-ignore
-		filterSpan.textContent = "Filters: " + JSON.stringify(layer.filters);
+		filterSpan.textContent = "필터: " + JSON.stringify(layer.filters);
 		container.append(filterSpan);
 
 		// Animation key
 		if (typeof layer.animation === "string") {
-			CombatEditor.CreateTextboxControl(container, "cr-layer-animation", "Animation*: ", layer.animation, (control, layer) => {
+			CombatEditor.CreateTextboxControl(container, "cr-layer-animation", "애니메이션*: ", layer.animation, (control, layer) => {
 				layer.animation = control.value;
 			});
 		}
 
 		// Mask src
 		if (typeof layer.masksrc === "string") {
-			CombatEditor.CreateTextboxControl(container, "cr-layer-masksrc", "Mask: ", layer.masksrc, (control, layer) => {
+			CombatEditor.CreateTextboxControl(container, "cr-layer-masksrc", "마스크: ", layer.masksrc, (control, layer) => {
 				layer.masksrc = control.value;
 			});
 		}
@@ -310,7 +310,7 @@ class CombatEditor {
 		if (Array.isArray(layer.masksrc)) {
 			layer.masksrc.forEach((src, i) => {
 				if (typeof src === "string") {
-					CombatEditor.CreateTextboxControl(container, "cr-layer-masksrc" + i, "Mask: ", src, (control, layer) => {
+					CombatEditor.CreateTextboxControl(container, "cr-layer-masksrc" + i, "마스크: ", src, (control, layer) => {
 						if (Array.isArray(layer.masksrc) && typeof layer.masksrc[i] === "string") {
 							layer.masksrc[i] = control.value;
 						}
@@ -321,7 +321,7 @@ class CombatEditor {
 
 		if (typeof layer.masksrc === "object") {
 			if (!Array.isArray(layer.masksrc) && Renderer.isMaskObject(layer.masksrc)) {
-				CombatEditor.CreateTextboxControl(container, "cr-layer-masksrc", "Mask: ", layer.masksrc.path, (control, layer) => {
+				CombatEditor.CreateTextboxControl(container, "cr-layer-masksrc", "마스크: ", layer.masksrc.path, (control, layer) => {
 					if (typeof layer.masksrc === "object" && !Array.isArray(layer.masksrc) && Renderer.isMaskObject(layer.masksrc)) {
 						layer.masksrc.path = control.value;
 					}
@@ -330,7 +330,7 @@ class CombatEditor {
 			if (Array.isArray(layer.masksrc)) {
 				layer.masksrc.forEach((src, i) => {
 					if (Renderer.isMaskObject(src)) {
-						CombatEditor.CreateTextboxControl(container, "cr-layer-masksrc" + i, `Mask ${i}: `, src.path, (control, layer) => {
+						CombatEditor.CreateTextboxControl(container, "cr-layer-masksrc" + i, `마스크 ${i}: `, src.path, (control, layer) => {
 							if (typeof layer.masksrc === "object" && !Array.isArray(layer.masksrc) && Renderer.isMaskObject(layer.masksrc)) {
 								layer.masksrc.path = control.value;
 							}

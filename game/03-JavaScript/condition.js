@@ -43,16 +43,16 @@ Macro.add(["condition", "compute"], {
 	tags: null,
 	handler() {
 		if (this.args.length === 0) {
-			return this.error("no condition name specified");
+			return this.error("condition 이름이 지정되지 않았습니다");
 		}
 		if (this.args.length > 1) {
-			return this.error("too many parameters specified");
+			return this.error("매개변수가 너무 많습니다");
 		}
 
 		const widgetName = this.args[0];
 
 		if (Object.hasOwn(CU, widgetName)) {
-			return this.error(`cannot clobber existing definition "${widgetName}"`);
+			return this.error(`이미 존재하는 정의를 덮어쓸 수 없습니다: "${widgetName}"`);
 		}
 
 		Object.defineProperty(CU, widgetName, {
@@ -62,7 +62,7 @@ Macro.add(["condition", "compute"], {
 		});
 		if (this.payload[0].name === "condition") {
 			if (Macro.has(widgetName)) {
-				return this.error(`cannot clobber existing macro "${widgetName}"`);
+				return this.error(`이미 존재하는 매크로를 덮어쓸 수 없습니다: "${widgetName}"`);
 			}
 
 			Macro.add(widgetName, {
@@ -91,7 +91,7 @@ Macro.add(["condition", "compute"], {
 								this.output = Wikifier.wikifyEval(this.payload[0].contents);
 							}
 						} catch (ex) {
-							return this.error(`bad conditional expression in <<condition "${widgetName}">>: ${typeof ex === "object" ? ex.message : ex}`);
+							return this.error(`<<condition "${widgetName}">>의 조건식이 잘못되었습니다: ${typeof ex === "object" ? ex.message : ex}`);
 						}
 					};
 				})(widgetName),

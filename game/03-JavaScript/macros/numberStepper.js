@@ -43,15 +43,15 @@ Macro.add("numberStepper", {
 
 		// Check for missing or invalid mandatory parameters
 		if (typeof title !== "string" || !title.trim()) {
-			$(this.output).append($("<div>", { class: "red", text: "Error: Title is missing or invalid." }));
+			$(this.output).append($("<div>", { class: "red", text: "오류: 제목이 없거나 유효하지 않습니다." }));
 			return;
 		}
 		if (initialValue !== undefined && isNaN(initialValue)) {
-			$(this.output).append($("<div>", { class: "red", text: "Error: Initial value is not a valid number." }));
+			$(this.output).append($("<div>", { class: "red", text: "오류: 초기값이 유효한 숫자가 아닙니다." }));
 			return;
 		}
 		if (setter !== undefined && typeof setter !== "string") {
-			$(this.output).append($("<div>", { class: "red", text: "Error: Setter must be a valid string." }));
+			$(this.output).append($("<div>", { class: "red", text: "오류: 설정자는 유효한 문자열이어야 합니다." }));
 			return;
 		}
 
@@ -74,36 +74,36 @@ Macro.add("numberStepper", {
 
 		// Validations
 		if (isNaN(min) || isNaN(max)) {
-			$(this.output).append($("<div>", { class: "red", text: "Error: Min or Max value is not a valid number." }));
+			$(this.output).append($("<div>", { class: "red", text: "오류: 최소 또는 최대값이 유효한 숫자가 아닙니다." }));
 			return;
 		}
 		if (min > max) {
 			console.log("min", min, "max", max);
-			$(this.output).append($("<div>", { class: "red", text: "Error: Min value must be less than max value." }));
+			$(this.output).append($("<div>", { class: "red", text: "오류: 최소값은 최대값보다 작아야 합니다." }));
 			return;
 		}
 		if (isNaN(step) || step <= 0) {
-			$(this.output).append($("<div>", { class: "red", text: "Error: Step must be a positive number." }));
+			$(this.output).append($("<div>", { class: "red", text: "오류: 단계는 양수여야 합니다." }));
 			return;
 		}
 		if (typeof reverse !== "boolean") {
-			$(this.output).append($("<div>", { class: "red", text: "Error: reverse must be a boolean." }));
+			$(this.output).append($("<div>", { class: "red", text: "오류: reverse는 불리언 값이어야 합니다." }));
 			return;
 		}
 		if (colorArr !== null && (!Array.isArray(colorArr) || !colorArr.every(color => typeof color === "string"))) {
-			$(this.output).append($("<div>", { class: "red", text: "Error: colorArr must be an array of strings." }));
+			$(this.output).append($("<div>", { class: "red", text: "오류: colorArr은 문자열 배열이어야 합니다." }));
 			return;
 		}
 		if (valueFormat !== null && typeof valueFormat !== "function") {
-			$(this.output).append($("<div>", { class: "red", text: "Error: valueFormat must be a function." }));
+			$(this.output).append($("<div>", { class: "red", text: "오류: valueFormat은 함수여야 합니다." }));
 			return;
 		}
 		if (tooltip !== null && typeof tooltip !== "object") {
-			$(this.output).append($("<div>", { class: "red", text: "Error: tooltip must be an object." }));
+			$(this.output).append($("<div>", { class: "red", text: "오류: tooltip은 객체여야 합니다." }));
 			return;
 		}
 		if (callback !== null && typeof callback !== "function") {
-			$(this.output).append($("<div>", { class: "red", text: "Error: callback must be a function." }));
+			$(this.output).append($("<div>", { class: "red", text: "오류: 콜백은 함수여야 합니다." }));
 			return;
 		}
 

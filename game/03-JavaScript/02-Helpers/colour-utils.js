@@ -172,12 +172,12 @@ const ColourUtils = (() => {
 				const hexColor = tinycolor().toHexFromHsl(color);
 				return hexColor;
 			} catch (error) {
-				console.error(`Error converting HSL to Hex: ${error.message}`);
+				console.error(`HSL을 Hex로 변환하는 중 오류 발생: ${error.message}`);
 				return undefined;
 			}
 		}
 
-		console.error(`Invalid color: ${color}.`);
+		console.error(`잘못된 색상: ${color}.`);
 		return undefined;
 	}
 

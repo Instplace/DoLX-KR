@@ -212,7 +212,7 @@ Weather.Renderer.Effects.add({
 	init() {
 		if (this.location?.[this.key] === undefined) return;
 		const obj = this.location[this.key].mask;
-		if (obj === undefined) throw new Error("Property 'mask' is not defined in reflective property.");
+		if (obj === undefined) throw new Error("reflective 속성에 'mask' 속성이 정의되어 있지 않습니다.");
 
 		this.reflectionCanvas = new this.renderInstance.Canvas();
 		this.locationCanvas = new this.renderInstance.Canvas();
@@ -436,12 +436,12 @@ Weather.Renderer.Effects.add({
 							window.ImageCache.getOrCreate(fallbackSrc)
 								.then(handleLoadedImage)
 								.catch(() => {
-									Errors.report("Warning: Missing location image fallback: " + fallbackSrc);
+									Errors.report("경고: 위치 이미지 대체본 누락: " + fallbackSrc);
 									resolve();
 								});
 							return;
 						}
-						Errors.report("Warning: Missing location image: " + resolvedSrc);
+						Errors.report("경고: 위치 이미지 누락: " + resolvedSrc);
 						resolve();
 					});
 			});

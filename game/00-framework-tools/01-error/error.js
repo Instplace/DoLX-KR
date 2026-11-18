@@ -24,8 +24,8 @@ Errors.report = (message, copyData, noClone) => {
 	try {
 		error = Errors.registerMessage(message, copyData, noClone);
 	} catch (e) {
-		console.error(`Failed to append an error log. Something went really wrong: `, message, copyData, e);
-		alert(`A critical error occurred. Please report this issue to the devs. [Errors.report/registerMessage]`);
+		console.error(`오류 로그를 추가하지 못했습니다. 심각한 문제가 발생했습니다: `, message, copyData, e);
+		alert(`치명적인 오류가 발생했습니다. 이 문제를 개발진에게 제보해 주세요. [Errors.report/registerMessage]`);
 		return;
 	}
 	try {
@@ -39,8 +39,8 @@ Errors.report = (message, copyData, noClone) => {
 			}
 		}
 	} catch (e) {
-		console.error(`Failed to render and open in Error console. \nRendering error: `, e, `\n\nError log: `, Errors.log);
-		alert(`A critical error occurred. Please report this issue to the devs. [Errors.report/displayMessage]`);
+		console.error(`오류 콘솔을 렌더링하고 여는 데 실패했습니다. \n렌더링 오류: `, e, `\n\n오류 로그: `, Errors.log);
+		alert(`치명적인 오류가 발생했습니다. 이 문제를 개발진에게 제보해 주세요. [Errors.report/displayMessage]`);
 	}
 };
 
@@ -64,12 +64,12 @@ Errors.report = (message, copyData, noClone) => {
 			reporterContainer.className = "hidden";
 			reporterContainer.innerHTML = `
 				<div class="pane">
-					<h3>Errors:</h3>
+					<h3>오류:</h3>
 					<div class="messages"></div>
 					<div class="actions">
-						<div class="button close" onclick="Errors.Reporter.hide()">Close</div>
-						<div class="button close" onclick="Errors.Reporter.hide(true)">Clear</div>
-						<div class="button copy" onclick="Errors.Reporter.copyAll()">Copy</div>
+						<div class="button close" onclick="Errors.Reporter.hide()">닫기</div>
+						<div class="button close" onclick="Errors.Reporter.hide(true)">지우기</div>
+						<div class="button copy" onclick="Errors.Reporter.copyAll()">복사</div>
 						<textarea class="copy-area hidden" spellcheck="false"></textarea>
 					</div>
 				</div>`;
@@ -147,15 +147,15 @@ Errors.report = (message, copyData, noClone) => {
 			copyArea.focus();
 			copyArea.select();
 			document.execCommand("copy");
-			copyButton.textContent = "Copied!";
+			copyButton.textContent = "복사 완료";
 		} catch (e) {
-			copyButton.textContent = "Copy Failed :(";
+			copyButton.textContent = "복사 실패";
 			alert(
-				`Failed to copy to the clipboard. Try manually copying from the textarea, or if nothing has appeared, directly from Errors.log in the developer console.`
+				`클립보드에 복사하지 못했습니다. 텍스트 영역에서 직접 복사해 보세요. 아무것도 나타나지 않았다면 개발자 콘솔의 Errors.log에서 직접 복사해 주세요.`
 			);
 		}
 		setTimeout(() => {
-			copyButton.textContent = "Copy";
+			copyButton.textContent = "복사";
 		}, 5000);
 	};
 }

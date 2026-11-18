@@ -3,7 +3,7 @@ const ImageCache = (() => {
 
 	function getOrCreate(src) {
 		if (!src) {
-			throw new Error("ImageCache: src must be a non empty string.");
+			throw new Error("ImageCache: src는 비어 있지 않은 문자열이어야 합니다.");
 		}
 
 		const existing = cacheEntries.get(src);
@@ -25,7 +25,7 @@ const ImageCache = (() => {
 		image.onload = () => resolvePromise(image);
 		image.onerror = () => {
 			cacheEntries.delete(src);
-			rejectPromise(new Error(`Could not load image at path ${src}`));
+			rejectPromise(new Error(`경로 ${src}의 이미지를 불러올 수 없습니다`));
 		};
 		image.src = src;
 

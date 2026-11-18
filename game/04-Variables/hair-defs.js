@@ -32,7 +32,7 @@ setup.hair = {
 			devolve: ["ruffled", "bedhead"],
 		},
 		{
-			name: "single tail",
+			name: "싱글 테일",
 			list: [
 				"flat ponytail",
 				"fluffy ponytail",
@@ -49,7 +49,7 @@ setup.hair = {
 			devolve: ["messy ponytail"],
 		},
 		{
-			name: "double tail",
+			name: "더블 테일",
 			list: [
 				"crescent tails",
 				"curly pigtails",
@@ -76,7 +76,7 @@ setup.hair = {
 			devolve: ["twintails"],
 		},
 		{
-			name: "single braid",
+			name: "싱글 브레이드",
 			list: [
 				"braid left",
 				"braid right",
@@ -91,28 +91,28 @@ setup.hair = {
 			devolve: ["braid left"],
 		},
 		{
-			name: "double bun",
+			name: "더블 번",
 			list: ["sailor buns", "space buns", "fairy low buns"],
 			devolve: ["sailor buns"],
 		},
 		{
-			name: "double braid",
+			name: "더블 브레이드",
 			list: ["bubble tails", "twin braids", "twin fishtails", "twin double braids", "little doll"],
 			devolve: ["twin braids"],
 		},
 		{
-			name: "short",
+			name: "짧은 머리",
 			list: ["crude", "french bob", "layered bob", "messy", "short", "short spiky", "straight bob"],
 			devolve: ["messy", "bedhead"],
 		},
 		{
-			name: "fro",
+			name: "아프로",
 			list: ["fro", "afro puffs", "afro pouf"],
 			devolve: ["fro"],
 		},
 		{
 			/* immune to being ruined (because devolve list is empty) */
-			name: "special",
+			name: "특수",
 			list: ["dreads", "shaved", "dread bun", "bantu knots", "cornrows", "dreadlock twintails", "french curl ponytail", "french curls"],
 			devolve: [],
 		},
@@ -188,7 +188,7 @@ setup.hair = {
 		},
 		{
 			/* immune to being ruined (because devolve list is empty) */
-			name: "special",
+			name: "특수",
 			list: [
 				"fro",
 				"dreads",

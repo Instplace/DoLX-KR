@@ -1,6 +1,6 @@
 :: Widgets Shop [widget]
 <<widget "shoptraits">>
-	Traits:
+	특성:
 	<<for _trait range setup.clothingTraits>>
 		<<if _temp_choice.type.includes(_trait)>>
 			<<set _traitObj to setup.shopDetails[_trait]>>
@@ -162,15 +162,15 @@
 			<<if _space - _returnWardrobe[_args[0][_i]].length lt _spaceLeft>>
 				<<set _spaceLeft to _space - _returnWardrobe[_args[0][_i]].length>>
 			<</if>>
-			Wardrobe <<print (_args[0][_i]).replace("_"," ")>> slots used: <<print _returnWardrobe[_args[0][_i]].length>> / _space.
+			옷장 <<print window.KR.getClothingSlotKr(_args[0][_i])>> 수납 공간: <<print _returnWardrobe[_args[0][_i]].length>> / _space.
 			<br>
 		<</for>>
 		<<if _undamagedCount gt 0>>
-			You own _undamagedCount of this item<<if _damagedCount gte 0>> unbroken<</if>>.
+			당신은 이 아이템을<<if _damagedCount gte 0>> 파손되지 않은 상태로<</if>> <<number _undamagedCount>>개 소지하고 있습니다.
 			<br>
 		<</if>>
 		<<if _damagedCount gt 0>>
-			You own _damagedCount of this item that have been broken in some way.
+			당신은 어떤 식으로든 망가진 상태의 이 아이템을 <<number _damagedCount>>개 소지하고 있습니다.
 			<br>
 		<</if>>
 	<</if>>
@@ -180,7 +180,7 @@
 <<widget "shopFullImage">>
 	<<if _args[0] and _args[1] isnot undefined>>
 		<<set _shopFullImageVar to [_args[0], _args[1]]>>
-		<a value="Refresh" onclick="Wikifier.wikifyEval('<<replace #shopFullImage>><<shopFullImage $clothingShopSlot $clothes_choice>><</replace>>');">Refresh</a>
+		<a value="Refresh" onclick="Wikifier.wikifyEval('<<replace #shopFullImage>><<shopFullImage $clothingShopSlot $clothes_choice>><</replace>>');">새로고침</a>
 		<br>
 		<div class="hideImageOverflow">
 			<div class="shopImg">
@@ -279,10 +279,10 @@
 		<<link [[Submit willingly|Shopping Centre Slime Exhibitionism Obey]]>><<corruption 5>><<pain -8>><<stress -12>><<trauma -24>><<sub 2>><<set $phase to 1>><</link>><<promiscuous5>><<ggcorruption>><<llpain>><<llltrauma>><<llstress>><<submissivetext>>
 		<br>
 	<</if>>
-	<<link [[Obey|Shopping Centre Slime Exhibitionism Obey]]>><<corruption 1>><<pain -4>><<stress -6>><<trauma -12>><<sub 1>><</link>><<gcorruption>><<lpain>><<lltrauma>><<lstress>>
+	<<link [[복종한다|Shopping Centre Slime Exhibitionism Obey]]>><<corruption 1>><<pain -4>><<stress -6>><<trauma -12>><<sub 1>><</link>><<gcorruption>><<lpain>><<lltrauma>><<lstress>>
 	<br>
 	/* Different than normal stat changes as the slime will never for the player to act */
-	<<link [[Defy|Shopping Centre Slime Exhibitionism Defy]]>><<corruption -1>><<pain 35>><<stress 18>><<trauma 12>><<def 1>><</link>><<llcorruption>><<ggpain>><<ggtrauma>><<ggstress>>
+	<<link [[반항한다|Shopping Centre Slime Exhibitionism Defy]]>><<corruption -1>><<pain 35>><<stress 18>><<trauma 12>><<def 1>><</link>><<llcorruption>><<ggpain>><<ggtrauma>><<ggstress>>
 	<br>
 <</widget>>
 
@@ -292,7 +292,7 @@
 		<<if !$shoppingBasket>><<set $shoppingBasket to {}>><</if>>
 		<div id="mobileHeader">
 			<div id="controls" class="mobileOnly">
-				<div class="gold bold">Basket:</div>
+				<div class="gold bold">바구니:</div>
 				<div><<supermarketDisplayFillBasket>></div>
 			</div>
 			<div class="mobileOnly">
@@ -307,7 +307,7 @@
 						<</if>>
 					<</link>>
 				<<else>>
-					<<link "Basket">>
+					<<link "바구니">>
 						<<set _basketOpenAlt to _basketOpen>>
 							<<toggleclass "#altSection, #mobileCloser" "mobileHidden">>
 						<<if _basketOpenAlt>>
@@ -322,7 +322,7 @@
 		<div id="body">
 			<div id="mainSection">
 				<div id="search">
-					Search: <<textbox "_foodSearch" "">>
+					검색: <<textbox "_foodSearch" "">>
 					<<run $(() => {
 						var foodTimer = null;
 						$('#textbox--foodsearch').on('input change keypress', e => {
@@ -375,7 +375,7 @@
 	<<for _category range _foodGroups>>
 		<<set _categoryVar to "_" + _category.replace(" ", "")>>
 		<<foldout false _categoryVar>>
-			<span class="gold"><<print _category.toLocaleUpperFirst()>></span>
+			<span class="gold"><<print ({ "Sold out": "품절", dish: "요리", flower: "꽃", fruit: "과일", ingredient: "재료", meat: "고기", mushroom: "버섯", produce: "농산물", seafood: "해산물", vegetable: "채소" }[_category] || _category.toLocaleUpperFirst())>></span>
 			<<set _keys to _foodKeys.filter(key =>
 				(_category isnot "Sold out" && setup.foodstuff[key].category is _category && $foodstuff[key].supermarket > 0) ||
 				(_category is "Sold out" && $foodstuff[key].supermarket <= 0)
@@ -395,15 +395,15 @@
 		<div>
 			<<foodstufficon _args[0]>> |
 
-			Owned: <span class="gold"><<print $foodstuff[_key].amount>></span> |
+			소유 중: <span class="gold"><<print $foodstuff[_key].amount>></span> |
 
 			<<if Time.dayState is "night">>
-				Value: <span class="gold"> £<<print ($_setupItem.shop.sell_price * ($_setupItem.shop.bought_in_bulk or 1) * 2 / 100).toFixed(2)>></span>
+				가치: <span class="gold"> £<<print ($_setupItem.shop.sell_price * ($_setupItem.shop.bought_in_bulk or 1) * 2 / 100).toFixed(2)>></span>
 			<<else>>
 				Price: <span class="gold"> £<<print ((setup.inflation ? setup.inflation.price($_setupItem.shop.sell_price * ($_setupItem.shop.bought_in_bulk or 1) * 2) : $_setupItem.shop.sell_price * ($_setupItem.shop.bought_in_bulk or 1) * 2) / 100).toFixed(2)>></span>
 			<</if>>
 			<<if $_setupItem.shop.bought_in_bulk>>
-				per <<print $_setupItem.shop.bought_in_bulk>>
+				<<print $_setupItem.shop.bought_in_bulk>>개당
 			<</if>>
 		</div>
 		<<if $foodstuff[_key].supermarket gt 0>>
@@ -426,12 +426,12 @@
 			<br>
 			<span class="red">
 				<<switch _key>>
-					<<case "prawn" "clam" "date" "lime">><<recipe_name _key 'cap'>>s are
-					<<case "cherry">>Cherries are
-					<<case "oats">>Oats are
-					<<default>><<recipe_name _key 'cap'>> is
+					<<case "prawn" "clam" "date" "lime">><<recipe_name _key 'cap'>>【은는】
+					<<case "cherry">>체리는
+					<<case "oats">>귀리는
+					<<default>><<recipe_name _key 'cap'>>【은는】
 				<</switch>>
-				out of stock.
+				품절되었습니다.
 			</span>
 			<br>
 		<</if>>
@@ -445,7 +445,7 @@
 					<<removeclass "#altSection, #mobileCloser" "mobileHidden">>
 				<</link>>
 			<<else>>
-				<<link "Details">>
+				<<link "상세">>
 					<<replace "#altSection">><<supermarketDisplayDetails _key>><</replace>>
 					<<removeclass "#altSection, #mobileCloser" "mobileHidden">>
 				<</link>>
@@ -456,9 +456,9 @@
 
 <<widget "supermarketDisplayBasket">>
 	<<set _basketOpen to true>>
-	<div id="basket">Basket:
+	<div id="basket">바구니:
 		<div class="mobileOnly">
-			<<link "Close">>
+			<<link "닫기">>
 				<<addclass "#altSection, #mobileCloser" "mobileHidden">>
 			<</link>>
 			<br><br>
@@ -482,26 +482,26 @@
 		<<set _totalCostShown to (setup.inflation ? setup.inflation.price(_totalCost) : _totalCost)>>
 
 		<<if $_typesInBasket is 0>>
-			Your shopping basket is empty.
+			쇼핑 바구니가 비어 있습니다.
 			<<exit>>
 		<</if>>
 
 		<<if $_typesInBasket gt 5>>
 			<<foldout false "_basketFoldout">>
-				<span>Items:</span>
+				<span>아이템:</span>
 				<div class="itemSummary">
 					<<supermarketDisplayBasketSummary>>
 				</div>
 			<</foldout>>
 		<<else>>
-			Items:
+			아이템:
 			<div class="itemSummary">
 				<<supermarketDisplayBasketSummary>>
 			</div>
 		<</if>>
 		<hr>
 		<<if Time.dayState is "night" and Time.hour isnot 21>>
-			<<link [[Steal|$passage]]>>
+			<<link [[훔친다|$passage]]>>
 				<<supermarketTakeBasket "steal">>
 			<</link>>
 			<br>
@@ -524,7 +524,7 @@
 			Total: <span class="gold"> £<<print (_totalCostShown / 100).toFixed(2)>></span>
 			<br>
 			<<if setup.hbsc.paymentBalance("supermarket") gte _totalCostShown>>
-				<<link [["Purchase"|$passage]]>>
+				<<link [["구매한다"|$passage]]>>
 					<<for _itemInCart range Object.keys($shoppingBasket)>>
 						<<tending_give _itemInCart $shoppingBasket[_itemInCart]>>
 						<<money `-(setup.foodstuff[_itemInCart].shop.sell_price * $shoppingBasket[_itemInCart] * 2)` "supermarket">>
@@ -533,11 +533,11 @@
 					<<set $shoppingBasket to {}>>
 				<</link>>
 			<<else>>
-				You can't afford your selection of goods.
+				선택한 상품들을 구매할 돈이 부족합니다.
 			<</if>>
 		<</if>>
 		|
-		<<link "Empty">>
+		<<link "비우기">>
 			<<set $shoppingBasket to {}>>
 			<<addclass "#altSection, #mobileCloser" "mobileHidden">>
 			<<replace "#itemList">><<supermarketDisplayItems>><</replace>>
@@ -573,7 +573,7 @@
 				<span class="gold"> £<<print ((setup.inflation ? setup.inflation.price(setup.foodstuff[_itemInCart].shop.sell_price * $shoppingBasket[_itemInCart] * 2) : setup.foodstuff[_itemInCart].shop.sell_price * $shoppingBasket[_itemInCart] * 2) / 100).toFixed(2)>></span>
 				<span>
 					<<capture _itemInCart>>
-						<<link "Remove">>
+						<<link "제거하기">>
 							<<run delete $shoppingBasket[_itemInCart]>>
 							<<replace "#itemList">><<supermarketDisplayItems>><</replace>>
 							<<replace "#altSection">><<supermarketDisplayBasket>><</replace>>
@@ -589,13 +589,13 @@
 	<<if Object.keys(setup.foodstuff).find(key => {
 		if (setup.foodstuff[key].shop.available_in?.includes(_selectedShop) and $foodstuff[key].supermarket) return key;
 	})>>
-		Fill
+		채우기
 		<<link "25%">><<supermarketDisplayFillBasketLink 0.25>><</link>> |
 		<<link "50%">><<supermarketDisplayFillBasketLink 0.5>><</link>> |
 		<<link "75%">><<supermarketDisplayFillBasketLink 0.75>><</link>> |
 		<<link "100%">><<supermarketDisplayFillBasketLink 1>><</link>>
 	<<else>>
-		The shop is currently out of stock.
+		가게의 재고가 현재 소진되었습니다.
 	<</if>>
 <</widget>>
 
@@ -619,7 +619,7 @@
 			<div class="recipeTitle"><<recipe_name _args[0] "cap">>:</div>
 		</div>
 		<div class="mobileOnly">
-			<<link "Close">>
+			<<link "닫기">>
 				<<addclass "#altSection, #mobileCloser" "mobileHidden">>
 			<</link>>
 		</div>
@@ -627,14 +627,14 @@
 	<<set _basketOpen to false>>
 	<div id="basketItems">
 		<div class="mobileHidden">
-			<<link "Return to basket">>
+			<<link "장바구니로 돌아가기">>
 				<<replace "#altSection">><<supermarketDisplayBasket>><</replace>>
 				<<addclass "#altSection, #mobileCloser" "mobileHidden">>
 			<</link>>
 			<hr>
 		</div>
 		<<if $_setupItem.shop.bought_in_bulk>>
-			Bought in sets of <<print $_setupItem.shop.bought_in_bulk>>.
+			<<print $_setupItem.shop.bought_in_bulk>>개 세트로 구매함.
 		<</if>>
 		<<knownFoodRecipes _args[0]>>
 	</div>

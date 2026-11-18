@@ -3,7 +3,7 @@
 
 function statusCheck(name) {
 	if (!V.NPCNameList.includes(name)) {
-		Errors.report(`getNNPC received an invalid name ${name}.`);
+		Errors.report(`getNNPC에 유효하지 않은 이름이 전달되었습니다: ${name}.`);
 		return;
 	}
 
@@ -226,6 +226,13 @@ function averySchedule() {
 
 	if (!V.avery_mansion) return;
 
+	/* Player toggled the "stop party after tower" option while a party was already pending (party_state "waiting").
+	   Neutralize it into the same state used before the player's very first party ever happens, so it never gets
+	   marked "missed" (no-show, which costs love/rage) even if the option is unchecked again later. */
+	if (V.avery_tower?.stage === 3 && V.avery_mansion.stopPartyAfterTower && V.avery_mansion.party_state === "waiting") {
+		V.avery_mansion.party_state = "first sunday skip";
+	}
+
 	if (V.avery_mansion.schedule === "away" && V.avery_skyscraper_fire_time <= 0 && V.avery_injury) V.avery_mansion.schedule = "return";
 	else if (
 		V.avery_mansion.schedule === "away" &&
@@ -259,8 +266,8 @@ function averySchedule() {
 				else if (Time.hour <= 6) V.avery_mansion.schedule = "breakfast";
 				else if (Time.hour <= 16) V.avery_mansion.schedule = "work";
 				else if (Time.hour <= 17 && V.avery_mansion.rage.work === true) V.avery_mansion.schedule = "return";
-				else if (Time.hour <= 17 && V.avery_mansion.party_state === "waiting" && !V.avery_valentines?.invite) V.avery_mansion.schedule = "party_prepare";
-				else if (V.avery_mansion.party_state === "waiting") V.avery_mansion.schedule = "party";
+				else if (Time.hour <= 17 && V.avery_mansion.party_state === "waiting" && !(V.avery_tower?.stage === 3 && V.avery_mansion.stopPartyAfterTower) && !V.avery_valentines?.invite) V.avery_mansion.schedule = "party_prepare";
+				else if (V.avery_mansion.party_state === "waiting" && !(V.avery_tower?.stage === 3 && V.avery_mansion.stopPartyAfterTower)) V.avery_mansion.schedule = "party";
 				else V.avery_mansion.schedule = "drink";
 				break;
 
@@ -615,7 +622,7 @@ function npcCanHunt(npc) {
 		case "forest trio":
 			return npcCanHunt("Eden") || npcCanHunt("Black Wolf") || npcCanHunt("Gwylan");
 		default:
-			Errors.report(`npcCanHunt function received an invalid npc name ${npc}.`);
+			Errors.report(`npcCanHunt 함수에 유효하지 않은 NPC 이름이 전달되었습니다: ${npc}.`);
 	}
 }
 window.npcCanHunt = npcCanHunt;

@@ -63,12 +63,12 @@ Weather.Overcast = (() => {
 			const lastKeyPointTimestamp = lastKeyPoint?.timestamp || 0;
 
 			if (date.timeStamp > lastKeyPointTimestamp) {
-				console.warn(`getOvercast: Provided date is after the last key point timestamp.`);
+				console.warn(`getOvercast: 제공된 날짜가 마지막 키포인트 타임스탬프보다 이후입니다.`);
 				return null;
 			}
 
 			if (date.timeStamp < Time.date.timeStamp) {
-				console.warn(`getOvercast: Provided date is before the current timestamp. Returning the current overcast.`);
+				console.warn(`getOvercast: 제공된 날짜가 현재 타임스탬프보다 이전입니다. 현재 흐림도를 반환합니다.`);
 				return interpolateOvercast(new DateTime(Time.date));
 			}
 		}

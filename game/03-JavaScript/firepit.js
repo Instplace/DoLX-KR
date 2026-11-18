@@ -46,7 +46,7 @@ const Cooker = (() => {
 	 * @returns {number} the time left before the fire goes out, in seconds
 	 */
 	function getBurnTime(c) {
-		if (!c || c.lastsUntil == null) return Errors.report("No cooker provided to getBurnTime");
+		if (!c || c.lastsUntil == null) return Errors.report("getBurnTime에 cooker가 제공되지 않았습니다");
 		return Math.max(c.lastsUntil - V.timeStamp, 0);
 	}
 
@@ -77,7 +77,7 @@ const Cooker = (() => {
 	 */
 	function cookItem(c, item) {
 		if (!c || !c.items || !item || c.cookTime?.[item.name] == null) {
-			return Errors.report("Failed to add item to cooker: invalid cooker or item");
+			return Errors.report("cooker에 아이템을 추가하지 못했습니다: cooker 또는 아이템이 유효하지 않습니다");
 		}
 		if (c.items.length >= c.maxItems) return;
 		updateTimeBonus(c, item);
@@ -95,7 +95,7 @@ const Cooker = (() => {
 	 */
 	function createItem(c, itemName, skipBonusCalc = false) {
 		if (!c || c.cookTime?.[itemName] == null || !itemName) {
-			return Errors.report(`Failed to create item ${itemName}: item not allowed in provided cooker`);
+			return Errors.report(`아이템 생성 실패: 제공된 cooker에서 허용되지 않는 아이템입니다(${itemName}).`);
 		}
 		const newItem = {
 			name: itemName,
@@ -166,7 +166,7 @@ const Cooker = (() => {
 		const cookMult = c.cookMult;
 		const baseTime = c.cookTime?.[item.name];
 		if (!baseTime || !cookMult || cookMult < 0) {
-			Errors.report("No valid cooker provided for getTimeBonus");
+			Errors.report("getTimeBonus에 유효한 cooker가 제공되지 않았습니다");
 			return 0;
 		}
 		const timeElapsedRaw = V.timeStamp - item.startedAt;

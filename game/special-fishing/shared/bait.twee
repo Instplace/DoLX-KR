@@ -3,12 +3,12 @@
 <<widget "baitOverlay">>
 	<<fishingBaitList>>
 	<label class="fishing-select-bait-radio">
-		<<checkbox "$fishing.autoRebait" false true autocheck>> Automatically re-bait
+		<<checkbox "$fishing.autoRebait" false true autocheck>> 미끼 자동으로 끼우기
 	</label>
 	<br><br>
 
 	<<if $fishingSelectedBait is "none" or _fishingHaveBait is true>>
-		<<link "Change bait">>
+		<<link "미끼 변경">>
 			<<if $fishing.currentBait and $fishing.currentBait isnot $fishingSelectedBait>>
 				<<run baitReturn($fishing.currentBait)>>
 			<</if>>
@@ -78,7 +78,7 @@ The <span class="blue">reel</span> affects how much distance you gain or lose wh
 <<widget "fishingRebaitMid">>
 	<<set _rebaitLeft to baitUsableStock($fishing.currentBait)>>
 	<<if _rebaitLeft lte 0>>
-		baiting your <span class="red">last</span> piece of <<print setup.foodstuff[$fishing.currentBait].plural>> on the hook and casting back out.
+		<span class="red">마지막</span> 남은 <<print setup.foodstuff[$fishing.currentBait].plural>>【을를】 바늘에 꿰고 다시 낚싯대를 던진다.
 	<<else>>
 		re-baiting your line and casting back out. You have <<= _rebaitLeft>> <<print setup.foodstuff[$fishing.currentBait].plural>> left<<if $fishing.currentBait is "bait_worm" and wormCanUsable()>> in the can<</if>>.
 	<</if>>
@@ -87,7 +87,7 @@ The <span class="blue">reel</span> affects how much distance you gain or lose wh
 <<widget "fishingRebaitStart">>
 	<<set _rebaitLeft to baitUsableStock($fishing.currentBait)>>
 	<<if _rebaitLeft lte 0>>
-		You bait your <span class="red">last</span> piece of <<print setup.foodstuff[$fishing.currentBait].plural>> on the hook and cast back out.
+		당신은 <span class="red">마지막</span> 남은 <<print setup.foodstuff[$fishing.currentBait].plural>>【을를】 바늘에 꿰고 다시 낚싯대를 던진다.
 	<<else>>
 		You re-bait your line and cast back out. You have <<= _rebaitLeft>> <<print setup.foodstuff[$fishing.currentBait].plural>> left<<if $fishing.currentBait is "bait_worm" and wormCanUsable()>> in the can<</if>>.
 	<</if>>
@@ -97,7 +97,7 @@ The <span class="blue">reel</span> affects how much distance you gain or lose wh
 	<<unset $fishingSelectedBait>>
 
 	<label class="fishing-select-bait-radio">
-		<<icon `"fish/hook.png"`>> None
+		<<icon `"fish/hook.png"`>> 없음
 		<<if !$fishing.currentBait>>
 			<<radiobutton "$fishingSelectedBait" "none" checked>>
 		<<else>>
@@ -151,7 +151,7 @@ The <span class="blue">reel</span> affects how much distance you gain or lose wh
 	<<if $fishing?.currentBait and setup.foodstuff[$fishing.currentBait]>>
 		<<set _baitTooltip to "Bait: " + baitLabel($fishing.currentBait)>>
 	<<else>>
-		<<set _baitTooltip to "No bait on your line (click to change)">>
+		<<set _baitTooltip to "낚싯바늘에 미끼가 없습니다 (클릭하여 변경)">>
 	<</if>>
 	<button type="button" id="bait-sidebar" @class="'bait-sidebar' + (_baitEditEnabled ? '' : ' bait-sidebar-disabled') + ($fishing.displayBaitNotification ? ' bait-sidebar-notify' : '')" tooltip="<span>_baitTooltip</span>" onclick="openBaitOverlay(); this.classList.remove('bait-sidebar-notify');">
 		<<if $fishing?.currentBait and setup.foodstuff[$fishing.currentBait]>>
@@ -164,7 +164,7 @@ The <span class="blue">reel</span> affects how much distance you gain or lose wh
 
 <<widget "baitMobileDropdown">>
 	<select id="fishing-bait-select" onchange="fishingChangeBaitFromDropdown(this.value)">
-		<option value="none">None</option>
+		<option value="none">없음</option>
 		<<set _foodKeys to baitOrderedKeys()>>
 		<<for _i to 0; _i lt _foodKeys.length; _i++>>
 			<<set _food to _foodKeys[_i]>>
@@ -176,7 +176,7 @@ The <span class="blue">reel</span> affects how much distance you gain or lose wh
 	<<timed 0s>><<run $("#fishing-bait-select").val($fishing.currentBait ? $fishing.currentBait : "none")>><</timed>>
 	<br>
 	<label class="fishing-select-bait-radio">
-		<<checkbox "$fishing.autoRebait" false true autocheck>> Automatically re-bait
+		<<checkbox "$fishing.autoRebait" false true autocheck>> 미끼 자동으로 끼우기
 	</label>
 <</widget>>
 
@@ -185,7 +185,7 @@ The <span class="blue">reel</span> affects how much distance you gain or lose wh
 	<<if $fishing?.currentBait and setup.foodstuff[$fishing.currentBait]>>
 		<<set _baitTooltip to "Bait: " + baitLabel($fishing.currentBait)>>
 	<<else>>
-		<<set _baitTooltip to "No bait on your line (click to change)">>
+		<<set _baitTooltip to "낚싯바늘에 미끼가 없습니다 (클릭하여 변경)">>
 	<</if>>
 	<button type="button" id="bait-mobile-sidebar" @class="'bait-mobile-sidebar' + (_baitEditEnabled ? '' : ' bait-sidebar-disabled')" tooltip="<span>_baitTooltip</span>" onclick="openBaitOverlay()">
 		<<if $fishing?.currentBait and setup.foodstuff[$fishing.currentBait]>>

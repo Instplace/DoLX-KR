@@ -311,31 +311,37 @@ const Skin = (() => {
 		if (V.settings.blindStatsEnabled) return "";
 		const factor = modifier * minutes;
 		if (factor === 0) {
-			return statDisplay.statChange("No tanning effect", 0, "blue");
+			return statDisplay.statChange("태닝 효과 없음", 0, "blue");
 		}
-		return statDisplay.statChange("Tan", factor >= 50 ? 3 : factor >= 20 ? 2 : 1, "green");
+		return statDisplay.statChange("태닝", factor >= 50 ? 3 : factor >= 20 ? 2 : 1, "green");
 	}
 
 	function tanningPenaltiesOutput(modifiers) {
 		const reasons = [];
 
 		if (modifiers.sunscreen === 0) {
-			return `<span class="blue">Sunscreen prevented you from tanning.</span><br>`;
+			return `<span class="blue">자외선 차단제가 피부를 보호한다.</span><br>`;
 		}
 
 		if (V.outside) {
 			const month = modifiers.month <= 0.6;
 			const dayState = Weather.sidebar.dayFactor <= 0.6;
-			const output = month ? Time.monthName : dayState ? "Sun is low" : "weather";
-			if (modifiers.sun <= 0.3) reasons.push(`Low sun intensity (${output})`);
-			else if (modifiers.sun <= 0.7) reasons.push(`Reduced sun intensity (${output})`);
+			const output = month
+				? "계절상 햇빛이 약해"
+				: dayState
+					? "태양이 낮게 떠 있어 햇빛이 약해"
+					: "날씨 때문에 햇빛이 약해";
 
-			if (modifiers.weather < 1) reasons.push("Light clouds");
+			if (modifiers.sun <= 0.3) reasons.push(output);
+			else if (modifiers.sun <= 0.7) reasons.push(output);
+
+			if (modifiers.weather < 1) reasons.push("옅은 구름이 햇빛을 가려");
 		}
-		if (modifiers.clothing < 1) reasons.push("Shaded by clothing");
+
+		if (modifiers.clothing < 1) reasons.push("옷이 그늘을 만들어");
 
 		if (reasons.length === 0) return "";
-		return `<span class="teal">Your tanning gain was reduced due to:</span><br><span class="orange">${reasons.join("<br>")}</span><br>`;
+		return `<span class="orange">${reasons.join("<br>")}</span><br><span class="teal">태닝이 더디게 진행된다.</span><br>`;
 	}
 	return {
 		cachedLayers,

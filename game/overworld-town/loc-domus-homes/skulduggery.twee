@@ -1,157 +1,156 @@
 :: Domus House Lock
-
 <<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "domus">><<set $lock to 100>>
-The door is locked tight.
+문이 단단히 잠겨 있다.
 <br><br>
 <<if currentSkillValue('skulduggery') gte $lock>>
 	<<if pcAreArmsBound("both")>>
-		You think you'd be able to pick the lock, <span class="blue">if your arms weren't bound.</span>
+		자물쇠를 딸 수 있을 것 같지만, <span class="blue">팔이 묶여 있지 않다면 말이다.</span>
 		<br><br>
 	<<else>>
 		<<wearProp "lockpick">>
-		<span class="green">The lock looks easy to pick.</span>
+		<span class="green">자물쇠는 쉽게 딸 수 있을 것 같다.</span>
 		<br><br>
-		<<lockicon "pick">><<link [[Break in (0:05)|Domus House Sneak]]>><<pass 5>><<crimeUp 5 "trespassing">><</link>><<crime "trespassing">>
+		<<lockicon "pick">><<link [[침입한다 (0:05)|Domus House Sneak]]>><<pass 5>><<crimeUp 5 "trespassing">><</link>><<crime "trespassing">>
 		<br>
 	<</if>>
 <<else>>
-	<span class="red">The lock looks beyond your ability to pick.</span><<skulduggeryrequired>>
+	<span class="red">자물쇠는 당신의 실력으로 딸 수 없을 것 같다.</span><<skulduggeryrequired>>
 	<br><br>
 <</if>>
 <<mailboxsteallink "domus" "Domus Street" "Domus Street" 15 45 "one of the small homes">>
-<<domusicon>><<link [[Leave|Domus Street]]>><</link>>
+<<domusicon>><<link [[떠난다|Domus Street]]>><</link>>
 <br>
 
 :: Domus House Sneak
 
 <<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
-You successfully pick the lock and enter the abode.
+자물쇠를 따고 집에 들어가는 데 성공했다.
 <br><br>
 
 <<skulduggeryuse 200 "locks">>
 
-You sneak around the house and look for anything of value.
+당신은 집 안을 몰래 돌아다니며 가치 있는 물건을 찾는다.
 <<if $rng gte 81>>
 
 	<<beastNEWinit 1 dog>>
 	<<if beastSexEnabledForType("dog", $monster is 1) and not ($NPCList[0] and $NPCList[0].lewdBlocked)>>
-		A low growl interrupts you, and a <<beasttype>> emerges from the darkness. <<bHe>> starts to bark.<<if $monster is 1>> "Intruder! Away!"<</if>>
+		낮은 으르렁거림이 당신을 방해하고, 어둠 속에서 <<beasttype>> 한 마리가 나타난다. <<bHe>>【이가】 짖기 시작한다.<<if $monster is 1>> "침입자다! 물러가!"<</if>>
 		<br><br>
 		<<if hasSexStat("deviancy", 2)>>
-			<<link [[Try to calm <<bhim>>|Domus House Dog]]>><<set $phase to 0>><<set $sexstart to 1>><<generate2>><</link>><<deviant2>>
+			<<link [[<<bhim>>【을를】 진정시킨다|Domus House Dog]]>><<set $phase to 0>><<set $sexstart to 1>><<generate2>><</link>><<deviant2>>
 			<br>
 		<</if>>
-		<<link [[Fight|Domus House Dog]]>><<set $molestationstart to 1>><<set $phase to 0>><<generate2>><</link>>
+		<<link [[싸운다|Domus House Dog]]>><<set $molestationstart to 1>><<set $phase to 0>><<generate2>><</link>>
 		<br>
-		<<link [[Run|Domus House Run]]>><<transform cat 1>><</link>>
+		<<link [[도망친다|Domus House Run]]>><<transform cat 1>><</link>>
 		<br><br>
 	<<else>>
-		A low growl interrupts you, and a dog emerges from the darkness. It starts to bark.
+		낮은 으르렁거림이 당신을 방해하고, 어둠 속에서 개 한 마리가 나타난다. 개가 짖기 시작한다.
 		<br><br>
-		You flee out the house, the dog snapping at your heels. It doesn't chase you beyond the front door, content to bark into the <<if Time.dayState is "night">>night<<else>>street<</if>>.
+		당신은 집 밖으로 도망치고, 개는 당신의 발뒤꿈치를 물려고 한다. 개는 현관문 너머까지 쫓아오지는 않고, <<if Time.dayState is "night">>밤<<else>>거리<</if>>【을를】 향해 짖는 것에 만족한다..
 		<<beastescape>>
 		<br><br>
-		<<link [[Next|Domus Street]]>><<endevent>><</link>>
+		<<link [[다음|Domus Street]]>><<endevent>><</link>>
 		<br>
 	<</if>>
 <<elseif $rng gte 61>>
-	You find a safe with a combination lock.
+	다이얼 자물쇠가 달린 금고를 발견했다.
 	<br><br>
-	<<link [[Try to open it|Domus House Safe]]>><</link>>
+	<<link [[열어본다|Domus House Safe]]>><</link>>
 	<br>
-	<<link [[Leave|Domus Street]]>><</link>>
+	<<link [[떠난다|Domus Street]]>><</link>>
 	<br>
 <<elseif $rng gte 56>>
 	<<generate1>><<person1>>
-	As you creep through a darkened room a low voice startles you.
+	어두운 방을 살금살금 지나갈 때 낮은 목소리가 당신을 놀라게 한다.
 	<br><br>
-	"You're welcome to keep looking around, sweetheart, but there's nothing here. Nothing you'd want. This street is good people, but we haven't got much.
-	If you want a mark that's worth something head over to Danube. Nice big places over there. Full of nice stuff."
+	"계속 둘러봐도 좋아, 얘야. 하지만 여긴 아무것도 없어. 네가 원할 만한 건 없지. 이 거리는 좋은 사람들이지만, 가진 게 별로 없어.
+	값나가는 걸 원한다면 다뉴브 가로 가봐. 거기엔 멋지고 큰 집들이 있지. 좋은 물건들로 가득하고."
 	<br>
-	A lighter sparks twice, lighting up a <<person>>. Third time, the cigarette in <<his>> mouth catches. A point of glowing red in the dark.
+	라이터가 두 번 불꽃을 튀기더니, <<person>> 한 명을 비춘다. 세 번째에, <<his>> 입에 문 담배에 불이 붙는다. 어둠 속에서 붉은 점이 빛난다.
 	<br><br>
-	"I used to be a thief," <<he>> says. "Just be careful. Thieving's good for a while. Lots of good stuff for free. Nice life. Thought I was untouchable.
-	Ha. You pay for it in the end. In this town you always pay. One way or another. Pillory is brutal. Prison's worse. Far worse. Nowadays, I cut the middleman.
-	Can make easy money spreading your legs in this town. Easier than penal time. And at least you get to choose who. Keep some control. Prison's brutal."
+	"나도 예전엔 도둑이었어." <<he>>【이가】 말한다. "조심해. 도둑질은 한동안은 괜찮지. 공짜로 좋은 물건이 많이 생기니까. 좋은 인생이야. 난 내가 무적인 줄 알았어.
+	하. 결국엔 대가를 치르게 돼. 이 마을에선 언제나 대가를 치르지. 어떤 식으로든. 형틀은 잔인해. 감옥은 더 나쁘고. 훨씬 더 나빠. 요즘엔, 난 중간 과정을 생략해.
+	이 마을에선 다리를 벌리면 쉽게 돈을 벌 수 있어. 감옥살이보다 쉽지. 그리고 적어도 상대는 고를 수 있잖아. 어느 정도 통제권을 유지할 수 있지. 감옥은 잔인해."
 	<br><br>
-	A trail of smoke winds your way. It tickles your throat making you cough.
+	연기 한 줄기가 당신 쪽으로 피어오른다. 목을 간질여 기침이 나온다.
 	<br><br>
-	"Sorry," <<he>> says. "Filthy habit. Need to quit. Anyway, there's nothing here. Go see for yourself. Rather that than you come stumbling around here another day.
-	Go on, look around all you want. Take whatever. I can get more. Knock yourself out. Baby's sleeping in that room there though. Hasn't been down an hour yet.
+	"미안." <<he>>【이가】 말한다. "더러운 버릇이야. 끊어야 하는데. 어쨌든, 여긴 아무것도 없어. 직접 가서 봐. 네가 다른 날 또 여기 와서 어슬렁거리는 것보단 낫지.
+	어서, 원하는 만큼 둘러봐. 뭐든 가져가. 난 더 구할 수 있어. 마음대로 해. 저기 저 방에 아기가 자고 있어. 아직 잠든 지 한 시간도 안 됐어.
 	Don't wake <<worldMale 'him' 'her'>>, okay? That's all I ask."
 	<br>
-	You quietly move away.
+	당신은 조용히 자리를 뜬다.
 	<br>
 	"Growing up in this town, the little fucker's gonna need all the rest <<worldMale 'he' 'she'>> can get," <<he>> mutters, seemingly to <<himself>>. "Poor little bastard."
 	<br><br>
-	You find nothing and leave empty handed.
+	당신은 아무것도 찾지 못하고 빈손으로 떠난다.
 	<br><br>
 	<<endevent>>
-	<<link [[Leave|Domus Street]]>><</link>>
+	<<link [[떠난다|Domus Street]]>><</link>>
 	<br>
 <<elseif $rng gte 51>>
-	While searching a room for valuables you find a drawer containing a number of phones. Most are used but all are fairly new.
+	귀중품을 찾기 위해 방을 뒤지다가 여러 개의 휴대폰이 들어있는 서랍을 발견한다. 대부분은 중고지만 모두 꽤 새것이다.
 	<<wearProp "mobile phone">>
 	<<if currentSkillValue('skulduggery') gte 500>>
-		Your knowledge of the skulduggerous lets you quickly determine that these are stolen phones.
-		Stealing them again should not be a crime. It's not like they can report someone stealing their stolen goods.
+		당신은 속임수 기술에 대한 지식 덕분에 이것들이 훔친 휴대폰이라는 것을 금방 알아챈다.
+		이것들을 다시 훔치는 것은 범죄가 아닐 것이다. 훔친 물건을 도둑맞았다고 신고할 수는 없을 테니 말이다.
 		<br><br>
 		<<link [[Take them|Domus Street]]>><<blackmoney 15>><</link>>
 	<<else>>
-		Why would someone have so many nearly new phones? How odd.
+		왜 누군가가 이렇게 많은 거의 새 휴대폰을 가지고 있을까? 이상하다.
 		<br><br>
 		<<link [[Take it|Domus Street]]>><<blackmoney 15>><<crimeUp 15 "thievery">><</link>><<crime "thievery">>
 	<</if>>
 	<br>
-	<<link [[Leave|Domus Street]]>><</link>>
+	<<link [[떠난다|Domus Street]]>><</link>>
 	<br>
 <<elseif $rng gte 41>>
-	<<generate1>><<person1>>You're rummaging through the lounge when you hear footsteps approaching. You take cover behind the curtains, just before a <<person>> enters the room. <<He>> sits down and switches on the television like <<he>> plans to be there a while.
+	<<generate1>><<person1>>거실을 뒤지던 중 발소리가 다가오는 것을 듣는다. 당신은 커튼 뒤에 몸을 숨기고, 곧이어 <<person>> 한 명이 방으로 들어온다. <<He>>【은는】 자리에 앉아 텔레비전을 켜는데, 한동안 머무를 작정인 것 같다.
 	<br><br>
-	<<link [[Sneak out|Domus House Sneak 2]]>><</link>>
+	<<link [[몰래 빠져나간다|Domus House Sneak 2]]>><</link>>
 	<br>
-	<<link [[Wait (0:30)|Domus House Wait]]>><<pass 30>><</link>>
+	<<link [[기다린다 (0:30)|Domus House Wait]]>><<pass 30>><</link>>
 	<br>
 <<elseif $rng gte 31>>
-	You're searching the lounge for valuables when you notice that one step sounds hollow.
-	<<if currentSkillValue('skulduggery') gte 500>>Suspecting a hidden stash,<<else>>Confused,<</if>> you look under the rug and find a trapdoor.
-	Lifting it up and peering down, it seems there is a set of steps leading down to an underground room.
+	거실에서 귀중품을 찾던 중, 계단 하나에서 속이 빈 소리가 나는 것을 발견한다.
+	<<if currentSkillValue('skulduggery') gte 500>>숨겨진 장소가 있을 거라 의심하며,<<else>>의아해하며,<</if>> 양탄자 밑을 보니 쪽문이 있다.
+	그것을 들어 올리고 아래를 들여다보니, 지하 방으로 이어지는 계단이 있는 것 같다.
 	<br>
-	You cannot make out anything in the darkness.
+	어둠 속에서는 아무것도 분간할 수 없다.
 	<br><br>
-	<<link [[Climb down|Domus House Dungeon]]>><</link>>
+	<<link [[내려간다|Domus House Dungeon]]>><</link>>
 	<br>
-	<<link [[Leave|Domus Street]]>><</link>>
+	<<link [[떠난다|Domus Street]]>><</link>>
 	<br>
 <<elseif $rng gte 21>>
 	<<switch $rng % 4>>
 		<<case 3>>
-			<<set _bigthing to "an extremely state of the art gaming system">><<set _thebits to "the curved UHD screens, the surround-speaker system, the gaming chair with integrated controller">>
-			<<set _littlething to "large collection of hentai games">><<set _blackmoney to 10>><<wearProp "box porn">>
+			<<set _bigthing to "최첨단 게임 시스템">><<set _thebits to "곡면 UHD 화면, 서라운드 스피커 시스템, 통합 컨트롤러가 달린 게이밍 의자">>
+			<<set _littlething to "대량의 헨타이 게임 모음">><<set _blackmoney to 10>><<wearProp "box porn">>
 		<<case 2>>
-			<<set _bigthing to "a powerful home media centre">><<set _thebits to "the huge cinema screen, the integrated speaker system, the sofa-chair with integrated control-panel">>
-			<<set _littlething to "huge porn collection">><<set _blackmoney to 20>><<wearProp "box porn">>
+			<<set _bigthing to "강력한 홈 미디어 센터">><<set _thebits to "거대한 영화관 스크린, 통합 스피커 시스템, 통합 조작 패널이 달린 소파 의자">>
+			<<set _littlething to "방대한 포르노 컬렉션">><<set _blackmoney to 20>><<wearProp "box porn">>
 		<<case 1>>
-			<<set _bigthing to "an immersive VR anime system">><<set _thebits to "the VR headset, anime-themed fittings and furniture, the sensory-feedback gloves">>
-			<<set _littlething to "imported box of anime-themed 'used panties'">><<set _blackmoney to 10>><<wearProp "box panty">>
+			<<set _bigthing to "몰입형 VR 애니메이션 시스템">><<set _thebits to "VR 헤드셋, 애니메이션풍 부품과 가구, 감각 피드백 장갑">>
+			<<set _littlething to "수입산 애니메이션풍 '입던 팬티' 상자">><<set _blackmoney to 10>><<wearProp "box panty">>
 		<<default>>
-			<<set _bigthing to "a covert Government monitoring station">><<set _thebits to "the spy-cam screens, the cell-phone intercept equipment, the internet monitors and taps">><<wearProp "manila envelope">>
-			<<set _littlething to "set of 'Top Secret' government files relating to 'Project Dark Elk'">><<set _blackmoney to 30>>
+			<<set _bigthing to "비밀 정부 감시소">><<set _thebits to "스파이캠 화면, 휴대폰 감청 장비, 인터넷 감시 장비와 도청 장치">><<wearProp "manila envelope">>
+			<<set _littlething to "'프로젝트 어둠의 엘크'와 관련된 '1급 기밀' 정부 문서 세트">><<set _blackmoney to 30>>
 	<</switch>>
-	The house is almost entirely bare. You are almost ready to leave when you stumble across an entire room dedicated to _bigthing.
-	Unfortunately, most of it—_thebits—is far too difficult to extract or far too bulky to steal.
+	집은 거의 텅 비어 있다. 막 떠나려던 참에 _bigthing 전용으로 꾸며진 방 전체를 우연히 발견한다.
+	불행히도, 대부분의 물건들(<<print _thebits>>)은 빼내기가 너무 어렵거나 훔치기에는 너무 부피가 크다.
 	<br><br>
-	Thankfully, the _littlething next to the chair is far easier to steal and should be worth something on the black markets.
+	다행히도, 의자 옆에 있는 _littlething【은는】 훔치기가 훨씬 쉽고 암시장에서 꽤 값어치가 나갈 것이다.
 	<br><br>
 	<<link [[Take it|Domus Street]]>><<blackmoney _blackmoney>><<crimeUp _blackmoney "thievery">><</link>><<crime "thievery">>
 	<br>
-	<<link [[Leave|Domus Street]]>><</link>>
+	<<link [[떠난다|Domus Street]]>><</link>>
 	<br>
 <<elseif $rng gte 16>>
-	There's nothing of value in the entire house. Even the beds are just greasy sheets over old soiled mattresses on bare wooden floors.
-	<<print either("It's actually kind of tragic.","It's almost sad.","Three kids, one adult, and one mouldy half-loaf of bread in the cupboard.")>>
+	집 전체에 값나가는 물건이 하나도 없다. 침대조차도 맨 나무 바닥 위에 놓인 낡고 더러운 매트리스 위에 기름진 시트를 덮은 것뿐이다.
+	<<print either("사실 좀 비극적이다.","거의 슬플 지경이다.","아이 셋, 어른 하나, 그리고 찬장에는 곰팡이 핀 빵 반 덩어리뿐이다.")>>
 	<br><br>
-	You can't steal from these people. You should probably leave <i>them</i> money.
+	이런 사람들에게서 훔칠 수는 없다. 아마도 <i>그들에게</i> 돈을 남겨두고 가야 할 것 같다.
 	<br><br>
 	<<if setup.inflation.canAfford(10000)>>
 		<<link [[Leave <<printprice 10000>>|Domus Leave Money]]>><<set $phase to 0>><<money -10000>><<stress -6>><<trauma -6>><</link>><<lstress>><<ltrauma>>
@@ -165,85 +164,84 @@ You sneak around the house and look for anything of value.
 		<<link [[Leave <<printprice 100000>>|Domus Leave Money]]>><<set $phase to 2>><<money -100000>><<stress -50>><<trauma -18>><</link>><<lllstress>><<llltrauma>>
 		<br>
 	<</if>>
-	<<link [[Just leave|Domus Street]]>><</link>>
+	<<link [[그냥 떠난다|Domus Street]]>><</link>>
 	<br>
 <<else>>
 	<<rng>>
 	<<if $rng gte 91>>
-		You don't find much, just some loose change worth <<moneyGainDisplay 1 true true>>.
+		별다른 것을 찾지 못하고, <<moneyGainDisplay 1 true true>> 상당의 잔돈만 발견한다.
 		<br><br>
-		<<link [[Take it|Domus Street]]>><<money _money_gain>><<crimeUp `_money_gain / 100` "petty">><</link>><<crime "petty">>
+		<<link [[가져간다|Domus Street]]>><<money _money_gain>><<crimeUp `_money_gain / 100` "petty">><</link>><<crime "petty">>
 		<br>
-		<<link [[Leave|Domus Street]]>><</link>>
+		<<link [[떠난다|Domus Street]]>><</link>>
 		<br>
 	<<elseif $rng gte 81>>
-		You don't find much, just some loose change worth <<moneyGainDisplay 2 true true>>.
+		별다른 것을 찾지 못하고, <<moneyGainDisplay 2 true true>> 상당의 잔돈만 발견한다.
 		<br><br>
-		<<link [[Take it|Domus Street]]>><<money _money_gain>><<crimeUp `_money_gain / 100` "petty">><</link>><<crime "petty">>
+		<<link [[가져간다|Domus Street]]>><<money _money_gain>><<crimeUp `_money_gain / 100` "petty">><</link>><<crime "petty">>
 		<br>
-		<<link [[Leave|Domus Street]]>><</link>>
+		<<link [[떠난다|Domus Street]]>><</link>>
 		<br>
 	<<elseif $rng gte 71>>
-		You find <<moneyGainDisplay 3 true true>> hidden in a drawer.
+		서랍에 숨겨진 <<moneyGainDisplay 3 true true>>【을를】 찾는다.
 		<br><br>
-		<<link [[Take it|Domus Street]]>><<money _money_gain>><<crimeUp `_money_gain / 100` "petty">><</link>><<crime "petty">>
+		<<link [[가져간다|Domus Street]]>><<money _money_gain>><<crimeUp `_money_gain / 100` "petty">><</link>><<crime "petty">>
 		<br>
-		<<link [[Leave|Domus Street]]>><</link>>
+		<<link [[떠난다|Domus Street]]>><</link>>
 		<br>
 	<<elseif $rng gte 61>>
-		You find a nice-looking brooch in a drawer.
+		서랍에서 멋져 보이는 브로치를 발견한다.
 		<br><br>
 		<<link [[Take it|Domus Street]]>><<blackmoney 3>><<crimeUp 3 "thievery">><</link>><<crime "thievery">>
 		<br>
-		<<link [[Leave|Domus Street]]>><</link>>
+		<<link [[떠난다|Domus Street]]>><</link>>
 		<br>
 	<<elseif $rng gte 51>>
-		You find <<moneyGainDisplay 5 true true>> under a cushion on the sofa.
+		소파 쿠션 아래에서 <<moneyGainDisplay 5 true true>>【을를】 찾는다.
 		<br><br>
-		<<link [[Take it|Domus Street]]>><<money _money_gain>><<crimeUp `_money_gain / 100` "petty">><</link>><<crime "petty">>
+		<<link [[가져간다|Domus Street]]>><<money _money_gain>><<crimeUp `_money_gain / 100` "petty">><</link>><<crime "petty">>
 		<br>
-		<<link [[Leave|Domus Street]]>><</link>>
+		<<link [[떠난다|Domus Street]]>><</link>>
 		<br>
 	<<elseif $rng gte 41>>
-		You find a necklace on a stool beside the coat stand.
+		코트 걸이 옆 의자에서 목걸이를 발견한다.
 		<br><br>
 		<<link [[Take it|Domus Street]]>><<blackmoney 5>><<crimeUp 5 "thievery">><</link>><<crime "thievery">>
 		<br>
-		<<link [[Leave|Domus Street]]>><</link>>
+		<<link [[떠난다|Domus Street]]>><</link>>
 		<br>
 	<<elseif $rng gte 31>>
-		You find <<moneyGainDisplay 10 true true>> lying on the kitchen worktop.
+		주방 조리대 위에 놓인 <<moneyGainDisplay 10 true true>>【을를】 찾는다.
 		<br><br>
-		<<link [[Take it|Domus Street]]>><<money _money_gain>><<crimeUp `_money_gain / 100` "petty">><</link>><<crime "petty">>
+		<<link [[가져간다|Domus Street]]>><<money _money_gain>><<crimeUp `_money_gain / 100` "petty">><</link>><<crime "petty">>
 		<br>
-		<<link [[Leave|Domus Street]]>><</link>>
+		<<link [[떠난다|Domus Street]]>><</link>>
 		<br>
 	<<elseif $rng gte 21>>
-		You find a set of silverware.
+		은식기 세트를 발견한다.
 		<br><br>
 		<<link [[Take it|Domus Street]]>><<blackmoney 10>><<crimeUp 10 "thievery">><</link>><<crime "thievery">>
 		<br>
-		<<link [[Leave|Domus Street]]>><</link>>
+		<<link [[떠난다|Domus Street]]>><</link>>
 		<br>
 	<<elseif $rng gte 11>>
-		You find a pair of gold cufflinks in a coat pocket.
+		코트 주머니에서 금 커프스 단추 한 쌍을 발견한다.
 		<br><br>
 		<<link [[Take them|Domus Street]]>><<blackmoney 15>><<crimeUp 15 "thievery">><</link>><<crime "thievery">>
 		<br>
-		<<link [[Leave|Domus Street]]>><</link>>
+		<<link [[떠난다|Domus Street]]>><</link>>
 		<br>
 	<<else>>
-		You find <<moneyGainDisplay 15 true true>> in a pot beside the front door.
+		현관문 옆 화분에서 <<moneyGainDisplay 15 true true>>【을를】 찾는다.
 		<br><br>
-		<<link [[Take it|Domus Street]]>><<money _money_gain>><<crimeUp `_money_gain / 100` "petty">><</link>><<crime "petty">>
+		<<link [[가져간다|Domus Street]]>><<money _money_gain>><<crimeUp `_money_gain / 100` "petty">><</link>><<crime "petty">>
 		<br>
-		<<link [[Leave|Domus Street]]>><</link>>
+		<<link [[떠난다|Domus Street]]>><</link>>
 		<br>
 	<</if>>
 <</if>>
 
 :: Domus House Dog
-
 <<if $molestationstart is 1>>
 	<<set $molestationstart to 0>>
 	<<set $enemyno to 1>>
@@ -264,26 +262,26 @@ You sneak around the house and look for anything of value.
 	<<neutral 1>>
 	<<beastCombatInit>>
 	<<set $enemytrust -= 40>>
-	You drop to the floor and adopt a mating posture. The <<beasttype>> calms down, and other instincts are roused by your display.
+	당신은 바닥에 엎드려 짝짓기 자세를 취한다. <<beasttype>>【이가】 진정하고, 당신의 모습에 다른 본능이 깨어난다.
 	<<deviancy2>>
 	<<enable_rescue>>
 <</if>>
 <<effects>>
 <<if between($phase,1,2) and $orgasmdown gte 2>>
 	<<set $phase += 2>>
-	<<person2>>"Wow," says the <<person>>. "Being my <<beasttype>>'s <<bitch>> is making you cum. Maybe this isn't such a punishment for you after all, it's where you belong." You feel utterly humiliated.<<famebestiality 1>>
+	<<person2>>"와." <<person>>【이가】 말한다. "내 <<beasttype>>의 <<bitch>>【이가】 되니 가버리는군. 결국 이건 너한테 벌이 아닌가 보네, 네가 있을 곳이 바로 여기니까." 당신은 극심한 굴욕감을 느낀다.<<famebestiality 1>>
 	<br><br>
 <<elseif $phase gte 1>>
-	<<person2>>The <<person>> sits on the sofa, watching you.
+	<<person2>><<person>>【이가】 소파에 앉아 당신을 지켜본다.
 	<br><br>
 <</if>>
 <<effectsman>>
 <<if ($phase % 2) and $alarm is 1>>
-	<<alarmstate '<span class="red"><<person2>>The <<person>> laughs. "What\'s the matter, <<bitch>>? <<person1>>Is <<bhe>> too big for you?"</span><<person1>>' 1>>
+	<<alarmstate '<span class="red"><<person2>><<person>>【은는】 웃는다. "왜 그래, <<bitch>>? <<person1>><<bhe>>【이가】 너무 커?"</span><<person1>>' 1>>
 	<<set $alarm to 0>>
 	<<set $phase += 1>>
 <<else>>
-	<<alarmstate '<span class="red">Your screams go unanswered.</span>'>>
+	<<alarmstate '<span class="red">네 비명에는 아무도 응답하지 않는다.</span>'>>
 <</if>>
 <<beast $enemyno>>
 <br><br>
@@ -292,25 +290,24 @@ You sneak around the house and look for anything of value.
 <<actionsman>>
 <<if $phase is 0>>
 	<<if _combatend>>
-		<span id="next"><<link [[Next|Domus House Dog Finish]]>><</link>></span><<nexttext>>
+		<span id="next"><<link [[다음|Domus House Dog Finish]]>><</link>></span><<nexttext>>
 	<<else>>
-		<span id="next"><<link [[Next|Domus House Dog]]>><</link>></span><<nexttext>>
+		<span id="next"><<link [[다음|Domus House Dog]]>><</link>></span><<nexttext>>
 	<</if>>
 <<else>>
 	<<if _combatend>>
-		<span id="next"><<link [[Next|Domus House Dog Finish 2]]>><</link>></span><<nexttext>>
+		<span id="next"><<link [[다음|Domus House Dog Finish 2]]>><</link>></span><<nexttext>>
 	<<else>>
-		<span id="next"><<link [[Next|Domus House Dog]]>><</link>></span><<nexttext>>
+		<span id="next"><<link [[다음|Domus House Dog]]>><</link>></span><<nexttext>>
 	<</if>>
 <</if>>
 
 :: Domus House Run
-
 <<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "domus">>
-You flee out the house, the <<beasttype>> snapping at your heels. <<bHe>> doesn't chase you beyond the front door, content to continue barking into the <<if Time.dayState is "night">>night<<else>>street<</if>>.
+당신은 집 밖으로 도망치고, <<beasttype>>【이가】 발뒤꿈치를 물려고 달려든다. <<bHe>>【은는】 현관문 너머까지 쫓아오지는 않고, <<if Time.dayState is "night">>밤<<else>>거리<</if>>【을를】 향해 계속 짖는 것에 만족한다.
 <<beastescape>>
 <br><br>
-<<link [[Next|Domus Street]]>><<endevent>><</link>>
+<<link [[다음|Domus Street]]>><<endevent>><</link>>
 <br>
 
 :: Domus House Dog Finish
@@ -318,75 +315,74 @@ You flee out the house, the <<beasttype>> snapping at your heels. <<bHe>> doesn'
 <<set $outside to 0>><<set $location to "town">><<effects>>
 <<if $enemypleasure gte $enemypleasuremax>>
 	<<beastejaculation>>
-	The <<beasttype>> barks happily and walks over to the window.
-	<<tearful>> you rise to your feet.
+	<<beasttype>>【이가】 행복하게 짖으며 창가로 걸어간다.
+	<<tearful>> 당신은 자리에서 일어선다.
 	<br><br>
 	<<saveNPC 0 domus_skul_dog>>
 	<<clotheson>>
 	<<endcombat>>
 	<<loadNPC 0 domus_skul_dog>>
 	<<clearNPC domus_skul_dog>>
-	The <<beasttype>> pacified, you notice <<bhis>> collar glinting. You look closer and see it's encrusted with jewels.
+	<<beasttype>>【이가】 진정되자, <<bhis>> 목걸이가 반짝이는 것이 눈에 띈다. 자세히 보니 보석이 박혀 있다.
 	<br><br>
-	<<link [[Take it|Domus House Collar]]>><<crimeUp 15 "thievery">><</link>><<crime "thievery">>
+	<<link [[챙긴다|Domus House Collar]]>><<crimeUp 15 "thievery">><</link>><<crime "thievery">>
 	<br>
-	<<link [[Leave|Domus Street]]>><<endevent>><</link>>
+	<<link [[떠난다|Domus Street]]>><<endevent>><</link>>
 	<br>
 <<elseif $enemyhealth lte 0>>
-	The <<beasttype>> cowers and rolls over in submission.
-	<<tearful>> you rise to your feet.
+	<<beasttype>>【이가】 겁을 먹고 엎드려 복종의 자세를 취한다.
+	<<tearful>> 당신은 일어선다.
 	<br><br>
 	<<saveNPC 0 domus_skul_dog>>
 	<<clotheson>>
 	<<endcombat>>
 	<<loadNPC 0 domus_skul_dog>>
 	<<clearNPC domus_skul_dog>>
-	The <<beasttype>> pacified, you notice <<bhis>> collar glinting. You look closer and see it's encrusted with jewels.
+	<<beasttype>>【이가】 진정되자, <<bhis>> 목걸이가 반짝이는 것이 눈에 띈다. 자세히 보니 보석이 박혀 있다.
 	<br><br>
-	<<link [[Take it|Domus House Collar]]>><<crimeUp 15 "thievery">><</link>><<crime "thievery">>
+	<<link [[챙긴다|Domus House Collar]]>><<crimeUp 15 "thievery">><</link>><<crime "thievery">>
 	<br>
-	<<link [[Leave|Domus Street]]>><<endevent>><</link>>
+	<<link [[떠난다|Domus Street]]>><<endevent>><</link>>
 	<br>
 <<elseif $alarm is 1 and $rescue is 1>>
 	<<set $rescue to 0>>
 	<<if $NPCList[0].stance is "top">>
-		<<person2>>You hear footsteps coming towards you. "What you got there, <<print $NPCList[0].pronouns.boy>>?" says a <<person>>.
-		<<He>> laughs when <<he>> sees you. "Serves you right, sneaking around my property like that." <<He>> takes a seat. "Don't mind me."
+		<<person2>>발소리가 다가오는 것이 들린다. "거기서 뭘 잡고 있는 거야, <<print KR.getPronounKr("boy", $NPCList[0].pronouns.boy)>>?" <<person>>【이가】 말한다.
+		<<He>>【은는】 당신을 보고 웃는다. "내 집 주변을 그렇게 몰래 돌아다니다니, 꼴좋군." <<He>>【은는】 자리에 앉는다. "난 신경 쓰지 마."
 		<br><br>
-		<<link [[Next|Domus House Dog]]>><<set $phase to 1>><</link>>
+		<<link [[다음|Domus House Dog]]>><<set $phase to 1>><</link>>
 	<<else>>
-		<<person2>>"What you got there <<print $NPCList[0].pronouns.boy>>?" says a <<person>>.
-		<<He>> laughs when <<he>> sees you. "Serves you right, sneaking around my property like that. But I have a better idea." <<He>> grabs the <<beasttype>> by the collar and hauls it off you.
+		<<person2>>"거기서 뭘 잡고 있는 거야, <<print KR.getPronounKr("boy", $NPCList[0].pronouns.boy)>>?" <<person>>【이가】 말한다.
+		<<He>>【은는】 당신을 보고 웃는다. "내 집 주변을 그렇게 몰래 돌아다니다니, 꼴좋군. 하지만 더 좋은 생각이 있어." <<He>>【은는】 <<beasttype>>의 목걸이를 잡고 당신에게서 떼어낸다. <<He>>【은는】 <<beasttype>>의 목걸이를 잡고 당신에게서 떼어낸다.
 		<<saveNPC 1 domus_skul_dog_owner>>
 		<<endcombat>>
 		<<famebestiality 1>>
 		<<loadNPC 0 domus_skul_dog_owner>>
 		<<clearNPC domus_skul_dog_owner>>
 		<br><br>
-		<<link [[Next|Domus House Sneak Molestation]]>><<set $molestationstart to 1>><</link>>
+		<<link [[다음|Domus House Sneak Molestation]]>><<set $molestationstart to 1>><</link>>
 		<br>
 	<</if>>
 <<else>>
 	<<if $finish is 1>><<encounterEndViolence>><</if>>
-	The <<beasttype>> backs away from you. <<bHe>> growls at you again, but doesn't move. <<tearful>> you glance around. You see nothing of value.
+	<<beasttype>>【이가】 당신에게서 물러선다. <<bHe>>【은는】 다시 당신을 향해 으르렁거리지만 움직이지는 않는다. <<tearful>> 당신은 주위를 둘러본다. 값나가는 물건은 보이지 않는다.
 	<br><br>
 	<<clotheson>>
 	<<endcombat>>
-	<<link [[Leave|Domus Street]]>><</link>>
+	<<link [[떠난다|Domus Street]]>><</link>>
 	<br>
 <</if>>
 
 :: Domus House Collar
 
 <<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
-The <<beasttypes>> ears twitch, but other than that <<bhe>> makes no move as you remove <<bhis>> collar. You leave the premises with your prize in hand.
+<<beasttypes>> 귀가 움찔거리지만, 당신이 <<bhis>> 목걸이를 벗기는 동안 <<bhe>>【은는】 그 외에는 아무런 움직임도 보이지 않는다. 당신은 전리품을 손에 들고 그곳을 떠난다.
 <br><br>
 <<blackmoney 15>>
-<<link [[Leave|Domus Street]]>><<endevent>><</link>>
+<<link [[떠난다|Domus Street]]>><<endevent>><</link>>
 <br>
 
 :: Domus House Sneak Molestation
-
 <<if $molestationstart is 1>>
 	<<set $molestationstart to 0>>
 	<<controlloss>>
@@ -401,88 +397,86 @@ The <<beasttypes>> ears twitch, but other than that <<bhe>> makes no move as you
 <br><br>
 <<actionsman>>
 <<if _combatend>>
-	<span id="next"><<link [[Next|Domus House Sneak Molestation Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Domus House Sneak Molestation Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Domus House Sneak Molestation]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Domus House Sneak Molestation]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Domus House Dog Finish 2
-
 <<set $outside to 0>><<set $location to "town">><<effects>>
 <<if $enemypleasure gte $enemypleasuremax>>
 	<<beastejaculation>>
-	<<person2>>The beast barks happily and walks over to the window, where it sits. "It's nice to see a <<bitch>> get <<bred>> like that," says the <<person>>. <<He>> walks over to you before you can recover and grabs your neck. <<He>> drags you to the front door and hefts you onto the porch. "If I see you again you'll get far worse." The door slams shut.
-	<<tearful>> you rise to your feet.
+	<<person2>>짐승이 행복하게 짖으며 창가로 걸어가 앉는다. "<<bitch>>【이가】 저렇게 <<bred>>당하는 걸 보니 좋군." <<person>>【이가】 말한다. <<He>>【은는】 당신이 정신을 차리기 전에 다가와 목을 잡는다. <<He>>【은는】 당신을 현관문으로 끌고 가 현관에 내던진다. "다음에 또 보이면 훨씬 더 심한 꼴을 당하게 될 거야." 문이 쾅 닫힌다.
+	<<tearful>> 당신은 자리에서 일어선다.
 	<br><br>
 	<<clotheson>>
 	<<endcombat>>
-	<<link [[Next|Domus Street]]>><<endevent>><</link>>
+	<<link [[다음|Domus Street]]>><<endevent>><</link>>
 	<br>
 <<elseif $enemyhealth lte 0>>
-	<<person2>>The beast cowers and rolls over in submission.
-	<<tearful>> you escape the room before the <<person>> can react.
+	<<person2>>짐승이 겁을 먹고 엎드려 복종의 자세를 취한다.
+	<<tearful>> 당신은 <<person>>【이가】 반응하기 전에 방을 탈출한다.
 	<br><br>
 	<<clotheson>>
 	<<endcombat>>
-	<<link [[Next|Domus Street]]>><<endevent>><</link>>
+	<<link [[다음|Domus Street]]>><<endevent>><</link>>
 	<br>
 <<else>>
 	<<if $finish is 1>><<encounterEndViolence>><</if>>
-	<<person1>>The <<beasttype>> backs away from you. <<bHe>> growls at you again, but sits down by the window.
-	<<person2>>The <<person>> sighs. "Not even giving me a good show, huh?" <<He>> walks over to you before you can recover and grabs your neck. <<He>> drags you to the front door and hefts you onto the porch. "If I see you again you'll get far worse." The door slams shut.
+	<<person1>><<beasttype>>【이가】 당신에게서 물러선다. <<bHe>>【은는】 다시 당신을 향해 으르렁거리지만, 창가에 앉는다.
+	<<person2>><<person>>【이가】 한숨을 쉰다. "좋은 구경거리도 안 만들어주는군, 응?" <<He>>【은는】 당신이 정신을 차리기 전에 다가와 목을 잡는다. <<He>>【은는】 당신을 현관문으로 끌고 가 현관에 내던진다. "다음에 또 보이면 훨씬 더 심한 꼴을 당하게 될 거야." 문이 쾅 닫힌다.
 	<br><br>
 	<<clotheson>>
 	<<endcombat>>
-	<<link [[Next|Domus Street]]>><<endevent>><</link>>
+	<<link [[다음|Domus Street]]>><<endevent>><</link>>
 	<br>
 <</if>>
 
 :: Domus House Sneak Molestation Finish
 <<if $enemyhealth lte 0>>
-	You knock the <<person>> into one of <<his>> chairs. <<tearful>> you escape outside.
+	당신은 <<person>>【을를】 <<his>> 의자 중 하나로 밀쳐낸다. <<tearful>> 당신은 밖으로 탈출한다.
 	<br><br>
 	<<clotheson>>
 	<<endcombat>>
-	<<link [[Next|Domus Street]]>><</link>>
+	<<link [[다음|Domus Street]]>><</link>>
 <<elseif $enemypleasure gte $enemypleasuremax>>
 	<<ejaculation>>
-	"Serves you right," <<he>> says, grabbing you by the neck. "You're lucky I don't get the police involved." <<He>> drags you to the front door and shoves you out, where you tumble to the ground. <<tearful>> you rise to your feet.
+	"꼴좋군." <<he>>【이가】 당신의 목을 잡으며 말한다. "내가 경찰을 부르지 않은 걸 다행으로 알아." <<He>>【은는】 당신을 현관문으로 끌고 가 밖으로 밀쳐내고, 당신은 땅바닥에 나뒹군다. <<tearful>> 당신은 일어선다.
 	<br><br>
 	<<clotheson>>
 	<<endcombat>>
-	<<link [[Next|Domus Street]]>><</link>>
+	<<link [[다음|Domus Street]]>><</link>>
 <<else>>
 	/* No decisive outcome, such as giving up the encounter. */
 	<<if $finish is 1>><<encounterEndViolence>><</if>>
 	<<He>> loses interest in you. "You're lucky I don't get the police involved." <<He>> drags you to the front door and shoves you out, where you tumble to the ground.
 	<br><br>
-	<<tearful>> you rise to your feet.
+	<<tearful>> 당신은 자리에서 일어선다.
 	<<clotheson>>
 	<<endcombat>>
-	<<link [[Next|Domus Street]]>><</link>>
+	<<link [[다음|Domus Street]]>><</link>>
 <</if>>
 
 :: Domus House Safe
-
 <<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">><<set $lock to 400>>
-The safe doesn't look too fancy.
+금고는 그리 고급스러워 보이지 않는다.
 <br><br>
 <<if currentSkillValue('skulduggery') gte $lock>>
 	<<if pcAreArmsBound("both")>>
-		You think you'd be able to pick the lock, <span class="blue">if your arms weren't bound.</span>
+		자물쇠를 딸 수 있을 것 같지만, <span class="blue">팔이 묶여 있지 않다면 말이다.</span>
 		<br><br>
 	<<else>>
 		<<wearProp "lockpick">>
-		<span class="green">The safe looks easy to crack.</span>
+		<span class="green">금고는 쉽게 딸 수 있을 것 같다.</span>
 		<br><br>
-		<<link [[Break in (0:05)|Domus House Safe Open]]>><<pass 5>><<crimeUp 5 "trespassing">><</link>><<crime "trespassing">>
+		<<link [[침입한다 (0:05)|Domus House Safe Open]]>><<pass 5>><<crimeUp 5 "trespassing">><</link>><<crime "trespassing">>
 		<br>
 	<</if>>
 <<else>>
-	<span class="red">The lock looks beyond your ability to pick.</span><<skulduggeryrequired>>
+	<span class="red">자물쇠는 당신의 실력으로 딸 수 없을 것 같다.</span><<skulduggeryrequired>>
 	<br><br>
 <</if>>
-<<link [[Leave|Domus Street]]>><</link>>
+<<link [[떠난다|Domus Street]]>><</link>>
 <br>
 
 :: Domus House Safe Open
@@ -492,18 +486,18 @@ The safe doesn't look too fancy.
 <<skulduggeryuse 500 "locks">>
 
 <<if $rng gte 11>>
-	You successfully open the safe, and find <<moneyGainDisplay 20 true true>> inside.
+	금고를 여는 데 성공하고, 안에서 <<moneyGainDisplay 20 true true>>【을를】 찾는다.
 	<br><br>
-	<<link [[Take it|Domus Street]]>><<money _money_gain>><<crimeUp `_money_gain / 100` "thievery">><</link>><<crime "thievery">>
+	<<link [[가져간다|Domus Street]]>><<money _money_gain>><<crimeUp `_money_gain / 100` "thievery">><</link>><<crime "thievery">>
 	<br>
-	<<link [[Leave|Domus Street]]>><</link>>
+	<<link [[떠난다|Domus Street]]>><</link>>
 	<br>
 <<else>>
-	You successfully open the safe, and find an expensive-looking watch inside.
+	당신은 성공적으로 금고를 열고, 안에서 비싸 보이는 시계를 발견한다.
 	<br><br>
 	<<link [[Take it|Domus Street]]>><<blackmoney 100>><<crimeUp 100 "thievery">><</link>><<crime "thievery">>
 	<br>
-	<<link [[Leave|Domus Street]]>><</link>>
+	<<link [[떠난다|Domus Street]]>><</link>>
 	<br>
 <</if>>
 
@@ -512,59 +506,58 @@ The safe doesn't look too fancy.
 <<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
 <<if $rng gte 61>>
 	<<wearProp "mobile phone">>
-	You stay behind the curtain, remaining as still and quiet as possible. After thirty minutes, the <<person>> gets up, stretches, and walks to the kitchen. You start creeping out, but notice <<he>> left <<his>> phone lying on the sofa.
+	당신은 커튼 뒤에 숨어 최대한 조용히 가만히 있는다. 30분 후, <<person>>【이가】 일어나 스트레칭을 하고 부엌으로 걸어간다. 당신은 살금살금 빠져나가기 시작하지만, <<he>>【이가】 소파 위에 <<his>> 휴대폰을 두고 간 것을 발견한다.
 	<br><br>
 	<<link [[Take it|Domus Street]]>><<crimeUp 10 "thievery">><<endevent>><<blackmoney 10>><</link>><<crime "thievery">>
 	<br>
-	<<link [[Leave|Domus Street]]>><<endevent>><</link>>
+	<<link [[떠난다|Domus Street]]>><<endevent>><</link>>
 	<br>
 <<else>>
-	You stay behind the curtain, remaining as still and quiet as possible. After thirty minutes, the <<person>> gets up, stretches, and walks to the kitchen. You creep outside.
+	당신은 커튼 뒤에 숨어 최대한 조용히 가만히 있는다. 30분 후, <<person>>【이가】 일어나 스트레칭을 하고 부엌으로 걸어간다. 당신은 살금살금 밖으로 나간다.
 	<br><br>
-	<<link [[Leave|Domus Street]]>><<endevent>><</link>>
+	<<link [[떠난다|Domus Street]]>><<endevent>><</link>>
 	<br>
 <</if>>
 
 :: Domus House Sneak 2
-
 <<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
-The <<person>> can't see you from where <<he>> sits, so you slowly start to creep out.
+<<person>>【이가】 앉아 있는 곳에서는 당신을 볼 수 없으므로, 당신은 천천히 살금살금 빠져나가기 시작한다.
 <br><br>
 <<if $rng gte 81>>
-	As you tiptoe past the back of <<his>> chair, <<he>> reaches back and grabs you. "Thought I couldn't hear you?" <<he>> says, hauling you onto <<his>> lap. "I think you need to be taught a lesson."
+	당신이 <<his>> 의자 뒤를 살금살금 지나갈 때, <<he>>【이가】 뒤로 손을 뻗어 당신을 잡는다. "내가 못 들을 줄 알았어?" <<he>>【이가】 당신을 <<his>> 무릎 위로 끌어올리며 말한다. "넌 교훈이 좀 필요한 것 같군."
 	<br><br>
-	<<link [[Next|Domus House Sneak Molestation]]>><<set $molestationstart to 1>><</link>>
+	<<link [[다음|Domus House Sneak Molestation]]>><<set $molestationstart to 1>><</link>>
 	<br>
 <<else>>
-	<<He>> remains glued to <<his>> television, letting you slip out with no difficulty.
+	<<He>>【은는】 텔레비전에 계속 집중하고 있어, 당신은 아무 어려움 없이 빠져나갈 수 있다.
 	<br><br>
-	<<link [[Leave|Domus Street]]>><<endevent>><</link>>
+	<<link [[떠난다|Domus Street]]>><<endevent>><</link>>
 	<br>
 <</if>>
 
 :: Domus House Dungeon
 <<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
 <<set $resc to 0>>
-You creep down into the cool depths.
+당신은 서늘한 깊은 곳으로 살금살금 내려간다.
 <br><br>
-As your eyes adjust, you notice light from further inside. You close the trapdoor behind you. An acrid smell hits you as you continue. Sweat, and something else. The room is lit by a single orange bulb, mounted above a metal door, bolted shut from this side.
+눈이 어둠에 익숙해지자, 더 안쪽에서 빛이 새어 나오는 것을 발견한다. 당신은 뒤쪽의 비밀 문을 닫는다. 계속 나아가자 톡 쏘는 냄새가 코를 찌른다. 땀, 그리고 무언가 다른 냄새. 방은 이쪽에서 빗장이 걸린 금속 문 위에 설치된 단 하나의 주황색 전구로 밝혀져 있다.
 <br><br>
-You can make out a number of podiums with cameras on top. Most are set around a single metal-frame bed. It looks like a prison bed. There are no covers. Just a bare mattress covered in sinister stains.
+카메라가 위에 놓인 여러 개의 연단이 보인다. 대부분은 단 하나의 금속 프레임 침대 주위에 설치되어 있다. 감옥 침대처럼 보인다. 덮개는 없다. 불길한 얼룩으로 뒤덮인 맨 매트리스만 있을 뿐이다.
 <br><br>
-A set of handcuffs hangs from the headboard. Several more sets, along with chains and ropes, lie in a tidy pile on the bed.
-Next to that, a nasty looking metal hook lies on top of a heap of rags and towels.
+침대 머리판에는 수갑 한 쌍이 걸려 있다. 몇 개의 수갑 세트와 사슬, 밧줄이 침대 위에 깔끔하게 쌓여 있다.
+그 옆에는 넝마와 수건 더미 위에 흉측하게 생긴 금속 갈고리가 놓여 있다.
 <br><br>
-Another camera is pointed at a wall covered with a clean, white sheet. A box nearby is filled with expensive camera equipment.
+또 다른 카메라는 깨끗한 흰 시트로 덮인 벽을 향하고 있다. 근처 상자에는 값비싼 카메라 장비가 가득하다.
 <br><br>
-Studio lights are dotted around the room. At the moment these are off and only cast sinister shadows.
+스튜디오 조명이 방 곳곳에 점점이 박혀 있다. 지금은 꺼져 있어 불길한 그림자만 드리우고 있다.
 <br><br>
-You think you hear breathing behind the door.
+문 뒤에서 숨소리가 들리는 것 같다.
 <br><br>
-<<link [[Get out. Now.|Domus House Dungeon 2]]>><<set $phase to 0>><</link>>
+<<link [[나간다. 지금 당장.|Domus House Dungeon 2]]>><<set $phase to 0>><</link>>
 <br>
 <<link [[Steal equipment and escape|Domus House Dungeon 2]]>><<set $phase to 1>><<crimeUp 20 "thievery">><<blackmoney 20>><</link>><<crime "thievery">>
 <br>
-<<link [[Open door|Domus House Prisoner]]>><</link>>
+<<link [[문을 연다|Domus House Prisoner]]>><</link>>
 <br>
 <br>
 
@@ -573,29 +566,28 @@ You think you hear breathing behind the door.
 <<set _risk to 0>>
 <<if $phase is 0>>
 	<<set _risk to 10>>
-	You head straight for the exit.
+	당신은 곧장 출구로 향한다.
 <<elseif $phase is 1>>
 	<<set _risk to 25>>
-	Grabbing as much of the equipment as you can conceal, you head for the exit.
+	숨길 수 있는 만큼 장비를 챙겨 출구로 향한다.
 <</if>>
 <br><br>
 <<rng>>
-You open the trapdoor and peek out.
+당신은 비밀 문을 열고 밖을 엿본다.
 <<if $rng gt _risk>>
-	The room remains empty and silent. You climb from the trapdoor, close it and silently escape the property.
+	방은 여전히 비어 있고 조용하다. 당신은 비밀 문에서 기어 나와, 문을 닫고 조용히 그곳을 탈출한다.
 	<br><br>
-	<<link [[Leave|Domus Street]]>><<unset $resc>><</link>>
+	<<link [[떠난다|Domus Street]]>><<unset $resc>><</link>>
 <<else>>
-	The room looks empty. Climbing out, <span class="red">hands seize you.</span>
+	방은 비어 있는 것 같다. 밖으로 기어 나오자, <span class="red">손들이 당신을 붙잡는다.</span>
 	<br><br>
-	<<link [[Next|Domus House Dungeon Rape]]>><<set $molestationstart to 1>><</link>>
+	<<link [[다음|Domus House Dungeon Rape]]>><<set $molestationstart to 1>><</link>>
 <</if>>
 <br>
 
 :: Domus House Dungeon Rape
-
 <<if $molestationstart is 1>>
-	<<generate1>><<person1>>A <<person>> pins you down.
+	<<generate1>><<person1>>한 <<person>>【이가】 당신을 꼼짝 못하게 짓누른다.
 	<br>
 	<<set $molestationstart to 0>>
 	<<controlloss>>
@@ -613,22 +605,22 @@ You open the trapdoor and peek out.
 	<<set $alarm to 0>>
 	<<switch $dun_counter>>
 	<<case 1>>
-		"Soundproofed walls," <<he>> breathes. "So I can enjoy the screams."
+		"방음벽이야." <<he>>【이가】 숨을 헐떡인다. "비명을 즐길 수 있도록."
 	<<case 2>>
-		"Keep screaming!" <<he>> whispers. "It makes it hotter."
+		"계속 비명 질러!" <<he>>【이가】 속삭인다. "그게 더 흥분돼."
 		<<set $enemyarousal += 10>>
 	<<case 3>>
-		"Scream harder!" <<he>> growls. "You're turning me on."
+		"더 세게 비명 질러!" <<he>>【이가】 으르렁거린다. "날 흥분시키고 있잖아."
 		<<set $enemyarousal += 20>>
 	<<case 4>>
-		"Scream!" <<he>> growls. "Like I'm hurting you."
+		"비명 질러!" <<he>>【이가】 으르렁거린다. "내가 널 아프게 하는 것처럼."
 		<<set $enemyarousal += 20>>
 	<<default>>
-		"I own you <<bitch>>!" <<he>> grunts. "Scream!"
+		"넌 내 거야, <<bitch>>!" <<he>>【이가】 끙끙거린다. "비명 질러!"
 		<<set $enemyarousal += 30>>
 	<</switch>>
 	<<if $NPCList[0].lefthand is "mouth" or $NPCList[0].righthand is "mouth">>
-		<br><span class="teal"><<He>> releases <<his>> hand from your mouth.</span>
+		<br><span class="teal"><<He>>【이가】 당신의 입에서 <<his>> 손을 뗀다.</span>
 		<<set $NPCList[0].righthand to 0>>
 		<<set $NPCList[0].lefthand to 0>>
 		<<set $mouthuse to 0>>
@@ -644,9 +636,9 @@ You open the trapdoor and peek out.
 <<actionsman>>
 
 <<if _combatend>>
-	<span id="next"><<link [[Next|Domus House Dungeon Rape Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Domus House Dungeon Rape Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Domus House Dungeon Rape]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Domus House Dungeon Rape]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Domus House Dungeon Rape Finish
@@ -654,34 +646,34 @@ You open the trapdoor and peek out.
 <<if $enemypleasure gte $enemypleasuremax>>
 	<<ejaculation>>
 
-	"Shame the basement suite is full, otherwise I'd keep you," <<he>> says. "Go on, scram."
+	"지하실 스위트룸이 꽉 찬 게 아쉽군, 안 그랬으면 널 가둬뒀을 텐데." <<he>>【이가】 말한다. "자, 어서 꺼져."
 	<br><br>
 
-	<<tearful>> you recover.
+	<<tearful>> 당신은 정신을 차린다.
 	<br><br>
 
 	<<if $resc is 1>>
-		Seeing you defeated, the frightened prisoner must have returned to their underground cell.
+		당신이 패배한 것을 보고, 겁에 질린 죄수는 지하 감옥으로 돌아간 것이 틀림없다.
 		<br><br>
 	<</if>>
 
-	You leave the house.
+	당신은 집을 떠난다.
 <<elseif $enemyhealth lte 0>>
 
-	You knock the <<person>> back. Staggering back, <<he>> steps into the empty space of the still-open trapdoor. With a loud crash and louder cursing <<he>> disappears beneath.
+	당신은 <<person>>【을를】 뒤로 밀쳐낸다. 비틀거리며 뒤로 물러서던 <<he>>【은는】 여전히 열려 있는 비밀 문의 빈 공간으로 발을 헛디딘다. 큰 충돌음과 더 큰 욕설과 함께 <<he>>【은는】 아래로 사라진다.
 
 	<<if $resc is 1>>
-		The frightened prisoner narrowly dodges <<him>> and frantically clambers up. Together you flee the house. Once clear, the prisoner thanks you.
-		"You probably saved my life."
+		겁에 질린 죄수는 간신히 <<him>>【을를】 피하고 미친 듯이 위로 기어 올라온다. 함께 집을 탈출한다. 안전해지자, 죄수가 당신에게 고마워한다.
+		"당신이 제 목숨을 구해주셨어요."
 		<br><br>
-		As the prisoner limps away, you feel a warm glow and a weight lifted from you for the good you have done.
+		죄수가 절뚝거리며 멀어지는 동안, 당신은 좋은 일을 했다는 생각에 따뜻한 기운과 함께 마음의 짐이 덜어지는 것을 느낀다.
 		<<lstress>><<ltrauma>><<gcontrol>><<stress -2>><<trauma -4>><<control 10>>
 	<<else>>
-		You swiftly escape.
+		당신은 재빨리 탈출한다.
 	<</if>>
 	<br><br>
 
-	<<tearful>> you recover.
+	<<tearful>> 당신은 정신을 차린다.
 <<else>>
 	/* No decisive outcome, such as giving up the encounter. */<<set _noDecisiveOutcome to true>>
 	<<if $finish is 1>><<encounterEndViolence>><</if>>
@@ -700,53 +692,53 @@ You open the trapdoor and peek out.
 <<clotheson>>
 <<endcombat>>
 
-<<link [[Next|Domus Street]]>><<unset $resc>><</link>>
+<<link [[다음|Domus Street]]>><<unset $resc>><</link>>
 <br>
 <</if>>
 
 :: Domus House Prisoner
 <<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
 <<set _risk to 10>><<set $resc to 1>><<generateyv1>><<person1>>
-You unbolt the door. Behind, curled up like a dog, sleeping naked on the bare floor, you find a <<person>>. <<His>> body is covered in marks and bruises.
-<<He>> snorts, and two wild eyes stare up at you.
+당신은 문의 빗장을 푼다. 문 뒤에는, 개처럼 몸을 웅크리고 맨바닥에서 벌거벗은 채 잠들어 있는 <<person>>【을를】 발견한다. <<His>> 몸은 상처와 멍으로 뒤덮여 있다.
+<<He>>【이가】 코를 킁킁거리더니, 두 개의 야생적인 눈이 당신을 올려다본다.
 <br>
 <<if currentSkillValue('english') gte (350+$rng)>>
-	With a few carefully chosen words, <span class="green">you reassure <<him>> that you are a friend</span>, and that you are here to help. <<He>> smiles up at you.
+	몇 마디 신중하게 고른 말로, <span class="green">당신은 <<him>>에게 당신이 친구임을 안심시킨다</span>, 그리고 당신이 도우러 왔다는 것을. <<He>>【은는】 당신을 올려다보며 미소 짓는다.
 <<elseif $purity gte (750 + $rng)>>
-	Somehow sensing the purity radiating from you, <span class="green"><<he>> trusts you</span>. You would never hurt <<him>>. <<He>> smiles up at you.
+	어쩐지 당신에게서 뿜어져 나오는 순수함을 감지하고, <span class="green"><<he>>【은는】 당신을 신뢰한다</span>. 당신은 절대 <<him>>【을를】 해치지 않을 것이다. <<He>>【은는】 당신을 올려다보며 미소 짓는다.
 <<else>>
-	You stare, lost for words. Without warning, <<he>> howls, and cowers in the corer. It takes a couple of minutes for you to calm <<him>>, and convince <<him>> that you're a friend.
+	당신은 할 말을 잃고 쳐다본다. 갑자기, <<he>>【이가】 울부짖으며 구석에서 몸을 웅크린다. 당신이 <<him>>【을를】 진정시키고 친구라고 설득하는 데 몇 분이 걸린다.
 	<br><br>
-	<span class="red">You hope no one heard.</span>
+	<span class="red">아무도 듣지 않았기를 바란다.</span>
 	<<set _risk += 35>>
 <</if>>
 <br><br>
 
 <<rng>>
-You lead <<him>> from the room, and hand <<him>> the towels from the bed. <<He>> covers <<himself>>. Together, you creep up the steps and open the trapdoor.<<famegood 2>>
+당신은 <<him>>【을를】 방에서 이끌어내고, 침대에서 수건을 건네준다. <<He>>【은는】 몸을 가린다. 함께, 계단을 살금살금 올라가 비밀 문을 연다.<<famegood 2>>
 <br><br>
 <<if $rng gt _risk>>
-	The room above is still empty and silent. Together, you escape the property.
+	위층 방은 여전히 비어 있고 조용하다. 함께, 그곳을 탈출한다.
 	<br><br>
-	Once clear, the <<person>> thanks you for saving <<his>> life. With a wave and a smile, <<he>> limps towards Danube Street.
+	안전해지자, <<person>>【은는】 <<his>> 목숨을 구해준 것에 대해 당신에게 감사한다. 손을 흔들고 미소를 지으며, <<he>>【은는】 다뉴브 가를 향해 절뚝거리며 걸어간다.
 	<br><br>
-	You feel good.
+	기분이 좋다.
 	<<lstress>><<ltrauma>><<gcontrol>><<stress -2>><<trauma -4>><<control 10>>
 	<br><br>
 	<<endevent>>
-	<<link [[Leave|Domus Street]]>><<unset $resc>><</link>>
+	<<link [[떠난다|Domus Street]]>><<unset $resc>><</link>>
 <<else>>
-	The room above looks empty. <span class="red">Hands seize you as you climb out.</span>
+	위층 방은 비어 있는 것 같다. <span class="red">당신이 기어 나오자 손들이 당신을 붙잡는다.</span>
 	<br><br>
 	<<endevent>>
-	<<link [[Next|Domus House Dungeon Rape]]>><<set $molestationstart to 1>><</link>>/*End event clears out prisoner before combat*/
+	<<link [[다음|Domus House Dungeon Rape]]>><<set $molestationstart to 1>><</link>>/*End event clears out prisoner before combat*/
 <</if>>
 <br>
 
 :: Domus Leave Money
 <<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
 
-You leave
+당신은 떠난다
 <<if $phase is 0>>
 	£100
 <<elseif $phase is 1>>
@@ -754,7 +746,7 @@ You leave
 <<else>>
 	£1000
 <</if>>
-on the counter for them to find. <<if $christmas>>Merry Christmas.<<else>>You hope it will help.<</if>>
+주방 조리대에 올려놓는다. <<if $christmas>>메리 크리스마스.<<else>>도움이 되길 바란다.<</if>>
 <br><br>
 
 <<if $phase gte 2>>
@@ -762,5 +754,5 @@ on the counter for them to find. <<if $christmas>>Merry Christmas.<<else>>You ho
 	<<specialClothesUnlock "set" "christmas">>
 <</if>>
 
-<<link [[Leave|Domus Street]]>><<endevent>><</link>>
+<<link [[떠난다|Domus Street]]>><<endevent>><</link>>
 <br>

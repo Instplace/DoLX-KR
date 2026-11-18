@@ -4,41 +4,40 @@
 <<plot_effects>>
 <<if $farm_fields_intro is 1>>
 	<<unset $farm_fields_intro>>
-	The charred smell greets you before you see them. The fields are still black from Remy's sabotage. A sack of potato seeds lies half-spilled at the gate.
+	그들을 보기 전에 그을린 냄새가 당신을 맞이한다. 밭은 레미의 방화로 여전히 검게 타 있다. 감자 씨앗 자루가 문 앞에서 반쯤 쏟아져 있다.
 	<br><br>
 	<<if !$plants_known.includes("potato")>>
 		<<run $plants_known.pushUnique("potato")>>
-		<span class="gold">You can now grow <<foodstufficon "potato">> potatoes.</span>
+		<span class="gold">이제 <<foodstufficon "potato">> 감자를 재배할 수 있습니다.</span>
 		<br>
 	<</if>>
 	<<if !$plants_known.includes("turnip")>>
 		<<run $plants_known.pushUnique("turnip")>>
-		<span class="gold">You can now grow <<foodstufficon "turnip">> turnips.</span>
+		<span class="gold">이제 <<foodstufficon "turnip">> 순무를 재배할 수 있습니다.</span>
 		<br>
 	<</if>>
 	<br>
 <<else>>
-	You are in your fields.
+	당신은 밭에 있다.
 <</if>>
 <br><br>
-
 
 <<if $stress gte $stressmax>>
 	<<passoutfarmroad>>
 <<elseif $farm_attack_timer is 0 and Time.hour gte 21>>
 	<<npc Alex>><<person1>>
-	Alex rushes over. <span class="red">"Remy's here,"</span> <<he>> says. "We can do this. Go get ready, I'll
+	알렉스가 달려온다. <span class="red">"레미가 왔어,"</span> <<he>>【이가】 말한다. "우린 할 수 있어. 가서 준비해, 내가
 	<<if $farm.tower_guard>>
-		check on $farm.tower_guard."
+		$farm.tower_guard【을를】 확인해볼게."
 	<<else>>
-		see if I can spot them."
+		"놈들을 발견할 수 있는지 볼게."
 	<</if>>
 	<br><br>
 
 	<<farm_assault_intro>>
 	<br><br>
 
-	<<link [[Prepare|Farm Assault Wardrobe]]>><<endevent>><<set $phase to 2>><</link>>
+	<<link [[준비한다|Farm Assault Wardrobe]]>><<endevent>><<set $phase to 2>><</link>>
 	<br>
 <<elseif dangerEvent() and $eventskip isnot 1>>
 	<<farm_tending_events>>
@@ -46,63 +45,60 @@
 
 	<<if $farm.tower gte 1>>
 		<<if $farm.tower_guard>>
-			The watchtower stands guard.
+			감시탑이 경계를 서고 있다.
 			<<loadNPC 0 "farm_tower_guard">><<person1>>
 			<<if $NPCList[0].traits.includes("relaxed")>>
-				<<print $NPCList[0].name>> leans against the railing. A trail of smoke rises from <<him>>.
+				<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【은는】 난간에 기대어 있다. 그에게서 연기 한 줄기가 피어오른다.
 			<<elseif $NPCList[0].traits.includes("sociable")>>
-				<<print $NPCList[0].name>> waves at you from the top.
+				<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 꼭대기에서 당신에게 손을 흔든다.
 			<<elseif $NPCList[0].traits.includes("brooding")>>
-				You can see <<print $NPCList[0].name>>'s silhouette at the top.
+				꼭대기에 있는 <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>의 실루엣을 볼 수 있다.
 			<<else>>
-				<<print $NPCList[0].name>> leans against the railing, watching you.
+				<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【은는】 난간에 기대어 당신을 지켜보고 있다.
 			<</if>>
 			<<endevent>>
 		<<else>>
-			The watchtower stands guard, though it's currently unoccupied.
+			감시탑이 경계를 서고 있지만, 현재는 비어 있다.
 		<</if>>
 		<br>
-		<<laddericon>><<link [[Climb|Farm Tower]]>><</link>>
+		<<laddericon>><<link [[올라간다|Farm Tower]]>><</link>>
 		<br><br>
 	<</if>>
 
 	<<display_plot farm>>
 	<br>
-	<<getouticon>><<link [[Leave (0:05)|Farm Work]]>><<pass 5>><<endevent>><</link>>
+	<<getouticon>><<link [[떠난다 (0:05)|Farm Work]]>><<pass 5>><<endevent>><</link>>
 	<br>
 <</if>>
 
 <<set $eventskip to 0>>
 
-
-
 :: Farm Tower
 <<effects>>
 
-You climb the tower.
+당신은 탑을 오른다.
 <<if $farm.tower_guard>>
 	<<loadNPC 0 "farm_tower_guard">><<person1>>
 
-
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		<<print $NPCList[0].name>> puts down <<his>> cigarette. "What can I do for you?"
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【은는】 담배를 내려놓는다. "뭘 도와줄까?"
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		<<print $NPCList[0].name>> smiles at you. "What's up?"
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 당신에게 미소 짓는다. "무슨 일이야?"
 	<<elseif $NPCList[0].traits.includes("brooding")>>
-		<<print $NPCList[0].name>> nods at you. "Something amiss?"
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 당신에게 고개를 끄덕인다. "무슨 문제라도?"
 	<<else>>
-		<<print $NPCList[0].name>> checks you out. "What brings your sexy ass up here?"
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 당신을 훑어본다. "섹시한 엉덩이를 이끌고 여긴 어쩐 일이야?"
 	<</if>>
 	<br><br>
 
-	Security skill: <<guard_skill_text "tower">> <<print $NPCList[0].skills.security>>
+	보안 기술: <<guard_skill_text "tower">> <<print $NPCList[0].skills.security>>
 	<br>
 	<<farm_guard_wage>>Wage: <<printprice $farm.tower_guard_wage>>
 	<br><br>
 
 	<<farm_guard_pay>>
 	<<if not $farm.watchtowerDailyAttempt>>
-		<<link [[Spar|Farm Tower Spar]]>><<set $fightstart to 1>><<set $farm.watchtowerDailyAttempt to 1>><</link>><<note "+ Security skill" "green">>
+		<<link [[대련한다|Farm Tower Spar]]>><<set $fightstart to 1>><<set $farm.watchtowerDailyAttempt to 1>><</link>><<note "+ 보안 기술" "green">>
 		<br>
 		<<if $promiscuity gte 15>>
 			<<link [[Seduce (0:01)|Farm Tower Seduce]]>><<pass 1>><<set $farm.watchtowerDailyAttempt to 1>><</link>><<promiscuous2>><<note "+ Security skill" "green">>
@@ -110,97 +106,92 @@ You climb the tower.
 		<</if>>
 	<</if>>
 <<else>>
-	The moor stretches to the horizon in one direction, and the sea in the other.
+	한쪽으로는 황야가, 다른 쪽으로는 바다가 지평선까지 펼쳐져 있다.
 	<br><br>
 <</if>>
-<<getouticon>><<link [[Leave|Farm Fields]]>><<endevent>><<set $eventskip to 1>><</link>>
+<<getouticon>><<link [[떠난다|Farm Fields]]>><<endevent>><<set $eventskip to 1>><</link>>
 <br>
 
 :: Farm Tower Pay
 <<effects>>
 
 <<if $NPCList[0].traits.includes("relaxed")>>
-	"Thanks," <<print $NPCList[0].name>> says. "I'll keep my watch up."
+	"고마워." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "계속 감시할게."
 <<elseif $NPCList[0].traits.includes("sociable")>>
-	"Cheers, love." <<print $NPCList[0].name>>'s smile broadens. "It's more lively out here than I expected."
+	"고마워, 자기." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>의 미소가 넓어진다. "여기가 생각보다 활기차네."
 <<elseif $NPCList[0].traits.includes("brooding")>>
-	<<print $NPCList[0].name>> nods again, then stares out over the moor.
+	<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【은는】 다시 고개를 끄덕이고는 황야 너머를 응시한다.
 <<else>>
-	"Nice," <<print $NPCList[0].name>> says. "I'd suggest another sort of payment, but I need the cash."
+	"좋아." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "다른 종류의 지불을 제안하고 싶지만, 현금이 필요해서 말이야."
 <</if>>
 <br><br>
 
 
 
 <<if previous() is "Farm Tower">>
-	You climb down the tower.
+	당신은 탑을 내려간다.
 	<br><br>
 
-	<<link [[Leave|Farm Fields]]>><<saveNPC 0 "farm_tower_guard">><<endevent>><<set $eventskip to 1>><</link>>
+	<<link [[떠난다|Farm Fields]]>><<saveNPC 0 "farm_tower_guard">><<endevent>><<set $eventskip to 1>><</link>>
 	<br>
 <<else>>
-	<<He>> walks away.
+	<<He>>【은는】 걸어간다.
 	<br><br>
 
-	<<link [[Leave|Farm Work]]>><<saveNPC 0 "farm_tower_guard">><<endevent>><<set $eventskip to 1>><</link>>
+	<<link [[떠난다|Farm Work]]>><<saveNPC 0 "farm_tower_guard">><<endevent>><<set $eventskip to 1>><</link>>
 	<br>
 <</if>>
-
-
-
 
 :: Farm Guard Pay Refuse
 <<effects>><<speechresolve>>
 
 <<if ((_speechAttitudeResolved is "meek") or (_speechAttitudeResolved is "shy") or (_speechAttitudeResolved is "docile"))>>
-	"I-I can't afford it," you say. "I'm really sorry."
+	"지-지금은 돈이 없어요." 당신이 말한다. "정말 죄송해요."
 <<elseif ((_speechAttitudeResolved is "polite") or (_speechAttitudeResolved is "flamboyant") or (_speechAttitudeResolved is "special"))>>
 	"Can't afford it right now," you say. "I'm sorry. I'll pay you back."
 <<elseif ((_speechAttitudeResolved is "bratty") or (_speechAttitudeResolved is "cruel"))>>
 	"Budget's too tight," you say. "You'll get it next week."
 <<else>>
-	"I can't afford it," you say. "I'll pay you back."
+	"돈이 없어." 당신이 말한다. "나중에 갚을게."
 <</if>>
 <br><br>
 
 <<if $NPCList[0].trust gte 1>>
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		<<print $NPCList[0].name>> sighs. <span class="green">"That's fine,"</span> <<he>> says. "See you next week."
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 한숨을 쉰다. <span class="green">"괜찮아,"</span> <<he>>【이가】 말한다. "다음 주에 보자."
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		<<print $NPCList[0].name>> shrugs. <span class="green">"I can wait,"</span> <<he>> says. "But not forever."
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【은는】 어깨를 으쓱한다. <span class="green">"기다릴 수 있어,"</span> <<he>>【이가】 말한다. "하지만 영원히는 아니야."
 	<<elseif $NPCList[0].traits.includes("brooding")>>
-		<span class="green">"I understand,"</span> <<print $NPCList[0].name>> says.
+		<span class="green">"이해해요,"</span> <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다.
 	<<else>>
-		<<print $NPCList[0].name>> kicks at a mound of dirt. <span class="green">"I'll wait,"</span> <<he>> says. "But only because it's you."
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【은는】 흙더미를 걷어찬다. <span class="green">"기다릴게,"</span> <<he>>【이가】 말한다. "하지만 너니까 기다리는 거야."
 	<</if>>
 
-	<<He>> walks away.
+	<<He>>【은는】 걸어간다.
 	<br><br>
 
 	<<set $NPCList[0].trust -= 3>>
 
-	<<link [[Next|Farm Work]]>><<saveNPC 0 "farm_tower_guard">><<set $farm.tower_guard_patience to 1>><<endevent>><</link>>
+	<<link [[다음|Farm Work]]>><<saveNPC 0 "farm_tower_guard">><<set $farm.tower_guard_patience to 1>><<endevent>><</link>>
 	<br>
 <<else>>
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		<<print $NPCList[0].name>> <span class="red">shakes <<his>> head.</span> "Sorry," <<he>> says. "I'd love to help for free, but I've bills to pay. See you around."
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 <span class="red">고개를 젓는다.</span> "미안." <<he>>【이가】 말한다. "공짜로 도와주고 싶지만, 나도 낼 돈이 있어서. 다음에 보자."
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		<span class="red">"Sorry <<girl>>,"</span> <<print $NPCList[0].name>> says. "I can't mooch off my friends forever. See you."
+		<span class="red">"미안, <<girl>>,"</span> <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "친구들한테 영원히 빌붙어 살 순 없잖아. 잘 가."
 	<<elseif $NPCList[0].traits.includes("brooding")>>
-		"<span class="red">That's it from me,</span> then," <<print $NPCList[0].name>> says. "Good luck."
+		"<span class="red">그럼 난 이만,</span>" <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "행운을 빌어."
 	<<else>>
-		<span class="red">"Sorry <<girl>>,"</span> <<print $NPCList[0].name>> says. "As much as I'd like to feed off your radiance, I need something solid. Bye."
+		<span class="red">"미안, <<girl>>,"</span> <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "네 빛나는 기운을 받아먹고 싶긴 하지만, 뭔가 실질적인 게 필요해. 잘 가."
 	<</if>>
 	<br><br>
-	<<He>> leaves the farm.
+	<<He>>【은는】 농장을 떠난다.
 	<br><br>
-	<span class="purple">The watchtower will no longer operate until a replacement is found.</span>
+	<span class="purple">대체 인력을 찾을 때까지 감시탑은 더 이상 운영되지 않습니다.</span>
 	<br><br>
-	<<link [[Next|Farm Work]]>><<endevent>><<clearNPC "farm_tower_guard">><<set $farm.tower_guard to 0>><</link>>
+	<<link [[다음|Farm Work]]>><<endevent>><<clearNPC "farm_tower_guard">><<set $farm.tower_guard to 0>><</link>>
 	<br>
 <</if>>
-
-
 
 :: Farm Guard Pay Seduce
 <<effects>><<speechresolve>>
@@ -220,51 +211,50 @@ You climb the tower.
 <<seductionskilluse>>
 
 <<if ((_speechAttitudeResolved is "meek") or (_speechAttitudeResolved is "shy") or (_speechAttitudeResolved is "docile"))>>
-	"A-are you sure there's no other way I can pay?" you purr.
+	"저-정말 다른 방법으로 지불할 순 없을까요?" 당신이 교태를 부리며 말한다.
 <<elseif ((_speechAttitudeResolved is "bratty") or (_speechAttitudeResolved is "cruel"))>>
-	"Oh, I'll pay you all right," you say. "While you're on your back."
+	"오, 물론 지불할게." 당신이 말한다. "네가 누워있는 동안에 말이야."
 <<elseif _speechAttitudeResolved is "confident">>
 	"I can think of another way to settle this," you say, holding <<his>> gaze.
 <<else>>
-	"There's another way I can pay you," you purr.
+	"다른 방법으로 지불할 수 있는데," 당신이 교태를 부리며 말한다.
 <</if>>
 <<promiscuity3>>
 
 <<if $seductionrating gte $seductionrequired>>
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		<span class="green">"I was hoping you'd offer,"</span> <<print $NPCList[0].name>> says. "Didn't want to be a creep." You take <<his>> hand, and lead <<him>> to a secluded spot in the barn.
+		<span class="green">"네가 제안해주길 바랐어,"</span> <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "변태처럼 보이고 싶지 않았거든." 당신은 <<his>> 손을 잡고 헛간의 한적한 곳으로 이끈다.
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		<<print $NPCList[0].name>> tries to speak, <span class="green">but can only manage a gulp.</span> You take <<his>> hand, and lead <<him>> to a secluded spot in the barn.
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【은는】 말을 하려 하지만, <span class="green">꿀꺽 침을 삼킬 뿐이다.</span> 당신은 <<his>> 손을 잡고 헛간의 한적한 곳으로 이끈다.
 	<<elseif $NPCList[0].traits.includes("brooding")>>
-		<span class="green">"Just this once,"</span> <<print $NPCList[0].name>> says. "I know it's hard out here." You take <<his>> hand, and lead <<him>> to a secluded spot in the barn.
+		<span class="green">"이번 한 번만이야,"</span> <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "여기서 지내기 힘든 거 알아." 당신은 <<his>> 손을 잡고 헛간의 한적한 곳으로 이끈다.
 	<<else>>
-		<span class="green">"Nice,"</span> <<print $NPCList[0].name>> says. "Let's do it in the barn."
+		<span class="green">"좋아,"</span> <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "헛간에서 하자."
 		<br><br>
-		You find a secluded spot at the back.
+		당신은 뒤편에서 한적한 장소를 찾는다.
 	<</if>>
 	<br><br>
 
-	<<link [[Next|Farm Guard Sex]]>><<set $sexstart to 1>><</link>>
+	<<link [[다음|Farm Guard Sex]]>><<set $sexstart to 1>><</link>>
 	<br>
 <<else>>
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		<span class="red">"Sorry,"</span> <<print $NPCList[0].name>> says. "You're cute, but I've got bills to pay."
+		<span class="red">"미안,"</span> <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "귀엽긴 한데, 나도 낼 돈이 있어서."
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		"You're a lewd one," <<print $NPCList[0].name>> says. <span class="red">"But if I took up every offer like that, I'd be destitute."</span>
+		"음란한 녀석이네." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. <span class="red">"하지만 그런 제안을 다 받아들였다간 거지가 될 거야."</span>
 	<<elseif $NPCList[0].traits.includes("brooding")>>
-		<span class="red">"Not interested,"</span> <<print $NPCList[0].name>> says. "Whores a plenty in town."
+		<span class="red">"관심 없어,"</span> <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "마을에 창녀는 널렸어."
 	<<else>>
-		"Tempting," <<print $NPCList[0].name>> says. "<span class="red">But my wage could buy many cheaper <<girls>>.</span> Sorry."
+		"솔깃하네." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "<span class="red">하지만 내 임금이면 더 싼 <<girls>>【을를】 많이 살 수 있어.</span> 미안."
 	<</if>>
 	<br><br>
 	<<farm_guard_pay>>
-	<<link [[Say you can't afford it right now|Farm Guard Pay Refuse]]>><</link>><<lltrust>>
+	<<link [[지금은 돈이 없다고 말한다|Farm Guard Pay Refuse]]>><</link>><<lltrust>>
 	<br>
 
 <</if>>
 
 :: Farm Guard Sex
-
 <<if $sexstart is 1>>
 	<<set $sexstart to 0>>
 	<<consensual>>
@@ -284,9 +274,9 @@ You climb the tower.
 <<actionsman>>
 
 <<if _combatend>>
-	<span id="next"><<link [[Next|Farm Guard Sex Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Farm Guard Sex Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Farm Guard Sex]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Farm Guard Sex]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Farm Guard Sex Finish
@@ -295,16 +285,16 @@ You climb the tower.
 <<if $enemypleasure gte $enemypleasuremax>>
 	<<ejaculation>>
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		"Damn," <<print $NPCList[0].name>> says. "Seduced again. Gonna be a tight week."
+		"젠장." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "또 유혹당했네. 이번 주는 빡빡하겠어."
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		"Thanks love," <<print $NPCList[0].name>> says. "Didn't know I was the type to roll around in hay until I met you."
+		"고마워, 자기." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "당신을 만나기 전까진 내가 건초 더미에서 뒹구는 걸 좋아하는 타입인 줄 몰랐어."
 	<<elseif $NPCList[0].traits.includes("brooding")>>
-		"I'll get ready for work," <<print $NPCList[0].name>> says. "Deal's a deal."
+		"일할 준비나 해야지." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "거래는 거래니까."
 	<<else>>
-		"Damn <<girl>>," <<print $NPCList[0].name>> says. "You're good at this. Wanna brag to my friends, but also wanna keep you to myself. Decisions."
+		"이런, <<girl>>." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "이런 거에 소질 있네. 친구들한테 자랑하고 싶으면서도, 나만 알고 싶기도 하고. 고민되네."
 	<</if>>
-	Your employee leaves the barn.
-	<<note "+ Security Skill" "green">><<note "+ Wage" "red">>
+	당신의 직원이 헛간을 떠난다.
+	<<note "+ 보안 스킬" "green">><<note "+ 주급" "red">>
 	<br><br>
 	<<if ((_speechAttitudeResolved is "meek") or (_speechAttitudeResolved is "shy") or (_speechAttitudeResolved is "docile"))>>
 		<<tearful>> you brush hay from your clothes, still flushed from what just happened.
@@ -315,7 +305,7 @@ You climb the tower.
 	<<elseif _speechAttitudeResolved is "confident">>
 		You brush off the hay and straighten yourself up, looking far less rattled than you feel.
 	<<else>>
-		<<tearful>> you brush off hay.
+		<<tearful>> 당신은 건초를 털어낸다.
 	<</if>>
 	<br><br>
 
@@ -325,35 +315,35 @@ You climb the tower.
 
 	<<clotheson>>
 	<<endcombat>>
-	<<link [[Next|Farm Work]]>><</link>>
+	<<link [[다음|Farm Work]]>><</link>>
 <<elseif $enemyhealth lte 0>>
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		"Sorry," <<print $NPCList[0].name>> says, backing away. "I misread things. Gimme my money, and I'll be on my way."
+		"미안." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말하며 물러선다. "내가 오해했나 보네. 돈만 주면 갈게."
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		"Alright alright!" <<print $NPCList[0].name>> says, holding <<his>> hands up. "I get it. No more touching. I'll just take my money."
+		"알았어, 알았다고!" <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 <<his>> 손을 들어 올리며 말한다. "알겠어. 더는 안 건드릴게. 돈만 받을게."
 	<<elseif $NPCList[0].traits.includes("brooding")>>
-		"Easy <<girl>>," <<print $NPCList[0].name>> says, backing off. "Let's keep things civil. My money."
+		"진정해, <<girl>>." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 물러서며 말한다. "좋게 해결하자고. 내 돈 줘."
 	<<else>>
-		"I like it rough, but damn," <<print $NPCList[0].name>> says. "You can pay me another way if you insist."
+		"거친 것도 좋아하지만, 젠장." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "정 그렇다면 다른 방식으로 지불해도 좋아."
 	<</if>>
 	<br><br>
 	<<clotheson>>
 	<<endcombat>>
 	<<loadNPC 0 "farm_tower_guard">><<person1>>
 	<<farm_guard_pay>>
-	<<link [[Say you can't afford it right now|Farm Guard Pay Refuse]]>><</link>><<lltrust>>
+	<<link [[지금은 돈이 없다고 말한다|Farm Guard Pay Refuse]]>><</link>><<lltrust>>
 	<br>
 <<elseif $alarm is 1 and $rescue is 1>>
 	<<set $rescued += 1>>
-	"I'm coming!" Alex enters the barn.
+	"내가 간다!" 알렉스가 헛간으로 들어온다.
 	<br><br>
 
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		<<print $NPCList[0].name>> backs away from you. "This isn't what this looks like," <<he>> says.
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 당신에게서 물러난다. "이건 그런 게 아니야." <<he>>【이가】 말한다.
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		<<print $NPCList[0].name>> steps away from you. "Sorry boss," <<he>> says. "Er, bosses. I didn't mean nothing by it."
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 당신에게서 떨어져 나간다. "죄송합니다, 사장님." <<he>>【이가】 말한다. "어, 사장님들. 나쁜 뜻은 아니었어요."
 	<<elseif $NPCList[0].traits.includes("brooding")>>
-		<<print $NPCList[0].name>> throws up <<his>> arms. "I lost my cool," <<he>> says. "I'm sorry."
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 <<his>> 팔을 들어 올린다. "제가 이성을 잃었어요." <<he>>【이가】 말한다. "죄송합니다."
 	<<else>>
 		<<print $NPCList[0].name>> stumbles away from you. "It was <<pher stranger>> idea," <<he>> says. "I swear!"
 	<</if>>
@@ -363,37 +353,37 @@ You climb the tower.
 	<<npc Alex>>
 	<<loadNPC 1 "farm_tower_guard">>
 
-	"Get the fuck off <<if C.npc.Alex.dom gte 20>>my<<else>>our<</if>> farm," Alex says. "You're fired."
+	"당장 <<if C.npc.Alex.dom gte 20>>내<<else>>우리<</if>> 농장에서 꺼져." 알렉스가 말한다. "넌 해고야."
 	<br>
 	<<person2>>
-	<<print $NPCList[0].name>> opens <<his>> mouth to protest, but decides against it. <<He>> leaves the barn.
+	<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 항의하려 입을 열었지만, 이내 그만둔다. <<He>>【은는】 헛간을 떠난다.
 	<br><br>
 	<<person1>>
-	"Are you okay?" Alex asks as <<he>> helps you off the hay. "I thought we could trust <<person2>><<him>>.<<person1>> I'll be more watchful in the future."<<ggdom>><<npcincr Alex dom 3>>
+	"괜찮아?" 알렉스가 건초 더미에서 당신을 일으켜주며 묻는다. "난 <<person2>><<him>>【을를】 믿을 수 있을 줄 알았는데.<<person1>> 앞으론 더 잘 살필게."<<ggdom>><<npcincr Alex dom 3>>
 	<br><br>
 
-	<span class="purple">The watchtower will no longer operate until a replacement is found.</span>
+	<span class="purple">대체 인력을 찾을 때까지 감시탑은 더 이상 운영되지 않습니다.</span>
 	<br><br>
-	<<link [[Next|Farm Work]]>><<endevent>><<clearNPC "farm_tower_guard">><<set $farm.tower_guard to 0>><</link>>
+	<<link [[다음|Farm Work]]>><<endevent>><<clearNPC "farm_tower_guard">><<set $farm.tower_guard to 0>><</link>>
 	<br>
 <<else>>
 	<<if $finish is 1>><<encounterEndViolence>><</if>>
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		"Fine," <<print $NPCList[0].name>> says. "I'll take the money instead."
+		"알았어." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "대신 돈으로 받을게."
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		"Suit yourself," <<print $NPCList[0].name>> says. "I'm calm. How about the money?"
+		"마음대로 해." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "난 진정했어. 돈은 어때?"
 	<<elseif $NPCList[0].traits.includes("brooding")>>
-		"Didn't expect you to work me up so easily," <<print $NPCList[0].name>> says. "Now, about the money."
+		"네가 날 이렇게 쉽게 흥분시킬 줄은 몰랐네." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "자, 이제 돈 얘기나 하자고."
 	<<else>>
-		"You little tease," <<print $NPCList[0].name>> says. "Getting me all worked up like that. Hope you appreciate the willpower this takes. I'll take my money."
+		"이 작은 요물 같으니." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "날 이렇게 흥분시키다니. 내가 얼마나 의지력을 발휘하는지 알아줬으면 좋겠네. 돈이나 받을게."
 	<</if>>
 	<br><br>
-	<<tearful>> you brush off the hay.
+	<<tearful>> 당신은 건초를 털어낸다.
 	<<clotheson>>
 	<<endcombat>>
 	<<loadNPC 0 "farm_tower_guard">><<person1>>
 	<<farm_guard_pay>>
-	<<link [[Say you can't afford it right now|Farm Guard Pay Refuse]]>><</link>><<lltrust>>
+	<<link [[지금은 돈이 없다고 말한다|Farm Guard Pay Refuse]]>><</link>><<lltrust>>
 	<br>
 <</if>>
 
@@ -408,13 +398,13 @@ You climb the tower.
 	<<healthMultiplier>>
 	<<npcidlegenitals>>
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		<<print $NPCList[0].name>> puts out <<his>> cigarette. "Come on then, let's get this over with."
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【은는】 담배를 끈다. "자, 그럼 얼른 끝내자."
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		<<print $NPCList[0].name>> grins. "I won't go easy on you!"
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 씩 웃는다. "봐주지 않을 거야!"
 	<<elseif $NPCList[0].traits.includes("brooding")>>
-		<<print $NPCList[0].name>> sighs. "Fine, could use the practice."
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 한숨을 쉰다. "알았어, 연습이 필요하긴 했으니까."
 	<<else>>
-		<<print $NPCList[0].name>> shrugs. "I would prefer getting my hands on you some other way but you're the boss."
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【은는】 어깨를 으쓱한다. "다른 식으로 널 만져 보고 싶긴 한데, 네가 보스니까 어쩔 수 없지."
 	<</if>>
 	<br><br>
 <</if>>
@@ -428,9 +418,9 @@ You climb the tower.
 <<actionsman>>
 
 <<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
-	<span id="next"><<link [[Next|Farm Tower Spar Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Farm Tower Spar Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Farm Tower Spar]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Farm Tower Spar]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Farm Tower Spar Finish
@@ -440,17 +430,17 @@ You climb the tower.
 	<<ejaculation "short">>
 
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		"That was unexpected, but I'll take it." <<print $NPCList[0].name>> says.
+		"예상 밖이었지만, 받아 두지." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다.
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		"That was cheating..." <<print $NPCList[0].name>> says.
+		"반칙이잖아..." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다.
 	<<elseif $NPCList[0].traits.includes("brooding")>>
-		"Unconventional, but it did work." <<print $NPCList[0].name>> says.
+		"정석은 아니지만, 효과는 있었네." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다.
 	<<else>>
-		"That was a lot more fun than I expected, you could've just been honest." <<print $NPCList[0].name>> says.
+		"예상보다 훨씬 재미있었어. 솔직하게 말했으면 됐잖아." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다.
 	<</if>>
 	<br><br>
 
-	<<set $NPCList[0].trust += 1>><<securityskill>><<gtrust>><<note "+ Security skill" "green">>
+	<<set $NPCList[0].trust += 1>><<securityskill>><<gtrust>><<note "+ 보안 기술" "green">>
 
 	<<set $per_npc.farm_tower_guard.skills.security to clone($NPCList[0].skills.security)>>
 	<<set $per_npc.farm_tower_guard.virginity to clone($NPCList[0].virginity)>>
@@ -458,21 +448,21 @@ You climb the tower.
 	<<clotheson>>
 	<<endcombat>>
 
-	<<link [[Next|Farm Tower]]>><</link>>
+	<<link [[다음|Farm Tower]]>><</link>>
 <<elseif $enemyhealth lte 0>>
 
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		<<print $NPCList[0].name>> staggers. "Alright alright, stop, you win."
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 비틀거린다. "알았어, 알았어, 그만, 네가 이겼어."
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		<<print $NPCList[0].name>> winces. "Damn, you're a good! I ought to practice more."
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 얼굴을 찡그린다. "젠장, 잘하네! 연습 좀 더 해야겠어."
 	<<elseif $NPCList[0].traits.includes("brooding")>>
-		<<print $NPCList[0].name>> holds a hand up. "Let's stop there, you fought very well. I must be getting rusty."
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【은는】 한 손을 들어 올린다. "여기까지 하자, 아주 잘 싸웠어. 내 실력이 녹슬었나 봐."
 	<<else>>
-		<<print $NPCList[0].name>> holds both hands up. "Okay stop, I do like it rough but geez."
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【은는】 양손을 들어 올린다. "알았어, 그만. 거칠게 하는 건 좋아하지만, 세상에."
 	<</if>>
 	<br><br>
 
-	<<set $NPCList[0].trust += 1>><<securityskill>><<gtrust>><<note "+ Security skill" "green">>
+	<<set $NPCList[0].trust += 1>><<securityskill>><<gtrust>><<note "+ 보안 기술" "green">>
 
 	<<set $per_npc.farm_tower_guard.skills.security to clone($NPCList[0].skills.security)>>
 	<<set $per_npc.farm_tower_guard.virginity to clone($NPCList[0].virginity)>>
@@ -480,22 +470,22 @@ You climb the tower.
 	<<clotheson>>
 	<<endcombat>>
 
-	<<link [[Next|Farm Tower]]>><</link>>
+	<<link [[다음|Farm Tower]]>><</link>>
 
 <<else>>
 	<<if $finish is 1>><<encounterEndViolence>><</if>>
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		<<print $NPCList[0].name>> asks. "Are you okay? May have gone too hard sorry."
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 묻는다. "괜찮아? 내가 너무 세게 했나 봐, 미안."
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		<<print $NPCList[0].name>> exclaims. "Ha! I win! You okay though?."
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 외친다. "하! 내가 이겼어! 근데 괜찮아?"
 	<<elseif $NPCList[0].traits.includes("brooding")>>
 		<<print $NPCList[0].name>> reaches out. "Good effort."
 	<<else>>
-		<<print $NPCList[0].name>> smirks. "Does this mean to the winner the spoils? I'm kidding, you ok boss?"
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 씩 웃는다. "이긴 사람이 전리품을 가져가는 건가? 농담이야. 괜찮아, 보스?"
 	<</if>>
 	<br><br>
 
-	<<securityskill>><<note "+ Security skill" "green">>
+	<<securityskill>><<note "+ 보안 기술" "green">>
 
 	<<set $per_npc.farm_tower_guard.skills.security to clone($NPCList[0].skills.security)>>
 	<<set $per_npc.farm_tower_guard.virginity to clone($NPCList[0].virginity)>>
@@ -503,7 +493,7 @@ You climb the tower.
 	<<clotheson>>
 	<<endcombat>>
 
-	<<link [[Next|Farm Tower]]>><</link>>
+	<<link [[다음|Farm Tower]]>><</link>>
 <</if>>
 
 :: Farm Tower Seduce
@@ -522,13 +512,13 @@ You climb the tower.
 <<seductioncheck>>
 <br><br>
 <<if $seductionskill lt 1000>>
-	<span class="gold">You feel more confident in your powers of seduction.</span>
+	<span class="gold">유혹에 더 자신감이 붙는다.</span>
 	<br><br>
 <</if>>
 <<seductionskilluse>>
 
 <<if ((_speechAttitudeResolved is "meek") or (_speechAttitudeResolved is "shy") or (_speechAttitudeResolved is "docile"))>>
-	"D-do you want to have some fun?" you purr.
+	"ㅈ-재미 좀 보지 않을래요?" 당신이 나긋하게 말한다.
 <<elseif ((_speechAttitudeResolved is "polite") or (_speechAttitudeResolved is "flamboyant") or (_speechAttitudeResolved is "special"))>>
 	"Would you like to have some fun?" you ask, voice warm.
 <<elseif ((_speechAttitudeResolved is "bratty") or (_speechAttitudeResolved is "cruel"))>>
@@ -540,15 +530,15 @@ You climb the tower.
 
 <<if $seductionrating gte $seductionrequired>>
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		<span class="green">"Why not?"</span> <<print $NPCList[0].name>> says. "Let's go." You take <<his>> hand, and lead <<him>> to a secluded spot in the barn.
+		<span class="green">"안 될 거 없지."</span> <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "가자." 당신은 <<his>> 손을 잡고 헛간의 한적한 곳으로 이끈다.
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		<<print $NPCList[0].name>> tries to speak, <span class="green">but can only manage a gulp.</span> You take <<his>> hand, and lead <<him>> to a secluded spot in the barn.
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【은는】 말을 하려 하지만, <span class="green">꿀꺽 침을 삼킬 뿐이다.</span> 당신은 <<his>> 손을 잡고 헛간의 한적한 곳으로 이끈다.
 	<<elseif $NPCList[0].traits.includes("brooding")>>
-		<span class="green">"I could use the break,"</span> <<print $NPCList[0].name>> says. "Come on then." You take <<his>> hand, and lead <<him>> to a secluded spot in the barn.
+		<span class="green">"쉬어 가는 것도 나쁘지 않지,"</span> <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "그럼 가자." 당신은 <<his>> 손을 잡고 헛간의 한적한 곳으로 이끈다.
 	<<else>>
-		<span class="green">"Nice,"</span> <<print $NPCList[0].name>> says. "Let's do it in the barn."
+		<span class="green">"좋아,"</span> <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "헛간에서 하자."
 		<br><br>
-		You find a secluded spot at the back.
+		당신은 뒤편에서 한적한 장소를 찾는다.
 	<</if>>
 	<br><br>
 
@@ -556,17 +546,17 @@ You climb the tower.
 	<br>
 <<else>>
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		<span class="red">"Sorry,"</span> <<print $NPCList[0].name>> says. "You're cute, but I don't just sleep with anyone."
+		<span class="red">"미안,"</span> <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "귀엽긴 한데, 아무하고나 자지는 않아."
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		"You're a lewd one," <<print $NPCList[0].name>> says. <span class="red">"But I prefer to know who I sleep with."</span>
+		"음란한 녀석이네." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. <span class="red">"하지만 누구랑 자는지는 알고 자고 싶어."</span>
 	<<elseif $NPCList[0].traits.includes("brooding")>>
-		<span class="red">"Not interested,"</span> <<print $NPCList[0].name>> says. "Let's keep it professional."
+		<span class="red">"관심 없어,"</span> <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "일은 일답게 하자."
 	<<else>>
-		"Tempting," <<print $NPCList[0].name>> says. <span class="red">"But no, no offense.</span> Sorry."
+		"솔깃하네." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. <span class="red">"하지만 안 돼, 나쁜 뜻은 없어.</span> 미안."
 	<</if>>
 	<br><br>
 
-	<<link [[Next|Farm Tower]]>><</link>>
+	<<link [[다음|Farm Tower]]>><</link>>
 	<br>
 
 <</if>>
@@ -592,9 +582,9 @@ You climb the tower.
 <<actionsman>>
 
 <<if _combatend>>
-	<span id="next"><<link [[Next|Farm Guard Seduce Sex Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Farm Guard Seduce Sex Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Farm Guard Seduce Sex]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Farm Guard Seduce Sex]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Farm Guard Seduce Sex Finish
@@ -602,16 +592,16 @@ You climb the tower.
 <<if $enemypleasure gte $enemypleasuremax>>
 	<<ejaculation>>
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		"Hoo," <<print $NPCList[0].name>> says. "That was good. Wouldn't mind doing that again."
+		"후." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "좋았어. 또 해도 괜찮겠는데."
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		"Thanks love," <<print $NPCList[0].name>> says. "Didn't know I was the type to roll around in hay until I met you."
+		"고마워, 자기." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "당신을 만나기 전까진 내가 건초 더미에서 뒹구는 걸 좋아하는 타입인 줄 몰랐어."
 	<<elseif $NPCList[0].traits.includes("brooding")>>
-		"Thank you," <<print $NPCList[0].name>> says. "I needed that."
+		"고마워." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "이게 필요했어."
 	<<else>>
-		"Damn <<girl>>," <<print $NPCList[0].name>> says. "You're good at this. Wanna brag to my friends, but also wanna keep you to myself. Decisions."
+		"이런, <<girl>>." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "이런 거에 소질 있네. 친구들한테 자랑하고 싶으면서도, 나만 알고 싶기도 하고. 고민되네."
 	<</if>>
-	Your employee leaves the barn.
-	<<securityskill>><<note "+ Security skill" "green">>
+	당신의 직원이 헛간을 떠난다.
+	<<securityskill>><<note "+ 보안 기술" "green">>
 	<br><br>
 	<<if ((_speechAttitudeResolved is "meek") or (_speechAttitudeResolved is "shy") or (_speechAttitudeResolved is "docile"))>>
 		<<tearful>> you brush hay from your clothes, still flushed from what just happened.
@@ -622,7 +612,7 @@ You climb the tower.
 	<<elseif _speechAttitudeResolved is "confident">>
 		You brush off the hay and straighten yourself up, looking far less rattled than you feel.
 	<<else>>
-		<<tearful>> you brush off hay.
+		<<tearful>> 당신은 건초를 털어낸다.
 	<</if>>
 	<br><br>
 
@@ -631,16 +621,16 @@ You climb the tower.
 
 	<<clotheson>>
 	<<endcombat>>
-	<<link [[Next|Farm Work]]>><</link>>
+	<<link [[다음|Farm Work]]>><</link>>
 <<elseif $enemyhealth lte 0>>
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		"Sorry," <<print $NPCList[0].name>> says, backing away. "I misread things."
+		"미안." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말하며 물러선다. "내가 오해했나 보네."
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		"Alright alright!" <<print $NPCList[0].name>> says, holding <<his>> hands up. "I get it. No more touching."
+		"알았어, 알았다고!" <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 <<his>> 손을 들어 올리며 말한다. "알겠어. 더는 안 건드릴게."
 	<<elseif $NPCList[0].traits.includes("brooding")>>
-		"Easy <<girl>>," <<print $NPCList[0].name>> says, backing off. "Let's keep things civil."
+		"진정해, <<girl>>." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 물러서며 말한다. "좋게 해결하자고."
 	<<else>>
-		"I like it rough, but damn," <<print $NPCList[0].name>> says.
+		"거친 것도 좋아하지만, 젠장." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다.
 	<</if>>
 	<br><br>
 	<<clotheson>>
@@ -651,17 +641,17 @@ You climb the tower.
 	<br>
 <<elseif $alarm is 1 and $rescue is 1>>
 	<<set $rescued += 1>>
-	"I'm coming!" Alex enters the barn.
+	"내가 간다!" 알렉스가 헛간으로 들어온다.
 	<br><br>
 
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		<<print $NPCList[0].name>> backs away from you. "This isn't what this looks like," <<he>> says.
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 당신에게서 물러난다. "이건 그런 게 아니야." <<he>>【이가】 말한다.
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		<<print $NPCList[0].name>> steps away from you. "Sorry boss," <<he>> says. "Er, bosses. I didn't mean nothing by it."
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 당신에게서 떨어져 나간다. "죄송합니다, 사장님." <<he>>【이가】 말한다. "어, 사장님들. 나쁜 뜻은 아니었어요."
 	<<elseif $NPCList[0].traits.includes("brooding")>>
-		<<print $NPCList[0].name>> throws up <<his>> arms. "I lost my cool," <<he>> says. "I'm sorry."
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 <<his>> 팔을 들어 올린다. "제가 이성을 잃었어요." <<he>>【이가】 말한다. "죄송합니다."
 	<<else>>
-		<<print $NPCList[0].name>> stumbles away from you. "It was <<his>> idea," <<he>> says. "I swear!"
+		<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 당신에게서 비틀거리며 물러난다. "<<his>> 생각이었어요." <<he>>【이가】 말한다. "맹세해요!"
 	<</if>>
 	<br><br>
 	<<clotheson>>
@@ -669,32 +659,32 @@ You climb the tower.
 	<<npc Alex>>
 	<<loadNPC 1 "farm_tower_guard">>
 
-	"Get the fuck off <<if $NPCName[$NPCNameList.indexOf("Alex")].dom gte 20>>my<<else>>our<</if>> farm," Alex says. "You're fired."
+	"당장 <<if $NPCName[$NPCNameList.indexOf("Alex")].dom gte 20>>내<<else>>우리<</if>> 농장에서 꺼져." 알렉스가 말한다. "넌 해고야."
 	<br>
 	<<person2>>
-	<<print $NPCList[0].name>> opens <<his>> mouth to protest, but decides against it. <<He>> leaves the barn.
+	<<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 항의하려 입을 열었지만, 이내 그만둔다. <<He>>【은는】 헛간을 떠난다.
 	<br><br>
 	<<person1>>
-	"Are you okay?" Alex asks as <<he>> helps you off the hay. "I thought we could trust <<person2>><<him>><<person1>>. I'll be more watchful in the future.<<ggdom>><<npcincr Alex dom 3>>
+	"괜찮아?" 알렉스가 건초 더미에서 당신을 일으켜주며 묻는다. "난 <<person2>><<him>>【을를】<<person1>> 믿을 수 있을 줄 알았는데. 앞으론 더 잘 살필게.<<ggdom>><<npcincr Alex dom 3>>
 	<br><br>
 
-	<span class="purple">The watchtower will no longer operate until a replacement is found.</span>
+	<span class="purple">대체 인력을 찾을 때까지 감시탑은 더 이상 운영되지 않습니다.</span>
 	<br><br>
-	<<link [[Next|Farm Work]]>><<endevent>><<clearNPC "farm_tower_guard">><<set $farm.tower_guard to 0>><</link>>
+	<<link [[다음|Farm Work]]>><<endevent>><<clearNPC "farm_tower_guard">><<set $farm.tower_guard to 0>><</link>>
 	<br>
 <<else>>
 	<<if $finish is 1>><<encounterEndViolence>><</if>>
 	<<if $NPCList[0].traits.includes("relaxed")>>
-		"Fine," <<print $NPCList[0].name>> says.
+		"알았어." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다.
 	<<elseif $NPCList[0].traits.includes("sociable")>>
-		"Suit yourself," <<print $NPCList[0].name>> says. "I'm calm."
+		"마음대로 해." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "난 진정했어."
 	<<elseif $NPCList[0].traits.includes("brooding")>>
-		"Didn't expect you to work me up so easily." <<print $NPCList[0].name>> says.
+		"네가 날 이렇게 쉽게 흥분시킬 줄은 몰랐네." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다.
 	<<else>>
-		"You little tease," <<print $NPCList[0].name>> says. "Getting me all worked up like that. Hope you appreciate the willpower this takes."
+		"이 작은 요물 같으니." <<print window.KR.gatPersonNameDictKR($NPCList[0].name)>>【이가】 말한다. "날 이렇게 흥분시키다니. 내가 얼마나 의지력을 발휘하는지 알아줬으면 좋겠네."
 	<</if>>
 	<br><br>
-	<<tearful>> you brush off the hay.
+	<<tearful>> 당신은 건초를 털어낸다.
 	<<clotheson>>
 	<<endcombat>>
 	<<loadNPC 0 "farm_tower_guard">><<person1>>

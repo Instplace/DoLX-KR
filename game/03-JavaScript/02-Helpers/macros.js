@@ -29,7 +29,7 @@ const ErrorSystem = ((Scripting, Errors) => {
 			const result = Scripting.evalJavaScript(exp[0] === "{" ? `(${exp})` : exp);
 			let { message, source, depth, exportable, logged } = Object.assign(
 				{
-					message: "Message not set",
+					message: "메시지가 설정되지 않았습니다",
 					source: null,
 					depth: 0,
 					exportable: true,
@@ -96,21 +96,21 @@ var General = ((Macro, SexTypes) => {
 	 * @param {number} override
 	 */
 	function getFluidsFromGroup(override) {
-		const sperm = either("semen", "sperm", "cum");
+		const sperm = either("정액", "정자", "사정액");
 		const id = override || getSexesFromRandomGroup();
 		switch (id) {
 			case SexTypes.ALL_FEMALE_PENISES:
-				return `${sperm} and milk`;
+				return `${sperm}【와과】 우유`;
 			case SexTypes.ALL_MALES:
 			case SexTypes.ALL_DICKS:
 				return sperm;
 			case SexTypes.ALL_MALE_VAGINAS:
 			case SexTypes.ALL_VAGINAS:
-				return "lewd fluids";
+				return "음란한 체액";
 			case SexTypes.ALL_FEMALES:
-				return "lewd fluids and milk";
+				return "음란한 체액과 우유";
 			default:
-				return `${sperm}, lewd fluids and milk`;
+				return `${sperm}, 음란한 체액, 우유`;
 		}
 	}
 

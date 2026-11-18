@@ -119,7 +119,7 @@ Weather.Renderer.Layer = class Layer {
 				this.canvas.ctx.globalCompositeOperation = effect.compositeOperation;
 				this.canvas.drawImage(effect.canvas.element);
 			} catch (e) {
-				console.error(this, `Error drawing effect in layer '${this.name}':`, e);
+				console.error(this, `레이어 '${this.name}'에서 효과를 그리는 중 오류:`, e);
 				errors.push(e);
 			}
 		}

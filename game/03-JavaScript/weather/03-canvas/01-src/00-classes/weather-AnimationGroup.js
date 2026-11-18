@@ -23,7 +23,7 @@ Weather.Renderer.AnimationGroup = class AnimationGroup {
 
 	add(key, animation) {
 		if (!(animation instanceof Weather.Renderer.Animation)) {
-			console.error("Error adding animation to group: Expected Animation instance as argument, but received ", animation);
+			console.error("그룹에 애니메이션을 추가하는 중 오류: 인수로 Animation 인스턴스가 필요하지만 다음 값을 받았습니다: ", animation);
 			return;
 		}
 

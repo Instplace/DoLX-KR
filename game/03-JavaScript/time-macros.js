@@ -6,7 +6,7 @@ function timeAfterXHours(hours) {
 DefineMacroS("timeAfterXHours", timeAfterXHours);
 
 function ampm(hour, minute) {
-	let ampm;
+	let ampmPrefix;
 	if (hour !== undefined) {
 		minute ??= "00";
 	} else {
@@ -14,10 +14,10 @@ function ampm(hour, minute) {
 		minute = Time.minute;
 	}
 	if (V.options.timestyle === "ampm") {
-		ampm = hour >= 12 ? " pm" : " am";
+		ampmPrefix = hour >= 12 ? "오후 " : "오전 ";
 		hour = ((hour + 11) % 12) + 1;
 	}
-	return !ampm ? ("0" + getTimeString(hour, minute)).slice(-5) : getTimeString(hour, minute) + ampm;
+	return !ampmPrefix ? ("0" + getTimeString(hour, minute)).slice(-5) : ampmPrefix + getTimeString(hour, minute);
 }
 window.ampm = ampm;
 DefineMacroS("ampm", ampm);
@@ -110,17 +110,17 @@ function schoolTerm() {
 		const currentTimeStamp = Time.date.timeStamp;
 		if (date.year === Time.year && date.month === Time.month && date.day === Time.monthDay) {
 			if (date.timeStamp > currentTimeStamp) {
-				return "School term finishes today.";
+				return "학기는 오늘 끝납니다.";
 			} else {
 				const nextDate = Time.getNextSchoolTermStartDate(date.addDays(1));
-				return "School term has finished. Next term starts on " + getFormattedDate(nextDate, true) + ".";
+				return "학기가 끝났습니다. 다음 학기는 " + getFormattedDate(nextDate, true) + "에 시작합니다.";
 			}
 		} else {
-			return "School term finishes on " + getFormattedDate(date, true) + ".";
+			return "학기는 " + getFormattedDate(date, true) + "에 끝납니다.";
 		}
 	}
 	const date = Time.nextSchoolTermStartDate;
-	return "School term starts on " + getFormattedDate(date, true) + ".";
+	return "학기는 " + getFormattedDate(date, true) + "에 시작합니다.";
 }
 DefineMacroS("schoolterm", schoolTerm);
 

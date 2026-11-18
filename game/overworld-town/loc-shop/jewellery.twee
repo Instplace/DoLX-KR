@@ -11,21 +11,21 @@
 	<<set $outside to 0>><<set $location to "shopping_centre">><<effects>>
 	<<set $shopName = "jewellery">>
 
-	You are in the jewellery store. Many trinkets and bijouterie sits on the displays. Most look expensive.
+	당신은 보석 가게 안에 있다. 진열대 위에는 많은 장신구와 보석 세공품이 놓여 있다. 대부분 비싸 보인다.
 	<br><br>
 
 	<<if $stress gte $stressmax>>
 		<<passoutshop>>
 	<<else>>
 		<<if Time.hour is 21>>
-			It's closing time. Security is herding everyone outside. <<if $exposed gte 1>>Panic swells within you as you realise how exposed you'll be should security find you in this state of dress.<</if>>
+			폐점 시간이다. 경비원이 모든 사람을 밖으로 몰아내고 있다. <<if $exposed gte 1>>경비원이 이 옷차림을 본다면 얼마나 노출되어 있을지 깨닫고 공황 상태에 빠진다.<</if>>
 			<br><br>
 
 			<<if $exposed lte 0>>
-				<<highicon>><<link [[Go outside|High Street]]>><</link>>
+				<<highicon>><<link [[밖으로 나간다|High Street]]>><</link>>
 				<br>
 			<<else>>
-				<<ind>><<link [["Hide until it's over (1:00)"|Jewellery Store]]>><<pass 1 hour>><</link>>
+				<<ind>><<link [["끝날 때까지 숨는다 (1:00)"|Jewellery Store]]>><<pass 1 hour>><</link>>
 			<</if>>
 		<<else>>
 			<div id="tryonstats-div"><<tryOnStats>></div>
@@ -34,36 +34,36 @@
 			<<set $shopPage = 0>>
 
 			<<if Time.dayState is "night">>
-				You are alone in the darkness.
+				어둠 속에 당신 혼자 있다.
 			<</if>>
 			
 			<br>
 
-			<span>Warmth:</span>
+			<span>보온성:</span>
 			<<warmthscale>>
 			<div id="warmth-description">
 				<<warmth_description>>
 			</div>
 			<br><br>
 			<<clothingcategoryicon "all">>
-			<<link "View All">><<replace "#clothingShop-div">><<AllShop>><</replace>><</link>>
+			<<link "전체 보기">><<replace "#clothingShop-div">><<AllShop>><</replace>><</link>>
 			<br><br>
 			<<clothingcategoryicon "neck">>
-			<<link "View Neck Accessories">><<replace "#clothingShop-div">><<NeckShop>><</replace>><</link>>
+			<<link "목 장식 보기">><<replace "#clothingShop-div">><<NeckShop>><</replace>><</link>>
 			<br>
 			<<clothingcategoryicon "earrings">>
-			<<link "View Earrings">><<replace "#clothingShop-div">><<EarringsShop>><</replace>><</link>>
+			<<link "귀걸이 보기">><<replace "#clothingShop-div">><<EarringsShop>><</replace>><</link>>
 			<br>
 			<<clothingcategoryicon "rings">>
-			<<link "View Rings">><<replace "#clothingShop-div">><<RingsShop>><</replace>><</link>>
+			<<link "반지 보기">><<replace "#clothingShop-div">><<RingsShop>><</replace>><</link>>
 			<br>
 			<<clothingcategoryicon "hand">>
-			<<link "View Hand Accessories">><<replace "#clothingShop-div">><<HandsShop>><</replace>><</link>>
+			<<link "장갑 보기">><<replace "#clothingShop-div">><<HandsShop>><</replace>><</link>>
 			<br><br>
 			<<run linkifyDivs('.button-back-to-shop')>>
 
 			<<if Time.dayState is "night" and Time.hour isnot $closinghour and !$weekly.theft.jewelleryStore>>
-				<<shopicon "register">><<link [[Examine the cash register|Jewellery Store Register]]>><</link>>
+				<<shopicon "register">><<link [[계산대를 살펴본다|Jewellery Store Register]]>><</link>>
 				<br>
 			<</if>>
 
@@ -71,10 +71,10 @@
 
 			<<if Time.dayState is "night" or $tryOn.value is 0>>
 				<<if $tryOn.value gt 0 and Object.values(V.tryOn?.tryingOn).some(slot => slot?.type.includes("heavy"))>>
-					<span class="red">The jewellery you're trying on is too heavy to steal!</span>
+					<span class="red">착용해 보고 있는 장신구는 너무 무거워서 훔칠 수 없다!</span>
 				<<elseif Time.dayState is "night" and $clothingShop.spotted is true and $clothingShop.stolenClothes gt 0>>
 					<<getouticon>>
-					<<link [[Leave|Jewellery Store Night Guard Found]]>>
+					<<link [[나간다|Jewellery Store Night Guard Found]]>>
 						<<shopClothingFilterReset>>
 						<<ShowUnderEquip "normal">>
 						<<ShowUnderEquip "over">>
@@ -93,7 +93,7 @@
 					<</if>>
 				<<else>>
 					<<getouticon>>
-					<<link [[Leave|Shopping Centre Top]]>>
+					<<link [[떠난다|Shopping Centre Top]]>>
 						<<shopClothingFilterReset>>
 						<<ShowUnderEquip "normal">>
 						<<ShowUnderEquip "over">>
@@ -113,7 +113,7 @@
 				<</if>>
 				<br><br>
 			<<elseif $tryOn.value isnot 0>>
-				<<icon "hanger.png">><<link "Return jewellery">><<clothingReset>>
+				<<icon "hanger.png">><<link "장신구를 반납한다">><<clothingReset>>
 					<<updatesidebarimg>>
 					<<updatesidebardescription>>
 					<<updateallure>>
@@ -123,9 +123,9 @@
 				<br>
 				<<if $tryOn.value gt 0 and $tryOn.value lte $money>>
 					<<sendItemsToDropdown>>
-					<<highicon>><<link "Buy jewellery">><<buyTryOnClothes "wear">><<updatesidebarmoney>><<updateclothingshop>><</link>>
+					<<highicon>><<link "장신구를 산다">><<buyTryOnClothes "wear">><<updatesidebarmoney>><<updateclothingshop>><</link>>
 					<br>
-					<<wardrobeicon>><<link "Buy jewellery and send to wardrobe">>
+					<<wardrobeicon>><<link "장신구를 사서 옷장으로 보낸다">>
 						<<buyTryOnClothes "wardrobe">>
 						<<updatesidebarmoney>>
 						<<updatesidebarimg>>
@@ -138,7 +138,7 @@
 				<</if>>
 				<<if $tryOn.value gt 0>>
 					<<if Object.values(V.tryOn.tryingOn).some(slot => slot?.type.includes("heavy"))>>
-						<span class="red">The jewellery you're trying on is too heavy to steal!</span>
+						<span class="red">착용해 보고 있는 장신구는 너무 무거워서 훔칠 수 없다!</span>
 					<<else>>
 						<<getouticon>><<link [[Leave with stolen jewellery|Stolen Jewellery Store Result]]>><<shopClothingFilterReset>><<shopHoodCheck>><<shopCommandoCheck>><</link>><<crime "thievery">>
 					<</if>>
@@ -154,14 +154,14 @@
 
 <<if currentSkillValue('skulduggery') gte $lock>>
 	<<if pcAreArmsBound("both")>>
-		You think you'd be able to pick the lock, <span class="blue">if your arms weren't bound.</span>
+		자물쇠를 딸 수 있을 것 같지만, <span class="blue">팔이 묶여 있지 않다면 말이다.</span>
 		<br><br>
 	<<else>>
 		<<wearProp "lockpick">>
-		<span class="green">The lock looks easy to pick.</span>
+		<span class="green">자물쇠는 쉽게 딸 수 있을 것 같다.</span>
 		<br><br>
 		<<lockicon "pick">>
-		<<link [[Pick it (0:10)|Jewellery Store]]>>
+		<<link [[딴다 (0:10)|Jewellery Store]]>>
 			<<handheldon>><<pass 10>><<crimeUp 15 "trespassing">>
 			<<if $clothingShop.ban gt 0 or crimeSumCurrent() gte 50000 or ($clothingShop.rng + 200) gte $skulduggery>>
 				<<set $clothingShop.spotted to true>>
@@ -171,10 +171,10 @@
 		<br>
 	<</if>>
 <<else>>
-	<span class="red">The lock looks beyond your ability to pick.</span>
+	<span class="red">자물쇠는 당신의 실력으로 딸 수 없을 것 같다.</span>
 	<<skulduggeryrequired>>
 	<br><br>
 <</if>>
 
-<<getouticon>><<link [[Leave|Shopping Centre Top]]>><<handheldon>><</link>>
+<<getouticon>><<link [[나간다|Shopping Centre Top]]>><<handheldon>><</link>>
 <br>

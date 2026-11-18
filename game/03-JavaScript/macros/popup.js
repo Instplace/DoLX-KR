@@ -59,10 +59,10 @@ Macro.add("popup", {
 	handler() {
 		// errors
 		if (this.args.length < 1) {
-			return this.error("need at least one argument; the passage to display");
+			return this.error("인수가 하나 이상 필요합니다. 표시할 패시지를 지정하십시오");
 		}
 		if (!Story.has(this.args[0])) {
-			return this.error("the passage " + this.args[0] + "does not exist");
+			return this.error("패시지 " + this.args[0] + "【이가】 존재하지 않습니다");
 		}
 
 		// passage name and title

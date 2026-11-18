@@ -2,11 +2,11 @@
 <<effects>>
 <<set _canEatFish to canEatFishTf($fishingHookedFish)>>
 <<if $athleticsSuccess>>
-	The seagull <span class="green">startles and backs away</span>, then flies off over the water.
+	갈매기는 <span class="green">깜짝 놀라 물러서더니</span>, 바다 위로 날아간다.
 	<br><br>
 
 	<<if _canEatFish>>
-		It's such a small fish, you could probably fit the whole thing in your mouth.
+		아주 작은 물고기라, 통째로 입에 넣을 수 있을 것 같다.
 		<br><br>
 	<</if>>
 
@@ -18,10 +18,10 @@
 			<<endevent>>
 		<</link>>
 		<br>
-		<<link [[Throw it back|Fishing Beach Wait]]>><<set $fishingAmbientOverride to "throwBack">><</link>>
+		<<link [[놓아준다|Fishing Beach Wait]]>><<set $fishingAmbientOverride to "throwBack">><</link>>
 		<<if _canEatFish>>
 			<br>
-			<<link [[Eat the fish|Fishing Beach Cat Eat]]>><</link>><<fishEatingTf>>
+			<<link [[물고기를 먹는다|Fishing Beach Cat Eat]]>><</link>><<fishEatingTf>>
 		<</if>>
 	<<elseif $bus is "fishingPier">>
 		<<link [[fishStowLabel($fishingHookedFish)|Fishing Pier Wait]]>>
@@ -31,10 +31,10 @@
 			<<endevent>>
 		<</link>>
 		<br>
-		<<link [[Throw it back|Fishing Pier Wait]]>><<set $fishingAmbientOverride to "throwBack">><</link>>
+		<<link [[놓아준다|Fishing Pier Wait]]>><<set $fishingAmbientOverride to "throwBack">><</link>>
 		<<if _canEatFish>>
 			<br>
-			<<link [[Eat the fish|Fishing Pier Cat Eat]]>><</link>><<fishEatingTf>>
+			<<link [[물고기를 먹는다|Fishing Pier Cat Eat]]>><</link>><<fishEatingTf>>
 		<</if>>
 	<<elseif $bus is "fishingCoastPath">>
 		<<link [[fishStowLabel($fishingHookedFish)|Fishing Coast Path Wait]]>>
@@ -44,23 +44,23 @@
 			<<endevent>>
 		<</link>>
 		<br>
-		<<link [[Throw it back|Fishing Coast Path Wait]]>><<set $fishingAmbientOverride to "throwBack">><</link>>
+		<<link [[놓아준다|Fishing Coast Path Wait]]>><<set $fishingAmbientOverride to "throwBack">><</link>>
 		<<if _canEatFish>>
 			<br>
-			<<link [[Eat the fish|Fishing Coast Path Cat Eat]]>><</link>><<fishEatingTf>>
+			<<link [[물고기를 먹는다|Fishing Coast Path Cat Eat]]>><</link>><<fishEatingTf>>
 		<</if>>
 	<</if>>
 <<else>>
-	Despite your efforts, the seagull darts in and <span class="red">snatches</span> the fish right from your hand and flies off with it.
+	발버둥 쳐 보았지만, 갈매기가 쏜살같이 날아와 손에서 물고기를 <span class="red">채어가며</span> 날아가 버린다.
 	<<unset $fishingHookedFish>>
 	<br><br>
 
 	<<if $bus is "fishingBeach">>
-		<<link [[Next|Fishing Beach Wait]]>><</link>>
+		<<link [[다음|Fishing Beach Wait]]>><</link>>
 	<<elseif $bus is "fishingPier">>
-		<<link [[Next|Fishing Pier Wait]]>><</link>>
+		<<link [[다음|Fishing Pier Wait]]>><</link>>
 	<<elseif $bus is "fishingCoastPath">>
-		<<link [[Next|Fishing Coast Path Wait]]>><</link>>
+		<<link [[다음|Fishing Coast Path Wait]]>><</link>>
 	<</if>>
 <</if>>
 
@@ -72,11 +72,11 @@ You hold the <<= fishDisplayName($fishingHookedFish.type)>> out. The seagull eye
 <br><br>
 
 <<if $bus is "fishingBeach">>
-	<<link [[Next|Fishing Beach Wait]]>><</link>>
+	<<link [[다음|Fishing Beach Wait]]>><</link>>
 <<elseif $bus is "fishingPier">>
-	<<link [[Next|Fishing Pier Wait]]>><</link>>
+	<<link [[다음|Fishing Pier Wait]]>><</link>>
 <<elseif $bus is "fishingCoastPath">>
-	<<link [[Next|Fishing Coast Path Wait]]>><</link>>
+	<<link [[다음|Fishing Coast Path Wait]]>><</link>>
 <</if>>
 
 /* =================================== */
@@ -87,6 +87,7 @@ You hold the <<= fishDisplayName($fishingHookedFish.type)>> out. The seagull eye
 <<widget "fishingSeagullCatch">>
 	<<set _fish to _args[0]>>
 	<<set _fishingLocation to _args[1]>>
+	<<set _fishNameKr to setup.foodstuff[_fish.type].name>>
 	<<effects>>
 	<<set $daily.fishing.seagullSteal to true>>
 
@@ -102,7 +103,7 @@ You hold the <<= fishDisplayName($fishingHookedFish.type)>> out. The seagull eye
 				<<endevent>>
 			<</link>>
 			<br>
-			<<link [[Throw it back|Fishing Beach Wait]]>><<set $fishingAmbientOverride to "throwBack">><</link>>
+			<<link [[놓아준다|Fishing Beach Wait]]>><<set $fishingAmbientOverride to "throwBack">><</link>>
 		<<elseif _fishingLocation is "fishingPier">>
 			<<link [[fishStowLabel(_fish)|Fishing Pier Wait]]>>
 				<<run fishStow(_fish)>>
@@ -111,7 +112,7 @@ You hold the <<= fishDisplayName($fishingHookedFish.type)>> out. The seagull eye
 				<<endevent>>
 			<</link>>
 			<br>
-			<<link [[Throw it back|Fishing Pier Wait]]>><<set $fishingAmbientOverride to "throwBack">><</link>>
+			<<link [[놓아준다|Fishing Pier Wait]]>><<set $fishingAmbientOverride to "throwBack">><</link>>
 		<<elseif _fishingLocation is "fishingCoastPath">>
 			<<link [[fishStowLabel(_fish)|Fishing Coast Path Wait]]>>
 				<<run fishStow(_fish)>>
@@ -120,13 +121,13 @@ You hold the <<= fishDisplayName($fishingHookedFish.type)>> out. The seagull eye
 				<<endevent>>
 			<</link>>
 			<br>
-			<<link [[Throw it back|Fishing Coast Path Wait]]>><<set $fishingAmbientOverride to "throwBack">><</link>>
+			<<link [[놓아준다|Fishing Coast Path Wait]]>><<set $fishingAmbientOverride to "throwBack">><</link>>
 		<</if>>
 	<<else>>
 		A seagull lands nearby and eyes your <<= fishDisplayName(_fish.type)>>. After a moment it hops forward and lunges for your catch.
 		<br><br>
 
-		<<link [[Shoo it away|Fishing Seagull Shoo]]>><</link>><<athleticsdifficulty -100 200>>
+		<<link [[쫓아낸다|Fishing Seagull Shoo]]>><</link>><<athleticsdifficulty -100 200>>
 		<br>
 		<<link [["Let it have the " + fishDisplayName($fishingHookedFish.type)|Fishing Seagull Give]]>><</link>>
 	<</if>>

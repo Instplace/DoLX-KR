@@ -38,8 +38,8 @@ setup.pills = [
 	{
 		name: "bottom reduction",
 		description:
-			"Each pill contains 500mg of Praberrhol, a derived molecule crafted specifically to attach to the triglyceride present in your buttocks and dissolve them over time.",
-		onTakeMessage: "You take the pills intended to reduce your butt's size. You hope it will be as effective as advertised.",
+			"각 알약에는 엉덩이에 있는 중성지방에 결합해 시간이 지나며 녹이도록 특별히 제작된 유도 분자 프라베르홀 500mg이 들어 있다.",
+		onTakeMessage: "엉덩이 크기를 줄이기 위한 알약을 삼킨다. 광고만큼 효과가 있기를 바란다.",
 		warning_label: "Warning: Severe side effects upon exceeding the maximum dose prescribed per day. Not to be associated with any other hormonal treatment.",
 		autoTake() {
 			return V.sexStats.pills["pills"][this.name].autoTake;
@@ -71,10 +71,10 @@ setup.pills = [
 	{
 		name: "bottom growth",
 		description:
-			"This pill contains the molecule Nynthroptechloxin, created by our eminent pharmaceutical scientist Dr Bancel's technological prowess. It increases the body's production of the particular hormone responsible for hip and buttock weight gains. 190mg of this molecule is present per pill.",
-		onTakeMessage: "You take the pills intended to boost your butt's growth. You hope it will be as effective as advertised.",
+			"이 알약에는 저명한 제약 과학자 반셀 박사의 기술력으로 만들어진 분자 닌트롭테클록신이 들어 있다. 이 물질은 엉덩이와 둔부 지방 증가를 담당하는 특정 호르몬의 체내 생성을 촉진한다. 한 알당 해당 분자 190mg이 포함되어 있다.",
+		onTakeMessage: "엉덩이 성장을 촉진하기 위한 알약을 삼킨다. 광고만큼 효과가 있기를 바란다.",
 		warning_label:
-			"Warning: Severe side effects upon exceeding the maximum doses per day. Refer to your doctor if in doubts. Not to be associated with any other hormonal treatment.",
+			"경고: 하루 최대 복용량을 초과하면 심각한 부작용이 발생할 수 있습니다. 의문이 있는 경우 의사와 상담하십시오. 다른 호르몬 치료와 병용하지 마십시오.",
 		autoTake() {
 			return V.sexStats.pills["pills"][this.name].autoTake;
 		},
@@ -107,10 +107,10 @@ setup.pills = [
 	{
 		name: "bottom blocker",
 		description:
-			"Each pill contains Praberrhol-NG2, a derived molecule crafted specifically to attach to triglycerides and dissolve them over time. Inactive ingredient Trinelca triggers strong binding with subcutaneous adipose tissues present in your buttocks. 200mg is the correct dosage allowing a balance between gained fat and dissolved fat.",
-		onTakeMessage: "You take the pills intended to block your butt's growth. You hope it will be as effective as advertised.",
+			"각 알약에는 중성지방에 결합해 시간이 지나며 녹이도록 특별히 제작된 유도 분자 프라베르홀-NG2가 들어 있다. 비활성 성분 트리넬카는 엉덩이의 피하 지방 조직과 강하게 결합하도록 돕는다. 200mg은 늘어나는 지방과 녹아 없어지는 지방 사이의 균형을 맞추는 적정 용량이다.",
+		onTakeMessage: "엉덩이 성장을 억제하기 위한 알약을 삼킨다. 광고만큼 효과가 있기를 바란다.",
 		warning_label:
-			"<span class='hpi_notice_label'>Notice: No side effects were determined during the trials for this drug. Taking more than 1 pill per 24 hours is ineffective</span>",
+			"<span class='hpi_notice_label'>알림: 이 약의 임상시험에서 확인된 부작용은 없습니다. 24시간 내에 1알을 초과해 복용해도 효과가 없습니다.</span>",
 		autoTake() {
 			return V.sexStats.pills["pills"][this.name].autoTake;
 		},
@@ -143,10 +143,10 @@ setup.pills = [
 	{
 		name: "breast reduction",
 		description:
-			"Each pill contains 500mg of Praberrhol-NG2, a derived molecule crafted specifically to attach to triglycerides and dissolve them over time. Inactive ingredient Abflutyx triggers strong binding with fatty tissues present in your breasts.",
-		onTakeMessage: "You take the pills intended to reduce your breasts' size. You hope it will be as effective as advertised.",
+			"각 알약에는 중성지방에 결합해 시간이 지나며 녹이도록 특별히 제작된 유도 분자 프라베르홀-NG2 500mg이 들어 있다. 비활성 성분 애브플루틱스는 가슴의 지방 조직과 강하게 결합하도록 돕는다.",
+		onTakeMessage: "가슴 크기를 줄이기 위한 알약을 삼킨다. 광고만큼 효과가 있기를 바란다.",
 		warning_label:
-			"Warning: Severe side effects upon exceeding the maximum doses per day. Refer to your doctor if in doubts. Not to be associated with any other hormonal treatment.",
+			"경고: 하루 최대 복용량을 초과하면 심각한 부작용이 발생할 수 있습니다. 의문이 있는 경우 의사와 상담하십시오. 다른 호르몬 치료와 병용하지 마십시오.",
 		autoTake() {
 			return V.sexStats.pills["pills"][this.name].autoTake;
 		},
@@ -177,10 +177,10 @@ setup.pills = [
 	{
 		name: "breast growth",
 		description:
-			"A hormonal mRNA-therapy pill. The 5mg of Dipardyn present aim to trigger natural secretion of the specific hormones responsible for causing breast growth, while the mRNA will help your cells produce a new kind of hormone to increase breast tissue production and their capability to store fat, effectively making your breasts grow faster.",
-		onTakeMessage: "You take the pills intended to boost your breasts' growth. You hope it will be as effective as advertised.",
+			"호르몬 mRNA 치료제 알약이다. 포함된 디파딘 5mg은 가슴 성장을 일으키는 특정 호르몬의 자연 분비를 유도하며, mRNA는 세포가 새로운 종류의 호르몬을 만들어 가슴 조직 생성과 지방 저장 능력을 높이도록 도와 결과적으로 가슴이 더 빨리 자라게 한다.",
+		onTakeMessage: "가슴 성장을 촉진하기 위한 알약을 삼킨다. 광고만큼 효과가 있기를 바란다.",
 		warning_label:
-			"Warning: Severe side effects upon exceeding the maximum doses per day. Refer to your doctor if in doubts. Not to be associated with any other hormonal treatment.",
+			"경고: 하루 최대 복용량을 초과하면 심각한 부작용이 발생할 수 있습니다. 의문이 있는 경우 의사와 상담하십시오. 다른 호르몬 치료와 병용하지 마십시오.",
 		autoTake() {
 			return V.sexStats.pills["pills"][this.name].autoTake;
 		},
@@ -213,10 +213,10 @@ setup.pills = [
 	{
 		name: "breast blocker",
 		description:
-			"A selective oestrogen receptor modulator (SERM), blocking the protein receptors responsible for breast growth; supplemented by 269mg of Tetraozealpostigyl.",
-		onTakeMessage: "You take the pills intended to block your breasts' growth. You hope it will be as effective as advertised.",
+			"선택적 에스트로겐 수용체 조절제(SERM)로, 가슴 성장을 담당하는 단백질 수용체를 차단한다. 테트라오제알포스티길 269mg이 보강되어 있다.",
+		onTakeMessage: "가슴 성장을 억제하기 위한 알약을 삼킨다. 광고만큼 효과가 있기를 바란다.",
 		warning_label:
-			'<span class="hpi_notice_label">Notice: No side effects were determined during the trials for this drug. Taking more than 1 pill per 24 hours is ineffective</span>',
+			'<span class="hpi_notice_label">알림: 이 약의 임상시험에서 확인된 부작용은 없습니다. 24시간 내에 1알을 초과해 복용해도 효과가 없습니다.</span>',
 		autoTake() {
 			return V.sexStats.pills["pills"][this.name].autoTake;
 		},
@@ -249,10 +249,10 @@ setup.pills = [
 	{
 		name: "penis reduction",
 		description:
-			"Each pill contains 50mg of Chliustose which has limited anti-androgen effects. Additionally, 450mg of Phirhyn will reduce the amount and thickness of the erectile tissue.",
-		onTakeMessage: "You take the pills intended to reduce your penis' size. You hope it will be as effective as advertised.",
+			"각 알약에는 제한적인 항안드로겐 효과를 지닌 클리우스토스 50mg이 들어 있다. 또한 피린 450mg이 발기 조직의 양과 두께를 줄인다.",
+		onTakeMessage: "자지 크기를 줄이기 위한 알약을 삼킨다. 광고만큼 효과가 있기를 바란다.",
 		warning_label:
-			"Warning: Severe side effects upon exceeding the maximum doses per day. Refer to your doctor if in doubts. Not to be associated with any other hormonal treatment.",
+			"경고: 하루 최대 복용량을 초과하면 심각한 부작용이 발생할 수 있습니다. 의문이 있는 경우 의사와 상담하십시오. 다른 호르몬 치료와 병용하지 마십시오.",
 		autoTake() {
 			return V.sexStats.pills["pills"][this.name].autoTake;
 		},
@@ -283,10 +283,10 @@ setup.pills = [
 	{
 		name: "penis growth",
 		description:
-			"Each pill contains 780mg of Cumnictondyl, 240mg of Iphopol, and 149mg of testosterone undecanoate. The two molecules enable and facilitate the action of the androgen, which has for effect the resumption of your penis' natural growth.",
-		onTakeMessage: "You take the pills intended to boost your penis' growth. You hope it will be as effective as advertised.",
+			"각 알약에는 컴닉톤딜 780mg, 이포폴 240mg, 테스토스테론 운데카노에이트 149mg이 들어 있다. 두 분자는 안드로겐의 작용을 가능하게 하고 촉진해, 자지의 자연 성장을 다시 시작시키는 효과를 낸다.",
+		onTakeMessage: "자지 성장을 촉진하기 위한 알약을 삼킨다. 광고만큼 효과가 있기를 바란다.",
 		warning_label:
-			"Warning: Severe side effects upon exceeding the maximum doses per day. Refer to your doctor if in doubts. Not to be associated with any other hormonal treatment.",
+			"경고: 하루 최대 복용량을 초과하면 심각한 부작용이 발생할 수 있습니다. 의문이 있는 경우 의사와 상담하십시오. 다른 호르몬 치료와 병용하지 마십시오.",
 		autoTake() {
 			return V.sexStats.pills["pills"][this.name].autoTake;
 		},
@@ -317,10 +317,10 @@ setup.pills = [
 	{
 		name: "penis blocker",
 		description:
-			"An anti-androgen hormonal treatment containing 370mg of Dynthryme aiming at blocking the production of androsterone and testosterone in your body, effectively blocking penile growth.",
-		onTakeMessage: "You take the pills intended to block your penis' growth. You hope it will be as effective as advertised.",
+			"딘트라임 370mg을 함유한 항안드로겐 호르몬 치료제로, 체내 안드로스테론과 테스토스테론 생성을 차단해 결과적으로 자지 성장을 억제한다.",
+		onTakeMessage: "자지 성장을 억제하기 위한 알약을 삼킨다. 광고만큼 효과가 있기를 바란다.",
 		warning_label:
-			'<span class="hpi_notice_label">Notice: No side effects were determined during the trials for this drug. Taking more than 1 pill per 24 hours is ineffective</span>',
+			'<span class="hpi_notice_label">알림: 이 약의 임상시험에서 확인된 부작용은 없습니다. 24시간 내에 1알을 초과해 복용해도 효과가 없습니다.</span>',
 		autoTake() {
 			return V.sexStats.pills["pills"][this.name].autoTake;
 		},
@@ -351,10 +351,10 @@ setup.pills = [
 	{
 		name: "fertility booster",
 		description:
-			"Each pill contains 50mg of clomiphene citrate, a structural analogue of oestrogens. It also acts on your hypothalamus which secretes the hormones necessary to trigger ovulation. In some cases effectively inducing your ovary to release eggs.",
-		onTakeMessage: "You take the pills intended to increase your fertility. You hope it will be as effective as advertised.",
+			"각 알약에는 에스트로겐의 구조 유사체인 클로미펜 시트르산염 50mg이 들어 있다. 또한 배란을 유도하는 데 필요한 호르몬을 분비하는 시상하부에도 작용한다. 경우에 따라 난소가 난자를 배출하도록 효과적으로 유도한다.",
+		onTakeMessage: "생식력을 높이기 위한 알약을 삼킨다. 광고만큼 효과가 있기를 바란다.",
 		warning_label:
-			"Warning: Mild side effects may occur with the prescribed dosage, including those that may mimic the signs of early pregnancy. Severe complications may occur if exceeding the maximum doses per day. If in doubt, please consult your doctor.",
+			"경고: 처방 용량으로도 가벼운 부작용이 발생할 수 있으며, 초기 임신 징후와 비슷한 증상이 나타날 수 있습니다. 하루 최대 복용량을 초과하면 심각한 합병증이 발생할 수 있습니다. 의심스러운 경우 의사와 상담하십시오.",
 		autoTake() {
 			return V.sexStats.pills["pills"][this.name].autoTake;
 		},
@@ -368,11 +368,11 @@ setup.pills = [
 			if (V.sexStats.pills["pills"][this.name].doseTaken) {
 				return "Effective for " + V.sexStats.pills["pills"][this.name].doseTaken + " day" + (V.sexStats.pills["pills"][this.name].doseTaken > 1 ? "s" : "");
 			} else {
-				return "Not Applied";
+				return "사용하지 않음";
 			}
 		},
 		hpi_take_every_morning() {
-			return this.autoTake() ? "Stop Taking them" : "Take when required";
+			return this.autoTake() ? "자동 복용 중지" : "필요할 때 복용";
 		},
 		type: "pregnancy",
 		subtype: "fertility booster",
@@ -392,10 +392,10 @@ setup.pills = [
 	{
 		name: "contraceptive",
 		description:
-			"Estroprogestatifs associating 24mg of ethinylestradiol (synthetic oestrogen) and 31mg of a synthetic progestin for a near-perfect contraceptive effect.",
-		onTakeMessage: "You take the contraceptive pill. You hope it will be as effective as advertised.",
+			"에티닐에스트라디올 24mg과 합성 프로게스틴 31mg을 조합한 에스트로겐-프로게스틴 복합제로, 거의 완벽한 피임 효과를 낸다.",
+		onTakeMessage: "피임약을 삼킨다. 광고만큼 효과가 있기를 바란다.",
 		warning_label:
-			"Warning: Mild side effects may occur with the prescribed dosage. Severe complications may occur if exceeding the maximum doses per day. If in doubt, please consult your doctor.",
+			"경고: 처방 용량으로도 가벼운 부작용이 발생할 수 있습니다. 하루 최대 복용량을 초과하면 심각한 합병증이 발생할 수 있습니다. 의심스러운 경우 의사와 상담하십시오.",
 		autoTake() {
 			return V.sexStats.pills["pills"][this.name].autoTake;
 		},
@@ -409,11 +409,11 @@ setup.pills = [
 			if (V.sexStats.pills["pills"][this.name].doseTaken) {
 				return "Effective for " + V.sexStats.pills["pills"][this.name].doseTaken + " day" + (V.sexStats.pills["pills"][this.name].doseTaken > 1 ? "s" : "");
 			} else {
-				return "Not Applied";
+				return "사용하지 않음";
 			}
 		},
 		hpi_take_every_morning() {
-			return this.autoTake() ? "Stop Taking them" : "Take when required";
+			return this.autoTake() ? "자동 복용 중지" : "필요할 때 복용";
 		},
 		type: "pregnancy",
 		subtype: "contraceptive",
@@ -433,10 +433,10 @@ setup.pills = [
 	{
 		name: "Anti-Parasite Cream",
 		description:
-			"A parasite-repelling cream containing Permethrin. When applied, it prevents new parasitic infestation from occurring, although it has no effect on any ongoing parasitic infections. Effective for 14 days on application.",
-		onTakeMessage: "You apply the cream around your genitals. You hope it prevents them from leaving any offspring behind.",
+			"퍼메트린이 들어 있는 기생충 방지 크림이다. 바르면 새로운 기생충 감염을 막지만, 이미 진행 중인 기생충 감염에는 효과가 없다. 한 번 바르면 14일 동안 효과가 지속된다.",
+		onTakeMessage: "성기 주변에 크림을 바른다. 기생충이 새끼를 남기지 못하게 막아주기를 바란다.",
 		warning_label:
-			"Warning: Please consult your doctor if you have an allergic reaction shortly after application. Contact your doctor immediately if you get the cream in your mouth or eyes.",
+			"경고: 사용 직후 알레르기 반응이 나타나면 의사와 상담하십시오. 크림이 입이나 눈에 들어간 경우 즉시 의사에게 연락하십시오.",
 		autoTake() {
 			return false;
 		},
@@ -447,13 +447,13 @@ setup.pills = [
 			return V.sexStats.pills["pills"][this.name].owned;
 		},
 		hpi_take_pills() {
-			return "Apply to skin";
+			return "피부에 바르기";
 		},
 		hpi_doseTaken() {
 			if (V.sexStats.pills["pills"][this.name].doseTaken) {
 				return "Effective for " + V.sexStats.pills["pills"][this.name].doseTaken + " day" + (V.sexStats.pills["pills"][this.name].doseTaken > 1 ? "s" : "");
 			} else {
-				return "Not Applied";
+				return "사용하지 않음";
 			}
 		},
 		hpi_take_every_morning() {
@@ -649,11 +649,11 @@ setup.pills = [
 	},
 	{
 		name: "asylum's prescription",
-		description: "A powerful antipsychotic.",
-		onTakeMessage: "You take the pills prescribed in the asylum. You feel hazy.",
+		description: "강력한 항정신병제다.",
+		onTakeMessage: "정신병원에서 처방받은 알약을 삼킨다. 머리가 멍해진다.",
 		warning_label:
-			"<span class='hpi_notice_label'>Notice: No side effects could be determined during the experimental stage of this drug, and it passed all safety regulations. <span class='hpi_blur unselectable'>I think this drug company is about to be the end of me. No side effects ? Who do they think they're kidding ?!</span></span>",
-		indicators: ["<span class='hpi_indic_green'>++ Control</span>", "<span class='hpi_indic_blue'>- Awareness</span>"],
+			"<span class='hpi_notice_label'>알림: 이 약의 실험 단계에서 확인된 부작용은 없었으며, 모든 안전 규정을 통과했습니다. <span class='hpi_blur unselectable'>이 제약회사 때문에 내가 끝장날 것 같군. 부작용이 없다고? 대체 누굴 속이려는 거야?!</span></span>",
+		indicators: ["<span class='hpi_indic_green'>++ 통제력</span>", "<span class='hpi_indic_blue'>- 성지식</span>"],
 		autoTake() {
 			return V.sexStats.pills["pills"][this.name].autoTake;
 		},
@@ -808,10 +808,10 @@ setup.pills = [
 	{
 		name: "Hair Growth Formula",
 		description:
-			"A spray containing Minoxidil and other ingredients to promote faster growth and healthier hair when applied directly to hair. Effective for 3 days on application.",
-		onTakeMessage: "You apply the spray. You hope it helps grow your hair quickly.",
+			"머리카락에 직접 바르면 더 빠르고 건강한 성장을 촉진하는 미녹시딜과 기타 성분이 들어 있는 스프레이다. 한 번 사용하면 3일 동안 효과가 지속된다.",
+		onTakeMessage: "스프레이를 뿌린다. 머리카락이 빨리 자라는 데 도움이 되기를 바란다.",
 		warning_label:
-			"Warning: Please consult your doctor if you have an allergic reaction shortly after application. Contact your doctor immediately if you get the spray in your mouth or eyes.",
+			"경고: 사용 직후 알레르기 반응이 나타나면 의사와 상담하십시오. 스프레이가 입이나 눈에 들어간 경우 즉시 의사에게 연락하십시오.",
 		autoTake() {
 			return V.sexStats.pills["pills"][this.name].autoTake;
 		},
@@ -822,17 +822,17 @@ setup.pills = [
 			return V.sexStats.pills["pills"][this.name].owned;
 		},
 		hpi_take_pills() {
-			return "Apply to hair";
+			return "머리카락에 바르기";
 		},
 		hpi_doseTaken() {
 			if (V.sexStats.pills["pills"][this.name].doseTaken) {
 				return "Effective for " + V.sexStats.pills["pills"][this.name].doseTaken + " day" + (V.sexStats.pills["pills"][this.name].doseTaken > 1 ? "s" : "");
 			} else {
-				return "Not Applied";
+				return "사용하지 않음";
 			}
 		},
 		hpi_take_every_morning() {
-			return this.autoTake() ? "Stop Applying it" : "Apply when required";
+			return this.autoTake() ? "자동 사용 중지" : "필요할 때 사용";
 		},
 		type: "hair",
 		subtype: "Hair Growth Formula",
@@ -849,7 +849,30 @@ setup.pills = [
 		},
 		effects: [],
 	},
-];
+ ];
+
+const homePillDisplayNames = {
+	"bottom reduction": "엉덩이 축소제",
+	"bottom growth": "엉덩이 성장제",
+	"bottom blocker": "엉덩이 성장 억제제",
+	"breast reduction": "가슴 축소제",
+	"breast growth": "가슴 성장제",
+	"breast blocker": "가슴 성장 억제제",
+	"penis reduction": "자지 축소제",
+	"penis growth": "자지 성장제",
+	"penis blocker": "자지 성장 억제제",
+	"fertility booster": "배란 유도제",
+	contraceptive: "피임약",
+	"Anti-Parasite Cream": "기생충 방지 크림",
+	"asylum's prescription": "정신병원 처방약",
+	"Dr Harper's prescription": "하퍼 의사의 처방약",
+	"Hair Growth Formula": "모발 성장제",
+};
+
+function homePillDisplayName(name) {
+	return homePillDisplayNames[name] || name;
+}
+
 // ToDo: figure out a means to allow applying the Hair Growth Formula to pubic hair as well
 
 function generateHomePillsInventory() {
@@ -875,8 +898,8 @@ function addElementToGrid(item) {
 			<div class="hpi_item">
 				<div class="hpi_icon">${item.frontIcon ? `<img class="icon infront" src="${item.frontIcon}"/>` : ""}<img class="icon" src="${item.icon}"/></div>
 				<div class="hpi_name" id="hpi_name_${itemName}">
-					${itemName}
-					${item.autoTake() === true ? `<span class="hpi_auto_label"> [Auto]</span>` : ""}
+					${itemDisplayName}
+					${item.autoTake() === true ? `<span class="hpi_auto_label"> [자동]</span>` : ""}
 				</div>
 				<div class="hpi_count" onmouseenter="T.disableGridClick = true" onmouseleave="T.disableGridClick = false">${item.owned()}</div>
 			</div>
@@ -929,10 +952,10 @@ function onHomePillItemClick(itemName) {
 					<div class="hpi_warning_label">${item.warning_label}</div>
 					<div id="hpi_desc_action">
 						<div class="hpi_action_cell">
-							<a id="hpi_take_pills" onclick="window.onTakeClick(${itemName}, ${itemType})">Take pill</a>
+							<a id="hpi_take_pills" onclick="window.onTakeClick(${itemName}, ${itemType})">알약 복용</a>
 						</div>
 						<div class="hpi_action_cell">
-							<a id="hpi_take_every_morning" onclick="window.onAutoTakeClick(${itemName}, ${itemType})">Take every morning</a>
+							<a id="hpi_take_every_morning" onclick="window.onAutoTakeClick(${itemName}, ${itemType})">매일 아침 복용</a>
 						</div>
 						${pillBagActionCell(item)}
 					</div>
@@ -962,7 +985,7 @@ function initPillContextButtons(item) {
 	if (item.hpi_take_every_morning) {
 		document.getElementById("hpi_take_every_morning").innerHTML = item.hpi_take_every_morning();
 	} else {
-		document.getElementById("hpi_take_every_morning").innerHTML = item.autoTake() ? "Stop taking them" : "Take every morning";
+		document.getElementById("hpi_take_every_morning").innerHTML = item.autoTake() ? "자동 복용 중지" : "매일 아침 복용";
 	}
 
 	// Hide auto-use for medication that must be taken manually.
@@ -974,7 +997,7 @@ function initPillContextButtons(item) {
 		}
 	}
 	//  Add 'Take pill' button
-	document.getElementById("hpi_take_pills").innerHTML = item.hpi_take_pills ? item.hpi_take_pills() : "Take pill";
+	document.getElementById("hpi_take_pills").innerHTML = item.hpi_take_pills ? item.hpi_take_pills() : "알약 복용";
 
 	// If the button doesn't exist, create it. If it exists, display the right dose Taken for that pill
 	if (document.getElementById("hpi_doseTaken") != null) {
@@ -984,7 +1007,7 @@ function initPillContextButtons(item) {
 		} else {
 			// todo: replace style with a proper css class
 			document.getElementById("hpi_doseTaken").outerHTML =
-				"<span id='hpi_doseTaken' style='font-size: 0.88em;color: #979797;'> [" + item.doseTaken() + " Taken]</span>";
+				"<span id='hpi_doseTaken' style='font-size: 0.88em;color: #979797;'> [" + item.doseTaken() + "회 복용]</span>";
 		}
 		// Display today taken doses for specific pill
 	} else {
@@ -993,7 +1016,7 @@ function initPillContextButtons(item) {
 				`<span id="hpi_doseTaken" style="font-size: 0.88em;color: #979797;"> [` + item.hpi_doseTaken() + `]</span>`; // Display today taken doses for specific pill
 		} else {
 			document.getElementById("hpi_take_pills").outerHTML +=
-				`<span id="hpi_doseTaken" style="font-size: 0.88em;color: #979797;"> [` + item.doseTaken() + ` Taken]</span>`; // Display today taken doses for specific pill
+				`<span id="hpi_doseTaken" style="font-size: 0.88em;color: #979797;"> [` + item.doseTaken() + `회 복용]</span>`; // Display today taken doses for specific pill
 		}
 	}
 	// Check if the player meets the criteria to take the pill.
@@ -1349,8 +1372,8 @@ function syncAutoTakeDisplayedState() {
 	for (const item of setup.pills) {
 		const capitalisedName = item.name[0].toUpperCase() + item.name.slice(1);
 		if (document.getElementById("hpi_name_" + capitalisedName) != null) {
-			document.getElementById("hpi_name_" + capitalisedName).innerHTML = capitalisedName;
-			document.getElementById("hpi_name_" + capitalisedName).innerHTML += item.autoTake() === true ? "<span class='hpi_auto_label'> [Auto]</span>" : "";
+			document.getElementById("hpi_name_" + capitalisedName).innerHTML = homePillDisplayName(item.name);
+			document.getElementById("hpi_name_" + capitalisedName).innerHTML += item.autoTake() === true ? "<span class='hpi_auto_label'> [자동]</span>" : "";
 		}
 	}
 }

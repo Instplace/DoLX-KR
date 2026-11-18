@@ -407,7 +407,7 @@ setup.colours = {
 		return `<span class="skinToneSwatch" style="background:${colour}"></span>`;
 	},
 	getSkinToneLabel(tone) {
-		if (tone === "ghost") return "Ghostly Pale";
+		if (tone === "ghost") return "유령처럼 창백함";
 		if (!Number.isFinite(tone)) return "N/A";
 		if (tone < 30) return "Light";
 		if (tone < 70) return "Medium";
@@ -428,8 +428,8 @@ setup.colours = {
 setup.colours.hair = [
 	{
 		variable: "random", // Only used at the start for a randomised colour
-		name: "random",
-		name_cap: "Random",
+		name: "무작위",
+		name_cap: "무작위",
 		csstext: "Random",
 		natural: true,
 		dye: false,
@@ -439,8 +439,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "red",
-		name: "red",
-		name_cap: "Red",
+		name: "빨간색",
+		name_cap: "빨간색",
 		csstext: "red",
 		natural: true,
 		dye: true,
@@ -450,8 +450,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "ebony",
-		name: "ebony",
-		name_cap: "Ebony",
+		name: "에보니",
+		name_cap: "에보니",
 		csstext: "black",
 		natural: false,
 		dye: true,
@@ -462,8 +462,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "jetblack",
-		name: "jet black",
-		name_cap: "Jet Black",
+		name: "칠흑색",
+		name_cap: "칠흑색",
 		csstext: "black",
 		natural: true,
 		dye: true,
@@ -474,8 +474,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "black",
-		name: "black",
-		name_cap: "Black",
+		name: "검은색",
+		name_cap: "검은색",
 		csstext: "black",
 		natural: true,
 		dye: true,
@@ -486,8 +486,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "blond",
-		name: "blond",
-		name_cap: "Blond",
+		name: "금발",
+		name_cap: "금발",
 		csstext: "gold",
 		natural: true,
 		dye: true,
@@ -497,8 +497,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "softblond",
-		name: "soft blond",
-		name_cap: "Soft Blond",
+		name: "부드러운 금발",
+		name_cap: "부드러운 금발",
 		csstext: "softblond",
 		natural: true,
 		dye: true,
@@ -508,8 +508,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "platinumblond",
-		name: "platinum blond",
-		name_cap: "Platinum Blond",
+		name: "백금발",
+		name_cap: "백금발",
 		csstext: "platinum",
 		natural: true,
 		dye: true,
@@ -519,8 +519,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "golden",
-		name: "golden",
-		name_cap: "Golden",
+		name: "황금색",
+		name_cap: "황금색",
 		csstext: "gold",
 		natural: false,
 		dye: true,
@@ -530,8 +530,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "ashyblond",
-		name: "ashy blond",
-		name_cap: "Ashy Blond",
+		name: "애쉬 블론드",
+		name_cap: "애쉬 블론드",
 		csstext: "ashy",
 		natural: true,
 		dye: true,
@@ -552,8 +552,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "strawberryblond",
-		name: "strawberry blond",
-		name_cap: "Strawberry Blond",
+		name: "스트로베리 블론드",
+		name_cap: "스트로베리 블론드",
 		csstext: "strawberry",
 		natural: true,
 		dye: true,
@@ -563,8 +563,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "darkbrown",
-		name: "dark brown",
-		name_cap: "Dark Brown",
+		name: "어두운 갈색",
+		name_cap: "어두운 갈색",
 		csstext: "darkbrown",
 		natural: true,
 		dye: true,
@@ -575,8 +575,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "brown",
-		name: "brown",
-		name_cap: "Brown",
+		name: "갈색",
+		name_cap: "갈색",
 		csstext: "brown",
 		natural: true,
 		dye: true,
@@ -587,8 +587,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "copperbrown",
-		name: "copper brown",
-		name_cap: "Copper Brown",
+		name: "구리빛 갈색",
+		name_cap: "구리빛 갈색",
 		csstext: "copperbrown",
 		natural: true,
 		dye: true,
@@ -599,8 +599,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "softbrown",
-		name: "soft brown",
-		name_cap: "Soft Brown",
+		name: "부드러운 갈색",
+		name_cap: "부드러운 갈색",
 		csstext: "softbrown",
 		natural: true,
 		dye: true,
@@ -611,8 +611,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "lightbrown",
-		name: "light brown",
-		name_cap: "Light Brown",
+		name: "밝은 갈색",
+		name_cap: "밝은 갈색",
 		csstext: "lightbrown",
 		natural: true,
 		dye: true,
@@ -623,8 +623,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "burntorange",
-		name: "burnt orange",
-		name_cap: "Burnt Orange",
+		name: "번트 오렌지",
+		name_cap: "번트 오렌지",
 		csstext: "burntorange",
 		natural: true,
 		dye: true,
@@ -635,8 +635,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "ginger",
-		name: "ginger",
-		name_cap: "Ginger",
+		name: "진저",
+		name_cap: "진저",
 		csstext: "tangerine",
 		natural: true,
 		dye: true,
@@ -646,8 +646,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "bloodorange",
-		name: "blood orange",
-		name_cap: "Blood Orange",
+		name: "블러드 오렌지",
+		name_cap: "블러드 오렌지",
 		csstext: "bloodorange",
 		natural: false,
 		dye: true,
@@ -657,8 +657,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "blue",
-		name: "blue",
-		name_cap: "Blue",
+		name: "파란색",
+		name_cap: "파란색",
 		csstext: "bluehair",
 		natural: false,
 		dye: true,
@@ -669,8 +669,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "deepblue",
-		name: "deep blue",
-		name_cap: "Deep Blue",
+		name: "짙은 파란색",
+		name_cap: "짙은 파란색",
 		csstext: "deepblue",
 		natural: false,
 		dye: true,
@@ -681,8 +681,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "neonblue",
-		name: "neon blue",
-		name_cap: "Neon Blue",
+		name: "네온 블루",
+		name_cap: "네온 블루",
 		csstext: "neonblue",
 		natural: false,
 		dye: true,
@@ -692,8 +692,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "frostblue",
-		name: "frost blue",
-		name_cap: "Frost Blue",
+		name: "프로스트 블루",
+		name_cap: "프로스트 블루",
 		csstext: "frostblue",
 		natural: false,
 		dye: true,
@@ -703,8 +703,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "green",
-		name: "green",
-		name_cap: "Green",
+		name: "녹색",
+		name_cap: "녹색",
 		csstext: "greenhair",
 		natural: false,
 		dye: true,
@@ -714,8 +714,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "darklime",
-		name: "dark lime",
-		name_cap: "Dark Lime",
+		name: "어두운 라임색",
+		name_cap: "어두운 라임색",
 		csstext: "darklime",
 		natural: false,
 		dye: true,
@@ -725,8 +725,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "toxicgreen",
-		name: "toxic green",
-		name_cap: "Toxic Green",
+		name: "톡식 그린",
+		name_cap: "톡식 그린",
 		csstext: "toxicgreen",
 		natural: false,
 		dye: true,
@@ -736,8 +736,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "teal",
-		name: "teal",
-		name_cap: "Teal",
+		name: "청록색",
+		name_cap: "청록색",
 		csstext: "tealhair",
 		natural: false,
 		dye: true,
@@ -747,8 +747,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "aquamarine",
-		name: "aquamarine",
-		name_cap: "Aquamarine",
+		name: "아쿠아마린",
+		name_cap: "아쿠아마린",
 		csstext: "aquamarine",
 		natural: false,
 		dye: true,
@@ -769,8 +769,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "pink",
-		name: "pink",
-		name_cap: "Pink",
+		name: "분홍색",
+		name_cap: "분홍색",
 		csstext: "pinkhair",
 		natural: false,
 		dye: true,
@@ -780,8 +780,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "brightpink",
-		name: "bright pink",
-		name_cap: "Bright Pink",
+		name: "밝은 분홍색",
+		name_cap: "밝은 분홍색",
 		csstext: "brightpink",
 		natural: false,
 		dye: true,
@@ -791,8 +791,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "hotpink",
-		name: "hot pink",
-		name_cap: "Hot Pink",
+		name: "핫핑크",
+		name_cap: "핫핑크",
 		csstext: "hotpink",
 		natural: false,
 		dye: true,
@@ -802,8 +802,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "softpink",
-		name: "soft pink",
-		name_cap: "Soft Pink",
+		name: "부드러운 분홍색",
+		name_cap: "부드러운 분홍색",
 		csstext: "softpink",
 		natural: false,
 		dye: true,
@@ -814,8 +814,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "rosegold",
-		name: "rose gold",
-		name_cap: "Rose Gold",
+		name: "로즈 골드",
+		name_cap: "로즈 골드",
 		csstext: "rosegold",
 		natural: false,
 		dye: true,
@@ -825,8 +825,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "crimson",
-		name: "crimson",
-		name_cap: "Crimson",
+		name: "진홍색",
+		name_cap: "진홍색",
 		csstext: "crimson",
 		natural: false,
 		dye: true,
@@ -836,8 +836,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "wine",
-		name: "wine",
-		name_cap: "Wine",
+		name: "와인",
+		name_cap: "와인",
 		csstext: "winehair",
 		natural: false,
 		dye: true,
@@ -848,8 +848,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "purple",
-		name: "purple",
-		name_cap: "Purple",
+		name: "보라색",
+		name_cap: "보라색",
 		csstext: "purplehair",
 		natural: false,
 		dye: true,
@@ -860,8 +860,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "mediumpurple",
-		name: "medium purple",
-		name_cap: "Medium Purple",
+		name: "중간 보라색",
+		name_cap: "중간 보라색",
 		csstext: "mediumpurple",
 		natural: false,
 		dye: true,
@@ -871,8 +871,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "brightpurple",
-		name: "bright purple",
-		name_cap: "Bright Purple",
+		name: "밝은 보라색",
+		name_cap: "밝은 보라색",
 		csstext: "brightpurple",
 		natural: false,
 		dye: true,
@@ -893,8 +893,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "grey",
-		name: "grey",
-		name_cap: "Grey",
+		name: "회색",
+		name_cap: "회색",
 		csstext: "grey",
 		natural: false,
 		dye: true,
@@ -903,9 +903,23 @@ setup.colours.hair = [
 		},
 	},
 	{
+		// KR: genePool.wolfFur("tan")이 참조하지만 원본 hair 배열엔 없던 색상. 임시로 clothes 쪽
+		// "tan"(colours.js ~1481행) 블렌드값을 재사용함 — 늑대 새끼 스프라이트에서 실제로
+		// 확인 후 canvasfilter는 조정 필요.
+		variable: "tan",
+		name: "황갈색",
+		name_cap: "황갈색",
+		csstext: "tan",
+		natural: false,
+		dye: false,
+		canvasfilter: {
+			blend: "#c3ad91",
+		},
+	},
+	{
 		variable: "white",
-		name: "white",
-		name_cap: "White",
+		name: "흰색",
+		name_cap: "흰색",
 		csstext: "whitehair",
 		natural: true,
 		dye: true,
@@ -916,8 +930,8 @@ setup.colours.hair = [
 	},
 	{
 		variable: "snowwhite",
-		name: "snow white",
-		name_cap: "Snow White",
+		name: "설백색",
+		name_cap: "설백색",
 		csstext: "snowwhitehair",
 		natural: true,
 		dye: true,
@@ -1198,8 +1212,8 @@ setup.colours.hairgradients_prototypes = {
 setup.colours.eyes = [
 	{
 		variable: "random", // Only used at the start for a randomised colour
-		name: "random",
-		name_cap: "Random",
+		name: "무작위",
+		name_cap: "무작위",
 		csstext: "Random",
 		natural: true,
 		lens: false,
@@ -1220,8 +1234,8 @@ setup.colours.eyes = [
 	},
 	{
 		variable: "purple",
-		name: "purple",
-		name_cap: "Purple",
+		name: "보라색",
+		name_cap: "보라색",
 		csstext: "purple",
 		natural: true,
 		lens: true,
@@ -1231,8 +1245,8 @@ setup.colours.eyes = [
 	},
 	{
 		variable: "dark blue",
-		name: "dark blue",
-		name_cap: "Dark Blue",
+		name: "어두운 파란색",
+		name_cap: "어두운 파란색",
 		csstext: "blue",
 		natural: true,
 		lens: true,
@@ -1243,8 +1257,8 @@ setup.colours.eyes = [
 	},
 	{
 		variable: "light blue",
-		name: "light blue",
-		name_cap: "Light Blue",
+		name: "밝은 파란색",
+		name_cap: "밝은 파란색",
 		csstext: "lblue",
 		natural: true,
 		lens: true,
@@ -1255,8 +1269,8 @@ setup.colours.eyes = [
 	},
 	{
 		variable: "amber",
-		name: "amber",
-		name_cap: "Amber",
+		name: "호박색",
+		name_cap: "호박색",
 		csstext: "tangerine",
 		natural: true,
 		lens: true,
@@ -1266,8 +1280,8 @@ setup.colours.eyes = [
 	},
 	{
 		variable: "hazel",
-		name: "hazel",
-		name_cap: "Hazel",
+		name: "헤이즐색",
+		name_cap: "헤이즐색",
 		csstext: "brown",
 		natural: true,
 		lens: true,
@@ -1275,21 +1289,20 @@ setup.colours.eyes = [
 			blend: "#917742",
 		},
 	},
-	{
-		variable: "brown",
-		name: "brown",
-		name_cap: "Brown",
-		csstext: "brown",
-		natural: true,
-		lens: true,
-		canvasfilter: {
-			blend: "#704132",
-		},
-	},
+    {variable: "brown",
+        name: "갈색",
+        name_cap: "갈색",
+        csstext: "brown",
+        natural: true,
+        lens: true,
+        canvasfilter: {
+            blend: "#704132",
+        },
+    },
 	{
 		variable: "green",
-		name: "green",
-		name_cap: "Green",
+		name: "녹색",
+		name_cap: "녹색",
 		csstext: "green",
 		natural: true,
 		lens: true,
@@ -1299,8 +1312,8 @@ setup.colours.eyes = [
 	},
 	{
 		variable: "lime green",
-		name: "lime green",
-		name_cap: "Lime Green",
+		name: "라임 그린",
+		name_cap: "라임 그린",
 		csstext: "green",
 		natural: true,
 		lens: true,
@@ -1311,8 +1324,8 @@ setup.colours.eyes = [
 	},
 	{
 		variable: "light green",
-		name: "light green",
-		name_cap: "Light Green",
+		name: "밝은 녹색",
+		name_cap: "밝은 녹색",
 		csstext: "green",
 		natural: true,
 		lens: true,
@@ -1322,8 +1335,8 @@ setup.colours.eyes = [
 	},
 	{
 		variable: "red",
-		name: "red",
-		name_cap: "Red",
+		name: "빨간색",
+		name_cap: "빨간색",
 		csstext: "red",
 		natural: true,
 		lens: true,
@@ -1333,8 +1346,8 @@ setup.colours.eyes = [
 	},
 	{
 		variable: "pink",
-		name: "pink",
-		name_cap: "Pink",
+		name: "분홍색",
+		name_cap: "분홍색",
 		csstext: "pink",
 		natural: true,
 		lens: true,
@@ -1345,8 +1358,8 @@ setup.colours.eyes = [
 	},
 	{
 		variable: "grey",
-		name: "grey",
-		name_cap: "Grey",
+		name: "회색",
+		name_cap: "회색",
 		csstext: "grey",
 		natural: true,
 		lens: true,
@@ -1356,8 +1369,8 @@ setup.colours.eyes = [
 	},
 	{
 		variable: "light grey",
-		name: "light grey",
-		name_cap: "Light Grey",
+		name: "밝은 회색",
+		name_cap: "밝은 회색",
 		csstext: "grey",
 		natural: true,
 		lens: true,
@@ -1368,8 +1381,8 @@ setup.colours.eyes = [
 	},
 	{
 		variable: "colorWheelTemporary0",
-		name: "black",
-		name_cap: "Black",
+		name: "검정",
+		name_cap: "검정",
 		csstext: "black",
 		natural: false,
 		lens: true,
@@ -1392,8 +1405,8 @@ setup.colours.eyes = [
 	},
 	{
 		variable: "red possessed",
-		name: "red possessed",
-		name_cap: "Red Possessed",
+		name: "빙의된 빨간색",
+		name_cap: "빙의된 빨간색",
 		csstext: "redPossessed",
 		natural: false,
 		lens: false,
@@ -1404,8 +1417,8 @@ setup.colours.eyes = [
 	},
 	{
 		variable: "blue possessed",
-		name: "blue possessed",
-		name_cap: "Blue Possessed",
+		name: "빙의된 파란색",
+		name_cap: "빙의된 파란색",
 		csstext: "bluePossessed",
 		natural: false,
 		lens: false,
@@ -1427,127 +1440,127 @@ setup.colours.eyes = [
 setup.colours.clothes = [
 	{
 		variable: "blue",
-		name: "blue",
-		name_cap: "Blue",
+		name: "파란색",
+		name_cap: "파란색",
 		csstext: "blue",
 		canvasfilter: { blend: "#475CB3" },
 	},
 	{
 		variable: "lake blue",
-		name: "lake blue",
-		name_cap: "Lake Blue",
+		name: "호수 파란색",
+		name_cap: "호수 파란색",
 		csstext: "navy blue",
 		canvasfilter: { blend: "#223d8f" },
 	},
 	{
 		variable: "light blue",
-		name: "light blue",
-		name_cap: "Light Blue",
+		name: "밝은 파란색",
+		name_cap: "밝은 파란색",
 		csstext: "light-blue",
 		canvasfilter: { blend: "#559BC0" },
 	},
 	{
 		variable: "neon blue",
-		name: "neon blue",
-		name_cap: "Neon Blue",
+		name: "네온 블루",
+		name_cap: "네온 블루",
 		csstext: "neon-blue",
 		canvasfilter: { blend: "#00d5ff" },
 	},
 	{
 		variable: "white",
-		name: "white",
-		name_cap: "White",
+		name: "흰색",
+		name_cap: "흰색",
 		csstext: "white",
 		canvasfilter: { blend: "#ffffff" },
 	},
 	{
 		variable: "purest white",
-		name: "purest white",
-		name_cap: "Purest White",
+		name: "순백색",
+		name_cap: "순백색",
 		csstext: "white",
 		canvasfilter: { blend: "#ffffff" },
 	},
 	{
 		variable: "pale white",
-		name: "pale white",
-		name_cap: "Pale White",
+		name: "창백한 흰색",
+		name_cap: "창백한 흰색",
 		csstext: "white",
 		canvasfilter: { blend: "#eeeeee", contrast: 1.1 },
 	},
 	{
 		variable: "red",
-		name: "red",
-		name_cap: "Red",
+		name: "빨간색",
+		name_cap: "빨간색",
 		csstext: "red",
 		canvasfilter: { blend: "#D92B2B" },
 	},
 	{
 		variable: "jewel red",
-		name: "jewel red",
-		name_cap: "Jewel red",
+		name: "보석 빨간색",
+		name_cap: "보석 빨간색",
 		csstext: "jewel-red",
 		canvasfilter: { blend: "#d4273b" },
 	},
 	{
 		variable: "green",
-		name: "green",
-		name_cap: "Green",
+		name: "녹색",
+		name_cap: "녹색",
 		csstext: "green",
 		canvasfilter: { blend: "#62B362" },
 	},
 	{
 		variable: "light green",
-		name: "light green",
-		name_cap: "Light Green",
+		name: "밝은 녹색",
+		name_cap: "밝은 녹색",
 		csstext: "green",
 		canvasfilter: { blend: "#A1D683" },
 	},
 	{
 		variable: "forest green",
-		name: "forest green",
-		name_cap: "Forest Green",
+		name: "숲 녹색",
+		name_cap: "숲 녹색",
 		csstext: "forest-green",
 		canvasfilter: { blend: "#374f2f" },
 	},
 	{
 		variable: "lime",
-		name: "lime",
-		name_cap: "Lime",
+		name: "라임색",
+		name_cap: "라임색",
 		csstext: "lime",
 		canvasfilter: { blend: "#38B20A" },
 	},
 	{
 		variable: "black",
-		name: "black",
-		name_cap: "Black",
+		name: "검은색",
+		name_cap: "검은색",
 		csstext: "black",
 		canvasfilter: { blend: "#4B4B4B" },
 	},
 	{
 		variable: "confessor black",
-		name: "confessor black",
-		name_cap: "Confessor Black",
+		name: "고해 검은색",
+		name_cap: "고해 검은색",
 		csstext: "black",
 		canvasfilter: { blend: "#353535" },
 	},
 	{
 		variable: "pink",
-		name: "pink",
-		name_cap: "Pink",
+		name: "분홍색",
+		name_cap: "분홍색",
 		csstext: "pink",
 		canvasfilter: { blend: "#FF66A7" },
 	},
 	{
 		variable: "light pink",
-		name: "light pink",
-		name_cap: "Light Pink",
+		name: "밝은 분홍색",
+		name_cap: "밝은 분홍색",
 		csstext: "light-pink",
 		canvasfilter: { blend: "#FFB0DD" },
 	},
 	{
 		variable: "hospital pink",
-		name: "hospital pink",
-		name_cap: "Hospital Pink",
+		name: "병원 분홍색",
+		name_cap: "병원 분홍색",
 		csstext: "hospital-pink",
 		canvasfilter: {
 			blend: "#fe8b90",
@@ -1555,22 +1568,22 @@ setup.colours.clothes = [
 	},
 	{
 		variable: "purple",
-		name: "purple",
-		name_cap: "Purple",
+		name: "보라색",
+		name_cap: "보라색",
 		csstext: "purple",
 		canvasfilter: { blend: "#9450C7" },
 	},
 	{
 		variable: "lilac",
-		name: "lilac",
-		name_cap: "Lilac",
+		name: "라일락",
+		name_cap: "라일락",
 		csstext: "lilac",
 		canvasfilter: { blend: "#d692fc" },
 	},
 	{
 		variable: "witchbloom",
-		name: "witchbloom",
-		name_cap: "Witchbloom",
+		name: "마녀꽃",
+		name_cap: "마녀꽃",
 		csstext: "witchbloom",
 		canvasfilter: {
 			blend: "#743499",
@@ -1578,36 +1591,36 @@ setup.colours.clothes = [
 	},
 	{
 		variable: "violet",
-		name: "violet",
-		name_cap: "Violet",
+		name: "제비꽃색",
+		name_cap: "제비꽃색",
 		csstext: "violet",
 		canvasfilter: { blend: "#c42eff" },
 	},
 	{
 		variable: "tangerine",
-		name: "tangerine",
-		name_cap: "Tangerine",
+		name: "귤색",
+		name_cap: "귤색",
 		csstext: "tangerine",
 		canvasfilter: { blend: "#FF9340" },
 	},
 	{
 		variable: "pale tangerine",
-		name: "pale tangerine",
-		name_cap: "Pale Tangerine",
+		name: "옅은 귤색",
+		name_cap: "옅은 귤색",
 		csstext: "pale-tangerine",
 		canvasfilter: { blend: "#FFCCBF" },
 	},
 	{
 		variable: "dusty orange",
 		name: "dusty orange",
-		name_cap: "Dusty orange",
+		name_cap: "더스티 오렌지",
 		csstext: "tangerine",
 		canvasfilter: { blend: "#a04500" },
 	},
 	{
 		variable: "teal",
-		name: "teal",
-		name_cap: "Teal",
+		name: "청록색",
+		name_cap: "청록색",
 		csstext: "teal",
 		canvasfilter: { blend: "#70E0C4" },
 	},
@@ -1620,211 +1633,211 @@ setup.colours.clothes = [
 	},
 	{
 		variable: "yellow",
-		name: "yellow",
-		name_cap: "Yellow",
+		name: "노란색",
+		name_cap: "노란색",
 		csstext: "yellow",
 		canvasfilter: { blend: "#F2DA61", brightness: 0.1 },
 	},
 	{
 		variable: "pale yellow",
-		name: "pale yellow",
-		name_cap: "Pale Yellow",
+		name: "옅은 노란색",
+		name_cap: "옅은 노란색",
 		csstext: "pale-yellow",
 		canvasfilter: { blend: "#FFE5B3" },
 	},
 	{
 		variable: "brown",
-		name: "brown",
-		name_cap: "Brown",
+		name: "갈색",
+		name_cap: "갈색",
 		csstext: "brown",
 		canvasfilter: { blend: "#704A2D" },
 	},
 	{
 		variable: "bucket brown",
-		name: "bucket brown",
-		name_cap: "Bucket Brown",
+		name: "양동이 갈색",
+		name_cap: "양동이 갈색",
 		csstext: "brownish",
 		canvasfilter: { blend: "#87634a" },
 	},
 	{
 		variable: "soft brown",
-		name: "soft brown",
-		name_cap: "Soft brown",
+		name: "부드러운 갈색",
+		name_cap: "부드러운 갈색",
 		csstext: "brownish",
 		canvasfilter: { blend: "#6a4225" },
 	},
 	{
 		variable: "light brown",
-		name: "light brown",
-		name_cap: "Light brown",
+		name: "밝은 갈색",
+		name_cap: "밝은 갈색",
 		csstext: "brownish",
 		canvasfilter: { blend: "#87634a" },
 	},
 	{
 		variable: "tan",
-		name: "tan",
-		name_cap: "Tan",
+		name: "황갈색",
+		name_cap: "황갈색",
 		csstext: "tan",
 		canvasfilter: { blend: "#c3ad91" },
 	},
 	{
 		variable: "khaki",
-		name: "khaki",
-		name_cap: "Khaki",
+		name: "카키색",
+		name_cap: "카키색",
 		csstext: "tan",
 		canvasfilter: { blend: "#c89673" },
 	},
 	{
 		variable: "fleshy",
-		name: "fleshy",
-		name_cap: "Fleshy",
+		name: "살색",
+		name_cap: "살색",
 		csstext: "fleshy",
 		canvasfilter: { blend: "#ffddc8" },
 	},
 	{
 		variable: "grey",
-		name: "grey",
-		name_cap: "Grey",
+		name: "회색",
+		name_cap: "회색",
 		csstext: "grey",
 		canvasfilter: { blend: "#b5aea6" },
 	},
 	{
 		variable: "sand",
-		name: "sand",
-		name_cap: "Sand",
+		name: "모래색",
+		name_cap: "모래색",
 		csstext: "sand",
 		canvasfilter: { blend: "#ebd1ad" },
 	},
 	{
 		variable: "off-white",
-		name: "off-white",
-		name_cap: "Off-white",
+		name: "미색",
+		name_cap: "미색",
 		csstext: "off-white",
 		canvasfilter: { blend: "#ecece8" },
 	},
 	{
 		variable: "navy",
-		name: "navy",
-		name_cap: "Navy",
+		name: "남색",
+		name_cap: "남색",
 		csstext: "navy",
 		canvasfilter: { blend: "#292934" },
 	},
 	{
 		variable: "navy blue",
-		name: "navy blue",
-		name_cap: "Navy blue",
+		name: "남색",
+		name_cap: "남색",
 		csstext: "navy blue",
 		canvasfilter: { blend: "#47478D" },
 	},
 	{
 		variable: "denim",
-		name: "denim",
-		name_cap: "Denim",
+		name: "데님",
+		name_cap: "데님",
 		csstext: "denim",
 		canvasfilter: { blend: "#4b6e85" },
 	},
 	{
 		variable: "olive",
-		name: "olive",
-		name_cap: "Olive",
+		name: "올리브",
+		name_cap: "올리브",
 		csstext: "olive",
 		canvasfilter: { blend: "#5f5a44" },
 	},
 	{
 		variable: "wine",
-		name: "wine",
-		name_cap: "Wine",
+		name: "와인",
+		name_cap: "와인",
 		csstext: "wine",
 		canvasfilter: { blend: "#65252d" },
 	},
 	{
 		variable: "blood moon red",
-		name: "blood moon red",
-		name_cap: "Blood Moon Red",
+		name: "붉은 달 레드",
+		name_cap: "붉은 달 레드",
 		csstext: "wine",
 		canvasfilter: { blend: "#5c0707" },
 	},
 	{
 		variable: "branded red",
-		name: "branded red",
-		name_cap: "Branded Red",
+		name: "낙인 레드",
+		name_cap: "낙인 레드",
 		csstext: "wine",
 		canvasfilter: { blend: "#d4273b" },
 	},
 	{
 		variable: "russet",
-		name: "russet",
-		name_cap: "Russet",
+		name: "적갈색",
+		name_cap: "적갈색",
 		csstext: "russet",
 		canvasfilter: { blend: "#9f4033" },
 	},
 	{
 		variable: "apocalypse",
-		name: "apocalypse",
-		name_cap: "Apocalypse",
+		name: "아포칼립스",
+		name_cap: "아포칼립스",
 		csstext: "apocalypse",
 		canvasfilter: { blend: "#5c271d" },
 	},
 	{
 		variable: "steel",
-		name: "steel",
-		name_cap: "Steel",
+		name: "강철",
+		name_cap: "강철",
 		csstext: "steel",
 		canvasfilter: { blend: "#999999" },
 	},
 	{
 		variable: "blue steel",
-		name: "blue steel",
-		name_cap: "Blue Steel",
+		name: "블루 스틸",
+		name_cap: "블루 스틸",
 		csstext: "blue-steel",
 		canvasfilter: { blend: "#646e82" },
 	},
 	{
 		variable: "bronze",
-		name: "bronze",
-		name_cap: "Bronze",
+		name: "청동",
+		name_cap: "청동",
 		csstext: "bronze",
 		canvasfilter: { blend: "#cd9932" },
 	},
 	{
 		variable: "rose gold",
-		name: "rose gold",
-		name_cap: "Rose gold",
+		name: "로즈 골드",
+		name_cap: "로즈 골드",
 		csstext: "rose-gold",
 		canvasfilter: { blend: "#dea193", brightness: 0.15 },
 	},
 	{
 		variable: "gold",
-		name: "gold",
-		name_cap: "Gold",
+		name: "금",
+		name_cap: "금",
 		csstext: "gold",
 		canvasfilter: { blend: "#ffbf00", brightness: 0.1 },
 	},
 	{
 		variable: "virgo gold",
-		name: "virgo gold",
-		name_cap: "Virgo Gold",
+		name: "처녀자리 골드",
+		name_cap: "처녀자리 골드",
 		csstext: "virgo gold",
 		canvasfilter: { blend: "#ffbf00", brightness: 0.1 },
 	},
 	{
 		variable: "silver",
-		name: "silver",
-		name_cap: "Silver",
+		name: "은",
+		name_cap: "은",
 		csstext: "silver",
 		canvasfilter: { blend: "#C0C0C0" },
 	},
 	{
 		variable: "sterling silver",
-		name: "sterling silver",
-		name_cap: "Sterling silver",
+		name: "순은",
+		name_cap: "순은",
 		csstext: "sterling-silver",
 		canvasfilter: { blend: "#8b9fc4" },
 	},
 	{
 		variable: "shackle silver",
-		name: "shackle silver",
-		name_cap: "Shackle silver",
+		name: "족쇄 은",
+		name_cap: "족쇄 은",
 		csstext: "sterling-silver",
 		canvasfilter: { blend: "#8b9fc4" },
 	},
@@ -1840,8 +1853,8 @@ setup.colours.clothes = [
 setup.colours.lipstick = [
 	{
 		variable: "red",
-		name: "red",
-		name_cap: "Red",
+		name: "빨강",
+		name_cap: "빨강",
 		csstext: "red",
 		canvasfilter: {
 			blend: "#EC3535",
@@ -1849,8 +1862,8 @@ setup.colours.lipstick = [
 	},
 	{
 		variable: "blue",
-		name: "blue",
-		name_cap: "Blue",
+		name: "파랑",
+		name_cap: "파랑",
 		csstext: "blue",
 		canvasfilter: {
 			blend: "#4372FF",
@@ -1858,8 +1871,8 @@ setup.colours.lipstick = [
 	},
 	{
 		variable: "green",
-		name: "green",
-		name_cap: "Green",
+		name: "초록",
+		name_cap: "초록",
 		csstext: "green",
 		canvasfilter: {
 			blend: "#195205",
@@ -1867,8 +1880,8 @@ setup.colours.lipstick = [
 	},
 	{
 		variable: "purple",
-		name: "purple",
-		name_cap: "Purple",
+		name: "보라",
+		name_cap: "보라",
 		csstext: "purple",
 		canvasfilter: {
 			blend: "#AA4BC8",
@@ -1876,8 +1889,8 @@ setup.colours.lipstick = [
 	},
 	{
 		variable: "orange",
-		name: "orange",
-		name_cap: "Orange",
+		name: "주황",
+		name_cap: "주황",
 		csstext: "orange",
 		canvasfilter: {
 			blend: "#f28500",
@@ -1885,8 +1898,8 @@ setup.colours.lipstick = [
 	},
 	{
 		variable: "lime",
-		name: "lime",
-		name_cap: "Lime",
+		name: "라임",
+		name_cap: "라임",
 		csstext: "lime",
 		canvasfilter: {
 			blend: "#38B20A",
@@ -1894,8 +1907,8 @@ setup.colours.lipstick = [
 	},
 	{
 		variable: "pink",
-		name: "pink",
-		name_cap: "Pink",
+		name: "분홍",
+		name_cap: "분홍",
 		csstext: "pink",
 		canvasfilter: {
 			blend: "#E40081",
@@ -1903,8 +1916,8 @@ setup.colours.lipstick = [
 	},
 	{
 		variable: "light pink",
-		name: "light pink",
-		name_cap: "Light Pink",
+		name: "밝은 분홍",
+		name_cap: "밝은 분홍",
 		csstext: "light-pink",
 		canvasfilter: {
 			blend: "#d67caf",
@@ -1912,8 +1925,8 @@ setup.colours.lipstick = [
 	},
 	{
 		variable: "dark red",
-		name: "dark red",
-		name_cap: "Dark Red",
+		name: "어두운 빨강",
+		name_cap: "어두운 빨강",
 		csstext: "red",
 		canvasfilter: {
 			blend: "#BD0000",
@@ -1921,8 +1934,8 @@ setup.colours.lipstick = [
 	},
 	{
 		variable: "black",
-		name: "black",
-		name_cap: "Black",
+		name: "검정",
+		name_cap: "검정",
 		csstext: "black",
 		canvasfilter: {
 			blend: "#292929",
@@ -1932,8 +1945,8 @@ setup.colours.lipstick = [
 setup.colours.eyeshadow = [
 	{
 		variable: "red",
-		name: "red",
-		name_cap: "Red",
+		name: "빨강",
+		name_cap: "빨강",
 		csstext: "red",
 		canvasfilter: {
 			blend: "#EC3535",
@@ -1941,8 +1954,8 @@ setup.colours.eyeshadow = [
 	},
 	{
 		variable: "pink",
-		name: "pink",
-		name_cap: "Pink",
+		name: "분홍",
+		name_cap: "분홍",
 		csstext: "pink",
 		canvasfilter: {
 			blend: "#E40081",
@@ -1950,8 +1963,8 @@ setup.colours.eyeshadow = [
 	},
 	{
 		variable: "light pink",
-		name: "light pink",
-		name_cap: "Light Pink",
+		name: "밝은 분홍",
+		name_cap: "밝은 분홍",
 		csstext: "light-pink",
 		canvasfilter: {
 			blend: "#d67caf",
@@ -1959,8 +1972,8 @@ setup.colours.eyeshadow = [
 	},
 	{
 		variable: "green",
-		name: "green",
-		name_cap: "Green",
+		name: "초록",
+		name_cap: "초록",
 		csstext: "green",
 		canvasfilter: {
 			blend: "#38B20A",
@@ -1968,8 +1981,8 @@ setup.colours.eyeshadow = [
 	},
 	{
 		variable: "light green",
-		name: "light green",
-		name_cap: "Light green",
+		name: "밝은 초록",
+		name_cap: "밝은 초록",
 		csstext: "green",
 		canvasfilter: {
 			blend: "#7caf7c",
@@ -1977,8 +1990,8 @@ setup.colours.eyeshadow = [
 	},
 	{
 		variable: "lime",
-		name: "lime",
-		name_cap: "Lime",
+		name: "라임",
+		name_cap: "라임",
 		csstext: "lime",
 		canvasfilter: {
 			blend: "#38B20A",
@@ -1986,8 +1999,8 @@ setup.colours.eyeshadow = [
 	},
 	{
 		variable: "blue",
-		name: "blue",
-		name_cap: "Blue",
+		name: "파랑",
+		name_cap: "파랑",
 		csstext: "blue",
 		canvasfilter: {
 			blend: "#4372FF",
@@ -1995,8 +2008,8 @@ setup.colours.eyeshadow = [
 	},
 	{
 		variable: "light blue",
-		name: "light blue",
-		name_cap: "Light Blue",
+		name: "밝은 파랑",
+		name_cap: "밝은 파랑",
 		csstext: "light-blue",
 		canvasfilter: {
 			blend: "#559BC0",
@@ -2004,8 +2017,8 @@ setup.colours.eyeshadow = [
 	},
 	{
 		variable: "purple",
-		name: "purple",
-		name_cap: "Purple",
+		name: "보라",
+		name_cap: "보라",
 		csstext: "purple",
 		canvasfilter: {
 			blend: "#AA4BC8",
@@ -2013,8 +2026,8 @@ setup.colours.eyeshadow = [
 	},
 	{
 		variable: "orange",
-		name: "orange",
-		name_cap: "Orange",
+		name: "주황",
+		name_cap: "주황",
 		csstext: "orange",
 		canvasfilter: {
 			blend: "#f28500",
@@ -2022,8 +2035,8 @@ setup.colours.eyeshadow = [
 	},
 	{
 		variable: "yellow",
-		name: "yellow",
-		name_cap: "Yellow",
+		name: "노랑",
+		name_cap: "노랑",
 		csstext: "yellow",
 		canvasfilter: {
 			blend: "#FFD700",
@@ -2031,8 +2044,8 @@ setup.colours.eyeshadow = [
 	},
 	{
 		variable: "brown",
-		name: "brown",
-		name_cap: "Brown",
+		name: "갈색",
+		name_cap: "갈색",
 		csstext: "brown",
 		canvasfilter: {
 			blend: "#4C2217",
@@ -2040,8 +2053,8 @@ setup.colours.eyeshadow = [
 	},
 	{
 		variable: "light brown",
-		name: "light brown",
-		name_cap: "Light Brown",
+		name: "밝은 갈색",
+		name_cap: "밝은 갈색",
 		csstext: "lightbrown",
 		canvasfilter: {
 			blend: "#C5793A",
@@ -2049,8 +2062,8 @@ setup.colours.eyeshadow = [
 	},
 	{
 		variable: "dark brown",
-		name: "dark brown",
-		name_cap: "Dark Brown",
+		name: "어두운 갈색",
+		name_cap: "어두운 갈색",
 		csstext: "brown",
 		canvasfilter: {
 			blend: "#4C2217",
@@ -2058,8 +2071,8 @@ setup.colours.eyeshadow = [
 	},
 	{
 		variable: "black",
-		name: "black",
-		name_cap: "Black",
+		name: "검정",
+		name_cap: "검정",
 		csstext: "black",
 		canvasfilter: {
 			blend: "#292929",
@@ -2067,8 +2080,8 @@ setup.colours.eyeshadow = [
 	},
 	{
 		variable: "white",
-		name: "white",
-		name_cap: "White",
+		name: "흰색",
+		name_cap: "흰색",
 		csstext: "",
 		canvasfilter: {
 			blend: "#EEEEEE",
@@ -2076,8 +2089,8 @@ setup.colours.eyeshadow = [
 	},
 	{
 		variable: "silver",
-		name: "silver",
-		name_cap: "Silver",
+		name: "은",
+		name_cap: "은",
 		csstext: "silver",
 		canvasfilter: {
 			blend: "#C0C0C0",
@@ -2087,8 +2100,8 @@ setup.colours.eyeshadow = [
 setup.colours.mascara = [
 	{
 		variable: "black",
-		name: "black",
-		name_cap: "Black",
+		name: "검정",
+		name_cap: "검정",
 		csstext: "black",
 		canvasfilter: {
 			blend: "#292929",
@@ -2096,8 +2109,8 @@ setup.colours.mascara = [
 	},
 	{
 		variable: "brown waterproof",
-		name: "brown (waterproof)",
-		name_cap: "Brown (waterproof)",
+		name: "갈색 (워터프루프)",
+		name_cap: "갈색 (워터프루프)",
 		csstext: "brown",
 		canvasfilter: {
 			blend: "#5a422e",
@@ -2105,7 +2118,7 @@ setup.colours.mascara = [
 	},
 	{
 		variable: "light brown waterproof",
-		name: "light brown (waterproof)",
+		name: "연갈색 (워터프루프)",
 		name_cap: "Light brown (waterproof)",
 		csstext: "light brown",
 		canvasfilter: {
@@ -2114,8 +2127,8 @@ setup.colours.mascara = [
 	},
 	{
 		variable: "red waterproof",
-		name: "red (waterproof)",
-		name_cap: "Red (waterproof)",
+		name: "빨간색 (워터프루프)",
+		name_cap: "빨간색 (워터프루프)",
 		csstext: "red",
 		canvasfilter: {
 			blend: "#97190b",
@@ -2123,8 +2136,8 @@ setup.colours.mascara = [
 	},
 	{
 		variable: "orange waterproof",
-		name: "orange (waterproof)",
-		name_cap: "Orange (waterproof)",
+		name: "주황색 (워터프루프)",
+		name_cap: "주황색 (워터프루프)",
 		csstext: "orange",
 		canvasfilter: {
 			blend: "#cb6d10",
@@ -2132,8 +2145,8 @@ setup.colours.mascara = [
 	},
 	{
 		variable: "yellow waterproof",
-		name: "yellow (waterproof)",
-		name_cap: "Yellow (waterproof)",
+		name: "노란색 (워터프루프)",
+		name_cap: "노란색 (워터프루프)",
 		csstext: "yellow",
 		canvasfilter: {
 			blend: "#cfb72c",
@@ -2141,8 +2154,8 @@ setup.colours.mascara = [
 	},
 	{
 		variable: "green waterproof",
-		name: "green (waterproof)",
-		name_cap: "Green (waterproof)",
+		name: "초록색 (워터프루프)",
+		name_cap: "초록색 (워터프루프)",
 		csstext: "green",
 		canvasfilter: {
 			blend: "#0ba41d",
@@ -2150,8 +2163,8 @@ setup.colours.mascara = [
 	},
 	{
 		variable: "blue waterproof",
-		name: "blue (waterproof)",
-		name_cap: "Blue (waterproof)",
+		name: "파란색 (워터프루프)",
+		name_cap: "파란색 (워터프루프)",
 		csstext: "blue",
 		canvasfilter: {
 			blend: "#1b3eb4",
@@ -2159,8 +2172,8 @@ setup.colours.mascara = [
 	},
 	{
 		variable: "pink waterproof",
-		name: "pink (waterproof)",
-		name_cap: "Pink (waterproof)",
+		name: "분홍색 (워터프루프)",
+		name_cap: "분홍색 (워터프루프)",
 		csstext: "pink",
 		canvasfilter: {
 			blend: "#cb24a7",
@@ -2168,8 +2181,8 @@ setup.colours.mascara = [
 	},
 	{
 		variable: "purple waterproof",
-		name: "purple (waterproof)",
-		name_cap: "Purple (waterproof)",
+		name: "보라색 (워터프루프)",
+		name_cap: "보라색 (워터프루프)",
 		csstext: "purple",
 		canvasfilter: {
 			blend: "#5d07a4",
@@ -2177,8 +2190,8 @@ setup.colours.mascara = [
 	},
 	{
 		variable: "white waterproof",
-		name: "white (waterproof)",
-		name_cap: "White (waterproof)",
+		name: "흰색 (워터프루프)",
+		name_cap: "흰색 (워터프루프)",
 		csstext: "white",
 		canvasfilter: {
 			blend: "#eeeeee",
@@ -2186,8 +2199,8 @@ setup.colours.mascara = [
 	},
 	{
 		variable: "black waterproof",
-		name: "black (waterproof)",
-		name_cap: "Black (waterproof)",
+		name: "검정 (워터프루프)",
+		name_cap: "검정 (워터프루프)",
 		csstext: "black",
 		canvasfilter: {
 			blend: "#292929",
@@ -2197,8 +2210,8 @@ setup.colours.mascara = [
 setup.colours.blusher = [
 	{
 		variable: "rosy pink",
-		name: "rosy pink",
-		name_cap: "Rosy pink",
+		name: "로즈 핑크",
+		name_cap: "로즈 핑크",
 		csstext: "light-pink",
 		canvasfilter: {
 			blend: "#4372FF",
@@ -2208,8 +2221,8 @@ setup.colours.blusher = [
 setup.colours.condom = [
 	{
 		variable: "red",
-		name: "red",
-		name_cap: "Red",
+		name: "빨강",
+		name_cap: "빨강",
 		csstext: "red",
 		canvasfilter: {
 			blend: "#EC3535",
@@ -2217,8 +2230,8 @@ setup.colours.condom = [
 	},
 	{
 		variable: "blue",
-		name: "blue",
-		name_cap: "Blue",
+		name: "파랑",
+		name_cap: "파랑",
 		csstext: "blue",
 		canvasfilter: {
 			blend: "#4372FF",
@@ -2226,8 +2239,8 @@ setup.colours.condom = [
 	},
 	{
 		variable: "lblue",
-		name: "light blue",
-		name_cap: "Light Blue",
+		name: "밝은 파랑",
+		name_cap: "밝은 파랑",
 		csstext: "lblue",
 		canvasfilter: {
 			blend: "#559BC0",
@@ -2235,8 +2248,8 @@ setup.colours.condom = [
 	},
 	{
 		variable: "green",
-		name: "green",
-		name_cap: "Green",
+		name: "초록",
+		name_cap: "초록",
 		csstext: "green",
 		canvasfilter: {
 			blend: "#38B20A",
@@ -2244,8 +2257,8 @@ setup.colours.condom = [
 	},
 	{
 		variable: "lime",
-		name: "lime",
-		name_cap: "Lime",
+		name: "라임",
+		name_cap: "라임",
 		csstext: "lime",
 		canvasfilter: {
 			blend: "#7caf7c",
@@ -2253,8 +2266,8 @@ setup.colours.condom = [
 	},
 	{
 		variable: "purple",
-		name: "purple",
-		name_cap: "Purple",
+		name: "보라",
+		name_cap: "보라",
 		csstext: "purple",
 		canvasfilter: {
 			blend: "#AA4BC8",
@@ -2262,8 +2275,8 @@ setup.colours.condom = [
 	},
 	{
 		variable: "orange",
-		name: "orange",
-		name_cap: "Orange",
+		name: "주황",
+		name_cap: "주황",
 		csstext: "orange",
 		canvasfilter: {
 			blend: "#f28500",
@@ -2271,8 +2284,8 @@ setup.colours.condom = [
 	},
 	{
 		variable: "pink",
-		name: "pink",
-		name_cap: "Pink",
+		name: "분홍",
+		name_cap: "분홍",
 		csstext: "pink",
 		canvasfilter: {
 			blend: "#E40081",
@@ -2280,8 +2293,8 @@ setup.colours.condom = [
 	},
 	{
 		variable: "plain",
-		name: "plain",
-		name_cap: "Plain",
+		name: "민무늬",
+		name_cap: "민무늬",
 		csstext: "plain",
 		canvasfilter: {
 			blend: "#f28500",
@@ -2390,14 +2403,27 @@ buildColourMap("eyes");
 buildColourMap("clothes");
 buildColourMap("lipstick");
 buildColourMap("mascara");
+buildColourMap("blusher");
 buildColourMap("eyeshadow");
 buildColourMap("blusher");
 buildColourMap("condom");
 buildColourMap("tentacle");
 
 /**
- * Tries to guess colour in the map by removing spaces or replacing them with '-' and checking against name.
- * Return colour record if found and null if no.
+ * Normalizes a colour key for loose comparison: lowercased, with spaces/underscores/hyphens
+ * stripped. Lets "dark brown", "dark_brown", "dark-brown" and "darkbrown" all match each other.
+ *
+ * @param {any} str
+ * @returns {any} the normalized string, or the input unchanged if it isn't a string
+ */
+setup.normalizeColourKey = function (str) {
+	return typeof str === "string" ? str.toLowerCase().replace(/[\s_-]+/g, "") : str;
+};
+
+/**
+ * Tries to guess colour in the map regardless of spacing/underscore/hyphen/case differences
+ * between the lookup key and the map's keys, falling back to a match on the record's display
+ * name. Return colour record if found and null if no.
  *
  * @param {any} map
  * @param {any} colour
@@ -2405,11 +2431,10 @@ buildColourMap("tentacle");
 setup.guessColourInMap = function (map, colour) {
 	if (colour in map) return map[colour];
 
-	let testname = colour.replace(/ /g, "");
-	if (testname in map) return map[testname];
-
-	testname = colour.replace(/ /g, "-");
-	if (testname in map) return map[testname];
+	const normalizedTarget = setup.normalizeColourKey(colour);
+	for (const key in map) {
+		if (setup.normalizeColourKey(key) === normalizedTarget) return map[key];
+	}
 
 	for (const record of Object.values(map)) {
 		if (record.name === colour) return record;
@@ -2423,6 +2448,9 @@ setup.guessColourInMap = function (map, colour) {
  * @param {any} colour
  */
 setup.colourName = function (colour) {
+	if (colour === "custom") return "커스텀";
+	if (colour === "random") return "무작위";
+	if (colour === "any") return "무관";
 	for (const map of [
 		setup.colours.hair_map,
 		setup.colours.eyes_map,
@@ -2433,8 +2461,17 @@ setup.colourName = function (colour) {
 		setup.colours.eyeshadow_map,
 		setup.colours.condom_map,
 		setup.colours.tentacle_map,
-	]) {
+	])
+		/* 키값에 하이픈(-)있어도 무시하는거 */
+	{
 		if (colour in map) return map[colour].name;
+		const normalized = typeof colour === "string" ? colour.replace(/-/g, " ") : colour;
+		if (normalized !== colour && normalized in map) return map[normalized].name;
+	}
+	/*	KR: 프리셋 맵(hair_map 등)에 없는 색상(예: 커스텀 렌즈 색상 "peachpuff")은
+		color-namer.js의 색상명 사전에서 한글 이름을 찾아본다. */
+	if (typeof colour === "string" && window.colors && colour in window.colors) {
+		return window.colorNameTranslate(colour, "spaced name");
 	}
 	return colour;
 };

@@ -139,7 +139,7 @@ window.parseCSSFilter = function (filter) {
 window.getCustomColourName = function (hue, saturation, brightness, contrast) {
 	if (arguments.length === 1 && typeof arguments[0] === "string") {
 		const match = parseCSSFilter(arguments[0]);
-		if (!match) return "custom";
+		if (!match) return "사용자 지정";
 
 		hue = match[1];
 		saturation = match[2];
@@ -152,37 +152,37 @@ window.getCustomColourName = function (hue, saturation, brightness, contrast) {
 	const hsv = rgbToHsv(rgb);
 
 	// very specific colours
-	if (hsv.h >= 6 && hsv.h <= 11 && hsv.s > 60 && hsv.s < 80 && hsv.v > 85) return "coral";
-	else if (hsv.h >= 20 && hsv.h <= 45 && hsv.s > 25 && hsv.s < 45 && hsv.v > 90) return "sand";
+	if (hsv.h >= 6 && hsv.h <= 11 && hsv.s > 60 && hsv.s < 80 && hsv.v > 85) return "산호색";
+	else if (hsv.h >= 20 && hsv.h <= 45 && hsv.s > 25 && hsv.s < 45 && hsv.v > 90) return "모래색";
 	// general desaturated colours
-	else if (hsv.v <= 30 && hsv.s <= 20) return "black";
-	else if (hsv.s < 10 && hsv.v > 90) return "white";
+	else if (hsv.v <= 30 && hsv.s <= 20) return "검정";
+	else if (hsv.s < 10 && hsv.v > 90) return "흰색";
 	else if (hsv.s < 12) {
-		if (hsv.v >= 70) return "light grey";
-		else if (hsv.v >= 50) return "grey";
-		else return "dark grey";
+		if (hsv.v >= 70) return "밝은 회색";
+		else if (hsv.v >= 50) return "회색";
+		else return "어두운 회색";
 	}
 	// full rainbow action
 	else {
 		let main, aux;
 
-		if (hsv.h <= 8 || hsv.h >= 345) main = "red";
-		else if (hsv.h <= 44) main = "orange";
-		else if (hsv.h <= 55) main = "yellow";
-		else if (hsv.h <= 66) main = "chartreuse";
-		else if (hsv.h <= 74) main = "lime";
-		else if (hsv.h <= 150) main = "green";
-		else if (hsv.h <= 165) main = "aquamarine";
-		else if (hsv.h <= 180) main = "cyan";
-		else if (hsv.h <= 215) main = "blue";
-		else if (hsv.h <= 245) main = "indigo";
-		else if (hsv.h <= 260) main = "violet";
-		else if (hsv.h <= 285) main = "purple";
-		else if (hsv.h <= 315) main = "magenta";
-		else main = "rose";
+		if (hsv.h <= 8 || hsv.h >= 345) main = "빨강";
+		else if (hsv.h <= 44) main = "주황";
+		else if (hsv.h <= 55) main = "노랑";
+		else if (hsv.h <= 66) main = "연두";
+		else if (hsv.h <= 74) main = "라임색";
+		else if (hsv.h <= 150) main = "초록";
+		else if (hsv.h <= 165) main = "아쿠아마린";
+		else if (hsv.h <= 180) main = "청록";
+		else if (hsv.h <= 215) main = "파랑";
+		else if (hsv.h <= 245) main = "남색";
+		else if (hsv.h <= 260) main = "보라";
+		else if (hsv.h <= 285) main = "자주색";
+		else if (hsv.h <= 315) main = "마젠타";
+		else main = "장밋빛";
 
-		if (hsv.s < 60 && hsv.v > 80) aux = "light";
-		else if (hsv.v <= 50) aux = "dark";
+		if (hsv.s < 60 && hsv.v > 80) aux = "밝은";
+		else if (hsv.v <= 50) aux = "어두운";
 		else if (
 			hsv.v > 50 &&
 			((hsv.h <= 100 && hsv.h >= 330 && hsv.s < 40) ||
@@ -191,18 +191,18 @@ window.getCustomColourName = function (hue, saturation, brightness, contrast) {
 				(hsv.h >= 150 && hsv.h < 200 && hsv.s < 25) ||
 				(hsv.h >= 200 && hsv.h < 330 && hsv.s < 30))
 		)
-			aux = "greyish";
+			aux = "회색빛";
 
-		if (main === "orange" && (hsv.s < 70 || hsv.v < 70)) main = "brown";
-		else if (main === "yellow" && hsv.v < 90) main = "brown";
+		if (main === "주황" && (hsv.s < 70 || hsv.v < 70)) main = "갈색";
+		else if (main === "노랑" && hsv.v < 90) main = "갈색";
 
 		let colour = aux ? aux + " " + main : main;
 
-		if (main === "brown" && (aux === "greyish" || aux === "light" || (hsv.s < 25 && hsv.v < 70))) colour = "beige";
-		else if (colour === "greyish green" || (aux !== "light" && main === "chartreuse")) colour = "olive";
-		else if (aux === "light" && (main === "red" || main === "rose" || main === "magenta")) colour = "pink";
-		else if (colour === "dark indigo") colour = "navy";
-		else if (colour === "dark cyan") colour = "teal";
+		if (main === "갈색" && (aux === "회색빛" || aux === "밝은" || (hsv.s < 25 && hsv.v < 70))) colour = "베이지";
+		else if (colour === "회색빛 초록" || (aux !== "밝은" && main === "연두")) colour = "올리브색";
+		else if (aux === "밝은" && (main === "빨강" || main === "장밋빛" || main === "마젠타")) colour = "분홍";
+		else if (colour === "어두운 남색") colour = "네이비";
+		else if (colour === "어두운 청록") colour = "틸색";
 
 		return colour;
 	}

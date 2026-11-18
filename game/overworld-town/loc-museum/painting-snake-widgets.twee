@@ -283,11 +283,11 @@
 
 		<<set _daysUntilBloodMoon to Time.lastDayOfMonth - Time.monthDay>>
 		<<set $hc.daysPassed++>>
-		<b>Day <<number $hc.daysPassed>> - <span class="red">
+		<b><<number $hc.daysPassed>>일차 - <span class="red">
 			<<if _daysUntilBloodMoon is 0>>
-				Night of the blood moon
+				붉은 달의 밤
 			<<elseif _daysUntilBloodMoon is 1>>
-				One day until the blood moon
+				붉은 달까지 1일
 			<<else>>
 				<<Number _daysUntilBloodMoon>> days until the blood moon
 			<</if>>
@@ -344,28 +344,28 @@
 		<<if $sadism_message>>
 			<<switch $sadism_message>>
 				<<case "up 1">>
-					<span class="blue">Your thoughts turn to the pain you've inflicted. You shiver.
-					<i>You've become a guilty sadist.</i></span>
+					<span class="blue">당신이 가한 고통으로 생각이 향한다. 당신은 몸을 떤다.
+					<i>당신은 죄책감 어린 사디스트가 되었습니다.</i></span>
 				<<case "up 2">>
-					<span class="purple">Your thoughts turn to the pain you've inflicted. A thrill follows, unbeckoned.
-					<i>You've become a normal sadist.</i></span>
+					<span class="purple">당신이 가한 고통으로 생각이 향한다. 부르지도 않은 전율이 뒤따른다.
+					<i>당신은 평범한 사디스트가 되었습니다.</i></span>
 				<<case 3>>
-					<span class="pink">You yearn to hurt others.
-					<i>You've become a hardened sadist.</i></span>
+					<span class="pink">당신은 다른 사람들에게 고통을 주기를 갈망한다.
+					<i>당신은 무자비한 사디스트가 되었습니다.</i></span>
 				<<case "up 4">>
-					<span class="red">If they want to play rough, so be it.
-					<i>You've become a vengeful sadist.</i></span>
+					<span class="red">그들이 거칠게 놀고 싶어 한다면, 기꺼이 그렇게 해줄 것이다.
+					<i>당신은 복수심에 불타는 사디스트가 되었습니다.</i></span>
 				<<case "down 0">>
-					<span class = "lblue"><i>You are no longer a sadist.</i></span>
+					<span class = "lblue"><i>당신은 더 이상 사디스트가 아닙니다.</i></span>
 				<<case "down 1">>
-					<span class="blue">You are no longer so sadistic, and can only be considered a
-					<i>guilty sadist.</i></span>
+					<span class="blue">당신의 사디즘은 이전보다 줄어들어, 이젠 그저
+					<i>죄책감 어린 사디스트</i>일 뿐입니다.</span>
 				<<case "down 2">>
-					<span class="purple">You are no longer so sadistic, and can only be considered a
-					<i>normal sadist.</i></span>
+					<span class="purple">당신의 사디즘은 이전보다 줄어들어, 이젠 그저
+					<i>평범한 사디스트</i>일 뿐입니다.</span>
 				<<case "down 3">>
-					<span class="pink">You are no longer so sadistic, and can only be considered a
-					<i>hardened sadist.</i></span>
+					<span class="pink">당신의 사디즘은 이전보다 줄어들어, 이젠 그저
+					<i>무자비한 사디스트</i>일 뿐입니다.</span>
 			<</switch>>
 			<br>
 			<<unset $sadism_message>>
@@ -494,10 +494,10 @@
 			<<hcPrisonerHealth -6 "penance">><<set $prisoner.punishmentsMissed++>>
 			<<if $prisoner.punishmentsMissed gte 2>>
 				<<set $hc.endingETimer to 3>>
-				<span class="red">You have avoided another penance. The Hand has deemed you bewitched.</span>
+				<span class="red">당신은 또 한 번의 참회를 피했다. 손은 당신이 마녀에게 홀렸다고 판단했다.</span>
 				<br>
 			<<else>>
-				<span class="red">You avoided <<print $prisoner.name>>'s daily penance.</span> <<hcSuspicion 30>><<hopelessCycleSus 3>>
+				<span class="red">당신은 <<print window.KR.gatPersonNameDictKR($prisoner.name)>>【을를】 위한 매일의 참회를 피했다.</span> <<hcSuspicion 30>><<hopelessCycleSus 3>>
 				<br>
 			<</if>>
 		<</if>>
@@ -715,22 +715,22 @@
 				<<set $hc.daily.sermon to true>>
 				<<if $hc.sermonMissed>>
 					<<set $hc.endingETimer to 3>>
-					<span class="red">You missed another sermon in the cloister. The Hand has deemed you bewitched.</span>
+					<span class="red">당신은 회랑에서의 설교를 또 빠졌다. 손은 당신이 마녀에게 홀렸다고 판단했다.</span>
 				<<else>>
-					<span class="red">You missed this morning's sermon in the cloister.</span> <<hcSuspicion 10>><<hopelessCycleSus 2>>
+					<span class="red">당신은 회랑에서 열린 오늘 아침 설교를 빠졌다.</span> <<hcSuspicion 10>><<hopelessCycleSus 2>>
 					<<if $hcChallenge.suspicionSermon>>
 						<<set $hc.sermonMissed to true>>
 					<</if>>
 				<</if>>
 				<br>
 			<<elseif Time.hour gte 7 and Time.hour lte 9>>
-				<span @class="$hcChallenge.suspicionSermon ? 'purple' : 'blue'">A daily sermon will be held in the cloister soon.
+				<span @class="$hcChallenge.suspicionSermon ? 'purple' : 'blue'">곧 회랑에서 일일 설교가 열릴 것이다.
 				<<if $hcChallenge.suspicionSermon>>
-					Attendance is mandatory.
+					참석은 의무다.
 				<<elseif $hc.suspicionRevealed>>
-					Failing to attend will arouse suspicion.
+					참석하지 않으면 의심을 사게 될 것이다.
 				<<else>>
-					Siblings of the faith are expected to attend.
+					신앙의 형제자매들은 참석할 것으로 기대된다.
 				<</if>>
 				</span>
 				<br>
@@ -758,13 +758,13 @@
 		<<if $hc.endingETimer isnot undefined>>
 			<<set $hc.endingETimer-->>
 			<<if $hc.endingETimer lte 0>>
-				<span class="red">Everything goes dark as a sack is pulled over your head.</span> You're quickly struck in the gut, doubling you over. You're forced to your knees.
+				<span class="red">당신의 머리에 자루가 씌워지면서 시야가 어두워진다.</span> 당신은 재빨리 복부를 가격당해 몸이 반으로 접힌다. 당신은 강제로 무릎을 꿇게 된다.
 				<br><br>
 
-				The last thing you feel is an impact against your head.
+				마지막으로 느껴지는 것은 머리를 강타하는 충격이다.
 				<br><br>
 
-				<<link [[Next|Hopeless Cycle Ending E]]>><<pass 4 hours>><<endevent>><</link>>
+				<<link [[다음|Hopeless Cycle Ending E]]>><<pass 4 hours>><<endevent>><</link>>
 				<br>
 				<<exitAll>>
 			<</if>>
@@ -774,13 +774,13 @@
 			<<set _hcEvent to "dailyPunishment">>
 		<<elseif Time.lastDayOfMonth is $hc.day and Time.hour gte 20 or $hc.day is 1>>
 			<<set _hcEvent to "blood">>
-			<span class="red">The time for the ritual has come.</span>
+			<span class="red">의식의 시간이 다가왔다.</span>
 			<<if (Time.hour gte 22 or $hc.day is 1) and !$hc.forcedMove>>
 				<<set $hc.forcedMove to true>>
-				You stop what you're doing and head back to the temple.
+				당신은 하던 일을 멈추고 신전으로 발길을 돌린다.
 				<br><br>
 
-				<<link [[Next|Hopeless Cycle Blood Cell Late]]>><<pass 20>><<endevent>><</link>>
+				<<link [[다음|Hopeless Cycle Blood Cell Late]]>><<pass 20>><<endevent>><</link>>
 				<br>
 				<<exitAll>>
 			<</if>>
@@ -811,8 +811,8 @@
 				<</if>>
 			<</for>>
 			<<if _barkbark gt 0 and !_alreadyLoud>>
-				<span class="blue">You hear <<= $bus isnot "garden" ? "distant" : "">> barking.</span>
-				<<= _barkbark is $hc.dogs.length ? "The" : "<<Number _barkbark>> of the">> <<pluralise $hc.dogs.length "dog">> <<pluralise _barkbark "has" "have">> become agitated again.
+				<span class="blue"><<= $bus isnot "garden" ? "멀리서 " : "">>개 짖는 소리가 들린다.</span>
+				<<= _barkbark is $hc.dogs.length ? "그" : "<<Number _barkbark>>마리의">> 개가 다시 흥분하기 시작했다.
 				<br>
 			<</if>>
 		<</if>>
@@ -822,9 +822,9 @@
 
 	/* Every passage */
 
-	<<if $hc.vanishedItems?.length>>
+<<if $hc.vanishedItems?.length>>
 		<<if !["cell", "forest", "lake", "disposal", "guardhouse"].includes($bus) and Time.dayState isnot "night">>
-			<span class="narration">Whispers spread through the temple's flock. They reach the gaoler's ears.</span>
+			<span class="narration">신도들 사이에 속삭임이 퍼진다. 그 소문은 간수의 귀에까지 들어간다.</span>
 			<span class="red">
 				<<for _labelVanished, _valueVanished range $hc.vanishedItems>>
 					<<if !_valueVanished.fromCont>>
@@ -888,7 +888,7 @@
 					<</if>>
 				<</for>>
 				<<if $hc.suspicion gte 50>>
-					You notice many of them stealing glances at you.
+					당신은 그들 중 많은 이들이 당신을 훔쳐보는 것을 눈치챈다.
 				<</if>>
 				<<if $hc.suspicionGained gte 20>>
 					<<set _susPlus to 3>>
@@ -904,11 +904,11 @@
 		<</if>>
 	<</if>>
 	<<if _leak?.includes("held")>>
-		<<set _bucketOutput to _leak.filter(x => x is "held").length gt 1 ? "buckets" : "bucket">>
+		<<set _bucketOutput to _leak.filter(x => x === "held").length gt 1 ? "양동이들" : "양동이">>
 		<<if !["disposal", "forest", "lake"].includes($bus)>>
-			<span class="red">The water leaks out of your _bucketOutput, making a horrible mess everywhere.</span> <<hopelessCycleSus 2>>
+			<span class="red">당신의 _bucketOutput에서 물이 새어 나와, 사방을 엉망으로 만든다.</span> <<hopelessCycleSus 2>>
 		<<else>>
-			<span class="purple">The water leaks out of your _bucketOutput.</span>
+			<span class="purple">당신의 _bucketOutput에서 물이 샌다.</span>
 		<</if>>
 		<br>
 	<</if>>
@@ -927,15 +927,15 @@
 		<<if _hcItemWarnings.length>>
 			<<hcSuspicion _susFromHeld>>
 			<span class="red">
-				You are attracting glances.
+				당신은 시선을 끌고 있다.
 				<<if _hcItemWarnings.includesAny("clothes", "sheets")>>
-					Clothing and sheets outside of the quarters will raise suspicion.
+					숙소 밖으로 의류와 시트를 들고나가면 의심을 살 것이다.
 				<</if>>
 				<<if _hcItemWarnings.includes("food")>>
-					You're smuggling stolen food out in the open!
+					당신은 대놓고 훔친 음식을 밀반출하고 있다!
 				<</if>>
 				<<if _hcItemWarnings.includes("bones")>>
-					You hear whispers of the bones you're holding.
+					당신이 들고 있는 뼈에 대해 수군거리는 소리가 들린다.
 				<</if>>
 			</span>
 			<<hopelessCycleSus 1>>
@@ -952,7 +952,7 @@
 
 	/* Suspicion */
 	<<if $hc.suspicionRevealed and ["temple", "cloister", "training", "dining", "quarters", "bed", "garden", "pyre", "prayerroom", "guardhouse", "cell"].includes($bus) and _hcEvent isnot "blood">>
-		<<crimeicon "mark">> The Hand's gaze:
+		<<crimeicon "mark">> 손의 시선:
 		<div class="meter">
 			<<print '<div class="redbar" style="width:' + $hc.suspicion + '%"></div>'>>
 		</div>
@@ -973,16 +973,16 @@
 		<<switch $prisoner.health>>
 			<<case 30 29 28 27 26>>
 				<<if Time.lastDayOfMonth is $hc.day and $hc.daily.dailyPunishment or !$hc.suspicionRevealed>>
-					<span class="green"><<print $prisoner.name.toUpperFirst()>> is healthy.</span>
+					<span class="green"><<print window.KR.gatPersonNameDictKR($prisoner.name).toUpperFirst()>>【은는】 건강하다.</span>
 				<<else>>
-					<span class="red"><<print $prisoner.name.toUpperFirst()>> is suspiciously healthy.</span>
+					<span class="red"><<print window.KR.gatPersonNameDictKR($prisoner.name).toUpperFirst()>>【은는】 의심스러울 정도로 건강하다.</span>
 				<</if>>
-			<<case 25 24 23 22 21 20>><span class="green"><<print $prisoner.name.toUpperFirst()>> is healthy.</span>
-			<<case 19 18 17 16>><span class="teal"><<print $prisoner.name.toUpperFirst()>> is decently healthy.</span>
-			<<case 15 14 13 12>><span class="blue"><<print $prisoner.name.toUpperFirst()>> is sickly.</span>
-			<<case 11 10 9 8>><span class="purple"><<print $prisoner.name.toUpperFirst()>> is sickly and hurt.</span>
-			<<case 7 6 5 4>><span class="pink"><<print $prisoner.name.toUpperFirst()>> is very sick, and isn't moving much.</span>
-			<<case 3 2 1 0>><span class="red"><<print $prisoner.name.toUpperFirst()>> is unresponsive.</span>
+			<<case 25 24 23 22 21 20>><span class="green"><<print window.KR.gatPersonNameDictKR($prisoner.name).toUpperFirst()>>【은는】 건강하다.</span>
+			<<case 19 18 17 16>><span class="teal"><<print window.KR.gatPersonNameDictKR($prisoner.name).toUpperFirst()>>【은는】 꽤 건강하다.</span>
+			<<case 15 14 13 12>><span class="blue"><<print window.KR.gatPersonNameDictKR($prisoner.name).toUpperFirst()>>【은는】 병약하다.</span>
+			<<case 11 10 9 8>><span class="purple"><<print window.KR.gatPersonNameDictKR($prisoner.name).toUpperFirst()>>【은는】 병약하고 다쳤다.</span>
+			<<case 7 6 5 4>><span class="pink"><<print window.KR.gatPersonNameDictKR($prisoner.name).toUpperFirst()>>【은는】 매우 아프고, 거의 움직이지 않는다.</span>
+			<<case 3 2 1 0>><span class="red"><<print window.KR.gatPersonNameDictKR($prisoner.name).toUpperFirst()>>【은는】 아무런 반응이 없다.</span>
 		<</switch>>
 		<br>
 		<<if _prisonerClothesItem>>
@@ -1142,12 +1142,12 @@
 		<<switch $itemAction>>
 			<<case "water">>
 				<<if $bus is "lake">>
-					You fill the bucket from the lake.
+					당신은 호수에서 양동이에 물을 채운다.
 				<<else>>
 					<<if $hc.wellTainted>>
-						You fill the bucket from the well. <span class="red">Red and purple hues swirl in the tainted water within.</span>
+						당신은 우물에서 양동이에 물을 채운다. <span class="red">오염된 물 속에서 붉고 보랏빛 도는 색이 소용돌이친다.</span>
 					<<else>>
-						You lower the bucket into the well by its rope and winch. You pull it back up, now full of water.
+						당신은 밧줄과 윈치를 이용해 우물로 양동이를 내린다. 그리고 물이 가득 찬 양동이를 끌어올린다.
 					<</if>>
 				<</if>>
 			<<case "pickUp">>You pick up _itemText.
@@ -1165,7 +1165,7 @@
 			<<case "disposal">>
 				You throw _itemText into the disposal channel.
 				<<if _itemText is "clothes">>
-					The wicked have no second skin to hide behind, now.
+					이제 사악한 자들이 숨을 두 번째 가죽은 없다.
 				<</if>>
 				<<if $itemActionObject?.dirty gte 2>>
 					<<set $hc.disposals += 2>>
@@ -1174,7 +1174,7 @@
 					<<set $hc.disposals ++>>
 					<<if $hc.shortcutCount isnot undefined>><<set $hc.shortcutCount++>><</if>>
 				<<elseif $hcChallenge.forestNoShortcut>>
-					You feel that <span class="blue">$itemActionObject.state torches are not accepted as offerings</span>.
+					당신은 <span class="blue"><<print hcTranslateName($itemActionObject.state)>> 횃불이 제물로 받아들여지지 않을 것</span>이라고 느낀다.
 				<</if>>
 
 			<<case "putInBucket">>You put _itemText in a bucket. <<if ["snuffer"].includes($itemActionObject.type)>>It rattles around noisily.<</if>>
@@ -1184,7 +1184,7 @@
 				<<if $torchOffering>>
 					/* it should not be possible to put lit torches in a bucket, so no need to account for them */
 					<<unset $torchOffering>>
-					You feel that <span class="blue">snuffed torches are not accepted as offerings</span>.
+					당신은 <span class="blue">불이 꺼진 횃불이 제물로 받아들여지지 않을 것</span>이라고 느낀다.
 				<</if>>
 			<<case "emptyWell">>
 				<<if $bus is "lake">>
@@ -1200,66 +1200,66 @@
 				<<else>>
 					You kick over _itemText.
 				<</if>>
-			<<case "pickUpLit">>You quickly pick up the burning torch.
-			<<case "pickUpSnuffed">>You pick up the unlit torch.
-			<<case "pickUpBurnt">>You retrieve the remains of the torch.
-			<<case "pickUpLitSconce">>You retrieve your torch from the sconce.
-			<<case "pickUpSnuffedSconce">>You retrieve the snuffed torch from the sconce.
-			<<case "pickUpBurntSconce">>You retrieve the remains of the torch from the sconce.
+			<<case "pickUpLit">>당신은 불타는 횃불을 재빨리 집어 든다.
+			<<case "pickUpSnuffed">>당신은 불이 꺼진 횃불을 줍는다.
+			<<case "pickUpBurnt">>당신은 횃불의 잔해를 회수한다.
+			<<case "pickUpLitSconce">>당신은 횃불걸이에서 횃불을 꺼낸다.
+			<<case "pickUpSnuffedSconce">>당신은 횃불걸이에서 꺼진 횃불을 빼낸다.
+			<<case "pickUpBurntSconce">>당신은 횃불걸이에서 횃불의 잔해를 빼낸다.
 
-			<<case "dungeonLit">>You take a prepared torch from the stockpile and light it with another torch.
-			<<case "dungeonSnuffed">>You take a snuffed torch from the wall of the dungeon.
-			<<case "dungeonBack">>You place your torch back in the stack after ensuring it won't re-ignite itself.
-			<<case "putCell">>You place your torch in the cell's sconce.
-			<<case "putDisposal">>You place your torch in the rusty sconce.
-			<<case "refresh">>You dig through the guardhouse's supplies. You add cloth, kindling and some animal fat to your torch. You give it a swing to make sure nothing comes loose. It holds.
-			<<case "reignite">>You hold your torch against the other, quickly re-igniting it.
+			<<case "dungeonLit">>당신은 쌓여 있는 곳에서 준비된 횃불을 하나 꺼내, 다른 횃불로 불을 붙인다.
+			<<case "dungeonSnuffed">>당신은 지하 감옥 벽에서 꺼진 횃불을 하나 집어든다.
+			<<case "dungeonBack">>당신은 횃불이 다시 불붙지 않는지 확인한 후 횃불 더미에 다시 놓는다.
+			<<case "putCell">>당신은 감옥의 횃불걸이에 횃불을 꽂아 넣는다.
+			<<case "putDisposal">>당신은 녹슨 횃불걸이에 횃불을 꽂아 넣는다.
+			<<case "refresh">>당신은 위병소의 보급품을 뒤진다. 천, 불쏘시개, 그리고 동물의 지방을 횃불에 덧붙인다. 당신은 한 번 휘둘러 떨어지는 것이 없는지 확인한다. 튼튼하다.
+			<<case "reignite">>당신은 다른 횃불에 당신의 횃불을 가져다 대어, 재빨리 다시 불을 붙인다.
 			<<case "reignitePyre">>
 				<<if Time.hour gte 20 or Time.hour lte 2>>
-					You press the head of your torch into the pyre.
+					당신은 장작더미에 횃불의 머리를 쑤셔 넣는다.
 				<<else>>
-					You press the head of your torch into the burning coals.
+					당신은 불타는 석탄에 횃불의 머리를 쑤셔 넣는다.
 				<</if>>
-			<<case "snuff">>You quickly snuff out the torch with your snuffer.
-			<<case "extinguish">>You quickly snuff out the torch with the water. It steams and sizzles, but goes out. Both the water and torch are ruined.
-			<<case "disposalBurnt" "disposalSnuffed">>You toss the unlit torch into the disposal channel.
-			<<case "disposalLit">>You toss your still-burning torch into the disposal channel, where it is immediately snuffed out.
+			<<case "snuff">>당신은 도구를 이용해 재빨리 횃불의 불을 끈다.
+			<<case "extinguish">>당신은 물로 횃불을 재빨리 끈다. 증기가 나며 지글거리지만, 결국 꺼진다. 물과 횃불 모두 망가졌다.
+			<<case "disposalBurnt" "disposalSnuffed">>당신은 불이 꺼진 횃불을 폐기 수로에 던져 넣는다.
+			<<case "disposalLit">>당신은 여전히 불타고 있는 횃불을 폐기 수로에 던져 넣고, 그것은 즉시 꺼진다.
 
 			<<case "clean">>You diligently scrub _itemText clean.
 			<<case "burn">>You commit _itemText to the pyre.
 				<<if $itemActionObject.dirty gte 2>>
-					Your siblings look pleased with your offering. <<stress -6>><<purity 5>><<lstress>><<gpurity>><<hopelessCycleSus -2>>
+					당신의 형제자매들은 당신의 제물에 흡족해하는 것 같다. <<stress -6>><<purity 5>><<lstress>><<gpurity>><<hopelessCycleSus -2>>
 				<</if>>
 
-			<<case "armour">>You change into your armour. It's a slow, noisy process.
-			<<case "robes">>You change into your robes.
+			<<case "armour">>당신은 갑옷으로 갈아입는다. 느리고 소음이 심한 과정이다.
+			<<case "robes">>당신은 예복으로 갈아입는다.
 			<<case "undressPrisoner">>
-				You undress <<print $prisoner.name>>.
+				당신은 <<print window.KR.gatPersonNameDictKR($prisoner.name)>>의 옷을 벗긴다.
 				<<if $prisoner.harmed gte Math.floor($prisoner.love / 6)>>
 					<<worldFemale 'She' 'He'>> doesn't make it easy.
 				<<elseif $prisoner.love gte 45>>
 					<<worldFemale 'She' 'He'>> glares at you suggestively.
 				<</if>>
 			<<case "undressPrisonerAsleep">>
-				You undress <<print $prisoner.name>>.
+				당신은 <<print window.KR.gatPersonNameDictKR($prisoner.name)>>의 옷을 벗긴다.
 				<<if $prisoner.love gte 45>>
 					<<worldFemale 'She' 'He'>> quickly wakes up, but calms down upon seeing that it's you.
 				<<else>>
 					<<worldFemale 'She' 'He'>> quickly wakes up and tries to push you away.
 				<</if>>
-			<<case "dressPrisoner">>You dress <<print $prisoner.name>> in the $itemActionObject.name.
+			<<case "dressPrisoner">>당신은 <<print window.KR.gatPersonNameDictKR($prisoner.name)>>에게 <<print hcTranslateName($itemActionObject.nameText || $itemActionObject.name)>>【을를】 입힌다.
 			<<case "bandagesRemove">>You remove <<worldFemale 'her' 'his'>> bandages. <<if $hc.daily.treatedDayBefore>><<run delete $hc.daily.treatedDayBefore>>The spent medicinal herbs fall away from <<worldFemale 'her' 'his'>> body.<</if>>
-			<<case "bandagesApply">>You apply $itemActionObject.nameText.
+			<<case "bandagesApply">>당신은 <<print hcTranslateName($itemActionObject.nameText || $itemActionObject.name)>>【을를】 감아준다.
 
-			<<case "petTheDog">>You pet the dog. It happily bounds around you.
+			<<case "petTheDog">>당신은 개를 쓰다듬는다. 녀석은 행복하게 당신 주위를 펄쩍거리며 뛴다.
 
-			<<case "surrender">>You give back some of the burden you've shouldered.
-			<<case "embrace">>You hug Virgo, and take some of its burden.
+			<<case "surrender">>당신이 짊어졌던 부담의 일부를 다시 돌려준다.
+			<<case "embrace">>당신은 비르고를 안고, 그것의 짐을 조금 넘겨받는다.
 			<<default>>
-				<span class="red">Error in 'Hopeless Cycle' event: invalid action: $itemAction, name: $itemActionObject.name </span>
+				<span class="red">'Hopeless Cycle' 이벤트 오류: 잘못된 행동: $itemAction, 이름: <<print hcTranslateName($itemActionObject.nameText || $itemActionObject.name)>> </span>
 				<<if $hcItemError>>
 					<br>
-					<span class="red">Invalid item!: $hcItemError</span>
+					<span class="red">잘못된 아이템입니다!: <<print hcTranslateName($hcItemError)>></span>
 				<</if>>
 		<</switch>>
 		</span>
@@ -1275,30 +1275,30 @@
 	<<set _containers to _items.filter(item => item.containerID and ["held", $bus].includes(item.location))>>
 
 	<<run $hcItems.filter(item => item.dirty isnot undefined).forEach(item => {
-		item.nameText = item.name;
-		if (item.used and ["bandages"].includes(item.type)) item.nameText = "used " + item.nameText;
+		item.nameText = hcTranslateName(item.name);
+		if (item.used and ["bandages"].includes(item.type)) item.nameText = "사용한 " + item.nameText;
 		if (item.used and ["food"].includes(item.type)) {
 			if (item.name is "stolen food") {
-				item.nameText = "stolen dish";
+				item.nameText = "훔친 빈 접시";
 			} else {
-				item.nameText = "used dish";
+				item.nameText = "빈 그릇";
 			}
 		}
 		if (item.type is "water") {
 			if (item.dirty gte 2) {
-				item.nameText = "<span class='purple'>tainted water</span>";
+				item.nameText = "<span class='purple'>오염된 물</span>";
 			} else if (item.dirty is 1) {
-				item.nameText = " <span class='blue'>used water</span>";
+				item.nameText = " <span class='blue'>사용한 물</span>";
 			} else {
-				item.nameText = " <span class='teal'>clean water</span>";
+				item.nameText = " <span class='teal'>깨끗한 물</span>";
 			}
 		} else {
 			if (item.dirty gte 2) {
-				item.nameText += " <span class='purple'>(tainted)</span>";
+				item.nameText += " <span class='purple'>(오염됨)</span>";
 			} else if (item.dirty is 1) {
-				item.nameText += " <span class='brown'>(dirty)</span>";
+				item.nameText += " <span class='brown'>(더러움)</span>";
 			} else {
-				item.nameText += " <span class='grey'>(clean)</span>";
+				item.nameText += " <span class='grey'>(깨끗함)</span>";
 			}
 		}
 	})>>
@@ -1309,7 +1309,7 @@
 		<<set _containersHeld to _containers.filter(cont => cont.location is "held").length>>
 		<<set _containersHeldIndex to 0>>
 		<<run _containers.forEach((gucket, index) => {
-			gucket.nameText = gucket.name;
+			gucket.nameText = hcTranslateName(gucket.name);
 			gucket.tooltip = null;
 			if (gucket.location is V.bus) {
 				if (_containersHere gte 2) {
@@ -1323,50 +1323,25 @@
 					_int = _containersHeldIndex;
 					gucket.nameText = ordinalSuffixOf(_int) + " held " + gucket.name;
 				} else {
-					gucket.nameText = "held " + gucket.name;
+					gucket.nameText = gucket.nameText;
 				}
 			}
-			let gucketItems = V.hcItems.filter(thing => thing.location === gucket.containerID);
-			if (gucketItems.length is 0) {
-				gucket.nameText += " <span class='black'>(empty)</span>";
+			if (V.hcChallenge.waterLeaky) {
+				gucket.nameText += ", " + water.time + "시간)</span>";
 			} else {
-				let water = gucketItems.find(thing => thing.type === "water");
-				if (water) {
-					water.nameText = water.name;
-					switch (water.dirty) {
-						case 0:
-							gucket.nameText += " <span class='teal'>(clean water";
-							break;
-						case 1:
-							gucket.nameText += " <span class='blue'>(used water";
-							water.nameText = "used water";
-							break;
-						default:
-							gucket.nameText += " <span class='purple'>(tainted water";
-							water.nameText = "tainted water";
-							break;
-					}
-					if (V.hcChallenge.waterLeaky) {
-						gucket.nameText += ", <<number " + water.time + ">> hour";
-						if (water.time >= 2) {
-							gucket.nameText += "s)</span>";
-						} else {
-							gucket.nameText += ")</span>";
-						}
-					} else {
-						gucket.nameText += ")</span>";
-					}
-				}
-				if (gucketItems.some(item => item.type isnot "water") and gucket.capacity) {
-					let cHas = gucketItems.length;
-					let cCap = gucket.capacity;
-					let itemsIn = [];
-					V.hcItems.filter(c => c.location === gucket.containerID).forEach(c => {
-						let itemName = c.nameText || c.name;
-						itemsIn.push(itemName.toUpperFirst());
-					});
-					let itemsInText = formatList(itemsIn);
-					gucket.tooltip = ` <span tooltip="<span class='gold'>` + itemsInText + `</span>" class="tooltip-anchor"><span class='gold'>(items ` + cHas +`/` + cCap + `)</span></span>`;
+				gucket.nameText += ")</span>";
+			}
+		}
+		if (gucketItems.some(item => item.type isnot "water") and gucket.capacity) {
+			let cHas = gucketItems.length;
+			let cCap = gucket.capacity;
+			let itemsIn = [];
+			V.hcItems.filter(c => c.location === gucket.containerID).forEach(c => {
+				let itemName = c.nameText || hcTranslateName(c.name);
+				itemsIn.push(itemName.toUpperFirst());
+			});
+			let itemsInText = formatList(itemsIn);
+			gucket.tooltip = ` <span tooltip="<span class='gold'>` + itemsInText + `</span>" class="tooltip-anchor"><span class='gold'>(물건 ` + cHas + `/` + cCap + `)</span></span>`;
 				}
 			}
 		})>>
@@ -1379,7 +1354,7 @@
 	<<set _hcSconces to ["cell", "disposal"]>>
 
 	<<if _itemsDropped.length or _itemsHere.filter(items => !["water", "fire"].includes(items)).length>>
-		<b><u>Items here:</u></b><br>
+		<b><u>이곳에 있는 물건들:</u></b><br>
 	<</if>>
 
 	/* ToDo: Improve when proper inventory system is made. I will only ask God for forgiveness. */
@@ -1395,9 +1370,9 @@
 			<<elseif _valueHere is "torch">>
 				<<set _outOfStock to false>>
 				<<if $hc.dungeonTorchState is "snuffed">>
-					<<hcicon "torch-unlit">>Torches <span class="blue">(snuffed)</span>
+					<<hcicon "torch-unlit">>횃불 <span class="blue">(꺼짐)</span>
 				<<elseif $hc.dungeonTorchState is "burnt">>
-					<<hcicon "torch-burnt">>Torches <span class="red">(burnt out)</span>
+					<<hcicon "torch-burnt">>횃불 <span class="red">(다 탐)</span>
 				<<else>>
 					<<set _torchTimeDisplay to $hcChallenge.torchFaster ? Math.clamp(Math.floor($hc.dungeonTorchTime/2),1,12) : $hc.dungeonTorchTime>>
 					<<hcicon "torch">>Torches <span class="orange">(<<number _torchTimeDisplay>> <<pluralise _torchTimeDisplay "hour">>)</span>
@@ -1426,7 +1401,7 @@
 							<</capture>>
 						<<else>>
 							/* Anything else pushed to _itemsHere in-passage. Use with care. */
-							| <<link [[Take|$passage]]>>
+							| <<link [[가져간다|$passage]]>>
 								<<run hcItemAdd(_valueHere, "held", "pickUp")>>
 							<</link>>
 						<</if>>
@@ -1504,22 +1479,22 @@
 		<</if>>
 		<<if _item.location isnot "held">>
 			<<if _item.inSconce>>
-				<span class="green">(in sconce)</span>
+				<span class="green">(횃불걸이에 있음)</span>
 			<<elseif $bus is "bed">>
-				<span class="green">(stashed)</span>
+				<span class="green">(숨겨짐)</span>
 			<<else>>
-				<span class="red">(on ground)</span>
+				<span class="red">(바닥에 있음)</span>
 			<</if>>
 		<</if>>
 	<<else>>
 		<<hcicon _item>><<print _displayName>>
 		<<if _item.location isnot "held">>
 			<<if _item.origin is $bus and _item.persists>>
-				<span class="green">(stored)</span>
+				<span class="green">(보관됨)</span>
 			<<elseif $bus is "bed">>
-				<span class="green">(stashed)</span>
+				<span class="green">(숨겨짐)</span>
 			<<else>>
-				<span class="red">(on ground)</span>
+				<span class="red">(바닥에 있음)</span>
 			<</if>>
 		<</if>>
 	<</if>>
@@ -1556,7 +1531,7 @@
 
 			/* Kicking over buckets full of water */
 			<<if _item.containerID and _waterInThisContainer>>
-				| <<link [[Kick it over|$passage]]>>
+				| <<link [[발로 찬다|$passage]]>>
 					<<run hcItemRemove(_waterInThisContainer, "kick")>>
 					<<set $itemActionObject to _item>>
 					<<if !["disposal", "forest", "lake"].includes($bus)>><<hcSuspicion 10>><</if>>
@@ -1569,7 +1544,7 @@
 			/* Putting down or returning, skip torches */
 			<<if _item.type is "torch">>
 				<<if _item.state is "lit" and !hcItemCanReach("snuffer") and $bus isnot _item.origin and !_hcSconces.includes($bus)>>
-					<span class="red"><i>Too dangerous to <<if $bus is "bed">>stash<<else>>drop<</if>>!</i></span>
+					<span class="red"><i><<if $bus is "bed">>숨기기엔<<else>>떨어뜨리기엔<</if>> 너무 위험하다!</i></span>
 				<</if>>
 			<<else>>
 
@@ -1578,7 +1553,7 @@
 
 					/* Return used dishes */
 					<<if _item.type is "food" and _item.used>>
-						| <<link [[Return|$passage]]>>
+						| <<link [[되돌린다|$passage]]>>
 							<<run hcItemRemove(_item, "return")>>
 							<<if _item.dirty and _item.name is "stolen food">>
 								<<hcSuspicion 5>>
@@ -1632,7 +1607,7 @@
 				<<if _itemsInThisContainer.length and $bus is "disposal" and !_persistentInThisContainer.length>>
 					<<if _waterInThisContainer>>
 						/* water */
-						| <<link [[Empty into channel (0:01)|$passage]]>>
+						| <<link [[수로에 비운다 (0:01)|$passage]]>>
 							<<pass 1>>
 							<<if _waterInThisContainer.dirty gte 2>>
 								<<set $hc.disposals += 2>>
@@ -1644,7 +1619,7 @@
 						<</link>>
 					<<else>>
 						/* items */
-						| <<link [[Empty into channel (0:01)|$passage]]>>
+						| <<link [[수로에 비운다 (0:01)|$passage]]>>
 							<<pass 1>>
 							<<for _labelTrash, _valueTrash range _itemsInThisContainer>>
 								<<if _valueTrash.dirty gte 2>>
@@ -1672,7 +1647,7 @@
 						<<set $itemActionObject to _item>>
 					<</link>>
 				<<elseif $bus is "garden" and _waterInThisContainer and _waterInThisContainer.dirty lte 1>>
-					| <<link [[Dump out (0:01)|$passage]]>>
+					| <<link [[쏟아버린다 (0:01)|$passage]]>>
 						<<pass 1>>
 						<<run hcItemRemove(_waterInThisContainer)>>
 						<<set $itemAction to "emptyGarden">>
@@ -1716,7 +1691,7 @@
 				<<set _torchAlreadyHere to $hcItems.find(torch => torch.type is "torch" and torch.location is $bus and torch.inSconce is true)>>
 				<<if _torchAlreadyHere>>
 					<<capture _torchAlreadyHere>>
-						| <<link [[Replace in sconce|$passage]]>>
+						| <<link [[벽걸이 등에 꽂아 교체한다|$passage]]>>
 							<<set _torchAlreadyHere.location to _item.location>><<set _torchAlreadyHere.inSconce to false>>
 							<<set _item.location to $bus>><<set _item.inSconce to true>><<set $itemAction to "put" + $bus.toUpperFirst()>>
 						<</link>>
@@ -1789,7 +1764,7 @@
 
 		/* Pyre */
 		<<if _itemsHere.includes("fire") and !_item.persists>>
-			| <<link [[Burn|$passage]]>>
+			| <<link [[태운다|$passage]]>>
 				<<run hcItemRemove(_item, "burn")>>
 				<<if ["food"].includes(_item.type) or ["sheets","clothes","bandages"].includes(_item.type) and _item.dirty lte 1>>
 					<<hcSuspicion 5>>
@@ -1829,9 +1804,9 @@
 	<<run $hcItems.filter(cont => cont.containerID).forEach(cont => cont.location = cont.origin)>>
 	<<set $hc.neverLeftDungeon to false>><<set $hc.snuckInDungeon to false>><<set $hc.daily.enteredDungeon to false>>
 	<<if _hcEvent is "night" or (_hcEvent is "dailyPunishment" and $bus is "cell") or $hc.suspicion gte 100>>
-		<<link [[Everything fades to black...|Hopeless Cycle Ending E]]>><<pass 4 hours>><<endevent>><</link>>
+		<<link [[모든 것이 암흑 속으로 흐려진다...|Hopeless Cycle Ending E]]>><<pass 4 hours>><<endevent>><</link>>
 	<<else>>
-		<<link [[Everything fades to black...|Hopeless Cycle Passout]]>><</link>>
+		<<link [[모든 것이 암흑 속으로 흐려진다...|Hopeless Cycle Passout]]>><</link>>
 	<</if>>
 	<br>
 <</widget>>
@@ -1964,15 +1939,15 @@
 
 <<widget "hopelessCycleEndings">>
 	<<set _endings to {
-		S: {name: "Faith", hint: "See every other ending first.", revealed: "Forever, As One.", colour: "gold"},
-		A: {name: "Love", hint: "Become bewitched.", revealed: "By love, coerced.", colour: "green"},
-		B: {name: "Desperation", hint: "Try to make things right.", revealed: "The road to hell gains a new flagstone.", colour: "teal"},
-		C: {name: "Perdition", hint: "Fulfill her wish for revenge.", revealed: "Elk. Fox. Hound.", colour: "blue"},
-		D: {name: "Stagnation", hint: "Do not interfere.", revealed: "The ritual completes.", colour: "purple"},
-		E: {name: "Paranoia", hint: "Make your siblings question your faith.", revealed: "Betrayed by your siblings.", colour: "pink"},
-		F: {name: "Hatred", hint: "Fail your duty.", revealed: "New skin, same sin.", colour: "red"}
+		S: {name: "믿음", hint: "다른 모든 엔딩을 먼저 보라.", revealed: "영원히, 하나 되어.", colour: "gold"},
+		A: {name: "사랑", hint: "마녀에게 홀리다.", revealed: "사랑에 의해, 강제되다.", colour: "green"},
+		B: {name: "절망", hint: "상황을 바로잡으려 애쓰라.", revealed: "지옥으로 가는 길은 새로운 돌로 포장된다.", colour: "teal"},
+		C: {name: "파멸", hint: "그녀의 복수심을 충족시켜라.", revealed: "엘크. 여우. 사냥개.", colour: "blue"},
+		D: {name: "정체", hint: "개입하지 마라.", revealed: "의식이 완료되다.", colour: "purple"},
+		E: {name: "편집증", hint: "형제자매들이 당신의 믿음을 의심하게 만들라.", revealed: "형제자매들에게 배신당하다.", colour: "pink"},
+		F: {name: "증오", hint: "임무에 실패하라.", revealed: "새로운 가죽, 똑같은 죄.", colour: "red"}
 	}>>
-	<span class="gold">Endings:</span>
+	<span class="gold">엔딩:</span>
 	<br>
 	<<for _label, _value range _endings>>
 		<<if $hcEndings.includes(_label)>>
@@ -2010,7 +1985,7 @@
 				name: setup.hopelessCycleChallenges[_hcC].name
 			}>>
 			<<if $hcChallengesCompleted[_text.key] isnot "">>
-				<<set _text.desc to _text.desc + "<br><br>Highest ending: <span class='" + ['','red','pink','purple','blue','teal','green','gold'][['','F','E','D','C','B','A','S'].indexOf($hcChallengesCompleted[_text.key])] + "'>" + $hcChallengesCompleted[_text.key] + "</span>">>
+				<<set _text.desc to _text.desc + "<br><br>최고 엔딩: <span class='" + ['','red','pink','purple','blue','teal','green','gold'][['','F','E','D','C','B','A','S'].indexOf($hcChallengesCompleted[_text.key])] + "'>" + $hcChallengesCompleted[_text.key] + "</span>">>
 			<</if>>
 			<label><<checkbox "$hcChallenge[_text.key]" false true autocheck>> <span @class='$hcChallengesCompleted[_text.key] is "S" ? _text.colorSeen : _text.colorNot' @tooltip="_text.desc"><<print _text.name>></span></label>
 			<<if _hcC % 3 is 2>><br><<else>> | <</if>>
@@ -2047,9 +2022,9 @@
 				<</if>>
 			<</for>>
 			<<set _chal.pushUnique({
-				name: "<i>" + {"hand": "A Menacing Hand", "torch": "Fading Light", "faith": "Holy Virgo's Wish", "forest": "Overgrowth", "water": "Deluge", "item": "Broken Tools", "prisoner": "Nona's Sorrow", "suspicion": "Judging Eyes", "dogs": "Beasts of Romilly", "time": "Arrow of Time"}[_filter] + "</i> (" + _filter.toUpperFirst() + " set)",
+				name: "<i>" + {"hand": "위협적인 손", "torch": "희미해지는 빛", "faith": "성처녀의 소원", "forest": "과잉 성장", "water": "대홍수", "item": "부서진 도구", "prisoner": "노나의 슬픔", "suspicion": "심판하는 눈", "dogs": "로밀리의 야수들", "time": "시간의 화살"}[_filter] + "</i> (" + _filter.toUpperFirst() + " 세트)",
 				color: hcChallengeColor(_filter),
-				desc: formatList(_rawDescs, "and", true, "; "),
+				desc: formatList(_rawDescs, "그리고", true, "; "),
 			})>>
 		<</if>>
 	<</for>>
@@ -2072,29 +2047,29 @@
 	<</for>>
 	<<if _args[0] is "ending">>
 		<<if _endingSeen is "S">>
-			<b>Challenges completed:</b>
+			<b>완료한 챌린지:</b>
 		<<else>>
-			<b>Challenges failed:</b>
+			<b>실패한 챌린지:</b>
 		<</if>>
 		/* Can't populate an array and use formatList() for this because it'll just print the last challenge over and over */
 		<<for _p range _chal>>
 			<span @class="_p.color" @tooltip="_p.desc"><<print _p.name>></span><<if _chal.indexOf(_p) lt _chal.length-1>>,<<else>>.<</if>>
-			<<if _chal.indexOf(_p) is _chal.length-2>>and<</if>>
+			<<if _chal.indexOf(_p) is _chal.length-2>>그리고<</if>>
 		<</for>>
 		<br><br>
 	<<elseif _args[0] is "journal">>
-		You selected the following challenges:
+		선택한 챌린지:
 		<ul class="journal">
 			<<for _p range _chal>>
 				<li><span @class="_p.color" @tooltip="_p.desc"><<print _p.name>></span></li>
 			<</for>>
 		</ul>
 	<<else>>
-		<b>Challenges selected:</b>
+		<b>선택한 챌린지:</b>
 		<br>
 		<<for _p range _chal>>
 			<span @class="_p.color" @tooltip="_p.desc"><<print _p.name>></span><<if _chal.indexOf(_p) lt _chal.length-1>>,<<else>>.<</if>>
-			<<if _chal.indexOf(_p) is _chal.length-2>>and<</if>>
+			<<if _chal.indexOf(_p) is _chal.length-2>>그리고<</if>>
 		<</for>>
 		<br>
 	<</if>>
@@ -2111,7 +2086,7 @@
 		<<if _sum.filter(x => x.key.split(/[A-Z]/)[0] is _filter).length gte 3>>
 			<<set _sets.pushUnique(_filter)>>
 			<<set _chal.pushUnique({
-				name: "<i>" + {"hand": "A Menacing Hand", "torch": "Fading Light", "faith": "Holy Virgo's Wish", "forest": "Overgrowth", "water": "Deluge", "item": "Broken Tools", "prisoner": "Nona's Sorrow", "suspicion": "Judging Eyes", "dogs": "Beasts of Romilly", "time": "Arrow of Time"}[_filter] + "</i> (" + _filter.toUpperFirst() + " set x3)",
+				name: "<i>" + {"hand": "위협적인 손", "torch": "희미해지는 빛", "faith": "성처녀의 소원", "forest": "과잉 성장", "water": "대홍수", "item": "부서진 도구", "prisoner": "노나의 슬픔", "suspicion": "심판하는 눈", "dogs": "로밀리의 야수들", "time": "시간의 화살"}[_filter] + "</i> (" + _filter.toUpperFirst() + " 세트 x3)",
 				color: hcChallengeColor(_filter),
 			})>>
 		<</if>>
@@ -2129,7 +2104,7 @@
 		<<set _item to "<span class=" + _p.color + ">" + _p.name + "</span>">>
 		<<set _output.push(_item)>>
 	<</for>>
-	<<print formatList(_output, "and")>>
+	<<print formatList(_output, "【와과】")>>
 <</widget>>
 
 <<widget "hcDetailsTotal">>
@@ -2143,7 +2118,7 @@
 		<<if _sum.filter(x => x.key.split(/[A-Z]/)[0] is _filter).length gte 3>>
 			<<set _sets.pushUnique(_filter)>>
 			<<set _chal.pushUnique({
-				name: "<i>" + {"hand": "A Menacing Hand", "torch": "Fading Light", "faith": "Holy Virgo's Wish", "forest": "Overgrowth", "water": "Deluge", "item": "Broken Tools", "prisoner": "Nona's Sorrow", "suspicion": "Judging Eyes", "dogs": "Beasts of Romilly", "time": "Arrow of Time"}[_filter] + "</i> (" + _filter.toUpperFirst() + " set x3)",
+				name: "<i>" + {"hand": "위협적인 손", "torch": "희미해지는 빛", "faith": "성처녀의 소원", "forest": "과잉 성장", "water": "대홍수", "item": "부서진 도구", "prisoner": "노나의 슬픔", "suspicion": "심판하는 눈", "dogs": "로밀리의 야수들", "time": "시간의 화살"}[_filter] + "</i> (" + _filter.toUpperFirst() + " 세트 x3)",
 				color: hcChallengeColor(_filter),
 			})>>
 		<</if>>
@@ -2161,7 +2136,7 @@
 		<<set _item to "<span class=" + _p.color + ">" + _p.name + "</span>">>
 		<<set _output.push(_item)>>
 	<</for>>
-	<<print formatList(_output, "and")>>
+	<<print formatList(_output, "【와과】")>>
 <</widget>>
 
 <<widget "hcSuspicion">>

@@ -328,14 +328,14 @@ const statChange = (() => {
 
 		traumaClamp();
 		if (source !== "combat") {
-			updatePlayerTraumaState();
-			updateHallucinations();
+		updatePlayerTraumaState();
+		updateHallucinations();
 		}
 	}
 	DefineMacro("trauma", trauma);
 
 	function combattrauma(amount) {
-		if (isNaN(amount)) paramError("combattrauma", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("combattrauma", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			if (amount > 0) {
@@ -348,7 +348,7 @@ const statChange = (() => {
 	DefineMacro("combattrauma", combattrauma);
 
 	function straighttrauma(amount) {
-		if (isNaN(amount)) paramError("straighttrauma", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("straighttrauma", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			V.trauma += amount;
@@ -435,7 +435,7 @@ const statChange = (() => {
 	DefineMacro("updateHallucinations", updateHallucinations);
 
 	function control(amount, combat) {
-		if (isNaN(amount)) paramError("control", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("control", "amount", amount, "숫자를 입력해야 합니다.");
 		if (V.gamemode === "soft" && !V.possessed) {
 			// everything is a consensual consensual roleplay
 			V.control = V.controlmax;
@@ -462,7 +462,7 @@ const statChange = (() => {
 	DefineMacro("combatcontrol", amount => control(amount, true));
 
 	function corruption(amount, dailyIncrease = false) {
-		if (isNaN(amount)) paramError("corruption", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("corruption", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount && numberOfEarSlime()) {
 			V.earSlime.corruption += amount;
@@ -482,7 +482,7 @@ const statChange = (() => {
 		return Math.min(14000, Math.max(0, ((Number(V.semen_max) || 0) + xChangeBonus) * multiplier));
 	}
 	function semenvolume(amount) {
-		if (isNaN(amount)) paramError("semenvolume", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("semenvolume", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (V.player.penisExist) {
 			if (amount) {
@@ -500,7 +500,7 @@ const statChange = (() => {
 	DefineMacro("semenvolume", semenvolume);
 
 	function semenAmount(amount) {
-		if (isNaN(amount)) paramError("semenAmount", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("semenAmount", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			V.semen_amount = Math.clamp(V.semen_amount + amount, 0, V.semen_volume);
@@ -509,7 +509,7 @@ const statChange = (() => {
 	DefineMacro("semen_amount", semenAmount);
 
 	function milkvolume(amount) {
-		if (isNaN(amount)) paramError("milkvolume", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("milkvolume", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount > 0) lactationPressure(Transformations.effectiveLevel("cow") >= 6 ? 2 : 1);
 		if (V.lactating) {
@@ -524,7 +524,7 @@ const statChange = (() => {
 	DefineMacro("milkvolume", milkvolume);
 
 	function milkAmount(amount) {
-		if (isNaN(amount)) paramError("milkAmount", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("milkAmount", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			V.milk_amount = Math.clamp(V.milk_amount + amount, 0, V.milk_volume);
@@ -544,7 +544,7 @@ const statChange = (() => {
 	DefineMacro("milk_amount", milkAmount);
 
 	function lactationPressure(amount) {
-		if (isNaN(amount)) paramError("lactationPressure", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("lactationPressure", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			V.lactation_pressure = Math.clamp(V.lactation_pressure + amount, 0, 100);
@@ -554,7 +554,7 @@ const statChange = (() => {
 
 	/* See wolfDefiant in twee-config for information */
 	function wolfDefiant(amount) {
-		if (isNaN(amount)) paramError("wolfDefiant", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("wolfDefiant", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			if (Transformations.effectiveLevel("wolf") >= 6) {
@@ -569,7 +569,7 @@ const statChange = (() => {
 	DefineMacro("wolfDefiant", wolfDefiant);
 
 	function sensitivity(amount, key) {
-		if (isNaN(amount)) paramError("sensitivity", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("sensitivity", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (typeof insanitySensitivityAdjustment === "function") amount = insanitySensitivityAdjustment(amount);
 		const sens = V[key + "sensitivity"];
@@ -584,7 +584,7 @@ const statChange = (() => {
 	DefineMacro("bottom_sensitivity", amount => sensitivity(amount, "bottom"));
 
 	function arousal(amount, source) {
-		if (isNaN(amount)) paramError("arousal", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("arousal", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		const fragment = document.createDocumentFragment();
 		if (amount) {
@@ -674,8 +674,8 @@ const statChange = (() => {
 	}
 
 	function pain(amount, modifier = 4) {
-		if (isNaN(amount)) paramError("pain", "amount", amount, "Expected a number.");
-		if (isNaN(modifier)) paramError("pain", "modifier", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("pain", "amount", amount, "숫자를 입력해야 합니다.");
+		if (isNaN(modifier)) paramError("pain", "modifier", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		modifier = Number(modifier);
 		if (amount) {
@@ -710,7 +710,7 @@ const statChange = (() => {
 	DefineMacro("pain", pain);
 
 	function masopain(amount) {
-		if (isNaN(amount)) paramError("masopain", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("masopain", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		/* Masochistic arousal comes from pain, so the dose reduces both together. */
 		if (amount > 0 && colosseumDrugStage() === "active") amount *= window.COLOSSEUM_DRUG_PAIN_LET_THROUGH;
@@ -760,7 +760,7 @@ const statChange = (() => {
 
 	function detention(amount) {
 		if (V.statFreeze) return;
-		if (isNaN(amount)) paramError("detention", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("detention", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			if (V.backgroundTraits.includes("delinquent")) {
@@ -777,7 +777,7 @@ const statChange = (() => {
 
 	function delinquency(amount, source) {
 		if (V.statFreeze) return;
-		if (isNaN(amount)) paramError("delinquency", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("delinquency", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			if (V.backgroundTraits.includesAny("delinquent", "insanity")) {
@@ -803,7 +803,7 @@ const statChange = (() => {
 
 	function status(amount) {
 		if (V.statFreeze) return;
-		if (isNaN(amount)) paramError("status", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("status", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (V.backgroundTraits.includes("delinquent")) {
 			amount *= 1.25;
@@ -828,7 +828,7 @@ const statChange = (() => {
 	DefineMacro("status", status);
 
 	function spray(amount) {
-		if (isNaN(amount)) paramError("spray", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("spray", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount > 0) {
 			V.spray += amount;
@@ -846,7 +846,7 @@ const statChange = (() => {
 	DefineMacro("spray", spray);
 
 	function awareness(amount) {
-		if (isNaN(amount)) paramError("awareness", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("awareness", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (V.backgroundTraits.includesAny("promiscuous", "exhibitionist", "deviant")) {
 			amount *= amount > 0 ? 1.25 : 0.5;
@@ -863,7 +863,7 @@ const statChange = (() => {
 	DefineMacro("awareness", awareness);
 
 	function purity(amount) {
-		if (isNaN(amount)) paramError("purity", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("purity", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			const mod = Object.values(V.worn).reduce((prev, item) => {
@@ -882,7 +882,7 @@ const statChange = (() => {
 
 	function suspicion(amount) {
 		if (V.statFreeze) return;
-		if (isNaN(amount)) paramError("suspicion", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("suspicion", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			V.suspicion = (V.suspicion || 0) + amount;
@@ -892,7 +892,7 @@ const statChange = (() => {
 
 	function asylumstatus(amount) {
 		if (V.statFreeze) return;
-		if (isNaN(amount)) paramError("asylumstatus", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("asylumstatus", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			V.asylumstatus = (V.asylumstatus || 0) + amount;
@@ -908,37 +908,37 @@ const statChange = (() => {
 
 	function wolfpacktrust() {
 		V.wolfpacktrust++;
-		return statDisplay.statChange("The pack trusts you a little more.", 0, "green");
+		return statDisplay.statChange("무리가 당신을 조금 더 신뢰한다.", 0, "green");
 	}
 
 	function wolfpackfear() {
 		V.wolfpackfear++;
-		return statDisplay.statChange("The pack fears you a little more.", 0, "green");
+		return statDisplay.statChange("무리가 당신을 조금 더 두려워한다.", 0, "green");
 	}
 
 	function ferocity(amount) {
-		if (isNaN(amount)) paramError("ferocity", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("ferocity", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			V.wolfpackferocity = (V.wolfpackferocity || 0) + amount;
 			if (amount > 0) {
-				return statDisplay.statChange("Ferocity", Math.clamp(amount, 1, 3), "blue");
+				return statDisplay.statChange("흉포성", Math.clamp(amount, 1, 3), "blue");
 			} else if (amount < 0) {
-				return statDisplay.statChange("Ferocity", Math.clamp(amount, -3, -1), "purple");
+				return statDisplay.statChange("흉포성", Math.clamp(amount, -3, -1), "purple");
 			}
 		}
 		return "";
 	}
 
 	function harmony(amount = 1) {
-		if (isNaN(amount)) paramError("harmony", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("harmony", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			V.wolfpackharmony = (V.wolfpackharmony || 0) + amount;
 			if (amount > 0) {
-				return statDisplay.statChange("Harmony", Math.clamp(amount, 1, 3), "lblue");
+				return statDisplay.statChange("조화", Math.clamp(amount, 1, 3), "lblue");
 			} else if (amount < 0) {
-				return statDisplay.statChange("Harmony", Math.clamp(amount, -3, -1), "pink");
+				return statDisplay.statChange("조화", Math.clamp(amount, -3, -1), "pink");
 			}
 		}
 		return "";
@@ -946,8 +946,8 @@ const statChange = (() => {
 
 	function submissive(amount, modifier = 4) {
 		if (V.statFreeze) return;
-		if (isNaN(amount)) paramError("submissive", "amount", amount, "Expected a number.");
-		if (isNaN(modifier)) paramError("submissive", "modifier", modifier, "Expected a number.");
+		if (isNaN(amount)) paramError("submissive", "amount", amount, "숫자를 입력해야 합니다.");
+		if (isNaN(modifier)) paramError("submissive", "modifier", modifier, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		modifier = Number(modifier);
 		/* Personality wears off slowly: a move back toward neutral counts for half, and a quarter while the Submissive, Bratty or Defiant trait holds, so one fight can't undo it. */
@@ -979,7 +979,7 @@ const statChange = (() => {
 
 	function gainPenisInsecurity(amount = 10) {
 		if (V.statFreeze) return "";
-		if (isNaN(amount)) paramError("gainPenisInsecurity", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("gainPenisInsecurity", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			switch (V.player.penissize) {
@@ -1011,7 +1011,7 @@ const statChange = (() => {
 
 	function gainBreastInsecurity(amount = 5) {
 		if (V.statFreeze) return "";
-		if (isNaN(amount)) paramError("gainBreastInsecurity", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("gainBreastInsecurity", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			if ((V.player.perceived_breastsize ?? V.player.breastsize) >= 8) {
@@ -1058,7 +1058,7 @@ const statChange = (() => {
 
 	function insecurity(type, amount) {
 		if (V.statFreeze) return;
-		if (isNaN(amount)) paramError("insecurity", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("insecurity", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			let possible;
@@ -1104,7 +1104,7 @@ const statChange = (() => {
 
 	function acceptance(type, amount) {
 		if (V.statFreeze) return;
-		if (isNaN(amount)) paramError("acceptance", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("acceptance", "amount", amount, "숫자를 입력해야 합니다.");
 		if (!["penis_small", "penis_big", "breasts_small", "breasts_big", "pregnancy", "clear_climax"].includes(type)) {
 			paramError("acceptance", "type", type, 'Expected values include "penis_small", "penis_big", "breasts_small", "breasts_big", "pregnancy", "clear_climax"');
 			return;
@@ -1124,7 +1124,7 @@ const statChange = (() => {
 
 	function gainPenisAcceptance(amount) {
 		if (V.statFreeze) return "";
-		if (isNaN(amount)) paramError("gainPenisAcceptance", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("gainPenisAcceptance", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount > 0) {
 			let type;
@@ -1152,7 +1152,7 @@ const statChange = (() => {
 	}
 
 	function willpower(amount) {
-		if (isNaN(amount)) paramError("willpower", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("willpower", "amount", amount, "숫자를 입력해야 합니다.");
 		if (V.backgroundTraits.includes("nerd")) {
 			amount *= 2;
 		}
@@ -1180,7 +1180,7 @@ const statChange = (() => {
 
 	function hope(amount) {
 		if (V.statFreeze) return;
-		if (isNaN(amount)) paramError("hope", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("hope", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			V.orphan_hope = Math.clamp(V.orphan_hope + amount * 2, -50, 50);
@@ -1190,7 +1190,7 @@ const statChange = (() => {
 
 	function reb(amount) {
 		if (V.statFreeze) return;
-		if (isNaN(amount)) paramError("reb", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("reb", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			V.orphan_reb = Math.clamp(V.orphan_reb + amount * 2, -50, 50);
@@ -1200,7 +1200,7 @@ const statChange = (() => {
 
 	function grace(amount, expectedRank) {
 		if (V.statFreeze) return;
-		if (isNaN(amount)) paramError("grace", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("grace", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			let modifyGrace = true;
@@ -1230,7 +1230,7 @@ const statChange = (() => {
 
 	function livestockObey(amount) {
 		if (V.statFreeze) return;
-		if (isNaN(amount)) paramError("livestockObey", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("livestockObey", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			V.livestock.obey = Math.clamp((V.livestock.obey || 0) + amount, 0, 100);
@@ -1240,7 +1240,7 @@ const statChange = (() => {
 
 	function shame(amount) {
 		if (V.statFreeze) return;
-		if (isNaN(amount)) paramError("shame", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("shame", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			V.shame = Math.clamp((V.shame || 0) + amount, 0, 100);
@@ -1250,7 +1250,7 @@ const statChange = (() => {
 
 	function farmYield(amount) {
 		if (V.statFreeze) return;
-		if (isNaN(amount)) paramError("farmYield", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("farmYield", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			V.farm_yield = (V.farm_yield || 0) + amount;
@@ -1260,7 +1260,7 @@ const statChange = (() => {
 
 	function skill(type, amount) {
 		if (V.statFreeze) return;
-		if (isNaN(amount)) paramError("skill", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("skill", "amount", amount, "숫자를 입력해야 합니다.");
 		if (
 			![
 				"oralskill",
@@ -1327,7 +1327,7 @@ const statChange = (() => {
 	DefineMacro("skulduggery", amount => skill("skulduggery", amount));
 
 	function prof(skill, amount) {
-		if (isNaN(amount)) paramError("prof", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("prof", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			V.prof[skill] = Math.clamp((V.prof[skill] || 0) + amount * 5 * (V.statGainMult / 100), 0, 1000);
@@ -1337,7 +1337,7 @@ const statChange = (() => {
 
 	function lockerSuspicion(amount = 1) {
 		if (V.statFreeze) return;
-		if (isNaN(amount)) paramError("lockerSuspicion", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("lockerSuspicion", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			V.locker_suspicion = (V.locker_suspicion || 0) + amount;
@@ -1346,7 +1346,7 @@ const statChange = (() => {
 	DefineMacro("locker_suspicion", lockerSuspicion);
 
 	function drugs(amount) {
-		if (isNaN(amount)) paramError("drugs", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("drugs", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			let mod = 1;
@@ -1357,7 +1357,7 @@ const statChange = (() => {
 	DefineMacro("drugs", drugs);
 
 	function hallucinogen(amount) {
-		if (isNaN(amount)) paramError("hallucinogen", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("hallucinogen", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			if (V.substanceRebalance === 1 && V.passage.includes("Gwylan")) amount /= 2;
@@ -1367,7 +1367,7 @@ const statChange = (() => {
 	DefineMacro("hallucinogen", hallucinogen);
 
 	function lewdity(amount) {
-		if (isNaN(amount)) paramError("lewdity", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("lewdity", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (amount) {
 			V.daily.stall_lewdity = Math.clamp((Number.isFinite(V.daily.stall_lewdity) ? V.daily.stall_lewdity : 0) + amount, 0, 4);
@@ -1376,7 +1376,7 @@ const statChange = (() => {
 	DefineMacro("lewdity", lewdity);
 
 	function wet(type, amount) {
-		if (isNaN(amount)) paramError("wet", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("wet", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (!["over_upper", "over_lower", "upper", "lower", "under_upper", "under_lower"].includes(type)) {
 			paramError("wet", "type", type, 'Expected values include "over_upper", "over_lower", "upper", "lower", "under_upper" and "under_lower"');
@@ -1397,7 +1397,7 @@ const statChange = (() => {
 	DefineMacro("overlowerwet", amount => wet("over_lower", amount));
 
 	function worldCorruption(type, amount) {
-		if (isNaN(amount)) paramError("worldCorruption", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("worldCorruption", "amount", amount, "숫자를 입력해야 합니다.");
 		amount = Number(amount);
 		if (!["hard", "soft"].includes(type)) {
 			paramError("worldCorruption", "type", type, 'Expected values include "hard" and "soft"');
@@ -1424,7 +1424,7 @@ const statChange = (() => {
 	DefineMacro("world_corruption", worldCorruption);
 
 	function money(amount, source, optional = {}) {
-		if (isNaN(amount)) paramError("money", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("money", "amount", amount, "숫자를 입력해야 합니다.");
 		if (!(typeof source === "string" || source instanceof String || source === undefined))
 			paramError("money", "source", source, "Expected a string or undefined.");
 		if (!(typeof optional === "object" && optional !== null)) paramError("money", "optional", optional, "Expected an object.");
@@ -1597,7 +1597,7 @@ const statChange = (() => {
 	DefineMacro("timeTrackingEnd", source => timeTracking(source));
 
 	function timeTrackingManual(source, amount, timeType = "hour") {
-		if (isNaN(amount)) paramError("timeTrackingManual", "amount", amount, "Expected a number.");
+		if (isNaN(amount)) paramError("timeTrackingManual", "amount", amount, "숫자를 입력해야 합니다.");
 		if (!(typeof source === "string" || source instanceof String)) paramError("timeTrackingManual", "source", source, "Expected a string.");
 		if (!["hour", "minute", "second"].includes(timeType))
 			paramError("timeTrackingManual", "timeType", timeType, "Expected a string of either 'hour', 'minute' or 'second'.");

@@ -67,7 +67,7 @@ Weather.FogGeneration = (() => {
 		const fogKeypoints = V.weatherObj.fogKeypoints;
 
 		if (!weatherKeypoints?.length) {
-			throw new Error("weather keypoints are required to generate fog keypoints");
+			throw new Error("안개 키포인트를 생성하려면 날씨 키포인트가 필요합니다");
 		}
 
 		const lastFogTimestamp = fogKeypoints.length > 0 ? fogKeypoints[fogKeypoints.length - 1].timestamp : 0;
@@ -207,13 +207,13 @@ Weather.FogGeneration = (() => {
 				const lastFogKeypointTimestamp = fogKeypoints[fogKeypoints.length - 1]?.timestamp ?? null;
 
 				console.warn(
-					`interpolateFog: currentKeyPoint is the last fog keypoint; returning currentKeyPoint.fogGoal.` +
+					`interpolateFog: currentKeyPoint가 마지막 안개 키포인트입니다. currentKeyPoint.fogGoal을 반환합니다.` +
 						` \ncurrentTimeStamp: ${currentTimeStamp}` +
 						` \ncurrentFogTimestamp: ${currentKeyPoint.timestamp}` +
-						` \nLast Weather Timestamp: ${lastWeatherKeypointTimestamp}` +
-						` \nLast Fog Timestamp: ${lastFogKeypointTimestamp}` +
+						` \n마지막 날씨 타임스탬프: ${lastWeatherKeypointTimestamp}` +
+						` \n마지막 안개 타임스탬프: ${lastFogKeypointTimestamp}` +
 						` \nFog Keypoints Length=${fogKeypoints.length}` +
-						` \nWeather Keypoints Length=${V.weatherObj.keypointsArr?.length ?? 0}`
+						` \n날씨 키포인트 수=${V.weatherObj.keypointsArr?.length ?? 0}`
 				);
 			}
 			return Math.clamp(currentKeyPoint.fogGoal ?? 0, 0, 1);

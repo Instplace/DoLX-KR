@@ -3,30 +3,30 @@
 <<effects>>
 <<silently>><<dancedifficulty -300 600>><</silently>>
 <<if $rng gte 20 and $danceSuccess>>
-	You turn off the coastal path onto a narrow trail down the cliff face. The footing is uneven and it takes a bit of care, but you make it down without trouble.
+	당신은 해안로에서 벗어나 절벽 아래로 난 좁은 오솔길로 접어든다. 발길이 고르지 않아 약간 주의가 필요하지만, 무사히 내려간다.
 <<else>>
-	You turn off the coastal path onto a trail path down the cliff face. Your foot <span class="red">slips</span> on a loose stone and you go down hard, scraping your hands and knees.
+	당신은 해안 산책로에서 벗어나 절벽을 따라 내려가는 오솔길로 접어든다. 흔들리는 돌에 발이 <span class="red">미끄러지며</span> 세게 넘어져 손과 무릎이 까진다.
 	<<gpain>><<pain 4>>
 <</if>>
 <br><br>
 
-<<link [[Next|Fishing Coast Path Approach]]>><</link>>
+<<link [[다음|Fishing Coast Path Approach]]>><</link>>
 
 
 :: Fishing Coast Path Approach
 <<set $bus to "fishingCoastPathApproach">>
 <<effects>>
-An old wooden dock juts out below, half-rotten and creaking in the wind, it looks ready to collapse. You don't think it's safe to stand on the dock, but the path before it is safe enough.
+아래쪽으로 튀어나온 낡은 나무 부두는 반쯤 썩어 바람에 삐걱거리며 당장이라도 무너질 것 같다. 부두 위에 서는 것은 위험해 보이지만, 그 앞의 길은 꽤 안전하다.
 <br><br>
 
 <<if canStartFishing()>>
-	<<fishingRodIcon>><<link [[Start fishing (0:05)|Fishing Coast Path Wait]]>><<set $fishingAmbientOverride to "castOut">><<pass 5>><</link>>
+	<<fishingRodIcon>><<link [[낚시한다 (0:05)|Fishing Coast Path Wait]]>><<set $fishingAmbientOverride to "castOut">><<pass 5>><</link>>
 	<br>
 <<else>>
-	If you had a fishing rod, you could probably catch fish from here
+	낚싯대가 있다면, 여기서 물고기를 잡을 수 있을 것이다.
 	<br>
 <</if>>
-<<link [[Hike up the path (0:10)|Fishing Coast Path Approach Up]]>><</link>>
+<<link [[길을 따라 올라간다 (0:10)|Fishing Coast Path Approach Up]]>><</link>>
 
 
 :: Fishing Coast Path Approach Up
@@ -34,14 +34,14 @@ An old wooden dock juts out below, half-rotten and creaking in the wind, it look
 <<effects>>
 <<silently>><<dancedifficulty -300 600>><</silently>>
 <<if $rng gte 20 and $danceSuccess>>
-	You head up the cliff trail to the coastal path.
+	딩신은 절벽 오솔길을 따라 해안로로 올라간다.
 <<else>>
-	You head up the cliff trail. Halfway up, your foot <span class="red">slips</span> and you go down on your hands, catching yourself before you slide back down.
+	당신은 절벽 오솔길을 올라간다. 반쯤 올라갔을 때 발이 <span class="red">미끄러지며</span> 앞으로 넘어지지만, 아래로 미끄러져 내려가기 전에 양손으로 바닥을 짚어 간신히 몸을 지탱한다.
 	<<gpain>><<pain 4>><<gstress>><<stress 3>>
 <</if>>
 <br><br>
 
-<<link [[Next|Coast Path]]>><<pass 10>><</link>>
+<<link [[다음|Coast Path]]>><<pass 10>><</link>>
 
 
 /* The PC gets sent here any time they start fishing or after an event. From here, they get sent into the wait loop, where events can happen. */
@@ -73,9 +73,9 @@ An old wooden dock juts out below, half-rotten and creaking in the wind, it look
 	<br><br>
 
 	<<fishingKitSummary>>
-	<<link [[Wait for a bite (0:05)|Fishing Coast Path Wait Loop]]>><<pass 5>><</link>>
+	<<link [[입질을 기다린다 (0:05)|Fishing Coast Path Wait Loop]]>><<pass 5>><</link>>
 	<br>
-	<<link [[Leave|Fishing Coast Path Approach]]>><</link>>
+	<<link [[떠난다|Fishing Coast Path Approach]]>><</link>>
 <</if>>
 
 <<if canOpenBaitOverlay()>>
@@ -137,37 +137,37 @@ You open wide and drop the whole <<= fishDisplayName($fishingHookedFish.type)>> 
 <<unset $fishingHookedFish>>
 <br><br>
 
-<<link [[Next|Fishing Coast Path Wait]]>><<set $fishingAmbientOverride to "castOut">><</link>>
+<<link [[다음|Fishing Coast Path Wait]]>><<set $fishingAmbientOverride to "castOut">><</link>>
 
 
 :: Widgets Fishing Coast Path Wait Flavour [widget]
 <<widget "fishingCoastPathWaitAmbient">>
 	<<if $fishingAmbientOverride is "throwBack">>
 		<<if $fishing.currentBait>>
-			You toss the fish back into the surf before <<fishingRebaitMid>>
+			물고기를 다시 파도 속으로 던져주고 <<fishingRebaitMid>>
 		<<else>>
-			You toss the fish back into the surf.
+			물고기를 다시 파도 속으로 던져버린다.
 		<</if>>
 	<<elseif $fishingAmbientOverride is "stowAway">>
 		<<if $fishing.currentBait>>
-			You stow the fish away before <<fishingRebaitMid>>
+			물고기를 보관하고 <<fishingRebaitMid>>
 		<<else>>
-			You stow the fish away and cast back out.
+			물고기를 보관한 뒤 낚싯줄을 다시 던진다.
 		<</if>>
 	<<elseif $fishingAmbientOverride is "reHook">>
 		<<if $fishing.currentBait>>
 			<<fishingRebaitStart>>
 		<<else>>
-			You re-hook your line and cast back out.
+			낚싯줄에 바늘을 다시 꿰고 물속으로 던진다.
 		<</if>>
 	<<elseif $fishingAmbientOverride is "keepClothing">>
 		<<generalSend "wardrobe" $clothingItem.slot $clothingItem.item.name $clothingItem.colour>>
-		You wring out the <<= $clothingItem.item.name>> and stow <<= $clothingItem.item.word is "n" ? "them" : "it">> away.
+		<<= $clothingItem.item.name>>의 물기를 짜내고 보관한다.
 	<<elseif $fishingAmbientOverride is "tossClothing">>
-		You wring out the <<= $clothingItem.item.name>> and stow <<= $clothingItem.item.word is "n" ? "them" : "it">> away. You'll throw <<= $clothingItem.item.word is "n" ? "them" : "it">> away when you get back to town.
+		<<= $clothingItem.item.name>>의 물기를 짜내고 보관한다. 마을로 돌아가면 버릴 것이다.
 		<<unset $fishingAmbientOverride>>
 	<<elseif $fishingAmbientOverride is "castOut">>
-		You cast out into the water.
+		물속으로 낚싯줄을 던진다.
 	<<else>>
 		<<cleareventpool>>
 		<<fishingWaitAmbient $bus>>

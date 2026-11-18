@@ -327,19 +327,15 @@ function pregnancyNameCorrection(name, caps = false, pregnancy) {
 		name = pregnancy?.carrierDescription || intro?.description || "stranger";
 	}
 	switch (name) {
-		case "Black Wolf":
-		case "Great Hawk":
-		case "Night Monster":
-		case "Ivory Wraith":
 		case "cum bucket":
 		case "portal":
-			name = (caps ? "The " : "the ") + name;
+			name = "정액받이";
 			break;
 		case "pc":
-			name = caps ? "Yourself" : "yourself";
+			name = "당신";
 			break;
 		default:
-			name = name[0] === name[0].toLowerCase() ? (caps ? "A" : "a") + (["a", "e", "i", "o", "u"].includes(name[0]) ? "n " : " ") + name : name;
+			name = window.KR.gatPersonNameDictKR(name);
 			break;
 	}
 	return name;
@@ -480,7 +476,7 @@ window.playerPregnancyRisk = playerPregnancyRisk;
 function menstrualFertileDates() {
 	const menstruation = V.sexStats.vagina.menstruation;
 	const labels = PregnancyConstants.riskMeterLabels;
-	const riskyBound = labels[labels.findIndex(l => l.text === "risky") - 1].upTo;
+	const riskyBound = labels[labels.findIndex(l => l.key === "risky") - 1].upTo;
 	const dangerousBound = labels[labels.length - 2].upTo;
 	const dateIn = days => {
 		const d = new DateTime(Time.date).addDays(days);

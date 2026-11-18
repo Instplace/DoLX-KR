@@ -266,9 +266,9 @@ var Renderer;
 				);
 				break;
 			default:
-				throw new Error("Invalid gradient type: " + spec.gradient);
+				throw new Error("잘못된 그라데이션 타입: " + spec.gradient);
 		}
-		if (spec.colors.length < 2) throw new Error("Invalid gradient stops: " + JSON.stringify(spec.colors));
+		if (spec.colors.length < 2) throw new Error("잘못된 그라디언트 색상 지점: " + JSON.stringify(spec.colors));
 		for (let i = 0; i < spec.colors.length; i++) {
 			let stop = spec.colors[i];
 			let offset, color;
@@ -400,7 +400,7 @@ var Renderer;
 				} else if (typeof target.brightness === "number" && typeof source.brightness === "number") {
 					target.brightness += source.brightness;
 				} else {
-					throw new Error("Not implemented: cannot merge two gradient brightnesses.");
+					throw new Error("미구현: 두 그라디언트 밝기값은 병합할 수 없습니다.");
 				}
 			} else if (k === "contrast" && "contrast" in target) {
 				target.contrast *= source.contrast;
@@ -446,7 +446,7 @@ var Renderer;
 	Renderer.filterImage = filterImage;
 	function adjustGradientBrightness(image, frameCount, brightness, resultCanvas) {
 		if (brightness.adjustments.length !== 2) {
-			throw new Error("Not Implemented: Brightness gradients can have only exactly 2 stops.");
+			throw new Error("미구현: 밝기 그라디언트는 정확히 2개의 지점만 가질 수 있습니다.");
 		}
 		const gradientInitializations = [];
 		for (const [i, adjustment] of brightness.adjustments.entries()) {
@@ -849,7 +849,7 @@ var Renderer;
 			.filter(layer => layer.show !== false && !(typeof layer.alpha === "number" && layer.alpha <= 0.0))
 			.map((layer, i) => {
 				if (isNaN(layer.z)) {
-					console.error("Layer " + (layer.name || layer.src) + " has z-index NaN");
+					console.error("레이어 " + (layer.name || layer.src) + "의 z-index가 NaN입니다");
 					layer.z = 0;
 				}
 				return [layer, i];
@@ -1183,7 +1183,7 @@ var Renderer;
 					if (layer.animation) {
 						let spec = Renderer.AnimationProvider(layer);
 						if (!spec) {
-							console.error("Layer '" + (layer.name || layer.src) + "' animation '" + layer.animation + "' not found");
+							console.error("레이어 '" + (layer.name || layer.src) + "'의 애니메이션 '" + layer.animation + "'【을를】 찾을 수 없습니다");
 							continue;
 						}
 						let complex = false;
