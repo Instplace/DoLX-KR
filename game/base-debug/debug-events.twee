@@ -81,12 +81,12 @@
 	<h3>지역 정보</h3>
 
 	<br>
-	Tracked passages: <<print $_passages.length gt 0 ? $_passages.join(", ") : "None">>
+	추적된 패시지: <<print $_passages.length gt 0 ? $_passages.join(", ") : "없음">>
 	<br>
 
 	<<if _eventValidationFailed>>
-		<span class="red">EventSystem.validate() failed. The live event buffer and the current NPC state disagree.</span><br>
-		<span class="yellow">This usually means a stale entry, a slot remap mismatch, or an uncleared event entry survived longer than it should have.</span>
+		<span class="red">EventSystem.validate() 실패. 실시간 이벤트 버퍼와 현재 NPC 상태가 일치하지 않습니다.</span><br>
+		<span class="yellow">보통 오래된 항목, 슬롯 재매핑 불일치, 또는 정리되지 않은 이벤트 항목이 필요 이상으로 오래 남았다는 뜻입니다.</span>
 		<<set _eventreason to true>>
 	<<elseif _eventAlertMajorArea is true>>
 		<span class="red">당신은 주요 지역에 있습니다. 즉 NPC가 탈출했습니다!</span>
@@ -97,7 +97,7 @@
 		<</if>>
 		<<set _eventreason to true>>
 	<<elseif _eventAlertMajorArea is false>>
-		<span class="green">This NPC was defined in this passage.</span>
+		<span class="green">이 NPC는 이 패시지에서 정의되었습니다.</span>
 		<<set _eventreason to true>>
 	<<else>>
 		<<if $passage.includes("Street Stalk")>>
@@ -128,7 +128,7 @@
 	<</if>>
 	<<if !_eventreason>>
 		<<if _liveNpcCount is 0>>
-			<span class="green">No live NPCs are present. Remaining NPC list slots are empty padding from the last cleanup. Nothing needs clearing.</span>
+			<span class="green">실시간 NPC가 없습니다. 남은 NPC 목록 슬롯은 마지막 정리에서 남은 빈 패딩입니다. 정리할 것이 없습니다.</span>
 		<<else>>
 			<span class="yellow">어느 시점에서 생성된 NPC가 정리되지 않았을 수 있습니다. 해당 NPC는 여전히 사용 중일 수 있습니다. 활성화되지 않아야 한다고 생각된다면 제보해 주세요. 제보해야 할지 확신이 서지 않는다면 주요 지역(예: 거리/골목/야외)으로 가서 다시 확인하세요.</span>
 		<</if>>
@@ -163,7 +163,7 @@
 		<<elseif $_npcIsLive>>
 			<div class="debug-event-item debug-event-empty">
 				ID: $_i | $_npc.fullDescription<br>
-				<span class="yellow">Live NPC exists, but no valid event buffer entry is linked to this slot.</span>
+				<span class="yellow">실시간 NPC는 있지만, 이 슬롯에 연결된 유효한 이벤트 버퍼 항목이 없습니다.</span>
 			</div>
 		<<else>>
 			<div class="debug-event-item debug-event-empty">
@@ -179,8 +179,8 @@
 			<<set $_eventNPC to $event.buffer[$_i]>>
 			<<if $_eventNPC is undefined or $_eventNPC.slot is undefined or $_eventNPC.area is undefined or $_eventNPC.area[0] is undefined or $_eventNPC.time is undefined>>
 				<div class="debug-event-item debug-event-empty">
-					Event buffer index $_i is malformed.
-					<<if $_eventNPC isnot undefined and $_eventNPC.slot isnot undefined>><br>Slot: <<print $_eventNPC.slot>><</if>>
+					이벤트 버퍼 인덱스 $_i 항목의 형식이 잘못되었습니다.
+					<<if $_eventNPC isnot undefined and $_eventNPC.slot isnot undefined>><br>슬롯: <<print $_eventNPC.slot>><</if>>
 				</div>
 			<<else>>
 				<<set $_time to new DateTime($_eventNPC.time + V.startDate)>>
@@ -189,10 +189,10 @@
 				<<if $NPCList[$_eventNPC.slot] and $NPCList[$_eventNPC.slot].fullDescription>>
 					<<print $NPCList[$_eventNPC.slot].fullDescription>><br>
 				<<else>>
-					No description.<br>
+					설명 없음.<br>
 				<</if>>
 				<<if !isLiveNPC($NPCList[$_eventNPC.slot])>>
-					<span class="red">This event entry points to slot <<print $_eventNPC.slot>>, but no live NPC exists there right now.</span><br>
+					<span class="red">이 이벤트 항목은 슬롯 <<print $_eventNPC.slot>>번【을를】 가리키지만, 지금 그 슬롯에는 실시간 NPC가 없습니다.</span><br>
 				<</if>>
 				패시지 <<print $_eventNPC.area[0]>>에서 <<ampm $_time.getHours() $_time.getMinutes()>>에 정의됨.<br>
 				<<if $_eventNPC.area.length gt 1>>
@@ -202,7 +202,7 @@
 					<</for>>
 					<br>
 					<<if $_legalBeastEvent>>
-						<span class="green">Recognized beast-train lifecycle entry.</span><br>
+						<span class="green">알려진 짐승 열차 수명 주기 항목입니다.</span><br>
 					<</if>>
 				<</if>>
 				<<unset _eventnumberinpassage>>
@@ -224,7 +224,7 @@
 					<<set $_eventNPC2 to $event.buffer[$_j]>>
 					<<if $_eventNPC2 and $_eventNPC2.slot isnot undefined and $_i isnot $_j and $_eventNPC.slot is $_eventNPC2.slot>>
 						<<if !$_legalBeastEvent>>
-							<span class="red">Two live event entries are pointing at slot <<print $_eventNPC.slot>>.</span><br>
+							<span class="red">실시간 이벤트 항목 두 개가 슬롯 <<print $_eventNPC.slot>>번【을를】 가리키고 있습니다.</span><br>
 						<<else>>
 							<span class="green">이 슬롯 재사용은 알려진 짐승 열차 재로드 경로와 일치합니다.</span><br>
 						<</if>>
@@ -239,7 +239,7 @@
 
 	<<if $eventDebugHistory and $eventDebugHistory.length gt 0>>
 		<br>
-		<h3>Recent event debug history</h3>
+		<h3>최근 이벤트 디버그 기록</h3>
 		<<set _eventHistoryStart to Math.max(0, $eventDebugHistory.length - 6)>>
 		<<for $_histI = _eventHistoryStart; $_histI lt $eventDebugHistory.length; $_histI++>>
 			<<set $_histEntry to $eventDebugHistory[$_histI]>>
@@ -247,10 +247,10 @@
 				<<set $_histPassage to $_histEntry.area and $_histEntry.area.length gt 0 ? $_histEntry.area[0] : "Unknown">>
 				<<set $_histTime to $_histEntry.detectedAt isnot undefined ? new DateTime($_histEntry.detectedAt + V.startDate) : 0>>
 				<div class="debug-event-item debug-event-empty">
-					Slot: <<print $_histEntry.slot>> | <<print $_histEntry.reason ? $_histEntry.reason : "Recorded debug entry">><br>
-					Source: <<print $_histPassage>><<if $_histEntry.detectedIn isnot undefined>> | Detected in: <<print $_histEntry.detectedIn>><</if>><br>
+					슬롯: <<print $_histEntry.slot>> | <<print $_histEntry.reason ? $_histEntry.reason : "기록된 디버그 항목">><br>
+					출처: <<print $_histPassage>><<if $_histEntry.detectedIn isnot undefined>> | 감지 위치: <<print $_histEntry.detectedIn>><</if>><br>
 					<<if $_histTime>>
-						Detected at: <<ampm $_histTime.getHours() $_histTime.getMinutes()>><br>
+						감지 시각: <<ampm $_histTime.getHours() $_histTime.getMinutes()>><br>
 					<</if>>
 				</div>
 			<</if>>
@@ -293,7 +293,7 @@
 	</tbody>
 </table>
 <br>
-<<link [[Back Home|Bedroom]]>><</link>>
+<<link [[집으로 돌아가기|Bedroom]]>><</link>>
 
 :: Caught Fish Prop Debug
 <div class="gold">포획한 물고기 소품 테스터</div>
