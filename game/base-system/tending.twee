@@ -110,7 +110,7 @@
 
 	<<if _location is "garden" and $robin.autoWater and C.npc.Robin.trauma < 50 and ["orphanage", "garden", "bath"].includes(getRobinLocation()) and Time.hour is 16 and between(Time.minute, 30, 59) and orphanagePlotsPlanted() and !orphanagePlotsWatered() and Weather.precipitation !== "rain" and (Weather.precipitation !== "snow" or V.alex_greenhouse >= 3)>>
 		<<if $robin.waterTogether>>
-			<span class="green">Robin is out here with a watering can, waiting to do this with you.</span>
+			<span class="green">로빈이 물뿌리개를 들고 이곳에서 당신과 함께 물을 주려고 기다리고 있다.</span>
 			<br><br>
 		<<else>>
 			<span class="green">로빈이 당신을 위해 정원에 물을 주느라 바쁘다.</span>
@@ -278,14 +278,14 @@
 	<<if _location isnot "water_dragon_lab" and Transformations.chimeraActive("melusine") and ($sciencetrait gte 5 or $danceskill gte 1000) and $daily.melusineRainDance isnot 1>>
 		<<tficon "waterdragon">>
 		<<if $feetuse is "bound" or $worn.feet.type.includes("shackle")>>
-			<span class="red">You cannot perform a rain dance while your legs are bound.</span>
+			<span class="red">다리가 묶여 있어 비를 부르는 춤을 출 수 없다.</span>
 		<<else>>
-			<<link [[Perform a rain dance|Melusine Rain Dance]]>><<set $lastPassage to $passage>><</link>>
+			<<link [[비를 부르는 춤을 춘다|Melusine Rain Dance]]>><<set $lastPassage to $passage>><</link>>
 		<</if>>
 		<br>
 	<</if>>
 	<br>
-	<<gardenicon "fertiliser">><<link [[Seed list settings|Seed List Settings]]>><<set $tendingUIExitPassage to $passage>><</link>>
+	<<gardenicon "fertiliser">><<link [[씨앗 목록 설정|Seed List Settings]]>><<set $tendingUIExitPassage to $passage>><</link>>
 	<<if $debug is 1 and $_plotsHere.filter(plot => plot.stage > 0 && plot.stage < 5).length gte 1>>
 		<br>
 		<<link "DEBUG: 이곳의 모든 작물을 즉시 다 자라게 함" $passage>><<run tendingInstaGrow(_location)>><</link>>
@@ -362,9 +362,9 @@
 		<<if !$_plant>>
 			<<set _shownSeeds++>>
 			<br>
-			<span class="red">Plant type '<<print _plantType>>' not found.</span>
+			<span class="red">'<<print _plantType>>' 식물 종류를 찾을 수 없습니다.</span>
 			<br><br>
-			Please report this to the developer
+			이 문제를 개발자에게 보고해 주십시오.
 		<<else>>
 			<<set _seasonAvailable to $_plant.tending and ($_plant.tending.seasons?.includes(Time.season) or _location is "water_dragon_lab" or (_location is "garden" and $alex_greenhouse gte 3) or (_location is "avery_mansion" and $avery_mansion?.crops))>>
 			<<set _bedCompatible to $_plant.tending?.planting_bed is _plantbed.bed>>
@@ -425,7 +425,7 @@
 	<</for>>
 	<<if _shownSeeds is 0 and $plants_known.length gt 0>>
 		<br>
-		<span class="blue">No seeds match your current seed list settings.</span>
+		<span class="blue">현재 씨앗 목록 설정에 맞는 씨앗이 없다.</span>
 	<</if>>
 	<br>
 <</widget>>
@@ -545,9 +545,9 @@
 			<<set _tendingCalm to -_tendingCalm>>
 			<<stress _tendingCalm>>
 			<<if $backgroundTraits.includes("plantlover")>>
-				The work leaves you calmer than when you started. <<llstress>>
+				일을 마치고 나니 시작할 때보다 마음이 한결 차분하다. <<llstress>>
 			<<else>>
-				There's something steadying about the work. <<llstress>>
+				이 일에는 마음을 가라앉히는 구석이 있다. <<llstress>>
 			<</if>>
 			<br>
 		<</if>>
@@ -810,7 +810,7 @@
 		관리 기술 덕분에 수확량이
 		<!-- Clamp so S+/SS/SSS tending (skill 1100+) can't overflow past the top case and fall back to the misleading "slightly". -->
 		<<switch Math.clamp(Math.floor(currentSkillValue('tending') / 100), 1, 15)>>
-			<<case 15 14 13 12 11>><span class = "lustful">phenomenally</span>.
+			<<case 15 14 13 12 11>><span class = "lustful">경이로울 정도로</span> 증가한다.
 			<<case 10>><span class="green">엄청나게</span> 증가한다.
 			<<case 9>><span class="teal">막대하게</span> 증가한다.
 			<<case 8>><span class="teal">크게</span> 증가한다.
@@ -826,6 +826,6 @@
 		관리 기술이 <span class="red">너무 낮아</span> 수확량을 늘릴 수 없다.
 	<</if>>
 	<<if $worn.feet.type.includes("rugged")>>
-		<span class="green">Your rugged footwear helps you bring in a larger harvest.</span>
+		<span class="green">튼튼한 신발 덕분에 수확량이 더 늘어난다.</span>
 	<</if>>
 <</widget>>

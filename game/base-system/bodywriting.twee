@@ -146,24 +146,24 @@
 			<<if _args[0] is "left">>
 				<<set $NPCList[_n].lefthand to 0>>
 				<<if $NPCList[0].fullDescription is "Ivory Wraith">>
-					<span class="blue">and <<his>> _args[0] hand stops glowing.</span>
+					<span class="blue"><<print _args[0] is "left" ? "왼" : "오른">>손의 빛이 사그라든다.</span>
 				<<else>>
 					<span class="blue">짜증스럽게 <<print window.KR.getToolKr($NPCList[_n].lefttool)>>【을를】 던져버린다.</span>
 				<</if>>
 			<<else>>
 				<<set $NPCList[_n].righthand to 0>>
 				<<if $NPCList[0].fullDescription is "Ivory Wraith">>
-					<span class="blue">and <<his>> _args[0] hand stops glowing.</span>
+					<span class="blue"><<print _args[0] is "left" ? "왼" : "오른">>손의 빛이 사그라든다.</span>
 				<<else>>
 					<span class="blue">짜증스럽게 <<print window.KR.getToolKr($NPCList[_n].righttool)>>【을를】 던져버린다.</span>
 				<</if>>
 			<</if>>
 		<<elseif $NPCList[0].fullDescription is "Ivory Wraith" and ["tattoo","brand","magic"].includes($skin[_bodypart].pen)>>
 			<<if $skin[_bodypart].special isnot "Ivory Wraith" and $wli.cfg.tattoobypass>>
-				<<He>> looks thoughtful as <<he>> <span class="red">traces an unknown symbol over your <<tattoo _bodypart>>, erasing it.</span>
+				<<He>>【이가】 생각에 잠긴 표정으로 <span class="red">당신의 <<tattoo _bodypart>> 위에 알 수 없는 문양을 그어 지워 버린다.</span>
 				<<bodywriting_clear _bodypart>>
 			<<else>>
-				<<He>> sees your <<tattoo _bodypart>>, <span class="blue">and <<his>> _args[0] hand stops glowing.</span>
+				<<He>>【이가】 당신의 <<tattoo _bodypart>>【을를】 보자, <span class="blue"><<print _args[0] is "left" ? "왼" : "오른">>손의 빛이 사그라든다.</span>
 				/* The hand has to be released, or it stays on "pen" and re-runs this branch every turn, stalling the fight. */
 				<<if _args[0] is "left">>
 					<<set $NPCList[_n].lefthand to 0>>
@@ -239,14 +239,14 @@
 			<<if _args[0] is "left">>
 				<<set $NPCList[_n].lefthand to "pen" + "_" + _bodypart>>
 				<<if $NPCList[0].fullDescription is "Ivory Wraith">>
-					<<He>> looks thoughtful as <<his>> glowing _args[0] hand hovers over your <<bodypart _bodypart>>.
+					<<He>>【이가】 생각에 잠긴 표정으로 빛나는 <<print _args[0] is "left" ? "왼" : "오른">>손을 당신의 <<bodypart _bodypart>> 위로 가져다 댄다.
 				<<else>>
 					<<He>>【이가】 당신의 <<bodypart _bodypart>> 위로 <<print window.KR.getToolKr($NPCList[_n].lefttool)>>【을를】 갖다 대며 생각에 잠긴 표정을 짓는다.
 				<</if>>
 			<<else>>
 				<<set $NPCList[_n].righthand to "pen" + "_" + _bodypart>>
 				<<if $NPCList[0].fullDescription is "Ivory Wraith">>
-					<<He>> looks thoughtful as <<his>> glowing _args[0] hand hovers over your <<bodypart _bodypart>>.
+					<<He>>【이가】 생각에 잠긴 표정으로 빛나는 <<print _args[0] is "left" ? "왼" : "오른">>손을 당신의 <<bodypart _bodypart>> 위로 가져다 댄다.
 				<<else>>
 					<<He>>【이가】 당신의 <<bodypart _bodypart>> 위로 <<print window.KR.getToolKr($NPCList[_n].righttool)>>【을를】 갖다 대며 생각에 잠긴 표정을 짓는다.
 				<</if>>
@@ -965,7 +965,7 @@
 					<<case 5>><<He>>【이가】 말한다. "돈을 주긴 해야지. 네가 이거 말고 다른 쓸모가 있을 리 없으니."
 				<</switch>>
 			<</if>>
-			<<He>> drops a <<income 1000 "prostitution">> note atop you.
+			<<He>>【이가】 당신 위로 <<income 1000 "prostitution">> 지폐를 던진다.
 			<<earnFeat "Billboard">><<set $NPCList[_n].paid to 1>>
 		<<elseif (($enemyarousal + ($enemytrust * 5) - $enemyanger + ($attractiveness / 10) * (currentSkillValue("seductionskill") / 200)) gte 500)>>
 			<<set $enemyanger += 10>><<set $enemytrust -= 100>><<fameprostitution 1>>
@@ -978,7 +978,7 @@
 					<<case 5>><<He>>【이가】 말한다. "싸구려에 더러운 창녀가 최고지."
 				<</switch>>
 			<</if>>
-			<<He>> drops a <<income 500 "prostitution">> note atop you.
+			<<He>>【이가】 당신 위로 <<income 500 "prostitution">> 지폐를 던진다.
 			<<earnFeat "Billboard">><<set $NPCList[_n].paid to 1>>
 		<<else>><<set $enemytrust -= 20>>
 			<<fameprostitution 1>>
@@ -1003,7 +1003,7 @@
 				<<case 5>><<He>>【이가】 말한다. "좋아, 지불하지. 이번만."
 			<</switch>>
 		<</if>>
-		<<He>> drops <<income $skin[_args[0]].degree "prostitution">> atop you.
+		<<He>>【이가】 당신 위로 <<income $skin[_args[0]].degree "prostitution">>【을를】 던진다.
 		<<earnFeat "Billboard">><<set $NPCList[_n].paid to 1>>
 	<<else>>
 		<<set $enemytrust -= 20>><<fameprostitution 1>>
@@ -1209,7 +1209,7 @@
 			<<case 3>><<He>>【이가】 말한다. "육변기가 필요하면 누굴 찾아가야 하는지 내 친구들한테 말해둬야겠네."
 			<<case 4>><<He>>【이가】 말한다. "수치심도 없나?"
 			<<case 5>><<He>>【이가】 말한다. "자존감이란 게 너한텐 참 낯선 개념이겠지."
-			<<case 6>><<He>> speaks. "Don't worry, I know how to satisfy <<aGirl>>."
+			<<case 6>><<He>>【이가】 말한다. "걱정 마, <<aGirl>>【을를】 어떻게 만족시키는지 잘 아니까."
 			<<case 7>><<He>>【이가】 말한다. "이런 걸레를 찾게 되어 정말 다행이야."
 			<<case 8>><<He>>【이가】 말한다. "대주는 게 숨 쉬는 것만큼 자연스럽겠지."
 			<<case 9>><<He>>【이가】 말한다. "단 하루도 누구한테 제대로 안 박히고는 못 버틸걸."
@@ -1299,8 +1299,8 @@
 				<<case 3>><<He>>【이가】 말한다. "납치된 공주님처럼 다뤄주지."
 				<<case 4>><<He>>【이가】 말한다. "아주 귀엽고 여성스러워."
 				<<case 5>><<He>>【이가】 말한다. "널 지켜줄 강한 사람이 필요한가 보네."
-				<<case 6>><<He>> speaks. "Most <<worldFemale 'girls' 'boys'>> would be embarrassed to wear such a thing."
-				<<case 7>><<He>> speaks. "Do other <<worldFemale 'girls' 'boys'>> wear marks like this?"
+				<<case 6>><<He>>【이가】 말한다. "대부분의 <<worldFemale '여자애들' '남자애들'>>【은는】 이런 걸 달고 다니는 걸 부끄러워할 텐데."
+				<<case 7>><<He>>【이가】 말한다. "다른 <<worldFemale '여자애들' '남자애들'>>도 이런 자국을 달고 다녀?"
 				<<case 8>><<He>>【이가】 말한다. "네 여성스러움을 광고하는 거야? 누가 널 남자애로 착각하기라도 할까 봐."
 				<<case 9>><<He>>【이가】 말한다. "넌 존나 섹시해, 그건 확실하지."
 				<<case 10>><<He>>【이가】 말한다. "이렇게 예쁜 여자애를 데리고 놀 수 있어서 너무 기뻐."
@@ -1662,7 +1662,7 @@
 				<<case 4>>"씨발, 저거 진짜야?"
 				<<case 5>>"저걸 직접 몸에 붙인 거야?"
 				<<case 6>>"대체 저런 걸 어디서 찾은 거지?"
-				<<case 7>>"I would never suspect <<aGirl>> like you to be into that."
+				<<case 7>>"너 같은 <<aGirl>>【이가】 저런 거에 취향이 있을 줄은 몰랐네."
 				<<case 8>>"내 취향은 아니지만, 뭐 가릴 처지도 아니니."
 			<</switch>>
 		<</if>>
@@ -1862,19 +1862,19 @@
 	<<elseif _bodywritingPart.special is "prostitution">>
 		<<if $avery_mansion>>
 			<<if $averyragerevealed is 1 and C.npc.Avery.rage gte 60>>
-				"To think I waste my wealth on someone who still insists on presenting <<pherself "Avery">> like a cheap whore..." <<he>> scowls. "You better clean that filth off when we're done."
+				"여전히 <<pherself "Avery">>【을를】 싸구려 창녀처럼 내보이겠다고 고집하는 족속한테 내 재산을 낭비하고 있었다니..." <<he>>【이가】 인상을 찌푸린다. "끝나면 그 더러운 것부터 닦아내."
 			<<elseif $averyragerevealed is 1>>
 				"넌 온전히 내 소유야." <<He>>【이가】 낮게 으르렁거린다. "나중에 깨끗이 닦아내. 이 저택에서 네 위치가 뭔지 생각하라고."
 			<<else>>
-				<<He>> frowns. "How unsightly. You're off the streets now, remember? Be a <<goodgirl>> and wash that off when we're through."
+				<<He>>【이가】 눈살을 찌푸린다. "보기 흉하잖아. 넌 이제 밑바닥 길거리 출신이 아니야, 기억 안 나? 착하게 굴고, 끝나면 지우도록 해."
 			<</if>>
 		<<else>> /* PC not living at Avery's mansion */
 			<<if $averyragerevealed is 1 and C.npc.Avery.rage gte 60>>
-				"To think I was seen in public with someone so eager to advertise <<pherself "Avery">> as a cheap whore..." <<he>> scowls. "Scrub that filth off once we're finished. I won't be made to look a fool twice."
+				"<<pherself "Avery">>【을를】 싸구려 창녀라고 광고하지 못해 안달 난 인간이랑 함께 있는 모습을 남들에게 보였다니..." <<he>>【이가】 인상을 찌푸린다. "끝나면 그 더러운 것부터 박박 문질러 지워. 두 번 다시 바보 꼴이 되진 않을 거니까."
 			<<elseif $averyragerevealed is 1>>
 				<<He>>【이가】 노려본다. "내 곁에 두는 인간에게는 그에 걸맞은 품격을 바라는 법이야. 끝나면 지워. 사람들이 헛소문 내는 건 질색이니까."
 			<<else>>
-				<<He>> frowns. "We wouldn't want anyone thinking I keep such vulgar company, would we? Be a <<goodgirl>> and clean that off later."
+				<<He>>【이가】 눈살을 찌푸린다. "내가 이런 천박한 무리와 어울려 다닌다고 사람들이 생각하게 둘 순 없잖아, 그렇지? 착하게 굴고, 나중에 깨끗이 지워."
 			<</if>>
 		<</if>>
 	<<elseif _bodywritingPart.special is "sex">>
@@ -2109,7 +2109,7 @@
 			<<switch $skin[_args[0]].special>>
 				<<case "Robin">>
 					<<if $syndromeBailey>>
-						<<His>> eyes darken.
+						<<His>> 눈빛이 어두워진다.
 						<<set _text_output to "Maybe I should sell <<nnpc_him 'Robin'>> somewhere you can't find <<nnpc_him 'Robin'>>.">>
 					<<elseif $skin[_args[0]].writing is "Robin & I">>
 						<<He>>【은는】 비웃는다.
@@ -2130,17 +2130,17 @@
 					<<if $syndromeBailey>>
 						<<set _strings to ["Get <<nnpc_his 'Eden'>> name off of you.", "Get rid of it."]>>
 						<<if random(1)>>
-							<<He>> growls, gripping the mark hard enough to hurt.
+							<<He>>【은는】 으르렁거리며 자국을 아플 만큼 세게 움켜쥔다.
 						<<else>>
-							<<He>> traces Eden's mark with <<his>> thumb slowly. <<His>> nail digs in.
+							<<He>>【은는】 에덴의 자국을 엄지로 천천히 쓸어내린다. <<His>> 손톱이 살갗을 파고든다.
 						<</if>>
 						<<set _text_output to _strings[random(0, _strings.length - 1)]>>
 					<<else>>
 						<<if random(1)>>
-							<<He>> snarls.
+							<<He>>【은는】 으르렁거린다.
 							<<set _text_output to "<<nnpc_He 'Eden'>> chose the trees over people. Over you. Over everyone.">>
 						<<else>>
-							<<His>> fingers close around the marked skin.
+							<<His>> 손가락이 자국 난 살갗을 움켜쥔다.
 							<<set _text_output to "<<nnpc_He 'Eden'>> doesn't get to keep anything.">>
 						<</if>>
 					<</if>>
@@ -2152,15 +2152,15 @@
 						<<He>>【은는】 히죽 웃는다.
 						<<set _text_output to "<<nnpc_He 'Avery'>> paid and still needs to write <<nnpc_his 'Avery'>> name on it?">>
 					<<else>>
-						<<His>> lip curls. <<His>> fingers dig painfully into the mark.
+						<<His>> 입술이 일그러진다. <<His>> 손가락이 자국을 아프도록 파고든다.
 						<<set _admireNothing to true>>
 					<</if>>
 				<<case "Whitney">>
 					<<if random(1)>>
-						<<He>> snickers.
+						<<He>>【은는】 낄낄거린다.
 						<<set _text_output to "I'll let <<nnpc_him 'Whitney'>> keep pretending.">>
 					<<else>>
-						<<He>> exhales.
+						<<He>>【은는】 숨을 내쉰다.
 						<<set _text_output to "That brat can't afford you.">>
 					<</if>>
 				<<case "Kylar">>
@@ -2170,7 +2170,7 @@
 					<<He>>【은는】 코웃음을 친다.
 					<<set _text_output to "That idiot farmer? At least cattle know their place.">>
 				<<case "Remy">>
-					<<He>> sneers at the mark with disgust.
+					<<He>>【은는】 역겹다는 듯 자국을 보며 코웃음을 친다.
 					<<set _text_output to "Looks like Remy got <<nnpc_his 'Remy'>> money's worth.">>
 				<<case "Gwylan">>
 					<<switch $skin[_args[0]].writing>>
@@ -2185,24 +2185,24 @@
 								<<He>>【은는】 코웃음을 친다.
 								<<set _text_output to "네 분수에 넘치는 짓이야.">>
 							<<else>>
-								<<He>> traces the mark.
+								<<He>>【은는】 자국을 손끝으로 훑는다.
 								<<set _text_output to "<<nnpc_He 'Gwylan'>> can take what <<nnpc_he 'Gwylan'>> wants from your head. I'll take what I want from the rest of you.">>
 							<</if>>
 					<</switch>>
 				<<case "prostitution">>
 					<<if $skin[_args[0]].owner is "Bailey">>
-						<<He>> exhales.
+						<<He>>【은는】 숨을 내쉰다.
 						<<if $syndromeBailey>>
 							<<set $_pool to [
-								{act: "", say: `Still accurate.`},
-								{act: "", say: `Mine.`},
-								{act: `<<He>> looks satisfied.`, say: ""},
+								{act: "", say: `여전히 정확하군.`},
+								{act: "", say: `내 거야.`},
+								{act: `<<He>>【은는】 만족스러운 표정이다.`, say: ""},
 							]>>
 						<<else>>
 							<<set $_pool to [
-								{act: "", say: `Don't wash that off.`},
-								{act: "", say: `About right.`},
-								{act: "", say: `Still there. Good.`},
+								{act: "", say: `그거 씻어내지 마.`},
+								{act: "", say: `딱 맞네.`},
+								{act: "", say: `아직 있군. 좋아.`},
 							]>>
 						<</if>>
 						<<set $_pick to $_pool[random(0, $_pool.length - 1)]>>
@@ -2230,15 +2230,15 @@
 				<<case "Bailey">>
 					<<if $syndromeBailey>>
 						<<set $_pool to [
-							{act: `<<He>> exhales.`, say: `That's right.`},
-							{act: `<<His>> eyes linger on the mark.`, say: ""},
-							{act: `<<He>> traces it with <<his>> thumb.`, say: `Mine.`},
+							{act: `<<He>>【은는】 숨을 내쉰다.`, say: `그래, 맞아.`},
+							{act: `<<His>> 시선이 자국에 머문다.`, say: ""},
+							{act: `<<He>>【은는】 엄지로 자국을 쓸어내린다.`, say: `내 거야.`},
 						]>>
 					<<else>>
 						<<set $_pool to [
-							{act: `<<He>> exhales.`, say: `So you do know who you belong to.`},
-							{act: `<<He>> scoffs.`, say: `Don't forget it.`},
-							{act: `<<He>> exhales.`, say: `Right where you belong.`},
+							{act: `<<He>>【은는】 숨을 내쉰다.`, say: `그래도 누구 것인지는 아는군.`},
+							{act: `<<He>>【은는】 코웃음을 친다.`, say: `잊지 마.`},
+							{act: `<<He>>【은는】 숨을 내쉰다.`, say: `네 자리에 딱 맞게 있군.`},
 						]>>
 					<</if>>
 					<<set $_pick to $_pool[random(0, $_pool.length - 1)]>>

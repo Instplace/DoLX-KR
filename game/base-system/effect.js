@@ -179,7 +179,7 @@ function effectsWater(waterType = "liquid") {
 			if (V.lowerwetstage === 3 || V.worn.lower.type.includes("naked")) {
 				// If clothing above underwear is also wet, or missing
 				wetIntro = 2;
-				sWikifier(`<span class="lewd">Your bodily fluids soak through your ${V.worn.under_lower.name}, exposing your <<genitals>> through its fabric.</span>`);
+				sWikifier(`<span class="lewd">당신의 체액이 ${V.worn.under_lower.name}【을를】 흠뻑 적셔, 천 너머로 <<genitals>>【이가】 비쳐 보인다.</span>`);
 			} else if (wornSetupClothes("lower").skirt === 1) {
 				sWikifier(
 					`<span class="lewd">당신의 체액이 ${V.worn.under_lower.name}【을를】 흠뻑 적셔, $worn.lower.name 아래로 <<genitals>>【이가】 공기에 노출된다.</span>`
@@ -191,11 +191,11 @@ function effectsWater(waterType = "liquid") {
 			V.underlowerwetstage = 3;
 			wetIntro = 2;
 			sWikifier(
-				`<span class="lewd">${waterType.toUpperFirst()} soaks through your ${V.worn.under_lower.name}, exposing your <<genitals>> through its fabric.</span>`
+				`<span class="lewd">${waterTypeText}【이가】 ${V.worn.under_lower.name}【을를】 흠뻑 적셔, 천 너머로 <<genitals>>【이가】 비쳐 보인다.</span>`
 			);
 		} else if (V.underlowerwet < 90 && V.underlowerwetstage >= 3) {
 			V.underlowerwetstage = 2;
-			sWikifier(`<span class="green">Your ${V.worn.under_lower.name} <<underlowerhas>> dried, concealing your <<genitals>> once again. </span>`);
+			sWikifier(`<span class="green">${V.worn.under_lower.name}【이가】 말라 <<genitals>>【을를】 다시 가린다.</span>`);
 		} else if (V.underlowerwet >= 80 && V.underlowerwetstage < 2 && wetStageReveals("under_lower", 30, true)) {
 			V.underlowerwetstage = 2;
 			wetIntro = 1;
@@ -218,7 +218,7 @@ function effectsWater(waterType = "liquid") {
 			V.underupperwetstage = 3;
 			wetIntro = 2;
 			sWikifier(
-				`<span class="lewd">${waterType.toUpperFirst()} soaks through your ${V.worn.under_upper.name}, exposing your <<breasts>> through its fabric.</span>`
+				`<span class="lewd">${waterTypeText}【이가】 ${V.worn.under_upper.name}【을를】 흠뻑 적셔, 천 너머로 <<breasts>>【이가】 비쳐 보인다.</span>`
 			);
 		} else if (V.underupperwet < 90 && V.underupperwetstage >= 3) {
 			V.underupperwetstage = 2;
@@ -301,8 +301,8 @@ function effectsMakeup() {
 		delete V.makeupWashed;
 		const hadBeautyBoost = typeof getBeautyBoost === "function" && getBeautyBoost() > 0;
 		span(
-			`Your makeup is washed away${
-				V.beauty >= (V.beautymax / 7) * 4 ? ", revealing your natural beauty" : hadBeautyBoost ? "" : ", and you feel a little plainer"
+			`화장이 씻겨 내려간다${
+				V.beauty >= (V.beautymax / 7) * 4 ? ", 타고난 아름다움이 드러난다" : hadBeautyBoost ? "" : ", 어쩐지 조금 밋밋해진 느낌이 든다"
 			}.`,
 			"teal"
 		);
@@ -593,10 +593,10 @@ function effects() {
 		sWikifier(
 			`<span class="red">양수가 터졌다.</span> ${
 				dragonLabour && !dragonHeld
-					? '<span class="navy">You need to reach the coastal path, fast!</span>'
+					? '<span class="navy">빨리 해안 산책로로 가야 한다!</span>'
 					: ["asylum", "prison", "hospital", "mines"].includes(V.location)
-					? "You need to find help, fast!"
-					: "You need to head to the hospital, fast!"
+					? "빨리 도움을 찾아야 한다!"
+					: "빨리 병원으로 가야 한다!"
 			} <<ggstress>>`
 		);
 		br();
@@ -1239,13 +1239,13 @@ function effects() {
 			["rape", "살아남은자", "육변기"],
 			["bestiality", "조련사", "암캐"],
 			["tentacle", "마녀", "사냥감"],
-			["critter_magnet", "Critter Magnet", "Critter Magnet"],
+			["critter_magnet", "동물 자석", "동물 자석"],
 			["vore", "무모한 도전자", "맛있는 먹잇감"],
 			["milk", "우유 애호가", "우유 중독자"],
 			["cum", "정액 감별사", "정액받이"],
-			["penis_addict", "Cock Enthusiast", "Cock Addict"],
-			["hole_addict", "Hole Enthusiast", "Hole Addict"],
-			["oral_fixation", "Oral Fixation", "Oral Fixation"],
+			["penis_addict", "자지 애호가", "자지 중독자"],
+			["hole_addict", "구멍 애호가", "구멍 중독자"],
+			["oral_fixation", "구강 집착", "구강 집착"],
 		].forEach(([variable, defiantName, submissiveName]) => {
 			if (V[`${variable}_trait_message`]) {
 				element("span", `"${V.submissive <= 850 ? defiantName : submissiveName}" 특성을 얻었다.`, "gold");
@@ -1653,7 +1653,7 @@ function effects() {
 		if (V.earSlime.event.includes("get sperm into your") && V.earSlime.event.includes("completed") && V.earSlime.eventTimer <= 2) {
 			element(
 				"span",
-				`The ${earSlimeNoun()} in your ear is pleased that you completed its task of getting sperm into your ${V.player.vaginaExist ? "vagina" : "anus"}.`,
+				`귀 속 ${earSlimeNoun()}【이가】 과제를 완수한 당신에게 흡족해한다. 당신 자신이 아닌 상대의 정액을 당신의 ${V.player.vaginaExist ? "보지" : "항문"}에 넣는 과제였다.`,
 				"green"
 			);
 			sWikifier(`<<pain -4>><<stress -6>><<trauma -12>><<lpain>><<lltrauma>><<lstress>>`);
@@ -1662,25 +1662,25 @@ function effects() {
 		} else if (V.earSlime.event.includes("get your own sperm into your") && V.earSlime.event.includes("completed") && V.earSlime.eventTimer <= 2) {
 			element(
 				"span",
-				`The ${earSlimeNoun()} in your ear is pleased that you completed its task of getting your own sperm into your ${
-					V.player.vaginaExist ? "vagina" : "anus"
+				`귀 속 ${earSlimeNoun()}【이가】 과제를 완수한 당신에게 흡족해한다. 당신 자신의 정액을 넣은 곳은 당신의 ${
+					V.player.vaginaExist ? "보지" : "항문"
 				}.`,
 				"green"
 			);
 			sWikifier(`<<pain -4>><<stress -6>><<trauma -12>><<lpain>><<lltrauma>><<lstress>>`);
 			if (V.earSlime.growth >= 100 && V.earSlime.focus === "pregnancy" && V.worn.genitals.name === "naked" && !earSlimeThoughts()) {
-				sWikifier(`<span class="purple">A new chastity parasite forms around your penis.</span> <<genitalswear "chastity parasite">>`);
+				sWikifier(`<span class="purple">새 정조 기생충이 성기 주위에 생겨난다.</span> <<genitalswear "chastity parasite">>`);
 				V.worn.genitals.origin = "ear slime";
 			}
 			br();
 			V.earSlime.event = "";
 		} else if (V.earSlime.eventTimer <= 2 || (V.earSlime.noSleep && Time.dayState !== "night")) {
 			if (V.earSlime.startedThreats) {
-				element("span", `The ${earSlimeNoun()} in your ear punishes you for failing to complete your task.`, "red");
+				element("span", `귀 속 ${earSlimeNoun()}【이가】 과제를 완수하지 못한 당신을 벌한다.`, "red");
 				sWikifier(`<<ggpain>><<ggtrauma>><<ggstress>><<pain 16>><<stress 12>><<trauma 12>>`);
 				V.earSlime.defyCooldown += 4;
 			} else {
-				element("span", `The ${earSlimeNoun()} in your ear is upset you were unable to complete what you said you would do.`, "cyan");
+				element("span", `귀 속 ${earSlimeNoun()}【이가】 당신이 하겠다고 한 일을 끝내지 못해 언짢아한다.`, "cyan");
 			}
 			br();
 			V.earSlime.event = "";
@@ -1955,7 +1955,7 @@ function effects() {
 				case "waterdragonUp2":
 					element(
 						"span",
-						"Your mouth feels different. You explore it with your newly lengthened, forked tongue and wince as it presses against your new fangs.",
+						"입안이 달라진 것 같다. 길게 늘어난 갈라진 새 혀로 입안을 더듬자, 새로 돋은 송곳니에 닿아 얼굴이 찡그려진다.",
 						"gold"
 					);
 					break;
@@ -1979,7 +1979,7 @@ function effects() {
 					element("span", "더는 헤엄치고 싶다는 생각이 들지 않는다.", "gold");
 					break;
 				case "waterdragonDown1":
-					element("span", "Your fangs have turned into regular teeth, and your tongue has returned to normal.", "gold");
+					element("span", "송곳니가 평범한 이빨로 돌아오고, 혀도 원래대로 돌아왔다.", "gold");
 					break;
 				case "waterdragonDown2":
 					element("span", "뿔이 사라졌다.", "gold");

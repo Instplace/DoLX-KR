@@ -257,10 +257,10 @@ function genderappearancecheck() {
 		}
 	}
 	/* Makeup */
-	addfemininityfromfactor(makeupPartEquipped("lipstick") ? 50 : 0, "Lipstick");
-	addfemininityfromfactor(makeupPartEquipped("eyeshadow") ? 50 : 0, "Eyeshadow");
-	addfemininityfromfactor(makeupPartEquipped("mascara") ? 50 : 0, "Mascara");
-	addfemininityfromfactor(makeupPartEquipped("blusher") ? 50 : 0, "Blusher");
+	addfemininityfromfactor(makeupPartEquipped("lipstick") ? 50 : 0, "립스틱");
+	addfemininityfromfactor(makeupPartEquipped("eyeshadow") ? 50 : 0, "아이쉐도");
+	addfemininityfromfactor(makeupPartEquipped("mascara") ? 50 : 0, "마스카라");
+	addfemininityfromfactor(makeupPartEquipped("blusher") ? 50 : 0, "블러셔");
 	/* Body structure */
 	setfemininitymultiplierfromgender(V.player.gender_body);
 	addfemininityfromfactor(T.femininity_multiplier * 200, "체형");
@@ -272,9 +272,9 @@ function genderappearancecheck() {
 	/* Sexswap fame */
 	if (!V.statFreeze && playerHasXChangeBody() && V.xchange_fame >= 2) {
 		if (V.player.sex === "m") {
-			addfemininityfromfactor(V.xchange_fame / 2, "Sex flipped");
+			addfemininityfromfactor(V.xchange_fame / 2, "성별 반전");
 		} else {
-			addfemininityfromfactor(0 - V.xchange_fame / 2, "Sex flipped");
+			addfemininityfromfactor(0 - V.xchange_fame / 2, "성별 반전");
 		}
 	}
 	/* Special handling for calculating topless gender */

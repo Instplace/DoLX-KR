@@ -48,7 +48,7 @@
 		<<case "genomedump">>
 			<<genomedump>>
 		<<case "mood">>
-			<div class="mirror-back"><<mirroricon>><<link "Back">><<replace #mirror>><<mirrorMenu>><</replace>><<numberify "#passages > .passage">><<unset $mirrorMenu>><</link>></div>
+			<div class="mirror-back"><<mirroricon>><<link "뒤로">><<replace #mirror>><<mirrorMenu>><</replace>><<numberify "#passages > .passage">><<unset $mirrorMenu>><</link>></div>
 			<<mirrorMood>>
 		<<default>>
 			<<mirrorMenu _args[0]>>
@@ -125,7 +125,7 @@
 	<<elseif $hallucinogen gt 0>>
 		당신의 존재에 표면이 일렁이고, 어렴풋이 낯익은 <<girl>>【이가】 
 	<<elseif $trauma gte $traumamax>>
-		<<AGirl>> with glazed eyes
+		초점 없는 눈을 한 <<AGirl>>【이가】
 	<<else>>
 		<<= $pain gte 100 ? "울고 있는" : $pain gte 40 ? "눈물이 고인" : $pain gte 1 ? "찡그리고 있는" : "밝은 표정의">> <<girl>>【이가】 
 	<</if>>
@@ -199,7 +199,7 @@
 		<<set _perceivedGender to perceivedGender()>>
 		<<settextcolorfromgender _perceivedGender>>
 		<div class="settingsToggleItem">
-			You look like a <span @class="_text_color"><<if playerBellyVisible(true)>>pregnant <</if>><<print _perceivedGender is "m" ? "boy" : _perceivedGender is "f" ? "girl" : "androgynous person">>.</span>
+			당신은 <span @class="_text_color"><<if playerBellyVisible(true)>>임신한 <</if>><<print _perceivedGender is "m" ? "소년" : _perceivedGender is "f" ? "소녀" : "중성적인 사람">>처럼 보인다.</span>
 			<br>
 			<<genderAppearanceMeter>>
 		</div>
@@ -244,25 +244,25 @@
 			<span class="gold bold">행동:</span>
 			<br>
 			<<if $player.gender_posture is "n">>
-				You turn around to get a look at yourself, without deliberately trying to look more masculine or feminine.
+				당신은 일부러 더 남성적이거나 여성적으로 보이려 애쓰지 않은 채, 몸을 돌려 자신의 모습을 살펴본다.
 				<br>
 				<<set _perceivedGender to perceivedGender()>>
 				<<settextcolorfromgender _perceivedGender>>
-				<span @class="_text_color">Right now, others would likely see you as a <<print _perceivedGender is "m" ? "boy" : _perceivedGender is "f" ? "girl" : "androgynous person">>. Carrying yourself differently could shift that.</span>
+				<span @class="_text_color">지금 모습으로는 다른 사람들이 당신을 <<print _perceivedGender is "m" ? "소년" : _perceivedGender is "f" ? "소녀" : "중성적인 사람">>【으로로】 볼 가능성이 높습니다. 몸가짐을 달리하면 달라질 수 있습니다.</span>
 			<<elseif $player.gender_posture is "f">>
 				소녀 같은 포즈를 몇 번 취해보고, 최대한 여성스러운 목소리를 내어 본다.
 				<br>
-				<span class="pink">This makes you look more feminine than you otherwise would.</span>
+				<span class="pink">평소보다 더 여성스러워 보이게 됩니다.</span>
 			<<elseif $player.gender_posture is "m">>
 				근육에 힘을 주고 목소리를 조금 굵게 깔아본다.
 				<br>
-				<span class="lblue">This makes you look more masculine than you otherwise would.</span>
+				<span class="lblue">평소보다 더 남성스러워 보이게 됩니다.</span>
 			<</if>>
 			<br>
 			<<if hypnosisTrait("crossdressing") is 5>>
-				<span class="red">Your compulsion forces you to adopt a <<print $player.gender is "m" ? "feminine" : "masculine">> posture.</span>
+				<span class="red">강박 때문에 어쩔 수 없이 <<print $player.gender is "m" ? "여성적인" : "남성적인">> 자세를 취하게 됩니다.</span>
 			<<elseif hypnosisTrait("crossdressing") gte 3>>
-				<span class="red">Your compulsion stops you from adopting a <<print $player.gender is "f" ? "feminine" : "masculine">> posture.</span>
+				<span class="red">강박 때문에 <<print $player.gender is "f" ? "여성적인" : "남성적인">> 자세를 취할 수 없습니다.</span>
 			<</if>>
 			<br>
 			<<set _postures to ["masculine", "feminine", "natural"]>>
@@ -325,19 +325,19 @@
 		<</if>>
 		<<run _increaseBoth(`머리 길이 ${$hairlength gte 333 ? "+".repeat($hairlength gte 666 ? 2 : 1) : ""}`)>>
 		<<if $arousal gte ($arousalmax / 7) * 4>>
-			Horny
+			음란함
 			<<run _increaseAllure.push("Arousal: Horny ++++++")>>
 			<br>
 		<<elseif $arousal gte ($arousalmax / 7) * 3>>
-			Lustful
+			욕정에 젖음
 			<<run _increaseAllure.push("Arousal: Lustful ++++")>>
 			<br>
 		<<elseif $arousal gte ($arousalmax / 7) * 2>>
-			Aroused
+			흥분함
 			<<run _increaseAllure.push("Arousal: Aroused ++")>>
 			<br>
 		<<elseif $arousal gte ($arousalmax / 7)>>
-			Sensual
+			관능적
 			<<run _increaseAllure.push("Arousal: Sensual +")>>
 			<br>
 		<</if>>
@@ -922,10 +922,10 @@
 				<</for>>
 				<<listbox "$player.bodyshape" autoselect>>
 					<<option "클래식" "classic">>
-					<<option "Slender" "slender">>
-					<<option "Androgynous" "andro">>
-					<<option "Curvy" "curvy">>
-					<<option "Soft" "soft">>
+					<<option "호리호리" "slender">>
+					<<option "중성적" "andro">>
+					<<option "굴곡진" "curvy">>
+					<<option "부드러운" "soft">>
 				<</listbox>>
 			</span>
 			<br>
@@ -943,7 +943,7 @@
 				당신이 선택한 오른팔 위치는 다음과 같습니다:
 				<<set _positionOptions to {
 					"위": "above",
-					"Below": "Below"
+					"아래": "Below"
 				}>>
 				<<listbox "$rightArmPosition" autoselect>>
 					<<optionsfrom _positionOptions>>
@@ -1565,7 +1565,7 @@
 						<<run Engine.show()>>
 					<</link>>
 				<<case "middle">>
-					<<link "Position back hair in front of TF ears">>
+					<<link "뒤쪽 머리카락을 변이 귀 앞에 둔다">>
 						<<run State.setVar("$tfearsposition", "back")>>
 						<<run Engine.show()>>
 					<</link>>
@@ -1719,7 +1719,7 @@
 						<<run Engine.show()>>
 					<</link>>
 				<<case "middle">>
-					<<link "Position back hair in front of TF ears">>
+					<<link "뒤쪽 머리카락을 변이 귀 앞에 둔다">>
 						<<run State.setVar("$tfearsposition", "back")>>
 						<<run Engine.show()>>
 					<</link>>
@@ -2469,7 +2469,7 @@
 						<<set $makeup.concealer = 1>>
 						<<run Engine.show()>>
 					<</link>> |
-					<<link "Hide freckles with waterproof concealer">>
+					<<link "방수 컨실러로 주근깨를 가린다">>
 						<<set $makeup.concealer = 2>>
 						<<run Engine.show()>>
 					<</link>>
@@ -2660,17 +2660,17 @@
 				<<cosmeticsicon "dyes">>
 				<<set _dyes = $makeup.owned.hairdye.filter(x => x.count > 0)>>
 				<<if _dyes.length == 0>>
-					You have no hair dye to dye your eyebrows with.
+					눈썹을 염색할 염색약이 없다.
 				<<else>>
-					<span class="gold bold">Eyebrow Colour:</span>
+					<span class="gold bold">눈썹 색:</span>
 					<br>
 					<<if $makeup.browscolour != 0>>
-						Your brows are coloured with <<hairmapcolourtext $makeup.browscolour>> hair dye. Visit a hairdresser to restore them to their natural <<hairmapcolourtext $naturalhaircolour>> colour.
+						당신의 눈썹은 <<hairmapcolourtext $makeup.browscolour>>색 염색약으로 염색되어 있다. 원래의 <<hairmapcolourtext $naturalhaircolour>>색으로 되돌리려면 미용실에 가야 한다.
 					<<else>>
-						Your brows are their natural <<hairmapcolourtext $naturalhaircolour>> colour.
+						당신의 눈썹은 자연스러운 <<hairmapcolourtext $naturalhaircolour>>색이다.
 					<</if>>
 					<br><br>
-					Dying your eyebrows will take <span class="gold">0:15</span> minutes.
+					눈썹을 염색하는 데는 <span class="gold">0:15</span>분이 걸린다.
 					<br>
 					<<browsColourPreview>>
 					<div class="makeupList no-numberify capitalize">
@@ -2703,20 +2703,20 @@
 <<widget "makeupPresets">>
 	<<set _presetChosen to $makeup.presets[_args[0]]>>
 	<hr>
-	Preset: <<print _args[0]>><br><<ccmodMirrorMannequin _presetChosen>>
+	프리셋: <<print _args[0]>><br><<ccmodMirrorMannequin _presetChosen>>
 	<br>
 	<<for $_label, $_value range _presetChosen>>
 		<<switch $_label>>
 			<<case "browscolour">>
 				눈썹 염색: <<makeupPresetsItem "hairdye" $_value>>
 			<<case "lipstick">>
-				Lipstick: <<if _presetChosen[$_label + '_custom'] isnot undefined and Object.keys(_presetChosen[$_label + '_custom']).length gt 1>> <<ccmodMirrorPresetItem _presetChosen $_label>> <<else>> <<makeupPresetsItem $_label $_value>> <</if>>
+				립스틱: <<if _presetChosen[$_label + '_custom'] isnot undefined and Object.keys(_presetChosen[$_label + '_custom']).length gt 1>> <<ccmodMirrorPresetItem _presetChosen $_label>> <<else>> <<makeupPresetsItem $_label $_value>> <</if>>
 			<<case "eyeshadow">>
-				Eyeshadow: <<if _presetChosen[$_label + '_custom'] isnot undefined and Object.keys(_presetChosen[$_label + '_custom']).length gt 1>> <<ccmodMirrorPresetItem _presetChosen $_label>> <<else>> <<makeupPresetsItem $_label $_value>> <</if>>
+				아이섀도: <<if _presetChosen[$_label + '_custom'] isnot undefined and Object.keys(_presetChosen[$_label + '_custom']).length gt 1>> <<ccmodMirrorPresetItem _presetChosen $_label>> <<else>> <<makeupPresetsItem $_label $_value>> <</if>>
 			<<case "mascara">>
-				Mascara: <<if _presetChosen[$_label + '_custom'] isnot undefined and Object.keys(_presetChosen[$_label + '_custom']).length gt 1>> <<ccmodMirrorPresetItem _presetChosen $_label>> <<else>> <<makeupPresetsItem $_label $_value>> <</if>>
+				마스카라: <<if _presetChosen[$_label + '_custom'] isnot undefined and Object.keys(_presetChosen[$_label + '_custom']).length gt 1>> <<ccmodMirrorPresetItem _presetChosen $_label>> <<else>> <<makeupPresetsItem $_label $_value>> <</if>>
 			<<case "blusher">>
-				Blusher: <<if _presetChosen[$_label + '_custom'] isnot undefined and Object.keys(_presetChosen[$_label + '_custom']).length gt 1>> <<ccmodMirrorPresetItem _presetChosen $_label>> <<else>> <<makeupPresetsItem $_label $_value>> <</if>>
+				블러셔: <<if _presetChosen[$_label + '_custom'] isnot undefined and Object.keys(_presetChosen[$_label + '_custom']).length gt 1>> <<ccmodMirrorPresetItem _presetChosen $_label>> <<else>> <<makeupPresetsItem $_label $_value>> <</if>>
 			<<case "eyelenses">>
 				콘택트렌즈: <<makeupPresetsItem $_label $_value>>
 		<</switch>>
@@ -2804,7 +2804,7 @@
 		<span @class="'hair-' + $browsDyeOption.replace(/ /g, '-')">
 			<span class="colour-sample bgcolour-hair colour-hair"></span>
 		</span>
-		<br><<link "Dye eyebrows (0:15)">>
+		<br><<link "눈썹을 염색한다 (0:15)">>
 			<<pass 15>>
 			<<for _i to 0; _i lt $makeup.owned.hairdye.length; _i++>>
 				<<if $makeup.owned.hairdye[_i].colour is $browsDyeOption and $makeup.owned.hairdye[_i].count gt 0>>
@@ -2826,7 +2826,7 @@
 <<widget "mirrorTransformation">>
 	<<mirroricon>><<link "뒤로">><<replace #mirror>><<mirrorMenu>><</replace>><<numberify "#passages > .passage">><<unset $mirrorMenu>><</link>>
 	<br>
-	<i class="red"><b>Note:</b> If a change you set here doesn't seem to apply, close the mirror and open it again.</i>
+	<i class="red"><b>참고:</b> 여기서 바꾼 설정이 적용되지 않는 것 같으면 거울을 닫았다가 다시 여십시오.</i>
 	<br><br>
 
 	__게놈 덤프__
@@ -2844,24 +2844,24 @@
 		<div class="tf-description">
 			__Description__<br>
 			<<set _tfDescLabels to {
-				"xenos"       : "Xenos",
-				"demon"       : "Demon",
-				"angel"       : "Angel",
-				"fallen"      : "Fallen angel",
-				"cat"         : "Cat",
-				"cow"         : "Cow",
-				"bear"        : "Bear",
-				"waterdragon" : "Water dragon",
-				"wolf"        : "Wolf",
-				"harpy"       : "Harpy",
-				"fox"         : "Fox",
-				"bunny"       : "Bunny",
-				"okami"       : "Okami",
-				"kitsune"     : "Kitsune",
-				"seraphim"    : "Seraphim",
-				"bakunawa"    : "Bakunawa",
-				"ryuujin"     : "Ryuujin",
-				"melusine"    : "Melusine"
+				"xenos"       : "제노스",
+				"demon"       : "악마",
+				"angel"       : "천사",
+				"fallen"      : "타락 천사",
+				"cat"         : "고양이",
+				"cow"         : "소",
+				"bear"        : "곰",
+				"waterdragon" : "수룡",
+				"wolf"        : "늑대",
+				"harpy"       : "하피",
+				"fox"         : "여우",
+				"bunny"       : "토끼",
+				"okami"       : "오카미",
+				"kitsune"     : "키츠네",
+				"seraphim"    : "세라핌",
+				"bakunawa"    : "바쿠나와",
+				"ryuujin"     : "류진",
+				"melusine"    : "멜루신"
 			}>>
 			<<set _tfDescOrder to ["xenos", "demon", "angel", "fallen", "cat", "cow", "bear", "waterdragon", "wolf", "harpy", "fox", "bunny", "okami", "kitsune", "seraphim", "bakunawa", "ryuujin", "melusine"]>>
 			<<set _tfDescOptions to { "Default (automatic)" : "default" }>>
@@ -2878,7 +2878,7 @@
 					<<set _tfDescOptions[_tfComboLabel] = _tfComboKey>>
 				<</if>>
 			<</for>>
-			<label>Described as:
+			<label>다음과 같이 묘사됨:
 				<<listbox "$tfDesc.primary" autoselect>>
 					<<optionsfrom _tfDescOptions>>
 				<</listbox>>
@@ -2955,7 +2955,7 @@
 	<<if _fallenPlusFullCheck or _wolfInitialCheck or _catInitialCheck or _foxInitialCheck or _bearInitialCheck or _birdInitialCheck or _cowFullCheck or _waterdragonMenuCheck or _bunnyInitialCheck or (_demonPartialCheck and hasSexStat("exhibitionism", 6))>>
 		__Traits__<br>
 		<<if _fallenPlusFullCheck>>
-			Iron Will: <<checkbox "_traits.ironWill" "disabled" "default" autocheck>><br>
+			강철 의지: <<checkbox "_traits.ironWill" "disabled" "default" autocheck>><br>
 		<</if>>
 		<<if _wolfInitialCheck or _catInitialCheck or _foxInitialCheck or _bearInitialCheck or _waterdragonMenuCheck>>
 			송곳니: <<checkbox "_traits.fangs" "disabled" "default" autocheck>><br>
@@ -2965,7 +2965,7 @@
 		<</if>>
 		<<if _waterdragonMenuCheck>>
 			용의 눈: <<checkbox "_traits.dragonEyes" "disabled" "default" autocheck>><br>
-			Dragon Tongue: <<checkbox "_traits.dragonTongue" "disabled" "default" autocheck>><br>
+			용의 혀: <<checkbox "_traits.dragonTongue" "disabled" "default" autocheck>><br>
 		<</if>>
 		<<if _birdTraitCheck or _foxTraitCheck>>
 			평생의 짝: <<checkbox "_traits.mateForLife" "disabled" "default" autocheck>><br>
@@ -2983,19 +2983,19 @@
 			수중 폐: <<checkbox "_traits.aquatic" "disabled" "default" autocheck>><br>
 		<</if>>
 		<<if _cowFullCheck>>
-			Double Semen/Milk Volume:
+			정액/모유 두 배 용량:
 			<<if $semen_max isnot 6000>>
 				<<link [[설정한다|$passage]]>><<set $semen_max to 6000>><<set $milk_max to 6000>><</link>>
 			<<else>>
 				<<link [[해제한다|$passage]]>><<set $semen_max to 3000>><<set $milk_max to 3000>><</link>>
 			<</if>>
 			<br>
-			Double Semen/Milk Production: <<checkbox "$cowDoubleProduction" 0 1 autocheck>><br>
+			정액/모유 두 배 생산: <<checkbox "$cowDoubleProduction" 0 1 autocheck>><br>
 		<</if>>
 		<<if _tfStageUnlocked($cat, $cattf, 7)>>
 			오드아이:
 			<<if _cat.heterochromia isnot "default">>
-				<<link [[Set|$passage]]>><<set _cat.heterochromia = "default">><<if V.custom_eyecolours.findIndex(c => c.variable && c.variable.startsWith("cat_tf_stage_")) === -1>><<run window.determineCatEyeStages()>><</if>><<set $original_colour = [$leftEyeColour, $rightEyeColour]>><<catHeterochromiaTF `$cat gte 7 ? Math.min($cat - 7, 3) : 3`>><<updatesidebarimg>><</link>>
+				<<link [[설정한다|$passage]]>><<set _cat.heterochromia = "default">><<if V.custom_eyecolours.findIndex(c => c.variable && c.variable.startsWith("cat_tf_stage_")) === -1>><<run window.determineCatEyeStages()>><</if>><<set $original_colour = [$leftEyeColour, $rightEyeColour]>><<catHeterochromiaTF `$cat gte 7 ? Math.min($cat - 7, 3) : 3`>><<updatesidebarimg>><</link>>
 			<<else>>
 				<<link [[해제한다|$passage]]>><<set _cat.heterochromia = "disabled">><<set $leftEyeColour to $original_colour[0]>><<set $rightEyeColour to $original_colour[1]>><<catHeterochromiaTF "hide">><<updatesidebarimg>><</link>>
 			<</if>>
@@ -3104,7 +3104,7 @@
 			<<set _clawOptions[_clawLabels[_claw]] to _claw>>
 		<</for>>
 		<<set _clawChoice to _clawType>>
-		<label>Claws:
+		<label>발톱:
 			<div class="tf-claws">
 				<<listbox "_clawChoice" autoselect>>
 					<<optionsfrom _clawOptions>>
@@ -3146,10 +3146,10 @@
 	<<if _demonSkinMenuCheck>>
 		/* "auto" follows your tan. Choosing a colour locks it instead. */
 		<<set _demonSkinChoice to ($demonSkinLock is "auto" ? (Skin.color.tan gte 66 ? "red" : Skin.color.tan gte 33 ? "purple" : "blue") : $demonSkinLock is "off" ? "none" : $demonSkinLock)>>
-		<label>Demon Skin:
+		<label>악마 피부:
 			<div class="tf-demon-skin">
 				<<listbox "_demonSkinChoice" autoselect>>
-					<<option "None" "none">>
+					<<option "없음" "none">>
 					<<option "파란색" "blue">>
 					<<option "보라색" "purple">>
 					<<option "빨간색" "red">>
@@ -3161,15 +3161,15 @@
 
 	<<if _waterdragonSkinMenuCheck>>
 		<<set _waterDragonSkinChoice to ($waterdragonSkinLock is "auto" ? (_waterdragonFullCheck ? (Skin.color.tan gte 66 ? "blue" : Skin.color.tan gte 33 ? "purple" : "lilac") : "none") : $waterdragonSkinLock is "off" ? "none" : $waterdragonSkinLock)>>
-		<label>Water Dragon Skin:
+		<label>수룡 피부:
 			<div class="tf-waterdragon-skin">
 				<<listbox "_waterDragonSkinChoice" autoselect>>
-					<<option "None" "none">>
-					<<option "Lilac" "lilac">>
+					<<option "없음" "none">>
+					<<option "라일락" "lilac">>
 					<<option "보라색" "purple">>
-					<<option "Blue/Cyan" "blue">>
-					<<option "Sky Blue" "skyblue">>
-					<<option "Soft Pink" "pink">>
+					<<option "파랑/청록" "blue">>
+					<<option "하늘색" "skyblue">>
+					<<option "연분홍" "pink">>
 				<</listbox>>
 			</div>
 		</label>
@@ -3535,7 +3535,7 @@
 				<<listbox "_divineHornsChoice" autoselect>>
 					<<optionsfrom _options>>
 				<</listbox>>
-				<span class="small-description">Demon colour:</span> <<gencolourselector "$transformationParts.demon.horns_colour">>
+				<span class="small-description">악마 색상:</span> <<gencolourselector "$transformationParts.demon.horns_colour">>
 			</div>
 		</label>
 		<br>
@@ -3613,7 +3613,7 @@
 					<<optionsfrom _options>>
 				<</listbox>>
 				<<if _demonPartialCheck>>
-					<span class="small-description">Demon colour:</span> <<gencolourselector "$transformationParts.demon.tail_colour">>
+					<span class="small-description">악마 색상:</span> <<gencolourselector "$transformationParts.demon.tail_colour">>
 				<</if>>
 			</div>
 		</label>
@@ -3791,7 +3791,7 @@
 					<<optionsfrom _options>>
 				<</listbox>>
 				<<if _demonFullCheck>>
-					<span class="small-description">Demon colour:</span> <<gencolourselector "$transformationParts.demon.wings_colour">>
+					<span class="small-description">악마 색상:</span> <<gencolourselector "$transformationParts.demon.wings_colour">>
 				<</if>>
 			</div>
 		</label>
@@ -3826,8 +3826,8 @@
 
 	<br>
 	<<if ($traumatized isnot undefined)>>
-		__Traumatic Eyes__<br>
-		<<link [[Set|$passage]]>><<set $traumaeyes to true>><<updatesidebarimg>><</link>> | <<link [[Clear|$passage]]>><<set $traumaeyes to false>><<updatesidebarimg>><</link>><br>
+		__트라우마 눈__<br>
+		<<link [[설정한다|$passage]]>><<set $traumaeyes to true>><<updatesidebarimg>><</link>> | <<link [[해제한다|$passage]]>><<set $traumaeyes to false>><<updatesidebarimg>><</link>><br>
 		<br>
 	<</if>>
 
@@ -3897,25 +3897,25 @@
 	</div>
 
 	<<set _animalColourTfLabels to {
-		wolf: "Wolf",
-		cat: "Cat",
-		cow: "Cow",
-		bird: "Bird",
-		fox: "Fox",
-		bunny: "Bunny",
-		bear: "Bear",
-		waterdragon: "Water Dragon"
+		wolf: "늑대",
+		cat: "고양이",
+		cow: "소",
+		bird: "새",
+		fox: "여우",
+		bunny: "토끼",
+		bear: "곰",
+		waterdragon: "수룡"
 	}>>
 	<<set _animalColourPartLabels to {
-		ears: "ears",
-		tail: "tail",
-		cheeks: "cheek fur",
-		pits: "underarm fur",
-		pubes: "pubic fur",
-		horns: "horns",
-		wings: "wings",
-		malar: "facial plumage",
-		plumage: "plumage and fur"
+		ears: "귀",
+		tail: "꼬리",
+		cheeks: "뺨 털",
+		pits: "겨드랑이 털",
+		pubes: "음모",
+		horns: "뿔",
+		wings: "날개",
+		malar: "얼굴 깃털",
+		plumage: "깃털과 털"
 	}>>
 	<<set _animalColourParts to []>>
 	<<for _tf, _parts range Transformations.colourableAnimalParts>>
@@ -3940,30 +3940,30 @@
 			<<set $transformationParts.catsith to {}>>
 		<</if>>
 		<<run _animalColourParts.push({
-			label: "Cat sith markings",
+			label: "캣시 무늬",
 			target: "$transformationParts.catsith.pattern_colour"
 		})>>
 	<</if>>
 
 	<<if _isMenuEnabled or _animalColourParts.length gt 0>>
 		<details class="expandMenu tf-custom-colours">
-			<summary class="expandMenu">Custom Transformation Colours</summary>
+			<summary class="expandMenu">변이 색상 사용자 지정</summary>
 			<<if _animalColourParts.length gt 0>>
 				<div class="colour-selector-list">
-					<span class="small-description">Animal parts:</span><br>
+					<span class="small-description">동물 부위:</span><br>
 					<<for _colourPart range _animalColourParts>>
 						<label><<= _colourPart.label>>: <<gencolourselector _colourPart.target>></label><br>
 					<</for>>
 				</div>
 			<</if>>
 			<div class="menuWarning">
-				Select the transformation-part checkboxes you'd like to recolour.
+				색을 바꾸고 싶은 변이 부위의 체크박스를 선택하세요.
 			</div>
 			<div class="menuContent hidden">
 				<<set _options to ['ffffff', 'ff0000', '00ff00', '0000ff', '590099', '000000']>>
 				<<gencoloursquares _options>>
 				<<gencolourpicker>>
-				<br><<link "Restore selected parts to natural colours">><<run TransformationsInterface.clearSelectedColours()>><</link>>
+				<br><<link "선택한 부위를 원래 색으로 되돌린다">><<run TransformationsInterface.clearSelectedColours()>><</link>>
 			</div>
 		</details>
 	<</if>>
@@ -4067,37 +4067,37 @@
 	<i>변이를 완전히 마친 뒤에만 실행하는 것을 강력히 권장합니다.</i></span>
 	<br><br>
 	<<if $angelbuild gte 1>>
-	Angel Transform: <<link [[Reset|$passage]]>><<if $angeltf is 1>><<run $transformationHistory.pushUnique("genomeDump:angel")>><</if>><<angelTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $angeltf is 1>><span class="green">Safe</span><<else>><span class="red">Unsafe</span><</if>><br>
+	천사 변이: <<link [[초기화한다|$passage]]>><<if $angeltf is 1>><<run $transformationHistory.pushUnique("genomeDump:angel")>><</if>><<angelTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $angeltf is 1>><span class="green">안전</span><<else>><span class="red">위험</span><</if>><br>
 	<</if>>
 	<<if $fallenangel gte 1>>
-	Fallen Angel Transform: <<link [[Reset|$passage]]>><<fallenButNotOut 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $fallenangelplustf is 1>><span class="green">Safe</span><<else>><span class="red">Unsafe</span><</if>><br>
+	타락 천사 변이: <<link [[초기화한다|$passage]]>><<fallenButNotOut 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $fallenangelplustf is 1>><span class="green">안전</span><<else>><span class="red">위험</span><</if>><br>
 	<</if>>
 	<<if $demonbuild gte 1>>
-	Demon Transform: <<link [[Reset|$passage]]>><<if $demontf is 1>><<run $transformationHistory.pushUnique("genomeDump:demon")>><</if>><<demonTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $demontf is 1>><span class="green">Safe</span><<else>><span class="red">Unsafe</span><</if>><br>
+	악마 변이: <<link [[초기화한다|$passage]]>><<if $demontf is 1>><<run $transformationHistory.pushUnique("genomeDump:demon")>><</if>><<demonTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $demontf is 1>><span class="green">안전</span><<else>><span class="red">위험</span><</if>><br>
 	<</if>>
 	<<if $wolfbuild gte 1>>
-	Wolf Transform: <<link [[Reset|$passage]]>><<if $wolftf is 1>><<run $transformationHistory.pushUnique("genomeDump:wolf")>><</if>><<wolfTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $wolftf is 1>><span class="green">Safe</span><<else>><span class="red">Unsafe</span><</if>><br>
+	늑대 변이: <<link [[초기화한다|$passage]]>><<if $wolftf is 1>><<run $transformationHistory.pushUnique("genomeDump:wolf")>><</if>><<wolfTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $wolftf is 1>><span class="green">안전</span><<else>><span class="red">위험</span><</if>><br>
 	<</if>>
 	<<if $catbuild gte 1>>
-	Cat Transform: <<link [[Reset|$passage]]>><<if $cattf is 1>><<run $transformationHistory.pushUnique("genomeDump:cat")>><</if>><<catTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $cattf is 1>><span class="green">Safe</span><<else>><span class="red">Unsafe</span><</if>><br>
+	고양이 변이: <<link [[초기화한다|$passage]]>><<if $cattf is 1>><<run $transformationHistory.pushUnique("genomeDump:cat")>><</if>><<catTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $cattf is 1>><span class="green">안전</span><<else>><span class="red">위험</span><</if>><br>
 	<</if>>
 	<<if $cowbuild gte 1>>
-	Cow Transform: <<link [[Reset|$passage]]>><<if $cowtf is 1>><<run $transformationHistory.pushUnique("genomeDump:cow")>><</if>><<cowTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $cowtf is 1>><span class="green">Safe</span><<else>><span class="red">Unsafe</span><</if>><br>
+	소 변이: <<link [[초기화한다|$passage]]>><<if $cowtf is 1>><<run $transformationHistory.pushUnique("genomeDump:cow")>><</if>><<cowTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $cowtf is 1>><span class="green">안전</span><<else>><span class="red">위험</span><</if>><br>
 	<</if>>
 	<<if $bearbuild gte 1>>
-	Bear Transform: <<link [[Reset|$passage]]>><<if $beartf is 1>><<run $transformationHistory.pushUnique("genomeDump:bear")>><</if>><<bearTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $beartf is 1>><span class="green">Safe</span><<else>><span class="red">Unsafe</span><</if>><br>
+	곰 변이: <<link [[초기화한다|$passage]]>><<if $beartf is 1>><<run $transformationHistory.pushUnique("genomeDump:bear")>><</if>><<bearTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $beartf is 1>><span class="green">안전</span><<else>><span class="red">위험</span><</if>><br>
 	<</if>>
 	<<if $waterdragonbuild gte 1>>
-	Water Dragon Transform: <<link [[Reset|$passage]]>><<if $waterdragontf is 1>><<set $waterdragonCosmeticUnlocked to 1>><</if>><<waterdragonTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $waterdragontf is 1>><span class="green">Safe</span><<else>><span class="red">Unsafe</span><</if>><br>
+	수룡 변이: <<link [[초기화한다|$passage]]>><<if $waterdragontf is 1>><<set $waterdragonCosmeticUnlocked to 1>><</if>><<waterdragonTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $waterdragontf is 1>><span class="green">안전</span><<else>><span class="red">위험</span><</if>><br>
 	<</if>>
 	<<if $birdbuild gte 1>>
-	Bird Transform: <<link [[Reset|$passage]]>><<if $harpytf is 1>><<run $transformationHistory.pushUnique("genomeDump:harpy")>><</if>><<harpyTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $harpytf is 1>><span class="green">Safe</span><<else>><span class="red">Unsafe</span><</if>><br>
+	새 변이: <<link [[초기화한다|$passage]]>><<if $harpytf is 1>><<run $transformationHistory.pushUnique("genomeDump:harpy")>><</if>><<harpyTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $harpytf is 1>><span class="green">안전</span><<else>><span class="red">위험</span><</if>><br>
 	<</if>>
 	<<if $foxbuild gte 1>>
-	Fox Transform: <<link [[Reset|$passage]]>><<if $foxtf is 1>><<run $transformationHistory.pushUnique("genomeDump:fox")>><</if>><<foxTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $foxtf is 1>><span class="green">Safe</span><<else>><span class="red">Unsafe</span><</if>><br>
+	여우 변이: <<link [[초기화한다|$passage]]>><<if $foxtf is 1>><<run $transformationHistory.pushUnique("genomeDump:fox")>><</if>><<foxTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $foxtf is 1>><span class="green">안전</span><<else>><span class="red">위험</span><</if>><br>
 	<</if>>
 	<<if $bunnybuild gte 1>>
-	Bunny Transform: <<link [[Reset|$passage]]>><<if $bunnytf is 1>><<run $transformationHistory.pushUnique("genomeDump:bunny")>><</if>><<bunnyTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $bunnytf is 1>><span class="green">Safe</span><<else>><span class="red">Unsafe</span><</if>><br>
+	바니 변이: <<link [[초기화한다|$passage]]>><<if $bunnytf is 1>><<run $transformationHistory.pushUnique("genomeDump:bunny")>><</if>><<bunnyTransform 99>><<set $tfDesc to { primary : "default" }>><<updatesidebarimg>><</link>><<if $bunnytf is 1>><span class="green">안전</span><<else>><span class="red">위험</span><</if>><br>
 	<</if>>
 <</widget>>
 
@@ -4153,7 +4153,7 @@
 		<span class="gold bold">키메라</span><br>
 		<<if _demoncatTail>>
 			/* Using kasha (cat + demon) chimera tail. */
-			<label>Kasha tail:
+			<label>카샤 꼬리:
 				<<listbox "$chimera.demoncat.tail" autoselect>>
 					<<option "표시" true>>
 					<<option "숨김" false>>
@@ -4163,7 +4163,7 @@
 		<</if>>
 		<<if _catsithEars>>
 			/* Cat sith ears. Hiding these keeps the plain cat ears; it does not stop you being a cat sith. */
-			<label>Cat sith ears:
+			<label>캣시 귀:
 				<<listbox "$chimera.catsith.ears" autoselect>>
 					<<option "표시" true>>
 					<<option "숨김" false>>
@@ -4173,7 +4173,7 @@
 		<</if>>
 		<<if _catsithTail>>
 			/* As above: art only. */
-			<label>Cat sith tail:
+			<label>캣시 꼬리:
 				<<listbox "$chimera.catsith.tail" autoselect>>
 					<<option "표시" true>>
 					<<option "숨김" false>>
@@ -4182,7 +4182,7 @@
 			<br>
 		<</if>>
 		<<if _demoncowHorns>>
-			<label>Demon cow horns:
+			<label>악마 소 뿔:
 				<<listbox "$chimera.demoncow.horns" autoselect>>
 					<<option "표시" true>>
 					<<option "숨김" false>>
@@ -4262,7 +4262,7 @@
 		<</if>>
 		<<if _bakunawaTail>>
 			/* Using Bakunawa (water dragon + demon) chimera tail. */
-			<label>Bakunawa tail:
+			<label>바쿠나와 꼬리:
 				<<listbox "$chimera.bakunawa.tail" autoselect>>
 					<<option "표시" true>>
 					<<option "숨김" false>>
@@ -4272,7 +4272,7 @@
 		<</if>>
 		<<if _bakunawaHorns>>
 			/* Using Bakunawa (water dragon + demon) chimera horns. */
-			<label>Bakunawa horns:
+			<label>바쿠나와 뿔:
 				<<listbox "$chimera.bakunawa.horns" autoselect>>
 					<<option "표시" true>>
 					<<option "숨김" false>>
@@ -4282,7 +4282,7 @@
 		<</if>>
 		<<if _bakunawaEars>>
 			/* Using Bakunawa (water dragon + demon) chimera ears. */
-			<label>Bakunawa ears:
+			<label>바쿠나와 귀:
 				<<listbox "$chimera.bakunawa.ears" autoselect>>
 					<<option "표시" true>>
 					<<option "숨김" false>>
@@ -4292,7 +4292,7 @@
 		<</if>>
 		<<if _ryuujinTail>>
 			/* Using Ryuujin (water dragon + angel) chimera tail. */
-			<label>Ryuujin tail:
+			<label>류진 꼬리:
 				<<listbox "$chimera.ryuujin.tail" autoselect>>
 					<<option "표시" true>>
 					<<option "숨김" false>>
@@ -4302,7 +4302,7 @@
 		<</if>>
 		<<if _ryuujinHorns>>
 			/* Using Ryuujin (water dragon + angel) chimera horns. */
-			<label>Ryuujin horns:
+			<label>류진 뿔:
 				<<listbox "$chimera.ryuujin.horns" autoselect>>
 					<<option "표시" true>>
 					<<option "숨김" false>>
@@ -4312,7 +4312,7 @@
 		<</if>>
 		<<if _ryuujinHalo>>
 			/* Using Ryuujin (water dragon + angel) chimera halo. */
-			<label>Ryuujin halo:
+			<label>류진 헤일로:
 				<<listbox "$chimera.ryuujin.halo" autoselect>>
 					<<option "표시" true>>
 					<<option "숨김" false>>
@@ -4322,7 +4322,7 @@
 		<</if>>
 		<<if _melusineEars>>
 			/* Using Melusine (water dragon + angel + harpy) chimera ears. */
-			<label>Melusine ears:
+			<label>멜루신 귀:
 				<<listbox "$chimera.melusine.ears" autoselect>>
 					<<option "기본" "default">>
 					<<option "보라색" "purple">>
@@ -4333,7 +4333,7 @@
 		<</if>>
 		<<if _melusineHalo>>
 			/* Using Melusine (water dragon + angel + harpy) chimera halo. */
-			<label>Melusine halo:
+			<label>멜루신 헤일로:
 				<<listbox "$chimera.melusine.halo" autoselect>>
 					<<option "기본" "default">>
 					<<option "보라색" "purple">>
@@ -4344,7 +4344,7 @@
 		<</if>>
 		<<if _melusineHorns>>
 			/* Using Melusine (water dragon + angel + harpy) chimera horns. */
-			<label>Melusine horns:
+			<label>멜루신 뿔:
 				<<listbox "$chimera.melusine.horns" autoselect>>
 					<<option "기본" "default">>
 					<<option "보라색" "purple">>
@@ -4355,7 +4355,7 @@
 		<</if>>
 		<<if _melusineTail>>
 			/* Using Melusine (water dragon + angel + harpy) chimera tail. */
-			<label>Melusine tail:
+			<label>멜루신 꼬리:
 				<<listbox "$chimera.melusine.tail" autoselect>>
 					<<option "기본" "default">>
 					<<option "보라색" "purple">>
@@ -4367,7 +4367,7 @@
 		<<if _melusineWings>>
 			/* Using Melusine (water dragon + angel + harpy) chimera wings.
 			   Show/Hide only - the wings have no purple colourway art, unlike the other four pieces. */
-			<label>Melusine wings:
+			<label>멜루신 날개:
 				<<listbox "$chimera.melusine.wings" autoselect>>
 					<<option "표시" true>>
 					<<option "숨김" false>>

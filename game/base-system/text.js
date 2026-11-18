@@ -103,18 +103,18 @@ statDisplay.create("gpain", () => statDisplay.statChange("고통", 1, "red"));
 statDisplay.create("ggpain", () => statDisplay.statChange("고통", 2, "red"));
 statDisplay.create("gggpain", () => statDisplay.statChange("고통", 3, "red"));
 
-statDisplay.create("gmasochism", () => statDisplay.statChange("Masochism", 1, "lewd"));
-statDisplay.create("ggmasochism", () => statDisplay.statChange("Masochism", 2, "lewd"));
-statDisplay.create("gggmasochism", () => statDisplay.statChange("Masochism", 3, "lewd"));
-statDisplay.create("ggggmasochism", () => statDisplay.statChange("Masochism", 4, "lewd"));
-statDisplay.create("gggggmasochism", () => statDisplay.statChange("Masochism", 5, "lewd"));
+statDisplay.create("gmasochism", () => statDisplay.statChange("피학 성향", 1, "lewd"));
+statDisplay.create("ggmasochism", () => statDisplay.statChange("피학 성향", 2, "lewd"));
+statDisplay.create("gggmasochism", () => statDisplay.statChange("피학 성향", 3, "lewd"));
+statDisplay.create("ggggmasochism", () => statDisplay.statChange("피학 성향", 4, "lewd"));
+statDisplay.create("gggggmasochism", () => statDisplay.statChange("피학 성향", 5, "lewd"));
 
-statDisplay.create("lpurity", () => statDisplay.statChange("Purity", -1, Transformations.effectiveLevel("demon") >= 6 ? "green demon-tf-purity" : "red"));
-statDisplay.create("llpurity", () => statDisplay.statChange("Purity", -2, Transformations.effectiveLevel("demon") >= 6 ? "green demon-tf-purity" : "red"));
-statDisplay.create("lllpurity", () => statDisplay.statChange("Purity", -3, Transformations.effectiveLevel("demon") >= 6 ? "green demon-tf-purity" : "red"));
-statDisplay.create("gpurity", () => statDisplay.statChange("Purity", 1, Transformations.effectiveLevel("demon") >= 6 ? "red demon-tf-purity" : "green"));
-statDisplay.create("ggpurity", () => statDisplay.statChange("Purity", 2, Transformations.effectiveLevel("demon") >= 6 ? "red demon-tf-purity" : "green"));
-statDisplay.create("gggpurity", () => statDisplay.statChange("Purity", 3, Transformations.effectiveLevel("demon") >= 6 ? "red demon-tf-purity" : "green"));
+statDisplay.create("lpurity", () => statDisplay.statChange("순결함", -1, Transformations.effectiveLevel("demon") >= 6 ? "green demon-tf-purity" : "red"));
+statDisplay.create("llpurity", () => statDisplay.statChange("순결함", -2, Transformations.effectiveLevel("demon") >= 6 ? "green demon-tf-purity" : "red"));
+statDisplay.create("lllpurity", () => statDisplay.statChange("순결함", -3, Transformations.effectiveLevel("demon") >= 6 ? "green demon-tf-purity" : "red"));
+statDisplay.create("gpurity", () => statDisplay.statChange("순결함", 1, Transformations.effectiveLevel("demon") >= 6 ? "red demon-tf-purity" : "green"));
+statDisplay.create("ggpurity", () => statDisplay.statChange("순결함", 2, Transformations.effectiveLevel("demon") >= 6 ? "red demon-tf-purity" : "green"));
+statDisplay.create("gggpurity", () => statDisplay.statChange("순결함", 3, Transformations.effectiveLevel("demon") >= 6 ? "red demon-tf-purity" : "green"));
 
 statDisplay.create("ldelinquency", () => statDisplay.statChange("불량도", -1, "green"));
 statDisplay.create("lldelinquency", () => statDisplay.statChange("불량도", -2, "green"));
@@ -212,7 +212,7 @@ statDisplay.create("llove", (npc, simple) => {
 	const selectedNPC = npc || V.npc.find(name => !!C.npc[name]);
 	const loveAlias = `${(selectedNPC && setup.loveAlias[selectedNPC]()) || "사랑"}`;
 	return statDisplay.statChange(
-		selectedNPC && !simple && (npc || V.npc.length >= 2) ? `${selectedNPC}'s ${loveAlias}` : loveAlias,
+		selectedNPC && !simple && (npc || V.npc.length >= 2) ? `${window.KR.gatPersonNameDictKR(selectedNPC)}의 ${loveAlias}` : loveAlias,
 		-1,
 		loveTextClass(selectedNPC, "red")
 	);
@@ -221,7 +221,7 @@ statDisplay.create("lllove", (npc, simple) => {
 	const selectedNPC = npc || V.npc.find(name => !!C.npc[name]);
 	const loveAlias = `${(selectedNPC && setup.loveAlias[selectedNPC]()) || "사랑"}`;
 	return statDisplay.statChange(
-		selectedNPC && !simple && (npc || V.npc.length >= 2) ? `${selectedNPC}'s ${loveAlias}` : loveAlias,
+		selectedNPC && !simple && (npc || V.npc.length >= 2) ? `${window.KR.gatPersonNameDictKR(selectedNPC)}의 ${loveAlias}` : loveAlias,
 		-2,
 		loveTextClass(selectedNPC, "red")
 	);
@@ -230,7 +230,7 @@ statDisplay.create("llllove", (npc, simple) => {
 	const selectedNPC = npc || V.npc.find(name => !!C.npc[name]);
 	const loveAlias = `${(selectedNPC && setup.loveAlias[selectedNPC]()) || "사랑"}`;
 	return statDisplay.statChange(
-		selectedNPC && !simple && (npc || V.npc.length >= 2) ? `${selectedNPC}'s ${loveAlias}` : loveAlias,
+		selectedNPC && !simple && (npc || V.npc.length >= 2) ? `${window.KR.gatPersonNameDictKR(selectedNPC)}의 ${loveAlias}` : loveAlias,
 		-3,
 		loveTextClass(selectedNPC, "red")
 	);
@@ -239,7 +239,7 @@ statDisplay.create("glove", (npc, simple) => {
 	const selectedNPC = npc || V.npc.find(name => !!C.npc[name]);
 	const loveAlias = `${(selectedNPC && setup.loveAlias[selectedNPC]()) || "사랑"}`;
 	return statDisplay.statChange(
-		selectedNPC && !simple && (npc || V.npc.length >= 2) ? `${selectedNPC}'s ${loveAlias}` : loveAlias,
+		selectedNPC && !simple && (npc || V.npc.length >= 2) ? `${window.KR.gatPersonNameDictKR(selectedNPC)}의 ${loveAlias}` : loveAlias,
 		1,
 		loveTextClass(selectedNPC, "green")
 	);
@@ -248,7 +248,7 @@ statDisplay.create("gglove", (npc, simple) => {
 	const selectedNPC = npc || V.npc.find(name => !!C.npc[name]);
 	const loveAlias = `${(selectedNPC && setup.loveAlias[selectedNPC]()) || "사랑"}`;
 	return statDisplay.statChange(
-		selectedNPC && !simple && (npc || V.npc.length >= 2) ? `${selectedNPC}'s ${loveAlias}` : loveAlias,
+		selectedNPC && !simple && (npc || V.npc.length >= 2) ? `${window.KR.gatPersonNameDictKR(selectedNPC)}의 ${loveAlias}` : loveAlias,
 		2,
 		loveTextClass(selectedNPC, "green")
 	);
@@ -257,7 +257,7 @@ statDisplay.create("ggglove", (npc, simple) => {
 	const selectedNPC = npc || V.npc.find(name => !!C.npc[name]);
 	const loveAlias = `${(selectedNPC && setup.loveAlias[selectedNPC]()) || "사랑"}`;
 	return statDisplay.statChange(
-		selectedNPC && !simple && (npc || V.npc.length >= 2) ? `${selectedNPC}'s ${loveAlias}` : loveAlias,
+		selectedNPC && !simple && (npc || V.npc.length >= 2) ? `${window.KR.gatPersonNameDictKR(selectedNPC)}의 ${loveAlias}` : loveAlias,
 		3,
 		loveTextClass(selectedNPC, "green")
 	);
@@ -301,40 +301,40 @@ statDisplay.create("gggperlove", (npc, simple) => {
 });
 
 statDisplay.create("gpatience", () => {
-	return statDisplay.statChange("Patience", 1, "green");
+	return statDisplay.statChange("인내심", 1, "green");
 });
 statDisplay.create("ggpatience", () => {
-	return statDisplay.statChange("Patience", 2, "green");
+	return statDisplay.statChange("인내심", 2, "green");
 });
 statDisplay.create("gggpatience", () => {
-	return statDisplay.statChange("Patience", 3, "green");
+	return statDisplay.statChange("인내심", 3, "green");
 });
 statDisplay.create("lpatience", () => {
-	return statDisplay.statChange("Patience", -1, "red");
+	return statDisplay.statChange("인내심", -1, "red");
 });
 statDisplay.create("llpatience", () => {
-	return statDisplay.statChange("Patience", -2, "red");
+	return statDisplay.statChange("인내심", -2, "red");
 });
 statDisplay.create("lllpatience", () => {
-	return statDisplay.statChange("Patience", -3, "red");
+	return statDisplay.statChange("인내심", -3, "red");
 });
 statDisplay.create("ganger", () => {
-	return statDisplay.statChange("Anger", 1, "red");
+	return statDisplay.statChange("분노", 1, "red");
 });
 statDisplay.create("gganger", () => {
-	return statDisplay.statChange("Anger", 2, "red");
+	return statDisplay.statChange("분노", 2, "red");
 });
 statDisplay.create("ggganger", () => {
-	return statDisplay.statChange("Anger", 3, "red");
+	return statDisplay.statChange("분노", 3, "red");
 });
 statDisplay.create("langer", () => {
-	return statDisplay.statChange("Anger", -1, "green");
+	return statDisplay.statChange("분노", -1, "green");
 });
 statDisplay.create("llanger", () => {
-	return statDisplay.statChange("Anger", -2, "green");
+	return statDisplay.statChange("분노", -2, "green");
 });
 statDisplay.create("lllanger", () => {
-	return statDisplay.statChange("Anger", -3, "green");
+	return statDisplay.statChange("분노", -3, "green");
 });
 
 statDisplay.create("llust", npc => statDisplay.statChange(npc ? `${window.KR.gatPersonNameDictKR(npc)}의 욕정` : "욕정", -1, "teal"));
@@ -507,16 +507,16 @@ statDisplay.create("ginsecurity", (type, amount) => {
 	return "";
 });
 
-statDisplay.create("lwillpower", () => statDisplay.statChange("Willpower", -1, "red"));
-statDisplay.create("llwillpower", () => statDisplay.statChange("Willpower", -2, "red"));
-statDisplay.create("lllwillpower", () => statDisplay.statChange("Willpower", -3, "red"));
+statDisplay.create("lwillpower", () => statDisplay.statChange("의지력", -1, "red"));
+statDisplay.create("llwillpower", () => statDisplay.statChange("의지력", -2, "red"));
+statDisplay.create("lllwillpower", () => statDisplay.statChange("의지력", -3, "red"));
 statDisplay.create("gwillpower", () => statDisplay.statChange("의지력", 1, "green"));
 statDisplay.create("ggwillpower", () => statDisplay.statChange("의지력", 2, "green"));
 statDisplay.create("gggwillpower", () => statDisplay.statChange("의지력", 3, "green"));
 
-statDisplay.create("lskulduggery", () => statDisplay.statChange("Skulduggery", -1, "red"));
-statDisplay.create("llskulduggery", () => statDisplay.statChange("Skulduggery", -2, "red"));
-statDisplay.create("lllskulduggery", () => statDisplay.statChange("Skulduggery", -3, "red"));
+statDisplay.create("lskulduggery", () => statDisplay.statChange("속임수", -1, "red"));
+statDisplay.create("llskulduggery", () => statDisplay.statChange("속임수", -2, "red"));
+statDisplay.create("lllskulduggery", () => statDisplay.statChange("속임수", -3, "red"));
 
 statDisplay.create("lphysique", () => statDisplay.statChange("체격", -1, "red"));
 statDisplay.create("llphysique", () => statDisplay.statChange("체격", -2, "red"));

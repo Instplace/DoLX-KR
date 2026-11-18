@@ -38,10 +38,10 @@
 		"거기 섹시한 년, 이리 와서 놀자.",
 		"이리 와서 예쁜 얼굴 좀 보여줘.",
 		"여기로 와서 대화나 할까, 섹시?",
-		"Hey, do you have a <<partnerfriend 'stranger'>>?",
-		"I bet your <<partnerfriend 'stranger'>> doesn't appreciate you like I would.",
-		"Hey cutie, want to be my <<girlfriend 'stranger'>>?",
-		"Your <<partnerfriend 'stranger'>> is a lucky <<print perceivedGender() is 'm' ? 'lady' : 'man'>>.")>>"
+		"너, <<partnerfriend 'stranger'>> 있어?",
+		"장담컨대 네 <<partnerfriend 'stranger'>>【은는】 나만큼 널 대접해주진 않을걸.",
+		"안녕 귀염둥이, 내 <<girlfriend 'stranger'>>【이가】 되어줄래?",
+		"네 <<partnerfriend 'stranger'>>【은는】 참 운도 좋네. 그런 <<print perceivedGender() is 'm' ? '아가씨' : '남자'>>【을를】 만났으니.")>>"
 <</widget>>
 
 <<widget "catcalllewd">>
@@ -256,12 +256,12 @@
 		"그거 내 애야, 자기?",
 		"누가 배불뚝이가 됐나 보자고!",
 		"올해의 훌륭한 <<pmother>> 납시네!",
-		"You're lucky you can't get more pregnant.",
+		"더는 임신할 수 없어서 다행인 줄 알아라.",
 		"내가 환상적인 베이비시터가 될 수 있는데.",
 		"베이비시터 구하고 있니?",
 		"나는 임산부 <<girl>>【이가】 그렇게 섹시하더라!",
 		"섹스가 출산에 도움이 된다는 말도 있던데.",
-		"I like <<aGirl>> with experience.",
+		"경험 있는 <<aGirl>>【이가】 참 좋단 말이지.",
 		"배 엄청 부른 것 좀 봐!")>>"
 <</widget>>
 
@@ -280,7 +280,7 @@
 	<<if $hairColourStyle == "gradient">>
 		<<set _color1 to $dhmod.hair.is_custom ? $dhmod.hair.colors[1] : $hairColourGradient.colours[1]>>
 		<<set _color2 to $dhmod.hair.is_custom ? $dhmod.hair.colors[0] : $hairColourGradient.colours[0]>>
-		<<hairmapcolourtext _color1>> and <<hairmapcolourtext _color2>>
+		<<hairmapcolourtext _color1>>【와과】 <<hairmapcolourtext _color2>>
 	<<else>>
 		<<set _color to $dhmod.hair.is_custom ? $dhmod.hair.colors[0] : $haircolour>>
 		<<hairmapcolourtext _color>>
@@ -291,7 +291,7 @@
 	<<if $hairFringeColourStyle == "gradient">>
 		<<set _color1 to $dhmod.fringe.is_custom ? $dhmod.fringe.colors[1] : $hairFringeColourGradient.colours[1]>>
 		<<set _color2 to $dhmod.fringe.is_custom ? $dhmod.fringe.colors[0] : $hairFringeColourGradient.colours[0]>>
-		<<hairmapcolourtext _color1>> and <<hairmapcolourtext _color2>>
+		<<hairmapcolourtext _color1>>【와과】 <<hairmapcolourtext _color2>>
 	<<else>>
 		<<set _color to $dhmod.fringe.is_custom ? $dhmod.fringe.colors[0] : $hairfringecolour>>
 		<<hairmapcolourtext _color>>
@@ -635,9 +635,9 @@
         <<personselect _n>>
         <<if $NPCList[_n].intro is 1>>
             <<if $npcrow.includes(_n) and $NPCList[_n].name_known is 1>>
-                <<print $npc[$npcrow.indexOf(_n)]>>'s
+                <<print window.KR.gatPersonNameDictKR($npc[$npcrow.indexOf(_n)])>>의
             <<else>>
-                The <<persons>>
+                그 <<persons>>
             <</if>>
             <<set $NPCList[_n].intro to 0>>
         <<else>>
@@ -1297,7 +1297,7 @@
 <<widget "gendercheck">>
 	<<set _playerPronoun to _args[0] || playerPronoun()>>
 	<<if !["m", "f", "n"].includes(_playerPronoun)>>
-		<<set _text_output to "<span class=\"red\">ERROR: Unexpected player pronoun: [" + _playerPronoun + "]</span>">>
+		<<set _text_output to "<span class=\"red\">오류: 예상치 못한 플레이어 대명사 값: [" + _playerPronoun + "]</span>">>
 	<</if>>
 	<<misgender _playerPronoun>>
 <</widget>>
@@ -2027,7 +2027,7 @@
 	<<if !$NPCList[_n] or !$NPCList[_n].pronoun>>
 		<<if !$bugNoticesShown.dolx_personselect_missing>>
 			<<set $bugNoticesShown.dolx_personselect_missing to true>>
-			<span class="red"><b>A bug happened!</b> NPC-Personselect is missing but the game fixed it. Do report it to Discord server!</span><br>
+			<span class="red"><b>버그가 발생했습니다!</b> NPC-Personselect가 없지만 게임이 이를 복구했습니다. 디스코드 서버에 꼭 제보해 주십시오!</span><br>
 		<</if>>
 		<<run console.warn("personselect missing NPCList[" + _n + "] in " + $passage)>>
 		/* Safe defaults so narration continues */
@@ -2774,7 +2774,7 @@
 			<span @class="_classList"><<print ($enemytype is "man" ? "- 음란도" : "- 이상성욕")>> _args[0]</span>
 		<</if>>
 	<<elseif !$statFreeze and $xchange.pill.bimboEffect is true>>
-		<span class="pink">- Bimbo</span>
+		<span class="pink">- 빔보</span>
 	<</if>>
 <</widget>>
 
@@ -2945,7 +2945,7 @@
 		<<set $damagedCondoms += $_condomGain>>
 	<</if>>
 	<<if !$settings.blindStatsEnabled>> |
-		<span class="pink">+ $_condomGain <<if $_damagedCondomGain>>Worn-looking <</if>><<pluralise $_condomGain "Condom">></span>
+		<span class="pink">+ $_condomGain <<if $_damagedCondomGain>>낡은 <</if>>콘돔</span>
 	<</if>>
 <</widget>>
 
@@ -3844,117 +3844,117 @@
 	<<speechresolve>>
 	<<if $arousal gte (($arousalmax / 10) * 9)>>
 		<<if _speechAttitudeResolved is "cruel">>
-			Embarrassment dominates your mind and threatens to send you over the edge. You hate that it only sharpens the heat.
+			부끄러움이 당신의 마음을 지배하며, 당장이라도 이성을 날려버릴 듯하다. 그럴수록 열기만 더 날카로워지는 것이 싫다.
 		<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-			Embarrassment dominates your mind and threatens to send you over the edge. You bite back the sound trying to escape your throat.
+			부끄러움이 당신의 마음을 지배하며, 당장이라도 이성을 날려버릴 듯하다. 당신은 목구멍을 비집고 나오려는 소리를 억지로 삼킨다.
 		<<elseif _speechAttitudeResolved is "docile">>
-			Embarrassment dominates your mind and leaves you trembling on the edge.
+			부끄러움이 당신의 마음을 지배하며, 당신은 한계 직전에서 덜덜 떨고 있다.
 		<<elseif (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
-			Embarrassment dominates your mind and makes you feel like you'll melt.
+			부끄러움이 당신의 마음을 지배하며, 온몸이 녹아내릴 것만 같다.
 		<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-			Embarrassment dominates your mind and threatens to ruin your composure.
+			부끄러움이 당신의 마음을 지배하며, 침착함마저 무너질 듯하다.
 		<<else>>
 			부끄러움이 당신의 마음을 지배하며, 당장이라도 이성을 날려버릴 듯하다.
 		<</if>>
 	<<elseif $arousal gte (($arousalmax / 10) * 8)>>
 		<<if _speechAttitudeResolved is "cruel">>
-			Lewd shivers ripple through your body despite your embarrassment, leaving you furious with yourself.
+			부끄러움에도 불구하고 야릇한 전율이 온몸을 타고 흐르고, 당신은 자신에게 화가 치민다.
 		<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-			Lewd shivers ripple through your body despite your embarrassment, but you refuse to look away.
+			부끄러움에도 불구하고 야릇한 전율이 온몸을 타고 흐르지만, 당신은 시선을 피하지 않는다.
 		<<elseif _speechAttitudeResolved is "docile">>
-			Lewd shivers ripple through your body despite your embarrassment, and you can only endure them.
+			부끄러움에도 불구하고 야릇한 전율이 온몸을 타고 흐르고, 당신은 그저 견딜 수밖에 없다.
 		<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-			Lewd shivers ripple through your body despite your embarrassment, testing your composure.
+			부끄러움에도 불구하고 야릇한 전율이 온몸을 타고 흐르며, 침착함을 시험한다.
 		<<else>>
 			부끄러움에도 불구하고 야릇한 전율이 온몸을 타고 흐른다.
 		<</if>>
 	<<elseif $arousal gte (($arousalmax / 10) * 7)>>
 		<<if _speechAttitudeResolved is "cruel">>
-			The embarrassment leaves you lightheaded and seething.
+			부끄러움에 머리가 아찔하고 속이 부글부글 끓는다.
 		<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-			The embarrassment leaves you lightheaded, though you try to stand your ground.
+			부끄러움에 머리가 아찔하지만, 당신은 물러서지 않으려 버틴다.
 		<<elseif _speechAttitudeResolved is "docile">>
-			The embarrassment leaves you lightheaded and pliant.
+			부끄러움에 머리가 아찔하고 몸에 힘이 풀린다.
 		<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-			The embarrassment leaves you lightheaded despite your best effort to stay poised.
+			단정함을 지키려 애써도 부끄러움에 머리가 아찔하다.
 		<<else>>
 			부끄러움에 머리가 아찔해진다.
 		<</if>>
 	<<elseif $arousal gte (($arousalmax / 10) * 6)>>
 		<<if _speechAttitudeResolved is "cruel">>
-			You're so embarrassed. Your breath catches in your throat like a snarl.
+			너무나 부끄러워, 당신의 숨이 으르렁거리듯 목구멍에서 턱 막힌다.
 		<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-			You're so embarrassed. Your breath catches in your throat, but your chin stays high.
+			너무나 부끄러워, 당신의 숨이 턱 막히지만 턱은 꼿꼿이 들려 있다.
 		<<elseif _speechAttitudeResolved is "docile">>
-			You're so embarrassed. Your breath catches in your throat, small and helpless.
+			너무나 부끄러워, 당신의 숨이 작고 무력하게 턱 막힌다.
 		<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-			You're so embarrassed. Your breath catches despite your attempt to stay proper.
+			너무나 부끄러워, 단정함을 지키려 애써도 숨이 턱 막힌다.
 		<<else>>
 			너무나 부끄러워, 당신의 숨이 턱 막힌다.
 		<</if>>
 	<<elseif $arousal gte (($arousalmax / 10) * 5)>>
 		<<if _speechAttitudeResolved is "cruel">>
-			You're so embarrassed. Your heart beats faster with spiteful heat.
+			너무나 부끄러워, 당신의 심장 박동이 앙심 어린 열기와 함께 빨라진다.
 		<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-			You're so embarrassed. Your heart beats faster, refusing to settle.
+			너무나 부끄러워, 당신의 심장 박동이 빨라진 채 가라앉으려 하지 않는다.
 		<<elseif _speechAttitudeResolved is "docile">>
-			You're so embarrassed. Your heart beats faster while you lower your gaze.
+			너무나 부끄러워, 당신의 심장 박동이 빨라지고 시선이 아래로 떨어진다.
 		<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-			You're so embarrassed. Your heart beats faster beneath your careful composure.
+			너무나 부끄러워, 조심스레 지켜 낸 침착함 아래에서 당신의 심장 박동이 빨라진다.
 		<<else>>
 			너무나 부끄러워, 당신의 심장 박동이 빨라진다.
 		<</if>>
 	<<elseif $arousal gte (($arousalmax / 10) * 4)>>
 		<<if _speechAttitudeResolved is "cruel">>
-			You feel a warmth build despite the embarrassment, and it makes you scowl.
+			부끄러움에도 불구하고 아랫배에 열기가 차오르고, 당신은 인상을 찌푸린다.
 		<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-			You feel a warmth build despite the embarrassment, daring anyone to notice.
+			부끄러움에도 불구하고 아랫배에 열기가 차오르지만, 누구든 알아채 보라는 듯 당당하다.
 		<<elseif _speechAttitudeResolved is "docile">>
-			You feel a warmth build despite the embarrassment, leaving you subdued.
+			부끄러움에도 불구하고 아랫배에 열기가 차오르고, 당신은 풀이 죽는다.
 		<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-			You feel a warmth build despite the embarrassment and try to smooth it away.
+			부끄러움에도 불구하고 아랫배에 열기가 차오르는 것을 애써 달래 가라앉히려 한다.
 		<<else>>
 			부끄러움에도 불구하고 아랫배에 열기가 차오른다.
 		<</if>>
 	<<elseif $arousal gte (($arousalmax / 10) * 3)>>
 		<<if (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel" or _speechAttitudeResolved is "confident")>>
-			You're so embarrassed. Your heart skips a beat, but you keep your expression steady.
+			너무나 부끄러워, 심장이 덜컥 내려앉는 듯하지만 당신은 표정을 흐트러뜨리지 않는다.
 		<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-			You're so embarrassed. Your heart skips a beat beneath your expressionless mask.
+			너무나 부끄러워, 무표정한 가면 뒤에서 심장이 덜컥 내려앉는 듯하다.
 		<<else>>
 			너무나 부끄러워, 심장이 덜컥 내려앉는 듯하다.
 		<</if>>
 	<<elseif $arousal gte (($arousalmax / 10) * 2)>>
 		<<if _speechAttitudeResolved is "cruel">>
-			You shiver with embarrassment and resentment.
+			부끄러움과 분함에 몸이 떨린다.
 		<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-			You shiver with embarrassment, then steady yourself.
+			부끄러움에 몸이 떨리지만, 곧 마음을 다잡는다.
 		<<elseif _speechAttitudeResolved is "docile">>
-			You shiver meekly with embarrassment.
+			부끄러움에 몸이 소심하게 떨린다.
 		<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-			You shiver with embarrassment despite your composed posture.
+			단정한 자세를 유지하려 해도 부끄러움에 몸이 떨린다.
 		<<else>>
 			부끄러움에 몸이 떨린다.
 		<</if>>
 	<<elseif $arousal gte (($arousalmax / 10) * 1)>>
 		<<if (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel" or _speechAttitudeResolved is "confident")>>
-			You're so embarrassed. Blood rushes to your face, but you refuse to shrink.
+			너무나 부끄러워, 얼굴로 피가 쏠리지만 당신은 움츠러들지 않는다.
 		<<elseif _speechAttitudeResolved is "docile">>
-			You're so embarrassed. Blood rushes to your face as you lower your gaze.
+			너무나 부끄러워, 얼굴로 피가 쏠리고 당신은 시선을 내린다.
 		<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-			You're so embarrassed. Blood rushes to your face despite your restraint.
+			너무나 부끄러워, 애써 절제하는데도 얼굴로 피가 쏠린다.
 		<<else>>
 			너무나 부끄러워, 얼굴로 피가 쏠린다.
 		<</if>>
 	<<else>>
 		<<if _speechAttitudeResolved is "cruel">>
-			Your face reddens with embarrassed irritation.
+			부끄러움과 짜증에 얼굴이 달아오른다.
 		<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-			Your face reddens, though you try to look unaffected.
+			얼굴이 달아오르지만, 아무렇지 않은 척하려 한다.
 		<<elseif _speechAttitudeResolved is "docile">>
-			Your face reddens with quiet embarrassment.
+			조용한 부끄러움에 얼굴이 달아오른다.
 		<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-			Your face reddens despite your attempt at composure.
+			침착해 보려 애써도 얼굴이 달아오른다.
 		<<else>>
 			부끄러움에 얼굴이 달아오른다.
 		<</if>>
@@ -4512,41 +4512,41 @@
 			<<if $arousal gte ($arousalmax / 5) * 4>>
 				<<if $pain gte 100>>
 					<<if _speechAttitudeResolved is "cruel">>
-						A vicious part of you savours the pain you're in as
+						자신의 악랄한 일부가 겪고 있는 고통을 음미하며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						An angry part of you refuses to let the pain affect you as
+						자신의 성난 일부가 고통이 영향을 주도록 내버려 두지 않으며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						A quiet, obedient part of you accepts the pain as
+						자신의 조용하고 순종적인 일부가 고통을 받아들이며,
 					<<elseif (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
-						A small, frightened part of you savours the pain you're in as
+						자신의 작고 겁먹은 일부가 겪고 있는 고통을 음미하며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						A mortified part of you notices the pain too keenly as
+						수치스러워하는 자신의 일부가 고통을 너무나 예민하게 느끼며,
 					<<else>>
 						자신의 일부가 겪고 있는 고통을 음미하며,
 					<</if>>
 				<<elseif $pain gte 40>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Tearful and furious that your mind would betray you,
+						마음이 자신을 배신한다는 사실에 눈물을 흘리며 분노하고,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						Tearful and angry that you're losing your mind,
+						미쳐가고 있다는 사실에 눈물을 흘리며 화가 나서,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Tearful and quietly worried that you're losing your mind,
+						미쳐가고 있을까 봐 조용히 걱정하며 눈물을 흘리고,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Tearful despite your attempt to keep your thoughts orderly,
+						생각을 가지런히 하려 애써도 눈물이 흐르며,
 					<<else>>
 						미쳐가고 있다는 걱정에 눈물을 흘리며,
 					<</if>>
 				<<else>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Though furious at the thought of losing your mind,
+						미쳐가고 있다는 생각에 분노하면서도,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						Though angry at the thought of losing your mind,
+						미쳐가고 있다는 생각에 화가 나면서도,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Though quietly worried that you're losing your mind,
+						미쳐가고 있을까 봐 조용히 걱정하면서도,
 					<<elseif (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
-						Though terrified that you're losing your mind,
+						미쳐가고 있다는 생각에 겁에 질리면서도,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Though trying to stay composed while fearing for your mind,
+						침착함을 유지하려 애쓰면서도 정신이 어떻게 될까 두려워하며,
 					<<else>>
 						미쳐가고 있다는 걱정이 들면서도,
 					<</if>>
@@ -4562,25 +4562,25 @@
 			<<else>>
 				<<if $pain gte 100>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Though hurt, vulnerable, and full of spite,
+						상처받고 취약해진 데다 앙심으로 가득 찬 상태임에도 불구하고,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						Though hurt and refusing to look vulnerable,
+						상처받았지만 약해 보이기를 거부하면서도,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Though hurt and meekly vulnerable,
+						상처받고 순하게 취약해진 상태임에도 불구하고,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Though hurt and trying not to show your vulnerability,
+						상처받았지만 약한 모습을 보이지 않으려 애쓰면서도,
 					<<else>>
 						상처받고 취약해진 상태임에도 불구하고,
 					<</if>>
 				<<elseif $pain gte 40>>
 					<<if _speechAttitudeResolved is "cruel">>
-						You resent the tears on your face as
+						얼굴에 흐른 눈물이 원망스러우며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						You blink angrily against the tears on your face as
+						얼굴에 흐른 눈물을 성난 듯 깜빡여 털어내며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						You lower your gaze, self-conscious about the tears on your face, as
+						얼굴에 흐른 눈물이 신경 쓰여 시선을 내리며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						You try to hide the tears on your face as
+						얼굴에 흐른 눈물을 숨기려 애쓰며,
 					<<else>>
 						얼굴에 흐른 눈물이 자꾸 의식되며,
 					<</if>>
@@ -4610,25 +4610,25 @@
 					자신이 부서질 듯 취약하게 느껴지며,
 				<<elseif $pain gte 40>>
 					<<if _speechAttitudeResolved is "cruel">>
-						You sob like each tear is an insult as
+						눈물 한 방울 한 방울이 모욕이라는 듯 흐느끼며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						You sob despite yourself as
+						의지와 상관없이 흐느끼며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						You sob quietly as
+						조용히 흐느끼며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						You try to sob softly as
+						소리 죽여 흐느끼려 애쓰며,
 					<<else>>
 						흐느껴 울며,
 					<</if>>
 				<<else>>
 					<<if _speechAttitudeResolved is "cruel">>
-						You hold yourself together out of spite as
+						앙심으로 간신히 정신을 붙들며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						You stubbornly keep yourself together as
+						고집스럽게 정신을 다잡으며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						You quietly try to keep yourself together as
+						조용히 정신을 다잡으려 애쓰며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						You try to keep yourself presentable as
+						흐트러지지 않은 모습을 유지하려 애쓰며,
 					<<else>>
 						정신을 다잡으려 노력하며,
 					<</if>>
@@ -4638,39 +4638,39 @@
 			<<if $arousal gte ($arousalmax / 5) * 4>>
 				<<if $pain gte 100>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Feeling furious enough to bite through the pain,
+						고통을 깨물어 삼킬 만큼 분노하며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
 						분노와 고통을 느끼며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Feeling small and sore enough to fold in on yourself,
+						몸이 안으로 말려들 만큼 작아지고 아픈 기분을 느끼며,
 					<<elseif (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
 						수치심과 고통을 느끼며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Trying to keep some dignity through the pain,
+						고통 속에서도 체면을 지키려 애쓰며,
 					<<else>>
 						수치심과 고통을 느끼며,
 					<</if>>
 				<<elseif $pain gte 40>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Furious tears cover your face as
+						분노에 찬 눈물이 얼굴을 뒤덮으며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
 						분노 어린 눈물이 얼굴을 뒤덮으며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Quiet tears cover your face as
+						조용한 눈물이 얼굴을 뒤덮으며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Tears prick your eyes despite your best efforts as
+						애써 참아도 눈가가 따끔해지며,
 					<<else>>
 						수치심에 물든 얼굴을 눈물이 뒤덮으며,
 					<</if>>
 				<<else>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Angry that your own body would dare betray you,
+						자신의 몸이 감히 자신을 배신한다는 사실에 화가 나며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
 						내면에서 차오르는 감정에 분노와 수치심을 느끼며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Shivering with shame at the feelings rising within you,
+						내면에서 차오르는 감정에 수치심으로 몸을 떨며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Flustered by the feelings rising within you,
+						내면에서 차오르는 감정에 어쩔 줄 몰라 하며,
 					<<else>>
 						내면에서 차오르는 감정에 수치심을 느끼며,
 					<</if>>
@@ -4678,39 +4678,39 @@
 			<<elseif $arousal gte $arousalmax / 5>>
 				<<if $pain gte 100>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Your body hurts yet tingles, annoyingly responsive, as
+						몸이 아프면서도 짜증스럽게 반응해 찌릿거리며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						Your body hurts yet tingles against your will as
+						몸이 아프면서도 의지와 상관없이 찌릿거리며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Your body hurts yet tingles helplessly as
+						몸이 아프면서도 어쩔 도리 없이 찌릿거리며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Your body hurts yet tingles, much to your mortification, as
+						몸이 아프면서도 찌릿거려 몹시 수치스러워하며,
 					<<else>>
 						몸이 아프면서도 수치스럽게 찌릿거리며,
 					<</if>>
 				<<elseif $pain gte 40>>
 					<<if _speechAttitudeResolved is "cruel">>
-						You snarl through your sobs at the injustice of it all as
+						이 모든 불공평함에 으르렁거리며 흐느끼고,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
 						이 모든 불공평함에 비명을 지르며 흐느껴 울고,
 					<<elseif _speechAttitudeResolved is "docile">>
-						You bow your head and sob at the injustice of it all as
+						고개를 숙인 채 이 모든 불공평함에 흐느끼며,
 					<<elseif (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
 						이 모든 불공평함에 조용히 흐느껴 울며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						You try to swallow your sobs at the injustice of it all as
+						이 모든 불공평함에 터져 나오는 흐느낌을 삼키려 애쓰며,
 					<<else>>
 						이 모든 불공평함에 흐느껴 울며,
 					<</if>>
 				<<else>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Your <<genitals 1>> twitches in spiteful defiance as
+						당신의 <<genitals 1>>【이가】 앙심 어린 반항처럼 움찔거리며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						Your <<genitals 1>> twitches despite your stubborn will as
+						당신의 <<genitals 1>>【이가】 고집스러운 의지와 상관없이 움찔거리며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Your <<genitals 1>> involuntarily twitches, leaving you helpless to hide it, as
+						당신의 <<genitals 1>>【이가】 무의식적으로 움찔거리는데, 당신은 그것을 숨길 방법이 없으며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Your <<genitals 1>> involuntarily twitches, much to your embarrassment, as
+						당신의 <<genitals 1>>【이가】 무의식적으로 움찔거려 몹시 창피해하며,
 					<<else>>
 						당신의 <<genitals 1>>【이가】 무의식적으로 움찔거리며,
 					<</if>>
@@ -4718,39 +4718,39 @@
 			<<else>>
 				<<if $pain gte 100>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Feeling lost, in pain, and viciously angry,
+						어찌할 바를 모르고, 고통스럽고, 지독하게 화가 난 채,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						Feeling lost and angrily in pain,
+						어찌할 바를 모르고 화가 난 채 고통스러워하며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Feeling lost, small, and in pain,
+						어찌할 바를 모르고, 작아진 기분으로, 고통 속에서,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Feeling lost, in pain, and desperate to stay composed,
+						어찌할 바를 모르고 고통스러운 와중에도 침착함을 지키려 필사적으로 애쓰며,
 					<<else>>
 						고통 속에서 어찌할 바를 모르며,
 					<</if>>
 				<<elseif $pain gte 40>>
 					<<if _speechAttitudeResolved is "cruel">>
-						You try and fail to turn your tears into a glare as
+						눈물을 노려보는 눈빛으로 바꾸려 했지만 실패하며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						You try and fail to blink away your tears as
+						눈물을 깜빡여 털어내려 했지만 실패하며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						You try and fail to keep your tears quiet as
+						눈물을 조용히 삼키려 했지만 실패하며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						You try and fail to hide your tears with dignity as
+						눈물을 품위 있게 숨기려 했지만 실패하며,
 					<<else>>
 						눈물을 참으려 노력했지만 실패하며,
 					<</if>>
 				<<else>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Viciously angry and shaken,
+						지독하게 화가 난 채 크게 흔들리며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
 						분노한 채 크게 흔들리며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Shaken and keeping your head down,
+						크게 흔들린 채 고개를 푹 숙이며,
 					<<elseif (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
-						Shaken and fighting to stay quiet,
+						크게 흔들린 채 소리를 죽이려 애쓰며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Shaken, but trying to compose yourself,
+						크게 흔들리면서도 마음을 가다듬으려 애쓰며,
 					<<else>>
 						크게 흔들린 채,
 					<</if>>
@@ -4762,37 +4762,37 @@
 			<<if $arousal gte ($arousalmax / 5) * 4>>
 				<<if $pain gte 100>>
 					<<if _speechAttitudeResolved is "cruel">>
-						You're an emotional wreck held together by spite as
+						앙심 하나로 버티는 감정의 잔해가 된 채,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						You're an emotional wreck, though you refuse to show weakness, as
+						감정이 완전히 무너져 내렸으면서도 약한 모습을 보이지 않으려 하며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						You're an emotional wreck and too subdued to hide it as
+						감정이 완전히 무너져 내렸으나 기운이 없어 그것을 숨기지도 못하며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						You're an emotional wreck beneath your fragile composure as
+						위태로운 침착함 아래로 감정이 완전히 무너져 내리며,
 					<<else>>
 						감정이 완전히 무너져 내리며,
 					<</if>>
 				<<elseif $pain gte 40>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Feeling emotionally raw and physically tender, but still spiteful,
+						감정은 쓰라리고 몸은 예민해졌지만 여전히 앙심을 품은 채,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						Feeling emotionally raw and physically tender,
+						감정은 쓰라리고 몸은 예민해진 기분을 느끼며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Feeling emotionally and physically tender enough to fold inward,
+						감정적으로도 육체적으로도 안으로 말려들 만큼 연약해진 기분을 느끼며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Feeling emotionally and physically tender beneath a fragile mask,
+						위태로운 가면 아래에서 감정적으로나 육체적으로 연약해진 기분을 느끼며,
 					<<else>>
 						감정적으로나 육체적으로 연약해진 기분을 느끼며,
 					<</if>>
 				<<else>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Furious at your body's betrayals,
+						몸이 자신을 배신하는 듯해 격분하며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
 						몸이 자신을 배신하는 듯해 분노하며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Too overwhelmed to argue with your body's betrayals,
+						몸의 배신에 맞서 따질 기력조차 없이 압도되어,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Though trying not to let your body's betrayals show,
+						몸이 자신을 배신하는 모습이 드러나지 않도록 애쓰면서도,
 					<<else>>
 						몸이 자신을 배신할지도 모른다는 두려움에도 불구하고,
 					<</if>>
@@ -4800,37 +4800,37 @@
 			<<elseif $arousal gte $arousalmax / 5>>
 				<<if $pain gte 100>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Hurt, afraid, and hating it,
+						상처받고, 두렵고, 그것이 증오스러워,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						Hurt and angry enough to mask your fear,
+						두려움을 가릴 만큼 상처받고 화가 나서,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Hurt, afraid, and subdued,
+						상처받고 두려워하면서 기가 죽어,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Hurt, afraid, and trying to look collected,
+						상처받고 두려우면서도 침착해 보이려 애쓰며,
 					<<else>>
 						상처받고 두려움에 떨며,
 					<</if>>
 				<<elseif $pain gte 40>>
 					<<if _speechAttitudeResolved is "cruel">>
-						You bristle against the myriad feelings assailing you as
+						당신을 덮쳐 오는 무수한 감정들에 곤두서며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						You grit your teeth against the myriad feelings assailing you as
+						당신을 덮쳐 오는 무수한 감정들을 이를 악물고 버티며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						You shrink beneath the myriad feelings assailing you as
+						당신을 덮쳐 오는 무수한 감정들 아래에서 움츠러들며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						You try to compose yourself despite the myriad feelings assailing you as
+						당신을 덮쳐 오는 무수한 감정들 속에서도 침착함을 유지하려 애쓰며,
 					<<else>>
 						괴롭히는 무수한 감정들에 대처하려 발버둥 치며,
 					<</if>>
 				<<else>>
 					<<if _speechAttitudeResolved is "cruel">>
-						You feel faint and furious about it as
+						기절할 것만 같은 기분에 분통이 터지며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						You feel faint, but stubbornly keep moving as
+						기절할 것만 같은 기분이지만 고집스럽게 계속 움직이며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						You feel faint and quietly unsteady as
+						기절할 것만 같은 기분에 조용히 휘청거리며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						You feel faint despite your attempt at poise as
+						의연하려 애써도 기절할 것만 같은 기분에,
 					<<else>>
 						기절할 것만 같은 기분에,
 					<</if>>
@@ -4838,37 +4838,37 @@
 			<<else>>
 				<<if $pain gte 100>>
 					<<if _speechAttitudeResolved is "cruel">>
-						You know you must look like a complete mess, and hate anyone who sees it, as
+						스스로가 엉망진창으로 보일 것임을 알고, 그것을 보는 모두가 미워지며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						You know you must look like a complete mess, but lift your chin anyway, as
+						스스로가 엉망진창으로 보일 것임을 알면서도 그래도 턱을 치켜들며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						You know you must look like a complete mess, and keep your head low, as
+						스스로가 엉망진창으로 보일 것임을 알고 고개를 푹 숙이며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						You know you must look like a complete mess, despite your efforts, as
+						스스로가 엉망진창으로 보일 것임을 알면서도, 애써 노력하며,
 					<<else>>
 						스스로가 엉망진창으로 보일 것임을 알면서도,
 					<</if>>
 				<<elseif $pain gte 40>>
 					<<if _speechAttitudeResolved is "cruel">>
-						You wonder who to blame for this as
+						이게 대체 누구 탓인지 따져 보며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						You wonder what you did to deserve this, and resent the question, as
+						무슨 죄를 지었길래 이런 일을 당하는지 자문하고, 그 물음이 원망스러워지며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						You wonder if you did something to deserve this as
+						어쩌면 자신이 뭔가 잘못해서 이런 일을 당하는 것이 아닌지 자문하며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						You wonder what you did to deserve this, trying not to let it show, as
+						무슨 죄를 지었길래 이런 일을 당하는지 자문하면서도, 내색하지 않으려 애쓰며,
 					<<else>>
 						무슨 죄를 지었길래 이런 일을 당하는지 자문하며,
 					<</if>>
 				<<else>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Though close to snapping,
+						폭발하기 직전이면서도,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Though too worn down to do more than endure,
+						견디는 것 말고는 아무것도 할 수 없을 만큼 지쳤으면서도,
 					<<elseif (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
-						Though struggling to keep yourself together,
+						정신을 붙들려 발버둥 치면서도,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Though trying hard to keep your composure,
+						침착함을 유지하려 애쓰면서도,
 					<<else>>
 						막다른 골목에 다다른 기분에도 불구하고,
 					<</if>>
@@ -4878,25 +4878,25 @@
 			<<if $arousal gte ($arousalmax / 5) * 4>>
 				<<if $pain gte 100>>
 					<<if _speechAttitudeResolved is "cruel">>
-						You feel a primal, infuriating yearning beneath your pain as
+						고통의 이면에서 원초적이고 짜증스러운 갈망을 느끼며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						You feel a primal yearning beneath your pain and glare through it as
+						고통의 이면에서 원초적인 갈망을 느끼며 그것을 노려보며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						You feel a primal yearning beneath your pain and tremble under it as
+						고통의 이면에서 원초적인 갈망을 느끼며 그 아래에서 몸을 떨며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						You feel a primal yearning beneath your pain and try to ignore it as
+						고통의 이면에서 원초적인 갈망을 느끼며 그것을 무시하려 애쓰며,
 					<<else>>
 						고통의 이면에서 원초적인 갈망을 느끼며,
 					<</if>>
 				<<elseif $pain gte 40>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Though furious at your body's signs of arousal,
+						흥분한 신체의 반응에 격분하면서도,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
 						흥분한 신체의 반응에 분노하면서도,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Though cowed by your body's signs of arousal,
+						흥분한 신체의 반응에 기가 눌리면서도,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Though mortified by your body's signs of arousal,
+						흥분한 신체의 반응에 수치스러워하면서도,
 					<<else>>
 						흥분한 신체의 반응에 굴욕감을 느끼면서도,
 					<</if>>
@@ -4906,9 +4906,9 @@
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
 						흥분한 신체의 반응에 분노하면서도,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Though embarrassed enough to shrink back from your body's signs of arousal,
+						흥분한 신체의 반응에 부끄러워 움츠러들면서도,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Though flustered by your body's signs of arousal,
+						흥분한 신체의 반응에 당황하면서도,
 					<<else>>
 						흥분한 신체의 반응에 당혹감을 느끼면서도,
 					<</if>>
@@ -4916,37 +4916,37 @@
 			<<elseif $arousal gte $arousalmax / 5>>
 				<<if $pain gte 100>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Shaken, hurt, and raw with resentment,
+						동요하고, 상처받고, 원망으로 쓰라린 채,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						Shaken, hurt, and trying to stay defiant,
+						동요하고 상처받았지만 반항심을 잃지 않으려 애쓰며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Shaken, hurt, and subdued,
+						동요하고, 상처받고, 기가 죽은 채,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Shaken and hurt despite your composure,
+						침착함을 유지하는데도 동요하고 상처받은 채,
 					<<else>>
 						동요하고 상처받은 채,
 					<</if>>
 				<<elseif $pain gte 40>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Your body tingles painfully, almost mockingly, as
+						당신의 몸이 고통스럽게, 거의 비웃기라도 하듯 찌릿거리며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						Your body tingles painfully against your will as
+						당신의 몸이 의지와 상관없이 고통스럽게 찌릿거리며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Your body tingles painfully while you endure it as
+						당신의 몸이 고통스럽게 찌릿거리는 것을 참으며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Your body tingles painfully despite your composure as
+						침착함을 유지하는데도 당신의 몸이 고통스럽게 찌릿거리며,
 					<<else>>
 						당신의 몸이 고통스럽게 찌릿거리며,
 					<</if>>
 				<<else>>
 					<<if _speechAttitudeResolved is "cruel">>
-						You feel spitefully self-conscious about the lewd warmth within you as
+						자신 안의 음란한 열기가 앙심 어리게 신경 쓰이는 상태로,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						You feel self-conscious about the lewd warmth within you and refuse to shrink as
+						자신 안의 음란한 열기가 신경 쓰이지만 움츠러들지 않는 상태로,
 					<<elseif _speechAttitudeResolved is "docile">>
-						You feel small beneath the lewd warmth within you as
+						자신 안의 음란한 열기 아래에서 작아진 기분으로,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						You feel mortified by the lewd warmth within you as
+						자신 안의 음란한 열기에 몹시 수치스러워하며,
 					<<else>>
 						자신 안의 음란한 열기가 신경 쓰이는 상태로,
 					<</if>>
@@ -4955,50 +4955,50 @@
 				<<if $pain gte 100>>
 					<<if $water is 1>>
 						<<if _speechAttitudeResolved is "cruel">>
-							Furious tears streaking away into the water,
+							분노에 찬 눈물이 물속으로 씻겨 내려가며,
 						<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
 							분노 어린 눈물이 물속으로 씻겨 내려가며,
 						<<elseif _speechAttitudeResolved is "docile">>
-							Quiet tears streaking away into the water,
+							조용한 눈물이 물속으로 씻겨 내려가며,
 						<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-							Tears streaking away before you can compose yourself,
+							마음을 가다듬기도 전에 눈물이 씻겨 내려가는 채로,
 						<<else>>
 							물속으로 눈물이 씻겨 내려가는 채로,
 						<</if>>
 					<<else>>
 						<<if _speechAttitudeResolved is "cruel">>
-							Face covered in furious tears,
+							분노에 찬 눈물로 얼굴이 뒤덮인 채,
 						<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
 							분노 어린 눈물로 얼굴이 뒤덮인 채,
 						<<elseif _speechAttitudeResolved is "docile">>
-							Face lowered and covered in tears,
+							고개를 숙인 얼굴이 눈물로 뒤덮인 채,
 						<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-							Face damp despite your attempts at composure,
+							침착해 보려 애써도 얼굴이 젖은 채,
 						<<else>>
 							눈물로 뒤덮인 얼굴로,
 						<</if>>
 					<</if>>
 				<<elseif $pain gte 40>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Feeling battered, but spiteful enough to keep moving,
+						만신창이가 된 기분이지만, 앙심으로 멈추지 않고 계속 움직이며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Feeling battered, but quietly forcing yourself onward,
+						만신창이가 된 기분이지만, 조용히 스스로를 몰아붙여 나아가며,
 					<<elseif (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
-						Feeling battered, but trying your best to keep going,
+						만신창이가 된 기분이지만, 최선을 다해 계속 나아가려 하며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Feeling battered, but determined not to make a scene,
+						만신창이가 된 기분이지만, 소란을 피우지 않겠다고 다짐하며,
 					<<else>>
 						만신창이가 된 기분이지만, 그럼에도 불구하고 최선을 다하겠다고 다짐하며,
 					<</if>>
 				<<else>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Still too spiteful to slow down,
+						그럼에도 앙심이 남아 걸음을 늦추지 못하며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Still quietly forcing yourself onward,
+						그럼에도 조용히 스스로를 몰아붙여 나아가며,
 					<<elseif (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
-						Still trying your best to keep going,
+						그럼에도 최선을 다해 계속 나아가려 하며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Still determined to keep yourself composed,
+						그럼에도 불구하고 침착함을 유지하겠다고 다짐하며,
 					<<else>>
 						그럼에도 불구하고 최선을 다하겠다고 다짐하며,
 					<</if>>
@@ -5008,37 +5008,37 @@
 			<<if $arousal gte ($arousalmax / 5) * 4>>
 				<<if $pain gte 100>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Your tortured body trembles with fury and arousal as
+						고문받은 몸이 분노와 흥분으로 떨리며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
 						고문받은 몸이 분노와 흥분으로 떨리며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Your tortured body trembles helplessly with arousal as
+						고문받은 몸이 어쩔 도리 없이 흥분으로 떨리며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Your tortured body trembles with arousal despite your composure as
+						침착함을 유지하는데도 고문받은 몸이 흥분으로 떨리며,
 					<<else>>
 						고문받은 몸이 흥분으로 떨리며,
 					<</if>>
 				<<elseif $pain gte 40>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Furious tears run down your flushed cheeks as
+						분노에 찬 눈물이 상기된 뺨을 타고 흘러내리며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
 						분노 어린 눈물이 상기된 뺨을 타고 흘러내리며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Quiet tears run down your flushed cheeks as
+						조용한 눈물이 상기된 뺨을 타고 흘러내리며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Tears run down your flushed cheeks despite your composure as
+						침착함을 유지하는데도 눈물이 상기된 뺨을 타고 흘러내리며,
 					<<else>>
 						상기된 뺨을 타고 눈물이 흘러내리며,
 					<</if>>
 				<<else>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Your body trembles with fury and arousal as
+						당신의 몸이 분노와 흥분으로 떨리며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
 						당신의 몸이 분노와 흥분으로 떨리며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Your body trembles helplessly with arousal as
+						당신의 몸이 어쩔 도리 없이 흥분으로 떨리며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Your body trembles with arousal despite your composure as
+						침착함을 유지하는데도 당신의 몸이 흥분으로 떨리며,
 					<<else>>
 						당신의 몸이 흥분으로 떨리며,
 					<</if>>
@@ -5046,39 +5046,39 @@
 			<<elseif $arousal gte $arousalmax / 5>>
 				<<if $pain gte 100>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Your body hurts and tingles, feeding your fury, as
+						당신의 몸이 아프고 찌릿거려 분노에 불을 붙이며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						Your body hurts and tingles against your will as
+						당신의 몸이 의지와 상관없이 아프고 찌릿거리며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Your body hurts and tingles helplessly as
+						당신의 몸이 어쩔 도리 없이 아프고 찌릿거리며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Your body hurts and tingles despite your poise as
+						의연함을 유지하는데도 당신의 몸이 아프고 찌릿거리며,
 					<<else>>
 						당신의 몸이 아프고 찌릿거리며,
 					<</if>>
 				<<elseif $pain gte 40>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Your body feels sensitive enough to anger you as
+						당신의 몸이 화가 날 만큼 민감해진 채,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						Your body feels sensitive, though you refuse to acknowledge it, as
+						당신의 몸이 민감해졌지만 그것을 인정하지 않으려 하며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Your body feels sensitive and vulnerable as
+						당신의 몸이 민감하고 취약해진 채,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Your body feels sensitive despite your careful composure as
+						조심스러운 침착함을 유지하는데도 당신의 몸이 민감해진 채,
 					<<else>>
 						당신의 몸이 민감해진 채,
 					<</if>>
 				<<else>>
 					<<if _speechAttitudeResolved is "cruel">>
-						You feel horny, and furious at yourself for it, as
+						꼴려하고, 그런 자신에게 화가 치밀며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						You feel horny despite your stubborn pride as
+						고집스러운 자존심에도 불구하고 꼴려하며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						You feel helplessly horny as
+						어쩔 도리 없이 꼴려하며,
 					<<elseif (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
-						You feel shamefully horny as
+						수치스러울 만큼 꼴려하며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						You feel indecently horny despite yourself as
+						자신의 뜻과 달리 주체할 수 없이 꼴려하며,
 					<<else>>
 						꼴려하며,
 					<</if>>
@@ -5086,13 +5086,13 @@
 			<<else>>
 				<<if $pain gte 100>>
 					<<if _speechAttitudeResolved is "cruel">>
-						Your whole body hurts, but spite keeps you moving, as
+						온몸이 쑤시지만 앙심이 당신을 계속 움직이게 하며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						Your whole body hurts, but you force yourself onward, as
+						온몸이 쑤시지만 억지로 앞으로 나아가며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						Your whole body hurts, and you meekly endure it, as
+						온몸이 쑤시지만 순순히 견디며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						Your whole body hurts, but you try to carry yourself with dignity, as
+						온몸이 쑤시지만 품위를 지키려 애쓰며,
 					<<else>>
 						온몸이 쑤신 채,
 					<</if>>
@@ -5100,24 +5100,24 @@
 					<<elseif $pain gte 40>>
 					<<if $leftarm is "bound" and $rightarm is "bound">>
 						<<if _speechAttitudeResolved is "cruel">>
-							You blink away furious tears as
+							분노에 찬 눈물을 깜빡이며 참아내고,
 						<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
 							화가 섞인 눈물을 깜빡이며 참아내고,
 						<<elseif _speechAttitudeResolved is "docile">>
-							You blink away quiet tears as
+							조용한 눈물을 깜빡이며 참아내고,
 						<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-							You blink away tears and try to look composed as
+							눈물을 깜빡이며 참아내고 침착해 보이려 하며,
 						<<else>>
 							눈물을 깜빡이며 참아내고,
 						<</if>>
 					<<elseif _speechAttitudeResolved is "cruel">>
-						You wipe away furious tears as
+						분노에 찬 눈물을 닦아내며,
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
 						화가 섞인 눈물을 닦아내며,
 					<<elseif _speechAttitudeResolved is "docile">>
-						You wipe away your tears without looking up as
+						고개도 들지 않은 채 눈물을 닦아내며,
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						You wipe away your tears and try to look composed as
+						눈물을 닦아내고 침착해 보이려 하며,
 					<<else>>
 						눈물을 닦아내며,
 					<</if>>
@@ -5131,15 +5131,15 @@
 					당신은 로켓을 손에 쥔 채
 				<<else>>
 					<<if _speechAttitudeResolved is "cruel">>
-						You move with spiteful purpose as
+						당신은 앙심 어린 결의로 움직이며
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "confident")>>
-						You waste no time, chin lifted, as
+						당신은 턱을 치켜든 채 시간을 지체하지 않고
 					<<elseif _speechAttitudeResolved is "docile">>
-						You quietly force yourself onward as
+						당신은 조용히 스스로를 몰아붙이며
 					<<elseif (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
-						You hurry onward before your nerves fail you as
+						당신은 용기가 꺾이기 전에 서둘러 나아가며
 					<<elseif (_speechAttitudeResolved is "polite" or _speechAttitudeResolved is "flamboyant")>>
-						You compose yourself and move on as
+						당신은 마음을 가다듬고 나아가며
 					<<else>>
 						당신은 시간을 지체하지 않고
 					<</if>>
@@ -5558,10 +5558,10 @@
 	<<set _temporaryXChangeVowForgiveness to typeof playerInTemporaryXChangeBody === "function" and playerInTemporaryXChangeBody()>>
 	<<if ($player.virginity.temple is true or $player.virginity.temple is 1) and $templePromised isnot _args[0] and _temporaryXChangeVowForgiveness>>
 		<<if !$combat>> | <</if>>
-		<span class="green"><<if $combat>>(<</if>><<if $player.virginity.vaginal is true and !$settings.blindStatsEnabled>>This action can deflower this body, but you may receive divine forgiveness<<else>>You may gain divine forgiveness for this action<</if>><<if $combat>>)<</if>></span>
+		<span class="green"><<if $combat>>(<</if>><<if $player.virginity.vaginal is true and !$settings.blindStatsEnabled>>이 행동으로 이 몸의 처녀를 잃을 수 있지만, 신의 용서를 받을 수도 있습니다<<else>>이 행동에 대해 신의 용서를 받을 수 있습니다<</if>><<if $combat>>)<</if>></span>
 	<<elseif $player.virginity.vaginal is true and !$settings.blindStatsEnabled>>
 		<<if !$combat>> | <</if>>
-		<span class="red"><<if $combat>>(<</if>>This action will deflower you<<if ($player.virginity.temple is true or $player.virginity.temple is 1) and $templePromised isnot _args[0]>> and break your chastity vow<</if>><<if $combat>>)<</if>></span>
+		<span class="red"><<if $combat>>(<</if>>이 행동으로 당신은 순결을 잃습니다<<if ($player.virginity.temple is true or $player.virginity.temple is 1) and $templePromised isnot _args[0]>>. 순결 서약도 함께 깨집니다<</if>><<if $combat>>)<</if>></span>
 	<<elseif ($player.virginity.temple is true or $player.virginity.temple is 1) and $templePromised isnot _args[0]>>
 		<<if !$combat>> | <</if>>
 		<span class="red"><<if $combat>>(<</if>>이 행동은 당신의 순결 서약을 깨뜨립니다<<if $combat>>)<</if>></span>
@@ -5574,7 +5574,7 @@
 		<!-- do nothing -->
 	<<elseif ($player.virginity.temple is true or $player.virginity.temple is 1) and $templePromised isnot _args[0] and _temporaryXChangeVowForgiveness>>
 		<<if !$combat>> | <</if>>
-		<span class="green"><<if $combat>>(<</if>><<if $player.virginity.penile is true and !$settings.blindStatsEnabled>>This action can deflower this body, but you may receive divine forgiveness<<else>>You may gain divine forgiveness for this action<</if>><<if $combat>>)<</if>></span>
+		<span class="green"><<if $combat>>(<</if>><<if $player.virginity.penile is true and !$settings.blindStatsEnabled>>이 행동으로 이 몸의 순결을 잃을 수 있지만, 신의 용서를 받을 수도 있습니다<<else>>이 행동에 대해 신의 용서를 받을 수 있습니다<</if>><<if $combat>>)<</if>></span>
 	<<elseif $player.virginity.penile is true and !$settings.blindStatsEnabled>>
 		<<if !$combat>> | <</if>>
 		<span class="red"><<if $combat>>(<</if>>This action will deflower you<<if ($player.virginity.temple is true or $player.virginity.temple is 1) and $templePromised isnot _args[0]>> and break your chastity vow<</if>><<if $combat>>)<</if>></span>
@@ -5602,7 +5602,7 @@
 	<<if $player.virginity.handholding is true and !$settings.blindStatsEnabled>>
 		<<if !$combat>> | <</if>>
 		<<if /glove|mitten/.test($worn.hands.name)>>
-			<span class="purple"><<if $combat>>(<</if>>With your hands covered, you won't feel skin-to-skin contact<<if $combat>>)<</if>></span>
+			<span class="purple"><<if $combat>>(<</if>>손이 가려져 있어 맨살이 닿는 감촉은 느끼지 못합니다<<if $combat>>)<</if>></span>
 		<<else>>
 			<span class="red"><<if $combat>>(<</if>>이 행동으로 당신은 첫 손잡기를 하게 됩니다<<if $combat>>)<</if>></span>
 		<</if>>
@@ -5627,19 +5627,19 @@
 		<<set _npcVirginityPronoun to $pronoun>>
 		<<switch _args[1]>>
 			<<case "vaginal">>
-				<span class="red"><<if $combat>>(<</if>>This action will deflower <<him `_args[0]`>><<if $combat>>)<</if>></span>
+				<span class="red"><<if $combat>>(<</if>>이 행동은 <<his `_args[0]`>> 처녀를 빼앗습니다<<if $combat>>)<</if>></span>
 			<<case "penile">>
 				<<if !npcHasStrapon(V.NPCList.findIndex(npc => npc.fullDescription === _args[0]))>>
 					<span class="red"><<if $combat>>(<</if>>This action will deflower <<him `_args[0]`>><<if $combat>>)<</if>></span>
 				<</if>>
 			<<case "anal">>
-				<span class="red"><<if $combat>>(<</if>>This action will take <<his `_args[0]`>> anal virginity<<if $combat>>)<</if>></span>
+				<span class="red"><<if $combat>>(<</if>>이 행동은 <<his `_args[0]`>> 항문 순결을 빼앗습니다<<if $combat>>)<</if>></span>
 			<<case "oral">>
-				<span class="red"><<if $combat>>(<</if>>This action will take <<his `_args[0]`>> oral virginity<<if $combat>>)<</if>></span>
+				<span class="red"><<if $combat>>(<</if>>이 행동은 <<his `_args[0]`>> 입술 순결을 빼앗습니다<<if $combat>>)<</if>></span>
 			<<case "kiss">>
-				<span class="red"><<if $combat>>(<</if>>This action will take <<his `_args[0]`>> first kiss<<if $combat>>)<</if>></span>
+				<span class="red"><<if $combat>>(<</if>>이 행동은 <<his `_args[0]`>> 첫 키스가 됩니다<<if $combat>>)<</if>></span>
 			<<case "handholding">>
-				<span class="red"><<if $combat>>(<</if>>This action will take <<his `_args[0]`>> handholding virginity<<if $combat>>)<</if>></span>
+				<span class="red"><<if $combat>>(<</if>>이 행동은 <<his `_args[0]`>> 첫 손잡기가 됩니다<<if $combat>>)<</if>></span>
 			<<default>>
 		<</switch>>
 		<<set $pronoun to _npcVirginityPronoun>>
@@ -5648,7 +5648,7 @@
 
 <<widget "wolfgirl">>
 	<<if !$settings.blindStatsEnabled>> |
-		<span class="blue"><<if playerFeelsManlike()>>Wolfboy<<elseif playerFeelsGirllike()>>Wolfgirl<<else>>Wolfkin<</if>></span>
+		<span class="blue"><<if playerFeelsManlike()>>늑대 소년<<elseif playerFeelsGirllike()>>늑대 소녀<<else>>늑대 수인<</if>></span>
 	<</if>>
 <</widget>>
 
@@ -5672,7 +5672,7 @@
 
 <<widget "waterdragon">>
 	<<if !$settings.blindStatsEnabled>> |
-		<span class="lblue">Water Dragon</span>
+		<span class="lblue">수룡</span>
 	<</if>>
 <</widget>>
 
@@ -5688,13 +5688,13 @@
 
 <<widget "fox">>
 	<<if !$settings.blindStatsEnabled>> |
-		<span class="orange"><<if playerFeelsManlike()>>Foxboy<<elseif playerFeelsGirllike()>>Vixen<<else>>Foxkin<</if>></span>
+		<span class="orange"><<if playerFeelsManlike()>>여우 소년<<elseif playerFeelsGirllike()>>암여우<<else>>여우 수인<</if>></span>
 	<</if>>
 <</widget>>
 
 <<widget "bunny">>
     <<if !$settings.blindStatsEnabled>> |
-	   <span class="pink"><<if playerFeelsManlike()>>Bunnyboy<<elseif playerFeelsGirllike()>>Bunnygirl<<else>>Bunnykin<</if>></span>
+	   <span class="pink"><<if playerFeelsManlike()>>토끼 소년<<elseif playerFeelsGirllike()>>토끼 소녀<<else>>토끼 수인<</if>></span>
 	<</if>>
 <</widget>>
 
@@ -5797,7 +5797,7 @@
 	<<set _textOverrideColour to false>>
 	<<switch Skin.color.natural>>
 		<<case "wraith" "ivory" "ivorywraith" "ivory_wraith">>
-			ivory
+			상아색
 		<<case "light" "rlight" "ylight" "glight" "blight">>
 			밝은
 		<<case "medium" "rmedium" "ymedium" "gmedium" "bmedium">>
@@ -5843,7 +5843,7 @@
 		<</if>>
 		피부색
 	<<elseif _textOverrideColour>>
-		<<print _textOverrideColour>> skin colour.
+		<<print _textOverrideColour>> 피부색
 	<<elseif _textOverride is true>>
 		<<if Skin.color.tan gte 66>>
 			어두운
@@ -7106,7 +7106,7 @@ Argument 2, where appropriate, determines whether it's the player undressing the
 			<<case "lower">>
 				<<set _text_output to $_npc.clothes.lower.name>>
 			<<default>>
-				<<set _text_output to '<span class="red">ERROR: Invalid NPC clothing case. (NPC: $_npc.fullDescription, part called: $_part) Please inform the developer</span>'>>
+				<<set _text_output to '<span class="red">오류: 잘못된 NPC 의류 상황입니다. (NPC: $_npc.fullDescription, 호출된 부위: $_part) 개발자에게 알려 주십시오</span>'>>
 		<</switch>>
 	<</if>>
 <</silently>><<print _text_output>><</widget>>
@@ -7610,7 +7610,7 @@ Argument 2, where appropriate, determines whether it's the player undressing the
 
 <<widget "critterMagnetTrait">>
 	<<if !$settings.blindStatsEnabled>> |
-		<span class="lewd">Critter Magnet</span>
+		<span class="lewd">생물 자석</span>
 	<</if>>
 <</widget>>
 

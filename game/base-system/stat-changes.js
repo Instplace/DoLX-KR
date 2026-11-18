@@ -1106,7 +1106,7 @@ const statChange = (() => {
 		if (V.statFreeze) return;
 		if (isNaN(amount)) paramError("acceptance", "amount", amount, "숫자를 입력해야 합니다.");
 		if (!["penis_small", "penis_big", "breasts_small", "breasts_big", "pregnancy", "clear_climax"].includes(type)) {
-			paramError("acceptance", "type", type, 'Expected values include "penis_small", "penis_big", "breasts_small", "breasts_big", "pregnancy", "clear_climax"');
+			paramError("acceptance", "type", type, '다음 값 중 하나여야 합니다: "penis_small", "penis_big", "breasts_small", "breasts_big", "pregnancy", "clear_climax"');
 			return;
 		}
 		amount = Number(amount);

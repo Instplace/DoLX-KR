@@ -264,8 +264,8 @@ const events = [
 		starthour: 19,
 		endhour: 19,
 		priority: 4,
-		text: "You have an arrangement with Bailey at the Orphanage at <<ampm 19 00>>.",
-		failuretext: "You didn't show up for your arrangement with Bailey.",
+		text: "<<ampm 19 00>>에 고아원에서 베일리와 약속이 있습니다.",
+		failuretext: "베일리와의 약속에 나타나지 않았습니다.",
 	},
 	{
 		name: "bailey halloween gala",
@@ -281,8 +281,8 @@ const events = [
 		starthour: 18,
 		endhour: 19,
 		priority: 4,
-		text: "You have an arrangement with Bailey at the Orphanage at <<ampm 19 00>>.",
-		failuretext: "You didn't show up for your arrangement with Bailey.",
+		text: "<<ampm 19 00>>에 고아원에서 베일리와 약속이 있습니다.",
+		failuretext: "베일리와의 약속에 나타나지 않았습니다.",
 	},
 ];
 setup.events = events;

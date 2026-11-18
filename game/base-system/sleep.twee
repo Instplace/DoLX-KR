@@ -25,7 +25,7 @@
 
 <<widget "sleepGlasses">>
 	<<if _args[0] and $worn.face.type.includes("glasses") and !$worn.face.cursed and random(1, 100) lte 32>>
-		You wake to a sharp crack. <span class="red">Your $worn.face.name snapped while you slept.</span>
+		날카로운 딱 소리에 잠에서 깬다. <span class="red">자는 사이 당신의 $worn.face.name【이가】 부러졌다.</span>
 		<<generalRuined "face" false "worn">>
 		<br><br>
 	<</if>>
@@ -529,20 +529,20 @@
 	<<if _sleepAidStrength>>
 		<<run consumeSleepAid()>>
 		<<if _sleepAidOverslept gt 0>>
-			<span class="blue">The sleeping pills made you sleep longer than planned. You slept for an extra <<print _sleepAidOverslept>> hour<<if _sleepAidOverslept gt 1>>s<</if>>.</span><br>
+			<span class="blue">수면제 때문에 계획보다 오래 잤다. <<print _sleepAidOverslept>>시간을 더 잤다.</span><br>
 		<</if>>
 	<<elseif $sleepHoursTotal gt 0 and sleepAidWithdrawal()>>
-		<span class="red">Your body has become used to the sleeping pills. Without them, you keep waking during the night.</span><br>
+		<span class="red">몸이 수면제에 익숙해졌다. 수면제 없이는 밤새 자꾸 깬다.</span><br>
 	<</if>>
 
 	<<if $sleepHoursTotal gt 0 and $tiredness gte _sleepStartTiredness>>
 		<<if $stress gt _sleepStartStress>>
-			<span class="red">You slept, but wake up feeling much the same. Whatever rest you managed was swallowed by the stress on your body.</span><br>
+			<span class="red">잠을 잤지만 일어나 보니 컨디션이 거의 그대로다. 간신히 얻은 휴식마저 몸을 짓누르는 스트레스에 삼켜졌다.</span><br>
 		<<else>>
-			<span class="red">You slept, but wake up feeling much the same. Whatever rest you managed barely helped.</span><br>
+			<span class="red">잠을 잤지만 일어나 보니 컨디션이 거의 그대로다. 간신히 얻은 휴식은 별 도움이 되지 못했다.</span><br>
 		<</if>>
 	<<elseif _sleepNoFatigueDropNotice and $tiredness gte C.tiredness.max>>
-		<span class="red">You slept, but the rest has not helped and you wake up feeling much the same.</span><br>
+		<span class="red">잠을 잤지만 휴식은 도움이 되지 않았고, 일어나 보니 컨디션이 거의 그대로다.</span><br>
 	<</if>>
 <</widget>>
 
@@ -562,19 +562,19 @@
 		<br><br>
 	<</if>>
 	<<if _whitneyWaterdragonPlushieComfort and $sleepHoursTotal gt 0>>
-		<span class="green">You sleep with Whitney's water dragon plushie held close. It helps calm you.</span> <<ltrauma>>
+		<span class="green">당신은 휘트니의 수룡 인형을 꼭 끌어안고 잔다. 마음이 차분해진다.</span> <<ltrauma>>
 		<br><br>
 	<</if>>
 	<<if _gwylanFoxPlushieComfort and $sleepHoursTotal gt 0>>
-		You wake still holding the fox plushie against your chest.
+		여우 인형을 가슴에 끌어안은 채로 잠에서 깬다.
 		<<if _gwylanFoxPlushieComfort gte 5>>
-			You remember Gwylan telling you to relax. You hold the plushie for a little longer before getting out of bed.
+			그윌란이 긴장을 풀라고 했던 말이 떠오른다. 침대에서 일어나기 전에 인형을 조금 더 안고 있는다.
 		<<elseif _gwylanFoxPlushieComfort gt 1>>
-			Holding the plushie reminds you of resting in Gwylan's shop while Gwylan spoke to you.
+			인형을 안고 있자니 그윌란의 가게에서 그윌란의 말을 들으며 쉬던 때가 떠오른다.
 		<<else>>
-			Holding the soft plushie helped you sleep a little better.
+			포근한 인형 덕분에 조금 더 잘 잤다.
 		<</if>>
-		<span class="green">You feel calmer.</span> <<lstress>><<ltrauma>>
+		<span class="green">마음이 한결 차분해진다.</span> <<lstress>><<ltrauma>>
 		<br><br>
 	<</if>>
 	<<if $scienceproject is "ongoing" and $sciencephallusknown isnot 1 and hasSexStat("promiscuity", 3)>>
@@ -778,7 +778,7 @@
 	<<set _tempEventHide to true>>
 	<<set _noSleep to $earSlimeEvent.includes("go running or swimming") or $earSlimeEvent.includes("study at the school") or $earSlimeEvent.includes("masturbate")>>
 
-	<span @class="$earSlime.startedThreats ? 'lewd' : 'lblue'">The <<slimeWord>> in your head commands you to <<print $earSlimeEvent>><<if _noSleep>> before sleeping<</if>>.</span> It promises rewards if you comply<<if $earSlime.startedThreats>> and threatens consequences if you do not<</if>>.
+	<span @class="$earSlime.startedThreats ? 'lewd' : 'lblue'">머릿속의 <<slimeWord>>【이가】 <<if _noSleep>>잠들기 전에 <</if>><<= window.KR.getEarSlimeOrderKr($earSlimeEvent)>>라고 명령한다.</span> 따르면 보상을 주겠다고 약속한다<<if $earSlime.startedThreats>>. 따르지 않으면 대가를 치르게 될 거라고 협박한다<</if>>.
 
 	<br><br>
 	<<link [[복종한다|SleepSlimeEventObey]]>><<corruption 1>><<pain -4>><<stress -6>><<trauma -12>><<sub 1>><</link>><<gcorruption>><<lpain>><<lltrauma>><<lstress>>
@@ -913,11 +913,11 @@
 		<</switch>>
 		<<set _grayPick to (_grayPills.filter(p => _slimeWants.includes(p.subtype)).random() || _grayPills.random())>>
 		<<if _grayPick and onTakeClickSilent(_grayPick.name)>>
-			You open your drawer. The <<slimeWord>> steers your hand past the other packets to the <<print _grayPick.name>>, and you swallow it dry.
+			서랍을 연다. <<slimeWord>>【이가】 다른 약 봉지들 사이로 당신의 손을 이끌어 <<print _grayPick.name>>에 닿게 하고, 당신은 그것을 물 없이 삼킨다.
 			<br><br>
 			<<print $lastPillTakenDescription>>
 		<<else>>
-			You open your drawer, but the pill the <<slimeWord>> wanted is gone. It goes quiet, and you lie back down into bed.
+			서랍을 열지만, <<slimeWord>>【이가】 원하던 알약은 이미 없다. 그것은 조용해지고, 당신은 다시 침대에 눕는다.
 		<</if>>
 		<br><br>
 		<<link [[다음|$slimeBedExit]]>><<unset $slimeBedExit>><<unset $slimeBedroomExit>><</link>>
@@ -1082,13 +1082,13 @@
 <</widget>>
 
 <<widget "nightmareWake">>
-	You <<if _wakingEffect>>dreamt of<<else>>dream you are<</if>> being hunted by something <<rngWraith>>
-	<<if _wraithEvent>>pale and terrible.<br>
+	<<if _wakingEffect>>지난밤 꿈에서<<else>>꿈속에서<</if>> 당신은 <<rngWraith>>
+	<<if _wraithEvent>>창백하고 끔찍한 무언가에게 쫓기고 있다.<br>
 		<<if ($wli.cfg.bodywritinglvl gte 1 and $wli.cfg.tattoodream) and $rng gte 60 and W.wraithIsAngry()>>
 			<<wliBrandEvent "dream">>
 		<</if>>
 	<<else>>
-		dark and terrible.
+		어둡고 끔찍한 무언가에게 쫓기고 있다.
 	<</if>>
 	<br><br>
 <</widget>>
@@ -1096,7 +1096,7 @@
 :: SleepSlimeEventObey
 <<effects>>
 
-You obey the <<slimeWord>>'s demand.
+<<slimeWord>>의 요구에 복종한다.
 <<slimeEventResult>>
 
 :: SleepSlimeEventDefy
@@ -1106,25 +1106,25 @@ You obey the <<slimeWord>>'s demand.
 	<<set $slimeBedroomExit to "Bedroom">>
 <</if>>
 <<if $phase is 1>>
-	You ignore the <<slimeWord>>'s demand and get into bed without listening any further.
+	<<slimeWord>>의 요구를 무시하고, 더 듣지 않은 채 침대에 들어간다.
 	<<set $earSlime.event to "">>
 	<br><br>
 	<<link [[다음|$slimeBedExit]]>><<unset $slimeBedExit>><<unset $slimeBedroomExit>><<endevent>><</link>>
 <<elseif $earSlime.defyCooldown>>
 	<<if $earSlime.growth gte 100>>
 		<<set $earSlime.defyCooldown += 2>>
-		You defy the <<slimeWord>>'s demand and get into bed without listening any further. However, <span class="red">it doesn't stop you, knowing that it can punish you in other ways.</span>
+		<<slimeWord>>의 요구를 거부하고, 더 듣지 않은 채 침대에 들어간다. 하지만 <span class="red">다른 방법으로 당신을 벌할 수 있다는 것을 알기에 막지 않는다.</span>
 	<<else>>
-		You try to defy the <<slimeWord>>'s demand and get into bed without listening any further. However, <span class="teal">it's still worn out from overpowering you earlier.</span> It tries <span class="green">but fails</span> to force your steps in the opposite direction.
+		<<slimeWord>>의 요구를 거부하고, 더 듣지 않은 채 침대에 들어가려 한다. 하지만 <span class="teal">아까 당신을 제압하느라 아직 지쳐 있다.</span> 당신의 발걸음을 억지로 반대 방향으로 돌리려 <span class="green">시도하지만 실패한다</span>.
 	<</if>>
 	<<set $earSlime.event to "">>
 	<br><br>
 	<<link [[다음|$slimeBedExit]]>><<unset $slimeBedExit>><<unset $slimeBedroomExit>><</link>>
 <<elseif $earSlime.corruption gte (currentSkillValue('willpower') / 10)>>
-	The <<slimeWord>> is able to force you to comply with its demand.
+	<<slimeWord>>【이가】 당신을 강제로 자신의 요구에 따르게 만든다.
 	<<slimeEventResult>>
 <<else>>
-	You are able to defy the <<slimeWord>>'s demand and get into bed without listening any further.
+	<<slimeWord>>의 요구를 거역하고, 더 듣지 않은 채 침대에 들어간다.
 	<<set $earSlime.event to "">><<set $earSlime.defyCooldown += 4>>
 	<br><br>
 	<<link [[다음|$slimeBedExit]]>><<unset $slimeBedExit>><<unset $slimeBedroomExit>><</link>>

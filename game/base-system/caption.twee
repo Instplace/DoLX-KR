@@ -70,7 +70,7 @@
 		<</if>>
 		<<if $endeventerror isnot undefined>>
 			<<if $options.debugdisable is "f">>
-				<<if $options.images is 1>><img class="layer-sexmouth" src="img/ui/sym-awareness.png"><</if>><span class="red"><<print StartConfig.version>> Error: An NPC generated on the "$endeventerror" passage broke free. Please inform the developer <<if $cheatsEnabled is true>>Disregard this if you've just used a cheat.<</if>></span>
+				<<if $options.images is 1>><img class="layer-sexmouth" src="img/ui/sym-awareness.png"><</if>><span class="red"><<print StartConfig.version>> 오류: "$endeventerror" 패시지에서 생성된 NPC가 탈출했습니다. 개발자에게 알려주세요. <<if $cheatsEnabled is true>>치트를 사용한 직후라면 이 메시지를 무시하세요.<</if>></span>
 				<br><br>
 			<</if>>
 			<<unset $endeventerror>>
@@ -84,7 +84,7 @@
 				<span class="pink">어제 운동을 충분히 하지 않아, 체력이 약간 저하되었습니다.</span>
 				<br><br>
 			<<elseif $physiquechange is 3>>
-				<span class="gold"><<possessedWord 'Your' 'gold'>> exercise is keeping <<possessedWord 'your' 'gold'>> physique in shape.</span>
+				<span class="gold"><<possessedWord '당신의' 'gold'>> 꾸준한 운동 덕분에 <<possessedWord '당신의' 'gold'>> 체력이 유지되고 있습니다.</span>
 				<br><br>
 			<</if>>
 			<<set $physiquechange to 0>>
@@ -147,7 +147,7 @@
 			<<elseif $worn.neck.name is "familiar collar" and $hypnosis_traits.devotion gte 4>>
 				<span class="pink">익숙한 <<if $worn.neck.type.includes("leash")>>목줄 달린 <</if>>목걸이가 당신의 목을 보호합니다.</span>
 			<<elseif $worn.neck.name is "Bailey's collar">>
-				<span class="pink">A dark leather collar sits at <<possessedWord 'your' 'pink'>> throat. The lotus clasp catches the light.</span>
+				<span class="pink">어두운 가죽 목줄이 <<possessedWord '당신의' 'pink'>> 목에 걸려 있습니다. 연꽃 모양 잠금쇠가 빛을 받아 반짝입니다.</span>
 				<br>
 			<<else>>
 				<span class="pink">목줄이 <<possessedWord '당신의' 'pink'>> 목을 감싸고 있습니다.</span>
@@ -219,9 +219,9 @@
 
 		<<if !$hypnosis_traits.silence and earSlimeThoughts() and numberOfEarSlime()>>
 			<<if numberOfEarSlime() gte 2>>
-				<span class="lewd">Two voices in <<possessedWord 'your' 'lewd'>> head influence <<possessedWord 'your' 'lewd'>> thoughts<<if $earSlime.growth gte 100>> and actions<</if>>.</span>
+				<span class="lewd"><<possessedWord '당신의' 'lewd'>> 머릿속의 두 목소리가 <<possessedWord '당신의' 'lewd'>> 생각<<if $earSlime.growth gte 100>>【와과】 행동<</if>>에 영향을 미칩니다.</span>
 			<<else>>
-				<span class="lewd">An intrusive voice in <<possessedWord 'your' 'lewd'>> head influences <<possessedWord 'your' 'lewd'>> thoughts<<if $earSlime.growth gte 100>> and actions<</if>>.</span>
+				<span class="lewd"><<possessedWord '당신의' 'lewd'>> 머릿속의 낯선 목소리가 <<possessedWord '당신의' 'lewd'>> 생각<<if $earSlime.growth gte 100>>【와과】 행동<</if>>에 영향을 미칩니다.</span>
 			<</if>>
 			<br>
 		<<elseif !$hypnosis_traits.silence>>
@@ -352,33 +352,33 @@
 				<</if>>
 
 				<div class="sidebarButtonSplit">
-					<<button "CREDITS">>
+					<<button "크레딧">>
 						<<overlayReplace "DoLXCredits">>
 					<</button>>
-					<<button "POCKET">>
+					<<button "주머니">>
 						<<overlayReplace "pocket">>
 					<</button>>
 				</div>
 
 				<<if $options.debugdisable is "f">>
-					<<set _temp to "<span id='event-info-label' class='yellow'>EVENT INFO</span>">>
+					<<set _temp to "<span id='event-info-label' class='yellow'>이벤트 정보</span>">>
 					<<unset _eventAlertMajorArea>>
 					<<if $event isnot undefined and EventSystem.any()>>
 						<<set _event0 to EventSystem.has(0) ? EventSystem.get(0) : undefined>>
 						<<set _trackedPassages to ($event.buffer isnot undefined ? $event.buffer.reduce((prev, e) => {if (e && e.area && e.area[0] && !prev.includes(e.area[0])) {prev.push(e.area[0]);} return prev;}, []) : [])>>
 						<<if !EventSystem.validate()>>
-							<<set _temp to "<span id='event-info-label' class='red'>EVENT DESYNC</span>">>
+							<<set _temp to "<span id='event-info-label' class='red'>이벤트 불일치</span>">>
 						<<elseif _event0 and _event0.area and _event0.area[0] is $passage>>
 							<<set _eventAlertMajorArea to false>>
-							<<set _temp to "<span id='event-info-label' class='green'>EVENT ACTIVE</span>">>
+							<<set _temp to "<span id='event-info-label' class='green'>이벤트 진행 중</span>">>
 						<<elseif setup.majorAreas.includes($passage)>>
 							<<set _eventAlertMajorArea to true>>
-							<<set _temp to "<span id='event-info-label' class='red'>EVENT ESCAPED</span>">>
+							<<set _temp to "<span id='event-info-label' class='red'>이벤트 이탈</span>">>
 						<<elseif _trackedPassages.length is 1 and _event0 and _event0.area and ["Forest Cabin", "Eden Cabin", "Eden Clearing"].includes(_event0.area[0])>>
 							<<set _eventAlertMajorArea to false>>
-							<<set _temp to "<span id='event-info-label' class='green'>EVENT ACTIVE</span>">>
+							<<set _temp to "<span id='event-info-label' class='green'>이벤트 진행 중</span>">>
 						<<else>>
-							<<set _temp to "<span id='event-info-label' class='yellow'>SHOW EVENT INFO</span>">>
+							<<set _temp to "<span id='event-info-label' class='yellow'>이벤트 정보 보기</span>">>
 						<</if>>
 						<<unset _event0>>
 						<<unset _trackedPassages>>

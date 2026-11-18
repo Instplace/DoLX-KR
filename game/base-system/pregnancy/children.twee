@@ -730,7 +730,7 @@ Groups littermates by pregnancyId.*/
 		<<if _idList.length>>
 			<<childViewerDisplayElements>>
 		<<else>>
-			There are no children here.
+			이곳에는 아이가 없다.
 		<</if>>
 	</div>
 <</widget>>
@@ -843,7 +843,7 @@ Groups littermates by pregnancyId.*/
 			<br>
 			<span class="gold">나이:</span> <<childAge _args[0] "full">>
 			<br>
-			<span class="gold">Size:</span> <<print $childRecords[_args[0]].features.size ?? "Unknown">>
+			<span class="gold">크기:</span> <<childKrText "size" ($childRecords[_args[0]].features.size ?? "알 수 없음")>>
 			<<if $childRecords[_args[0]].features.hairColour>>
 				<<if $childRecords[_args[0]].species.includes("human")>>
 					| <span class="gold">머리카락:</span>
@@ -1482,12 +1482,36 @@ Groups littermates by pregnancyId.*/
 		사용법: <<childKrText "size"|"hair"|"eye"|"skin" _rawValue>>
 	-->
 	<<switch _args[0]>>
-		<<case "tiny">><<set $_text_output to "아주 작음">>
-		<<case "small">><<set $_text_output to "작음">>
-		<<case "normal">><<set $_text_output to "보통">>
-		<<case "large">><<set $_text_output to "큼">>
-		<<case "gyaru" "ygyaru" "rgyaru" "ggyaru" "bgyaru">><<set $_text_output to "medium">><<case "waterdragon" "waterdragonPurple">><<set $_text_output to "indigo">><<case "waterdragonLilac">><<set $_text_output to "pale lilac">><<case "waterdragonBlue">><<set $_text_output to "cyan">><<case "waterdragonSkyblue">><<set $_text_output to "sky blue">><<case "waterdragonPink">><<set $_text_output to "soft pink">>
-		<<default>><<set $_text_output to _args[1]>>
+		<<case "size">>
+			<<switch _args[1]>>
+				<<case "tiny">><<set $_text_output to "아주 작음">>
+				<<case "small">><<set $_text_output to "작음">>
+				<<case "normal">><<set $_text_output to "보통">>
+				<<case "large">><<set $_text_output to "큼">>
+				<<default>><<set $_text_output to _args[1]>>
+			<</switch>>
+		<<case "hair">>
+			<<set _childKrRecord to setup.guessColourInMap(setup.colours.hair_map, _args[1])>>
+			<<set $_text_output to _childKrRecord ? _childKrRecord.name : _args[1]>>
+		<<case "eye">>
+			<<set _childKrRecord to setup.guessColourInMap(setup.colours.eyes_map, _args[1])>>
+			<<set $_text_output to _childKrRecord ? _childKrRecord.name : _args[1]>>
+		<<case "skin">>
+			<<switch _args[1]>>
+				<<case "light" "rlight" "ylight" "glight" "blight">><<set $_text_output to "밝은">>
+				<<case "medium" "rmedium" "ymedium" "gmedium" "bmedium">><<set $_text_output to "보통">>
+				<<case "dark" "rdark" "ydark" "gdark" "bdark">><<set $_text_output to "어두운">>
+				<<case "ghostlyPale" "ghost">><<set $_text_output to "핏기 없이 창백한">>
+				<<case "gyaru" "ygyaru" "rgyaru" "ggyaru" "bgyaru">><<set $_text_output to "보통">>
+				<<case "waterdragon" "waterdragonPurple">><<set $_text_output to "남색">>
+				<<case "waterdragonLilac">><<set $_text_output to "연보라">>
+				<<case "waterdragonBlue">><<set $_text_output to "청록">>
+				<<case "waterdragonSkyblue">><<set $_text_output to "하늘색">>
+				<<case "waterdragonPink">><<set $_text_output to "연분홍">>
+				<<default>><<set $_text_output to _args[1]>>
+			<</switch>>
+		<<default>>
+			<<set $_text_output to _args[1]>>
 	<</switch>>
 	<</silently>><<print $_text_output>>
 <</widget>>

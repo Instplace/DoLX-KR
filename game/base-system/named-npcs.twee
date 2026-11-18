@@ -802,12 +802,12 @@ Zohar
 	<<if _args[0] and _args[1]>>
 		<<if !setup.npcClothesSets.some(set => set.name.includes($_newNPCOutfit))>>
 			<<error {
-				message	: `NPC (${_nam}) was given invalid outfit (Outfit name: ${$_newNPCOutfit}). Please inform the developer`,
+				message	: `NPC (${_nam})에게 잘못된 의상이 지정되었습니다(의상 이름: ${$_newNPCOutfit}). 개발자에게 알려주세요.`,
 				source	: Utils.GetStack()
 			}>>
 		<<elseif _i lt 0>>
 			<<error {
-				message	: `NPC (${_nam}) ${"is"} invalid (Must be a named NPC. check for typos!). Please inform the developer.`,
+				message	: `NPC (${_nam}) 항목이 잘못되었습니다(명명된 NPC여야 합니다. 오타를 확인하세요!). 개발자에게 알려주세요.`,
 				source	: Utils.GetStack()
 			}>>
 		<<else>>
@@ -826,17 +826,17 @@ Zohar
 	<<if _args[0] and _args[1]>>
 		<<if _i lt 0>>
 			<<error {
-				message	: `NPC (${_nam}) ${"is"} invalid (Must be a named NPC. Check for typos!). Please inform the developer`,
+				message	: `NPC (${_nam}) 항목이 잘못되었습니다(명명된 NPC여야 합니다. 오타를 확인하세요!). 개발자에게 알려주세요.`,
 				source	: Utils.GetStack()
 			}>>
 		<<elseif !$NPCName[_i].outfits>>
 			<<error {
-				message	: `NPC (${_nam}) attempted to remove outfit (Outfit name: ${$_newNPCOutfit}) while having no outfits. Please inform the developer`,
+				message	: `NPC (${_nam})에게 의상이 없는 상태에서 의상(의상 이름: ${$_newNPCOutfit})을 제거하려 했습니다. 개발자에게 알려주세요.`,
 				source	: Utils.GetStack()
 			}>>
 		<<elseif !$NPCName[_i].outfits.some(x => x.includes($_newNPCOutfit))>>
 			<<error {
-				message	: `NPC (${_nam}) had non-existent outfit removed (Outfit name: ${$_newNPCOutfit}). Please inform the developer`,
+				message	: `NPC (${_nam})에게서 존재하지 않는 의상(의상 이름: ${$_newNPCOutfit})을 제거하려 했습니다. 개발자에게 알려주세요.`,
 				source	: Utils.GetStack()
 			}>>
 		<<else>>
@@ -919,7 +919,7 @@ Zohar
 	<<if _npcno lt 0>>
 		<<set _npcno to 0>>
 	<<elseif _npcno gt 5>>
-		<span class="red"> Error: Named NPC slot was out of range. Clamped to slot 5.</span>
+		<span class="red"> 오류: 명명된 NPC 슬롯이 범위를 벗어났습니다. 슬롯 5로 보정했습니다.</span>
 		<<set _npcno to 5>>
 	<</if>>
 	<<if !$NPCList[_npcno]>>
@@ -964,13 +964,13 @@ Zohar
 			<<set _i to _namedRow>>
 			<<if !$bugNoticesShown.dolx_nnpc_index_drift>>
 				<<set $bugNoticesShown.dolx_nnpc_index_drift to true>>
-				<span class="red"><b>A bug happened!</b> The named NPC list was out of sync but the game realigned it. Do report it to the Discord server!</span><br>
+				<span class="red"><b>버그가 발생했습니다!</b> 명명된 NPC 목록의 동기화가 어긋났지만 게임이 다시 맞췄습니다. 디스코드 서버에 제보해 주십시오!</span><br>
 			<</if>>
 		<<else>>
 			<<run console.warn("no $NPCName record for " + _nam + " (passage " + $passage + ") - rebuilding a default row")>>
 			<<if !$bugNoticesShown.dolx_nnpc_row_missing>>
 				<<set $bugNoticesShown.dolx_nnpc_row_missing to true>>
-				<span class="red"><b>A bug happened!</b> A named NPC's record was missing but the game rebuilt it. Do report it to the Discord server!</span><br>
+				<span class="red"><b>버그가 발생했습니다!</b> 명명된 NPC의 기록이 누락되었지만 게임이 다시 만들었습니다. 디스코드 서버에 제보해 주십시오!</span><br>
 			<</if>>
 			<!-- Append rather than writing to _i: that row may belong to another NNPC, and overwriting it would destroy their relationship and body data. -->
 			<<run $NPCName.push(clone(setup.baseNNPC))>>
@@ -1732,7 +1732,7 @@ Zohar
 				<<elseif $NPCName[_i].rage gte 30>>
 					당신에게 <span class="blue">집착하고 있다</span>.
 				<<else>>
-					is <span class="green">head over heels for you</span>.
+					당신에게 <span class="green">완전히 빠져 있다</span>.
 				<</if>>
 			<<elseif $NPCName[_i].love gte 50>>
 				<<if $NPCName[_i].rage gte 90>>
@@ -1742,7 +1742,7 @@ Zohar
 				<<elseif $NPCName[_i].rage gte 30>>
 					당신에게 <span class="purple">푹 빠져 있다</span>.
 				<<else>>
-					<span class="teal">likes you.</span>
+					당신을 <span class="teal">좋아한다</span>.
 				<</if>>
 			<<elseif $NPCName[_i].love gte 30>>
 				<<if $NPCName[_i].rage gte 90>>
@@ -1752,7 +1752,7 @@ Zohar
 				<<elseif $NPCName[_i].rage gte 30>>
 					당신에게 <span class="purple">홀딱 반해 있다</span>.
 				<<else>>
-					is <span class="lblue">curious about you</span>.
+					당신에게 <span class="lblue">호기심을 느끼고 있다</span>.
 				<</if>>
 			<<else>>
 				<<if $NPCName[_i].rage gte 90>>
@@ -1762,7 +1762,7 @@ Zohar
 				<<elseif $NPCName[_i].rage gte 30>>
 					당신에게 <span class="purple">매달리고 있다</span>.
 				<<else>>
-					is <span class="blue">indifferent about you</span>.
+					당신에게 <span class="blue">무관심하다</span>.
 				<</if>>
 			<</if>>
 		<<case Whitney>>
@@ -1780,7 +1780,7 @@ Zohar
 					<span class="green">고마워하고 있다</span>.
 				<</if>>
 			<<elseif [1,2].includes($whitney_orphanage_special_seen)>>
-					feels <span class="red">rejected</span>.
+					<span class="red">거부당했다</span>고 느낀다.
 			<<elseif $NPCName[_i].love gte 20>>
 				<<if $NPCName[_i].lust gte 60>>
 					<span class="lewd">좀 놀아 볼 생각</span>이다.
@@ -1788,7 +1788,7 @@ Zohar
 					<<if $NPCName[_i].dom gte 20>>
 						당신을 <span class="lewd">소유했다</span>고 여긴다.
 					<<elseif $NPCName[_i].dom lte 8 or $loft_whitney gte 6>>
-						thinks you're <span class="green"><<nnpc_his "Whitney">> <<girlfriend "Whitney">></span>.
+						당신을 <span class="green"><<nnpc_his "Whitney">> <<girlfriend "Whitney">></span>라고 생각한다.
 					<<else>>
 						당신을 <span class="lewd"><<nnpc_his "Whitney">> 애완동물</span>로 여긴다.
 					<</if>>
@@ -2168,7 +2168,7 @@ Zohar
 					<<elseif _pat gte 10>>
 						당신을 <span class="purple">짜증 나는 사람</span>이라고 생각한다.
 					<<elseif _pat gte 1>>
-						thinks you're <span class="pink">getting on <<nnpc_his "Poppy">> nerves</span>.
+						당신이 <span class="pink"><<nnpc_his "Poppy">> 신경을 긁고 있다</span>고 생각한다.
 					<<else>>
 						당신을 <span class="red">치워버리고 싶어 한다</span>.
 					<</if>>
@@ -2182,7 +2182,7 @@ Zohar
 					<<elseif _pat gte 10>>
 						당신을 <span class="purple">짜증 나는 사람</span>이라고 생각한다.
 					<<elseif _pat gte 1>>
-						thinks you're <span class="pink">getting on <<nnpc_his "Poppy">> nerves</span>.
+						당신이 <span class="pink"><<nnpc_his "Poppy">> 신경을 긁고 있다</span>고 생각한다.
 					<<else>>
 						당신을 <span class="red">치워버리고 싶어 한다</span>.
 					<</if>>
@@ -2311,31 +2311,31 @@ Zohar
 				<span class="red">거둬 갈 준비가 되어 있다</span>.
 			<<elseif $NPCName[_i].love gte 50>>
 				<<if C.npc.Bailey.dom gte 70>>
-					<<if $syndromeBailey>>knows <span class="bailey-red">you belong to <<nnpc_him "Bailey">></span>.<<else>>thinks <span class="bailey-red">you belong to <<nnpc_him "Bailey">></span>.<</if>>
+					<<if $syndromeBailey>>당신이 <span class="bailey-red"><<nnpc_hers "Bailey">> 것</span>임을 안다.<<else>>당신이 <span class="bailey-red"><<nnpc_hers "Bailey">> 것</span>이라고 생각한다.<</if>>
 				<<elseif C.npc.Bailey.dom lte 30>>
-					thinks you're <span class="red">in over your head</span>.
+					당신이 <span class="red">감당 못 할 일에 휘말렸다</span>고 생각한다.
 				<<else>>
 					당신이 <span class="blue">스스로를 건사할 수 있다</span>고 생각한다.
 				<</if>>
 			<<elseif $NPCName[_i].love gte 25>>
 				<<if C.npc.Bailey.dom gte 70>>
-					thinks you're <span class="bailey-red"><<nnpc_hers "Bailey">> to spend</span>.
+					당신이 <span class="bailey-red"><<nnpc_hers "Bailey">> 마음대로 쓸 수 있는 것</span>이라고 생각한다.
 				<<elseif C.npc.Bailey.dom lte 30>>
-					thinks you're almost more <span class="blue">trouble than you're worth</span>.
+					당신을 거의 <span class="blue">값어치보다 골칫거리가 더 큰 존재</span>로 여긴다.
 				<<else>>
 					당신을 상품으로 여긴다.
 				<</if>>
 			<<else>>
 				<<if C.npc.Bailey.dom gte 70>>
-					considers you <span class="bailey-red">an investment</span>.
+					당신을 <span class="bailey-red">투자 대상</span>으로 여긴다.
 				<<elseif C.npc.Bailey.dom lte 30>>
-					thinks you're <span class="pink">a little shit</span>.
+					당신을 <span class="pink">골칫덩이 꼬맹이</span>라고 생각한다.
 				<<else>>
 					당신을 미끼로 여긴다.
 				<</if>>
 			<</if>>
 			<<if $syndromeBailey>>
-				<br><span class="bailey-stockholm">You are not going anywhere.</span>
+				<br><span class="bailey-stockholm">당신은 아무 데도 못 간다.</span>
 			<</if>>
 		<<case Briar>>
 			브라이어는
@@ -2756,19 +2756,19 @@ Zohar
 			/* Hidden stranger: name shown only as a glowing "???", and no opinion line until the player has drawn their interest.
 			   After the island reveal the line follows the invitation story first, then their Favor. */
 			<<if $xchange.arcology and $xchange.arcology.redeem and $xchange.arcology.redeem.stage is "silent">>
-				<<silverName>> <span class="red">won't acknowledge you.</span>
+				<<silverName>>에게서 <span class="red">아무 반응도 얻지 못한다</span>.
 			<<elseif $xchange.arcology and $xchange.arcology.redeem and $xchange.arcology.redeem.stage is "arena">>
-				<<silverName>> is waiting to see you <span class="gold">become champion</span>.
+				<<silverName>>의 눈은 당신이 <span class="gold">챔피언이 되는 날</span>을 기다리고 있다.
 			<<elseif $xchange.silverStranger and $xchange.silverStranger.nameKnown>>
 				<<if $NPCName[_i].love gte 30>>
-					<<silverName>> <span class="green">keeps you close</span>, somehow.
+					<<silverName>>에게 당신은 어쩐지 <span class="green">곁에 두고 싶은 사람</span>이다.
 				<<elseif $NPCName[_i].love gte 10>>
-					<<silverName>> <span class="teal">approves of you</span>.
+					<<silverName>>의 <span class="teal">인정을 받고 있다</span>.
 				<<else>>
-					<<silverName>> is watching what you do.
+					<<silverName>>의 눈이 당신의 행동 하나하나를 지켜보고 있다.
 				<</if>>
 			<<elseif $NPCName[_i].love gt 0>>
-				<<silverName>> wants to know more about you.
+				<<silverName>>에게는 당신에 대해 더 알고 싶은 마음이 있다.
 			<</if>>
 		<<case Zephyr>>
 			제퍼는
@@ -2787,14 +2787,14 @@ Zohar
 			Riley
 			<<if $mmaGymAssessmentPassed is 1 or $mmaGymAccessUnlocked is 1>>
 				<<if $NPCName[_i].love gte 45>>
-					looks <span class="gold">proud of you</span>.
+					당신을 <span class="gold">자랑스러워하는 듯하다</span>.
 				<<else>>
-					thinks you've <span class="green">grown strong</span>.
+					당신이 <span class="green">강해졌다</span>고 생각한다.
 				<</if>>
 			<<elseif $mmaConditioningUnlocked is 1 or $mmaSparUnlocked is 1>>
-				thinks you're <span class="teal">still need more training</span>.
+				당신이 <span class="teal">아직 훈련이 더 필요하다</span>고 생각한다.
 			<<else>>
-				thinks you <span class="red">need help getting stronger</span>.
+				당신이 <span class="red">강해지는 데 도움이 필요하다</span>고 생각한다.
 			<</if>>
 
 		<!-- Default cases -->
