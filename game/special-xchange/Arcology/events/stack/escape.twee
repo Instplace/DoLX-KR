@@ -2,51 +2,51 @@
 :: Arcology Stack Way Out
 <<location "arcology_stack">><<set $outside to 0>><<effects>>
 <<set _st to $xchange.arcology.stack>><<set _bm to _st.bandMax or 10>><<set _rm to _st.routeMax or 5>>
-You watch the drones travel between the sorting belts. Each one follows a particular path, and you begin looking for a time when you could cross the room without being seen.
+당신은 드론들이 분류 벨트 사이를 오가는 모습을 지켜본다. 드론마다 정해진 경로를 따라 움직이는데, 당신은 들키지 않고 방을 가로지를 수 있는 때를 찾아보기 시작한다.
 <br><br>
-The band around your ankle is locked, but you think a thin piece of scrap metal might loosen its hinge. You have also seen workers send discarded parts through an opening leading towards the sea door.
-If you can remove the band and learn when the drones pass, that opening might give you a way out. Watching the patrols or working on the hinge takes half an hour.
+발목의 밴드는 잠겨 있지만, 얇은 고철 조각으로 경첩을 느슨하게 할 수 있을 것 같다. 작업자들이 버려진 부품을 해상 출입구로 이어지는 개구부로 흘려보내는 것도 보았다.
+밴드를 벗고 드론이 지나가는 때를 알아낼 수 있다면, 그 개구부가 탈출구가 될지도 모른다. 순찰을 살피거나 경첩을 손보는 데는 각각 30분이 걸린다.
 <br><br>
-<<if _st.band gt 0>>The band is <span class="teal"><<print Math.floor(_st.band * 100 / _bm)>>%</span> loose. <</if>><<if _st.route gt 0>>You have worked out <span class="teal"><<print _st.route>> of <<print _rm>></span> drone patrol routes.<</if>>
-<<if _st.smuggler>><span class="green">Someone has prepared a place for you to hide among the scrap on the barge.</span><</if>>
+<<if _st.band gt 0>>밴드가 <span class="teal"><<print Math.floor(_st.band * 100 / _bm)>>%</span> 풀렸다. <</if>><<if _st.route gt 0>>드론 순찰 경로 <span class="teal"><<print _st.route>> / <<print _rm>></span>개를 파악했다.<</if>>
+<<if _st.smuggler>><span class="green">누군가 바지선의 고철 사이에 당신이 숨을 자리를 마련해 두었다.</span><</if>>
 <br><br>
 <<set _stBandHint to !$daily.arcologyStackBand and _st.band lt _bm and _st.suspicion gt 40>>
 <<set _stDarkHint to _st.band gte _bm and _st.route gte _rm and Time.hour gte 5 and Time.hour lt 22>>
 <<set _stDoneHint to $daily.arcologyStackRoute and ($daily.arcologyStackBand or _st.band gte _bm) and !(_st.band gte _bm and _st.route gte _rm)>>
-<<if _stBandHint>><span class="blue">The drones are checking your work area too often</span> for you to loosen the band safely. <</if>><<if _stDarkHint>><span class="blue">You can remove the band, and you know when the drones pass.</span> You need to wait until night to attempt your escape. <</if>><<if _stDoneHint>><span class="blue">You have already spent time preparing your escape today.</span> Doing more now could make the drones suspicious.<</if>>
+<<if _stBandHint>><span class="blue">드론이 작업 구역을 너무 자주 살피고 있어서</span> 밴드를 안전하게 풀 수 없다. <</if>><<if _stDarkHint>><span class="blue">밴드를 벗을 수 있고, 드론이 지나가는 때도 안다.</span> 탈출을 시도하려면 밤까지 기다려야 한다. <</if>><<if _stDoneHint>><span class="blue">오늘은 이미 탈출 준비에 시간을 썼다.</span> 지금 더 하면 드론이 의심할 수 있다.<</if>>
 <<if _stBandHint or _stDarkHint or _stDoneHint>><br><br><</if>>
 <<if !$daily.arcologyStackRoute and _st.route lt _rm>>
-	<<investigateicon>><<link [[Watch patrols (0:30)|Arcology Stack Patrols]]>><<set $daily.arcologyStackRoute to true>><<pass 30>><</link>>
+	<<investigateicon>><<link [[순찰을 지켜본다 (0:30)|Arcology Stack Patrols]]>><<set $daily.arcologyStackRoute to true>><<pass 30>><</link>>
 	<br>
 <</if>>
 <<if !$daily.arcologyStackBand and _st.band lt _bm and _st.suspicion lte 40>>
-	<<icon "mark.gif">><<link [[Loosen the band (0:30)|Arcology Stack Band]]>><<set $daily.arcologyStackBand to true>><<pass 30>><<set $phase to setup.arcology.escape("stack", "skulduggery", 200, 900) ? 1 : 0>><</link>><<arcologySkill "Skulduggery">>
+	<<icon "mark.gif">><<link [[밴드를 느슨하게 한다 (0:30)|Arcology Stack Band]]>><<set $daily.arcologyStackBand to true>><<pass 30>><<set $phase to setup.arcology.escape("stack", "skulduggery", 200, 900) ? 1 : 0>><</link>><<arcologySkill "Skulduggery">>
 	<br>
 <</if>>
 <<if _st.band gte _bm and _st.route gte _rm and (Time.hour gte 22 or Time.hour lt 5)>>
-	<<icon "prison-run.png">><<link [[Run|Arcology Stack Run]]>><<pass 3>><<set $phase to setup.arcology.escape("stack", "skulduggery", 400, 1100) ? 1 : 0>><</link>><<arcologySkill "Skulduggery">>
+	<<icon "prison-run.png">><<link [[도망친다|Arcology Stack Run]]>><<pass 3>><<set $phase to setup.arcology.escape("stack", "skulduggery", 400, 1100) ? 1 : 0>><</link>><<arcologySkill "Skulduggery">>
 	<br>
 <</if>>
 <br>
-<<getouticon>><<link `(!$daily.arcologyStackRoute && _st.route < _rm) || (!$daily.arcologyStackBand && _st.band < _bm && _st.suspicion <= 40) || (_st.band >= _bm && _st.route >= _rm && (Time.hour >= 22 || Time.hour < 5)) ? "Back to the bunks" : "Next"` "Arcology Stack Bunks">><</link>>
+<<getouticon>><<link `(!$daily.arcologyStackRoute && _st.route < _rm) || (!$daily.arcologyStackBand && _st.band < _bm && _st.suspicion <= 40) || (_st.band >= _bm && _st.route >= _rm && (Time.hour >= 22 || Time.hour < 5)) ? "침상 구역으로 돌아간다" : "다음"` "Arcology Stack Bunks">><</link>>
 <br>
 
 :: Arcology Stack Patrols
 <<effects>>
 <<set _st to $xchange.arcology.stack>><<set _rm to _st.routeMax or 5>>
 <<set _st.route to Math.min(_rm, _st.route + 1)>>
-You lie on a bunk facing the passage and keep your eyes partly closed whenever a drone moves past. From here, you can see the doorway without drawing attention to yourself.
+당신은 통로 쪽을 보고 침상에 누워, 드론이 지나갈 때마다 눈을 반쯤 감는다. 여기서는 눈에 띄지 않고 출입구를 볼 수 있다.
 <br><br>
-You count how long it takes each drone to pass. The drones follow the same paths, but arrive at different times. After one passes the doorway, there are a few seconds before the next one appears.
+당신은 드론마다 지나가는 데 걸리는 시간을 센다. 드론들은 같은 경로를 따르지만 도착하는 시간은 제각각이다. 한 대가 출입구를 지나가면 다음 드론이 나타나기까지 몇 초의 간격이 있다.
 <br><br>
-You keep watching until you can remember which drone comes next and how long the passage stays clear.
+다음에 어느 드론이 오는지, 통로가 얼마나 오래 비어 있는지 기억할 수 있을 때까지 계속 지켜본다.
 <<if _st.route gte _rm>>
-	<span class="green">You have learned the routes of every drone</span> between the bunks and the sea door, including the short gaps between patrols.
+	<span class="green">당신은 모든 드론의 경로를 파악했다.</span> 침상 구역에서 해상 출입구까지의 경로, 순찰 사이의 짧은 틈까지 전부.
 <<else>>
-	You've worked out <span class="teal"><<print _st.route>> of <<print _rm>></span> patrol patterns.
+	당신은 순찰 패턴 <span class="teal"><<print _st.route>> / <<print _rm>></span>개를 파악했다.
 <</if>>
 <br><br>
-<<link [[Next|Arcology Stack Way Out]]>><</link>>
+<<link [[다음|Arcology Stack Way Out]]>><</link>>
 <br>
 
 :: Arcology Stack Band
@@ -54,49 +54,49 @@ You keep watching until you can remember which drone comes next and how long the
 <<set _st to $xchange.arcology.stack>><<set _bm to _st.bandMax or 10>>
 <<if $phase is 1>>
 	<<set _st.band to Math.min(_bm, _st.band + Math.max(setup.escapeAmount(), 0.5))>>
-	You crouch beside a conveyor that has stopped moving. Its metal side blocks the nearest camera from seeing your ankle. You push a thin piece of scrap metal into the band's hinge, then press against the metal to loosen it.
+	당신은 멈춘 컨베이어 옆에 웅크려 앉는다. 컨베이어의 금속 옆면이 가장 가까운 카메라에서 당신의 발목을 가려 준다. 당신은 얇은 고철 조각을 밴드의 경첩에 밀어 넣고, 금속에 몸을 기대 경첩을 느슨하게 한다.
 	<br><br>
-	When you hear a drone approaching, you stop working on the hinge and keep your hand beside your ankle until the drone passes.
+	드론이 다가오는 소리가 들리면 경첩 작업을 멈추고, 드론이 지나갈 때까지 손을 발목 옆에 둔다.
 	<br><br>
 	<<if _st.band gte _bm>>
-		<span class="green">The hinge is loose enough for you to open the band.</span> Its red numbers are still lit, so you leave it around your ankle until you are ready to escape.
+		<span class="green">경첩이 밴드를 열 수 있을 만큼 느슨해졌다.</span> 붉은 숫자는 아직 켜져 있으므로, 탈출할 준비가 될 때까지 밴드는 발목에 그대로 둔다.
 	<<else>>
-		The band is <span class="teal"><<print Math.floor(_st.band * 100 / _bm)>>%</span> loose.
+		밴드가 <span class="teal"><<print Math.floor(_st.band * 100 / _bm)>>%</span> 풀렸다.
 	<</if>>
 <<else>>
-	You have barely pushed the piece of metal into the hinge when a drone comes around the conveyor. Its light moves towards your ankle, so you drop the scrap onto the floor and walk back to the bunks.
+	고철 조각을 경첩에 밀어 넣자마자 드론이 컨베이어를 돌아 나온다. 불빛이 당신의 발목 쪽으로 움직여, 당신은 고철을 바닥에 떨어뜨리고 침상 구역으로 돌아간다.
 	<br><br>
-	The drone follows you into the sleeping area. It passes your bunk several times, even after you lie down. <span class="red">You will have to be more careful while the drones are checking on you.</span> <<arcologyStackSuspicion 15>><<stress 4>><<gstress>>
+	드론이 당신을 따라 취침 구역으로 들어온다. 당신이 누운 뒤에도 드론은 당신의 침상 옆을 여러 번 지나간다. <span class="red">드론이 감시하는 동안에는 더 조심해야 한다.</span> <<arcologyStackSuspicion 15>><<stress 4>><<gstress>>
 <</if>>
 <<set $phase to 0>>
 <br><br>
-<<link [[Next|Arcology Stack Way Out]]>><</link>>
+<<link [[다음|Arcology Stack Way Out]]>><</link>>
 <br>
 
 :: Arcology Stack Run
 <<effects>>
-Once the other workers are asleep, you return to your bunk and open the loosened band. You put it on your mattress, leaving its red numbers lit, then walk towards the sorting belts.
+다른 작업자들이 잠들자 당신은 침상으로 돌아가 느슨해진 밴드를 연다. 붉은 숫자가 켜진 채로 밴드를 매트리스 위에 올려 두고, 분류 벨트 쪽으로 걸어간다.
 <br><br>
-You remember the times you counted while watching the drones. Whenever one passes, you wait for the few seconds before the next patrol arrives.
+당신은 드론을 지켜보며 센 시간들을 떠올린다. 한 대가 지나갈 때마다 다음 순찰이 도착하기 전의 몇 초를 기다린다.
 <br><br>
 <<if $phase is 1>>
 	<<set $phase to 0>>
-	You stay behind a metal support until the first drone passes. As soon as it turns the corner, you cross between two sorting belts and stop behind another piece of machinery.
+	당신은 첫 번째 드론이 지나갈 때까지 금속 지지대 뒤에 머문다. 드론이 모퉁이를 돌자마자 두 분류 벨트 사이를 가로질러 다른 기계 뒤에 멈춘다.
 	<br><br>
-	A drone enters the next aisle before you can cross it. You crouch beneath a conveyor and watch its light move across the floor. Once the drone has passed, you crawl out and continue towards the sea door.
+	건너기도 전에 드론 한 대가 다음 통로로 들어온다. 당신은 컨베이어 밑에 웅크려 바닥 위로 움직이는 드론의 불빛을 지켜본다. 드론이 지나가자 기어 나와 해상 출입구 쪽으로 계속 나아간다.
 	<br><br>
-	You reach the far end of the sorting room <span class="green">without setting off an alarm</span>.
+	당신은 <span class="green">경보를 울리지 않고</span> 분류실 맨 끝에 도착한다.
 	<br><br>
-	A steep metal chute leads upwards to the sea door. Workers send old machinery through this opening to be collected outside. Oil covers parts of the chute, so climbing it will be difficult. The scrap barge should be nearby tonight.
+	가파른 금속 활송로가 해상 출입구까지 위로 이어져 있다. 작업자들은 이 개구부로 낡은 기계를 내보내 바깥에서 수거하게 한다. 활송로 곳곳에 기름이 묻어 있어 오르기가 어려울 것이다. 고철 바지선은 오늘 밤 근처에 와 있을 것이다.
 	<br><br>
-	<<link [[Next|Arcology Stack Run 2]]>><<set $phase to setup.arcology.escape("stack", "athletics", 400, 1000) ? "up" : "slip">><</link>>
+	<<link [[다음|Arcology Stack Run 2]]>><<set $phase to setup.arcology.escape("stack", "athletics", 400, 1000) ? "up" : "slip">><</link>>
 	<br>
 <<else>>
-	You wait for a drone to pass before leaving your hiding place. Halfway to the next belt, another drone comes around the corner earlier than you expected.
+	당신은 드론이 지나가기를 기다렸다가 숨은 곳에서 나온다. 다음 벨트까지 절반쯤 갔을 때, 또 다른 드론이 예상보다 일찍 모퉁이를 돌아온다.
 	<br><br>
-	You try to get behind the machinery, but <span class="red">the drone shines its light directly at you.</span> A siren sounds above the sorting room before you can reach cover.
+	당신은 기계 뒤로 숨으려 하지만 <span class="red">드론이 불빛을 곧장 당신에게 비춘다.</span> 엄폐물에 닿기도 전에 분류실 위에서 사이렌이 울린다.
 	<br><br>
-	<<link [[Next|Arcology Stack Caught]]>><</link>>
+	<<link [[다음|Arcology Stack Caught]]>><</link>>
 	<br>
 <</if>>
 
@@ -104,36 +104,36 @@ You remember the times you counted while watching the drones. Whenever one passe
 <<pass 2>><<effects>>
 <<if $phase is "up">>
 	<<set $phase to 0>>
-	You get down on your hands and knees to climb the chute. The oil makes your feet slip, so you use the metal sides to support yourself as you move upwards.
+	당신은 네 발로 기어 활송로를 오른다. 기름 때문에 발이 미끄러져 금속 옆면을 짚어 몸을 지탱하며 위로 올라간다.
 	<br><br>
-	Your hands are sore by the time you reach the top. The sea door is open, and cold air reaches you from outside. You look for the scrap barge, but it is farther behind the moving city, attached by a long rope.
+	꼭대기에 닿을 즈음 손바닥이 아프다. 해상 출입구는 열려 있고 바깥에서 찬 공기가 들어온다. 고철 바지선을 찾아보지만, 바지선은 움직이는 도시 훨씬 뒤에서 긴 밧줄에 매달려 있다.
 	<br><br>
-	Below you, seawater moves quickly through a narrow channel beneath the city. Large pumps take in water to help keep the floating city level, then release it near the back. You will have to swim through that channel to reach the barge.
+	당신 아래로 도시 밑의 좁은 수로를 따라 바닷물이 빠르게 흐른다. 거대한 펌프들이 물을 빨아들여 떠 있는 도시의 수평을 맞추는 데 쓰고, 뒤쪽 근처에서 다시 내보낸다. 바지선에 닿으려면 그 수로를 헤엄쳐야 한다.
 	<br><br>
-	<<link [[Next|Arcology Stack Swim]]>><<set $xchange.arcology.stack.swim to { air: 3 }>><<water>><</link>>
+	<<link [[다음|Arcology Stack Swim]]>><<set $xchange.arcology.stack.swim to { air: 3 }>><<water>><</link>>
 	<br>
 <<else>>
 	<<set $phase to 0>>
-	As you climb, your foot slides across an oily patch of metal. You try to stop yourself by grabbing the sides of the chute, but you cannot find anything secure enough to hold.
+	오르던 중 발이 기름 묻은 금속 위에서 미끄러진다. 활송로 옆면을 붙잡아 버텨 보지만 몸을 지탱할 만큼 단단한 곳을 찾지 못한다.
 	<br><br>
-	You slide all the way to the bottom and hit the floor. A nearby drone turns towards the noise.<<pain 6>><<gpain>>
+	당신은 맨 아래까지 미끄러져 바닥에 부딪친다. 근처 드론이 소리 쪽으로 돌아본다.<<pain 6>><<gpain>>
 	<br><br>
-	<<link [[Next|Arcology Stack Caught]]>><</link>>
+	<<link [[다음|Arcology Stack Caught]]>><</link>>
 	<br>
 <</if>>
 
 /* UNDER THE HULL: the city is moving, so the barge trails on a tow line behind the stern. Each failed check costs a breath; none left means surfacing in a drone's light. */
 :: Arcology Stack Swim
 <<pass 1>><<effects>>
-You drop into the cold water and go beneath the surface. The strong flow pushes you along the channel before you have time to choose where to swim. You hold your breath and try to keep your body away from the pipes and large metal covers around the pumps.
+당신은 차가운 물속으로 뛰어들어 수면 아래로 잠긴다. 거센 물살이 어디로 헤엄칠지 고를 틈도 없이 당신을 수로를 따라 밀어낸다. 당신은 숨을 참고 펌프 주변의 파이프와 커다란 금속 덮개에 몸이 닿지 않게 애쓴다.
 <br><br>
-Small green work lights near the pipes help you see the machinery.
+파이프 근처의 작은 녹색 작업등 덕분에 기계가 눈에 들어온다.
 <br><br>
 <<arcologyStackBreath>>
 <br><br>
-<<link [[Ride the current|Arcology Stack Swim Grate]]>><<set $phase to setup.arcology.escape("stack", "swimming", 200, 900) ? 1 : 0>><</link>><<arcologySkill "Swimming">>
+<<link [[물살을 탄다|Arcology Stack Swim Grate]]>><<set $phase to setup.arcology.escape("stack", "swimming", 200, 900) ? 1 : 0>><</link>><<arcologySkill "Swimming">>
 <br>
-<<link [[Grab the guide rail|Arcology Stack Swim Grate]]>><<set $phase to setup.arcology.escape("force", "physique", 2000, 16000) ? 2 : 0>><</link>><<arcologySkill "Physique">>
+<<link [[안내 레일을 붙잡는다|Arcology Stack Swim Grate]]>><<set $phase to setup.arcology.escape("force", "physique", 2000, 16000) ? 2 : 0>><</link>><<arcologySkill "Physique">>
 <br>
 
 :: Arcology Stack Swim Grate
@@ -141,26 +141,26 @@ Small green work lights near the pipes help you see the machinery.
 <<set _ss to $xchange.arcology.stack.swim>>
 <<switch $phase>>
 <<case 1>>
-	You let the water carry you forwards and use small kicks to change direction. Whenever a pipe comes close, you turn your body to avoid it. <span class="green">You reach the end of the channel without hitting the machinery.</span>
+	당신은 물에 몸을 맡겨 앞으로 떠내려가며 작은 발차기로 방향을 바꾼다. 파이프가 가까워질 때마다 몸을 돌려 피한다. <span class="green">당신은 기계에 부딪치지 않고 수로 끝에 닿는다.</span>
 <<case 2>>
-	You grab the metal rail fixed along the channel wall. Keeping one hand on it, you reach forwards with the other and pull yourself towards the end of the channel. <span class="green">The rail lets you stay close to the wall while the water rushes past.</span>
+	당신은 수로 벽을 따라 고정된 금속 레일을 붙잡는다. 한 손으로 레일을 잡은 채 다른 손을 앞으로 뻗어 수로 끝을 향해 몸을 끌어당긴다. <span class="green">레일 덕분에 물살이 지나가는 동안에도 벽 가까이에 붙어 있을 수 있다.</span>
 <<default>>
-	The moving water turns your body sideways, and you hit the metal covering of a pump. <span class="red">The impact makes you release some of the air you were holding,</span> and bubbles rise past your face. <<pain 8>><<gpain>><<set _ss.air-->>
+	거센 물살이 당신의 몸을 옆으로 돌려 펌프의 금속 덮개에 부딪치게 한다. <span class="red">충격에 참고 있던 숨 일부를 내뱉고,</span> 거품이 얼굴 옆으로 올라간다. <<pain 8>><<gpain>><<set _ss.air-->>
 <</switch>>
 <<set $phase to 0>>
 <br><br>
 <<if _ss.air lte 0>>
-	<<link [[Next|Arcology Stack Swim Surface]]>><</link>>
+	<<link [[다음|Arcology Stack Swim Surface]]>><</link>>
 <<else>>
-	At the end of the channel, the strong flow pushes you against a large metal grate. You put your hands on its bars and try to keep your face away from the metal.
+	수로 끝에서 거센 물살이 당신을 커다란 금속 격자에 밀어붙인다. 당신은 격자 살에 손을 대고 얼굴이 금속에 닿지 않게 버틴다.
 	<br><br>
-	Through the grate, you can see the open water beneath the city. Two bars near the bottom have been bent apart, leaving a gap that might be wide enough for you to swim through.
+	격자 너머로 도시 아래의 탁 트인 물이 보인다. 아래쪽 살 두 개가 휘어 벌어져 있어, 헤엄쳐 지나갈 만큼 넓은 틈이 있을지도 모른다.
 	<br><br>
 	<<arcologyStackBreath>>
 	<br><br>
-	<<link [[Squeeze through the gap|Arcology Stack Swim Hull]]>><<set $phase to setup.arcology.escape("stack", "athletics", 300, 1000) ? 1 : 0>><</link>><<arcologySkill "Athletics">>
+	<<link [[틈으로 비집고 나간다|Arcology Stack Swim Hull]]>><<set $phase to setup.arcology.escape("stack", "athletics", 300, 1000) ? 1 : 0>><</link>><<arcologySkill "Athletics">>
 	<br>
-	<<link [[Wait for the pumps to reverse|Arcology Stack Swim Hull]]>><<set $phase to 2>><<set _ss.air-->><<stress 6>><</link>><<gstress>>
+	<<link [[펌프가 역류하기를 기다린다|Arcology Stack Swim Hull]]>><<set $phase to 2>><<set _ss.air-->><<stress 6>><</link>><<gstress>>
 <</if>>
 <br>
 
@@ -169,26 +169,26 @@ Small green work lights near the pipes help you see the machinery.
 <<set _ss to $xchange.arcology.stack.swim>>
 <<switch $phase>>
 <<case 1>>
-	You turn sideways and put one arm through the gap, followed by the other. You pull your shoulders through and push with your feet until your hips fit between the bars. <span class="green">The metal scratches your skin, but you make it to the other side.</span> <<pain 4>><<gpain>>
+	당신은 몸을 옆으로 돌려 한쪽 팔을 틈에 넣고, 이어서 다른 팔도 넣는다. 어깨를 빼내고 엉덩이가 살 사이에 들어갈 때까지 발로 민다. <span class="green">금속에 피부가 긁히지만 반대편으로 빠져나간다.</span> <<pain 4>><<gpain>>
 <<case 2>>
-	You keep both hands on the grate while the water pushes against your back. You badly need to breathe, but you wait for the pumps to change direction. When the flow becomes weaker, you pull yourself through the gap before the water starts pushing hard again.
+	물이 등을 밀어붙이는 동안 당신은 두 손으로 격자를 붙잡고 있다. 숨이 간절히 쉬고 싶지만, 펌프의 방향이 바뀔 때까지 기다린다. 물살이 약해지자, 물이 다시 세게 밀기 전에 몸을 끌어 틈을 통과한다.
 <<default>>
-	You manage to get your shoulders through the gap, but <span class="red">your clothes get caught on one of the bent bars.</span> You have to pull yourself backwards slightly to free the fabric before pushing through again. The struggle takes more of the air you were holding. <<pain 6>><<gpain>><<set _ss.air-->>
+	어깨는 틈을 통과하지만 <span class="red">옷이 휘어진 살 하나에 걸린다.</span> 천을 풀려면 몸을 조금 뒤로 빼야 하고, 그러고 나서 다시 밀고 나가야 한다. 버둥거리느라 참고 있던 숨이 더 줄어든다. <<pain 6>><<gpain>><<set _ss.air-->>
 <</switch>>
 <<set $phase to 0>>
 <br><br>
 <<if _ss.air lte 0>>
-	<<link [[Next|Arcology Stack Swim Surface]]>><</link>>
+	<<link [[다음|Arcology Stack Swim Surface]]>><</link>>
 <<else>>
-	After passing through the grate, you are swimming beneath the wide metal base of the city. A large metal fin, used to help keep the city steady, extends down into the water nearby. The water behind the engines is full of bubbles from the moving machinery.
+	격자를 지나자 당신은 도시의 널찍한 금속 하부 밑을 헤엄치고 있다. 도시를 안정시키는 데 쓰이는 커다란 금속 지느러미가 근처 물속으로 뻗어 있다. 엔진 뒤쪽의 물은 움직이는 기계 때문에 거품으로 가득하다.
 	<br><br>
-	A drone moves along the underside of the city. Its searchlight points into the water, moving from side to side as it looks for anyone swimming below.
+	드론 한 대가 도시 밑면을 따라 움직인다. 탐조등이 물속을 향해 좌우로 오가며 아래에서 헤엄치는 사람이 없는지 찾는다.
 	<br><br>
 	<<arcologyStackBreath>>
 	<br><br>
-	<<link [[Dive beneath the light|Arcology Stack Swim Wake]]>><<set $phase to setup.arcology.escape("stack", "swimming", 300, 1000) ? 1 : 0>><</link>><<arcologySkill "Swimming">>
+	<<link [[불빛 아래로 잠수한다|Arcology Stack Swim Wake]]>><<set $phase to setup.arcology.escape("stack", "swimming", 300, 1000) ? 1 : 0>><</link>><<arcologySkill "Swimming">>
 	<br>
-	<<link [[Hide in the fin's shadow|Arcology Stack Swim Wake]]>><<set $phase to setup.arcology.escape("stack", "skulduggery", 300, 1000) ? 2 : 0>><</link>><<arcologySkill "Skulduggery">>
+	<<link [[지느러미 그늘에 숨는다|Arcology Stack Swim Wake]]>><<set $phase to setup.arcology.escape("stack", "skulduggery", 300, 1000) ? 2 : 0>><</link>><<arcologySkill "Skulduggery">>
 <</if>>
 <br>
 
@@ -197,26 +197,26 @@ Small green work lights near the pipes help you see the machinery.
 <<set _ss to $xchange.arcology.stack.swim>>
 <<switch $phase>>
 <<case 1>>
-	You swim deeper as the drone approaches. From below, you can see its searchlight moving across the water above you. <span class="green">The drone passes without seeing you.</span>
+	드론이 다가오자 당신은 더 깊이 헤엄친다. 아래에서 보면 탐조등이 위쪽 물 위를 가로지르는 것이 보인다. <span class="green">드론은 당신을 보지 못한 채 지나간다.</span>
 <<case 2>>
-	You swim close to the large metal fin and put a hand against it to keep your position. The drone's searchlight moves across the nearby water, but the fin blocks the light from reaching you. <span class="green">The drone continues along the city without stopping.</span>
+	당신은 커다란 금속 지느러미 가까이 헤엄쳐 손을 대고 자세를 유지한다. 드론의 탐조등이 근처 물을 훑지만 지느러미가 빛을 막아 준다. <span class="green">드론은 멈추지 않고 도시를 따라 계속 간다.</span>
 <<default>>
-	The drone's searchlight reaches your arm. You pull it back beside your body and swim beneath the metal base, but <span class="red">the drone may have seen you.</span> Swimming so quickly makes it harder to keep holding your breath. <<set _ss.air-->><<arcologyStackSuspicion 10>>
+	드론의 탐조등이 당신의 팔에 닿는다. 당신은 팔을 몸 옆으로 당기고 금속 하부 밑으로 헤엄쳐 가지만, <span class="red">드론이 당신을 봤을지도 모른다.</span> 그렇게 빨리 헤엄치니 숨을 참기가 더 힘들어진다. <<set _ss.air-->><<arcologyStackSuspicion 10>>
 <</switch>>
 <<set $phase to 0>>
 <br><br>
 <<if _ss.air lte 0>>
-	<<link [[Next|Arcology Stack Swim Surface]]>><</link>>
+	<<link [[다음|Arcology Stack Swim Surface]]>><</link>>
 <<else>>
-	You swim upwards through the water behind the city and finally reach the surface. You take several breaths while looking around for the scrap barge. The city is still moving forwards, with its illuminated dome visible above the water.
+	당신은 도시 뒤쪽 물속에서 위로 헤엄쳐 마침내 수면에 닿는다. 고철 바지선을 찾아 주위를 둘러보며 숨을 몇 번 크게 쉰다. 도시는 여전히 앞으로 나아가고 있고, 불 켜진 돔이 물 위로 보인다.
 	<br><br>
-	The barge is being pulled behind the city by a long rope. It is close enough to swim towards, but you are already falling behind. If you struggled underwater, you may not have enough strength left to catch it.
+	바지선은 긴 밧줄에 매달려 도시 뒤를 따라 끌려오고 있다. 헤엄쳐 갈 수 있을 만큼 가깝지만, 당신은 이미 뒤처지고 있다. 물속에서 애를 먹었다면 따라잡을 힘이 남아 있지 않을지도 모른다.
 	<br><br>
 	<<set _ssTired to (3 - _ss.air) * 150>>
 	<<if $xchange.arcology.stack.smuggler>>
-		<<link [[Next|Arcology Stack Free]]>><<set $phase to setup.arcology.escape("stack", "swimming", 100 + _ssTired, 800 + _ssTired) ? "hidden" : "sank">><</link>>
+		<<link [[다음|Arcology Stack Free]]>><<set $phase to setup.arcology.escape("stack", "swimming", 100 + _ssTired, 800 + _ssTired) ? "hidden" : "sank">><</link>>
 	<<else>>
-		<<link [[Next|Arcology Stack Free]]>><<set $phase to setup.arcology.escape("stack", "swimming", 200 + _ssTired, 900 + _ssTired) ? "swam" : "sank">><</link>>
+		<<link [[다음|Arcology Stack Free]]>><<set $phase to setup.arcology.escape("stack", "swimming", 200 + _ssTired, 900 + _ssTired) ? "swam" : "sank">><</link>>
 	<</if>>
 <</if>>
 <br>
@@ -224,49 +224,49 @@ Small green work lights near the pipes help you see the machinery.
 :: Arcology Stack Swim Surface
 <<effects>>
 <<set $phase to 0>>
-You cannot hold your breath any longer. You kick towards the surface as quickly as you can, then come out of the water coughing and trying to breathe.
+당신은 더는 숨을 참을 수 없다. 최대한 빨리 수면으로 차올라 기침을 하고 숨을 헐떡이며 물 밖으로 나온다.
 <br><br>
-Before you can swim away, a drone turns its searchlight towards you. The light stays on you, and a siren sounds from the city above.
+헤엄쳐 달아나기도 전에 드론이 탐조등을 당신에게 돌린다. 불빛은 당신에게서 떨어지지 않고, 위의 도시에서 사이렌이 울린다.
 <br><br>
-<<link [[Next|Arcology Stack Caught]]>><</link>>
+<<link [[다음|Arcology Stack Caught]]>><</link>>
 <br>
 
 :: Arcology Stack Free
 <<effects>>
 <<if $phase is "hidden">>
 	<<set $phase to 0>>
-	You swim towards the blue mark on the scrap near the back of the barge. When you reach it, you grab the edge of the barge and pull yourself onto the pile of discarded metal.
+	당신은 바지선 뒤쪽 고철 위의 파란 표시를 향해 헤엄친다. 그곳에 닿자 바지선 가장자리를 붙잡고 버려진 금속 더미 위로 몸을 끌어올린다.
 	<br><br>
-	Someone has cleared a space behind the marked block, large enough for you to hide inside. You crawl into it, then pull a loose metal plate across the opening so the crew cannot easily see you.
+	누군가 표시된 덩어리 뒤에 숨을 만큼 넉넉한 공간을 비워 두었다. 당신은 그 안으로 기어들어 가 헐거운 금속판을 입구 앞으로 끌어당겨, 선원들이 쉽게 보지 못하게 한다.
 	<br><br>
-	Nobody approaches your hiding place. The barge's engines start, and the barge begins moving away from the city.
+	아무도 당신의 은신처로 다가오지 않는다. 바지선의 엔진이 시동을 걸고, 바지선이 도시에서 멀어지기 시작한다.
 	<br><br>
-	<<link [[Next|Arcology Stack Barge Landing]]>><</link>>
+	<<link [[다음|Arcology Stack Barge Landing]]>><</link>>
 <<elseif $phase is "swam">>
 	<<set $phase to 0>>
-	You swim towards the moving barge, trying to reach the long rope attached to its front. After several strokes, you manage to grab the rope and rest for a moment before pulling yourself along it.
+	당신은 움직이는 바지선을 향해 헤엄치며 앞쪽에 매달린 긴 밧줄에 닿으려 한다. 몇 번 물을 저은 끝에 밧줄을 붙잡고, 그것을 따라 몸을 끌어당기기 전에 잠시 숨을 돌린다.
 	<br><br>
-	You reach the side of the barge and climb over the edge, landing among broken mechanical arms and old cables.
+	당신은 바지선 옆면에 닿아 가장자리를 넘어, 부서진 기계 팔과 낡은 케이블 사이로 떨어져 내린다.
 	<br><br>
 	<<if random(1, 100) lte 50>>
-		You are still trying to catch your breath when you notice someone shining a torch across the scrap. <<arcologyNPC 0 "under" "loader">><<person1>>A <<person>> from the crew is walking between the piles of metal, checking the chains that keep everything in place.
+		숨을 고르려는데 누군가 고철 위로 손전등을 비추는 것이 보인다. <<arcologyNPC 0 "under" "loader">><<person1>>선원 중 한 명인 <<person>>【이가】 금속 더미 사이를 걸으며 모든 것을 제자리에 고정하는 쇠사슬을 점검하고 있다.
 		<br><br>
-		<<link [[Keep still|Arcology Stack Barge Found]]>><<set $phase to setup.arcology.escape("run", "skulduggery", 300, 1000) ? 1 : 0>><</link>><<arcologySkill "Skulduggery">>
+		<<link [[가만히 있는다|Arcology Stack Barge Found]]>><<set $phase to setup.arcology.escape("run", "skulduggery", 300, 1000) ? 1 : 0>><</link>><<arcologySkill "Skulduggery">>
 		<br>
-		<<link [[Jump the crew member first|Arcology Stack Barge Fight]]>><<set $fightstart to 1>><</link>>
+		<<link [[선원을 먼저 덮친다|Arcology Stack Barge Fight]]>><<set $fightstart to 1>><</link>>
 		<br>
 	<<else>>
-		Nobody comes to check the scrap, so you stay hidden among it.
+		아무도 고철을 살피러 오지 않아, 당신은 그 사이에 숨어 있는다.
 		<br><br>
-		<<link [[Next|Arcology Stack Barge Landing]]>><</link>>
+		<<link [[다음|Arcology Stack Barge Landing]]>><</link>>
 	<</if>>
 <<else>>
 	<<set $phase to 0>>
-	You try to swim towards the barge, but the water moving behind the city's engines keeps pushing you backwards. The barge gets farther away, and your arms become too tired to keep up.
+	당신은 바지선을 향해 헤엄치려 하지만, 도시 엔진 뒤에서 움직이는 물이 계속 당신을 뒤로 밀어낸다. 바지선은 점점 멀어지고, 팔은 따라가기에는 너무 지쳐 간다.
 	<br><br>
-	A drone flies out from the city and shines its light on the water around you. A siren sounds as the guards come to take you back.
+	드론 한 대가 도시에서 날아와 당신 주변의 물을 불빛으로 비춘다. 경비원들이 당신을 데려가러 오는 동안 사이렌이 울린다.
 	<br><br>
-	<<link [[Next|Arcology Stack Caught]]>><</link>>
+	<<link [[다음|Arcology Stack Caught]]>><</link>>
 <</if>>
 <br>
 
@@ -275,16 +275,16 @@ Before you can swim away, a drone turns its searchlight towards you. The light s
 <<person1>>
 <<if $phase is 1>>
 	<<set $phase to 0>>
-	You crouch beneath the old cables and keep your body still while the crew member checks the pile. The torch shines across a broken mechanical arm near your face, then moves away.
+	당신은 낡은 케이블 밑에 웅크려 선원이 더미를 살피는 동안 몸을 꼼짝 않는다. 손전등 불빛이 얼굴 가까이 있는 부서진 기계 팔 위를 훑고는 멀어진다.
 	<br><br>
-	You wait until you hear the crew member walking towards the stairs. <span class="green">The <<person>> goes below deck without finding you.</span>
+	선원이 계단 쪽으로 걸어가는 소리가 들릴 때까지 기다린다. <span class="green"><<person>>【이가】 당신을 찾지 못한 채 갑판 아래로 내려간다.</span>
 	<br><br>
-	<<link [[Next|Arcology Stack Barge Landing]]>><<endevent>><</link>>
+	<<link [[다음|Arcology Stack Barge Landing]]>><<endevent>><</link>>
 <<else>>
 	<<set $phase to 0>>
-	The crew member shines the torch directly at your face. <span class="red">The <<person>> shouts for help,</span> then climbs over the scrap towards you before you can hide again.
+	선원이 손전등을 당신의 얼굴에 곧장 비춘다. <span class="red"><<person>>【이가】 도와 달라고 소리치고,</span> 당신이 다시 숨기도 전에 고철을 넘어 당신 쪽으로 올라온다.
 	<br><br>
-	<<link [[Next|Arcology Stack Barge Fight]]>><<set $fightstart to 1>><</link>>
+	<<link [[다음|Arcology Stack Barge Fight]]>><<set $fightstart to 1>><</link>>
 <</if>>
 <br>
 
@@ -299,42 +299,42 @@ Before you can swim away, a drone turns its searchlight towards you. The light s
 <br><br>
 <<actionsman>>
 <<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
-	<span id="next"><<link [[Next|Arcology Stack Barge Fight Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Arcology Stack Barge Fight Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Arcology Stack Barge Fight]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Arcology Stack Barge Fight]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Arcology Stack Barge Fight Finish
 <<effects>>
 <<if $enemyhealth lte 0 or $enemypleasure gte $enemypleasuremax>>
 	<<if $enemypleasure gte $enemypleasuremax>><<ejaculation>><<else>><<run setup.arcology.noteWin()>><</if>>
-	<<tearful>> you manage to push the <<person>> over the side of the barge. You quickly move to the other end and crawl beneath a pile of scrap before the rest of the crew arrives. The other crew members search the deck without finding you. The crew assumes the missing worker fell into the water.
+	<<tearful>> 당신은 <<person>>【을를】 바지선 밖으로 밀어 넘기는 데 성공한다. 나머지 선원이 오기 전에 재빨리 반대쪽 끝으로 가서 고철 더미 밑으로 기어든다. 다른 선원들은 갑판을 뒤지지만 당신을 찾지 못한다. 선원들은 사라진 작업자가 물에 빠졌다고 생각한다.
 	<br><br>
 	<<clotheson>><<endcombat>>
 	<br><br>
-	<<link [[Next|Arcology Stack Barge Landing]]>><</link>>
+	<<link [[다음|Arcology Stack Barge Landing]]>><</link>>
 <<else>>
 	<<if $finish is 1>><<encounterEndViolence>><</if>>
-	Several crew members force you down against the pile of scrap and keep you there while one of them contacts the city. The barge begins turning back towards Arcology. <<tearful>> you watch the sky above the deck, knowing the drones will soon arrive.
+	선원 여럿이 당신을 고철 더미에 눌러 붙들고, 그중 한 명이 도시에 연락한다. 바지선이 아콜로지 쪽으로 방향을 돌리기 시작한다. <<tearful>> 당신은 갑판 위의 하늘을 올려다보며, 곧 드론들이 도착하리라는 것을 안다.
 	<br><br>
 	<<clotheson>><<endcombat>>
-	<<link [[Next|Arcology Stack Caught]]>><</link>>
+	<<link [[다음|Arcology Stack Caught]]>><</link>>
 <</if>>
 <br>
 
 :: Arcology Stack Barge Landing
 <<pass `setup.arcology.voyageHours() * 60`>><<effects>>
 <<badEndTrackingEnd "Arcology Stack" { reason: "arcologyStackRan" }>>
-You spend several days hidden among the scrap. Your clothes gradually dry, but you have no blanket to keep out the wind. You sleep in short stretches, waking whenever the engines change pitch or footsteps pass your hiding place. Each time someone comes near, you crouch behind the scrap and wait for them to leave.
+당신은 며칠 동안 고철 사이에 숨어 지낸다. 옷은 서서히 마르지만, 바람을 막아 줄 담요는 없다. 엔진 소리가 바뀌거나 발소리가 지나갈 때마다 깨어나며 짧게 끊어서 잔다. 누군가 가까이 올 때마다 고철 뒤에 웅크려 그 사람이 떠나기를 기다린다.
 <br><br>
-Eventually, the barge reaches the town docks. You wait until the barge stops beside the pier, then climb down onto it before the crew comes up from below deck.
+이윽고 바지선이 마을 부두에 닿는다. 당신은 바지선이 부두 옆에 멈출 때까지 기다렸다가, 선원들이 갑판 아래에서 올라오기 전에 부두로 내려선다.
 <br><br>
-The implant behind your ear is still active. Red text appears at the edge of your vision, reminding you that Arcology still considers you to be in debt.
+귀 뒤의 임플란트는 아직 켜져 있다. 시야 가장자리에 붉은 글자가 나타나, 아콜로지가 아직 당신을 빚진 사람으로 본다는 것을 일깨운다.
 <br><br>
 <<set _holoMsg to "ABSCONDED. OUTSTANDING DEBT " + setup.arcology.cxU($xchange.arcology.stack.debt) + ".">>
 <<holoNotice "CIVIC REGISTRY" _holoMsg "denied">>
 <br>
-<<link [[Next|Docks]]>><<set $xchange.arcology.debt to { amount: $xchange.arcology.stack.debt, runs: ($xchange.arcology.stack.runs or 0) + 1 }>><<arcologyStackEnd>><<set $eventskip to 1>><</link>>
+<<link [[다음|Docks]]>><<set $xchange.arcology.debt to { amount: $xchange.arcology.stack.debt, runs: ($xchange.arcology.stack.runs or 0) + 1 }>><<arcologyStackEnd>><<set $eventskip to 1>><</link>>
 <br>
 
 :: Arcology Stack Caught
@@ -342,13 +342,13 @@ The implant behind your ear is still active. Red text appears at the edge of you
 <<set _st to $xchange.arcology.stack>>
 <<set _st.band to 0>><<set _st.route to Math.min(_st.route, 2)>><<set _st.suspicion to 100>><<set _st.smuggler to false>><<run delete _st.swim>>
 <<endevent>><<arcologyNPC 0 "staff" "guard">><<person1>>
-Guards in grey armour take hold of your arms and bring you back to the bunks. One guard checks your ankle, then locks a replacement band around your leg. The new hinge is positioned where you cannot reach it easily.
+회색 갑옷을 입은 경비원들이 당신의 팔을 붙잡아 침상 구역으로 데려온다. 경비원 한 명이 당신의 발목을 확인하고 새 밴드를 다리에 채운다. 새 경첩은 손이 쉽게 닿지 않는 위치에 있다.
 <br><br>
-The guard shows you a new patrol schedule on a wrist screen. An extra drone has been assigned to watch you, changing the routes you memorised. <<arcologyStackCharge 2500>> <<stress 10>><<ggstress>><<trauma 4>><<gtrauma>>
+경비원이 손목 화면으로 새 순찰 일정을 보여 준다. 당신을 감시하도록 드론 한 대가 더 배정되어, 당신이 외워 둔 경로가 바뀌었다. <<arcologyStackCharge 2500>> <<stress 10>><<ggstress>><<trauma 4>><<gtrauma>>
 <br><br>
-"You still have to answer for trying to escape," the <<person>> says. The guard takes you by the arm and leads you away from the bunks.
+"탈출하려 한 대가는 치러야 해." <<person>>【이가】 말한다. 경비원이 당신의 팔을 잡고 침상 구역 밖으로 이끈다.
 <br><br>
-<<link [[Next|Arcology Stack Punishment]]>><</link>>
+<<link [[다음|Arcology Stack Punishment]]>><</link>>
 <br>
 
 /* REVOLT */
@@ -356,35 +356,35 @@ The guard shows you a new patrol schedule on a wrist screen. An extra drone has 
 <<effects>>
 <<set _st to $xchange.arcology.stack>>
 <<set _sdCount to $phase>>
-You climb onto a bunk and tap the nearby drone cable three times, giving the signal you agreed on with the other workers. You wait, watching the drones above the sorting belts.
+당신은 침상 위로 올라가 다른 작업자들과 정해 둔 신호대로 근처 드론 케이블을 세 번 두드린다. 그러고는 분류 벨트 위의 드론들을 지켜보며 기다린다.
 <br><br>
-The relay broadcasts your signal to the modified chips, including a command to erase the workers' debt records. A moment later, the drones' red camera lights turn white. The drones stop moving along their patrol routes and remain above the belts. Workers begin leaving the bunks and running towards the main passage.
+중계기가 당신의 신호를 개조된 칩들에 전송하고, 작업자들의 빚 기록을 지우라는 명령도 함께 보낸다. 잠시 뒤 드론들의 붉은 카메라 불빛이 흰색으로 바뀐다. 드론들은 순찰 경로를 따라 움직이기를 멈추고 벨트 위에 가만히 떠 있다. 작업자들이 침상을 떠나 중앙 통로로 달려가기 시작한다.
 <br><br>
 <<if _sdCount gte 3>>
-	The lights in the working area go out while smoke and the bright light from a flare appear near the sea door. At the same time, the guards' screens show an empty sorting room instead of the workers leaving their bunks.
+	작업 구역의 불이 꺼지고 해상 출입구 근처에서 연기와 신호탄의 밝은 빛이 나타난다. 동시에 경비원들의 화면에는 작업자들이 침상을 떠나는 모습 대신 텅 빈 분류실이 보인다.
 	<br><br>
-	The guards hurry towards different parts of the Stack to investigate. <span class="green">Nobody is left blocking your path to the service lift.</span>
+	경비원들이 상황을 조사하러 스택 곳곳으로 서둘러 흩어진다. <span class="green">서비스 엘리베이터로 가는 길을 막는 사람은 아무도 남지 않았다.</span>
 	<br><br>
-	<<link [[Next|Arcology Stack Revolt Victory]]>><</link>>
+	<<link [[다음|Arcology Stack Revolt Victory]]>><</link>>
 <<elseif _sdCount is 2>>
 	<<arcologyNPC 0 "staff" "security guard">><<person1>>
-	The problems you arranged draw most of the guards away. <span class="blue">One security guard remains in front of the lift,</span> holding a weapon towards the approaching workers. <<arcologyCyberLook 0>>
+	당신이 꾸민 소동에 경비원 대부분이 이끌려 간다. <span class="blue">보안 경비원 한 명이 엘리베이터 앞에 남아</span> 다가오는 작업자들에게 무기를 겨눈다. <<arcologyCyberLook 0>>
 	<br><br>
-	<<link [[Next|Arcology Stack Revolt Fight]]>><<set $fightstart to 1>><<set $phase to 1>><</link>>
+	<<link [[다음|Arcology Stack Revolt Fight]]>><<set $fightstart to 1>><<set $phase to 1>><</link>>
 <<elseif _sdCount is 1>>
 	<<arcologyNPC 0 "staff" "security guard">><<arcologyNPC 1 "staff" "guard">><<arcologyNPC 2 "staff" "guard">><<person1>>
-	Some guards leave to investigate the distraction you prepared. <span class="purple">Three guards remain in the corridor to the lift,</span> standing between you and the exit.
+	경비원 일부가 당신이 준비한 교란을 조사하러 떠난다. <span class="purple">경비원 세 명이 엘리베이터로 가는 복도에 남아</span> 당신과 출구 사이를 막아선다.
 	<br><br>
-	<<link [[Next|Arcology Stack Revolt Fight]]>><<set $fightstart to 1>><<set $phase to 3>><</link>>
+	<<link [[다음|Arcology Stack Revolt Fight]]>><<set $fightstart to 1>><<set $phase to 3>><</link>>
 <<else>>
 	<<arcologyNPC 0 "staff" "security guard">><<person1>>
-	The drones have stopped patrolling, but the guards can still see the workers running towards the lift. Several guards step into the corridor and draw their batons.
+	드론들은 순찰을 멈췄지만, 경비원들은 아직 엘리베이터 쪽으로 달리는 작업자들을 볼 수 있다. 경비원 여럿이 복도로 나서 곤봉을 뽑는다.
 	<br><br>
-	<span class="red">The workers at the front turn back when the guards begin hitting them,</span> forcing the people behind to stop as well.
+	<span class="red">경비원들이 때리기 시작하자 맨 앞의 작업자들이 되돌아서고,</span> 그 바람에 뒤에 있던 사람들도 멈춰 선다.
 	<br><br>
-	You try to keep moving, but a <<person>> catches you by the collar before you reach the lift. <<arcologyStackCrew -10>><<set _st.net to Math.max(0, _st.net - 5)>>
+	당신은 계속 움직이려 하지만, 엘리베이터에 닿기 전에 <<person>>【이가】 당신의 옷깃을 붙잡는다. <<arcologyStackCrew -10>><<set _st.net to Math.max(0, _st.net - 5)>>
 	<br><br>
-	<<link [[Next|Arcology Stack Punishment]]>><</link>>
+	<<link [[다음|Arcology Stack Punishment]]>><</link>>
 <</if>>
 <br>
 
@@ -402,46 +402,46 @@ The relay broadcasts your signal to the modified chips, including a command to e
 <br><br>
 <<actionsman>>
 <<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
-	<span id="next"><<link [[Next|Arcology Stack Revolt Fight Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Arcology Stack Revolt Fight Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Arcology Stack Revolt Fight]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Arcology Stack Revolt Fight]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Arcology Stack Revolt Fight Finish
 <<effects>>
 <<if $enemyhealth lte 0 or $enemypleasure gte $enemypleasuremax>>
 	<<if $enemypleasure gte $enemypleasuremax>><<ejaculation>><<else>><<run setup.arcology.noteWin()>><</if>>
-	<<tearful>> you move past the guards you have defeated. The other workers run through the open space towards the lift, while you follow behind them.
+	<<tearful>> 당신은 쓰러뜨린 경비원들을 지나 이동한다. 다른 작업자들이 열린 공간을 가로질러 엘리베이터 쪽으로 달려가고, 당신은 그들 뒤를 따른다.
 	<br><br>
 	<<clotheson>><<endcombat>>
-	<<link [[Next|Arcology Stack Revolt Victory]]>><</link>>
+	<<link [[다음|Arcology Stack Revolt Victory]]>><</link>>
 <<else>>
 	<<if $finish is 1>><<encounterEndViolence>><</if>>
-	The guards strike you until you fall to the floor. When the workers behind you see that you cannot get past, the group turns back and runs towards the bunks.
+	경비원들이 당신이 바닥에 쓰러질 때까지 때린다. 뒤에 있던 작업자들은 당신이 지나갈 수 없다는 것을 보고, 무리 전체가 돌아서 침상 구역으로 달려간다.
 	<<clotheson>><<endcombat>>
 	<<arcologyStackCrew -10>><<set $xchange.arcology.stack.net to Math.max(0, $xchange.arcology.stack.net - 5)>>
 	<br><br>
 	<<endevent>><<arcologyNPC 0 "staff" "guard">><<person1>>
-	<<tearful>> you try to get up, but a <<person>> grabs your arm and pulls you away from the lift towards the punishment corridor.
+	<<tearful>> 당신은 일어나려 하지만 <<person>>【이가】 당신의 팔을 붙잡아 엘리베이터에서 징벌 복도 쪽으로 끌고 간다.
 	<br><br>
-	<<link [[Next|Arcology Stack Punishment]]>><</link>>
+	<<link [[다음|Arcology Stack Punishment]]>><</link>>
 <</if>>
 <br>
 
 :: Arcology Stack Revolt Victory
 <<effects>>
 <<set _st to $xchange.arcology.stack>>
-You reach the service lift, followed by the workers who escaped the guards. The lift doors are closed, and the control panel beside them shows a red warning light.
+당신은 서비스 엘리베이터에 이르고, 경비원에게서 벗어난 작업자들이 뒤따른다. 엘리베이터 문은 닫혀 있고, 옆의 조작반에는 붉은 경고등이 켜져 있다.
 <br><br>
 <<if _st.revolt.code>>
 	<<pass 4>>
-	You remember hearing the supervisors discuss the access code through a vent. You enter the shift number in reverse order, pressing one button at a time. <span class="green">The warning light turns green, and the lift doors unlock.</span>
+	당신은 감독관들이 환기구 너머로 접근 코드를 이야기하던 것을 들은 기억이 난다. 교대 번호를 거꾸로 입력하며 버튼을 하나씩 누른다. <span class="green">경고등이 초록색으로 바뀌고 엘리베이터 문이 열린다.</span>
 	<br><br>
-	<<link [[Next|Arcology Stack Revolt Free]]>><</link>>
+	<<link [[다음|Arcology Stack Revolt Free]]>><</link>>
 <<else>>
-	You do not know the code to open the lift. When you look above the closed doors, you see a maintenance hatch that leads into the space where the lift moves between floors.
+	당신은 엘리베이터를 여는 코드를 모른다. 닫힌 문 위를 올려다보니, 엘리베이터가 층 사이를 오가는 공간으로 이어지는 점검 해치가 보인다.
 	<br><br>
-	<<link [[Next|Arcology Stack Revolt Shaft]]>><<set $phase to setup.arcology.escape("stack", "athletics", 400, 1100) ? 1 : 0>><</link>>
+	<<link [[다음|Arcology Stack Revolt Shaft]]>><<set $phase to setup.arcology.escape("stack", "athletics", 400, 1100) ? 1 : 0>><</link>>
 <</if>>
 <br>
 
@@ -449,19 +449,19 @@ You reach the service lift, followed by the workers who escaped the guards. The 
 <<pass 10>><<effects>>
 <<if $phase is 1>>
 	<<set $phase to 0>>
-	You pull yourself through the hatch and find a metal ladder fixed to the wall. You begin climbing, followed by the other workers. There is little room to move, so you keep climbing without stopping while more people come through the hatch below.
+	당신은 몸을 끌어올려 해치를 통과해 벽에 고정된 금속 사다리를 발견한다. 다른 작업자들이 뒤따르는 가운데 오르기 시작한다. 움직일 공간이 거의 없어서, 아래 해치로 사람들이 계속 들어오는 동안 멈추지 않고 계속 오른다.
 	<br><br>
-	When you reach the pier level, your arms hurt from the climb. You find a lever beside the doors and pull it. The doors open, allowing everyone to leave the shaft.
+	부두 층에 이르렀을 때는 오르느라 팔이 아프다. 문 옆에서 레버를 발견해 당긴다. 문이 열려 모두가 승강로에서 나갈 수 있게 된다.
 	<br><br>
-	<<link [[Next|Arcology Stack Revolt Free]]>><</link>>
+	<<link [[다음|Arcology Stack Revolt Free]]>><</link>>
 <<else>>
 	<<set $phase to 0>>
-	Halfway up the ladder, your hand slips from a greasy step. You try to grab the next one, but fall backwards into the workers climbing below you. Several workers lose their hold, and you fall together to the bottom of the shaft. <<pain 15>><<ggpain>>
+	사다리 중간쯤에서 기름기 묻은 발판에서 손이 미끄러진다. 다음 발판을 잡으려 하지만 뒤로 넘어져 아래에서 오르던 작업자들 위로 떨어진다. 몇몇 작업자가 붙잡고 있던 것을 놓쳐, 모두 함께 승강로 바닥까지 추락한다. <<pain 15>><<ggpain>>
 	<br><br>
-	The drones begin patrolling again before you can climb out. By the time guards reach the hatch, you are still at the bottom of the shaft. <<arcologyStackCrew -10>>
+	당신이 빠져나오기도 전에 드론들이 다시 순찰을 시작한다. 경비원들이 해치에 이르렀을 때, 당신은 아직 승강로 바닥에 있다. <<arcologyStackCrew -10>>
 	<br><br>
 	<<endevent>><<arcologyNPC 0 "staff" "guard">><<person1>>
-	<<link [[Next|Arcology Stack Punishment]]>><</link>>
+	<<link [[다음|Arcology Stack Punishment]]>><</link>>
 <</if>>
 <br>
 
@@ -469,9 +469,9 @@ You reach the service lift, followed by the workers who escaped the guards. The 
 <<pass 1>><<effects>>
 <<badEndTrackingEnd "Arcology Stack" { reason: "arcologyStackRevolt" }>>
 <<run setup.arcology.expose(5)>>
-The doors open onto the pier, and the workers run outside. Some head along the waterfront while others take the stairs towards the lower streets. A few stop beside the exit, looking back at the dome above the city.
+문이 부두로 열리고 작업자들이 밖으로 달려 나간다. 일부는 해안가를 따라 가고, 일부는 계단으로 아래쪽 거리로 향한다. 몇 명은 출구 옆에 멈춰 서서 도시 위의 돔을 돌아본다.
 <br><br>
-The warning in your implant disappears, then returns with letters and numbers you cannot make sense of.
+임플란트의 경고가 사라졌다가, 당신이 이해할 수 없는 글자와 숫자와 함께 다시 나타난다.
 <br><br>
 <<holo "CIVIC REGISTRY / STATUS CHANGE" "ok">>
 	<<holoRow "HANDLE" `$xchange.arcology.handle`>>
@@ -479,9 +479,9 @@ The warning in your implant disappears, then returns with letters and numbers yo
 	<<holoLine "DEBT NOT FOUND" "ok">>
 <</holo>>
 <br>
-The Stack's debt records have been deleted during the revolt. Your implant no longer shows the amount you owed. You can leave the Stack, but <span class="red">the island's guards will soon be looking for the workers who escaped, including you.</span>
+스택의 빚 기록은 반란 중에 삭제되었다. 임플란트는 더는 당신이 갚아야 할 금액을 보여 주지 않는다. 당신은 스택을 떠날 수 있지만, <span class="red">섬의 경비원들이 곧 당신을 포함해 탈출한 작업자들을 찾으러 올 것이다.</span>
 <br><br>
-<<link [[Next|Arcology Pier]]>><<arcologyStackEnd>><</link>>
+<<link [[다음|Arcology Pier]]>><<arcologyStackEnd>><</link>>
 <br>
 
 /* The Stack's punishments, the island's answer to the mine's pit: the isolation pod, implant reconditioning, the compactor hold
@@ -492,49 +492,49 @@ The Stack's debt records have been deleted during the revolt. Your implant no lo
 <<set _spPool to ["Pod", "Recondition", "Compactor"]>>
 <<if _st.buyerSeen>><<set _spPool.push("Buyer", "Buyer")>><</if>>
 <<set _spPick to _spPool.random()>>
-The <<person>> takes you past the sleeping area and into a corridor away from the sorting belts. As you walk, the guard checks your record on a tablet and reads out the rule you broke. <<He>> keeps hold of your arm while leading you farther into the building.
+<<person>>【이가】 당신을 데리고 취침 구역을 지나 분류 벨트에서 먼 복도로 들어선다. 걸으면서 경비원은 태블릿으로 당신의 기록을 확인하고 당신이 어긴 규칙을 읽어 준다. <<He>>【은는】 당신을 건물 더 깊숙이 이끄는 동안 팔을 계속 붙잡고 있다.
 <br><br>
 <<set _spLink to "Arcology Stack " + _spPick>>
-<<link [[Next|_spLink]]>><</link>>
+<<link [[다음|_spLink]]>><</link>>
 <br>
 
 :: Arcology Stack Pod
 <<effects>><<person1>>
-The corridor ends beside a row of narrow metal pods. Each is just large enough for someone to stand inside, with a small window near the top. The <<person>> opens one of the doors and pushes you inside before closing it. <<pain 4>><<gpain>>
+복도는 좁은 금속 캡슐이 늘어선 곳에서 끝난다. 캡슐은 하나하나 사람이 서서 들어갈 만한 크기이고, 위쪽에 작은 창이 있다. <<person>>【이가】 문 하나를 열어 당신을 안으로 밀어 넣고 닫는다. <<pain 4>><<gpain>>
 <br><br>
-The light switches off, leaving you in darkness. The walls block almost all the noise from the rest of the Stack. You move one foot against the floor, but even that makes very little sound. <<ggstress>><<stress 10>>
+불이 꺼져 당신은 어둠 속에 남는다. 벽이 스택의 나머지 소음을 거의 다 막는다. 발을 바닥에 대고 움직여 보지만 그것조차 거의 소리가 나지 않는다. <<ggstress>><<stress 10>>
 <br><br>
-You try to count how much time has passed, but you cannot tell whether you have been inside for a few minutes or much longer. You feel the band around your ankle and start thinking about how many more shifts you will have to work. <<gggstress>><<stress 40>>
+당신은 시간이 얼마나 흘렀는지 세어 보려 하지만, 안에 있은 지 몇 분인지 훨씬 오래인지 알 수 없다. 발목의 밴드를 만져 보며 앞으로 몇 번의 교대를 더 일해야 할지 생각하기 시작한다. <<gggstress>><<stress 40>>
 <br><br>
-You remember the town across the water. You wonder whether anyone has looked for you since you disappeared, and whether you will be able to return. <<gggtrauma>><<trauma 300>>
+당신은 바다 건너의 마을을 떠올린다. 당신이 사라진 뒤로 누군가 찾아 나섰는지, 돌아갈 수 있을지 궁금해진다. <<gggtrauma>><<trauma 300>>
 <br><br>
-<<link `$trauma >= 2500 ? "Wait (2:00)" : "Next"` "Arcology Stack Pod End">><</link>>
+<<link `$trauma >= 2500 ? "기다린다 (2:00)" : "다음"` "Arcology Stack Pod End">><</link>>
 <br>
 <<if $trauma gte 2500>>
-	<<link [[Cry|Arcology Stack Pod Cry]]>><<trauma -50>><</link>><<llltrauma>>
+	<<link [[운다|Arcology Stack Pod Cry]]>><<trauma -50>><</link>><<llltrauma>>
 	<br>
 <</if>>
 
 :: Arcology Stack Pod Cry
 <<effects>>
-<span class="red">You begin crying and cannot stop.</span> You cover your face with your hands, but there is nobody inside the pod to see you. Your cries sound faint through the walls, and no guard comes to check on you. <<ggstress>><<stress 10>>
+<span class="red">당신은 울기 시작하고 멈출 수 없다.</span> 두 손으로 얼굴을 가리지만, 캡슐 안에는 그 모습을 볼 사람이 아무도 없다. 울음소리는 벽 너머로 희미하게 들리고, 확인하러 오는 경비원은 없다. <<ggstress>><<stress 10>>
 <br><br>
-After a while, you wipe your face and manage to stop crying. You lean against the wall and try to breathe normally again. <<trauma -25>><<llltrauma>>
+잠시 뒤 당신은 얼굴을 닦고 울음을 그친다. 벽에 기대 다시 숨을 고르게 쉬려 애쓴다. <<trauma -25>><<llltrauma>>
 <br><br>
-<<link [[Next|Arcology Stack Pod End]]>><</link>>
+<<link [[다음|Arcology Stack Pod End]]>><</link>>
 <br>
 
 :: Arcology Stack Pod End
 <<pass 2 hours>><<effects>><<person1>>
-The door opens, letting the bright corridor lights shine inside. You close your eyes briefly before the <<person>> grabs your arm and pulls you out.
+문이 열리며 환한 복도 불빛이 안으로 쏟아진다. <<person>>【이가】 당신의 팔을 붙잡아 끌어내기 전에, 당신은 잠시 눈을 감는다.
 <br><br>
-You stumble as you leave the pod, then manage to stand while the guard waits beside you.
+캡슐을 나서며 비틀거리지만, 경비원이 옆에서 기다리는 동안 간신히 일어선다.
 <br><br>
 <<arcologyStackPunishEnd>>
 
 :: Arcology Stack Recondition
 <<effects>><<person1>>
-The <<person>> sits you in a chair bolted to the floor and straps your wrists to its arms. A technician wheels a console over and plugs a cable into the light behind your ear.
+<<person>>【이가】 당신을 바닥에 고정된 의자에 앉히고 손목을 팔걸이에 묶는다. 기술자가 콘솔을 밀고 와서 귀 뒤의 불빛에 케이블을 꽂는다.
 <br><br>
 <<holo "IMPLANT / RECONDITIONING" "denied">>
 	<<holoRow "HANDLE" `$xchange.arcology.handle`>>
@@ -542,34 +542,34 @@ The <<person>> sits you in a chair bolted to the floor and straps your wrists to
 	<<holoLine "USER CONSENT" "denied">>
 <</holo>>
 <br>
-A sharp pain starts near the implant behind your ear and spreads through your head. Your vision fills with flashing lines, followed by large red words: <span class="red">STATION. SORT. COMPLY.</span>
+임플란트 근처에서 날카로운 통증이 시작되어 머리 전체로 번진다. 시야가 번쩍이는 선들로 가득 차고, 곧 커다란 붉은 글자가 떠오른다. <span class="red">자리. 분류. 복종.</span>
 <br><br>
-You try to look away, but the instructions remain in front of your eyes. Another pulse makes your fingers move against the straps, as though you were already working at a sorting belt. <<pain 10>><<ggpain>>
+당신은 눈을 돌리려 하지만 지시는 눈앞에서 사라지지 않는다. 또 한 번 펄스가 오자, 마치 이미 분류 벨트에서 일하고 있는 것처럼 손가락이 끈에 대고 움직인다. <<pain 10>><<ggpain>>
 <br><br>
-<<link [[Fight it|Arcology Stack Recondition 2]]>><<pass 30>><<set $phase to setup.arcology.escape("stack", "willpower", 200, 1000) ? 1 : 0>><</link>><<arcologySkill "Willpower">>
+<<link [[저항한다|Arcology Stack Recondition 2]]>><<pass 30>><<set $phase to setup.arcology.escape("stack", "willpower", 200, 1000) ? 1 : 0>><</link>><<arcologySkill "Willpower">>
 <br>
-<<link [[Let it run|Arcology Stack Recondition 2]]>><<pass 30>><<set $phase to 2>><</link>>
+<<link [[그대로 둔다|Arcology Stack Recondition 2]]>><<pass 30>><<set $phase to 2>><</link>>
 <br>
 
 :: Arcology Stack Recondition 2
 <<effects>>
 <<switch $phase>>
 <<case 1>>
-	You repeat your own handle out loud to remind yourself who you are. The programme keeps showing the same orders, but you concentrate on saying your handle rather than following them.
+	당신은 자신이 누구인지 떠올리려고 자기 아이디를 소리 내어 반복한다. 프로그램은 같은 명령을 계속 보여 주지만, 당신은 명령을 따르는 대신 핸들를 말하는 데 집중한다.
 	<br><br>
-	After several more pulses, the same instruction stays on the display without changing. <span class="green">The programme stops, and the technician cannot make it continue.</span> The technician swears and presses several buttons on the console. <<willpower 3>><<gwillpower>><<stress 10>><<gstress>>
+	몇 번의 펄스가 더 지나자 같은 지시가 바뀌지 않고 화면에 그대로 남는다. <span class="green">프로그램이 멈추고, 기술자는 다시 작동시키지 못한다.</span> 기술자가 욕설을 내뱉으며 콘솔의 버튼 여러 개를 누른다. <<willpower 3>><<gwillpower>><<stress 10>><<gstress>>
 	<br><br>
-	"You wouldn't follow the instructions," the technician says. The technician looks at the frozen display. "Put down that the treatment is complete. I'm not starting it again."
+	"넌 지시를 안 따랐잖아." 기술자가 말한다. 기술자는 멈춘 화면을 쳐다본다. "치료 완료로 적어 둬. 난 다시 시작 안 해."
 <<case 0>>
-	You try to remember your own handle while the machine repeats its instructions. Each new pulse makes it harder to concentrate, until <span class="red">you begin repeating the sorting orders without meaning to.</span> You keep thinking about where each piece of scrap belongs, even though you are still strapped to the chair. <<trauma 30>><<ggtrauma>><<stress 20>><<ggstress>><<pain 10>><<ggpain>>
+	당신은 기계가 지시를 반복하는 동안 자기 핸들를 기억해 내려 한다. 새 펄스가 올 때마다 집중하기가 더 어려워지고, 결국 <span class="red">당신은 자기도 모르게 분류 명령을 되뇌기 시작한다.</span> 의자에 묶여 있는데도 고철 하나하나가 어디에 속하는지 계속 생각한다. <<trauma 30>><<ggtrauma>><<stress 20>><<ggstress>><<pain 10>><<ggpain>>
 <<default>>
-	You stop trying to resist the repeated instructions. As the machine continues, the pain begins to fade and a strange warmth spreads through your body. You stop pulling against the straps and listen to the orders instead. <<trauma 20>><<ggtrauma>><<arousal 1500>><<garousal>>
+	당신은 반복되는 지시에 저항하기를 그만둔다. 기계가 계속되는 동안 통증이 가라앉고 이상한 온기가 온몸에 퍼진다. 당신은 끈을 당기는 것을 멈추고 지시에 귀를 기울인다. <<trauma 20>><<ggtrauma>><<arousal 1500>><<garousal>>
 	<br><br>
-	When the technician unplugs the cable, you find yourself waiting for another instruction to appear.
+	기술자가 케이블을 뽑자, 당신은 또 다른 지시가 나타나기를 기다리고 있는 자신을 발견한다.
 <</switch>>
 <<set $phase to 0>>
 <br><br>
-The <<person>> removes the straps from your wrists. Your vision is still disturbed by small flashes of light as you get up from the chair.
+<<person>>【이가】 당신의 손목에서 끈을 풀어 준다. 의자에서 일어나는 동안에도 시야에는 작은 불빛이 번쩍이며 어른거린다.
 <br><br>
 <<arcologyStackPunishEnd>>
 
@@ -579,30 +579,30 @@ The <<person>> removes the straps from your wrists. Your vision is still disturb
 <<if $settings.tentaclesEnabled>><<set _scPool.push("Tendrils")>><</if>>
 <<if $settings.slimesEnabled>><<set _scPool.push("Culture")>><</if>>
 <<set _scPick to _scPool.random()>>
-The <<person>> stops at a heavy metal door marked COMPACTOR HOLD / ORGANIC WASTE. The guard turns the wheel until the door opens, then pushes you inside.
+<<person>>【이가】 압축 보관실 / 유기 폐기물이라고 적힌 육중한 금속 문 앞에서 멈춘다. 경비원이 문이 열릴 때까지 바퀴를 돌리고, 당신을 안으로 밀어 넣는다.
 <br><br>
-You fall onto a floor that slopes down towards the drains. Something warm and slippery covers the metal beneath your hands. <<pain 5>><<gpain>>
+당신은 배수구 쪽으로 기울어진 바닥에 넘어진다. 손 밑의 금속을 따뜻하고 미끄러운 무언가가 덮고 있다. <<pain 5>><<gpain>>
 <br><br>
-The door closes above you, leaving you inside the room. A row of small green lights along one wall lets you see part of the floor. <<ggstress>><<stress 10>>
+문이 위에서 닫혀 당신은 방 안에 갇힌다. 한쪽 벽을 따라 늘어선 작은 녹색 불빛 덕분에 바닥 일부가 보인다. <<ggstress>><<stress 10>>
 <br><br>
 <<if _scPick is "Tendrils">>
-	You see something moving behind the metal covers over the drains. The Stack uses living organisms to break down waste mixed in with the scrap, and some have been left inside this room.
+	배수구를 덮은 금속 뚜껑 뒤에서 무언가 움직이는 것이 보인다. 스택은 고철에 섞인 폐기물을 분해하려고 살아 있는 생물을 쓰는데, 그중 일부가 이 방 안에 남겨져 있다.
 	<br><br>
-	Pale tendrils push through the openings and move across the floor towards you. <span class="red">One reaches your ankle while more emerge from the drains.</span>
+	창백한 촉수들이 틈새로 밀려 나와 바닥을 가로질러 당신 쪽으로 움직인다. <span class="red">하나가 당신의 발목에 닿고, 배수구에서 더 많은 것이 나온다.</span>
 	<br><br>
-	<<link [[Next|Arcology Stack Compactor Tendrils]]>><<set $molestationstart to 1>><<endevent>><</link>>
+	<<link [[다음|Arcology Stack Compactor Tendrils]]>><<set $molestationstart to 1>><<endevent>><</link>>
 <<elseif _scPick is "Culture">>
-	You try to get up, but the warm substance on the floor sticks to your hands. It is a living cleaning substance used to break down waste from the sorting belts.
+	당신은 일어나려 하지만 바닥의 따뜻한 물질이 손에 달라붙는다. 분류 벨트에서 나온 폐기물을 분해하는 데 쓰는 살아 있는 세정 물질이다.
 	<br><br>
-	As you move your hands away, the substance moves towards your legs. <span class="red">It gathers around your knees and slowly moves up your thighs.</span>
+	당신이 손을 떼자 물질이 다리 쪽으로 움직인다. <span class="red">무릎을 감싸고 천천히 허벅지를 타고 올라온다.</span>
 	<br><br>
-	<<link [[Next|Arcology Stack Compactor Culture]]>><<set $molestationstart to 1>><<endevent>><</link>>
+	<<link [[다음|Arcology Stack Compactor Culture]]>><<set $molestationstart to 1>><<endevent>><</link>>
 <<else>>
-	There is nobody else inside the room. Machinery starts working somewhere above you, and the metal walls shake every few minutes. You move away from the walls each time, expecting the machine to start pushing them together.
+	방 안에는 당신 말고 아무도 없다. 위쪽 어딘가에서 기계가 돌기 시작하고, 몇 분마다 금속 벽이 흔들린다. 기계가 벽을 서로 밀어붙이기 시작할 거라 예상하며 당신은 그때마다 벽에서 물러난다.
 	<br><br>
-	The walls do not move any closer, but you keep looking up whenever the machinery starts again. <<gggstress>><<stress 30>><<trauma 100>><<ggtrauma>>
+	벽은 더 다가오지 않지만, 기계가 다시 돌 때마다 당신은 계속 위를 올려다본다. <<gggstress>><<stress 30>><<trauma 100>><<ggtrauma>>
 	<br><br>
-	<<link [[Next|Arcology Stack Compactor End]]>><<endevent>><</link>>
+	<<link [[다음|Arcology Stack Compactor End]]>><<endevent>><</link>>
 <</if>>
 <br>
 
@@ -621,17 +621,17 @@ The door closes above you, leaving you inside the room. A row of small green lig
 <<tentacles>>
 <<actionstentacles>>
 <<if $tentacles.active lte ($tentacles.max / 2)>>
-	<span id="next"><<link [[Next|Arcology Stack Compactor Tendrils Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Arcology Stack Compactor Tendrils Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Arcology Stack Compactor Tendrils]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Arcology Stack Compactor Tendrils]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Arcology Stack Compactor Tendrils Finish
 <<effects>>
-The tendrils slowly pull away from your body and disappear through the drain openings. <<tearful>> you move towards a clear section of floor, sit against the wall and wait for someone to open the door.
+촉수들이 천천히 당신의 몸에서 떨어져 배수구 틈새로 사라진다. <<tearful>> 당신은 바닥의 깨끗한 구석으로 가 벽에 기대 앉아 누군가 문을 열어 주기를 기다린다.
 <br><br>
 <<clotheson>><<endcombat>>
-<<link [[Next|Arcology Stack Compactor End]]>><</link>>
+<<link [[다음|Arcology Stack Compactor End]]>><</link>>
 <br>
 
 :: Arcology Stack Compactor Culture
@@ -648,47 +648,47 @@ The tendrils slowly pull away from your body and disappear through the drain ope
 <<swarm>>
 <<swarmactions>>
 <<if $timer lte 0>>
-	<span id="next"><<link [[Next|Arcology Stack Compactor Culture Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Arcology Stack Compactor Culture Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Arcology Stack Compactor Culture]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Arcology Stack Compactor Culture]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Arcology Stack Compactor Culture Finish
 <<effects>>
-The living substance begins flowing back towards the drains, leaving some of it on your skin. <<tearful>> you wipe off as much as you can, then sit away from the drain openings and wait for the door to open.
+살아 있는 물질이 배수구 쪽으로 다시 흘러가기 시작하며 일부는 당신의 피부에 남는다. <<tearful>> 당신은 최대한 닦아 내고, 배수구에서 떨어져 앉아 문이 열리기를 기다린다.
 <br><br>
 <<clotheson>><<endcombat>>
-<<link [[Next|Arcology Stack Compactor End]]>><</link>>
+<<link [[다음|Arcology Stack Compactor End]]>><</link>>
 <br>
 
 :: Arcology Stack Compactor End
 <<pass 2 hours>><<effects>>
 <<arcologyNPC 0 "staff" "guard">><<person1>>
-The heavy door opens above you, and someone lowers a rope ladder into the room. You grab the ladder and climb towards the opening.
+육중한 문이 위에서 열리고 누군가 방 안으로 줄사다리를 내린다. 당신은 사다리를 붙잡고 열린 곳을 향해 오른다.
 <br><br>
-A <<person>> waits at the top with a hose. As soon as you climb out, the guard sprays you with water to wash off anything left from the room. <<wash>>
+<<person>>【이가】 호스를 들고 위에서 기다리고 있다. 당신이 올라오자마자 경비원은 방에서 묻어 온 것을 씻어 내려고 물을 뿌린다. <<wash>>
 <br><br>
 <<arcologyStackPunishEnd>>
 
 :: Arcology Stack Buyer
 <<effects>><<person1>>
-At the end of the corridor, the <<person>> opens a door to a room with carpet on the floor. The guard pushes you inside and closes the door, leaving you alone with whoever is waiting there.
+복도 끝에서 <<person>>【이가】 바닥에 카펫이 깔린 방의 문을 연다. 경비원은 당신을 안으로 밀어 넣고 문을 닫아, 안에서 기다리는 누군가와 당신만 남긴다.
 <br><br>
 <<endevent>><<loadNPC 0 "stack_buyer">><<person1>>
-A visitor wearing a clean coat is sitting on a wide bed. <<arcologyCyberLook 0>> <<He>> pours a drink into two glasses and offers you one.
+깨끗한 코트를 입은 방문객이 넓은 침대에 앉아 있다. <<arcologyCyberLook 0>> <<He>>【은는】 잔 두 개에 술을 따르고 하나를 당신에게 건넨다.
 <br><br>
-"I paid your supervisor to spend a few hours with you," <<he>> says. "Only a small part of that money will reduce your debt. The Stack keeps the rest."
+"네 감독관한테 돈을 내고 너랑 몇 시간 보내기로 했어." <<he>>【이가】 말한다. "그 돈 중 일부만 네 빚을 줄여 줘. 나머지는 스택이 가져가."
 <br><br>
-<<He>> taps the empty space on the bed beside <<him>>. "You can sit here yourself, or I can make you. What are you going to do?"
+<<He>>【은는】 <<his>> 옆 침대의 빈자리를 톡톡 두드린다. "스스로 앉든가, 내가 앉히든가. 어떻게 할래?"
 <br><br>
-<<link [[Make it pleasant|Arcology Stack Buyer Sex]]>><<set $sexstart to 1>><<pass 2 hours>><</link>><<promiscuous2>>
+<<link [[기분 좋게 해 준다|Arcology Stack Buyer Sex]]>><<set $sexstart to 1>><<pass 2 hours>><</link>><<promiscuous2>>
 <br>
-<<link [[Refuse|Arcology Stack Buyer Rape]]>><<set $molestationstart to 1>><<pass 2 hours>><</link>>
+<<link [[거절한다|Arcology Stack Buyer Rape]]>><<set $molestationstart to 1>><<pass 2 hours>><</link>>
 <br>
 
 :: Arcology Stack Buyer Sex
 <<if $sexstart is 1>>
-	<<person1>>You accept the glass and sit beside <<him>> on the bed. After you take a sip, the visitor takes the glass from your hand and puts it aside. <<He>> moves closer and guides you down onto the bed.
+	<<person1>>당신은 잔을 받아 <<him>> 옆 침대에 앉는다. 한 모금 마시자 방문객이 당신의 손에서 잔을 받아 한쪽에 놓는다. <<He>>【은는】 더 가까이 다가와 당신을 침대 위로 눕힌다.
 	<br><br>
 	<<set $sexstart to 0>>
 	<<consensual>>
@@ -705,15 +705,15 @@ A visitor wearing a clean coat is sitting on a wide bed. <<arcologyCyberLook 0>>
 <br><br>
 <<actionsman>>
 <<if _combatend>>
-	<span id="next"><<link [[Next|Arcology Stack Buyer Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Arcology Stack Buyer Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Arcology Stack Buyer Sex]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Arcology Stack Buyer Sex]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Arcology Stack Buyer Rape
 <<if $molestationstart is 1>>
 	<<set $molestationstart to 0>>
-	<<person1>><<He>> puts the glass aside and reaches for you. When you try to move away, the visitor grabs your wrists to stop you.
+	<<person1>><<He>>【은는】 잔을 한쪽에 놓고 당신에게 손을 뻗는다. 당신이 피하려 하자 방문객이 당신의 손목을 붙잡아 움직이지 못하게 한다.
 	<br><br>
 	<<controlloss>>
 	<<violence 1>>
@@ -726,23 +726,23 @@ A visitor wearing a clean coat is sitting on a wide bed. <<arcologyCyberLook 0>>
 <br><br>
 <<actionsman>>
 <<if _combatend>>
-	<span id="next"><<link [[Next|Arcology Stack Buyer Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Arcology Stack Buyer Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Arcology Stack Buyer Rape]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Arcology Stack Buyer Rape]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Arcology Stack Buyer Finish
 <<effects>>
 <<if $enemyhealth lte 0>>
-	You manage to push the visitor away and reach the door, but it is locked from the outside. You hit the door several times until a guard opens it.
+	당신은 방문객을 밀쳐 내고 문까지 가지만, 문은 바깥에서 잠겨 있다. 경비원이 열어 줄 때까지 문을 여러 번 두드린다.
 	<br><br>
-	The guard sees the visitor on the bed, grabs your arm and pulls you into the corridor. <<tearful>> you are taken back towards the Stack's work area. <<arcologyStackSuspicion 20>>
+	경비원은 침대 위의 방문객을 보더니 당신의 팔을 붙잡아 복도로 끌어낸다. <<tearful>> 당신은 스택의 작업 구역으로 도로 끌려간다. <<arcologyStackSuspicion 20>>
 <<elseif $enemypleasure gte $enemypleasuremax>>
 	<<ejaculation>>
-	The visitor lies back against the pillows and presses something on <<his>> wrist screen. "I'll ask your supervisor to send you here again," <<he>> says, without asking what you want. <<arcologyStackPay 3000>>
+	방문객이 베개에 기대 누워 <<his>> 손목 화면에서 무언가를 누른다. "네 감독관한테 또 보내 달라고 할게." <<he>>【이가】 당신이 무엇을 원하는지는 묻지도 않고 말한다. <<arcologyStackPay 3000>>
 <<else>>
 	<<if $finish is 1>><<encounterEndViolence>><</if>>
-	"You haven't given me what I paid for," the visitor says before calling for the guard. The guard takes you back into the corridor, and <<tearful>> you return to the Stack.
+	"내가 돈 낸 만큼은 못 받았네." 방문객이 경비원을 부르며 말한다. 경비원이 당신을 복도로 데려가고, <<tearful>> 당신은 스택으로 돌아간다.
 <</if>>
 <br><br>
 <<clotheson>><<endcombat>>

@@ -8,7 +8,7 @@ setup.arcology = {
 		return ((units || 0) / 1000).toLocaleString("en-GB", { minimumFractionDigits: 3, maximumFractionDigits: 3 });
 	},
 	cx(units) {
-		return this.cxN(units) + " Cipher";
+		return this.cxN(units) + " 사이퍼";
 	},
 	cxU(units) {
 		return this.cxN(units) + " CIPHER";

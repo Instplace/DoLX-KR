@@ -33,7 +33,7 @@ function masturbationSlimeControl() {
 		if (alternateForcedActions.includes("selfImpreg")) {
 			disableArmActions = true;
 		} else {
-			fragment.append(redText(`The ${earSlimeNoun()} prevents you from moving your left hand away.`));
+			fragment.append(redText(`귀 속의 ${earSlimeNoun()}【이가】 왼손을 떼지 못하게 막는다.`));
 			fragment.append(" ");
 			V.leftaction = "slime";
 		}
@@ -45,7 +45,7 @@ function masturbationSlimeControl() {
 		if (alternateForcedActions.includes("selfImpreg")) {
 			disableArmActions = true;
 		} else {
-			fragment.append(redText(`The ${earSlimeNoun()} prevents you from moving your right hand away.`));
+			fragment.append(redText(`귀 속의 ${earSlimeNoun()}【이가】 오른손을 떼지 못하게 막는다.`));
 			fragment.append(" ");
 			V.rightaction = "slime";
 		}
@@ -54,25 +54,25 @@ function masturbationSlimeControl() {
 	if (alternateForcedActions.includes("selfImpreg")) {
 		// Do nothing
 	} else if (V.mouthaction === "mpenisstop" || V.mouthaction === "mpenismouthoff") {
-		fragment.append(Wikifier.wikifyEval(`<span class="red">The ${earSlimeNoun()} prevents you from moving your mouth away from your <<penis>>.</span>`));
+		fragment.append(Wikifier.wikifyEval(`<span class="red">귀 속의 ${earSlimeNoun()}【이가】 <<penis>>에서 입을 떼지 못하게 막는다.</span>`));
 		fragment.append(" ");
 		V.mouthaction = "slime";
 	} else if (V.mouthaction === "mchastityparasitestop") {
 		fragment.append(
-			Wikifier.wikifyEval(`<span class="red">The ${earSlimeNoun()} prevents you from moving your mouth away from your chastity parasite.</span>`)
+			Wikifier.wikifyEval(`<span class="red">귀 속의 ${earSlimeNoun()}【이가】 정조대 기생충에서 입을 떼지 못하게 막는다.</span>`)
 		);
 		fragment.append(" ");
 		V.mouthaction = "slime";
 	} else if (V.mouthaction === "mpenispullback") {
 		fragment.append(
 			Wikifier.wikifyEval(
-				`<span class="red">The ${earSlimeNoun()} prevents you from pulling back from sucking your <<penis>> as deep as you currently are.</span>`
+				`<span class="red">귀 속의 ${earSlimeNoun()}【이가】 현재 깊이까지 빤 <<penis>>에서 물러나지 못하게 막는다.</span>`
 			)
 		);
 		fragment.append(" ");
 		V.mouthaction = "slime";
 	} else if (V.mouthaction === "mvaginastop") {
-		fragment.append(redText(`The ${earSlimeNoun()} prevents you from moving your mouth away from your vagina.`));
+		fragment.append(redText(`귀 속의 ${earSlimeNoun()}【이가】 보지에서 입을 떼지 못하게 막는다.`));
 		fragment.append(" ");
 		V.mouthaction = "slime";
 	}
@@ -86,7 +86,7 @@ function masturbationSlimeControl() {
 		["mdildostop", "mvaginastopdildo", "manusstopdildo", "mpenisstopstroker", "mmouthstopdildo", "mstopbreastpump"].includes(V.leftaction) &&
 		!(V.mouth !== 0 && playerToys[V.currentToyLeft].type.includes("stroker"))
 	) {
-		fragment.append(redText(`The ${earSlimeNoun()} prevents you from putting the sex toy in your left hand down.`));
+		fragment.append(redText(`귀 속의 ${earSlimeNoun()}【이가】 왼손의 섹스 토이를 내려놓지 못하게 막는다.`));
 		fragment.append(" ");
 		V.leftaction = "slime";
 	}
@@ -99,7 +99,7 @@ function masturbationSlimeControl() {
 		["mdildostop", "mvaginastopdildo", "manusstopdildo", "mpenisstopstroker", "mmouthstopdildo", "mstopbreastpump"].includes(V.rightaction) &&
 		!(V.mouth !== 0 && playerToys[V.currentToyRight].type.includes("stroker"))
 	) {
-		fragment.append(redText(`The ${earSlimeNoun()} prevents you from putting the sex toy in your right hand down.`));
+		fragment.append(redText(`귀 속의 ${earSlimeNoun()}【이가】 오른손의 섹스 토이를 내려놓지 못하게 막는다.`));
 		fragment.append(" ");
 		V.rightaction = "slime";
 	}

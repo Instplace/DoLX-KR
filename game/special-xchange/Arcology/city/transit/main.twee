@@ -4,7 +4,7 @@
 <<set _ssFare to setup.arcology.shuttleFare()>>
 <<set _ssBroke to _ssFare gt ($xchange.arcology.cipher or 0)>>
 <<run ArcologySfx.cue(_ssBroke ? "busDenied" : "busArrive")>>
-You wait at the shuttle stop beside the road. The screen on the stop post shows the routes, and the light at its base turns on as a shuttle approaches.
+당신은 길가의 셔틀 정류장에서 기다린다. 정류장 기둥의 화면에 노선이 표시되고, 셔틀이 다가오면 기둥 밑의 불이 켜진다.
 <br><br>
 <<holo "CITY SHUTTLE / ROUTE BOARD">>
 	<<holoRow "STOP" `_ssFrom.name.toUpperCase()`>>
@@ -14,16 +14,16 @@ You wait at the shuttle stop beside the road. The screen on the stop post shows 
 	<<holoLine "RESTRICTED DISTRICTS ARE NOT SERVED ON PUBLIC ROUTES" "warn">>
 <</holo>>
 <br>
-A driverless shuttle pulls in and stops in front of you. Its doors slide open.
+무인 셔틀이 들어와 당신 앞에 선다. 문이 미끄러지듯 열린다.
 <<if _ssBroke>>
-	You step up to the entrance. The scanner beside the door reads your implant, gives a short warning tone and a barrier drops across the doorway.
+	당신은 승강구로 올라선다. 문 옆의 스캐너가 임플란트를 읽더니 짧은 경고음을 내고, 출입구에 차단기가 내려온다.
 	<br><br>
-	<span class="blue">You don't have enough Cipher for the fare.</span> You step back onto the pavement, the doors close, and the shuttle pulls away without you.
+	<span class="blue">요금을 낼 사이퍼가 부족하다.</span> 당신은 보도로 물러서고, 문이 닫히고, 셔틀은 당신을 두고 떠난다.
 	<br><br>
-	<<getouticon>><<link "Leave the stop" _ssFrom.passage>><<unset $xchange.arcology.shuttleFrom>><</link>>
+	<<getouticon>><<link "정류장을 떠난다" _ssFrom.passage>><<unset $xchange.arcology.shuttleFrom>><</link>>
 	<br>
 <<else>>
-	A screen above the entrance lists the stops on its route.
+	입구 위 화면에 이 노선의 정류장 목록이 나와 있다.
 	<br><br>
 	<<for _ssId range Object.keys(setup.arcology.districts)>>
 		<<set _ssTo to setup.arcology.districts[_ssId]>>
@@ -34,34 +34,34 @@ A driverless shuttle pulls in and stops in front of you. Its doors slide open.
 		<br>
 	<</for>>
 	<br>
-	<<getouticon>><<link "Let it go and leave the stop" _ssFrom.passage>><<unset $xchange.arcology.shuttleFrom>><</link>>
+	<<getouticon>><<link "보내고 정류장을 떠난다" _ssFrom.passage>><<unset $xchange.arcology.shuttleFrom>><</link>>
 	<br>
 <</if>>
 
 :: Arcology Shuttle Ride
 <<set _srTo to setup.arcology.districts[$xchange.arcology.shuttleTo] or setup.arcology.districts.relay>>
 <<location _srTo.loc>><<set $outside to 0>><<effects>><<run ArcologySfx.cue("busBoard")>>
-You step aboard. The scanner by the door reads your implant<<if setup.arcology.shuttleFare() gt 0>> and takes the fare<</if>>. You find a seat by the window as the doors close behind you, and the shuttle pulls away from the stop.
+당신은 셔틀에 오른다. 문 옆의 스캐너가 임플란트를 읽는다<<if setup.arcology.shuttleFare() gt 0>>. 요금이 빠져나간다<</if>>. 뒤에서 문이 닫히는 동안 당신은 창가 자리를 찾고, 셔틀은 정류장에서 출발한다.
 <br><br>
-It joins a line of identical shuttles, all moving at the same speed with the same gap between them.
+셔틀은 똑같은 셔틀들이 늘어선 행렬에 합류한다. 모두 같은 속도로, 같은 간격을 유지하며 움직인다.
 <br><br>
 <<if Time.dayState is "night">>
-	Most floors of the towers you pass have their lights on. Advertisements hang in the air beside the buildings and turn to follow the shuttle as it goes by.
+	당신이 지나는 탑들은 대부분의 층에 불이 켜져 있다. 광고가 건물 옆 허공에 떠 있다가 셔틀이 지나가면 따라서 방향을 튼다.
 <<else>>
-	The other passengers sit quietly, facing forward. Their implants are showing them something you can't see. Nobody talks.
+	다른 승객들은 말없이 앞을 보고 앉아 있다. 이들의 임플란트가 당신에게는 보이지 않는 무언가를 보여 주고 있다. 아무도 말하지 않는다.
 <</if>>
 <br><br>
-The shuttle slows and stops. "<<print _srTo.name>>," a voice announces, and the doors slide open.
+셔틀이 속도를 줄이고 멈춘다. "<<print _srTo.name>>." 목소리가 안내하고, 문이 미끄러지듯 열린다.
 <br><br>
-<<arcologyicon _srTo.icon>><<link "Get off" _srTo.passage>><<run ArcologySfx.next("busAlight")>><<set $eventskip to 1>><<unset $xchange.arcology.shuttleFrom, $xchange.arcology.shuttleTo>><</link>>
+<<arcologyicon _srTo.icon>><<link "내린다" _srTo.passage>><<run ArcologySfx.next("busAlight")>><<set $eventskip to 1>><<unset $xchange.arcology.shuttleFrom, $xchange.arcology.shuttleTo>><</link>>
 <br>
 
 :: Arcology Loiter
 <<effects>>
 <<set _alBack to $xchange.arcology.loiterBack or "Arcology Street">>
-You step aside and find a spot where you can watch the street. People pass by without looking at you.
+당신은 옆으로 비켜 거리를 지켜볼 만한 자리를 찾는다. 사람들은 당신을 쳐다보지도 않고 지나간다.
 <br><br>
-How long do you want to stay here?
+얼마나 여기에 머물겠는가?
 <br>
 <<for _alMin range [5, 10, 30, 60, 120]>>
 	<<set _alLabel to "Loiter for " + (_alMin lt 60 ? _alMin + " minutes" : _alMin is 60 ? "an hour" : (_alMin / 60) + " hours") + " (" + Math.floor(_alMin / 60) + ":" + String(_alMin % 60).padStart(2, "0") + ")">>
@@ -69,5 +69,5 @@ How long do you want to stay here?
 	<br>
 <</for>>
 <br>
-<<getouticon>><<link "Move on" _alBack>><<unset $xchange.arcology.loiterBack>><</link>>
+<<getouticon>><<link "자리를 뜬다" _alBack>><<unset $xchange.arcology.loiterBack>><</link>>
 <br>

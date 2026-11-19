@@ -47,38 +47,38 @@
 	<</if>>
 	<div class="holo-wrap"><div class="holo-journal">
 		<div id="holoBoot" class="holo-boot" role="status">
-			<div class="holo-boot-status"><span class="holo-boot-dot"></span><span class="holo-boot-line"><<if setup.arcology.online()>>CONNECTING TO CITY NETWORK...<<else>>NO SIGNAL. LOADING CACHE...<</if>></span></div>
+			<div class="holo-boot-status"><span class="holo-boot-dot"></span><span class="holo-boot-line"><<if setup.arcology.online()>>도시 네트워크에 접속하는 중...<<else>>신호 없음. 캐시를 불러오는 중...<</if>></span></div>
 			<div class="holo-boot-bar"><span></span></div>
-			<div class="holo-boot-sub">AUTHENTICATING <<print (_ha.handle or "GUEST").toUpperCase()>></div>
+			<div class="holo-boot-sub">인증 중: <<print (_ha.handle or "게스트").toUpperCase()>></div>
 		</div>
 		<section class="holo holo-id" aria-label="Digital identity" @data-state="_haTone is 'denied' ? 'denied' : 'ok'">
 			<div class="holo-id-head">
 				<svg class="holo-id-emblem" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 21a10 10 0 0 1 20 0"/><path d="M7 21v-7m5 7V9m5 12v-6"/><path d="M1 21h22"/></svg>
-				<span class="holo-id-issuer">CIVIC REGISTRY</span>
-				<span class="holo-id-kind">DIGITAL IDENTITY</span>
+				<span class="holo-id-issuer">시민 등록소</span>
+				<span class="holo-id-kind">디지털 신분증</span>
 			</div>
 			<div class="holo-id-main">
-				<div class="holo-id-photo"><<if $options.images is 1>><<canvasimg "holoPortrait" "holo" "still">><<else>><span class="holo-empty">IMAGES DISABLED</span><</if>></div>
+				<div class="holo-id-photo"><<if $options.images is 1>><<canvasimg "holoPortrait" "holo" "still">><<else>><span class="holo-empty">이미지 꺼짐</span><</if>></div>
 				<div class="holo-id-fields">
-					<div class="holo-id-field holo-id-handle"><span class="holo-id-label">HANDLE</span><span class="holo-id-value"><<print _ha.handle or "UNREGISTERED">></span></div>
-					<div class="holo-id-field"><span class="holo-id-label">TITLE</span><span class="holo-id-value"><<print _ha.title or "NO TITLE">></span></div>
-					<div class="holo-id-field"><span class="holo-id-label">CLEARANCE</span><span class="holo-badge" @data-tone="_haTone">_haClearance</span></div>
-					<div class="holo-id-field"><span class="holo-id-label">INTERFACE</span><span class="holo-id-value"><<print (_ha.implant and _ha.implant.model is "basic") ? "BASIC CIVILIAN" : "UNKNOWN">></span></div>
-					<div class="holo-id-field"><span class="holo-id-label">STATUS</span><span class="holo-id-value">_haAuth</span></div>
-					<div class="holo-id-field"><span class="holo-id-label">AFFILIATION</span><span class="holo-id-value">NONE</span></div>
+					<div class="holo-id-field holo-id-handle"><span class="holo-id-label">핸들</span><span class="holo-id-value"><<print _ha.handle or "미등록">></span></div>
+					<div class="holo-id-field"><span class="holo-id-label">직함</span><span class="holo-id-value"><<print _ha.title or "직함 없음">></span></div>
+					<div class="holo-id-field"><span class="holo-id-label">권한 등급</span><span class="holo-badge" @data-tone="_haTone">_haClearance</span></div>
+					<div class="holo-id-field"><span class="holo-id-label">인터페이스</span><span class="holo-id-value"><<print (_ha.implant and _ha.implant.model is "basic") ? "기본 시민" : "알 수 없음">></span></div>
+					<div class="holo-id-field"><span class="holo-id-label">상태</span><span class="holo-id-value">_haAuth</span></div>
+					<div class="holo-id-field"><span class="holo-id-label">소속</span><span class="holo-id-value">없음</span></div>
 				</div>
 			</div>
 			<div class="holo-id-foot">
-				<div class="holo-id-field"><span class="holo-id-label">GUEST ID</span><span class="holo-id-value holo-id-number"><<print _haId or "NOT REGISTERED">></span></div>
+				<div class="holo-id-field"><span class="holo-id-label">게스트 ID</span><span class="holo-id-value holo-id-number"><<print _haId or "미등록">></span></div>
 				<<if _ha.implant and _ha.implant.fitted>>
-					<div class="holo-id-field"><span class="holo-id-label">ISSUED</span><span class="holo-id-value"><<print setup.arcology.issueDate(_ha.implant.fitted)>></span></div>
+					<div class="holo-id-field"><span class="holo-id-label">발급일</span><span class="holo-id-value"><<print setup.arcology.issueDate(_ha.implant.fitted)>></span></div>
 				<</if>>
 				<<if _haId>><<print setup.arcology.barcode(_haId)>><</if>>
 			</div>
 			<div class="holo-id-mrz" aria-hidden="true" @data-mrz="setup.arcology.mrz(_ha.handle, _haId)"></div>
 		</section>
 		<section class="holo holo-net" aria-label="Network" @data-state="_online ? 'ok' : 'pending'">
-			<div class="holo-head">NETWORK</div>
+			<div class="holo-head">네트워크</div>
 			<div class="holo-status" @data-tone="_online ? 'ok' : 'warn'"><span class="holo-dot" aria-hidden="true"></span><<print _online ? "CITY NETWORK CONNECTED" : "OUT OF RANGE">></div>
 			<<if _online>>
 				<<holoRow "LAST SYNC" "NOW">>
@@ -88,12 +88,12 @@
 			<</if>>
 			<div class="holo-auth">
 				<span class="holo-badge" @data-tone="_ha.handle ? 'ok' : 'warn'"><<print _ha.handle ? "ID VERIFIED" : "ID PENDING">></span>
-				<span class="holo-badge" @data-tone="_haRoom and _ha.guest.status is 'sponsored' ? 'ok' : 'off'">SPONSOR LINK</span>
-				<span class="holo-badge" @data-tone="_haTone">_haClearance ACCESS</span>
+				<span class="holo-badge" @data-tone="_haRoom and _ha.guest.status is 'sponsored' ? 'ok' : 'off'">후원자 연결</span>
+				<span class="holo-badge" @data-tone="_haTone">_haClearance 접근</span>
 			</div>
 		</section>
 		<section class="holo holo-objectives" aria-label="Objectives">
-			<div class="holo-head">OBJECTIVES<<print _cached>></div>
+			<div class="holo-head">목표<<print _cached>></div>
 			<<set _objectives to 0>>
 			<<if _ha.voyage and _ha.voyage.arriveAt>>
 				<<set _objectives++>><<set _hvs to setup.arcology.voyageStatus()>>
@@ -106,7 +106,7 @@
 			<<if _ha.debt>>
 				<<set _objectives++>>
 				<div class="holo-obj">
-					<div class="holo-obj-title">OUTSTANDING STACK DEBT</div>
+					<div class="holo-obj-title">미납 스택 부채</div>
 					<<holoRow "BALANCE" `setup.arcology.cxU(_ha.debt.amount)`>>
 					<<holoRow "STATUS" "ABSCONDED">>
 					<<holoLine "PAY AT THE PIER BOOTH. UNPAID DEBTORS ARE DETAINED ON ARRIVAL." "denied">>
@@ -115,7 +115,7 @@
 			<<if _ha.party.status is "invited">>
 				<<set _objectives++>>
 				<div class="holo-obj">
-					<div class="holo-obj-title">GLASSHOUSE MASQUERADE</div>
+					<div class="holo-obj-title">글래스하우스 가면무도회</div>
 					<<if _haNow gte _ha.party.end>>
 						<<holoLine "DOORS CLOSED" "denied">>
 					<<elseif _haNow gte _ha.party.at - 3600>>
@@ -130,60 +130,60 @@
 				</div>
 			<<elseif _ha.party.status is "attending">>
 				<<set _objectives++>>
-				<div class="holo-obj"><div class="holo-obj-title">GLASSHOUSE MASQUERADE</div><<holoLine "IN PROGRESS" "ok">></div>
+				<div class="holo-obj"><div class="holo-obj-title">글래스하우스 가면무도회</div><<holoLine "진행 중" "ok">></div>
 			<<elseif _ha.party.status is "done" and _haNow lt _ha.party.end + 2 * 86400>>
 				<<set _objectives++>>
-				<div class="holo-obj"><div class="holo-obj-title">GLASSHOUSE MASQUERADE</div><<holoLine "ATTENDED" "ok">></div>
+				<div class="holo-obj"><div class="holo-obj-title">글래스하우스 가면무도회</div><<holoLine "참석 완료" "ok">></div>
 			<</if>>
 			<<if _ha.redeem.stage is "silent">>
 				<<set _objectives++>>
-				<div class="holo-obj"><div class="holo-obj-title">SPONSOR</div><<holoLine "NO RESPONSE" "warn">></div>
+				<div class="holo-obj"><div class="holo-obj-title">후원자</div><<holoLine "응답 없음" "warn">></div>
 			<<elseif _ha.redeem.stage is "arena">>
 				<<set _objectives++>>
 				<div class="holo-obj">
-					<div class="holo-obj-title">SPONSOR CONDITION</div>
+					<div class="holo-obj-title">후원 조건</div>
 					<<holoRow "REQUIREMENT" `_ha.redeem.sponsored ? "WIN LUCHIFEN'S ARRANGED BOUT" : "CHAMPION OF THE UNDERGROUND ARENA"`>>
 					<<holoLine `setup.arcology.arenaQualified() ? "REQUIREMENT MET" : "NOT YET MET"` `setup.arcology.arenaQualified() ? "ok" : "warn"`>>
 				</div>
 			<<elseif _ha.redeem.stage is "invited">>
 				<<set _objectives++>>
-				<div class="holo-obj"><div class="holo-obj-title">SPONSOR</div><<holoLine "INVITATION RENEWED. MEET LUCHIFEN AT THE DOCKS" "ok">></div>
+				<div class="holo-obj"><div class="holo-obj-title">후원자</div><<holoLine "초대가 갱신되었습니다. 부두에서 루치펜을 만나십시오." "ok">></div>
 			<</if>>
 			<<if _objectives is 0>>
-				<div class="holo-empty">NO ACTIVE OBJECTIVES</div>
+				<div class="holo-empty">진행 중인 목표 없음</div>
 			<</if>>
 		</section>
 		<section class="holo holo-room" aria-label="Accommodation" @data-state="_haRoom ? 'ok' : 'denied'">
-			<div class="holo-head">ACCOMMODATION<<print _cached>></div>
+			<div class="holo-head">숙소<<print _cached>></div>
 			<<if _haRoom>>
-				<div class="holo-big">HOTEL MERIDIAN · <<print setup.arcology.roomNumber()>></div>
+				<div class="holo-big">호텔 메리디안 · <<print setup.arcology.roomNumber()>></div>
 				<<holoRow "SPONSOR" `_ha.guest.sponsor ? _ha.guest.sponsor.toUpperCase() : "NONE"`>>
 				<<holoRow "PAYMENT" `_ha.guest.status is "sponsored" ? "COVERED BY SPONSOR" : "SETTLED"`>>
 				<<holoRow "VALID UNTIL" `setup.arcology.when(_ha.guest.until).toUpperCase()`>>
 				<<holoRow "TIME LEFT" `setup.arcology.duration(_ha.guest.until - _haNow)`>>
 			<<else>>
-				<div class="holo-big holo-big-off">NO ROOM</div>
+				<div class="holo-big holo-big-off">객실 없음</div>
 				<<holoRow "NIGHTLY RATE" `setup.arcology.cxU(setup.arcologyPrice.peek("night").q)`>>
 			<</if>>
 		</section>
 		<section class="holo holo-wallet" aria-label="Wallet">
-			<div class="holo-head">WALLET<<print _cached>></div>
-			<div class="holo-amount"><<print setup.arcology.cxN(_ha.cipher or 0)>> <span>CIPHER</span></div>
+			<div class="holo-head">지갑<<print _cached>></div>
+			<div class="holo-amount"><<print setup.arcology.cxN(_ha.cipher or 0)>> <span>사이퍼</span></div>
 			<<if _ha.vault>><<holoRow "VAULT" `setup.arcology.cxU(_ha.vault)`>><</if>>
 		</section>
 		<section class="holo holo-services" aria-label="Network services" @data-state="_online ? 'ok' : 'denied'">
-			<div class="holo-head">SERVICES</div>
+			<div class="holo-head">서비스</div>
 			<div class="holo-tiles">
 				<div id="holoMapTile" class="holo-svc">
 					<div class="holo-svc-bg" @data-visual="'mapcard'" aria-hidden="true"></div>
 					<div class="holo-svc-body">
-						<span class="holo-svc-title">CITY MAP</span>
+						<span class="holo-svc-title">도시 지도</span>
 						<<if _online and setup.arcology.mapAccess()>>
-							<<link "Open the city map">><<replace "#customOverlayContent">><<arcologyCityMap>><</replace>><</link>>
+							<<link "도시 지도를 연다">><<replace "#customOverlayContent">><<arcologyCityMap>><</replace>><</link>>
 						<<elseif _online>>
-							<<link "Request the city map">><<run ArcologySfx.play("deny")>><<replace "#holoMapReply">><<holoLine "ACCESS RESTRICTED. INSUFFICIENT AUTHORIZATION." "denied">><</replace>><<run setup.arcology.compose(document.getElementById("holoMapReply"), "decode")>><<removeclass "#holoMapTile" "holo-interfere">><<run void document.getElementById("holoMapTile").offsetWidth>><<addclass "#holoMapTile" "holo-interfere">><</link>>
+							<<link "도시 지도를 요청한다">><<run ArcologySfx.play("deny")>><<replace "#holoMapReply">><<holoLine "접근이 제한되었습니다. 권한이 부족합니다." "denied">><</replace>><<run setup.arcology.compose(document.getElementById("holoMapReply"), "decode")>><<removeclass "#holoMapTile" "holo-interfere">><<run void document.getElementById("holoMapTile").offsetWidth>><<addclass "#holoMapTile" "holo-interfere">><</link>>
 						<<else>>
-							<button type="button" class="transit-locked-btn" disabled>Request the city map</button>
+							<button type="button" class="transit-locked-btn" disabled>도시 지도를 요청한다</button>
 							<<holoLine "UNAVAILABLE: CITY NETWORK OUT OF RANGE" "denied">>
 						<</if>>
 						<div id="holoMapReply"></div>
@@ -192,12 +192,12 @@
 				<div class="holo-svc holo-svc-fx">
 					<div class="holo-svc-bg" data-visual="fxcard" data-live aria-hidden="true"></div>
 					<div class="holo-svc-body">
-						<span class="holo-svc-title">UNIT EXCHANGE</span>
+						<span class="holo-svc-title">환전소</span>
 						<<if _online>>
-							<span class="holo-svc-rate">1 CIPHER = <<print setup.arcologyFx.gbp(setup.arcologyFx.mid(setup.arcologyFx.sync()))>></span>
-							<<link "Open Unit Exchange">><<replace "#customOverlayContent">><<arcologyHoloExchange>><</replace>><</link>>
+							<span class="holo-svc-rate">1 사이퍼 = <<print setup.arcologyFx.gbp(setup.arcologyFx.mid(setup.arcologyFx.sync()))>></span>
+							<<link "환전소를 연다">><<replace "#customOverlayContent">><<arcologyHoloExchange>><</replace>><</link>>
 						<<else>>
-							<button type="button" class="transit-locked-btn" disabled>Open Unit Exchange</button>
+							<button type="button" class="transit-locked-btn" disabled>환전소를 연다</button>
 							<<holoLine "UNAVAILABLE: CITY NETWORK OUT OF RANGE" "denied">>
 						<</if>>
 					</div>
@@ -206,9 +206,9 @@
 				<div class="holo-svc">
 					<div class="holo-svc-bg" data-visual="masthead" aria-hidden="true"></div>
 					<div class="holo-svc-body">
-						<span class="holo-svc-title">CITY NEWS</span>
-						<<link "Read the news">><<run setup.arcologyNews.mode = "journal">><<replace "#customOverlayContent">><<arcologyNewsReader>><</replace>><</link>>
-						<<if _haUnread>><span class="holo-svc-new"><<print _haUnread>> NEW REPL<<print _haUnread is 1 ? "Y" : "IES">></span><</if>>
+						<span class="holo-svc-title">도시 뉴스</span>
+						<<link "뉴스를 읽는다">><<run setup.arcologyNews.mode = "journal">><<replace "#customOverlayContent">><<arcologyNewsReader>><</replace>><</link>>
+						<<if _haUnread>><span class="holo-svc-new">새 답글 <<print _haUnread>>개</span><</if>>
 					</div>
 				</div>
 			</div>
@@ -221,7 +221,7 @@
    Opening it moves nobody and passes no time. */
 <<widget "arcologyHoloExchange">>
 	<div class="holo-wrap"><div class="fx-holo">
-		<div class="dbn-back"><<link "Back to Holo">><<run setup.arcology.holoQuiet = true>><<replace "#customOverlayContent">><<arcologyHoloJournal>><</replace>><</link>></div>
+		<div class="dbn-back"><<link "홀로그램으로 돌아간다">><<run setup.arcology.holoQuiet = true>><<replace "#customOverlayContent">><<arcologyHoloJournal>><</replace>><</link>></div>
 		<div id="fxHolo"></div>
 	</div></div>
 	<<run setTimeout(() => setup.arcologyFx.mount(document.getElementById("fxHolo")))>>
@@ -239,15 +239,15 @@
 			<svg class="arcology-holo-shape" viewBox="0 0 200 120" aria-hidden="true" focusable="false"><path d="M30 70 Q40 30 80 34 Q110 12 140 30 Q178 36 170 66 Q182 96 140 98 Q112 112 82 100 Q40 104 30 70 Z"/></svg>
 			<div class="arcology-holo-body">
 				<p id="arcologyHoloTitle"><<print setup.arcology.online() ? "CITY NETWORK CONNECTED" : "CACHED CITY DATA">></p>
-				<p>INTERFACE: <<print !$xchange.arcology.implant ? "NOT FITTED" : setup.arcology.online() ? "ONLINE" : "OUT OF RANGE">></p>
-				<p>USER: <<arcologyHandle>></p>
-				<p>CLEARANCE: <span class="arcology-holo-guest"><<print _arcologyRevoked ? "REVOKED" : ($xchange.arcology.clearance or "guest").toUpperCase()>></span></p>
+				<p>인터페이스: <<print !$xchange.arcology.implant ? "미장착" : setup.arcology.online() ? "온라인" : "범위 밖">></p>
+				<p>사용자: <<arcologyHandle>></p>
+				<p>권한 등급: <span class="arcology-holo-guest"><<print _arcologyRevoked ? "취소됨" : ($xchange.arcology.clearance or "guest").toUpperCase()>></span></p>
 				<p class="arcology-holo-noise" aria-hidden="true">&nbsp;</p>
 				<p class="arcology-holo-noise" aria-hidden="true">&nbsp;</p>
-				<p>DECRYPTING CITY DATA... <span class="arcology-holo-progress">0%</span></p>
-				<p class="arcology-holo-denied">ACCESS RESTRICTED<br>INSUFFICIENT AUTHORIZATION</p>
-				<p class="arcology-holo-note"><<if _arcologyRevoked>>Your guest key has been revoked, so the island's systems no longer accept it.<<else>>Your guest key opens the public district and your hotel. The rest of the map stays locked.<</if>></p>
-				<button type="button" class="arcology-holo-close">Close</button>
+				<p>도시 데이터 해독 중... <span class="arcology-holo-progress">0%</span></p>
+				<p class="arcology-holo-denied">접근 제한<br>권한 부족</p>
+				<p class="arcology-holo-note"><<if _arcologyRevoked>>당신의 게스트 키가 취소되어, 섬의 시스템은 더 이상 그것을 받아들이지 않는다.<<else>>당신의 게스트 키로는 공공 구역과 호텔만 이용할 수 있다. 지도의 나머지 부분은 잠긴 채로 남는다.<</if>></p>
+				<button type="button" class="arcology-holo-close">닫기</button>
 			</div>
 		</div>
 	<</if>>
@@ -259,8 +259,8 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 	<<arcologyInit>>
 	<div class="holo-wrap"><div class="holo-social">
 		<div class="holo-social-head">
-			<span class="holo-head">SOCIAL INTELLIGENCE</span>
-			<span class="holo-label">USER <<print ($xchange.arcology.handle or "GUEST").toUpperCase()>></span>
+			<span class="holo-head">사회 정보</span>
+			<span class="holo-label">사용자 <<print ($xchange.arcology.handle or "게스트").toUpperCase()>></span>
 		</div>
 		<<arcologyThreatMeter>>
 	</div></div>
@@ -271,18 +271,18 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 <<widget "arcologyThreatMeter">>
 	<<set _atScore to setup.arcology.threatScore()>><<set _atBand to setup.arcology.threatBand()>><<set _atBandInfo to setup.arcology.threatBands[_atBand]>>
 	<section class="holo arcology-threat" aria-label="Island threat assessment" @data-band="_atBand">
-		<div class="holo-head">ISLAND THREAT ASSESSMENT</div>
+		<div class="holo-head">섬 위협 평가</div>
 		<div class="arcology-threat-readout">
 			<span class="holo-big arcology-threat-label">_atBandInfo.label</span>
-			<span class="holo-value">SCORE <<print _atScore>> / 100</span>
+			<span class="holo-value">점수 <<print _atScore>> / 100</span>
 		</div>
 		<div class="arcology-threat-bar" role="meter" aria-valuemin="0" aria-valuemax="100" @aria-valuenow="_atScore" @aria-valuetext="_atBandInfo.label + ', score ' + _atScore" aria-label="Island threat assessment">
 			<span class="arcology-threat-marker" @style="'left: ' + _atScore + '%'"></span>
 		</div>
-		<div class="arcology-threat-ends"><span class="holo-label">LOW PROFILE</span><span class="holo-label">HUNTED</span></div>
+		<div class="arcology-threat-ends"><span class="holo-label">눈에 띄지 않음</span><span class="holo-label">쫓기는 중</span></div>
 		<div class="holo-line arcology-threat-note">_atBandInfo.note</div>
 		<<if setup.arcology.guarded()>>
-			<div class="holo-line" data-tone="warn"><<if _atBand gte 2>>SPONSOR ON FILE: LUCHIFEN. MOST PEOPLE KEEP THEIR DISTANCE.<<else>>SPONSOR ON FILE: LUCHIFEN.<</if>></div>
+			<div class="holo-line" data-tone="warn"><<if _atBand gte 2>>등록된 후원자: 루치펜. 대부분의 사람들은 거리를 둔다.<<else>>등록된 후원자: 루치펜.<</if>></div>
 		<</if>>
 	</section>
 <</widget>>
@@ -295,13 +295,13 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 		<header class="acm-head">
 			<div class="acm-backdrop" @data-visual="_cmAuth ? 'map-full' : 'map'" data-live aria-hidden="true"></div>
 			<div class="acm-title">
-				<span class="acm-kicker">ARCOLOGY / NAVIGATION</span>
-				<span class="acm-brand">CITY MAP</span>
+				<span class="acm-kicker">아콜로지 / 내비게이션</span>
+				<span class="acm-brand">도시 지도</span>
 				<span class="acm-badges"><span @class="'acm-state' + (_cmAuth ? '' : ' locked')"><<print _cmAuth ? "AUTHORIZED" : "ENCRYPTED">></span><span class="acm-sub"><<print setup.arcology.online() ? "LIVE POSITION" : "CACHED. LAST SYNC " + setup.arcologyNews.when($xchange.arcology.lastSync)>></span></span>
 			</div>
 			<<if _cmAuth>><div id="acmReadout" class="acm-readout" aria-live="polite"></div><</if>>
 		</header>
-		<div class="dbn-back"><<link "Back to Holo">><<run setup.arcology.holoQuiet = true>><<replace "#customOverlayContent">><<arcologyHoloJournal>><</replace>><</link>></div>
+		<div class="dbn-back"><<link "홀로그램으로 돌아간다">><<run setup.arcology.holoQuiet = true>><<replace "#customOverlayContent">><<arcologyHoloJournal>><</replace>><</link>></div>
 		<<if _cmAuth>><div id="acmHost"></div><<else>><<holoLine "ACCESS RESTRICTED. INSUFFICIENT AUTHORIZATION." "denied">><</if>>
 	</div></div>
 	<<run setTimeout(() => { const host = document.getElementById("acmHost"); if (host) arcologyRenderMap(host); setup.arcologyVisuals.fill(); })>>
@@ -314,21 +314,21 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 	<div class="holo-wrap"><div class="holo-news dbn">
 		<header class="dbn-head">
 			<div class="dbn-masthead" data-visual="masthead" data-live aria-hidden="true"></div>
-			<div class="dbn-brand"><span class="dbn-mark">DOME</span><span class="dbn-word">BROADCAST</span></div>
+			<div class="dbn-brand"><span class="dbn-mark">돔</span><span class="dbn-word">방송</span></div>
 			<div class="dbn-status">
-				<span class="dbn-net">CITY NETWORK</span>
+				<span class="dbn-net">도시 네트워크</span>
 				<<if !setup.arcology.online()>>
-					<span class="dbn-live">CACHED. LAST SYNC <<print setup.arcologyNews.when($xchange.arcology.lastSync)>></span>
+					<span class="dbn-live">캐시됨. 마지막 동기화 <<print setup.arcologyNews.when($xchange.arcology.lastSync)>></span>
 				<<elseif _nrHot>>
-					<span class="dbn-live on">LIVE</span>
+					<span class="dbn-live on">라이브</span>
 				<<else>>
-					<span class="dbn-live">SYNCED</span>
+					<span class="dbn-live">동기화됨</span>
 				<</if>>
 				<span class="dbn-date"><<print setup.arcology.issueDate(Time.date.timeStamp)>></span>
 			</div>
 		</header>
 		<<if setup.arcologyNews.mode is "journal">>
-			<div class="dbn-back"><<link "Back to Holo">><<run setup.arcology.holoQuiet = true>><<replace "#customOverlayContent">><<arcologyHoloJournal>><</replace>><</link>></div>
+			<div class="dbn-back"><<link "홀로그램으로 돌아간다">><<run setup.arcology.holoQuiet = true>><<replace "#customOverlayContent">><<arcologyHoloJournal>><</replace>><</link>></div>
 		<</if>>
 		<div id="holoNewsBody"><<arcologyNewsList>></div>
 	</div></div>
@@ -368,9 +368,9 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 	<<set _nlMoreAt to _nlLead.length + (_nlReminder ? 1 : 0)>>
 	<<set _nlCards to _nlLead.concat(_nlReminder ? [_nlReminder] : [], _nlCards.filter(x => !_nlLead.includes(x) and x isnot _nlReminder))>>
 	<<if _nlCards.length>>
-		<div class="dbn-section-head">Latest reports</div>
+		<div class="dbn-section-head">최신 보도</div>
 		<<for _nlI to 0; _nlI lt _nlCards.length; _nlI++>>
-			<<if _nlMoreAt gt 0 and _nlI is _nlMoreAt>><div class="dbn-section-head">More reports</div><</if>>
+			<<if _nlMoreAt gt 0 and _nlI is _nlMoreAt>><div class="dbn-section-head">더 많은 보도</div><</if>>
 			<<set _nlRow to [_nlCards[_nlI]]>>
 			<<if !["notice", "reminder", "investigation"].includes(_nlCards[_nlI].tone) and _nlCards[_nlI + 1] and !["notice", "reminder", "investigation"].includes(_nlCards[_nlI + 1].tone)>>
 				<<run _nlRow.push(_nlCards[++_nlI])>>
@@ -381,10 +381,10 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 	<<set _nlOld to _nlFeed.filter(x => x isnot _nlTop and !_nlCards.includes(x))>>
 	<<if _nlOld.length>>
 		<details class="dbn-archive">
-			<summary>Archive: <<print _nlOld.length>> older reports</summary>
+			<summary>보관함: 지난 보도 <<print _nlOld.length>>건</summary>
 			<ul class="dbn-archive-list">
 				<<for _nlA range _nlOld>>
-					<<capture _nlA>><li @data-tone="_nlA.tone"><span class="dbn-time"><<print setup.arcologyNews.when(_nlA.at)>></span> <span class="dbn-cat"><<print _nlA.cat>></span> <<if setup.arcologyNews.unread().includes(_nlA.id)>><span class="dbn-new">NEW REPLY</span> <</if>><<link _nlA.title>><<arcologyNewsOpen _nlA.id>><</link>></li><</capture>>
+					<<capture _nlA>><li @data-tone="_nlA.tone"><span class="dbn-time"><<print setup.arcologyNews.when(_nlA.at)>></span> <span class="dbn-cat"><<print _nlA.cat>></span> <<if setup.arcologyNews.unread().includes(_nlA.id)>><span class="dbn-new">새 답글</span> <</if>><<link _nlA.title>><<arcologyNewsOpen _nlA.id>><</link>></li><</capture>>
 				<</for>>
 			</ul>
 		</details>
@@ -398,13 +398,13 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 	<article @class="'dbn-card' + (_args[1] ? ' dbn-featured' : '')" @data-tone="_ncA.tone" @data-cat="_ncA.cat">
 		<div class="dbn-art" @data-news-art="_ncA.id" data-live aria-hidden="true"></div>
 		<div class="dbn-card-body">
-			<div class="dbn-meta"><span class="dbn-cat"><<print _ncA.cat>></span><<if _ncA.place>><span class="dbn-place"><<print _ncA.place>></span><</if>><<if setup.arcologyNews.unread().includes(_ncA.id)>><span class="dbn-new">NEW REPLY</span><</if>></div>
+			<div class="dbn-meta"><span class="dbn-cat"><<print _ncA.cat>></span><<if _ncA.place>><span class="dbn-place"><<print _ncA.place>></span><</if>><<if setup.arcologyNews.unread().includes(_ncA.id)>><span class="dbn-new">새 답글</span><</if>></div>
 			<div class="dbn-title"><<capture _ncA>><<link _ncA.title>><<arcologyNewsOpen _ncA.id>><</link>><</capture>></div>
 			<p class="dbn-dek"><<print _ncA.dek or _ncA.body[0]>></p>
 			<div class="dbn-foot">
 				<span class="dbn-time"><<print setup.arcologyNews.when(_ncA.at)>></span>
-				<<if _ncA.k isnot "notice">><span class="dbn-count"><<print setup.arcologyNews.reactionTotal(_ncA)>> reactions · <<print setup.arcologyNews.commentCount(_ncA)>> comments</span><</if>>
-				<span class="dbn-read" aria-hidden="true">Read report →</span>
+				<<if _ncA.k isnot "notice">><span class="dbn-count">반응 <<print setup.arcologyNews.reactionTotal(_ncA)>>개 · 댓글 <<print setup.arcologyNews.commentCount(_ncA)>>개</span><</if>>
+				<span class="dbn-read" aria-hidden="true">보도 읽기 →</span>
 			</div>
 		</div>
 	</article>
@@ -414,7 +414,7 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 <<widget "arcologyNewsArticle">>
 	<<set _naId to _args[0]>><<set _na to setup.arcologyNews.find(_naId)>>
 	<<set _naLive to setup.arcologyNews.mode is "journal" and setup.arcology.online()>>
-	<div class="dbn-back"><<link "All reports">><<replace "#holoNewsBody">><<arcologyNewsList>><</replace>><<run setup.arcologyNewsArt.later()>><</link>></div>
+	<div class="dbn-back"><<link "모든 보도">><<replace "#holoNewsBody">><<arcologyNewsList>><</replace>><<run setup.arcologyNewsArt.later()>><</link>></div>
 	<<if !_na>>
 		<<holoLine "THIS ARTICLE IS NO LONGER AVAILABLE." "warn">>
 	<<else>>
@@ -428,8 +428,8 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 			<<if ["MARKETS", "BUSINESS"].includes(_na.cat)>>
 				<<set _naFx to setup.arcologyFx.state()>>
 				<div class="dbn-market" aria-label="Market now">
-					<span class="dbn-market-label">MARKET NOW</span>
-					<span class="dbn-chip">£ / CIPHER <<print setup.arcologyFx.gbp(setup.arcologyFx.mid(_naFx))>></span>
+					<span class="dbn-market-label">현재 시세</span>
+					<span class="dbn-chip">£ / 사이퍼 <<print setup.arcologyFx.gbp(setup.arcologyFx.mid(_naFx))>></span>
 					<<for _naCh range [["1H", 3600], ["24H", 86400]]>>
 						<<set _naPct to setup.arcologyFx.change(_naFx, _naCh[1])>>
 						<<if _naPct isnot null>><span @class="'dbn-chip ' + (_naPct lt 0 ? 'down' : 'up')"><<print _naCh[0] + " " + (_naPct lt 0 ? "−" : "+") + Math.abs(_naPct).toFixed(2) + "%">></span><</if>>
@@ -438,7 +438,7 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 			<</if>>
 			<<set _naKeys to setup.arcologyNewsText.keyPoints(_na)>>
 			<<if _naKeys.length>>
-				<div class="dbn-keys"><span class="dbn-market-label">KEY POINTS</span><ol><<for _naK range _naKeys>><li><<print _naK>></li><</for>></ol></div>
+				<div class="dbn-keys"><span class="dbn-market-label">핵심 요약</span><ol><<for _naK range _naKeys>><li><<print _naK>></li><</for>></ol></div>
 			<</if>>
 			<div class="dbn-text">
 				<<if _na.sections>>
@@ -465,7 +465,7 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 			<</if>>
 			<<set _naRel to setup.arcologyNews.related(_naId)>>
 			<<if _naRel.length>>
-				<div class="dbn-section-head">More on this story</div>
+				<div class="dbn-section-head">이 소식 더 보기</div>
 				<ul class="dbn-related">
 					<<for _naRo range _naRel>>
 						<<capture _naRo>><li><span class="dbn-time"><<print setup.arcologyNews.when(_naRo.at)>></span> <<link _naRo.title>><<arcologyNewsOpen _naRo.id>><</link>></li><</capture>>
@@ -484,9 +484,9 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 						<</capture>>
 					<</for>>
 				</div>
-				<div class="dbn-section-head">Comments (<<print setup.arcologyNews.commentCount(_na)>>)</div>
+				<div class="dbn-section-head">댓글 (<<print setup.arcologyNews.commentCount(_na)>>)</div>
 				<ul class="dbn-comments">
-					<<for _naC range setup.arcologyNews.threadView(_na)>><li @class="'dbn-d' + _naC.depth"><span class="dbn-handle"><<print _naC.h>><<if _naC.to>> <span class="dbn-to">replying to <<print _naC.to>></span><</if>></span><span><<print _naC.t>></span></li><</for>>
+					<<for _naC range setup.arcologyNews.threadView(_na)>><li @class="'dbn-d' + _naC.depth"><span class="dbn-handle"><<print _naC.h>><<if _naC.to>> <span class="dbn-to"><<print _naC.to>>에게 답글</span><</if>></span><span><<print _naC.t>></span></li><</for>>
 					<<set _naPosted to setup.arcologyNews.state().comments[_naId]>>
 					<<if _naPosted>>
 						<li class="mine"><span class="dbn-handle"><<print $xchange.arcology.handle or "Guest">></span><span><<print _naPosted.t or _na.options[_naPosted.i][0]>></span>
@@ -494,7 +494,7 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 							<<if _naReplies.length>>
 								<ul class="dbn-replies">
 									<<for _naRp range _naReplies>>
-										<li @class="_naRp.o ? 'official' : ''"><span class="dbn-handle"><<print _naRp.h>><<if _naRp.o>> <span class="dbn-verified">VERIFIED</span><</if>></span><span><<print _naRp.t>></span><<if _naNew>> <span class="dbn-new">NEW</span><</if>></li>
+										<li @class="_naRp.o ? 'official' : ''"><span class="dbn-handle"><<print _naRp.h>><<if _naRp.o>> <span class="dbn-verified">인증됨</span><</if>></span><span><<print _naRp.t>></span><<if _naNew>> <span class="dbn-new">신규</span><</if>></li>
 										<<if _naRp.n>><li class="dbn-modnote"><<holoLine "MODERATION NOTE ATTACHED TO YOUR HANDLE" "warn">></li><</if>>
 									<</for>>
 								</ul>
@@ -504,7 +504,7 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 				</ul>
 				<<if !_naPosted and _naLive and _na.options.length>>
 					<div class="dbn-reply">
-						<div class="dbn-reply-label">Comment as <<print $xchange.arcology.handle or "Guest">></div>
+						<div class="dbn-reply-label"><<print $xchange.arcology.handle or "게스트">> 이름으로 댓글 작성</div>
 						<<for _naI to 0; _naI lt _na.options.length; _naI++>>
 							<<capture _naI>><<link _na.options[_naI][0]>><<run setup.arcologyNews.comment(_naId, _naI)>><<replace "#holoNewsBody">><<arcologyNewsArticle _naId>><</replace>><<run setup.arcologyNewsArt.later()>><</link>><</capture>>
 						<</for>>

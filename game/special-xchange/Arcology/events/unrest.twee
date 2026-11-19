@@ -4,106 +4,106 @@
 <<if _paA and setup.arcologyPrice.items[_paA.id]>>
 	<<set _paP to setup.arcologyPrice.peek(_paA.id)>><<set _paE to setup.arcologyPrice.explain(_paP)>>
 	<<if _paP.v.who is "kiosk">>
-		You tap the price on the kiosk screen. A small notice opens beside it.
+		당신은 키오스크 화면의 가격을 누른다. 그 옆에 작은 안내창이 열린다.
 		<br>
 		<<holoNotice "PRICE NOTICE" `_paE.why is "old" ? "POSTED PRICES ARE UPDATED EVERY FEW DAYS." : "PRICES FOLLOW THE CIPHER EXCHANGE RATE."` "warn">>
 	<<else>>
 		<<if _paP.pounds>>
-			"Why won't you take Cipher?" you ask.
+			"왜 사이퍼는 안 받죠?" 당신이 묻는다.
 		<<elseif _paP.corrected>>
-			"Why has the price changed?" you ask.
+			"가격이 왜 바뀌었죠?" 당신이 묻는다.
 		<<else>>
-			"Why is it so expensive?" you ask.
+			"왜 이렇게 비싸죠?" 당신이 묻는다.
 		<</if>>
 		<br><br>
-		The <<print _paP.v.who>> <<print _paE.action>> "<<print _paE.line>>"
+		<<print _paP.v.who>>【이가】 <<print _paE.action>> "<<print _paE.line>>"
 		<<if _paE.town>>
 			<br><br>
-			The till adds the extra charge that also applies to purchases in town.
+			계산대가 마을에서 하는 구매에도 붙는 추가 요금을 더한다.
 		<</if>>
 	<</if>>
 	<<set _paBack to _paA.back>>
 <<else>>
 	<<set _paBack to "Arcology Street">>
-	You cannot remember which price you wanted to ask about.
+	당신은 어떤 가격에 대해 물어보려 했는지 기억나지 않는다.
 <</if>>
 <br><br>
-<<link [[Back|_paBack]]>><<unset $xchange.arcology.priceAsk>><</link>>
+<<link [[뒤로|_paBack]]>><<unset $xchange.arcology.priceAsk>><</link>>
 <br>
 
 :: Arcology Black Market Deal
 <<location "arcology_blackmarket">><<set $outside to 0>><<effects>>
 <<set _bd to $xchange.arcology.deal>>
 <<if !_bd>>
-	The seller has put the tray away, so you cannot buy the patch now.
+	판매자가 쟁반을 치워 버려서, 지금은 패치를 살 수 없다.
 	<br><br>
-	<<link [[Next|Arcology Black Market]]>><</link>>
+	<<link [[다음|Arcology Black Market]]>><</link>>
 	<br>
 	<<exit>>
 <</if>>
 <<person1>>
 <<switch _bd.stage>>
 <<case "bought">>
-	The seller checks your payment, then pushes a patch across the table. You pick it up and press it against the inside of your wrist. Your arm starts to feel warm as the patch takes effect, and the pain in your body begins to fade.
+	판매자가 결제를 확인한 뒤 테이블 너머로 패치를 밀어 준다. 당신은 그것을 집어 손목 안쪽에 붙인다. 패치가 듣기 시작하자 팔이 따뜻해지고, 몸의 통증이 가라앉기 시작한다.
 	<br><br>
-	<<link [[Next|Arcology Black Market]]>><<endevent>><<unset $xchange.arcology.deal>><</link>>
+	<<link [[다음|Arcology Black Market]]>><<endevent>><<unset $xchange.arcology.deal>><</link>>
 <<case "unpaid">>
-	The seller checks the payment screen, then takes the patch back before you can pick it up. "Payment didn't go through. Try again."
+	판매자가 결제 화면을 확인하더니, 당신이 집기도 전에 패치를 도로 가져간다. "결제 안 됐어. 다시 해 봐."
 	<br><br>
-	<<link [[Next|Arcology Black Market]]>><<endevent>><<unset $xchange.arcology.deal>><</link>>
+	<<link [[다음|Arcology Black Market]]>><<endevent>><<unset $xchange.arcology.deal>><</link>>
 <<case "dispute">>
-	<<A $NPCList[0].fullDescription>> sits behind the table. <<arcologyCyberLook 0>> <<He>> looks at your payment, then checks the price on <<his>> wrist screen. <<He>> stops the sale and puts a hand over the patch.
+	<<print window.KR.getDescriptionKr($NPCList[0].fullDescription)>>【이가】 테이블 뒤에 앉아 있다. <<arcologyCyberLook 0>> <<He>>【은는】 당신이 낸 결제를 보고는 <<his>> 손목 화면에서 가격을 확인한다. <<He>>【은는】 거래를 멈추고 패치 위에 손을 얹는다.
 	<br><br>
-	"That price is old," <<he>> says. "Cipher's worth less now. You thought I was going to sell it that cheap?"
+	"그 가격은 옛날 거야." <<he>>【이가】 말한다. "사이퍼 값이 이제 떨어졌거든. 내가 그렇게 싸게 팔 줄 알았어?"
 	<br><br>
-	<<He>> enters a new amount and turns the screen towards you. The price is now <<print setup.arcology.cx(_bd.fair)>>.
+	<<He>>【은는】 새 금액을 입력하고 화면을 당신 쪽으로 돌린다. 가격은 이제 <<print setup.arcology.cx(_bd.fair)>>【이】다.
 	<br><br>
 	<<if $xchange.arcology.cipher gte _bd.fair>>
-		<<link `"Pay the new price (" + setup.arcology.cx(_bd.fair) + ")"` "Arcology Black Market Deal">><<if $xchange.arcology.cipher gte _bd.fair>><<set $xchange.arcology.cipher -= _bd.fair>><<set _bd.stage to "bought">><<pain -25>><<stress -3>><<run setup.arcologyPrice.noteBargain("dealer")>><</if>><</link>>
+		<<link `"새 가격을 낸다 (" + setup.arcology.cx(_bd.fair) + ")"` "Arcology Black Market Deal">><<if $xchange.arcology.cipher gte _bd.fair>><<set $xchange.arcology.cipher -= _bd.fair>><<set _bd.stage to "bought">><<pain -25>><<stress -3>><<run setup.arcologyPrice.noteBargain("dealer")>><</if>><</link>>
 		<br>
 	<</if>>
 	<<if !_bd.argued>>
-		<<link [[Point to the posted price|Arcology Black Market Deal]]>><<set _bd.argued to true>><<set _bd.stage to setup.arcology.escape("talk", "english", 400, 1100) ? "conceded" : "threat">><</link>><<arcologySkill "English">>
+		<<link [[게시된 가격을 가리킨다|Arcology Black Market Deal]]>><<set _bd.argued to true>><<set _bd.stage to setup.arcology.escape("talk", "english", 400, 1100) ? "conceded" : "threat">><</link>><<arcologySkill "English">>
 		<br>
 	<</if>>
-	<<link [[Leave the patch and walk away|Arcology Black Market]]>><<endevent>><<unset $xchange.arcology.deal>><</link>>
+	<<link [[패치를 두고 걸어 나간다|Arcology Black Market]]>><<endevent>><<unset $xchange.arcology.deal>><</link>>
 	<br>
 <<case "conceded">>
-	"That's the price you put up," you say, pointing at the list. "You can't change it after I try to pay."
+	"그건 그쪽이 내건 가격이잖아요." 당신이 목록을 가리키며 말한다. "내가 내려고 한 뒤에 바꾸면 안 되죠."
 	<br><br>
-	The people at the next table turn to watch. The seller looks at them, then pushes the patch towards you. "Fine. Pay the old price. After that, don't come back."
+	옆 테이블 사람들이 고개를 돌려 이쪽을 지켜본다. 판매자는 그들을 쳐다보고는 패치를 당신 쪽으로 밀어 준다. "좋아. 옛 가격으로 내. 그리고 다시는 오지 마."
 	<br><br>
 	<<if $xchange.arcology.cipher gte _bd.old>>
-		<<link `"Pay " + setup.arcology.cx(_bd.old)` "Arcology Black Market Deal">><<if $xchange.arcology.cipher gte _bd.old>><<set $xchange.arcology.cipher -= _bd.old>><<set _bd.stage to "bought">><<pain -25>><<stress -3>><<run setup.arcologyPrice.noteBargain("dealer")>><<set $daily.arcologyBlackMarketBanned to true>><</if>><</link>>
+		<<link `"지불한다 (" + setup.arcology.cx(_bd.old) + ")"` "Arcology Black Market Deal">><<if $xchange.arcology.cipher gte _bd.old>><<set $xchange.arcology.cipher -= _bd.old>><<set _bd.stage to "bought">><<pain -25>><<stress -3>><<run setup.arcologyPrice.noteBargain("dealer")>><<set $daily.arcologyBlackMarketBanned to true>><</if>><</link>>
 		<br>
 	<</if>>
-	<<link [[Leave it|Arcology Black Market]]>><<endevent>><<unset $xchange.arcology.deal>><</link>>
+	<<link [[포기한다|Arcology Black Market]]>><<endevent>><<unset $xchange.arcology.deal>><</link>>
 <<case "threat">>
-	"That's the price you put up," you say, pointing at the list. "You can't change it now."
+	"그건 그쪽이 내건 가격이잖아요." 당신이 목록을 가리키며 말한다. "이제 와서 바꾸면 안 되죠."
 	<br><br>
 	<<arcologyCounterLine>>
-	The seller gets up from the table. Another person stands up nearby and moves closer. The seller pulls <<his>> jacket aside, showing you a stun baton. "You want to keep arguing? Leave. Now."
+	판매자가 테이블에서 일어난다. 근처에 있던 다른 사람도 일어나 가까이 다가온다. 판매자가 <<his>> 재킷을 젖혀 전기 곤봉을 보여 준다. "계속 따질 거야? 꺼져. 지금 당장."
 	<br><br>
-	<<link [[Leave|Arcology Market Street]]>><<endevent>><<unset $xchange.arcology.deal>><<set $daily.arcologyBlackMarketBanned to true>><<stress 3>><</link>><<gstress>>
+	<<link [[떠난다|Arcology Market Street]]>><<endevent>><<unset $xchange.arcology.deal>><<set $daily.arcologyBlackMarketBanned to true>><<stress 3>><</link>><<gstress>>
 	<br>
-	<<link [[Grab the patch and run|Arcology Black Market Deal]]>><<set _bd.stage to setup.arcology.escape("run", "athletics", 400, 1200) ? "stolen" : "caught">><<pass 1>><</link>><<arcologySkill "Athletics">>
+	<<link [[패치를 낚아채 도망친다|Arcology Black Market Deal]]>><<set _bd.stage to setup.arcology.escape("run", "athletics", 400, 1200) ? "stolen" : "caught">><<pass 1>><</link>><<arcologySkill "Athletics">>
 	<br>
 <<case "stolen">>
-	You grab the patch from the tray and run for the curtain while the seller moves around the table. You push through it, pass the parts stalls, then turn onto Market Street. You slow down among the shoppers and look behind you. The seller has not followed you.
+	당신은 쟁반에서 패치를 낚아채 커튼 쪽으로 달리고, 판매자는 테이블을 돌아 쫓아온다. 당신은 커튼을 밀치고 나가 부품 가판대를 지나 마켓 가로 접어든다. 장 보는 사람들 사이에서 속도를 늦추고 뒤를 돌아본다. 판매자는 따라오지 않았다.
 	<br><br>
-	Once you are away from the market, you press the patch against the inside of your wrist. After a moment, the pain in your body begins to fade.<<pain -25>><<stress -3>>
+	시장에서 멀어지자 당신은 패치를 손목 안쪽에 붙인다. 잠시 뒤 몸의 통증이 가라앉기 시작한다.<<pain -25>><<stress -3>>
 	<<set $daily.arcologyBlackMarketBanned to true>>
 	<br><br>
-	<<link [[Next|Arcology Market Street]]>><<endevent>><<unset $xchange.arcology.deal>><</link>>
+	<<link [[다음|Arcology Market Street]]>><<endevent>><<unset $xchange.arcology.deal>><</link>>
 <<case "caught">>
 	<<arcologyCounterLine>>
-	You grab the patch and turn towards the curtain. The seller comes around the table before you can reach it, catches your arm and twists it behind your back.
+	당신은 패치를 낚아채 커튼 쪽으로 몸을 돌린다. 하지만 커튼에 닿기도 전에 판매자가 테이블을 돌아와 당신의 팔을 붙잡아 등 뒤로 꺾는다.
 	<br><br>
-	"Thief!" <<he>> shouts. People at the other tables look over as <<he>> pulls your arm further up behind your back. "Drop it and get out."
+	"도둑이야!" <<he>>【이가】 소리친다. 다른 테이블 사람들이 돌아보는 가운데 <<he>>【은는】 당신의 팔을 등 뒤로 더 높이 꺾어 올린다. "내려놓고 꺼져."
 	<br><br>
-	<<link [[Fight|Arcology Danger Fight]]>><<set $xchange.arcology.danger to { kind: "dealer", where: "market", back: "Arcology Market Street", stage: "approach", npc: true, price: _bd.fair }>><<unset $xchange.arcology.deal>><<set $daily.arcologyBlackMarketBanned to true>><<set $fightstart to 1>><</link>>
+	<<link [[싸운다|Arcology Danger Fight]]>><<set $xchange.arcology.danger to { kind: "dealer", where: "market", back: "Arcology Market Street", stage: "approach", npc: true, price: _bd.fair }>><<unset $xchange.arcology.deal>><<set $daily.arcologyBlackMarketBanned to true>><<set $fightstart to 1>><</link>>
 	<br>
-	<<link [[Drop the patch and leave|Arcology Market Street]]>><<endevent>><<unset $xchange.arcology.deal>><<set $daily.arcologyBlackMarketBanned to true>><<pain 4>><<stress 4>><</link>><<gpain>><<gstress>>
+	<<link [[패치를 내려놓고 떠난다|Arcology Market Street]]>><<endevent>><<unset $xchange.arcology.deal>><<set $daily.arcologyBlackMarketBanned to true>><<pain 4>><<stress 4>><</link>><<gpain>><<gstress>>
 	<br>
 <</switch>>
 <br>
@@ -119,47 +119,47 @@
 <<person1>>
 <<switch _ad.raid>>
 <<case "shop">>
-	Ahead, you see a small food shop with its metal shutter forced halfway open. <<A $NPCList[0].fullDescription>> is pulling crates out from under it and passing them to another person in the street. <<arcologyCyberLook 0>>
+	앞쪽에 금속 셔터가 반쯤 억지로 열린 작은 식료품 가게가 보인다. <<print window.KR.getDescriptionKr($NPCList[0].fullDescription)>>【이가】 그 밑에서 상자를 끌어내 거리의 다른 사람에게 넘기고 있다. <<arcologyCyberLook 0>>
 	<br><br>
-	The shop owner is on the floor inside, shouting that the money in the till is all in Cipher and barely worth anything now. People passing the shop keep walking. The payment card from the till is lying on the pavement beneath the shutter, where the two thieves have not noticed it.
+	가게 주인은 안쪽 바닥에 쓰러진 채, 계산대 돈이 전부 사이퍼라서 이제 거의 값이 없다고 소리치고 있다. 가게 앞을 지나는 사람들은 그냥 걸어간다. 계산대에서 나온 결제 카드는 도둑 둘이 알아채지 못한 채 셔터 밑 보도에 떨어져 있다.
 <<case "attack">>
-	Near a payment terminal, <<a $NPCList[0].fullDescription>> is holding a resident against the wall. Another person is going through the resident's coat pockets. <<arcologyCyberLook 0>>
+	결제 단말기 근처에서 <<print window.KR.getDescriptionKr($NPCList[0].fullDescription)>>【이가】 주민 한 명을 벽에 붙잡아 두고 있다. 다른 한 명은 그 주민의 코트 주머니를 뒤진다. <<arcologyCyberLook 0>>
 	<br><br>
-	"Pounds," the one doing the holding says. "Not Cipher. Nobody wants Cipher."
+	"파운드로 내놔." 붙잡고 있는 쪽이 말한다. "사이퍼 말고. 사이퍼는 아무도 안 받아."
 <<case "supplies">>
-	Two raiders have stopped a delivery cart carrying crates of food and water. <<A $NPCList[0].fullDescription>> is standing on top of the cart, kicking at anyone who tries to get close. The second raider is pulling crates off the back. <<arcologyCyberLook 0>>
+	약탈자 둘이 식량과 물 상자를 실은 배달 수레를 세웠다. <<print window.KR.getDescriptionKr($NPCList[0].fullDescription)>>【이가】 수레 위에 올라서서 가까이 오려는 사람마다 걷어차고 있다. 다른 약탈자는 수레 뒤에서 상자를 끌어내리고 있다. <<arcologyCyberLook 0>>
 	<br><br>
-	The driver is hiding behind the front of the cart. A payment card has fallen onto the road beside one of the wheels.
+	운전자는 수레 앞쪽 뒤에 숨어 있다. 바퀴 하나 옆 도로에는 결제 카드가 떨어져 있다.
 <<case "crowd">>
-	People have gathered outside a financial office and are shouting through the glass doors. Several private security officers are blocking the entrance. One officer, <<a $NPCList[0].fullDescription>>, holds up a shield and pushes back anyone who gets too close. <<arcologyCyberLook 0>>
+	사람들이 금융 사무소 밖에 모여 유리문 너머로 소리를 지르고 있다. 민간 경비원 여럿이 입구를 막고 있다. 경비원 한 명인 <<print window.KR.getDescriptionKr($NPCList[0].fullDescription)>>【은는】 방패를 들고 너무 가까이 오는 사람을 밀어낸다. <<arcologyCyberLook 0>>
 	<br><br>
-	A sign on the door says withdrawals are suspended until further notice.
+	문에 붙은 안내문에는 추후 공지가 있을 때까지 출금이 중단된다고 적혀 있다.
 <</switch>>
 <<if _ad.noticed>>
 	<br><br>
-	<<He>> notices you watching. <<He>> calls to the other raider, then leaves what <<he>> was doing and walks towards you.
+	<<He>>【이가】 당신이 지켜보는 것을 알아챈다. <<He>>【은는】 다른 약탈자를 부르고, 하던 일을 놓고 당신 쪽으로 걸어온다.
 <</if>>
 <br><br>
 <<if _ad.raid is "crowd">>
-	<<link [[Go around the crowd|Arcology Raid Act]]>><<set _ad.action to "leave">><</link>>
+	<<link [[군중을 돌아서 간다|Arcology Raid Act]]>><<set _ad.action to "leave">><</link>>
 	<br>
-	<<link [[Stop and listen|Arcology Raid Act]]>><<set _ad.action to "listen">><<pass 5>><</link>>
+	<<link [[멈춰 서서 귀 기울인다|Arcology Raid Act]]>><<set _ad.action to "listen">><<pass 5>><</link>>
 	<br>
-	<<link [[Push through to the doors|Arcology Raid Act]]>><<set _ad.action to "push">><<set _ad.check to setup.arcology.escape("run", "athletics", 300, 1000)>><</link>><<arcologySkill "Athletics">>
+	<<link [[문까지 밀치고 나아간다|Arcology Raid Act]]>><<set _ad.action to "push">><<set _ad.check to setup.arcology.escape("run", "athletics", 300, 1000)>><</link>><<arcologySkill "Athletics">>
 	<br>
 <<else>>
 	<<arcologyPoliceHint>>
 	<<if _ad.noticed>>
-		<<link [[Back away|Arcology Raid Act]]>><<set _ad.action to "back">><<set _ad.check to setup.arcology.escape("run", "athletics", 300, 1000)>><</link>><<arcologySkill "Athletics">>
+		<<link [[뒤로 물러난다|Arcology Raid Act]]>><<set _ad.action to "back">><<set _ad.check to setup.arcology.escape("run", "athletics", 300, 1000)>><</link>><<arcologySkill "Athletics">>
 	<<else>>
-		<<link [[Leave before the raiders notice you|Arcology Raid Act]]>><<set _ad.action to "leave">><</link>>
+		<<link [[약탈자들이 알아채기 전에 떠난다|Arcology Raid Act]]>><<set _ad.action to "leave">><</link>>
 	<</if>>
 	<br>
 	<<arcologyPoliceLink "Arcology Raid Act">>
-	<<link [[Step in and help|Arcology Raid Act]]>><<set _ad.action to "help">><<set _ad.check to setup.arcology.escape("force", "physique", 4000, 16000)>><</link>><<arcologySkill "Physique">>
+	<<link [[나서서 돕는다|Arcology Raid Act]]>><<set _ad.action to "help">><<set _ad.check to setup.arcology.escape("force", "physique", 4000, 16000)>><</link>><<arcologySkill "Physique">>
 	<br>
 	<<if _ad.raid isnot "attack" and !_ad.noticed>>
-		<<link [[Pick up the dropped card|Arcology Raid Act]]>><<set _ad.action to "loot">><<set _ad.check to setup.arcology.escape("lock", "skulduggery", 300, 1000)>><</link>><<arcologySkill "Skulduggery">>
+		<<link [[떨어진 카드를 줍는다|Arcology Raid Act]]>><<set _ad.action to "loot">><<set _ad.check to setup.arcology.escape("lock", "skulduggery", 300, 1000)>><</link>><<arcologySkill "Skulduggery">>
 		<br>
 	<</if>>
 <</if>>
@@ -172,83 +172,83 @@
 <<switch _ad.action>>
 <<case "leave">>
 	<<if _ad.raid is "crowd">>
-		You stay away from the officers at the entrance and walk around the people gathered outside. When you reach the next street, you continue on your way.
+		당신은 입구의 경비원들을 피해 밖에 모인 사람들 주위를 돌아 걷는다. 다음 거리에 이르자 가던 길을 계속 간다.
 	<<else>>
-		The raiders are still busy with the robbery. You turn around and walk back the way you came, leaving the street before anyone stops you.
+		약탈자들은 아직 강도질에 정신이 팔려 있다. 당신은 몸을 돌려 왔던 길로 돌아가, 누가 막기 전에 그 거리를 벗어난다.
 	<</if>>
 	<br><br>
 	<<arcologyDangerReturn>>
 <<case "listen">>
-	You stop at the back of the crowd to hear what everyone is shouting about. People say their savings are held in Cipher accounts, but the office will not let them withdraw their money. Nobody inside has explained when withdrawals will be allowed again.
+	당신은 군중 뒤쪽에 멈춰 서서 사람들이 무엇 때문에 소리치는지 듣는다. 사람들은 저축을 사이퍼 계좌에 넣어 두었는데 사무소가 출금을 허락하지 않는다고 말한다. 언제 다시 출금할 수 있는지 설명해 준 사람은 안에 아무도 없다.
 	<br><br>
-	A person standing nearby says the office stopped answering messages two days ago. Another person claims the managers left through a back door this morning.<<stress 2>><<gstress>>
+	근처에 서 있던 사람이 사무소가 이틀 전부터 메시지에 답하지 않는다고 말한다. 또 다른 사람은 관리자들이 오늘 아침 뒷문으로 빠져나갔다고 주장한다.<<stress 2>><<gstress>>
 	<br><br>
 	<<arcologyDangerReturn>>
 <<case "push">>
 	<<if _ad.check>>
-		You make your way between the people near the entrance until you reach the glass doors. The office inside is empty, although the lights are still on. Before you can look any further, a security officer pushes you back towards the crowd. You manage to walk away without being hurt.
+		당신은 입구 근처 사람들 틈을 비집고 유리문까지 간다. 불은 아직 켜져 있지만 안쪽 사무소는 텅 비어 있다. 더 살펴보기도 전에 경비원이 당신을 군중 쪽으로 밀어낸다. 다치지 않고 자리를 벗어난다.
 	<<else>>
 		<<arcologyCounterLine>>
-		As you reach the front, people behind you start pushing towards the doors. A security officer pushes a shield against your shoulder, forcing you backwards into the crowd. You fall, and someone steps on your hand before you can get up.<<pain 8>><<stress 4>><<gpain>><<gstress>>
+		당신이 맨 앞에 이르자 뒤에 있던 사람들이 문 쪽으로 밀려들기 시작한다. 경비원이 방패를 당신 어깨에 밀어붙여 군중 속으로 뒤로 떠민다. 당신은 넘어지고, 일어나기도 전에 누군가 당신 손을 밟는다.<<pain 8>><<stress 4>><<gpain>><<gstress>>
 	<</if>>
 	<br><br>
 	<<arcologyDangerReturn>>
 <<case "back">>
 	<<if _ad.check>>
-		You move backwards as <<he>> approaches, keeping enough distance to turn the corner before <<he>> reaches you. You continue down the next street until you are among other people. When you look back, nobody is following you.
+		<<he>>【이가】 다가오는 동안 당신은 뒤로 물러나며, <<he>>【이가】 닿기 전에 모퉁이를 돌 만큼 거리를 유지한다. 다른 사람들 사이에 섞일 때까지 다음 거리를 따라 계속 걷는다. 뒤를 돌아보니 따라오는 사람은 없다.
 		<br><br>
 		<<arcologyDangerReturn>>
 	<<else>>
 		<<arcologyCounterLine>>
-		You turn towards the corner, but <<he>> runs ahead and stands in your way. "Been watching us, have you?" <<he>> asks.
+		당신은 모퉁이 쪽으로 몸을 돌리지만, <<he>>【이가】 앞질러 달려와 길을 막아선다. "우리를 지켜보고 있었나 봐?" <<he>>【이가】 묻는다.
 		<br><br>
 		<<arcologyUnrestChoices>>
 	<</if>>
 <<case "call">>
-	You turn away from the raiders and use your implant to call Enforcement. You try to speak quietly so nobody hears you.
+	당신은 약탈자들에게서 몸을 돌려 임플란트로 집행국에 연락한다. 아무도 듣지 못하게 조용히 말하려 애쓴다.
 	<<if _ad.police is "arrive">>
-		You tell the person answering the call where you are. A police drone arrives soon afterwards, sounding its siren as it comes down towards the street. The raiders run away when the drone approaches. It then moves over to you and scans your implant, recording your username as the person who called.<<run setup.arcology.expose()>>
+		당신은 전화를 받은 사람에게 위치를 말한다. 얼마 뒤 경찰 드론이 사이렌을 울리며 거리로 내려온다. 드론이 다가오자 약탈자들은 달아난다. 그러고는 드론이 당신에게 다가와 임플란트를 스캔하고, 당신의 핸들를 신고자로 기록한다.<<run setup.arcology.expose()>>
 		<br><br>
 		<<arcologyDangerReturn>>
 	<<else>>
 		<<print setup.arcology.policeText(_ad.police)>>
 		<br><br>
-		<<if _ad.noticed>>The raider hears you talking and starts walking faster.<<else>>The raider hears your voice and turns towards you.<</if>> "Who are you calling?" <<he>> demands. You stop speaking, but <<he>> reaches you before you can leave and stands in your way. You still have no help from Enforcement.
+		<<if _ad.noticed>>약탈자가 당신이 통화하는 소리를 듣고 걸음을 재촉한다.<<else>>약탈자가 당신 목소리를 듣고 이쪽으로 몸을 돌린다.<</if>> "누구한테 전화하는 거야?" <<he>>【이가】 다그친다. 당신이 말을 멈추지만 <<he>>【은는】 당신이 자리를 뜨기 전에 다가와 길을 막아선다. 집행국의 도움은 여전히 없다.
 		<br><br>
 		<<arcologyUnrestChoices>>
 	<</if>>
 <<case "help">>
 	<<if setup.arcology.guarded()>><<include "Arcology Criminal Intercept">><<exit>><</if>>
 	<<if _ad.check>>
-		You shout at the raider and rush towards <<him>>. <<if _ad.raid is "supplies" and !_ad.noticed>>You grab <<his>> legs at the edge of the cart and pull <<him>> down onto the road.<<else>>You shove <<him>> before <<he>> can stop you. <<He>> stumbles backwards and moves away to keep <<his>> balance.<</if>> The second raider looks over as people nearby turn to watch. Both raiders pick up what they can carry and run away.
+		당신은 약탈자에게 소리를 지르며 <<him>>【을를】 향해 달려든다. <<if _ad.raid is "supplies" and !_ad.noticed>>수레 가장자리에서 <<his>> 다리를 붙잡아 도로로 끌어내린다.<<else>><<he>>【이가】 막기 전에 <<him>>【을를】 밀친다. <<He>>【은는】 비틀거리며 뒤로 물러나 균형을 잡는다.<</if>> 근처 사람들이 돌아보는 가운데 두 번째 약탈자도 이쪽을 본다. 두 약탈자는 들 수 있는 것을 집어 들고 달아난다.
 		<br><br>
 		<<switch _ad.raid>>
-		<<case "shop">>The shop owner gets up and thanks you before pulling the shutter back down.
-		<<case "attack">>The resident pulls away from the wall, thanks you, then walks quickly towards a nearby building.
-		<<default>>The driver gets back into the vehicle and drives away with the crates that are still on the cart.
+		<<case "shop">>가게 주인은 일어나 당신에게 고맙다고 말한 뒤 셔터를 다시 내린다.
+		<<case "attack">>주민은 벽에서 몸을 떼고 당신에게 고맙다고 한 뒤 근처 건물로 서둘러 걸어간다.
+		<<default>>운전자는 차량에 다시 올라타 수레에 남은 상자를 싣고 떠난다.
 		<</switch>>
 		<<stress -2>><<lstress>>
 		<br><br>
 		<<arcologyDangerReturn>>
 	<<else>>
 		<<arcologyCounterLine>>
-		You run up and shove <<him>>, but <<he>> stays on <<his>> feet. <<He>> turns towards you while the second raider drops the stolen goods and comes over to help.
+		당신은 달려가 <<him>>【을를】 밀치지만 <<he>>【은는】 쓰러지지 않고 버틴다. <<He>>【은는】 당신 쪽으로 돌아서고, 그동안 두 번째 약탈자가 훔친 물건을 내려놓고 거들러 온다.
 		<br><br>
-		"Wrong street," <<he>> says.
+		"길을 잘못 들었어." <<he>>【이가】 말한다.
 		<br><br>
 		<<arcologyUnrestChoices>>
 	<</if>>
 <<case "loot">>
 	<<if _ad.check>>
 		<<if !_ad.taken>><<set _ad.taken to random(1500, 4500)>><<set $xchange.arcology.cipher to ($xchange.arcology.cipher or 0) + _ad.taken>><</if>>
-		While the raiders are occupied, you crouch and pick up the payment card. You hold it against your implant and transfer <<print setup.arcology.cx(_ad.taken)>> into your wallet before the card stops working.
+		약탈자들이 정신이 팔린 사이 당신은 웅크려 앉아 결제 카드를 줍는다. 카드를 임플란트에 대고 <<print setup.arcology.cx(_ad.taken)>>【을를】 지갑으로 옮기고, 카드는 곧 작동을 멈춘다.
 		<br><br>
-		You put the empty card back on the ground, stand up, and leave before the raiders notice what you did.<<stress 2>><<gstress>>
+		당신은 빈 카드를 도로 바닥에 내려놓고 일어나, 약탈자들이 알아채기 전에 자리를 뜬다.<<stress 2>><<gstress>>
 		<br><br>
 		<<arcologyDangerReturn>>
 	<<else>>
 		<<arcologyCounterLine>>
-		You reach down for the card. The raider sees you and walks straight towards you. "That belongs to us," <<he>> says.
+		당신은 카드를 집으려고 몸을 숙인다. 약탈자가 당신을 보고 곧장 걸어온다. "그건 우리 거야." <<he>>【이가】 말한다.
 		<br><br>
 		<<arcologyUnrestChoices>>
 	<</if>>
@@ -266,18 +266,18 @@
 	<<set _ad.robbed to true>>
 	<<set _ad.loss to Math.min($xchange.arcology.cipher or 0, _ad.price)>><<set $xchange.arcology.cipher -= _ad.loss>><<stress 4>>
 <</if>>
-You hold out your wrist so <<he>> can use the payment reader. <<He>> presses it against your implant<<if _ad.loss>> and takes <<print setup.arcology.cx(_ad.loss)>> from your wallet<<else>>, but your wallet is empty. <<He>> swears at you<</if>>.
+당신은 <<he>>【이가】 결제 단말기를 쓸 수 있도록 손목을 내민다. <<He>>【은는】 그것을 당신 임플란트에 대고<<if _ad.loss>> 당신 지갑에서 <<print setup.arcology.cx(_ad.loss)>>【을를】 가져간다<<else>>, 하지만 당신 지갑은 비어 있다. <<He>>【은는】 당신에게 욕설을 퍼붓는다<</if>>.
 <br><br>
-"Now get out of here," <<he>> says, putting the reader away. The people standing in your way move aside, allowing you to leave.<<gstress>>
+"이제 꺼져." <<he>>【이가】 결제 단말기를 치우며 말한다. 길을 막고 서 있던 사람들이 옆으로 비켜 당신이 떠날 수 있게 한다.<<gstress>>
 <br><br>
 <<arcologyDangerReturn>>
 
 :: Arcology Unrest Missing
 <<effects>>
-The trouble has already ended. People are walking along the street again.
+사태는 이미 끝났다. 사람들이 다시 거리를 걷고 있다.
 <br><br>
 <<set _umBack to $xchange.arcology.danger and $xchange.arcology.danger.back ? $xchange.arcology.danger.back : "Arcology Street">>
-<<link [[Next|_umBack]]>><<endevent>><<unset $xchange.arcology.danger>><</link>>
+<<link [[다음|_umBack]]>><<endevent>><<unset $xchange.arcology.danger>><</link>>
 <br>
 
 :: Arcology Fraud
@@ -291,34 +291,34 @@ The trouble has already ended. People are walking along the street again.
 <<person1>>
 <<switch _ad.scam>>
 <<case "terminal">>
-	You find a small currency exchange machine set up in a doorway. Three people are waiting to use it. The screen displays <span class="green">EMERGENCY CONVERSION: CIPHER TO POUNDS AT LAST WEEK'S RATE</span>. <<A $NPCList[0].fullDescription>> stands beside the machine and waves the next person forward. <<arcologyCyberLook 0>>
+	당신은 출입구에 설치된 작은 환전 기계를 발견한다. 세 사람이 사용하려고 기다리고 있다. 화면에는 <span class="green">긴급 환전: 지난주 환율로 사이퍼를 파운드로</span>라고 떠 있다. <<print window.KR.getDescriptionKr($NPCList[0].fullDescription)>>【이가】 기계 옆에 서서 다음 사람에게 손짓한다. <<arcologyCyberLook 0>>
 	<br><br>
-	"The Registry is closing this exchange service soon," <<he>> says. "Give me your card and I can change your Cipher into pounds right now."
+	"등록소가 곧 이 환전 서비스를 닫아요." <<he>>【이가】 말한다. "카드를 주시면 지금 바로 사이퍼를 파운드로 바꿔 드릴 수 있어요."
 	<br><br>
-	The machine also asks for your mainland bank card details. "That's just to check your card," the operator says. "You won't be charged."
+	기계는 본토 은행 카드 정보도 요구한다. "카드 확인용일 뿐이에요." 운영자가 말한다. "요금은 청구되지 않아요."
 <<case "recovery">>
-	<<A $NPCList[0].fullDescription>> walks up beside you and shows you a small screen. <<arcologyCyberLook 0>> A chart on it shows Cipher becoming more valuable again.
+	<<print window.KR.getDescriptionKr($NPCList[0].fullDescription)>>【이가】 당신 곁으로 다가와 작은 화면을 보여 준다. <<arcologyCyberLook 0>> 화면의 차트는 사이퍼 가치가 다시 오르는 모습을 보여 준다.
 	<br><br>
-	"It's an investment fund," <<he>> says. "Put some Cipher in now, while the price is low. When it goes back up, you'll get twice as much back. I guarantee it."
+	"투자 펀드예요." <<he>>【이가】 말한다. "가격이 낮은 지금 사이퍼를 넣어 두세요. 다시 오르면 두 배로 돌려받아요. 내가 보장해요."
 <<case "debt">>
-	<<A $NPCList[0].fullDescription>> approaches you, grabs your arm to stop you walking, and holds up a screen displaying your username. <<arcologyCyberLook 0>>
+	<<print window.KR.getDescriptionKr($NPCList[0].fullDescription)>>【이가】 당신에게 다가와 걷지 못하게 팔을 붙잡고, 당신의 핸들가 떠 있는 화면을 들어 보인다. <<arcologyCyberLook 0>>
 	<br><br>
-	"I'm collecting payments for Halden Trust," <<he>> says. "Your account went below zero when Cipher lost value. You owe <<print setup.arcology.cx(_ad.price)>> to fix it. Pay now or the Trust will freeze your wallet."
+	"할든 트러스트을 대신해 수금하고 있어요." <<he>>【이가】 말한다. "사이퍼 가치가 떨어지면서 계좌가 마이너스가 됐어요. 정상으로 돌리려면 <<print setup.arcology.cx(_ad.price)>>【을를】 내야 해요. 지금 안 내면 신탁이 지갑을 동결할 거예요."
 <<case "staff">>
-	<<A $NPCList[0].fullDescription>> wearing a clean grey uniform steps out of a doorway and calls you by your username. <<arcologyCyberLook 0>> <<He>> has a badge with the Halden Trust logo on <<his>> chest.
+	깔끔한 회색 제복을 입은 <<print window.KR.getDescriptionKr($NPCList[0].fullDescription)>>【이가】 출입구에서 걸어 나와 당신의 핸들를 부른다. <<arcologyCyberLook 0>> <<He>>【은는】 가슴에 할든 트러스트 로고가 박힌 배지를 달고 있다.
 	<br><br>
-	"We've been trying to contact you," <<he>> says. "People have been stealing from accounts during the crisis. I can move your money somewhere safe, but first I need to check your identity."
+	"계속 연락하려고 했어요." <<he>>【이가】 말한다. "위기 중에 계좌에서 돈을 빼 가는 사람들이 있었어요. 돈을 안전한 곳으로 옮겨 드릴 수 있지만, 먼저 신원부터 확인해야 해요."
 <</switch>>
 <br><br>
 <<if !_ad.inspected>>
-	<<link [[Look more closely|Arcology Fraud Act]]>><<set _ad.inspected to true>><<set _ad.action to "inspect">><<set _ad.check to setup.arcology.escape("proof", "skulduggery", _ad.scam is "staff" ? 500 : 250, _ad.scam is "staff" ? 1300 : 900)>><<pass 2>><</link>><<arcologySkill "Skulduggery">>
+	<<link [[자세히 살펴본다|Arcology Fraud Act]]>><<set _ad.inspected to true>><<set _ad.action to "inspect">><<set _ad.check to setup.arcology.escape("proof", "skulduggery", _ad.scam is "staff" ? 500 : 250, _ad.scam is "staff" ? 1300 : 900)>><<pass 2>><</link>><<arcologySkill "Skulduggery">>
 	<br>
 <</if>>
 <<if !_ad.asked>>
-	<<link [[Ask questions|Arcology Fraud Act]]>><<set _ad.asked to true>><<set _ad.action to "ask">><<set _ad.check to setup.arcology.escape("talk", "english", _ad.scam is "staff" ? 500 : 250, _ad.scam is "staff" ? 1300 : 900)>><<pass 2>><</link>><<arcologySkill "English">>
+	<<link [[질문한다|Arcology Fraud Act]]>><<set _ad.asked to true>><<set _ad.action to "ask">><<set _ad.check to setup.arcology.escape("talk", "english", _ad.scam is "staff" ? 500 : 250, _ad.scam is "staff" ? 1300 : 900)>><<pass 2>><</link>><<arcologySkill "English">>
 	<br>
 <</if>>
-<<link [[Go along with it|Arcology Fraud Act]]>><<set _ad.action to "comply">><</link>>
+<<link [[시키는 대로 한다|Arcology Fraud Act]]>><<set _ad.action to "comply">><</link>>
 <br>
 <<arcologyFraudLeave>>
 
@@ -330,30 +330,30 @@ The trouble has already ended. People are walking along the street again.
 <<case "inspect" "ask">>
 	<<if _ad.check>>
 		<<switch _ad.scam>>
-		<<case "terminal">>You look over the machine and cannot find the Civic Registry's official mark anywhere on it. The rate on the screen is three times the amount offered by the real exchange today. The machine asks for your bank card details without explaining where the converted pounds would be sent.
-		<<case "recovery">><<if _ad.action is "ask">>You ask who runs the fund. <<He>> gives you a name that does not match the one on the screen.<<else>>You compare the chart with the payment details. The chart names one company, but the payment is going to someone else.<</if>> There is no proof that the fund will pay you anything back.
-		<<case "debt">>You know guest wallets cannot hold a negative balance. Halden Trust also does not send people into the street to collect payments. When you check the number on <<his>> screen, it does not match your account.
-		<<default>>You look at <<his>> badge and see that the logo is printed on ordinary paper. The account on <<his>> screen is also registered to a private person, with no connection to Halden Trust.
+		<<case "terminal">>당신은 기계를 살펴보지만 어디에서도 시민 등록소의 공식 표식을 찾을 수 없다. 화면의 환율은 오늘 실제 환전소가 제시하는 금액의 세 배다. 기계는 환전된 파운드가 어디로 보내지는지 설명하지 않은 채 은행 카드 정보를 요구한다.
+		<<case "recovery">><<if _ad.action is "ask">>당신은 누가 펀드를 운영하는지 묻는다. <<He>>【은는】 화면에 적힌 것과 맞지 않는 이름을 댄다.<<else>>당신은 차트와 결제 정보를 대조해 본다. 차트에는 한 회사가 적혀 있지만 결제는 다른 사람에게 가고 있다.<</if>> 펀드가 당신에게 무언가를 돌려준다는 증거는 없다.
+		<<case "debt">>당신은 손님 지갑에는 마이너스 잔액이 생길 수 없다는 것을 안다. 게다가 할든 트러스트은 사람을 거리로 보내 수금하지 않는다. <<his>> 화면의 번호를 확인해 보니 당신의 계좌와 일치하지 않는다.
+		<<default>>당신은 <<his>> 배지를 살펴보고 로고가 평범한 종이에 인쇄되어 있다는 것을 알아챈다. <<his>> 화면에 뜬 계좌도 할든 트러스트과 아무 관련 없는 개인 명의다.
 		<</switch>>
-		<span class="green">It's a scam.</span>
+		<span class="green">사기다.</span>
 		<br><br>
 		<<arcologyPoliceHint>>
 		<<arcologyFraudLeave>>
 		<<arcologyPoliceLink "Arcology Fraud Act" "report">>
-		<<link [[Call it out|Arcology Fraud Act]]>><<set _ad.action to "confront">><</link>>
+		<<link [[사기라고 폭로한다|Arcology Fraud Act]]>><<set _ad.action to "confront">><</link>>
 		<br>
 	<<else>>
 		<<arcologyCounterLine>>
-		<<if _ad.action is "ask">><<He>> answers your questions straight away, but you cannot tell whether <<he>> is telling the truth.<<else>>You check what <<he>> has shown you, but cannot find any clear evidence that it is fake.<</if>>
+		<<if _ad.action is "ask">><<He>>【은는】 당신의 질문에 곧바로 대답하지만, 당신은 <<he>>【이가】 진실을 말하는지 알 수 없다.<<else>>당신은 <<he>>【이가】 보여 준 것을 확인해 보지만 가짜라는 분명한 증거를 찾지 못한다.<</if>>
 		<br><br>
 		<<if !_ad.inspected>>
-			<<link [[Look more closely|Arcology Fraud Act]]>><<set _ad.inspected to true>><<set _ad.action to "inspect">><<set _ad.check to setup.arcology.escape("proof", "skulduggery", _ad.scam is "staff" ? 500 : 250, _ad.scam is "staff" ? 1300 : 900)>><<pass 2>><</link>><<arcologySkill "Skulduggery">>
+			<<link [[자세히 살펴본다|Arcology Fraud Act]]>><<set _ad.inspected to true>><<set _ad.action to "inspect">><<set _ad.check to setup.arcology.escape("proof", "skulduggery", _ad.scam is "staff" ? 500 : 250, _ad.scam is "staff" ? 1300 : 900)>><<pass 2>><</link>><<arcologySkill "Skulduggery">>
 			<br>
 		<<elseif !_ad.asked>>
-			<<link [[Ask questions|Arcology Fraud Act]]>><<set _ad.asked to true>><<set _ad.action to "ask">><<set _ad.check to setup.arcology.escape("talk", "english", _ad.scam is "staff" ? 500 : 250, _ad.scam is "staff" ? 1300 : 900)>><<pass 2>><</link>><<arcologySkill "English">>
+			<<link [[질문한다|Arcology Fraud Act]]>><<set _ad.asked to true>><<set _ad.action to "ask">><<set _ad.check to setup.arcology.escape("talk", "english", _ad.scam is "staff" ? 500 : 250, _ad.scam is "staff" ? 1300 : 900)>><<pass 2>><</link>><<arcologySkill "English">>
 			<br>
 		<</if>>
-		<<link [[Go along with it|Arcology Fraud Act]]>><<set _ad.action to "comply">><</link>>
+		<<link [[시키는 대로 한다|Arcology Fraud Act]]>><<set _ad.action to "comply">><</link>>
 		<br>
 		<<arcologyFraudLeave>>
 	<</if>>
@@ -374,74 +374,74 @@ The trouble has already ended. People are walking along the street again.
 	<</if>>
 	<<switch _ad.scam>>
 	<<case "terminal">>
-		You put your card against the machine. The screen displays <span class="green">CONVERSION PENDING</span>. The operator tells you to expect the pounds in your bank account within an hour.
+		당신은 카드를 기계에 댄다. 화면에 <span class="green">환전 대기 중</span>이라고 뜬다. 운영자가 한 시간 안에 은행 계좌로 파운드가 들어올 거라고 말한다.
 		<br><br>
-		Before leaving, you check the receipt. <span class="red">The machine has taken <<print setup.arcologyFx.gbp(_ad.lossGbp, true)>> from your mainland account. There is no record of any Cipher being changed into pounds.</span> You turn back to question the operator, but <<he>> has already left the doorway.
+		자리를 뜨기 전에 영수증을 확인한다. <span class="red">기계는 당신의 본토 계좌에서 <<print setup.arcologyFx.gbp(_ad.lossGbp, true)>>【을를】 빼 갔다. 사이퍼가 파운드로 바뀐 기록은 어디에도 없다.</span> 당신은 운영자에게 따지려고 돌아서지만 <<he>>【은는】 이미 출입구를 떠나고 없다.
 	<<case "recovery">>
-		You send <<print setup.arcology.cx(_ad.loss)>> to the fund. <<He>> thanks you and says you will get your money back when the price rises. <<He>> then walks away into the crowd. <span class="red">When you try to contact the fund again, nobody answers.</span>
+		당신은 펀드에 <<print setup.arcology.cx(_ad.loss)>>【을를】 보낸다. <<He>>【은는】 고맙다고 하며 가격이 오르면 돈을 돌려받을 거라고 말한다. 그러고는 군중 속으로 걸어가 버린다. <span class="red">다시 펀드에 연락하려 하면 아무도 받지 않는다.</span>
 	<<case "debt">>
-		You pay <<print setup.arcology.cx(_ad.loss)>>. <<He>> lets go of your arm, marks the payment as complete on <<his>> screen, then walks away. You open your Halden Trust account to check. There is no fee listed there. <span class="red">Your money was transferred to a private wallet.</span>
+		당신은 <<print setup.arcology.cx(_ad.loss)>>【을를】 낸다. <<He>>【은는】 당신의 팔을 놓고 <<his>> 화면에서 결제를 완료로 표시하더니 걸어가 버린다. 당신은 할든 트러스트 계좌를 열어 확인한다. 그곳에는 수수료 내역이 없다. <span class="red">당신의 돈은 개인 지갑으로 이체되었다.</span>
 	<<default>>
-		You let <<him>> scan your implant to check your identity. Your account balance then moves into the account <<he>> showed you. <<He>> says the money will appear under your username tomorrow.
+		당신은 신원 확인을 위해 <<he>>【이가】 당신의 임플란트를 스캔하도록 둔다. 그러자 당신의 계좌 잔액이 <<he>>【이가】 보여 준 계좌로 옮겨진다. <<He>>【은는】 내일 당신의 핸들 아래로 돈이 들어올 거라고 말한다.
 		<br><br>
-		As <<he>> walks away, you check where the money went. <span class="red">The transfer went to a private wallet belonging to someone you do not know. You have lost <<print setup.arcology.cx(_ad.loss)>>, and <<he>> also has a copy of your identity record.</span>
+		<<he>>【이가】 걸어가는 동안 당신은 돈이 어디로 갔는지 확인한다. <span class="red">이체는 당신이 모르는 사람의 개인 지갑으로 갔다. 당신은 <<print setup.arcology.cx(_ad.loss)>>【을를】 잃었고, <<he>>【은는】 당신의 신원 기록 사본까지 손에 넣었다.</span>
 	<</switch>>
 	<<gggstress>>
 	<br><br>
 	<<arcologyDangerReturn>>
 <<case "report">>
 	<<if !_ad.newsDone and ["arrive", "late"].includes(_ad.police)>><<set _ad.newsDone to true>><<run setup.arcologyNews.report("fraud")>><</if>>
-	You use your wrist screen to send Enforcement a report. You include a photo of <<him>> and the payment screen.
+	당신은 손목 화면으로 집행국에 신고를 보낸다. <<him>>의 사진과 결제 화면도 함께 첨부한다.
 	<<if _ad.police is "arrive">>
-		<<He>> notices you sending the report and quickly walks away. The person answering your call tells you there is an officer at the next junction. You go there and explain what happened. The officer records your username and says three other people have reported the same scam today.<<run setup.arcology.expose()>>
+		<<He>>【은는】 당신이 신고를 보내는 것을 알아채고 서둘러 자리를 뜬다. 전화를 받은 사람이 다음 교차로에 경찰관이 있다고 알려 준다. 당신은 그곳으로 가서 있었던 일을 설명한다. 경찰관은 당신의 핸들를 기록하고, 오늘 같은 사기를 신고한 사람이 세 명 더 있다고 말한다.<<run setup.arcology.expose()>>
 		<br><br>
 		<<arcologyDangerReturn>>
 	<<else>>
 		<<print setup.arcology.policeText(_ad.police)>>
 		<br><br>
 		<<if _ad.confronted>>
-			The person claiming to work for Halden Trust sees you sending the report. "You shouldn't have done that," <<he>> says. Two other people move away from the wall behind you and stand on either side of the pavement, blocking your way.
+			할든 트러스트 직원이라던 사람이 당신이 신고를 보내는 것을 본다. "그러지 말았어야지." <<he>>【이가】 말한다. 벽 앞에 있던 다른 두 사람이 당신 뒤에서 걸어 나와 보도 양쪽에 서서 길을 막는다.
 			<br><br>
 			<<arcologyUnrestChoices>>
 		<<else>>
 			<<if _ad.scam is "terminal">>
-				The operator notices you making a report and quickly disconnects the machine. <<He>> picks it up and walks away. The people waiting in line turn towards the empty doorway, unsure what to do.
+				운영자가 당신이 신고하는 것을 알아채고 재빨리 기계 연결을 끊는다. <<He>>【은는】 기계를 집어 들고 걸어가 버린다. 줄 서 있던 사람들은 어쩔 줄 모르고 텅 빈 출입구 쪽을 돌아본다.
 			<<else>>
-				<<He>> notices the report on your wrist screen, puts <<his>> own screen away, then walks into the crowd. You try to follow <<him>> with your eyes, but soon lose sight of <<him>>.
+				<<He>>【은는】 당신의 손목 화면에 뜬 신고를 알아채고 <<his>> 화면을 치운 뒤 군중 속으로 걸어간다. 당신은 눈으로 <<him>>【을를】 쫓으려 하지만 곧 놓치고 만다.
 			<</if>>
 			<br><br>
 			<<arcologyDangerReturn>>
 		<</if>>
 	<</if>>
 <<case "confront">>
-	"This is a scam!" you shout, turning towards the people nearby.
+	"이거 사기야!" 당신이 주변 사람들 쪽으로 돌아서며 외친다.
 	<br><br>
 	<<if _ad.scam is "staff">>
-		The person in the uniform looks past you and nods. Two other people come out of the doorway and stand on either side of you, stopping you from walking away.
+		제복 입은 사람이 당신 너머를 보며 고개를 끄덕인다. 다른 두 사람이 출입구에서 나와 당신 양옆에 서서 못 가게 막는다.
 		<br><br>
 		<<arcologyUnrestChoices>>
 	<<else>>
-		People nearby turn towards you. <<He>> swears, steps away from you and quickly walks off. A person standing near you thanks you for the warning.<<stress -2>><<lstress>>
+		주변 사람들이 당신 쪽으로 고개를 돌린다. <<He>>【은는】 욕설을 내뱉고 당신에게서 물러나 서둘러 사라진다. 근처에 서 있던 한 사람이 경고해 줘서 고맙다고 한다.<<stress -2>><<lstress>>
 		<br><br>
 		<<arcologyDangerReturn>>
 	<</if>>
 <<case "leave">>
 	<<if !_ad.confronted or _ad.check>>
 		<<if _ad.scam is "debt">>
-			You pull your arm out of <<his>> hand and quickly walk away. <<He>> shouts that your wallet will be frozen, but does not follow you.
+			당신은 <<his>> 손에서 팔을 빼내 서둘러 걸어간다. <<He>>【은는】 지갑이 동결될 거라고 소리치지만 따라오지는 않는다.
 		<<elseif _ad.scam is "staff">>
-			You walk past <<him>> without answering. <<He>> starts to follow you, but stops when a police drone passes above the street.
+			당신은 대답 없이 <<him>>【을를】 지나쳐 걷는다. <<He>>【은는】 따라오려 하지만 경찰 드론이 거리 위를 지나가자 멈춘다.
 		<<else>>
-			You shake your head and walk away. <<He>> calls after you, but soon stops and approaches another person instead.
+			당신은 고개를 젓고 걸어간다. <<He>>【은는】 뒤에서 부르다가 곧 그만두고 다른 사람에게 다가간다.
 		<</if>>
 		<br><br>
 		<<arcologyDangerReturn>>
 	<<else>>
 		<<arcologyCounterLine>>
 		<<if _ad.scam is "debt">>
-			<<He>> grips your arm harder when you try to pull away. Two other people come out of a nearby doorway. One stands in front of you while the other moves behind you, leaving you with no clear way to leave.
+			당신이 뿌리치려 하자 <<He>>【은는】 팔을 더 세게 움켜쥔다. 근처 출입구에서 다른 두 사람이 나온다. 한 명은 당신 앞에 서고 다른 한 명은 뒤로 돌아, 당신에게 빠져나갈 길이 없게 만든다.
 		<<else>>
-			You walk past the person in uniform, but two other people come out of the doorway and block the pavement ahead. The person in uniform follows behind you. "We weren't finished," <<he>> says.
+			당신은 제복 입은 사람을 지나쳐 걸어가지만, 다른 두 사람이 출입구에서 나와 앞쪽 보도를 막는다. 제복 입은 사람이 뒤에서 따라온다. "아직 안 끝났어요." <<he>>【이가】 말한다.
 		<</if>>
 		<br><br>
 		<<arcologyUnrestChoices>>
@@ -459,22 +459,22 @@ The trouble has already ended. People are walking along the street again.
 	<<if !_ucAd.demanded>>
 		<<set _ucAd.demanded to true>>
 		<<if _ucAd.kind is "raid">>
-			<<if $NPCList[1] and $NPCList[1].fullDescription>>The other raider walks behind you and blocks the way back.<</if>>
-			The first raider takes a payment reader from <<his>> pocket and shows you the screen. It says you must pay <<print setup.arcology.cx(_ucAd.price)>>. "Pay that and I'll let you leave."
+			<<if $NPCList[1] and $NPCList[1].fullDescription>>다른 약탈자가 당신 뒤로 돌아가 돌아가는 길을 막는다.<</if>>
+			첫 번째 약탈자가 주머니에서 결제 단말기를 꺼내 화면을 보여 준다. 당신이 <<print setup.arcology.cx(_ucAd.price)>>【을를】 내야 한다고 떠 있다. "그거 내면 보내 줄게."
 		<<else>>
-			<<He>> holds a payment reader in front of you. The screen shows <<print setup.arcology.cx(_ucAd.price)>>. "Pay me that much. Don't make this difficult."
+			<<He>>【은는】 결제 단말기를 당신 앞에 내민다. 화면에는 <<print setup.arcology.cx(_ucAd.price)>>【이】 떠 있다. "그만큼 내. 일 키우지 말고."
 		<</if>>
 	<<else>>
-		<<He>> puts the payment reader in front of you again. "Are you paying or not?"
+		<<He>>【은는】 결제 단말기를 다시 당신 앞에 들이민다. "낼 거야 말 거야?"
 	<</if>>
 	<br><br>
-	<<link [[Fight back|Arcology Criminal Fight]]>><<set $fightstart to 1>><</link>>
+	<<link [[맞서 싸운다|Arcology Criminal Fight]]>><<set $fightstart to 1>><</link>>
 	<br>
 	<<if !_ucAd.ran and $feetuse isnot "bound">>
-		<<link [[Try to run|Arcology Criminal Attempt]]>><<set _ucAd.ran to true>><<set _ucAd.action to "run">><<set _ucAd.check to setup.arcology.escape("run", "athletics", 400, 1200)>><<pass 1>><</link>><<arcologySkill "Athletics">>
+		<<link [[달아나 본다|Arcology Criminal Attempt]]>><<set _ucAd.ran to true>><<set _ucAd.action to "run">><<set _ucAd.check to setup.arcology.escape("run", "athletics", 400, 1200)>><<pass 1>><</link>><<arcologySkill "Athletics">>
 		<br>
 	<</if>>
-	<<link `($xchange.arcology.cipher or 0) gte _ucAd.price ? "Pay the " + setup.arcology.cx(_ucAd.price) : "Show them your wallet"` "Arcology Unrest Surrender">><</link>>
+	<<link `($xchange.arcology.cipher or 0) gte _ucAd.price ? "지불한다 (" + setup.arcology.cx(_ucAd.price) + ")" : "지갑을 보여 준다"` "Arcology Unrest Surrender">><</link>>
 	<br>
 <</widget>>
 
@@ -482,7 +482,7 @@ The trouble has already ended. People are walking along the street again.
 <<widget "arcologyPoliceLink">>
 	<<set _plTo to _args[0]>><<set _plAction to _args[1] or "call">>
 	<<if setup.arcology.policeLeft() gt 0>>
-		<<capture _plTo _plAction>><<link `(_plAction is "report" ? "Report it to Enforcement" : "Call Enforcement") + " (" + setup.arcology.policeLeft() + " left today)"` _plTo>><<set $xchange.arcology.danger.action to _plAction>><<run setup.arcology.policeCall($xchange.arcology.danger.where)>><</link>><</capture>>
+		<<capture _plTo _plAction>><<link `(_plAction is "report" ? "집행국에 신고한다" : "집행국을 부른다") + " (오늘 " + setup.arcology.policeLeft() + "회 남음)"` _plTo>><<set $xchange.arcology.danger.action to _plAction>><<run setup.arcology.policeCall($xchange.arcology.danger.where)>><</link>><</capture>>
 		<br>
 	<</if>>
 <</widget>>
@@ -490,7 +490,7 @@ The trouble has already ended. People are walking along the street again.
 /* Why the Enforcement link is missing; goes above the links. */
 <<widget "arcologyPoliceHint">>
 	<<if setup.arcology.policeLeft() lte 0>>
-		You have already made two calls to Enforcement today. <span class="blue">You can't call again until tomorrow.</span>
+		당신은 오늘 이미 집행국에 두 번 연락했다. <span class="blue">내일까지는 다시 연락할 수 없다.</span>
 		<br><br>
 	<</if>>
 <</widget>>
@@ -499,11 +499,11 @@ The trouble has already ended. People are walking along the street again.
 <<widget "arcologyFraudLeave">>
 	<<if $xchange.arcology.danger.confronted>>
 		<<if !$xchange.arcology.danger.leaveTried>>
-			<<link `$xchange.arcology.danger.scam is "debt" ? "Pull your arm free" : "Walk past them"` "Arcology Fraud Act">><<set $xchange.arcology.danger.leaveTried to true>><<set $xchange.arcology.danger.action to "leave">><<set $xchange.arcology.danger.check to setup.arcology.escape("run", "athletics", 200, 900)>><</link>><<arcologySkill "Athletics">>
+			<<link `$xchange.arcology.danger.scam is "debt" ? "팔을 뿌리친다" : "그들을 지나쳐 걷는다"` "Arcology Fraud Act">><<set $xchange.arcology.danger.leaveTried to true>><<set $xchange.arcology.danger.action to "leave">><<set $xchange.arcology.danger.check to setup.arcology.escape("run", "athletics", 200, 900)>><</link>><<arcologySkill "Athletics">>
 			<br>
 		<</if>>
 	<<else>>
-		<<link [[Walk away|Arcology Fraud Act]]>><<set $xchange.arcology.danger.action to "leave">><</link>>
+		<<link [[걸어서 떠난다|Arcology Fraud Act]]>><<set $xchange.arcology.danger.action to "leave">><</link>>
 		<br>
 	<</if>>
 <</widget>>
