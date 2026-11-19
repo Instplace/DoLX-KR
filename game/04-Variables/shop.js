@@ -50,7 +50,7 @@ setup.shopDetails = {
 		details: "해당 특성이 있는 아이템을 착용하면 팁으로 얻는 금액이 25% 증가합니다. 추가로 착용하는 아이템마다 효과가 33%씩 감소합니다.",
 	},
 	prey: {
-		name: "Prey",
+		name: "먹잇감",
 		desc: "사냥할 만한 먹잇감처럼 보이게 합니다.",
 		details: "숲의 야생 짐승과 황야 위의 매가 당신을 더 쉽게 찾아냅니다. 아이템을 추가할 때마다 효과가 커집니다.",
 	},
@@ -94,7 +94,7 @@ setup.shopDetails = {
 	sticky_fingers: {
 		name: "손버릇",
 		desc: "남의 물건을 내 것으로 만들 때 아주 유용합니다.",
-		details: "속임수를 더 쉽게 성공 할 수 있습니다.",
+		details: "속임수를 더 쉽게 성공할 수 있습니다.",
 	},
 	rainproof: {
 		name: "방수",
@@ -122,7 +122,7 @@ setup.shopDetails = {
 		details: "농장, 황야, 숲에서 운동 스킬 체크를 더 쉽게 통과하게 해 줍니다.",
 	},
 	silky: {
-		name: "Silky",
+		name: "매끄러움",
 		desc: "살갗에 닿는 감촉이 매끄럽습니다.",
 		details: "민감한 젖꼭지나 성기에 쓸리지 않습니다.",
 	},
@@ -145,7 +145,7 @@ setup.shopDetails = {
 		},
 	},
 	nectarbound: {
-		name: "Nectar-bound",
+		name: "넥타르 결속",
 		desc: "살아 있는 식물로 만들어졌습니다.",
 		details: "착용하는 동안 식물 애호가와 넥타르 중독이 사라지지 않게 막아 줍니다.",
 	},
@@ -161,7 +161,7 @@ setup.shopDetails = {
 	},
 	prison: {
 		name: "죄수복",
-		desc: "교도소에서 입던 옷입니다.",
+		desc: "감옥에서 입던 옷입니다.",
 		details: "없음",
 	},
 	sticky: {
@@ -230,12 +230,12 @@ setup.shopDetails = {
 		details: "남들이 당신의 성기가 어떻게 생겼는지 알 수 없습니다.",
 	},
 	internal: {
-		name: "Internal",
+		name: "내부",
 		desc: "겉보기보다 속사정이 있습니다.",
 		details: "착용하는 동안 끊임없이 내부를 자극합니다.",
 	},
 	shrinking: {
-		name: "Shrinking",
+		name: "수축",
 		desc: "자라나는 것을 받아 주도록 만들어지지 않았습니다.",
 		details: "착용하는 동안 자지가 서서히 줄어들고 최소 흥분 수치가 올라갑니다.",
 	},
@@ -245,12 +245,12 @@ setup.shopDetails = {
 		details: "키스, 삽입, 기타 입 활동을 막습니다. 말을 할 수 없게 됩니다.",
 	},
 	blindfold: {
-		name: "Blindfold",
+		name: "눈가리개",
 		desc: "눈을 가립니다.",
 		details: "착용하는 동안 앞을 볼 수 없습니다.",
 	},
 	shackle: {
-		name: "Shackles",
+		name: "족쇄",
 		desc: "다리를 구속합니다.",
 		details: "달리기, 수영, 춤이 더 어려워집니다.",
 	},
@@ -305,7 +305,7 @@ setup.shopDetails = {
 		details: "도둑질할 때 쌓이는 범죄 수치를 높입니다.",
 	},
 	portal: {
-		name: "Mysterious",
+		name: "신비로움",
 		desc: "입으면 이상하게 바람이 통하는 느낌이 듭니다.",
 		details: "모르는 사람들이 멀리서 당신의 성기를 쓸 수 있게 됩니다.",
 	},
@@ -370,7 +370,7 @@ setup.shopDetails = {
 	fishing_rod: {
 		name: "낚싯대",
 		desc: "낚시를 하려면 필요합니다.",
-		details: "none",
+		details: "없음",
 	},
 };
 

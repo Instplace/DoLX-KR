@@ -1539,7 +1539,7 @@ function initFace() {
 			combat: {
 				reference: "eyepatch",
 			},
-			description: "섬세한 손길.",
+			description: "섬세한 손길입니다.",
 			cost: 7000,
 			shop: ["forest"],
 			type: ["formal", "serving", "costume"],
@@ -1575,7 +1575,7 @@ function initFace() {
 			combat: {
 				reference: "eyepatch",
 			},
-			description: "모든 장미에는 가시가 숨어 있다.",
+			description: "모든 장미에는 가시가 숨어 있습니다.",
 			cost: 9500,
 			shop: ["forest"],
 			type: ["formal", "costume"],
@@ -1653,7 +1653,7 @@ function initFace() {
 			combat: {
 				reference: "glasses",
 			},
-			description: "전혀 수상하지 않다.",
+			description: "전혀 수상하지 않습니다.",
 			cost: 5000,
 			shop: ["clothing"],
 			type: ["glasses", "mask"],
@@ -1675,7 +1675,7 @@ function initFace() {
 			combat: {
 				reference: "glasses",
 			},
-			description: "트렌디한 물방울 모양 안경테다.",
+			description: "트렌디한 물방울 모양 안경테입니다.",
 			cost: 5000,
 			shop: ["clothing"],
 			type: ["glasses"],

@@ -93,7 +93,7 @@ Macro.add('moneyStatsNamesKr', {
 			"Lake": "호수", "Manors": "저택", "Mer": "메르 가", "Mines": "광산", "Monster": "괴물", "Night": "밤",
 			"Nightingale": "나이팅게일 가", "Outside": "외부", "Oxford": "옥스포드 가", "Park": "공원",
 			"Parkcafe": "공원 카페", "Parkmens": "공원 남자 화장실", "Parktree": "공원 나무", "Parkwomens": "공원 여자 화장실",
-			"Plains": "평원", "Prison": "교도소", "Promenade": "산책로", "Residential": "주거 지구", "Roof": "옥상",
+			"Plains": "평원", "Prison": "감옥", "Promenade": "산책로", "Residential": "주거 지구", "Roof": "옥상",
 			"Ruin": "폐허", "Schoolgrounds": "학교 부지", "Sea": "바다", "Seabeach": "바닷가", "Seacliffs": "해안 절벽",
 			"Seadocks": "해안 부두", "Searocks": "해안 암초", "Sepulchre": "묘실", "Sewers": "하수도", "Skyscraper": "마천루",
 			"Stables": "마구간", "Stand": "가판대", "Starfish": "스타피쉬 가", "Tentworld": "촉수 세계", "Tower": "탑",

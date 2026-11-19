@@ -370,7 +370,7 @@ const DoLSave = ((Story, Save) => {
 			throw new Error(
 					"세이브 압축을 해제할 수 없습니다 - 사전 " +
 					JSON.stringify(dicid) +
-						"이 현재 게임 버전에서 알 수 없습니다. (구버전 게임에서 신버전 세이브를 불러오려는 건가요?)"
+						"이 현재 게임 버전에서 알 수 없습니다. (구버전 게임에서 신버전 세이브를 불러오려는 것입니까?)"
 			);
 		const dictionary = COMPRESSOR_DICTIONARIES[dicid];
 		const decompressor = new JsonDecompressor(dictionary);

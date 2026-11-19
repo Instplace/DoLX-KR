@@ -49,7 +49,7 @@ const events = [
 		failuretext: "에이버리와의 데이트에 나타나지 않았습니다.",
 	},
 	{
-		name: "에이버리 발렌타인 데이트",
+		name: "에이버리 발렌타인데이트",
 		condition() {
 			return V.avery_valentines?.invite && !V.avery_valentines.done && Time.month === 2 && Time.monthDay === 14;
 		},
@@ -58,8 +58,8 @@ const events = [
 		},
 		endhour: 24,
 		priority: 4,
-		text: "<<if $avery_mansion>>저택 차고에서 <<ampm 21 00>>부터<<elseif Time.hour lt 20>>도무스 가에서 <<ampm 20 00>>부터<</if>> 에이버리와 <span class='pink'>발렌타인 데이트</span> 약속이 있습니다.",
-		failuretext: "에이버리와의 발렌타인 데이트를 놓쳤습니다.",
+		text: "<<if $avery_mansion>>저택 차고에서 <<ampm 21 00>>부터<<elseif Time.hour lt 20>>도무스 가에서 <<ampm 20 00>>부터<</if>> 에이버리와 <span class='pink'>발렌타인데이트</span> 약속이 있습니다.",
+		failuretext: "에이버리와의 발렌타인데이트를 놓쳤습니다.",
 	},
 	{
 		name: "협박 과제",

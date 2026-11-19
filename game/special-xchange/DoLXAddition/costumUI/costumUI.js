@@ -5,46 +5,46 @@
 	let observer = null;
 	let observedScope = null;
 	const overlayTabIcons = Object.freeze({
-		Characteristics: "\u2726", // ✦
-		Identity: "\u25C7", // ◇
+		"특징": "\u2726", // ✦
+		"정체성": "\u25C7", // ◇
 		Social: "\u2637", // ☷
-		Relationships: "\u2661", // ♡
-		Reputation: "\u2606", // ☆
-		Traits: "\u25C6", // ◆
+		"관계": "\u2661", // ♡
+		"평판": "\u2606", // ☆
+		"특성": "\u25C6", // ◆
 
-		Journal: "\u25A4", // ▤
-		Notes: "\u270E", // ✎
+		"저널": "\u25A4", // ▤
+		"메모": "\u270E", // ✎
 
-		Statistics: "\u25A5", // ▥
+		"통계": "\u25A5", // ▥
 		"추가 통계 (스포일러)": "\u2295", // ⊕
-		Feats: "\u2742", // ❂
-		Stats: "\u25A6", // ▦
+		"업적": "\u2742", // ❂
+		"스탯": "\u25A6", // ▦
 
-		Visual: "\u25C9", // ◉
-		NPCs: "\u265F", // ♟
+		"시각": "\u25C9", // ◉
+		"NPC": "\u265F", // ♟
 		"알렉스의 농장": "\u2302", // ⌂
-		Teleport: "\u219C", // ↜
-		Other: "\u22EF", // ⋯
+		"텔레포트": "\u219C", // ↜
+		"기타": "\u22EF", // ⋯
 
-		General: "\u2699\uFE0E", // ⚙︎
-		Theme: "\u25C8", // ◈
-		Performance: "\u21AF", // ↯
-		Advanced: "\u2692\uFE0E", // ⚒︎
-		Saves: "\u25A3", // ▣
-		Backups: "\u21BA",
-		"Export/Import": "\u21C4", // ⇄
+		"일반": "\u2699\uFE0E", // ⚙︎
+		"테마": "\u25C8", // ◈
+		"성능": "\u21AF", // ↯
+		"고급": "\u2692\uFE0E", // ⚒︎
+		"세이브": "\u25A3", // ▣
+		"백업": "\u21BA",
+		"내보내기/불러오기": "\u21C4", // ⇄
 
 		"이벤트 정보": "\u25CE", // ◎
 		"블랙잭 가이드": "\u2660", // ♠
-		Layers: "\u25A9", // ▩
-		Colours: "\u25D2", // ◒
-		Model: "\u25B1", // ▱
-		"Start/Stop Animation": "\u25B6", // ▶
+		"레이어": "\u25A9", // ▩
+		"색상": "\u25D2", // ◒
+		"모델": "\u25B1", // ▱
+		"애니메이션 시작/정지": "\u25B6", // ▶
 		"캐시 새로고침": "\u21BB", // ↻
 		"의상 편집기": "\u2702", // ✂
-		Bag: "\u25A2", // ▢
+		"가방": "\u25A2", // ▢
 		"손거울": "\u232C", // ⌬
-		Music: "\u266B", // ♫
+		"음악": "\u266B", // ♫
 	});
 
 	function styleOverlayTabs() {
@@ -57,7 +57,7 @@
 			if (icon) button.dataset.tabIcon = icon;
 			else delete button.dataset.tabIcon;
 			/* The island's implant interface gets the island itself as its icon, drawn in CSS. */
-			button.classList.toggle("tab-holo", label === "Holo");
+			button.classList.toggle("tab-holo", label === "홀로" || label === "Holo");
 		});
 	}
 

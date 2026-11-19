@@ -295,7 +295,7 @@ function initSpecialClothes() {
 		christmas: {
 			text: "크리스마스 의상",
 			requirements: () => Time.hasDatePassed(12, 18) || V.specialClothesEvents?.includes("skulduggery_gift"),
-			hint: "<<= getFormattedDate(new DateTime(Time.year, 12, 18))>>에 입고 되거나, 도움이 필요한 가족에게 후한 선물을 남기기",
+			hint: "<<= getFormattedDate(new DateTime(Time.year, 12, 18))>>에 입고되거나, 도움이 필요한 가족에게 후한 선물을 남기기",
 			shop: ["forest"],
 			feat: true,
 			featCost: 5,
@@ -398,7 +398,7 @@ function initSpecialClothes() {
 		prison: {
 			text: "죄수복",
 			requirements: () => V.prison_intro === 1,
-			hint: "교도소에 수감되기",
+			hint: "감옥에 수감되기",
 			shop: ["forest"],
 			subsetOf: ["bad_end"],
 			feat: true,
@@ -1031,7 +1031,7 @@ function specialClothesUnlockText(toUnlock, group) {
 				return output;
 			}
 			if (group === "valentines") {
-				output += `<span class="gold">숲속 상점에 </span><span class="pink">발렌타인 데이 의상</span><span class="gold">이 해금되었습니다!</span><br>`;
+				output += `<span class="gold">숲속 상점에 </span><span class="pink">발렌타인데이 의상</span><span class="gold">이 해금되었습니다!</span><br>`;
 				return output;
 			}
 			if (toUnlock.length === 1) {
@@ -1097,14 +1097,14 @@ function specialClothesUnlockText(toUnlock, group) {
 						break;
 					default:
 						output +=
-							'<span class="gold">숲 상점에 </span><span class="teal">' +
+							'<span class="gold">숲속 상점에 </span><span class="teal">' +
 							(toUnlock.length > 1 ? toUnlock.slice(0, -1).join(", ") + "【와과】" + toUnlock.at(-1) : toUnlock[0]).toUpperFirst() +
 							'</span><span class="gold">【이가】 새로 입고되었습니다!</span><br><br>';
 						break;
 				}
 			} else {
 				output +=
-					'<span class="gold">숲 상점에 </span><span class="teal">' +
+					'<span class="gold">숲속 상점에 </span><span class="teal">' +
 					(toUnlock.length > 1 ? toUnlock.slice(0, -1).join(", ") + "【와과】" + toUnlock.at(-1) : toUnlock[0]).toUpperFirst() +
 					'</span><span class="gold">【이가】 새로 입고되었습니다!</span><br><br>';
 			}

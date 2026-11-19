@@ -329,19 +329,19 @@ class Transformations {
 	}
 
 	static get descriptionSpecialNames() {
-		return { hellhound: "hellhound", dog: "dog", jackalope: "jackalope", moonrabbit: "moon rabbit", kasha: "kasha", catsith: "cat sith" };
+		return { hellhound: "헬하운드", dog: "개", jackalope: "잭얼로프", moonrabbit: "달토끼", kasha: "카샤", catsith: "캣시" };
 	}
 
 	static descriptionAnimalNoun(animal) {
 		switch (animal) {
 			case "cow":
-				return V.player?.gender_appearance === "m" ? "bull" : "cow";
+				return V.player?.gender_appearance === "m" ? "황소" : "젖소";
 			case "harpy":
-				return V.hallucinations >= 2 || !V.settings?.bestialityEnabled ? "harpy" : "bird";
+				return V.hallucinations >= 2 || !V.settings?.bestialityEnabled ? "하피" : "새";
 			case "waterdragon":
-				return "water dragon";
+				return "수룡";
 			default:
-				return animal; // cat, fox, bear
+				return { cat: "고양이", fox: "여우", bear: "곰", wolf: "늑대", bunny: "토끼" }[animal] || animal; // cat, fox, bear
 		}
 	}
 
@@ -356,7 +356,7 @@ class Transformations {
 		if (this.descriptionSpecialNames[id]) return this.descriptionSpecialNames[id];
 		if (!id.includes("+")) return "";
 		const [animal, celestial] = id.split("+");
-		const adjective = { angel: "angelic", fallen: "fallen", demon: "demonic" }[celestial];
+		const adjective = { angel: "천사 같은", fallen: "타락한", demon: "악마 같은" }[celestial];
 		const noun = this.descriptionAnimalNoun(animal);
 		return adjective ? `${adjective} ${noun}` : noun;
 	}
@@ -369,7 +369,7 @@ class Transformations {
 	static descriptionComboLabel(id) {
 		const phrase = this.descriptionPhrase(id);
 		if (!phrase) return "";
-		return `${/^[aeiou]/i.test(phrase) ? "an" : "a"} ${phrase}`;
+		return phrase;
 	}
 
 	/**

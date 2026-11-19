@@ -53,7 +53,7 @@ setup.horserace = setup.horserace || {};
 	};
 
 	HR.kind = function (plural, capital) {
-		const word = (HR.centaurs() ? "centaur" : "horse") + (plural ? "s" : "");
+		const word = (HR.centaurs() ? "켄타우로스" : "말") + (plural ? "" : "");
 		return capital ? word.toUpperFirst() : word;
 	};
 
@@ -79,7 +79,7 @@ setup.horserace = setup.horserace || {};
 			id: "injure_horse",
 			tier: "high",
 			get label() {
-				return `Injure a ${HR.kind()}`;
+				return `${HR.kind()}【을를】 다치게 한다`;
 			},
 			target: "rival",
 			passage: "Racecourse Rig Injure Horse",
@@ -246,16 +246,16 @@ setup.horserace = setup.horserace || {};
 		const turnsLeft = Math.max(0, HR.RIG_MINIGAME_TURN_CAP - g.turn);
 		return `<div class="horse-race-panel">
 			<div class="horse-race-progress">
-				<span>Progress</span>
+				<span>진행도</span>
 				<meter min="0" max="100" low="35" high="70" optimum="100" value="${progress.toFixed(0)}"></meter>
 				<span>${Math.floor(progress)}%</span>
 			</div>
 			<div class="horse-race-progress">
-				<span>Risk of being noticed</span>
+				<span>들킬 위험</span>
 				<meter min="0" max="100" low="35" high="70" optimum="0" value="${risk.toFixed(0)}"></meter>
 				<span>${Math.floor(risk)}%</span>
 			</div>
-			<p>Time before the ${HR.kind(true)} are led out: <strong>${turnsLeft}</strong></p>
+			<p>${HR.kind(true)}【이가】 끌려 나오기까지 남은 시간: <strong>${turnsLeft}</strong></p>
 		</div>`;
 	};
 
@@ -371,9 +371,9 @@ setup.horserace = setup.horserace || {};
 		},
 		encourage_own: {
 			get scene() {
-				return `Your hand is on the ${HR.kind()}'s flank and ${HR.it("it")} is pushing back against you. You need to work ${HR.it(
-					"itobj"
-				)} up and settle ${HR.it("itobj")} again before anyone comes down the row.`;
+				return `당신의 손이 ${HR.kind()}의 옆구리에 얹혀 있고, ${HR.kind()}【은는】 당신의 손길에 맞서 버티고 있다. 누가 줄을 따라 내려오기 전에 ${HR.kind()}【을를】 한껏 흥분시켰다가 다시 가라앉혀야 한다.` + (
+					""
+				);
 			},
 			quick: "계속한다, 더 빠르게",
 			careful: "느리고 꾸준한 손놀림",
@@ -661,10 +661,10 @@ setup.horserace = setup.horserace || {};
 		"초록 총알",
 		"낡은 왕관",
 		"은빛 과수원",
-		"Saltwind",
+		"소금바람",
 		"한밤의 대출",
 		"카드 샤크",
-		"Foxglove",
+		"디기탈리스",
 		"환한 소문",
 		"빗속의 동반자",
 		"행운의 폭동",
@@ -757,7 +757,7 @@ setup.horserace = setup.horserace || {};
 				return {
 					weatherName,
 					condition: "clear",
-					label: "clear",
+					label: "건조",
 					description: `트랙이 말라 있어, ${HR.kind(true)}【이가】 전속력으로 달릴 수 있다.`,
 				};
 
@@ -765,7 +765,7 @@ setup.horserace = setup.horserace || {};
 				return {
 					weatherName,
 					condition: "clear",
-					label: "good",
+					label: "양호",
 					description: "날씨는 온화하고, 트랙은 여전히 달리기 좋다.",
 				};
 
@@ -773,7 +773,7 @@ setup.horserace = setup.horserace || {};
 				return {
 					weatherName,
 					condition: "clear",
-					label: "cloudy",
+					label: "흐림",
 					description: "하늘은 흐리지만 땅 상태는 여전히 좋다.",
 				};
 
@@ -781,7 +781,7 @@ setup.horserace = setup.horserace || {};
 				return {
 					weatherName,
 					condition: "wet",
-					label: "wet",
+					label: "젖음",
 					description: "가벼운 비로 트랙이 미끄럽다.",
 				};
 
@@ -789,7 +789,7 @@ setup.horserace = setup.horserace || {};
 				return {
 					weatherName,
 					condition: "wet",
-					label: "soft",
+					label: "무름",
 					description: "폭우가 트랙을 흠뻑 적셔 달리기 힘들어졌다.",
 				};
 
@@ -797,7 +797,7 @@ setup.horserace = setup.horserace || {};
 				return {
 					weatherName,
 					condition: "muddy",
-					label: "muddy",
+					label: "진창",
 					description: "폭풍으로 트랙 곳곳이 진창이 되었다.",
 				};
 
@@ -805,7 +805,7 @@ setup.horserace = setup.horserace || {};
 				return {
 					weatherName,
 					condition: "muddy",
-					label: "heavy",
+					label: "험함",
 					description: "천둥과 폭우 탓에 트랙이 험하다.",
 				};
 
@@ -814,7 +814,7 @@ setup.horserace = setup.horserace || {};
 				return {
 					weatherName: "",
 					condition: fallback,
-					label: fallback,
+					label: ({ turf: "잔디", dirt: "흙", wet: "젖음", muddy: "진창" })[fallback] || fallback,
 					description: "",
 				};
 			}
@@ -1280,7 +1280,7 @@ setup.horserace = setup.horserace || {};
 		race.payout = 0;
 		race.paidOut = true;
 		race.autoWatch = false;
-		race.messages = [`Alex waits beside the rail with you while the handlers settle the ${HR.kind(true)} at the gate.`];
+		race.messages = [`알렉스가 조련사들이 출발선에서 ${HR.kind(true)}【을를】 진정시키는 동안 당신과 함께 울타리 옆에서 기다린다.`];
 		race.messageHistory = race.messages.slice();
 		return race;
 	};
@@ -1415,9 +1415,9 @@ setup.horserace = setup.horserace || {};
 		],
 		injured: [
 			name =>
-				`${name} hurts one of ${HR.it(
-					"its"
-				)} legs while running and starts having trouble walking properly. The rider stops immediately, and the vets come onto the track to help.`,
+				`${name}【이가】 달리다가 다리 하나를 다쳐 제대로 걷지 못하기 시작한다. 기수는 즉시 멈춰 서고, 수의사들이 트랙으로 달려와 돕는다.` + (
+					""
+				),
 			name =>
 				`${name}【이가】 트랙 반대편에서 달리다 넘어진다. 기수는 재빨리 일어나고, 수의사들이 ${HR.kind()}【을를】 살피러 서둘러 달려간다.`,
 		],
@@ -1728,7 +1728,7 @@ setup.horserace = setup.horserace || {};
 
 		const resultAnchor = document.querySelector("#horse-race-result-link a");
 		if (race.phase === "finished") {
-			controls.innerHTML = `<span class="horse-race-finished-note">The race has ended. See the result below.</span>`;
+			controls.innerHTML = `<span class="horse-race-finished-note">경주가 끝났다. 아래 결과를 확인하십시오.</span>`;
 			if (status) status.textContent = "경주가 끝났다.";
 			if (resultAnchor) resultAnchor.textContent = resultLabel || "결과를 본다";
 			return;
@@ -1803,8 +1803,8 @@ setup.horserace = setup.horserace || {};
 	HR.renderLiveControls = function (resultPassage, resultLabel, watchLabel, pauseLabel, delay) {
 		const race = HR.ensureState();
 		if (race.phase === "finished") {
-			return `<p id="horse-race-watch-status" class="horse-race-watch-status">The race has ended. See the result below.</p>
-			<div id="horse-race-controls" class="horse-race-controls"><span class="horse-race-finished-note">Finished.</span></div>`;
+			return `<p id="horse-race-watch-status" class="horse-race-watch-status">경주가 끝났다. 아래 결과를 확인하십시오.</p>
+			<div id="horse-race-controls" class="horse-race-controls"><span class="horse-race-finished-note">종료.</span></div>`;
 		}
 
 		const result = HR.escapeJsArg(resultPassage);
@@ -1864,7 +1864,7 @@ setup.horserace = setup.horserace || {};
 
 		const winner = HR.getHorse(race.winnerId);
 		if (winner) {
-			race.messages = [`${winner.name} crosses the line first.`];
+			race.messages = [`${winner.name}【이가】 가장 먼저 결승선을 통과한다.`];
 			race.messageHistory = race.messages.concat(Array.isArray(race.messageHistory) ? race.messageHistory : []).slice(0, 3);
 		}
 		return race;
@@ -1877,8 +1877,8 @@ setup.horserace = setup.horserace || {};
 				return `<tr>
 				<td>${horse.lane}</td>
 				<td><strong>${HR.escapeHtml(horse.name)}</strong></td>
-				<td>${horse.odds.toFixed(2)}x</td>
-				<td>${horse.placeOdds.toFixed(2)}x</td>
+				<td>${horse.odds.toFixed(2)}배</td>
+				<td>${horse.placeOdds.toFixed(2)}배</td>
 				<td>${horse.baseSpeed}</td>
 				<td>${horse.maxStamina}</td>
 			</tr>`;
@@ -1887,10 +1887,10 @@ setup.horserace = setup.horserace || {};
 
 		const track = HR.trackDefs[race.trackId];
 		return `<div class="horse-race-panel">
-			<p><strong>Track:</strong> ${HR.escapeHtml(track.name)}. ${HR.escapeHtml(track.description)}</p>
-			<p><strong>Going:</strong> ${HR.escapeHtml(race.goingLabel || race.condition)}. ${HR.escapeHtml(race.goingDescription || "")}</p>
+			<p><strong>코스:</strong> ${HR.escapeHtml(track.name)}. ${HR.escapeHtml(track.description)}</p>
+			<p><strong>주로 상태:</strong> ${HR.escapeHtml(race.goingLabel || race.condition)}. ${HR.escapeHtml(race.goingDescription || "")}</p>
 			<table class="horse-race-table">
-				<thead><tr><th>Lane</th><th>${HR.kind(false, true)}</th><th>Win</th><th>Place</th><th>Speed</th><th>Stamina</th></tr></thead>
+				<thead><tr><th>레인</th><th>${HR.kind(false, true)}</th><th>우승</th><th>입상</th><th>속도</th><th>체력</th></tr></thead>
 				<tbody>${rows}</tbody>
 			</table>
 		</div>`;
@@ -1985,12 +1985,12 @@ setup.horserace = setup.horserace || {};
 	HR.renderRaceLog = function () {
 		const race = HR.ensureState();
 		const messages = (
-			race.messageHistory.length > 0 ? race.messageHistory : race.messages.length > 0 ? race.messages : ["The crowd waits for the next move."]
+			race.messageHistory.length > 0 ? race.messageHistory : race.messages.length > 0 ? race.messages : ["관중이 다음 움직임을 기다린다."]
 		).slice(0, 3);
 		const items = messages
 			.map(function (message) {
 				if (message && typeof message === "object" && message.type === "accident") {
-					return `<li class="horse-race-accident-log"><strong><span style="color:#ff6b6b;">Injured.</span> ${HR.escapeHtml(
+					return `<li class="horse-race-accident-log"><strong><span style="color:#ff6b6b;">부상.</span> ${HR.escapeHtml(
 						message.text || `사고가 나서 ${HR.kind()} 한 마리가 경주에서 빠진다.`
 					)}</strong></li>`;
 				}
@@ -1999,19 +1999,19 @@ setup.horserace = setup.horserace || {};
 					return `<li class="horse-race-incident-log">${message.serious ? `<strong>${text}</strong>` : text}</li>`;
 				}
 				if (message && typeof message === "object" && message.type === "skill") {
-					const round = Number.isFinite(message.round) ? `<span class="horse-race-log-round">Moment ${message.round}</span> ` : "";
+					const round = Number.isFinite(message.round) ? `<span class="horse-race-log-round">${message.round}라운드</span> ` : "";
 					return `<li class="horse-race-skill-log">${round}<span class="horse-race-skill-badge">${HR.escapeHtml(
-						message.skillName || "Skill"
+						message.skillName || "기술"
 					)}</span> <strong>${HR.escapeHtml(message.horseName || HR.kind(false, true))}</strong>: ${HR.escapeHtml(message.text || "앞으로 치고 나간다.")}</li>`;
 				}
 				return `<li>${HR.escapeHtml(message)}</li>`;
 			})
 			.join("");
-		return `<div id="horse-race-log-area" class="horse-race-log"><strong>Race log</strong><ul>${items}</ul></div>`;
+		return `<div id="horse-race-log-area" class="horse-race-log"><strong>경주 기록</strong><ul>${items}</ul></div>`;
 	};
 
 	HR.ordinal = function (n) {
-		return ["first", "second", "third", "fourth", "fifth"][n - 1] || `number ${n}`;
+		return String(n);
 	};
 
 	/* What happened to the backed horse, told from what the simulation actually did to it. */
@@ -2030,9 +2030,9 @@ setup.horserace = setup.horserace || {};
 		],
 		blocked: [
 			(name, it, place) =>
-				`${name} was stuck behind another ${HR.kind()} and could not get past. When there was finally enough space to move forward, the horses in front were already too far ahead. ${
-					it.It
-				} finished ${place}.`,
+				`${name}【이가】 다른 ${HR.kind()} 뒤에 갇혀 앞지르지 못했다. 마침내 나아갈 공간이 났을 때는 앞선 ${HR.kind(true)}【이가】 이미 한참 멀어져 있었다. 녀석은 ${
+					place
+				}위로 들어왔다.`,
 			(name, it, place) =>
 				`다른 ${HR.kind()}【이가】 갑자기 ${name} 앞으로 끼어들어, 기수는 충돌을 피하려 속도를 늦춰야 했다. ${name}【은는】 계속 달렸지만 ${({first: 1, second: 2, third: 3, fourth: 4, fifth: 5})[place] || String(place).replace("number ", "")}위로 들어왔다.`,
 		],
@@ -2078,8 +2078,8 @@ setup.horserace = setup.horserace || {};
 			.map(function (horse, index) {
 				const backed = horse.id === race.betHorseId ? " backed" : "";
 				let resultText = `${Math.floor(horse.progress)}%`;
-				if (horse.accident === true) resultText = `<strong><span style="color:#ff6b6b;">Injured</span></strong>`;
-				else if (horse.withdrawn === true) resultText = `<span style="color:#ffcf6b;">Withdrawn</span>`;
+				if (horse.accident === true) resultText = `<strong><span style="color:#ff6b6b;">부상</span></strong>`;
+				else if (horse.withdrawn === true) resultText = `<span style="color:#ffcf6b;">기권</span>`;
 
 				return `<tr class="${backed}">
 				<td>${HR.isOut(horse) ? "-" : index + 1}</td>
@@ -2093,36 +2093,36 @@ setup.horserace = setup.horserace || {};
 		const injured = race.horses.filter(horse => horse.accident === true && horse.id !== race.betHorseId);
 
 		let celebration = winner
-			? `<p><strong>${HR.escapeHtml(winner.name)}</strong> crosses the winning post first. The crowd cheers while the bookies start checking their slips.</p>`
-			: "<p>The result board changes, and nobody seems certain who crossed the line first.</p>";
+			? `<p><strong>${HR.escapeHtml(winner.name)}</strong>【이가】 가장 먼저 결승선을 통과한다. 관중이 환호하고, 마권업자들은 마권을 확인하기 시작한다.</p>`
+			: "<p>결과판이 바뀌지만, 누가 가장 먼저 결승선을 통과했는지 아무도 확신하지 못하는 듯하다.</p>";
 
 		for (const horse of injured) {
-			celebration += `<p>The vets are still with ${HR.escapeHtml(horse.name)} on the far side of the course.</p>`;
+			celebration += `<p>수의사들이 코스 반대편에서 아직 ${HR.escapeHtml(horse.name)}의 곁을 지키고 있다.</p>`;
 		}
 
 		if (race.betAmount > 0 && race.betHorseId !== "") {
 			const betHorse = HR.getHorse(race.betHorseId);
-			const betName = HR.escapeHtml(betHorse ? betHorse.name : `your ${HR.kind()}`);
+			const betName = HR.escapeHtml(betHorse ? betHorse.name : `당신의 ${HR.kind()}`);
 			const betLabel = race.betType === "place" ? "입상 베팅" : "베팅";
 			if (race.won) {
 				if (betHorse && race.betType === "place" && race.winnerId !== betHorse.id) {
-					celebration += `<p>${HR.escapeHtml(betHorse.name)} finishes second, which is enough for a place.</p>`;
+					celebration += `<p>${HR.escapeHtml(betHorse.name)}【이가】 2위로 들어왔고, 입상에는 충분한 성적이다.</p>`;
 				}
-				celebration += `<p><strong><span style="color:#5fcf7b;">You won.</span></strong> Your ${HR.formatMoney(
+				celebration += `<p><strong><span style="color:#5fcf7b;">당신이 이겼다.</span></strong> ${betName}에 건 ${HR.formatMoney(
 					race.betAmount
-				)} ${betLabel} on ${betName} pays ${HR.formatMoney(race.payout)}.</p>`;
+				)} ${betLabel}의 지급액은 ${HR.formatMoney(race.payout)}이다.</p>`;
 			} else {
 				if (betHorse) celebration += `<p>${HR.backedStory(race, betHorse)}</p>`;
-				celebration += `<p><strong><span style="color:#ff6b6b;">You lost.</span></strong> Your ${HR.formatMoney(
+				celebration += `<p><strong><span style="color:#ff6b6b;">당신이 졌다.</span></strong> ${betName}에 건 ${HR.formatMoney(
 					race.betAmount
-				)} ${betLabel} does not return anything.</p>`;
+				)} ${betLabel}【은는】 한 푼도 돌아오지 않는다.</p>`;
 			}
 		}
 
 		return `<div class="horse-race-result">
 			${celebration}
 			<table class="horse-race-table">
-				<thead><tr><th>Place</th><th>${HR.kind(false, true)}</th><th>Finish</th></tr></thead>
+				<thead><tr><th>순위</th><th>${HR.kind(false, true)}</th><th>결과</th></tr></thead>
 				<tbody>${rows}</tbody>
 			</table>
 		</div>`;

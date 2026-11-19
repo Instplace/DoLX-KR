@@ -372,7 +372,7 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 				} else if (V.parasite.clit.name !== "parasite") {
 					result.options.push({
 						action: "mvaginaclitparasite",
-						text: `클리토리스 ${V.parasite.clit.name}【을를】 가지고 논다`,
+						text: `클리토리스 ${window.KR.getCreatureTypeKr(V.parasite.clit.name)}【을를】 가지고 논다`,
 						colour: "sub",
 					});
 				}
@@ -725,7 +725,7 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 							} else if (V.parasite.clit.name !== "parasite") {
 								result.options.push({
 									action: "mvaginaclitvibrateparasite",
-									text: `클리토리스 ${V.parasite.clit.name}에 가져다 댄다`,
+									text: `클리토리스 ${window.KR.getCreatureTypeKr(V.parasite.clit.name)}에 가져다 댄다`,
 									colour: "sub",
 								});
 							}
@@ -1028,7 +1028,7 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 					} else if (V.parasite.clit.name !== "parasite") {
 						result.options.push({
 							action: "mvaginaclitparasite",
-							text: `클리토리스 ${V.parasite.clit.name}에 집중한다`,
+							text: `클리토리스 ${window.KR.getCreatureTypeKr(V.parasite.clit.name)}에 집중한다`,
 							colour: "sub",
 							otherElements: !corruptionCheck ? "<<combataware 3>>" : undefined,
 						});

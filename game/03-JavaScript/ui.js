@@ -145,17 +145,17 @@ function settingsAsphyxiation() {
 				text = "내 목은 건드리지 마!";
 				break;
 			case 1:
-				text = "NPCs may <span class='blue inline-colour'>grab</span> you by the neck. Doesn't impede breathing.";
+				text = "NPC가 당신의 목을 <span class='blue inline-colour'>움켜잡을</span> 수 있습니다. 호흡을 방해하지는 않습니다.";
 				break;
 			case 2:
-				text = "NPCs may try to <span class='purple inline-colour'>choke</span> you during consensual intercourse.";
+				text = "합의된 성관계 중에 NPC가 당신의 숨을 <span class='purple inline-colour'>막으려</span> 할 수 있습니다.";
 				break;
 			case 3:
-				text = "NPCs may try to <span class='red inline-colour'>strangle</span> you during non-consensual intercourse.";
+				text = "강제적인 성관계 중에 NPC가 당신의 <span class='red inline-colour'>목을 조르려</span> 할 수 있습니다.";
 				break;
 			case 4:
 				text =
-					"NPCs will <span class='red inline-colour'>often</span> try to <span class='red inline-colour'>strangle</span> you during non-consensual intercourse.";
+					"강제적인 성관계 중에 NPC가 <span class='red inline-colour'>자주</span> 당신의 <span class='red inline-colour'>목을 조르려</span> 합니다.";
 				break;
 			default:
 				text = "오류: 잘못된 값: " + val;
@@ -179,16 +179,16 @@ function settingsCondoms() {
 		let text = null;
 		switch (val) {
 			case 0:
-				text = "<span class='red inline-colour'>Everyone is allergic to latex and safe sex.</span>";
+				text = "<span class='red inline-colour'>모두가 라텍스와 안전한 성관계에 알레르기가 있습니다.</span>";
 				break;
 			case 1:
-				text = "Only <span class='green inline-colour'>you</span> may use condoms. You may still give condoms to NPCs.";
+				text = "<span class='green inline-colour'>당신</span>만 콘돔을 쓸 수 있습니다. NPC에게 콘돔을 건네줄 수는 있습니다.";
 				break;
 			case 2:
-				text = "NPCs will only have condoms if <span class='blue inline-colour'>pregnancy</span> between them and the player is possible.";
+				text = "NPC는 자신과 플레이어 사이에 <span class='blue inline-colour'>임신</span>이 가능할 때만 콘돔을 가지고 있습니다.";
 				break;
 			case 3:
-				text = "NPCs may have and use condoms <span class='pink inline-colour'>whenever they please</span>.";
+				text = "NPC는 <span class='pink inline-colour'>내키는 대로</span> 콘돔을 가지고 쓸 수 있습니다.";
 				break;
 			default:
 				text = "오류: 잘못된 값: " + val;
@@ -212,13 +212,13 @@ function settingsNudeGenderAppearance() {
 		let text = null;
 		switch (val) {
 			case 0:
-				text = "NPCs will <span class='blue inline-colour'>ignore</span> your genitals when perceiving your gender.";
+				text = "NPC는 당신의 성별을 판단할 때 성기를 <span class='blue inline-colour'>무시</span>합니다.";
 				break;
 			case 1:
-				text = "NPCs will <span class='purple inline-colour'>consider</span> your genitals when perceiving your gender.";
+				text = "NPC는 당신의 성별을 판단할 때 성기를 <span class='purple inline-colour'>고려</span>합니다.";
 				break;
 			case 2:
-				text = "NPCs will <span class='red inline-colour'>judge</span> your gender based on your genitals.";
+				text = "NPC는 당신의 성기를 <span class='red inline-colour'>기준으로</span> 성별을 판단합니다.";
 				break;
 			default:
 				text = "오류: 잘못된 값: " + val;
@@ -244,16 +244,16 @@ function settingsBodywriting() {
 		let text = null;
 		switch (val) {
 			case 0:
-				text = "NPCs may <span class='green inline-colour'>not</span> write on you.";
+				text = "NPC가 당신의 몸에 글을 쓰는 일은 <span class='green inline-colour'>없습니다</span>.";
 				break;
 			case 1:
-				text = "NPCs may <span class='blue inline-colour'>ask</span> to write on you.";
+				text = "NPC가 당신의 몸에 글을 써도 되는지 <span class='blue inline-colour'>물어볼</span> 수 있습니다.";
 				break;
 			case 2:
-				text = "NPCs may <span class='purple inline-colour'>forcibly</span> write on you.";
+				text = "NPC가 당신의 몸에 <span class='purple inline-colour'>강제로</span> 글을 쓸 수 있습니다.";
 				break;
 			case 3:
-				text = "NPCs may <span class='red inline-colour'>forcibly</span> write on and <span class='red inline-colour'>tattoo</span> you.";
+				text = "NPC가 당신의 몸에 <span class='red inline-colour'>강제로</span> 글을 쓰고 <span class='red inline-colour'>문신</span>을 새길 수 있습니다.";
 				break;
 			default:
 				text = "오류: 잘못된 값: " + val;
@@ -321,25 +321,25 @@ function settingsGenericGenders(id) {
 		} else if (id === "mlm") {
 			val = V.maleChanceMale;
 			slider = "malechancemale";
-			attraction = "<span class='blue inline-colour'>attracted to men</span>";
-			men = "men";
-			women = "women";
+			attraction = "<span class='blue inline-colour'>남성에게 끌립니다</span>";
+			men = "남성";
+			women = "여성";
 		} else if (id === "wlw") {
 			val = V.maleChanceFemale;
 			slider = "malechancefemale";
-			attraction = "<span class='pink inline-colour'>attracted to women</span>";
-			men = "men";
-			women = "women";
+			attraction = "<span class='pink inline-colour'>여성에게 끌립니다</span>";
+			men = "남성";
+			women = "여성";
 		} else if (id === "blm") {
 			val = V.beastMaleChanceMale;
 			slider = "beastmalechancemale";
-			attraction = "<span class='blue inline-colour'>attracted to men</span>";
+			attraction = "<span class='blue inline-colour'>남성에게 끌립니다</span>";
 			men = "수컷 짐승";
 			women = "암컷 짐승";
 		} else if (id === "blw") {
 			val = V.beastMaleChanceFemale;
 			slider = "beastmalechancefemale";
-			attraction = "<span class='pink inline-colour'>attracted to women</span>";
+			attraction = "<span class='pink inline-colour'>여성에게 끌립니다</span>";
 			men = "수컷 짐승";
 			women = "암컷 짐승";
 		} else {
@@ -352,10 +352,10 @@ function settingsGenericGenders(id) {
 		if (id === "mlm" || id === "wlw" || id === "blw" || id === "blm") {
 			switch (val) {
 				case 100:
-					text = `<span class='gold inline-colour'>No</span> <span class='pink inline-colour'>${women}</span> and <span class='gold inline-colour'>all</span> <span class='blue inline-colour'>${men}</span> will be ${attraction}.`;
+					text = `<span class='pink inline-colour'>${women}</span>【은는】 <span class='gold inline-colour'>아무도</span>, <span class='blue inline-colour'>${men}</span>【은는】 <span class='gold inline-colour'>모두</span> ${attraction}.`;
 					break;
 				case 0:
-					text = `<span class='gold inline-colour'>All</span> <span class='pink inline-colour'>${women}</span> and <span class='gold inline-colour'>no</span> <span class='blue inline-colour'>${men}</span> will be ${attraction}.`;
+					text = `<span class='pink inline-colour'>${women}</span>【은는】 <span class='gold inline-colour'>모두</span>, <span class='blue inline-colour'>${men}</span>【은는】 <span class='gold inline-colour'>아무도</span> ${attraction}.`;
 					break;
 				default:
 					text = `<span class='gold inline-colour'>${
@@ -365,18 +365,18 @@ function settingsGenericGenders(id) {
 			}
 		} else {
 			if (val === 100) {
-				text = `<span class='gold inline-colour'>All</span> ${id} will be <span class='blue inline-colour'>male</span>.`;
+				text = `<span class='gold inline-colour'>모든</span> ${(({beasts:'짐승',NPCs:'NPC'})[id] || id)}【이가】 <span class='blue inline-colour'>남성</span>이 됩니다.`;
 			} else if (val === 0) {
-				text = `<span class='gold inline-colour'>All</span> ${id} will be <span class='pink inline-colour'>female</span>.`;
+				text = `<span class='gold inline-colour'>모든</span> ${(({beasts:'짐승',NPCs:'NPC'})[id] || id)}【이가】 <span class='pink inline-colour'>여성</span>이 됩니다.`;
 			} else if (val === 50) {
 				text =
-					id.charAt(0).toUpperCase() +
-					id.slice(1) +
-					" will be <span class='gold inline-colour'>evenly</span> split between <span class='blue inline-colour'>male</span> and <span class='pink inline-colour'>female</span> genders.";
+					(({beasts:'짐승',NPCs:'NPC'})[id] || id) +
+					"" +
+					"의 성비가 <span class='blue inline-colour'>남성</span>과 <span class='pink inline-colour'>여성</span>으로 <span class='gold inline-colour'>균등하게</span> 나뉩니다.";
 			} else if (val > 50) {
-				text = `<span class='gold inline-colour'>${val}%</span> of ${id} will be <span class='blue inline-colour'>male</span>.`;
+				text = `${(({beasts:'짐승',NPCs:'NPC'})[id] || id)}의 <span class='gold inline-colour'>${val}%</span>가 <span class='blue inline-colour'>남성</span>이 됩니다.`;
 			} else {
-				text = `<span class='gold inline-colour'>${100 - val}%</span> of ${id} will be <span class='pink inline-colour'>female</span>.`;
+				text = `${(({beasts:'짐승',NPCs:'NPC'})[id] || id)}의 <span class='gold inline-colour'>${100 - val}%</span>가 <span class='pink inline-colour'>여성</span>이 됩니다.`;
 			}
 		}
 
@@ -403,16 +403,16 @@ function settingsMonsterChance() {
 
 		switch (val) {
 			case 100:
-				text = "Beasts will <span class='gold inline-colour'>always</span> be monster girls and boys.";
+				text = "짐승은 <span class='gold inline-colour'>항상</span> 수인으로 나타납니다.";
 				break;
 			case 0:
-				text = "Beasts will <span class='gold inline-colour'>never</span> appear as monster girls and boys, unless allowed while hallucinating.";
+				text = "짐승은 환각 상태에서 허용된 경우가 아니라면 <span class='gold inline-colour'>절대</span> 수인으로 나타나지 않습니다.";
 				break;
 			case 50:
-				text = "<span class='gold inline-colour'>Half</span> of all beasts will be replaced by monster girls and boys.";
+				text = "전체 짐승의 <span class='gold inline-colour'>절반</span>이 수인으로 대체됩니다.";
 				break;
 			default:
-				text = `<span class='gold inline-colour'>${val}%</span> of beasts will be replaced by monster girls and boys.`;
+				text = `짐승의 <span class='gold inline-colour'>${val}%</span>가 수인으로 대체됩니다.`;
 				break;
 		}
 
@@ -436,43 +436,43 @@ function settingsBeastGenders(singleUpdate) {
 		switch (val) {
 			case 100:
 				if (T.beastMaleChanceSplit === "t") {
-					text = "<span class='gold inline-colour'>All</span> beasts will prefer the <span class='gold inline-colour'>opposite sex</span>.";
+					text = "<span class='gold inline-colour'>모든</span> 짐승이 <span class='gold inline-colour'>이성</span>에게 끌립니다.";
 				} else {
-					text = "<span class='gold inline-colour'>All</span> beasts will be <span class='blue inline-colour'>male</span>.";
+					text = "<span class='gold inline-colour'>모든</span> 짐승이 <span class='blue inline-colour'>수컷</span>이 됩니다.";
 				}
 				break;
 			case 75:
 				if (T.beastMaleChanceSplit === "t") {
-					text = "<span class='gold inline-colour'>75%</span> of beasts will prefer the <span class='gold inline-colour'>opposite sex</span>.";
+					text = "짐승의 <span class='gold inline-colour'>75%</span>가 <span class='gold inline-colour'>이성</span>에게 끌립니다.";
 				} else {
-					text = "<span class='gold inline-colour'>75%</span> of beasts will be <span class='blue inline-colour'>male.</span>";
+					text = "짐승의 <span class='gold inline-colour'>75%</span>가 <span class='blue inline-colour'>수컷</span>이 됩니다.";
 				}
 				break;
 			case 50:
 				if (T.beastMaleChanceSplit === "t") {
-					text = "Beast sexual preferences will be <span class='gold inline-colour'>randomly</span> split.";
+					text = "짐승의 성적 지향이 <span class='gold inline-colour'>무작위로</span> 나뉩니다.";
 				} else {
 					text =
-						"Beasts will be <span class='gold inline-colour'>evenly</span> split between <span class='blue inline-colour'>male</span> and <span class='pink inline-colour'>female</span> genders.";
+						"짐승의 성비가 <span class='blue inline-colour'>수컷</span>과 <span class='pink inline-colour'>암컷</span>으로 <span class='gold inline-colour'>균등하게</span> 나뉩니다.";
 				}
 				break;
 			case 25:
 				if (T.beastMaleChanceSplit === "t") {
-					text = "<span class='gold inline-colour'>75%</span> of beasts will prefer the <span class='gold inline-colour'>same sex</span>.";
+					text = "짐승의 <span class='gold inline-colour'>75%</span>가 <span class='gold inline-colour'>동성</span>에게 끌립니다.";
 				} else {
-					text = "<span class='gold inline-colour'>75%</span> of beasts will be <span class='pink inline-colour'>female.</span>";
+					text = "짐승의 <span class='gold inline-colour'>75%</span>가 <span class='pink inline-colour'>암컷</span>이 됩니다.";
 				}
 				break;
 			case 0:
 				if (T.beastMaleChanceSplit === "t") {
-					text = "<span class='gold inline-colour'>All</span> beasts will prefer the <span class='gold inline-colour'>same sex</span>.";
+					text = "<span class='gold inline-colour'>모든</span> 짐승이 <span class='gold inline-colour'>동성</span>에게 끌립니다.";
 				} else {
-					text = "<span class='gold inline-colour'>All</span> beasts will be <span class='pink inline-colour'>female.</span>";
+					text = "<span class='gold inline-colour'>모든</span> 짐승이 <span class='pink inline-colour'>암컷</span>이 됩니다.";
 				}
 				break;
 			default:
 				if (T.beastMaleChanceSplit === "t") {
-					text = "Beast sexual preferences will be <span class='gold inline-colour'>randomly</span> split.";
+					text = "짐승의 성적 지향이 <span class='gold inline-colour'>무작위로</span> 나뉩니다.";
 				} else {
 					text = "<span class='gold inline-colour'>" + V.beastmalechance + "%</span>의 짐승이 <span class='blue inline-colour'>수컷</span>입니다.";
 				}
@@ -499,15 +499,15 @@ function settingsPlayerGender() {
 		const val = V.genderidentity;
 		let text = "겉모습과 달리, 당신은 스스로를 이렇게 여깁니다: ";
 
-		if (val === 1000) text += "<span class='pink inline-colour'>Femme</span>";
-		else if (val >= 875) text += "<span class='pink inline-colour'>Woman</span>";
-		else if (val >= 750) text += "<span class='pink inline-colour'>Tomboy</span>";
-		else if (val >= 625) text += "<span class='pink inline-colour'>Butch</span>";
-		else if (val >= 375) text += "<span class='green inline-colour'>Non-binary</span>";
-		else if (val >= 250) text += "<span class='blue inline-colour'>Sissy</span>";
-		else if (val >= 125) text += "<span class='blue inline-colour'>Twink</span>";
-		else if (val >= 1) text += "<span class='blue inline-colour'>Man</span>";
-		else text += "<span class='blue inline-colour'>Macho</span>";
+		if (val === 1000) text += "<span class='pink inline-colour'>팜므</span>";
+		else if (val >= 875) text += "<span class='pink inline-colour'>여성</span>";
+		else if (val >= 750) text += "<span class='pink inline-colour'>말괄량이</span>";
+		else if (val >= 625) text += "<span class='pink inline-colour'>부치</span>";
+		else if (val >= 375) text += "<span class='green inline-colour'>논바이너리</span>";
+		else if (val >= 250) text += "<span class='blue inline-colour'>시시</span>";
+		else if (val >= 125) text += "<span class='blue inline-colour'>트윙크</span>";
+		else if (val >= 1) text += "<span class='blue inline-colour'>남성</span>";
+		else text += "<span class='blue inline-colour'>마초</span>";
 
 		jQuery("#numberslider-value-genderidentity").text("").append(text).addClass("small-description");
 	};
@@ -529,43 +529,43 @@ function settingsNpcGenders(singleUpdate) {
 		switch (val) {
 			case 100:
 				if (T.maleChanceSplit === "t") {
-					text = "<span class='gold inline-colour'>All</span> NPCs will prefer the <span class='gold inline-colour'>opposite sex</span>.";
+					text = "NPC 전원이 <span class='gold inline-colour'>이성</span>에게 끌립니다.";
 				} else {
-					text = "<span class='gold inline-colour'>All</span> NPCs will be <span class='blue inline-colour'>male</span>.";
+					text = "NPC 전원이 <span class='blue inline-colour'>남성</span>이 됩니다.";
 				}
 				break;
 			case 75:
 				if (T.maleChanceSplit === "t") {
-					text = "<span class='gold inline-colour'>75%</span> of NPCs will prefer the <span class='gold inline-colour'>opposite sex</span>.";
+					text = "NPC의 <span class='gold inline-colour'>75%</span>가 <span class='gold inline-colour'>이성</span>에게 끌립니다.";
 				} else {
-					text = "<span class='gold inline-colour'>75%</span> of NPCs will be <span class='blue inline-colour'>male.</span>";
+					text = "NPC의 <span class='gold inline-colour'>75%</span>가 <span class='blue inline-colour'>남성</span>이 됩니다.";
 				}
 				break;
 			case 50:
 				if (T.maleChanceSplit === "t") {
-					text = "NPC sexual preferences will be <span class='gold inline-colour'>randomly</span> split.";
+					text = "NPC의 성적 지향이 <span class='gold inline-colour'>무작위로</span> 나뉩니다.";
 				} else {
 					text =
-						"NPCs will be <span class='gold inline-colour'>evenly</span> split between <span class='blue inline-colour'>male</span> and <span class='pink inline-colour'>female</span> genders.";
+						"NPC의 성비가 <span class='blue inline-colour'>남성</span>과 <span class='pink inline-colour'>여성</span>으로 <span class='gold inline-colour'>균등하게</span> 나뉩니다.";
 				}
 				break;
 			case 25:
 				if (T.maleChanceSplit === "t") {
-					text = "<span class='gold inline-colour'>75%</span> of NPCs will prefer the <span class='gold inline-colour'>same sex</span>.";
+					text = "NPC의 <span class='gold inline-colour'>75%</span>가 <span class='gold inline-colour'>동성</span>에게 끌립니다.";
 				} else {
-					text = "<span class='gold inline-colour'>75%</span> of NPCs will be <span class='pink inline-colour'>female.</span>";
+					text = "NPC의 <span class='gold inline-colour'>75%</span>가 <span class='pink inline-colour'>여성</span>이 됩니다.";
 				}
 				break;
 			case 0:
 				if (T.maleChanceSplit === "t") {
-					text = "<span class='gold inline-colour'>All</span> NPCs will prefer the <span class='gold inline-colour'>same sex</span>.";
+					text = "NPC 전원이 <span class='gold inline-colour'>동성</span>에게 끌립니다.";
 				} else {
-					text = "<span class='gold inline-colour'>All</span> NPCs will be <span class='pink inline-colour'>female.</span>";
+					text = "NPC 전원이 <span class='pink inline-colour'>여성</span>이 됩니다.";
 				}
 				break;
 			default:
 				if (T.maleChanceSplit === "t") {
-					text = "NPC sexual preferences will be <span class='gold inline-colour'>randomly</span> split.";
+					text = "NPC의 성적 지향이 <span class='gold inline-colour'>무작위로</span> 나뉩니다.";
 				} else {
 					text = "<span class='gold inline-colour'>" + V.malechance + "%</span>의 NPC가 <span class='blue inline-colour'>남성</span>입니다.";
 				}
@@ -592,13 +592,13 @@ function settingsPlayerBeauty() {
 		const val = V.beauty;
 		let text = "당신을 보는 사람이라면 누구나 당신이 이런 사람이라는 데 동의할 겁니다: ";
 
-		if (val >= (V.beautymax / 7) * 6) text += "<span class='gold inline-colour'>Divine</span>";
-		else if (val >= (V.beautymax / 7) * 5) text += "<span class='pink inline-colour'>Ravishing</span>";
-		else if (val >= (V.beautymax / 7) * 4) text += "<span class='purple inline-colour'>Beautiful</span>";
-		else if (val >= (V.beautymax / 7) * 3) text += "<span class='blue inline-colour'>Charming</span>";
-		else if (val >= (V.beautymax / 7) * 2) text += "<span class='lblue inline-colour'>Pretty</span>";
-		else if (val >= (V.beautymax / 7) * 1) text += "<span class='teal inline-colour'>Cute</span>";
-		else text += "<span class='green inline-colour'>Plain</span>";
+		if (val >= (V.beautymax / 7) * 6) text += "<span class='gold inline-colour'>신성한 사람</span>";
+		else if (val >= (V.beautymax / 7) * 5) text += "<span class='pink inline-colour'>황홀한 사람</span>";
+		else if (val >= (V.beautymax / 7) * 4) text += "<span class='purple inline-colour'>아름다운 사람</span>";
+		else if (val >= (V.beautymax / 7) * 3) text += "<span class='blue inline-colour'>매력적인 사람</span>";
+		else if (val >= (V.beautymax / 7) * 2) text += "<span class='lblue inline-colour'>예쁜 사람</span>";
+		else if (val >= (V.beautymax / 7) * 1) text += "<span class='teal inline-colour'>귀여운 사람</span>";
+		else text += "<span class='green inline-colour'>평범한 사람</span>";
 
 		jQuery("#numberslider-value-beauty").text("").append(text).addClass("small-description");
 	};

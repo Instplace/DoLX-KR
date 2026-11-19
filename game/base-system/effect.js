@@ -1379,7 +1379,7 @@ function effects() {
 		}
 
 		if (V.community_message === "missed") {
-			sWikifier('<span class="red">사회봉사를 빠졌다. 경찰이 이를 기록했다.</span><<crime "obstruction">>');
+			sWikifier('<span class="red">사회봉사에 빠졌다. 경찰이 이를 기록했다.</span><<crime "obstruction">>');
 			delete V.community_message;
 		}
 
@@ -1445,7 +1445,7 @@ function effects() {
 				element("span", "반납 기한을 크게 넘긴 책이 있으며, 경찰에 통보되었다.", "red");
 			} else {
 				sWikifier(`<<delinquency ${3 / 4}>>`);
-				element("span", "반납 기한을 넘긴 책이 있어 비행도가 올랐다.", "red");
+				element("span", "반납 기한을 넘긴 책이 있어 불량도가 올랐다.", "red");
 			}
 			delete V.bookoverduemessage;
 		}
@@ -1491,7 +1491,7 @@ function effects() {
 			}
 			if (parasiteMessage) {
 				sWikifier(`<span class="blue">만족스러운 온기가 당신을 채운다. ${parasiteMessage}.</span>`);
-				element("span", `그것이 귀 속 슬라임에게서 비롯된 것임을 알 수 있다.`);
+				element("span", `그것이 귀 슬라임에게서 비롯된 것임을 알 수 있다.`);
 				if (V.earSlimePenisParasite && V.earSlimePenisParasite !== 1) {
 					element("span", `성장이 끝난 직후 이전 ${V.earSlimePenisParasite}【이가】 떨어져 나간다.`, "red");
 				}
@@ -2253,13 +2253,13 @@ function effects() {
 					break;
 				case "valentinesTomorrow":
 					sWikifier(
-						`<span class="gold">내일은 발렌타인 데이다. 특별한 사람과 소중한 시간을 보내는 일이 기대된다.</span> <<stress -6>><<lstress>><<trauma -6>><<ltrauma>>`
+						`<span class="gold">내일은 발렌타인데이다. 특별한 사람과 소중한 시간을 보내는 일이 기대된다.</span> <<stress -6>><<lstress>><<trauma -6>><<ltrauma>>`
 					);
 					br();
 					break;
 				case "valentinesToday":
 					sWikifier(
-						`<span class="gold">오늘은 발렌타인 데이다. 오늘 특별한 사람과 소중한 시간을 보내는 일이 기대된다. 그렇게 하면 평소보다 더 큰 보상이 있을 것 같은 예감이 든다.</span> <<stress -6>><<lstress>><<trauma -6>><<ltrauma>>`
+						`<span class="gold">오늘은 발렌타인데이다. 오늘 특별한 사람과 소중한 시간을 보내는 일이 기대된다. 그렇게 하면 평소보다 더 큰 보상이 있을 것 같은 예감이 든다.</span> <<stress -6>><<lstress>><<trauma -6>><<ltrauma>>`
 					);
 					br();
 					break;

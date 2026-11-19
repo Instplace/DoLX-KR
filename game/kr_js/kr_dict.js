@@ -170,7 +170,7 @@ window.KR.dict = {
   "chastity cage": "정조대 케이지",
   "chastity parasite": "기생형 정조대",
   "checkered lace skirt": "체크무늬 레이스 치마",
-  "checkered shirt": "체크 무늬 셔츠",
+  "checkered shirt": "체크무늬 셔츠",
   "checkered skirt": "체크무늬 치마",
   "cheerleader gloves": "치어리더 장갑",
   "cheerleading skirt": "치어리더 치마",
@@ -358,7 +358,7 @@ window.KR.dict = {
   "full body leotard bottom": "전신 레오타드 하의",
   "fur beret": "털 베레모",
   "fur beret with pompom": "방울 달린 털 베레모",
-  "fur boa": "깃털 보아",
+  "fur boa": "털 보아",
   "fur boots": "털부츠",
   "fur cap": "털모자",
   "futuristic bodysuit": "미래지향적 바디슈트",
@@ -548,10 +548,10 @@ window.KR.dict = {
   "light-up trainers": "발광 운동화",
   "loincloth": "샅바",
   "lolita bonnet": "롤리타 보닛",
-  "lolita dress": "로리타 드레스",
+  "lolita dress": "롤리타 드레스",
   "lolita headband": "롤리타 헤어밴드",
-  "lolita lace nightgown": "로리타 레이스 잠옷",
-  "lolita maid": "로리타 메이드",
+  "lolita lace nightgown": "롤리타 레이스 잠옷",
+  "lolita maid": "롤리타 메이드",
   "lolita maid headband": "롤리타 메이드 헤어밴드",
   "lolita night cap": "롤리타 수면 모자",
   "lolita nun's habit": "롤리타 수녀복",
@@ -977,7 +977,7 @@ window.KR.dict = {
   "towel top": "수건 상의",
   "tracksuit bottoms": "트레이닝 바지",
   "tracksuit jacket": "트레이닝 재킷",
-  "tracksuit top": "트레이닝 복 상의",
+  "tracksuit top": "트레이닝복 상의",
   "traditional maid band": "전통 메이드 머리띠",
   "traditional maid dress": "전통 메이드복",
   "traditional maid skirt": "전통 메이드복 치마",
@@ -1090,7 +1090,7 @@ window.KR.dict = {
   "unbuttoned shorts": "단추 푼 반바지",
   "wood muzzle": "나무 입마개",
   /* DoL+ 보석·장신구 등 */
-  "7c t tanzanite ring": "7캐럿 탄자나이트 반지",
+  "7ct tanzanite ring": "7캐럿 탄자나이트 반지",
   "2ct amethyst bracelet": "2캐럿 자수정 팔찌",
   "5ct amethyst bracelet": "5캐럿 자수정 팔찌",
   "10ct amethyst bracelet": "10캐럿 자수정 팔찌",
@@ -1465,7 +1465,7 @@ window.KR.dict = {
   "spinel cocktail earrings": "스피넬 칵테일 귀걸이",
   "spinel drop earrings": "스피넬 드롭 귀걸이",
   "spinel halo earrings": "스피넬 헤일로 귀걸이",
-  "1.5ct spinel ri ng": "1.5캐럿 스피넬 반지",
+  "1.5ct spinel ring": "1.5캐럿 스피넬 반지",
   "0.1ct spinel ring": "0.1캐럿 스피넬 반지",
   "0.15ct spinel ring": "0.15캐럿 스피넬 반지",
   "0.2ct spinel ring": "0.2캐럿 스피넬 반지",
@@ -1577,6 +1577,35 @@ window.KR.dict = {
   "tentacle dildo": "촉수 딜도",
   "jeweled butt plug": "보석 장식 애널 플러그",
   "fox tail butt plug": "여우 꼬리 애널 플러그",
+
+  // DoLX에서 추가된 옷·장신구 이름
+  "bailey's collar": "베일리의 목줄",
+  "big faux jewel ring": "큰 모조 보석 반지",
+  "dildo chastity belt": "딜도 정조대",
+  "dotted panties": "물방울무늬 팬티",
+  "fetish dildo chastity belt": "페티시 딜도 정조대",
+  "fetish flat chastity cage": "페티시 평면형 정조대 케이지",
+  "flower basket": "꽃바구니",
+  "fruit basket": "과일 바구니",
+  "gold and silver flower earrings": "금은 꽃 귀걸이",
+  "initialled gemstone ring": "이니셜 보석 반지",
+  "mushroom basket": "버섯 바구니",
+  "oversized tailored button-down": "오버핏 맞춤 버튼다운 셔츠",
+  "short evening gown": "짧은 이브닝 가운",
+  "short evening gown skirt": "짧은 이브닝 가운 치마",
+  "short plaid school skirt": "짧은 체크무늬 교복 치마",
+  "tailored button-down": "맞춤 버튼다운 셔츠",
+  "tailored double breasted jacket": "맞춤 더블 브레스트 재킷",
+  "tailored gothic jacket": "맞춤 고딕 재킷",
+  "tailored peacoat": "맞춤 피코트",
+  "tailored shadbelly coat": "맞춤 승마용 연미복",
+  "tailored shirt and blazer": "맞춤 셔츠와 블레이저",
+  "tailored single breasted jacket": "맞춤 싱글 브레스트 재킷",
+  "tailored tuxedo jacket": "맞춤 턱시도 재킷",
+  "tidebloom ring": "조수꽃 반지",
+  "white half-mask": "흰색 하프 마스크",
+  "harness": "하네스",
+  "headphones": "헤드폰",
 
   // X-체인지·SWP 알약 이름 (DoLX). 데이터의 name은 영어 키로 두고 화면에서만 바꾼다.
   "X-Change Breeder": "X-체인지 브리더",
@@ -1797,6 +1826,7 @@ window.KR.getCreatureTypeKr = function(type) {
 
 window.KR.getNpcRoleKr = function(role) {
     var map = {
+        professor: "교수",
         manager: "매니저", scientist: "과학자", initiate: "입문자", cultist: "신도",
         islander: "섬 주민", "old islander": "늙은 섬 주민", sleeper: "잠든 사람",
         repairman: "수리공", repairwoman: "수리공", employee: "직원", boy: "소년", girl: "소녀",
@@ -1970,6 +2000,12 @@ window.KR.getPenisDescKr = function(desc) {
     if (!desc) return desc;
 
     var dict = {
+        "monstrous": "괴물 같은",
+        "colossal": "압도적인",
+        "towering": "우뚝 솟은",
+        "titanic": "타이탄급",
+        "lethal": "치명적인",
+        "girthy": "굵직한",
         "dildo": "딜도",
         "beaded": "구슬 달린",
         "studded": "징 박힌",
@@ -1999,7 +2035,7 @@ window.KR.getPenisDescKr = function(desc) {
         "gigantic": "초거대한",
         "little": "작은",
         "pathetic": "초라한",
-        "micro": "실같은",
+        "micro": "실 같은",
         "mini": "아주 작은",
         "tiny": "조그만",
         "small": "작은",
@@ -2138,12 +2174,19 @@ window.KR.wardrobeNameDict = {
     "Brothel": "창관",
     "Schools boy's locker": "학교 남자 라커",
     "Schools girl's locker": "학교 여자 라커",
-    "Prison locker": "교도소 라커",
+    "Prison locker": "감옥 라커",
     "Mansion Wardrobe": "저택 옷장",
     "Temple": "신전",
     "Pirate Ship": "해적선",
     "Office agency changing room": "사무소 탈의실",
     "Great Hawk's Tower": "거대 매의 탑",
+    "Hidden Nest": "숨겨진 둥지",
+    "Player inventory": "소지품",
+    "Dance studio locker": "댄스 스튜디오 라커",
+    "MMA gym locker": "MMA 체육관 라커",
+    "Colosseum locker": "콜로세움 라커",
+    "Lake alcove": "호숫가 바위 틈새",
+    "Orphanage": "고아원",
 };
 window.KR.getWardrobeNameKr = function(name) {
     return window.KR.wardrobeNameDict[name] || name;
@@ -2243,6 +2286,8 @@ window.KR.personNameDict = {
     "Cass": "캐스", "Taylor": "테일러", "Sterling": "스털링",
     "Brutus": "브루투스", "Raul": "라울", "Mr Pinch": "핀치 씨", "Ms Pinch": "핀치 양", "Nona": "노나", "the witch": "마녀",
     "pale figure": "창백한 형체", "Harper's serum": "하퍼의 혈청", "anonymous donor": "익명의 기증자",
+    "Professor Elian Vale": "엘리안 베일 교수",
+    "scientist who studies ancient DNA": "고대 DNA를 연구하는 과학자",
 };
 
 /* 사람/몹 이름 통합 조회 함수. personNameDict에서 못 찾으면 getDescriptionKr (합성 묘사구 분해 번역)로 재조회하고, 그것마저 못 찾으면 원문을 그대로 반환한다. */
@@ -2289,7 +2334,7 @@ window.KR.getNpcTitleKr = function(title) {
         case "pirate": return "해적";
         case "horror": return "끔찍한 존재";
         case "curious": return "호기심 많은";
-        case "scarred": return "상처입은";
+        case "scarred": return "상처 입은";
         case "guard": return "경비원";
         case "manager": return "매니저";
         case "cultist": return "신도";

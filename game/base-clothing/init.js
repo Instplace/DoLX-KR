@@ -846,7 +846,7 @@ function initNpcClothes() {
 		{ name: "femaleTown1",			type: "town", gender: "f", outfit: 1, clothes: npcAssignClothesToSet("sundress top", "sundress skirt"), desc: "선드레스" },
 		{ name: "maleTown2",			type: "town", gender: "m", outfit: 0, clothes: npcAssignClothesToSet("shirt", "trousers"), desc: "셔츠와 바지" },
 		{ name: "femaleTown2",			type: "town", gender: "f", outfit: 0, clothes: npcAssignClothesToSet("shirt", "skirt"), desc: "셔츠와 치마" },
-		{ name: "townTrack",			type: "town", gender: "n", outfit: 0, clothes: npcAssignClothesToSet("tracksuit top", "tracksuit bottoms"), desc: "트레이닝 복" },
+		{ name: "townTrack",			type: "town", gender: "n", outfit: 0, clothes: npcAssignClothesToSet("tracksuit top", "tracksuit bottoms"), desc: "트레이닝복" },
 		{ name: "townCoat",				type: "town", gender: "n", outfit: 0, clothes: npcAssignClothesToSet("peacoat", "slacks"), desc: "피코트와 슬랙스" },
 		{ name: "townTurtleneck",		type: "town", gender: "n", outfit: 0, clothes: npcAssignClothesToSet("turtleneck", "jeans"), desc: "터틀넥과 청바지" },
 		{ name: "townCollar",			type: "town", gender: "n", outfit: 0, clothes: npcAssignClothesToSet("collared shirt", "khakis"), desc: "깃 달린 셔츠와 카키 바지" },

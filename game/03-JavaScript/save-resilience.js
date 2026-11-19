@@ -149,7 +149,7 @@ const DoLSaveGuard = (() => {
 			const status = element("span", "");
 			section.appendChild(
 				element("p", [
-					element("span", `${backup.saveName || backup.title || "unnamed save"}, day ${backup.days}, ${stamp(backup.date)} `),
+					element("span", `${backup.saveName || backup.title || "이름 없는 세이브"}, ${backup.days}일째, ${stamp(backup.date)} `),
 					element("input", {
 						type: "button",
 						class: "saveMenuButton saveMenuConfirm",
@@ -161,7 +161,7 @@ const DoLSaveGuard = (() => {
 							try {
 								const payload = JSON.parse(await appBackup().read(backup.index));
 								if (payload.date !== backup.date || payload.saveId !== backup.saveId) {
-									throw new Error("The backup changed. Reopen Backups to refresh the list.");
+									throw new Error("백업이 변경되었습니다. 백업 탭을 다시 열어 목록을 새로 고치십시오.");
 								}
 								if (restorePayload(payload)) {
 									dismissLoss();
@@ -599,7 +599,7 @@ const DoLSaveGuard = (() => {
 	 */
 	function describeSlot(slot) {
 		const label = slot.saveName || slot.title || "이름 없는 세이브";
-		const where = slot.slot === 0 ? "Autosave" : "Slot " + slot.slot;
+		const where = slot.slot === 0 ? "자동 저장" : "슬롯 " + slot.slot;
 		return `${where}: ${label} (${stamp(slot.date)})`;
 	}
 
@@ -630,7 +630,7 @@ const DoLSaveGuard = (() => {
 			element("input", {
 				type: "button",
 				class: "saveMenuButton",
-				value: "Dismiss",
+				value: "닫기",
 				onclick() {
 					dismissLoss();
 					container.textContent = "";
@@ -658,7 +658,7 @@ const DoLSaveGuard = (() => {
 							"p",
 							appBackup() == null
 								? "브라우저 쪽 백업 사본을 사용할 수 없었습니다. 내보낸 파일만이 유일한 독립 사본입니다."
-								: "No localStorage backup copy was available. Check the APK recovery copies in the Backups tab, or import an exported file."
+								: "localStorage 백업 사본을 사용할 수 없었습니다. 백업 탭의 APK 복구 사본을 확인하거나 내보낸 파일을 불러오십시오."
 					  ),
 				element("p", "백업과 세이브 목록 기록은 같은 브라우저 또는 앱 저장소를 사용합니다. 사이트 데이터를 모두 지우면 함께 사라질 수 있습니다."),
 				element("div", actions),
@@ -703,7 +703,7 @@ const DoLSaveGuard = (() => {
 					value: "영구 저장소 요청",
 					async onclick(event) {
 						event.currentTarget.disabled = true;
-						event.currentTarget.value = "Requesting...";
+						event.currentTarget.value = "요청 중...";
 						await requestPersistence();
 						await renderNotice(container.id, true);
 					},
@@ -748,20 +748,20 @@ const DoLSaveGuard = (() => {
 		const container = document.getElementById(containerId);
 		if (container == null) return;
 		const data = await diagnostics();
-		const mb = bytes => (bytes == null ? "unknown" : (bytes / 1048576).toFixed(1) + " MB");
+		const mb = bytes => (bytes == null ? "알 수 없음" : (bytes / 1048576).toFixed(1) + " MB");
 		const rows = [
-			["Origin", data.origin],
-			["indexedDB available", String(data.idbAvailable)],
-			["idb active", String(data.idbActive)],
-			["Rows in details store", String(data.detailRows)],
-			["Saves in localStorage mirror", String(data.mirrorSlots)],
-			["Storage persistent", data.persistence.supported ? String(data.persistence.persisted) : "unsupported"],
-			["Storage used", mb(data.usageBytes) + " of " + mb(data.quotaBytes)],
+			["출처", data.origin],
+			["indexedDB 사용 가능", String(data.idbAvailable)],
+			["idb 활성", String(data.idbActive)],
+			["상세 저장소 행 수", String(data.detailRows)],
+			["localStorage 미러의 세이브 수", String(data.mirrorSlots)],
+			["저장소 보호", data.persistence.supported ? String(data.persistence.persisted) : "지원 안 함"],
+			["저장소 사용량", mb(data.usageBytes) + " / " + mb(data.quotaBytes)],
 			["백업 사본", data.lifeboat ? `${stamp(data.lifeboat.date)} (${data.lifeboat.days}일째)` : data.lifeboatBlocked ? "공간 부족으로 차단됨" : "없음"],
 			["APK 파일 백업", appBackup() == null ? "이 빌드에서는 사용할 수 없음" : String(data.appBackups.length)],
-			["APK backup error", data.appBackupError || "none"],
-			["Last storage error", data.storageError || "none"],
-			["WebView / browser", data.userAgent],
+			["APK 백업 오류", data.appBackupError || "없음"],
+			["최근 저장소 오류", data.storageError || "없음"],
+			["WebView / 브라우저", data.userAgent],
 		];
 		container.textContent = "";
 		container.appendChild(

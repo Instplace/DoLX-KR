@@ -420,7 +420,7 @@ function getOwnedClothingCount(index, type, wardrobeName) {
 window.getOwnedClothingCount = getOwnedClothingCount;
 
 function importCustomColour(acc) {
-	const setName = prompt("커스텀 코드를 입력하세요", "");
+	const setName = prompt("커스텀 코드를 입력하십시오", "");
 	if (setName != null) {
 		let color;
 		try {
@@ -428,7 +428,7 @@ function importCustomColour(acc) {
 		} catch (e) {
 			document.getElementById("export-custom-colour-box").outerHTML = `
 			<div id="export-custom-colour-box">
-				<span class="export-custom-colour-error">잘못된 문자열입니다. 앞뒤 공백 없이 정확하게 복사했는지 확인하세요.</span>
+				<span class="export-custom-colour-error">잘못된 문자열입니다. 앞뒤 공백 없이 정확하게 복사했는지 확인하십시오.</span>
 			</div>`;
 			return;
 		}

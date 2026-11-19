@@ -882,7 +882,7 @@
 				<<if _overEquipped gt 1>> | <</if>>
 				<span class="no-numberify">
 					<<clothingicon $worn[_overSlot] _overSlot>><<wearlink_norefresh `$worn[_overSlot].name.toUpperFirst()` "strip" `"wear_" + _overSlot`>>
-					(<span class="wardrobe-action"><<wearlink_norefresh "Strip" "strip" `"wear_" + _overSlot`>></span>)
+					(<span class="wardrobe-action"><<wearlink_norefresh "벗는다" "strip" `"wear_" + _overSlot`>></span>)
 				</span>
 			<</capture>>
 		<</if>>
@@ -916,7 +916,7 @@
 					<<if _value.name is "Mansion Wardrobe" and ["kicked", "fallen"].contains($avery_fate)>>
 						<<set _value.name to "보관함">>
 					<</if>>
-					<<set _options[_value.name] to _label>>
+					<<set _options[window.KR.getWardrobeNameKr(_value.name)] to _label>>
 				<</if>>
 			<</for>>
 			<<listbox "_wardrobeTransfer" autoselect>>
@@ -941,7 +941,7 @@
 <</widget>>
 
 <<widget "wardrobeStorageSummary">>
-	<<print $wardrobes[$wardrobe_location] ? $wardrobes[$wardrobe_location].name : "Wardrobe">> | <<= getWardrobeItemCount(_selectedWardrobe, true)>> / 3,000
+	<<print $wardrobes[$wardrobe_location] ? window.KR.getWardrobeNameKr($wardrobes[$wardrobe_location].name) : "옷장">> | <<= getWardrobeItemCount(_selectedWardrobe, true)>> / 3,000
 	<span class="wardrobe-storage-hint">보관 및 일괄 작업</span>
 <</widget>>
 
@@ -953,7 +953,7 @@
 			<br>
 			<<set _targetWardrobe to "wardrobe">>
 			<<set _locationMap = {}>>
-			<<run _homeLocations.forEach(key => _locationMap[$wardrobes[key].name] = key)>>
+			<<run _homeLocations.forEach(key => _locationMap[window.KR.getWardrobeNameKr($wardrobes[key].name)] = key)>>
 			목적지:
 			<<listbox "_targetWardrobe" autoselect>>
 				<<optionsfrom _locationMap>>
@@ -1023,13 +1023,13 @@
 
 <<widget "wardrobeEquipActions">>
 	<<if $worn[_wardrobe_list].name isnot "naked">>
-		<span class="wardrobe-action no-numberify"><<wearlink_norefresh "Strip" 'strip'>></span>
+		<span class="wardrobe-action no-numberify"><<wearlink_norefresh "벗는다" 'strip'>></span>
 	<</if>>
 	<<if _wardrobe_list is "upper">>
 		<span class="wardrobe-action no-numberify"><<wearlink_norefresh "대형 수건" 'large_towel'>></span>
 	<</if>>
 	<<if _wardrobe_list is "upper" or _wardrobe_list is "lower">>
-		<span class="wardrobe-action no-numberify"><<wearlink_norefresh "Towel" 'towel'>></span>
+		<span class="wardrobe-action no-numberify"><<wearlink_norefresh "수건" 'towel'>></span>
 	<</if>>
 <</widget>>
 
@@ -1360,29 +1360,29 @@
 	<<switch _args[0]>>
 		<<case "upper">>
 			<<switch $worn.upper.variable>>
-				<<case "schoolcardigan">><<set _altLink to ["가디건을 허리에 묶기", "가디건을 정상적으로 입기"]>>
+				<<case "schoolcardigan">><<set _altLink to ["가디건을 허리에 묶는다", "가디건을 정상적으로 입는다"]>>
 				<<case "waistcoat" "waistcoatlapel" "blazershirt" "fittedblazershirt">><<set _altLink to ["안에 넣기", "밖으로 빼기"]>>
 				<<case "dress" "buttondown" "oversizedbuttondown" "fittedbuttondown" "oversizedfittedbuttondown" "shortsleevebuttonup" "flannel shirt">><<set _altLink to ["셔츠 단추 풀기", "셔츠 단추 채우기"]>>
-				<<case "catsuit">><<set _altLink to ["지퍼 내리기", "지퍼 올리기"]>>
-				<<case "kimono" "kimonomini">><<set _altLink to ["느슨하게 풀기", "단단히 조이기"]>>
-				<<case "flowy sleeve top" "milkmaid dress">><<set _altLink to ["소매 내리기", "소매 올리기"]>>
+				<<case "catsuit">><<set _altLink to ["지퍼를 내린다", "지퍼를 올린다"]>>
+				<<case "kimono" "kimonomini">><<set _altLink to ["느슨하게 푼다", "단단히 조인다"]>>
+				<<case "flowy sleeve top" "milkmaid dress">><<set _altLink to ["소매를 내린다", "소매를 올린다"]>>
 				<<case "striped sweater">><<set _altLink to ["소매를 걷어올린다", "소매를 내린다"]>>
-				<<case "boilersuit">><<set _altLink to ["지퍼 내리기", "지퍼 올리기"]>>
+				<<case "boilersuit">><<set _altLink to ["지퍼를 내린다", "지퍼를 올린다"]>>
 				<<default>><<exit>>
 			<</switch>>
 		<<case "over_upper">>
 			<<switch $worn.over_upper.variable>>
-				<<case "brownleather" "blackleather" "leathercropjacket" "winterjacket">><<set _altLink to ["Zip jacket", "Unzip jacket"]>>
+				<<case "brownleather" "blackleather" "leathercropjacket" "winterjacket">><<set _altLink to ["재킷 지퍼를 올린다", "재킷 지퍼를 내린다"]>>
 				<<default>><<exit>>
 			<</switch>>
 		<<case "under_upper">>
 			<<switch $worn.under_upper.variable>>
-				<<case "ruffled swimsuit">><<set _altLink to ["가디건 벗기", "가디건 입기"]>>
+				<<case "ruffled swimsuit">><<set _altLink to ["가디건을 벗는다", "가디건을 입는다"]>>
 				<<default>><<exit>>
 			<</switch>>
 		<<case "head">>
 			<<switch $worn.head.variable>>
-				<<case "bandana hat">><<set _altLink to ["뒤로 묶기", "앞으로 묶기"]>>
+				<<case "bandana hat">><<set _altLink to ["뒤로 묶는다", "앞으로 묶는다"]>>
 				<<default>><<exit>>
 			<</switch>>
 		<<case "neck">>
@@ -1412,7 +1412,7 @@
 			<</switch>>
 		<<case "legs">>
 			<<switch $worn.legs.variable>>
-				<<case "kneeplaster">><<set _altLink to ["왼쪽 무릎 가리기", "오른쪽 무릎 가리기"]>>
+				<<case "kneeplaster">><<set _altLink to ["왼쪽 무릎을 가린다", "오른쪽 무릎을 가린다"]>>
 				<<default>><<exit>>
 			<</switch>>
 		<<default>><<exit>>

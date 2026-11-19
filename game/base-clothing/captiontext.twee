@@ -36,10 +36,10 @@
 		<<set _insertables to []>>
 		<<if playerHasButtPlug()>>
 			<<set $_text_output to `${$worn.butt_plug.name}【을를】 착용하고 있습니다.`>>
-			<<set _insertables.push(`${$_a}${$worn.butt_plug.name}`)>>
+			<<set _insertables.push(`${$worn.butt_plug.name}`)>>
 		<</if>>
 		<<if playerHasWornVaginalDildo()>>
-			<<set $_a to ["a", "e", "i", "o", "u"].includes($worn.vaginal_dildo.name[0]) ? "an " : "a ">>
+			<<set $_a to "">>
 			<<set _insertables.push(`<<pussy>> 안의 ${$_a ? "" : ""}${$worn.vaginal_dildo.name}`)>>
 		<</if>>
 		<<if playerHasVibrator()>>
@@ -149,7 +149,7 @@
             <</if>>
 		<<elseif $worn.under_lower.name isnot "naked">>
 			<!--Lower only-->
-			<<set $_pair to ($worn.under_lower.name.last() is "s" ? "a pair of" : "<<word under_lower>>")>>
+			<<set $_pair to ($worn.under_lower.name.last() is "s" ? "" : "<<word under_lower>>")>>
             <<pushClothingCaption "under_lower" $_pair>>
 
             <<set _nothingBut to $_exposed>>
@@ -167,10 +167,10 @@
 		<<set _state to integrityWord($worn.handheld, "handheld")>>
 		<<set _word to setup.clothes.handheld[clothesIndex("handheld", $worn.handheld)].word>>
 		<<if $worn.handheld?.pattern_caption>>
-			<<set _article to _state ? "a " : ($worn.handheld.pattern.match(/^[aeiou]/i) ? "an " : "a ")>>
-			<<set $_text_output to `<<possessedWord '당신'>>【은는】 ${_article ? "" : ""}${_state}${$worn.handheld.pattern} ${$worn.handheld.name}【을를】 들고 있습니다.`>>
+			<<set _article to "">>
+			<<set $_text_output to `<<possessedWord '당신'>>【은는】 ${_article ? "" : ""}${_state}${setup.getPatternName($worn.handheld.pattern)} ${$worn.handheld.name}【을를】 들고 있습니다.`>>
 		<<else>>
-			<<set _article to _word is "n" ? "" : (_state ? "a " : _word + " ")>>
+			<<set _article to "">>
 			<<set $_text_output to `<<possessedWord '당신'>>【은는】 ${_article ? "" : ""}${_state}${$worn.handheld.name}【을를】 들고 있습니다.`>>
 		<</if>>
 	<</if>>
@@ -183,26 +183,26 @@
 		<<if _bottomless>>
 			<<set $_text_output to " <span class='red'><<possessedWord '당신의' 'red'>> <<clothingCaptionChastityEffect>> <<genitalsintegrity>> $worn.genitals.name<<if playerChastity('anus')>>, 항문 보호대<</if>><<if playerHasButtPlug()>>, $worn.butt_plug.name<</if>><<if playerHasVibrator()>>, $worn.vibrator.name<</if>><<if playerHasWornVaginalDildo()>>, <<pussy>> 안의 $worn.vaginal_dildo.name<</if>>【은는】 <<possessedWord '당신' 'red'>>에게 아무런 위안도 주지 못합니다.</span>">>
 		<<else>>
-			<<set $_text_output to " <<possessedWord 'You'>> wear <<genitalsword>> <<clothingCaptionChastityEffect>> <<genitalsintegrity>> $worn.genitals.name<<if playerChastity('anus')>> with an anal shield<</if>><<if playerHasButtPlug()>> and $worn.butt_plug.name<</if>><<if playerHasVibrator()>> and $worn.vibrator.name<</if>><<if playerHasWornVaginalDildo()>> and $worn.vaginal_dildo.name in your <<pussy>><</if>>.">>
+			<<set $_text_output to " <<possessedWord '당신'>>【은는】 <<genitalsword>> <<clothingCaptionChastityEffect>> <<genitalsintegrity>> $worn.genitals.name<<if playerChastity('anus')>>, 항문 보호대<</if>><<if playerHasButtPlug()>>, $worn.butt_plug.name<</if>><<if playerHasVibrator()>>, $worn.vibrator.name<</if>><<if playerHasWornVaginalDildo()>>, <<pussy>> 안의 $worn.vaginal_dildo.name<</if>>【을를】 착용하고 있습니다.">>
 		<</if>>
 	<<elseif playerHasButtPlug() || playerHasVibrator() || playerHasWornVaginalDildo()>>
 		<<set _insertables to []>>
 		<<if playerHasButtPlug()>>
 			<<set $_text_output to ` ${$worn.butt_plug.name}【을를】 착용하고 있습니다.`>>
-			<<set _insertables.push(`${$_a}${$worn.butt_plug.name}`)>>
+			<<set _insertables.push(`${$worn.butt_plug.name}`)>>
 		<</if>>
 		<<if playerHasVibrator()>>
 			<<set _insertables.push($worn.vibrator.name)>>
 		<</if>>
 		<<if playerHasWornVaginalDildo()>>
-			<<set $_a to ["a", "e", "i", "o", "u"].includes($worn.vaginal_dildo.name[0]) ? "an " : "a ">>
+			<<set $_a to "">>
 			<<set _insertables.push(`<<pussy>> 안의 ${$_a ? "" : ""}${$worn.vaginal_dildo.name}`)>>
 		<</if>>
-		<<set $_text_output to ` <<possessedWord 'You'>> wear ${formatList(_insertables)}.`>>
+		<<set $_text_output to ` <<possessedWord '당신'>>【은는】 ${formatList(_insertables)}【을를】 착용하고 있습니다.`>>
 	<</if>>
 	<<if playerChastity() and $worn.genitals.chastityKey and !["player", "vow"].includes($worn.genitals.chastityKey)>>
 		<<if $worn.genitals.chastityKeyholder>>
-			<<set $_text_output += ` <span class="red">${$worn.genitals.chastityKeyholder is "attacker" ? "가해자" : $worn.genitals.chastityKeyholder.toUpperFirst()}【이가】 열쇠를 가지고 있습니다.</span>`>>
+			<<set $_text_output += ` <span class="red">${$worn.genitals.chastityKeyholder is "attacker" ? "가해자" : window.KR.gatPersonNameDictKR($worn.genitals.chastityKeyholder.toUpperFirst())}【이가】 열쇠를 가지고 있습니다.</span>`>>
 		<<else>>
 			<<set $_text_output += ` <span class="red"><<possessedWord '당신' 'red'>>【은는】 열쇠를 가지고 있지 않습니다.</span>`>>
 		<</if>>
@@ -218,7 +218,7 @@
 		<<if ["broken", "lost", "stolen"].includes($worn.vibrator.remote)>>
 			<span class="pink"> <<possessedWord '당신' 'pink'>>【은는】 <<possessedWord '당신의' 'pink'>> $worn.vibrator.name 리모컨이 없어서 진동을 조절할 수 없습니다.</span>
 		<<else>>
-			<span class="pink"> <<print $worn.vibrator.remote.toUpperFirst()>>【이가】 <<possessedWord '당신의' 'pink'>> $worn.vibrator.name 리모컨을 가지고 있습니다.</span>
+			<span class="pink"> <<print window.KR.gatPersonNameDictKR($worn.vibrator.remote.toUpperFirst())>>【이가】 <<possessedWord '당신의' 'pink'>> $worn.vibrator.name 리모컨을 가지고 있습니다.</span>
 		<</if>>
 	<</if>>
 <</widget>>
