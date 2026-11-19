@@ -49,7 +49,7 @@ setup.arcologyNewsText = {
 	again(rec, noun) {
 		if (!rec.prev) return "";
 		const [ago, out] = rec.prev;
-		const span = ago < 14 ? `${ago} days` : `${Math.round(ago / 7)} weeks`;
+		const span = ago < 14 ? `${ago}일` : `${Math.round(ago / 7)}주`;
 		const how =
 			{
 				reopened: "수리를 마치고 다시 문을 열었다",
@@ -159,7 +159,7 @@ setup.arcologyNewsText = {
 		} else if (rec.f === "nightlife" && rec.ph === "notice") {
 			body.push(
 				rec.s === "raid"
-					? "이번 검사는 이 업소에만 적용된다. 도시 전체 폐쇄는 없고 게스트 권한도 바뀌지 않는다."
+					? "이번 검사는 이 업소에만 적용된다. 도시 전체 폐쇄는 없고 방문객 권한도 바뀌지 않는다."
 					: "이번 행사는 이 업소에 관한 것이며 구역의 영업시간에는 영향이 없다. 귀갓길을 계획하기 전에 셔틀 안내판을 확인해야 한다."
 			);
 		} else if (rec.f === "glasshouse") {
@@ -197,8 +197,8 @@ setup.arcologyNewsText = {
 			.map(([ph, at, n, sp, id, q]) => {
 				const earlier = Object.assign({}, rec, { ph, at, n, sp, id, q, h: [] });
 				const d = new DateTime(at);
-				const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][d.month - 1];
-				return `${d.day} ${month}, “${this.families[rec.f][ph].call(this, earlier, this.context(earlier)).title}”`;
+				const month = d.month + "월";
+				return `${month} ${d.day}일, “${this.families[rec.f][ph].call(this, earlier, this.context(earlier)).title}”`;
 			});
 		if (!told.length) return [];
 		const later = told.slice(1);
@@ -210,8 +210,8 @@ setup.arcologyNewsText = {
 	keyPoints(art) {
 		if (art.k !== "story" || art.list) return [];
 		const points = art.body
-			.filter(p => !p.startsWith("This follows our report"))
-			.map(p => p.split(/(?<=[.!?])\s+(?=[A-Z])/))
+			.filter(p => !p.startsWith("이 기사는 우리 보도"))
+			.map(p => p.split(/(?<=[.!?])\s+(?=[A-Z가-힣"“])/))
 			.filter(parts => parts.length > 1)
 			.map(parts => parts[0])
 			.slice(0, 3);
@@ -286,7 +286,7 @@ setup.arcologyNewsText = {
 				];
 			return [
 				{
-					press: `The press that split during the shift is out of use. Repairing it will get production moving again; finding out why it failed means examining its condition and the warnings workers say they gave. ${
+					press: `교대 근무 중 갈라진 프레스는 쓸 수 없는 상태다. 수리하면 생산을 다시 돌릴 수 있지만, 왜 고장 났는지 밝히려면 프레스의 상태와 노동자들이 했다고 말하는 경고를 살펴봐야 한다. ${
 						rec.ph === "incident"
 							? "노동자 두 명이 화상 치료를 받았다."
 							: (rec.h ?? []).some(([ph, , , sp]) => ph === "incident" && !sp)
@@ -299,9 +299,9 @@ setup.arcologyNewsText = {
 				}[rec.s],
 				finished
 					? ""
-					: `Workers planning to travel to ${c.P} need to know whether their shift is running today. ${
+					: `${c.P}에 일하러 갈 노동자는 오늘 교대 근무가 돌아가는지 알아야 한다. ${
 							rec.shut ? "교대 근무가 중단됐으며, 회사는 언제 다시 시작할지 밝히지 않았다." : "이번 차질로 모든 교대 근무가 멈춘 것은 아니다."
-					  } Nobody has said how much pay has been lost.`,
+					  } 잃은 급여가 얼마인지는 아무도 밝히지 않았다.`,
 			].filter(Boolean);
 		}
 		if (rec.f === "transit")
@@ -312,7 +312,7 @@ setup.arcologyNewsText = {
 							rec.ph === "reopen"
 								? "승객은 이 정류장을 다시 예약할 수 있다."
 								: "셔틀이 다시 정차하기 전까지 승객은 이 정류장에서 탈 수도, 예약할 수도 없다."
-					  } Passengers who decide to walk will have to travel through the district themselves.`,
+					  } 걸어가기로 한 승객은 그 구역을 직접 지나가야 한다.`,
 				rec.ph === "exposed"
 					? "도시 교통국은 정류장이 운행 중이라고 승객들에게 안내하던 때에도 화물 차량이 그 노선을 이용했다고 인정했다. 화물 회사가 그 이용료를 냈는지는 밝히지 않았고, 승객에게 보상이 제안된 적도 없다. 승객은 셔틀이 다시 그곳에 정차하는지 여전히 직접 확인해야 한다."
 					: "문제는 이 정류장에 한정되며 나머지 셔틀 노선은 운행 중이다. 요금은 그대로이고 보상은 발표되지 않았다.",
@@ -422,7 +422,7 @@ setup.arcologyNewsText = {
 						rec.s === "checkpoint"
 							? "지나가는 사람은 누구나 임플란트를 제시하라는 요구를 받는다. 게스트는 등록을 최신 상태로 유지해야 한다."
 							: this.pick(rec, "b", ["종료 날짜는 정해지지 않았다.", "대변인은 집행관이 몇 명 투입됐는지 밝히지 않았다."]),
-						this.again(rec, "operation"),
+						this.again(rec, "작전"),
 					],
 				};
 			},
@@ -557,7 +557,7 @@ setup.arcologyNewsText = {
 						`등록소, ${c.D} 복제본 추적 포기`,
 						`${c.D} 가짜 ID 출처 못 찾아`,
 					]),
-					body: [`The extra implant checks in ${c.D} have ended. The Civic Registry has not said where the ${this.families.idcheck.what[rec.s]} came from.`],
+					body: [`${c.D}의 임플란트 추가 검사가 끝났다. 시민 등록소는 ${this.families.idcheck.what[rec.s]}【이가】 어디서 나왔는지 밝히지 않았다.`],
 				};
 			},
 		},
@@ -681,13 +681,13 @@ setup.arcologyNewsText = {
 						`${c.Oc}, 물건 대부분 되찾아`,
 						`창고 수색에서 ${c.O} 화물 발견`,
 					]),
-					body: [`The goods ${c.O} reported missing were found in a storage unit near ${c.D}. Some of the contents are still unaccounted for.`],
+					body: [`${c.O}【이가】 분실 신고한 물건이 ${c.D} 근처 창고에서 발견됐다. 일부는 여전히 행방을 알 수 없다.`],
 				};
 			},
 			unresolved(rec, c) {
 				return {
 					title: this.pick(rec, "t", [`${c.Oc}, 사라진 물건 손실 처리`, `${c.D} 화물 끝내 못 찾아`, `${c.Oc}, 수색 중단`]),
-					body: [`${c.Oc} has stopped looking for the ${this.families.smuggle.goods[rec.s]} that disappeared in ${c.D}.`],
+					body: [`${c.Oc}【은는】 ${c.D}에서 사라진 ${this.families.smuggle.goods[rec.s]}【을를】 찾는 일을 그만뒀다.`],
 				};
 			},
 			exposed(rec, c) {
@@ -733,20 +733,20 @@ setup.arcologyNewsText = {
 				return {
 					title: this.pick(rec, "t", [
 						`${c.Pc}, ${noun} 발생`,
-						`${this.cap(noun)} at ${c.P}`,
+						`${c.P}의 ${noun}`,
 						rec.s === "walkout" ? `${c.P}의 작업 중단` : `${c.D}: ${c.P}에 문제 발생`,
 					]),
 					dek: shut,
-					body: [`${what} ${why}`, shut, this.again(rec, "stoppage")],
+					body: [`${what} ${why}`, shut, this.again(rec, "작업 중단")],
 				};
 			},
 			exposed(rec, c) {
 				return {
 					title: `회사 성명과 달리 ${c.Pc} 가동 중단`,
 					body: [
-						`Workers turned away from ${c.P} say every shift has been cancelled since ${this.families.industry.noun[rec.s]}. ${
+						`${c.P}에서 발길을 돌린 노동자들은 ${this.families.industry.noun[rec.s]} 이후 모든 교대 근무가 취소됐다고 말한다. ${
 							c.Oc
-						} had said work was continuing as normal.`,
+						}【은는】 작업이 평소처럼 이어지고 있다고 밝혔었다.`,
 						"입구에 붙은 공지에는 재개 날짜가 없다.",
 					],
 				};
@@ -825,7 +825,7 @@ setup.arcologyNewsText = {
 							: rec.s === "walkout"
 							? `점검관들, ${c.P}에서 미지급 초과 근무 수당 발견`
 							: `점검 보고서, ${c.P} 문제 원인으로 ${rec.c === "wear" ? "부품 마모" : "부실한 정비"} 지목`,
-					body: [`The civic report into ${c.P} found that the operators ignored earlier warnings. ${c.Oc} has been fined.`],
+					body: [`${c.P}에 대한 시민 보고서는 운영자들이 앞선 경고를 무시했다고 판단했다. ${c.Oc}【은는】 벌금을 부과받았다.`],
 				};
 			},
 		},
@@ -836,7 +836,7 @@ setup.arcologyNewsText = {
 				if (rec.sp)
 					return {
 						title: this.pick(rec, "t", [`${c.D} 노선 신호 장애 잠깐 발생, 현재 복구`, `짧은 지연 뒤 ${c.D} 셔틀 정상 운행`]),
-						body: [`City Transit says a short signal fault delayed shuttles near ${c.D} this morning. The stop is back in service.`],
+						body: [`도시 교통국은 오늘 아침 ${c.D} 근처에서 짧은 신호 장애로 셔틀이 지연됐다고 밝혔다. 정류장은 운행을 재개했다.`],
 						byline: "도시 교통국 공지",
 					};
 				const why = { maintenance: "정비를 위해", inspection: "점검관이 승강장을 점검하는 동안", interference: "셔틀이 그곳에 서지 못하게 된 뒤" }[
@@ -848,7 +848,7 @@ setup.arcologyNewsText = {
 					body: [
 						`${c.D}의 셔틀 정류장은 ${why} 폐쇄됐다. 따로 공지가 있을 때까지 셔틀은 그곳에 서지 않는다.`,
 						"승객은 가장 가까운 운행 정류장에서 걸어갈 수 있다. 이동 시간이 더 걸릴 수 있다.",
-						this.again(rec, "closure"),
+						this.again(rec, "정류장 폐쇄"),
 					],
 					byline: "도시 교통국 공지",
 				};
@@ -861,7 +861,7 @@ setup.arcologyNewsText = {
 							`도시 교통국, ${c.D} 노선 운행 중이라 밝혀`,
 							`운영사 밝혀: ${c.D} 노선 차질 없음`,
 						]),
-						body: [`City Transit says every public stop, including ${c.D}, is running to timetable.`],
+						body: [`도시 교통국은 ${c.D}【을를】 포함한 모든 공공 정류장이 시간표대로 운행 중이라고 밝혔다.`],
 						byline: "도시 교통국 공지",
 					};
 				return {
@@ -880,7 +880,7 @@ setup.arcologyNewsText = {
 					body: [
 						`${rec.sp ? "도시 교통국은 정류장이 운행 중이라고 밝혔다" : "도시 교통국은 기술자들이 현장에 있다고 밝혔다"}지만, ${
 							c.D
-						} say no shuttle has stopped there for days and the stop screen is dark.`,
+						} 주민들은 며칠째 그곳에 셔틀이 서지 않았고 정류장 화면도 꺼져 있다고 말한다.`,
 						rec.sp
 							? "여럿이 밤이면 셔틀 승강장에 화물 수레가 주차된 것을 봤다고 말했다."
 							: "기술자들이 승강장에서 목격됐지만 무엇을 발견했는지는 아무도 말하지 않았다.",
@@ -908,7 +908,7 @@ setup.arcologyNewsText = {
 				return {
 					tone: "notice",
 					title: `${c.D} 셔틀 정류장 운행 재개`,
-					body: [`Shuttles are stopping at ${c.D} again.`],
+					body: [`셔틀이 ${c.D}에 다시 정차한다.`],
 					byline: "도시 교통국 공지",
 				};
 			},
@@ -928,7 +928,7 @@ setup.arcologyNewsText = {
 			},
 			withdrawn(rec, c) {
 				return {
-					title: `${c.Oc} withdraws ${rec.s === "stake" ? "investment offer" : "expansion plan"}`,
+					title: `${c.Oc}, ${rec.s === "stake" ? "투자 제안" : "확장 계획"} 철회`,
 					body: [
 						rec.s === "stake"
 							? `${c.Oc}【은는】 ${c.O2}의 보유 지분을 늘리려던 계획을 포기했다. 이미 등록된 지분은 그대로다.`
@@ -980,7 +980,7 @@ setup.arcologyNewsText = {
 				if (rec.sp)
 					return {
 						title: `${c.Oc}: 내부 검토 결과 위법 없음`,
-						body: [`${c.Oc} says its own review found every transfer correctly recorded. It will not publish the review.`],
+						body: [`${c.Oc}【은는】 내부 검토 결과 모든 송금이 올바르게 기록됐다고 밝혔다. 검토 내용은 공개하지 않겠다고 한다.`],
 						byline: `${c.Oc} 성명`,
 					};
 				const b = {
@@ -1007,7 +1007,7 @@ setup.arcologyNewsText = {
 				return {
 					tone: "investigation",
 					title: `기록과 어긋나는 ${c.O}의 검토 결과`,
-					body: [`Records seen by Dome Broadcast show transfers through ${c.O} still logged under the wrong accounts after its review said otherwise.`],
+					body: [`돔 방송국이 확인한 기록에 따르면 ${c.O}의 검토에서는 이상이 없다고 했지만, ${c.O}【을를】 거친 송금은 여전히 엉뚱한 계좌로 기록돼 있다.`],
 				};
 			},
 			outcome(rec, c) {
@@ -1052,7 +1052,7 @@ setup.arcologyNewsText = {
 				if (rec.sp)
 					return {
 						title: `${c.Oc}: 임플란트에서 결함 발견되지 않아`,
-						body: [`${c.Oc} says its tests found nothing wrong and the restarts were caused by patients' own settings.`],
+						body: [`${c.Oc}【은는】 자체 시험에서 아무 문제도 발견하지 못했으며 재시작은 환자들의 개인 설정 때문이라고 밝혔다.`],
 						byline: `${c.Oc} 성명`,
 					};
 				const b = {
@@ -1075,7 +1075,7 @@ setup.arcologyNewsText = {
 				return {
 					tone: "investigation",
 					title: `${c.Oc} 환자들, 여전히 재시작 호소`,
-					body: [`More patients have come forward since ${c.O} said its implants had no fault. Two say the restarts started after their check-up.`],
+					body: [`${c.O}【이가】 임플란트에 결함이 없다고 밝힌 뒤 더 많은 환자가 나섰다. 두 명은 재시작이 정기 검진 뒤에 시작됐다고 말한다.`],
 				};
 			},
 			fixed(rec, c) {
@@ -1110,7 +1110,7 @@ setup.arcologyNewsText = {
 						"환자들 여전히 답 기다려",
 						"임플란트 문제 길어져",
 					]),
-					body: ["The complaints have not stopped, and nobody has taken responsibility."],
+					body: ["항의는 멈추지 않았고, 책임을 진 사람은 없다."],
 				};
 			},
 		},
@@ -1151,7 +1151,7 @@ setup.arcologyNewsText = {
 			after(rec, c) {
 				return {
 					title: this.pick(rec, "t", [`${c.D}, 긴 밤 뒤 정리`, `${c.D}의 이튿날 아침`, `붐볐던 밤 뒤 조용한 ${c.Oc}`]),
-					body: [`Street cleaners worked through the morning in ${c.D}. ${c.Oc} has not commented.`],
+					body: [`${c.D}에서는 청소부들이 오전 내내 거리를 치웠다. ${c.Oc}【은는】 논평하지 않았다.`],
 				};
 			},
 		},
@@ -1207,9 +1207,9 @@ setup.arcologyNewsText = {
 						title: this.pick(rec, "t", [`${c.Oc}, 사이퍼 거래 부서 축소`, `${c.Oc}, 사이퍼 시장에서 준비금 인출`]),
 						dek: "회사가 확인함.",
 						body: [
-							`${c.Oc} has confirmed it is reducing the reserves it uses to buy and sell Cipher at the Unit Exchange. It says the move concerns its own ${
+							`${c.Oc}【은는】 유닛 환전소에서 사이퍼를 사고파는 데 쓰는 준비금을 줄이고 있음을 확인했다. 회사는 이번 조치가 자사의 ${
 								{ reserves: "준비금 규정", contracts: "계약 대금 지급", confidence: "위험 한도" }[rec.c]
-							}.`,
+							}에 관한 것이라고 밝혔다.`,
 							"사이퍼를 사겠다는 구매자가 환전소에 줄었다. 그 때문에 매수가와 매도가의 차이가 벌어져 소액 거래도 큰 변동을 일으킬 수 있다.",
 							M.quote(rec),
 						],
@@ -1287,9 +1287,9 @@ setup.arcologyNewsText = {
 					title: this.pick(rec, "t", [`${c.Oc}, 사이퍼 매입 계획 철회`, `${c.Oc}, 예정된 사이퍼 매수 취소`]),
 					dek: "회사 발표.",
 					body: [
-						`${c.Oc} says it will no longer buy Cipher as planned, citing ${
+						`${c.Oc}【은는】 계획했던 사이퍼 매수를 더는 하지 않겠다고 밝히며 그 이유로 ${
 							{ reserves: "준비금 검토", contracts: "계약 지연", confidence: "시장 상황" }[rec.c]
-						}.`,
+						}【을를】 들었다.`,
 						M.quote(rec, true),
 					],
 				};
@@ -1352,9 +1352,9 @@ setup.arcologyNewsText = {
 					title: s <= -3 ? `${c.O}【이가】 준비금을 팔자 사이퍼 급락` : `${c.Oc}, 사이퍼 준비금 매각 확인`,
 					dek: "확인된 거래.",
 					body: [
-						`${c.Oc} has confirmed it is selling part of its Cipher reserves. It says the sales cover ${
+						`${c.Oc}【은는】 사이퍼 준비금 일부를 팔고 있음을 확인했다. 회사는 이 매각이 ${
 							{ reserves: "준비금 규정 변경", contracts: "파운드로 만기가 돌아오는 계약 대금", confidence: "사이퍼 노출 축소" }[rec.c]
-						}.`,
+						}【을를】 위한 것이라고 밝혔다.`,
 						M.quote(rec, true),
 						"회사는 앞으로 얼마나 더 팔 생각인지 밝히지 않았다.",
 					],
@@ -1377,7 +1377,7 @@ setup.arcologyNewsText = {
 				return {
 					title: this.pick(rec, "t", [`${c.O} 매각 뒤 사이퍼 안정`, `${c.O} 매각 뒤 돌아온 매수세`]),
 					dek: "시장 보도.",
-					body: [`Buyers have taken up the Cipher ${c.O} sold, and trading has calmed.`, M.quote(rec, true)],
+					body: [`${c.O}【이가】 판 사이퍼를 매수자들이 받아냈고, 거래는 진정됐다.`, M.quote(rec, true)],
 				};
 			},
 			intervene(rec, c) {
@@ -1386,9 +1386,9 @@ setup.arcologyNewsText = {
 					title: this.pick(rec, "t", [`${c.O2c}, 사이퍼 매수에 나서`, `${c.O2c}, 시장 진정시키려 사이퍼 매수`]),
 					dek: "확인된 거래.",
 					body: [
-						`${c.O2c} says it has bought Cipher on the Unit Exchange to steady prices after ${
+						`${c.O2c}【은는】 ${
 							rec.s === "withdraw" ? `${c.O}의 시장 철수` : `${c.O}의 매도`
-						}.`,
+						} 뒤 가격을 안정시키려 유닛 환전소에서 사이퍼를 샀다고 밝혔다.`,
 						"얼마나 오래 계속 사들일지는 밝히지 않았다.",
 						M.quote(rec, true),
 					],
@@ -1399,7 +1399,7 @@ setup.arcologyNewsText = {
 				return {
 					title: `등록소, ${c.O}의 사이퍼 준비금 검토`,
 					dek: "검토 진행 중.",
-					body: [`The Civic Registry has started a review of the Cipher reserves ${c.O} reports. ${c.Oc} says it will cooperate.`, M.quote(rec, true)],
+					body: [`시민 등록소가 ${c.O}【이가】 보고한 사이퍼 준비금에 대한 검토를 시작했다. ${c.Oc}【은는】 협조하겠다고 밝혔다.`, M.quote(rec, true)],
 				};
 			},
 			cleared(rec, c) {
@@ -1430,26 +1430,26 @@ setup.arcologyNewsText = {
 				return {
 					title: this.pick(rec, "t", ["매입설 뒤 대량 매도에 사이퍼 하락", "소문난 매입 뒤 사이퍼에 몰린 대량 매도"]),
 					dek: "시장 보도.",
-					body: [`A run of large sell orders hit the Unit Exchange today. No purchase by ${c.O2} has been confirmed.`, M.quote(rec, true)],
+					body: [`오늘 유닛 환전소에 대량 매도 주문이 잇따라 들어왔다. ${c.O2}의 매수는 확인되지 않았다.`, M.quote(rec, true)],
 				};
 			},
 			result(rec, c) {
 				const M = this.families.market;
 				const s = rec.q?.[1];
 				const subject = {
-					accumulate: `${c.O}'s purchase`,
+					accumulate: `${c.O}의 매입`,
 					selloff: `${c.O}의 준비금 매각`,
-					withdraw: `${c.O}'s withdrawal`,
+					withdraw: `${c.O}의 철수`,
 					scandal: `${c.O}에 대한 검토`,
 					pump: "허위 매입 주장",
 				}[rec.s];
 				return {
 					title: `${subject} 동안의 사이퍼 움직임`,
-					dek: "Analysis.",
+					dek: "분석.",
 					body: [
 						s === null || s === undefined
 							? M.quote(rec)
-							: `Across the reports on ${subject}, Cipher went from ${setup.arcologyFx.gbp(rec.q[0] / (1 + s / 100))} to ${M.price(rec)}, ${M.move(s)}.`,
+							: `${subject} 관련 보도를 거치며 사이퍼는 ${setup.arcologyFx.gbp(rec.q[0] / (1 + s / 100))}에서 시작해 ${M.price(rec)}까지 움직였다(${M.move(s)}).`,
 						"이 수치는 이 기간 동안 가격이 어떻게 달라졌는지를 보여 준다. 같은 시간에 다른 거래도 이루어지고 있었으므로, 이 보도로는 가격 변동의 모든 이유를 설명할 수 없다.",
 					],
 				};
@@ -1487,7 +1487,7 @@ setup.arcologyNewsText = {
 					title: this.pick(rec, "t", ["기관 계좌의 사이퍼 매도 이례적 급증", "거래소 기록에 기관 계좌의 대량 매도"]),
 					dek: "시장 보도. 원인은 확인되지 않았다.",
 					body: [
-						`Several institutional accounts placed unusually large sell orders on the Unit Exchange overnight. ${
+						`지난밤 유닛 환전소에 기관 계좌 여러 곳이 이례적으로 큰 매도 주문을 냈다. ${
 							rec.s === "counterfeit"
 								? "매도 계좌 가운데 일부는 며칠 전에 개설됐다."
 								: `거래인들은 매도 일부를 ${c.O}【와과】 거래하는 계좌와 연결한다.`
@@ -1522,10 +1522,10 @@ setup.arcologyNewsText = {
 					dek: "속보. 하락 중 거래 중단.",
 					tone: "breaking",
 					body: [
-						`Cipher's value collapsed after it emerged that ${this.families.crash.cause(
+						`${this.families.crash.cause(
 							rec,
 							c
-						)}. The Unit Exchange suspended trading for fifteen minutes as the price fell.`,
+						)}. 이 사실이 알려지자 사이퍼의 가치가 폭락했다. 가격이 떨어지는 동안 유닛 환전소는 15분간 거래를 중단했다.`,
 						M.quote(rec, true),
 						below || (rec.q && rec.q[0] < 300000)
 							? "시민 등록소는 긴급 명령을 내렸다. 시장이 안정될 때까지 게스트 계정은 사이퍼를 팔 수는 있어도 살 수는 없다. 주문 규모는 제한되며 매수가와 매도가의 차이는 매우 크다."
@@ -1649,9 +1649,9 @@ setup.arcologyNewsText = {
 					title: "긴급 매수에 힘입어 회복세 보이는 사이퍼",
 					dek: "확인된 거래.",
 					body: [
-						`The Civic Registry and ${
+						`시민 등록소와 ${
 							rec.s === "reserve" ? "유닛 환전소" : "할든 트러스트"
-						} have started buying Cipher with emergency funds and say they will keep doing so.`,
+						}【은는】 긴급 자금으로 사이퍼를 사들이기 시작했으며 계속 사들이겠다고 밝혔다.`,
 						M.quote(rec, true),
 						"긴급 매수가 가격에 도움이 되었지만 사이퍼의 가치는 여전히 이전보다 훨씬 낮다. 상점과 일터가 다시 정상적으로 돌아가기 시작했으나 일부 결제와 근무 제한은 남아 있다.",
 					],
@@ -1686,7 +1686,7 @@ setup.arcologyNewsText = {
 				const M = this.families.market;
 				return {
 					title: this.pick(rec, "t", ["사이퍼 붕괴 이후: 여전히 남은 혼란", "사이퍼 위기의 대가를 따져 보는 도시"]),
-					dek: "Analysis.",
+					dek: "분석.",
 					body: [
 						M.quote(rec, true),
 						rec.cz > 0
@@ -1731,7 +1731,7 @@ setup.arcologyNewsText = {
 				return {
 					title: this.pick(rec, "t", ["글래스하우스에 있던 사람은 누구?", "글래스하우스 손님 명단은 비밀", "글래스하우스 손님 짐작하는 주민들"]),
 					tone: "gossip",
-					body: ["Residents spent the morning guessing who had been on the guest list. Dome Broadcast was not able to confirm any names."],
+					body: ["주민들은 아침 내내 손님 명단에 누가 있었는지 짐작했다. 돔 방송국은 어떤 이름도 확인하지 못했다."],
 				};
 			},
 		},
@@ -1802,7 +1802,7 @@ setup.arcologyNewsText = {
 				],
 				question: "셔틀 요금이 금고에서 자동으로 빠져나가나요?",
 				answer: "아니요. 섬의 요금은 사이퍼 지갑에서 나갑니다. 지갑에 돈이 부족하면 결제하기 전에 할든 트러스트에서 금고 잔액을 꺼내야 합니다.",
-				where: "Check prices at the Unit Exchange and wallet/vault balances at Halden Trust in Exchange Square. Journal → Holo also shows your wallet.",
+				where: "유닛 환전소에서 시세를, 익스체인지 광장의 할든 트러스트에서 지갑과 금고 잔액을 확인할 수 있습니다. 저널 → 홀로에서도 지갑을 볼 수 있습니다.",
 				comments: [
 					"금고에 돈을 넣어 둔 것과 바로 쓸 수 있게 갖고 있는 것은 달라요.",
 					"파는 가격이 사는 가격보다 낮아요. 두 번 바꿀 거면 먼저 둘 다 확인해 보세요.",
@@ -1893,9 +1893,9 @@ setup.arcologyNewsText = {
 				title: "후원이 끝나기 전에 호텔 승인 확인하기",
 				body: [
 					"호텔 메리디안은 릴레이 가에서 방문객에게 객실을 제공한다. 후원을 받았거나 요금을 낸 객실은 홀로에 표시된 만료 시각까지만 이용할 수 있다. 후원에는 기한이 있으며, 오래된 기사에 후원이 언급되어 있다고 해서 체류가 연장되는 것은 아니다.",
-					`At publication, a standard paid night cost ${a.cx(
+					`발행 시점에 일반 유료 숙박 한 번의 요금은 ${a.cx(
 						setup.arcologyPrice.peek("night").q
-					)} and provides 24 hours of room authorization. Payment comes from the wallet. If sponsorship has ended, check the reception desk for the options your account is offered rather than assuming the room remains covered.`,
+					)}이며 객실 이용 권한이 24시간 주어진다. 요금은 지갑에서 나간다. 후원이 끝났다면 객실이 계속 보장된다고 여기지 말고 프런트 데스크에서 계정에 제공되는 선택지를 확인해야 한다.`,
 					"방문객 숙소를 이용한다고 해서 거주자 권한이나 제한 서비스 이용권, 제한 구역 출입의 영구 허가가 생기는 것은 아니다. 별도의 후원 조건과 검문소 조건이 적용될 수 있다. 취소된 방문객 계정은 사이퍼를 넉넉히 가지고 있다는 이유만으로 출입을 갱신할 수 있다고 여겨서는 안 된다.",
 				],
 				question: "방이 있으면 나도 거주자가 되나요?",
@@ -2016,7 +2016,7 @@ setup.arcologyNewsText = {
 			note: "정기 시민 안내. 규칙과 서비스 현황은 이번 호의 발행일을 기준으로 하며, 변경 사항은 현재의 안내 창구에서 확인하십시오.",
 			options: [
 				[edition.question, "", "question"],
-				["Where should I check if this changes?", "", "question"],
+				["이 내용이 바뀌면 어디서 확인해야 하나요?", "", "question"],
 			],
 			residents: edition.comments.map((line, i) => [voices[(Math.floor(setup.arcologyNews.seed(rec.id) * voices.length) + i) % voices.length][0], line]),
 		};
@@ -2110,10 +2110,10 @@ setup.arcologyNewsText = {
 						const [ph, at, n, sp, id, q] = previous;
 						const earlier = Object.assign({}, x, { ph, at, n, sp, id, q, h: [] });
 						const d = new DateTime(at);
-						const month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"][
+						const month = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"][
 							d.month - 1
 						];
-						return [`Last reported ${d.day} ${month}: “${this.families[x.f][ph].call(this, earlier, this.context(earlier)).title}”.`];
+						return [`최근 보도 ${month} ${d.day}일: “${this.families[x.f][ph].call(this, earlier, this.context(earlier)).title}”.`];
 				  })()
 				: [];
 			const explanation = this.explanation(x, c);
@@ -2141,7 +2141,7 @@ setup.arcologyNewsText = {
 					connections.push(
 						`${setup.arcologyNews.orgName(
 							shared
-						)} turns up in two of this week's stories. That is worth noticing, but nothing published so far shows the two are connected.`
+						)}【이가】 이번 주 소식 두 건에 모두 등장한다. 눈여겨볼 만하지만, 지금까지 보도된 내용만으로는 두 소식이 연결돼 있다고 볼 근거가 없다.`
 					);
 			}
 		if (connections.length) sections.push({ title: "눈여겨볼 점", paragraphs: connections.slice(0, 2) });
@@ -2236,20 +2236,20 @@ setup.arcologyNewsText = {
 		loyal: [
 			["일을 처리하는 사람이 있어서 다행이에요.", "SECURITY CRIME INDUSTRY CYBERNETICS"],
 			["일하게 두세요.", "SECURITY CRIME"],
-			["Thanks for the update."],
+			["소식 전해 줘서 고마워요."],
 			["그래서 제가 등록된 주소에 돈을 내는 거예요.", "SECURITY CRIME CYBERNETICS"],
 			["우린 그냥 조용한 거리가 좋을 뿐이에요.", "SECURITY CRIME SOCIETY"],
 			["합리적인 조치네요.", "BUSINESS TRANSIT"],
-			["I'm waiting to see whether the price stops changing so much.", "MARKETS"],
+			["시세가 이렇게 출렁이는 게 멈추는지 지켜보고 있어요.", "MARKETS"],
 			["재난 아닌 글을 읽으니 좋네요.", "BUSINESS SOCIETY PEOPLE"],
 		],
 		skeptic: [
-			["Whose statement is this, exactly?"],
-			["I'll believe it when I see it."],
+			["이게 정확히 누구 성명이에요?"],
+			["눈으로 보기 전에는 안 믿어요."],
 			["아무도 이름이 안 나오는 거 봤어요?", "SECURITY CRIME BUSINESS CYBERNETICS MARKETS"],
-			["I want to see the actual trade records, not another company statement.", "MARKETS"],
-			["Whoever posted it first has already sold.", "MARKETS"],
-			["Funny how these always come out on a quiet news day."],
+			["회사 성명 말고 실제 거래 기록을 보고 싶어요.", "MARKETS"],
+			["처음 올린 사람은 벌써 팔았을걸요.", "MARKETS"],
+			["이런 건 꼭 뉴스 없는 날에 나오더라고요."],
 			["누구한테 이득인지 물어봐요.", "BUSINESS SECURITY CRIME TRANSIT"],
 			["이거 어느 부서가 썼대?", "SECURITY TRANSIT"],
 			["자기네 검토에서 자기네가 무혐의라네. 당연하지.", "BUSINESS CYBERNETICS INDUSTRY"],
@@ -2257,44 +2257,44 @@ setup.arcologyNewsText = {
 		worried: [
 			["거기 사는 사람들은 누가 챙기고 있나요?", "SECURITY CRIME"],
 			["내일 {D}【을를】 지나가야 해요.", "SECURITY CRIME TRANSIT"],
-			["This keeps happening."],
+			["이런 일이 자꾸 반복돼요."],
 			["다들 몸조심해요.", "SECURITY CRIME SOCIETY"],
-			["Should I be worried about mine?", "CYBERNETICS"],
-			["Half my savings are in Cipher.", "MARKETS"],
-			["My wages are paid in Cipher. What are they worth today?", "MARKETS"],
+			["제 임플란트도 걱정해야 하나요?", "CYBERNETICS"],
+			["제 저축의 절반이 사이퍼예요.", "MARKETS"],
+			["제 임금은 사이퍼로 나와요. 오늘은 그 값어치가 어떨까요?", "MARKETS"],
 			["사촌이 거기서 일해요. 아직 연락이 없어요.", "INDUSTRY CRIME"],
 		],
 		joker: [
-			["Another day in paradise."],
-			["At this point I'd watch it as a series."],
-			["Somebody give the drones a raise.", "SECURITY"],
+			["오늘도 낙원의 하루네요."],
+			["이쯤 되면 시리즈로 챙겨 볼래요."],
+			["누가 드론들 월급 좀 올려 줘요.", "SECURITY"],
 			["우리 집주인은 어떻게든 월세를 올릴 방법을 찾겠지.", "BUSINESS INDUSTRY"],
-			["Walking is good for you, apparently.", "TRANSIT"],
+			["걷는 게 건강에 좋다잖아요, 아무튼.", "TRANSIT"],
 			["껐다 켜 봤대?", "CYBERNETICS INDUSTRY TRANSIT"],
 			["내가 초대받았나? 아니. 서운한가? 그것도 아니고.", "PEOPLE SOCIETY"],
-			["Bought high, sold low. Living the dream.", "MARKETS"],
+			["비싸게 사서 싸게 팔았어요. 꿈같은 삶이죠.", "MARKETS"],
 		],
 		rumour: [
-			["A friend says there's more to this."],
+			["아는 사람이 그러는데 이게 다가 아니래요."],
 			["{O}【이가】 일주일 전에 알고 있었다던데요.", "BUSINESS INDUSTRY CRIME CYBERNETICS"],
 			["{D} 사람들은 며칠째 이 얘기를 하고 있었어요.", "SECURITY CRIME TRANSIT INDUSTRY"],
-			["Wait for the second story. There's always a second story."],
+			["두 번째 기사를 기다려 봐요. 늘 두 번째 기사가 있잖아요."],
 			["부두에 있는 누가 그러는데 화물 건이래요.", "CRIME TRANSIT"],
-			["A friend at the exchange says there's a bigger order coming.", "MARKETS"],
+			["환전소에 아는 사람이 그러는데 더 큰 주문이 온대요.", "MARKETS"],
 		],
 		worker: [
-			["Somebody always has to clean up after these things.", "INDUSTRY"],
-			["Will we get paid for the lost days?", "INDUSTRY"],
+			["이런 일 뒤처리는 꼭 누군가 해야 하죠.", "INDUSTRY"],
+			["공친 날 급여는 나오나요?", "INDUSTRY"],
 			["철마다 똑같은 얘기예요.", "INDUSTRY BUSINESS"],
-			["Half my shift gets here by shuttle.", "TRANSIT"],
-			["Contracts like this always end with fewer jobs.", "BUSINESS"],
-			["We get paid in Cipher. Nobody asked us about any of this.", "MARKETS"],
+			["우리 교대 인원 절반은 셔틀로 와요.", "TRANSIT"],
+			["이런 계약은 늘 일자리만 줄이고 끝나요.", "BUSINESS"],
+			["우린 사이퍼로 월급을 받아요. 이런 얘기를 우리한테 물어본 사람은 없어요.", "MARKETS"],
 		],
 		night: [
-			["The strip was packed anyway.", "SOCIETY"],
+			["어쨌든 스트립은 사람으로 꽉 찼어요.", "SOCIETY"],
 			["{D}【이가】 그렇게 붐비는 건 처음 봐요.", "SOCIETY PEOPLE"],
 			["경비들이 밤새 날이 서 있었어요.", "SOCIETY CRIME"],
-			["Best night out this month.", "SOCIETY"],
+			["이번 달 최고의 밤이었어요.", "SOCIETY"],
 		],
 		local: [["저는 {D}에 살아요. 한 주 내내 이상했어요."], ["오늘 아침에 지나갔어요."], ["우리 거리 사람들은 아무도 놀라지 않았어요.", "SECURITY CRIME"]],
 	},
@@ -2337,19 +2337,19 @@ setup.arcologyNewsText = {
 	},
 
 	commentIntent(rec, line) {
-		if (rec.f === "business" && rec.s === "wages" && rec.ph === "outcome" && /agreement/i.test(line) && /statement/i.test(line) && /check/i.test(line))
+		if (rec.f === "business" && rec.s === "wages" && rec.ph === "outcome" && /agreement|합의/i.test(line) && /statement|명세서/i.test(line) && /check|확인/i.test(line))
 			return "business|wages|result|settlement-check";
-		const topic = /guest list|invit|attend|host/.test(line.toLowerCase())
+		const topic = /guest list|invit|attend|host|명단|초대|참석|주최/.test(line.toLowerCase())
 			? "attendance"
-			: /record|evidence|invoice|proof|finding|verif|review/i.test(line)
+			: /record|evidence|invoice|proof|finding|verif|review|기록|증거|송장|증명|검증|검토|서류|문서|명세서/i.test(line)
 			? "evidence"
-			: /pay|wage|deduction|refund/i.test(line)
+			: /pay|wage|deduction|refund|급여|임금|공제|환불|수당|월급|보수/i.test(line)
 			? "pay"
-			: /guest|eligib|authoriz|permission|consent|trial/i.test(line)
+			: /guest|eligib|authoriz|permission|consent|trial|방문객|자격|승인|권한|허가|동의|시험/i.test(line)
 			? "eligibility"
-			: /queue|counter|opening|reopen|closed|stop|shuttle|boarding|service/i.test(line)
+			: /queue|counter|opening|reopen|closed|stop|shuttle|boarding|service|줄|창구|재개|운행|폐쇄|닫|정류장|셔틀|탑승|서비스/i.test(line)
 			? "availability"
-			: /shift|work|hours/i.test(line)
+			: /shift|work|hours|교대|근무|영업시간|작업/i.test(line)
 			? "work"
 			: "opinion";
 		const end = setup.arcologyNews.families[rec.f]?.stages[rec.ph]?.out ? "result" : "developing";
@@ -2397,8 +2397,8 @@ setup.arcologyNewsText = {
 			const right = words(b);
 			// The same statement explicitly negated is disagreement, not a redundant contribution.
 			if (
-				left.includes("not") !== right.includes("not") &&
-				left.filter(w => !["not", "do"].includes(w)).join(" ") === right.filter(w => !["not", "do"].includes(w)).join(" ")
+				left.some(w => /^(not|안|못|않.*|아니.*)$/.test(w)) !== right.some(w => /^(not|안|못|않.*|아니.*)$/.test(w)) &&
+				left.filter(w => !/^(not|do|안|못|않.*|아니.*)$/.test(w)).join(" ") === right.filter(w => !/^(not|do|안|못|않.*|아니.*)$/.test(w)).join(" ")
 			)
 				return false;
 			if (N.similar(a, b)) return true;
@@ -2441,107 +2441,107 @@ setup.arcologyNewsText = {
 	   replier's own home district can show; without that, the replier says nobody knows. */
 	threadLines: {
 		unknown: [
-			["Nobody's said. I'd check again tomorrow."],
-			["Report doesn't say. I asked the same thing."],
-			["No idea. Nothing's been posted."],
-			["Haven't heard anything either."],
+			["아직 말해 준 사람이 없어요. 내일 다시 확인해 보세요."],
+			["기사에는 안 나와요. 저도 같은 걸 물었어요."],
+			["몰라요. 올라온 게 없어요."],
+			["저도 들은 게 없어요."],
 		],
 		evidence: [
 			["아직 발표된 게 없어요. 성명뿐이에요.", "SECURITY CRIME BUSINESS CYBERNETICS INDUSTRY TRANSIT MARKETS"],
-			["They haven't released anything. I looked."],
+			["공개한 게 없어요. 찾아봤거든요."],
 		],
-		thanks: [["Thanks."], ["Cheers, that helps."], ["Good to know."], ["Right. Thanks."]],
-		shrug: [["Great. So nobody knows."], ["Figures."], ["Brilliant. Thanks anyway."]],
+		thanks: [["고마워요."], ["고마워요, 도움이 됐어요."], ["좋은 정보네요."], ["그렇군요. 고마워요."]],
+		shrug: [["좋네요. 그러니까 아무도 모른다는 거네요."], ["그럴 줄 알았어요."], ["잘됐네요. 그래도 고마워요."]],
 		/* Pushback, keyed by the kind of comment it answers. A third entry is a pattern the parent must match. */
 		against: {
 			loyal: [
-				["They said that last time too.", "", /statement|announce|promis|explain|report|dealing|성명|발표|약속|설명|보도|대응/i],
+				["지난번에도 그렇게 말했잖아요.", "", /statement|announce|promis|explain|report|dealing|성명|발표|약속|설명|보도|대응/i],
 				["제 할 일을 하는 것만 해도 달라진 모습이겠네요.", "SECURITY CRIME TRANSIT", /job|dealing|patrol|enforcement|arrest|일자리|대응|순찰|집행국|체포/i],
-				["Wait for the second report before you thank anyone.", "", /thank|good to|glad|sensible|nice|고마|감사|다행|현명|좋네/i],
-				["Easy to say when it's not your savings.", "MARKETS"],
+				["누구한테 고마워하기 전에 두 번째 보도를 기다려요.", "", /thank|good to|glad|sensible|nice|고마|감사|다행|현명|좋네/i],
+				["당신 저축이 아니니까 쉽게 말하죠.", "MARKETS"],
 				["이중 교대로 일해 보고 그런 말을 해 봐요.", "INDUSTRY BUSINESS", /let them|calm|steady|quiet|내버려|차분|침착|조용/i],
-				["You've more faith in them than I do."],
-				["That's what they want you to think."],
+				["저보다 그쪽을 더 믿으시네요."],
+				["그렇게 생각하게 만들려는 거예요."],
 			],
 			skeptic: [
 				["아니면 그냥 자기 일을 하는 걸 수도 있잖아요.", "SECURITY CRIME TRANSIT"],
-				["Not everything's a cover-up.", "", /statement|record|review|operation|official|registry|enforcement|evidence|check|explain|성명|기록|검토|작전|공식|등록소|집행국|증거|확인|설명/i],
-				["You'd complain whatever they did.", "", /statement|record|review|operation|official|registry|enforcement|evidence|check|explain|성명|기록|검토|작전|공식|등록소|집행국|증거|확인|설명/i],
-				["Prices go up and down. Calm down.", "MARKETS"],
-				["Bit early to call it a scandal."],
-				["Give it a day before you decide."],
+				["다 은폐인 건 아니에요.", "", /statement|record|review|operation|official|registry|enforcement|evidence|check|explain|성명|기록|검토|작전|공식|등록소|집행국|증거|확인|설명/i],
+				["뭘 해도 불평하실 거잖아요.", "", /statement|record|review|operation|official|registry|enforcement|evidence|check|explain|성명|기록|검토|작전|공식|등록소|집행국|증거|확인|설명/i],
+				["시세는 오르락내리락하는 거예요. 진정하세요.", "MARKETS"],
+				["스캔들이라 부르기엔 좀 일러요."],
+				["하루만 두고 보고 판단해요."],
 			],
 			joker: [
 				["내 거리 얘기면 웃기지 않아요.", "SECURITY CRIME", /\bha\b|joke|laugh|at least|bet |guess I'll|my list|after rent|souvenir|free |하하|ㅋㅋ|농담|웃|적어도|내기|월세|기념품|공짜/i],
 				[
 					"다칠 수도 있는 일이에요. 농담하기엔 아직 일러요.",
 					"SECURITY CRIME INDUSTRY TRANSIT BREAKING",
-					/\bha\b|joke|laugh|at least|bet |guess I'll|my list|after rent|souvenir|free /i,
+					/\bha\b|joke|laugh|at least|bet |guess I'll|my list|after rent|souvenir|free |하하|ㅋㅋ|농담|웃|적어도|내기|월세|기념품|공짜/i,
 				],
-				["Funny until it's you.", "", /\bha\b|joke|laugh|at least|bet |guess I'll|my list|after rent|souvenir|free |하하|ㅋㅋ|농담|웃|적어도|내기|월세|기념품|공짜/i],
+				["자기 일이 되면 안 웃기죠.", "", /\bha\b|joke|laugh|at least|bet |guess I'll|my list|after rent|souvenir|free |하하|ㅋㅋ|농담|웃|적어도|내기|월세|기념품|공짜/i],
 			],
 			worker: [
 				["그래도 투덜댈 교대라도 있잖아요.", "INDUSTRY BUSINESS", /shift|wage|pay|work|hours|교대|임금|급여|월급|근무|시간/i],
-				["Everyone's got it hard. Not just you.", "", /\b(I|my|we|our)\b.*(hard|tired|again|cut|late)|(저|제|우리|내).*(힘들|지쳤|또|깎|늦)/i],
+				["다들 힘들어요. 당신만 그런 게 아니에요.", "", /\b(I|my|we|our)\b.*(hard|tired|again|cut|late)|(저|제|우리|내).*(힘들|지쳤|또|깎|늦)/i],
 			],
 			worried: [
-				["You worry too much.", "", /worr|scared|afraid|hope|careful|걱정|무서|두려|바라|조심/i],
-				["It's one report. Breathe.", "", /worr|scared|afraid|panic|걱정|무서|두려|공황|패닉/i],
+				["걱정이 너무 많아요.", "", /worr|scared|afraid|hope|careful|걱정|무서|두려|바라|조심/i],
+				["보도 하나일 뿐이에요. 진정해요.", "", /worr|scared|afraid|panic|걱정|무서|두려|공황|패닉/i],
 			],
-			local: [["Living there doesn't make you right.", "", /\b(my|our) (street|block|floor|building)\b|(우리|제|내) (동네|거리|블록|층|건물)/i]],
+			local: [["거기 산다고 해서 옳은 건 아니에요.", "", /\b(my|our) (street|block|floor|building)\b|(우리|제|내) (동네|거리|블록|층|건물)/i]],
 		},
 		back: {
 			loyal: [["좋아요. 검토에서 뭐라고 하는지 보죠.", "SECURITY CRIME BUSINESS INDUSTRY CYBERNETICS TRANSIT MARKETS"], ["두고 보죠."]],
-			skeptic: [["Name one time they told us everything."], ["Sure. And the next statement will be true as well."]],
-			worker: [["Easy for you to say."], ["Come work a shift and say that."]],
-			worried: [["I'll stop worrying when it stops happening."]],
-			joker: [["Somebody has to laugh."], ["Lighten up."]],
-			rumour: [["Believe what you want."], ["You'll see."]],
-			local: [["I live here. You don't."]],
-			night: [["Whatever you say."]],
+			skeptic: [["그쪽이 다 말해 준 적이 한 번이라도 있어요?"], ["그래요. 다음 성명도 사실이겠네요."]],
+			worker: [["말은 쉽죠."], ["교대 한 번 뛰어 보고 그런 말을 해요."]],
+			worried: [["이런 일이 멈추면 그때 걱정을 그만둘게요."]],
+			joker: [["누군가는 웃어야죠."], ["너무 심각해 하지 마요."]],
+			rumour: [["믿고 싶은 대로 믿어요."], ["두고 보면 알아요."]],
+			local: [["전 여기 살아요. 당신은 아니잖아요."]],
+			night: [["맘대로 생각해요."]],
 		},
 		help: [
 			["며칠은 돌아서 가요. 저는 그렇게 하고 있어요.", "SECURITY CRIME", /route|go(?:ing)? through|walk|home|street|경로|지나|걸어|집|거리/i],
 			["해 진 뒤에는 큰길로만 다니면 괜찮아요.", "SECURITY CRIME", /route|go(?:ing)? through|walk|home|street|after dark|night|경로|지나|걸어|집|거리|밤|어두워/i],
-			["Don't sell in a panic. That's exactly when it costs you most.", "MARKETS", /savings|wages|sell|worth|저축|임금|급여|팔|가치/i],
-			["Shuttles were running on the other line this morning.", "TRANSIT", /shuttle|stop|trip|route|travel|셔틀|정류장|운행|노선|경로|이동/i],
+			["겁먹고 팔지 마세요. 그때가 가장 손해가 커요.", "MARKETS", /savings|wages|sell|worth|저축|임금|급여|팔|가치/i],
+			["오늘 아침에는 다른 노선 셔틀이 다녔어요.", "TRANSIT", /shuttle|stop|trip|route|travel|셔틀|정류장|운행|노선|경로|이동/i],
 		],
-		source: [["Source?"], ["Which friend?"], ["Your friend says a lot of things."]],
+		source: [["출처는요?"], ["누구 말이에요?"], ["그 친구는 말이 많던데요."]],
 		same: [
 			["우리 쪽도 마찬가지예요.", "INDUSTRY BUSINESS MARKETS"],
 			["우리한테도 아무 얘기가 없었어요.", "INDUSTRY BUSINESS", /nothing|no notice|haven't|not told|no answer|아무것도|공지도 없|못 들었|안 알려|답이 없/i],
 		],
-		agree: [["Ha. Accurate."], ["Honestly."], ["This."], ["Not wrong."], ["Said it better than I would have."], ["Ha. Fair."]],
+		agree: [["하. 정확하네요."], ["솔직히요."], ["이거예요."], ["틀린 말은 아니네요."], ["저보다 말씀을 잘하시네요."], ["하. 인정."]],
 		nod: [
-			["Fair point."],
-			["Agreed."],
-			["That's what I'm doing too.", "", /\bI'(ll|m)\b/],
-			["Sensible. Half this thread hasn't read past the headline.", "", /check|wait|read|compare|확인|기다|읽|비교/i],
-			["Wish more people thought like that."],
-			["Exactly what I was going to say."],
-			["Glad someone said it."],
-			["Same thought here."],
-			["Agree with every word of that."],
+			["맞는 말이에요."],
+			["동의해요."],
+			["저도 그렇게 하고 있어요.", "", /\bI'(ll|m)\b|할게요|하고 있어요|볼게요|할래요|볼래요/],
+			["현명하네요. 이 글타래 절반은 제목밖에 안 읽었을걸요.", "", /check|wait|read|compare|확인|기다|읽|비교/i],
+			["이렇게 생각하는 사람이 더 많았으면 좋겠어요."],
+			["제가 하려던 말이에요."],
+			["누가 말해 줘서 다행이에요."],
+			["저도 같은 생각이에요."],
+			["한마디도 빠짐없이 동감이에요."],
 		],
-		close: [["Agree to disagree."], ["Whatever you say."], ["Not worth arguing about."]],
+		close: [["서로 생각이 다르다는 걸 인정해요."], ["그렇다고 해 두죠."], ["다툴 가치도 없어요."]],
 		/* How an argument winds down after the first poster answers back: [replier's line, then optionally the first
 		   poster's last word]. Each pair reads as one person answering the other. */
 		windDown: [
 			["좋아요. 내일이면 알겠죠.", "그러겠죠."],
-			["Suit yourself.", ""],
+			["마음대로 하세요.", ""],
 			["여기서 그만할게요.", "그게 낫겠네요."],
 			["그럼 우린 그냥 보는 눈이 다른 거네요.", "그런가 봐요."],
-			["Not going to change your mind, am I?", "No."],
+			["생각을 바꿀 마음은 없으시죠?", "없어요."],
 		],
 		/* A third resident ending a long exchange, and the first poster conceding to that. */
 		referee: [
 			["두 분은 보고마다 이 논쟁을 하시네요.", "맞아요. 그만할게요."],
 			["실제로 일어난 일만 가지고 얘기하면 안 될까요?", "그래요."],
-			["Both of you, wait for the next report before deciding.", "Fine."],
+			["두 분 다 다음 보도를 보고 판단해요.", "알겠어요."],
 		],
-		welcome: [["No problem."], ["Any time."], ["Stay safe out there."], ["Glad it helped."]],
+		welcome: [["별말씀을요."], ["언제든지요."], ["밖에서 몸조심해요."], ["도움이 됐다니 다행이에요."]],
 		/* Following up on a question nobody could answer yet. */
-		follow: [["I'll post here if I hear anything."], ["Someone on my floor might know. I'll ask."], ["Watching this too."], ["Same question. Following."]],
+		follow: [["소식 들으면 여기에 올릴게요."], ["우리 층에 아는 사람이 있을지도 몰라요. 물어볼게요."], ["저도 지켜보는 중이에요."], ["저도 같은 질문이에요. 지켜볼게요."]],
 	},
 
 	/* Replies under the residents' comments, chosen once when the article is written: [handle, text, intent,
@@ -2597,7 +2597,7 @@ setup.arcologyNewsText = {
 					used.add(seen);
 					return [local[0], seen, "fact"];
 				}
-				if (/record|evidence|proof|review|finding|statement|check/i.test(text) && !outcome) {
+				if (/record|evidence|proof|review|finding|statement|check|기록|증거|검토|성명|확인|입증/i.test(text) && !outcome) {
 					const who = pickBy(p => p[1] === "skeptic");
 					const line = who && take(n + "ev", this.threadLines.evidence);
 					return line && [who[0], line, "unknown"];
@@ -2607,13 +2607,13 @@ setup.arcologyNewsText = {
 				return line && [who[0], line, "unknown"];
 			}
 			/* Hearsay gets asked for its source; "which friend" only when there is a friend to ask about. */
-			if (pk === "rumour" && /a friend|heard|someone at|says there|saying this/i.test(text) && !/wait for|checked|source/i.test(text)) {
+			if (pk === "rumour" && /a friend|heard|someone at|says there|saying this|아는 사람|친구|들었|그러는데|던데|이래요|대요|래요/i.test(text) && !/wait for|checked|source|기다려|기다릴|확인된|확인했|출처/i.test(text)) {
 				const who = pickBy(p => p[1] === "skeptic");
 				const line =
 					who &&
 					take(
 						n + "src",
-						this.threadLines.source.filter(l => l[0] === "Source?" || /a friend/i.test(text))
+						this.threadLines.source.filter(l => l[0] === "출처는요?" || /a friend|아는 사람|친구/i.test(text))
 					);
 				return line && [who[0], line, "against"];
 			}
@@ -2625,18 +2625,18 @@ setup.arcologyNewsText = {
 				return line && [who[0], line, "help"];
 			}
 			/* "Same at ours" only answers someone describing their own work or pay. */
-			if (pk === "worker" && ["INDUSTRY", "BUSINESS", "MARKETS"].includes(cat) && /\b(we|our|my|us)\b/i.test(text)) {
+			if (pk === "worker" && ["INDUSTRY", "BUSINESS", "MARKETS"].includes(cat) && /\b(we|our|my|us)\b|우리|저희|제 |제가|저는|내 /i.test(text)) {
 				const who = pickBy(p => p[1] === "worker");
 				const line = who && take(n + "same", this.threadLines.same);
 				return line && [who[0], line, "agree"];
 			}
 			/* A long, careful comment gets a nod from someone who sees it the same way; a short opinion draws the opposite camp. */
-			if (text.length > 70) {
+			if (text.length > 40) {
 				const who = pickBy(p => p[1] === pk || (p[1] === "loyal" && pk === "worried") || (p[1] === "local" && pk === "worker"));
 				const line = who && take(n + "nod", this.threadLines.nod);
 				return line && [who[0], line, "agree"];
 			}
-			const rival = /glad|good to|useful|helps|thanks/i.test(text)
+			const rival = /glad|good to|useful|helps|thanks|다행|고마|유용|도움|좋네/i.test(text)
 				? null
 				: { loyal: ["skeptic", "worker"], skeptic: ["loyal"], joker: ["worried"], worker: ["loyal"] }[pk];
 			if (rival) {
@@ -2728,7 +2728,7 @@ setup.arcologyNewsText = {
 		if (rec.k === "reminder") return [];
 		if (rec.k === "weekly") {
 			return (out.sections ?? []).flatMap((section, i) => {
-				const fact = section.paragraphs.find(p => !p.startsWith("Last reported"));
+				const fact = section.paragraphs.find(p => !p.startsWith("최근 보도"));
 				return fact
 					? [
 							[this.people[(i * 3) % this.people.length][0], `“${section.title}” 후속 소식이 제가 따라가고 있는 소식이에요. ${fact}`],
@@ -2843,33 +2843,33 @@ setup.arcologyNewsText = {
 			const contextual =
 				{
 					loyal: [
-						[`I'd rather ${vals.O} explain the arrangements on ${vals.D} before people start guessing.`],
-						[`Keeping the notices for ${vals.D} current would help the people following them.`],
+						[`사람들이 짐작하기 시작하기 전에 ${vals.O}【이가】 ${vals.D}의 조치를 설명해 줬으면 해요.`],
+						[`${vals.D} 공지를 계속 최신으로 유지해 주면 그걸 따라가는 사람들에게 도움이 될 거예요.`],
 					],
 					skeptic: [
-						[`Has anyone outside ${vals.O} checked the account of what happened on ${vals.D}?`],
-						[`I want to see the records behind this report about ${vals.D}, not another statement.`],
+						[`${vals.O} 외부에서 ${vals.D}에서 벌어진 일에 대한 설명을 확인한 사람이 있나요?`],
+						[`${vals.D}에 관한 이번 보도의 근거 기록을 보고 싶어요. 또 다른 성명 말고요.`],
 					],
 					worried: [
-						[`My route home goes through ${vals.D}. I need to know what this changes for people passing through.`],
-						[`Does the public desk on ${vals.D} have any advice for residents yet?`],
+						[`제가 집에 가는 길은 ${vals.D}【을를】 지나요. 지나가는 사람들에게 이게 뭘 바꾸는지 알아야 해요.`],
+						[`${vals.D}의 공공 창구에서 주민들에게 해 줄 안내가 벌써 있나요?`],
 					],
 					worker: [
-						[`I work shifts near ${vals.D}. We need notices before we leave home, not after we arrive.`],
-						[`I'd like ${vals.O} to explain what this means for the next shift.`],
+						[`저는 ${vals.D} 근처에서 교대로 일해요. 출근한 뒤가 아니라 집을 나서기 전에 공지가 필요해요.`],
+						[`다음 교대에 이게 무슨 뜻인지 ${vals.O}【이가】 설명해 줬으면 해요.`],
 					],
 					night: [
-						[`People leaving the venues on ${vals.D} will want to know about this before closing time.`],
-						[`I usually meet friends on ${vals.D}. We're checking the notices before going tonight.`],
+						[`${vals.D}의 업소에서 나오는 사람들은 문 닫기 전에 이 소식을 알고 싶을 거예요.`],
+						[`저는 보통 ${vals.D}에서 친구들을 만나요. 오늘 밤 가기 전에 공지부터 확인하는 중이에요.`],
 					],
 					local: [
-						[`I live near ${vals.D}. The report doesn't say what residents should do next.`],
-						[`I'd check the street notices on ${vals.D} before making the trip.`],
+						[`${vals.D} 근처에 살아요. 보도에는 주민들이 다음에 뭘 해야 하는지 안 나와요.`],
+						[`${vals.D}에 가기 전에 거리 공지부터 확인할 거예요.`],
 					],
-					joker: [[`I'll put "check ${vals.D} notices" on tomorrow's list. Again.`], [`Somewhere on ${vals.D}, someone is already printing the next notice.`]],
+					joker: [[`내일 할 일 목록에 "${vals.D} 공지 확인"을 또 올려야겠네요.`], [`${vals.D} 어딘가에서 누군가는 벌써 다음 공지를 인쇄하고 있겠죠.`]],
 					rumour: [
-						[`People keep passing around different versions of the ${vals.D} story. Which ones have actually been checked?`],
-						[`I'd wait for a named source before sharing more about ${vals.O}.`],
+						[`${vals.D} 이야기가 버전마다 다르게 돌고 있어요. 실제로 확인된 건 어느 건가요?`],
+						[`${vals.O}에 대해 더 퍼 나르기 전에 이름이 밝혀진 출처를 기다릴래요.`],
 					],
 				}[kind] ?? [];
 			let topic = subject
@@ -3027,9 +3027,9 @@ setup.arcologyNewsText = {
 			if (rec.f === "transit" && rec.ph === "exposed")
 				topic =
 					kind === "loyal"
-						? ["At least Transit has now explained why the freight carts were there. I still need to know when the shuttles return."]
+						? ["적어도 교통국이 화물 수레가 왜 거기 있었는지는 이제 설명했어요. 셔틀이 언제 돌아오는지는 여전히 알아야 해요."]
 						: kind === "worker"
-						? ["The explanation matters, but I can't get to a shift on an admission. I'll check the boarding screen."]
+						? ["설명도 중요하지만, 인정만으로 교대에 갈 수는 없어요. 탑승 화면을 확인할게요."]
 						: [
 								"앞선 공지에서는 정류장이 열려 있다고 했어요. 화물 인정으로 사람들이 다른 광경을 본 이유가 설명되네요.",
 								"화물에 자리를 내주는 건 하나의 결정이에요. 누가 허가했는지 알고 싶어요.",
@@ -3048,7 +3048,7 @@ setup.arcologyNewsText = {
 			if (rec.f === "industry" && rec.ph === "report")
 				topic =
 					kind === "loyal"
-						? ["The inspectors have published what went wrong. I hope the company deals with the warnings this time."]
+						? ["조사관들이 무엇이 잘못됐는지 공개했어요. 이번에는 회사가 경고를 제대로 다루길 바라요."]
 						: [
 								"회사가 벌금을 물었지만, 저는 다음 교대가 예정대로 열리는지 여전히 알아야 해요.",
 								"직원들은 경고가 묵살됐다고 하고, 회사는 기계가 점검을 통과했다고 해요. 왜 두 얘기가 맞지 않는지 알고 싶어요.",
@@ -3428,7 +3428,7 @@ setup.arcologyNewsText = {
 			["지금 사야 할까요?", "그 발표가 진짜인가요?|critical", "가진 건 그대로 들고 있을래요."],
 			["얼마나 더 떨어질 수 있나요?", "거래소 기록은 누가 확인하나요?|critical", "먼저 안 사람한테는 쉬운 돈이네요."],
 		],
-		WEEKLY: [["Busy week.", "Nothing ever really changes.", "Thanks for the summary."]],
+		WEEKLY: [["바쁜 한 주였네요.", "달라지는 건 사실 없어요.", "요약 고마워요."]],
 		NOTICE: [
 			["공지 고마워요.", "이거 최신인가요?|critical", "이런 건 누가 정하나요?"],
 			["알아 둬서 좋네요.", "이런 거 아무도 안 읽어요.", "이거 정확한가요?|critical"],
@@ -3438,25 +3438,25 @@ setup.arcologyNewsText = {
 	options(rec, out) {
 		if (rec.f === "implant" && rec.s === "trial")
 			return [
-				["Can guests join this trial?", "", "question"],
-				["What are volunteers being asked to test?", "", "question"],
-				["I would read the consent terms first.", "", "concern"],
+				["방문객도 이 시험에 참여할 수 있어요?", "", "question"],
+				["지원자들은 무엇을 시험해 보라고 요청받아요?", "", "question"],
+				["동의서 조항부터 읽어 보겠어요.", "", "concern"],
 			];
 		if (rec.f === "implant" && rec.s === "backup")
 			return [
-				["Can a guest make a Registry backup?", "", "question"],
-				["Who is allowed to read existing backups?", "critical", "question"],
-				["A record check is not a backup.", "", "opinion"],
+				["방문객도 등록소 백업을 만들 수 있어요?", "", "question"],
+				["기존 백업은 누가 열람할 수 있어요?", "critical", "question"],
+				["기록 조회는 백업이 아니에요.", "", "opinion"],
 			];
 		if (rec.f === "implant" && ["xchange", "unlicensed"].includes(rec.s))
 			return [
-				["Does my guest implant authorize new body parts?", "", "question"],
-				["I would check the service desk's restrictions first.", "", "opinion"],
+				["내 게스트 임플란트로 새 신체 부위를 허가받을 수 있어요?", "", "question"],
+				["안내 데스크의 제한 사항부터 확인해 보겠어요.", "", "opinion"],
 			];
 		if (rec.f === "nightlife" && rec.s === "raid")
 			return [
-				["Why are guests being scanned?", "", "question"],
-				["I want the door policy explained.", "", "concern"],
+				["왜 방문객을 스캔해요?", "", "question"],
+				["출입 규정을 설명해 줬으면 해요.", "", "concern"],
 			];
 		const sets = this.replies[out.cat];
 		if (!sets) return [];
@@ -3548,7 +3548,7 @@ setup.arcologyNewsText = {
 				"적어도 노점들은 새 유리창을 얻겠네요.",
 				"스태틱 룸에서는 이런 거 돈 받는다고 누가 말 좀 해 주세요.",
 			],
-			critical: ["The crew names in these articles are always a guess."],
+			critical: ["이 기사들에 나오는 패거리 이름은 늘 짐작일 뿐이에요."],
 		},
 		INDUSTRY: {
 			ask: [
@@ -3624,7 +3624,7 @@ setup.arcologyNewsText = {
 				"다음엔 의자를 가져갈래요.",
 				"소매치기가 바 직원들보다 더 좋은 밤을 보냈어요.",
 			],
-			critical: ["Ask who pays for the cleanup."],
+			critical: ["뒷정리 비용은 누가 내는지 물어보세요."],
 		},
 		PEOPLE: {
 			ask: [
@@ -3658,14 +3658,14 @@ setup.arcologyNewsText = {
 			agree: ["알아 두면 도움 되겠네요.", "어딘가에 적어 둬서 다행이에요.", "고마워요. 지난 건 놓쳤거든요."],
 			differ: ["이런 거 아무도 안 읽어요.", "일이 벌어진 뒤에야 이런 걸 붙여요.", "공지 절반은 정오쯤이면 낡아 있어요."],
 			joke: ["공지에 대한 또 하나의 공지네요.", "다른 마흔 장 옆에 이것도 붙여 둘게요.", "흥미진진하네요."],
-			critical: ["These are only as accurate as whoever typed them."],
+			critical: ["이런 건 쓴 사람만큼만 정확해요."],
 		},
 		BREAKING: {
 			ask: ["제가 아는 한 크게 다친 사람은 없어요.", "아직 이름은 없어요. 집행국 뜻대로라면 앞으로도 없을 거예요.", "영상은 한 시간 안에 내려갔어요."],
 			agree: ["길 건너에서 봤어요. 대단했어요.", "사람들이 아직도 그 얘기를 해요.", "평범한 밤이 아니었어요."],
 			differ: ["영상에는 어떻게 시작됐는지가 안 나와요.", "편 가르기 전에 전체 이야기를 기다리세요.", "싸움은 카메라에 찍히면 다 더 심해 보여요."],
 			joke: ["누가 저 사람 좀 고용해요. 아니면 숨든가.", "이제 길을 조금 더 빨리 건너겠어요.", "새 규칙: 메리디안에서 낯선 사람을 건드리지 말 것."],
-			critical: ["Enforcement only posts the footage that suits them."],
+			critical: ["집행국은 자기들한테 유리한 영상만 올려요."],
 		},
 		MARKETS: {
 			ask: [
@@ -3687,11 +3687,11 @@ setup.arcologyNewsText = {
 			critical: ["그 성명을 쓴 사람이 먼저 샀어요.", "거래소는 그 주문을 누가 냈는지 알아요. 말을 안 할 뿐이죠."],
 		},
 		WEEKLY: {
-			ask: ["Same as every week, mostly."],
+			ask: ["대체로 매주 똑같아요."],
 			agree: ["바쁜 한 주였네요.", "요약 잘 됐어요."],
-			differ: ["Missed half of what actually happened."],
-			joke: ["Seven days, seven reasons to stay indoors."],
-			critical: ["Funny what never makes the weekly."],
+			differ: ["실제로 벌어진 일의 절반은 빠졌어요."],
+			joke: ["7일, 집에 있어야 할 이유 7가지."],
+			critical: ["주간 요약에 절대 안 나오는 얘기가 웃기죠."],
 		},
 	},
 
@@ -3699,9 +3699,9 @@ setup.arcologyNewsText = {
 	fallback: {
 		agree: ["오늘 아침에 이웃한테도 똑같은 말을 했어요.", "기사보다 말씀을 더 잘하셨네요."],
 		differ: ["맞는 말이지만 다른 면도 있어요.", "제가 본 건 달랐지만 그렇게 말씀하시는 이유는 알겠어요."],
-		joke: ["Put it on the wall at Dome Broadcast. They need new material."],
-		ask: ["Nobody official has said yet."],
-		critical: ["A few of us have been asking the same thing."],
+		joke: ["돔 방송 벽에 붙여 놔요. 새 소재가 필요할 테니까요."],
+		ask: ["공식적으로 말해 준 사람은 아직 없어요."],
+		critical: ["우리 중 몇 명도 같은 걸 물어 왔어요."],
 	},
 
 	/* Direct answers to each comment the player can post, so the first reply responds to what was actually said. */
@@ -4156,7 +4156,7 @@ setup.arcologyNewsText = {
 				const earlier = Object.assign({}, rec, { ph, at: timestamp, n, sp, id, q, h: [] });
 				background = this.families[rec.f][ph].call(this, earlier, this.context(earlier)).body.filter(Boolean)[0];
 			}
-			const lines = facts[said] ?? [`Regarding “${said}”: ${current} The published account gives no further confirmation of that point.`];
+			const lines = facts[said] ?? [`“${said}”에 관해: ${current} 이 기사는 그 점을 더 확인해 주지 않아요.`];
 			let t = fresh(k, lines, h);
 			/* Exhausting one account's wording must never turn a direct question into an unrelated category reply. */
 			if (!t) {
@@ -4172,7 +4172,7 @@ setup.arcologyNewsText = {
 			}
 			if (!t)
 				t = facts[said]
-					? `${fill(pick(k, lines))} ${current}${background ? ` Earlier coverage reported: ${background}` : ""}`
+					? `${fill(pick(k, lines))} ${current}${background ? ` 처음 보도된 내용: ${background}` : ""}`
 					: `“${said}”에 관해: ${current}${background ? ` 처음 보도된 내용: ${background}` : ""}`;
 			usedMood.add(intent === "ask" ? "ask" : "agree");
 			add(h, t);

@@ -1763,7 +1763,7 @@ function xchangeEffectsMessages() {
 	const br = () => fragment.append(document.createElement("br"));
 
 	if (V.hermSaveWarningMessage) {
-		element("span", "WARNING:", "yellow");
+		element("span", "경고:", "yellow");
 		element(
 			"span",
 			"방금 지원되지 않는 성별의 캐릭터(바닐라 헤름일 가능성이 높습니다)가 담긴 세이브 파일을 불러왔습니다. 모드의 시스템이 계속 작동하도록 사용 가능한 쪽으로 강제로 바뀌었지만, 이대로 진행하는 것은 전혀 권장되지 않으며 이상한 동작이 나타나도 정상입니다.",
@@ -1785,7 +1785,7 @@ function xchangeEffectsMessages() {
 
 	if (V.identityWarningMessage) {
 		if (V.identity.init < 2 && !(V.background && V.background.transgender)) {
-			element("span", "WARNING:", "yellow");
+			element("span", "경고:", "yellow");
 			element(
 				"span",
 				"아직 정체성 설정을 확정하지 않았습니다. 방으로 가서 게임플레이 설정 > 모드 설정 > 정체성 설정에서 맨 아래의 '선택 잠금' 체크 상자를 선택하십시오. 설정을 저장하기 전에 캐릭터의 정체성 설정을 꼭 확인하십시오.",
@@ -2223,9 +2223,9 @@ function xchangeEffectsMessages() {
 			const breederTarget = omegaAnal && pill?.breederEffect ? "holes" : omegaAnal ? "ass" : "womb";
 			element(
 				"span",
-				`The forced orgasm washes through you, but it feels hollow; your ${breederTarget} ${
+				`강제로 맞은 절정이 몸을 훑고 지나가지만 공허하다. 당신의 ${({holes: "구멍", ass: "엉덩이", womb: "자궁"})[breederTarget] || breederTarget}【이가】 ${
 					breederTarget === "holes" ? "" : ""
-				} for hot seed.`,
+				}뜨거운 씨앗을 갈망한다.`,
 				"blue"
 			);
 		} else if (pill?.alphaEffect && V.player.penisExist) {
@@ -2328,7 +2328,7 @@ function xchangeEffectsMessages() {
 				"lewd"
 			);
 			element("span", "|");
-			element("span", "+ Lewdness", "lewd");
+			element("span", "+ 음란함", "lewd");
 			br();
 		}
 		br();

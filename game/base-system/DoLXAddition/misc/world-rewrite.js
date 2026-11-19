@@ -542,7 +542,7 @@
 		}
 
 		/* Human settings: generic genders + victim genders locked while override is active. */
-		const $npcGenderGrid = findGridByHeaderText($, "NPC Genders");
+		const $npcGenderGrid = findGridByHeaderText($, "NPC 성별");
 		togglePanelLock(
 			$npcGenderGrid.find(".settingsToggleItem").eq(0),
 			active,
@@ -562,7 +562,7 @@
 		const $namedNpcGenderPanel = $("#npcSettingsMenu")
 			.find(".settingsToggleItem")
 			.filter(function () {
-				return $(this).find("> .gold").first().text().trim() === "Gender:";
+				return $(this).find("> .gold").first().text().trim() === "성별:";
 			})
 			.first();
 		togglePanelLock(
@@ -575,7 +575,7 @@
 		}
 		const $randomAssignRow = $(".solidBorderContainer.settings-container").has("#npcSettingsMenu").first().children(".settingsToggleIndent").first();
 		const $genderAssignLink = $randomAssignRow.find("a").filter(function () {
-			return $(this).text().trim() === "Genders";
+			return $(this).text().trim() === "성별";
 		});
 		toggleAnchorsDisabled($genderAssignLink, active);
 		setRowNote($randomAssignRow, active ? "세계 덮어쓰기가 켜져 있는 동안에는 네임드 NPC의 성별을 무작위로 배정할 수 없습니다." : "");
@@ -587,13 +587,13 @@
 		const $femaleGenitalPanel = $bodyGrid
 			.children(".solidBorderContainer")
 			.filter(function () {
-				return $(this).text().includes("Percentage of women that have only a vagina");
+				return $(this).text().includes("보지만 가진 여성의 비율");
 			})
 			.first();
 		const $maleGenitalPanel = $bodyGrid
 			.children(".solidBorderContainer")
 			.filter(function () {
-				return $(this).text().includes("Percentage of men that have only a penis");
+				return $(this).text().includes("자지만 가진 남성의 비율");
 			})
 			.first();
 		const $straponPanel = findPanelByText($bodyGrid, "페니스 밴드 자지를 가진 여성의 비율");

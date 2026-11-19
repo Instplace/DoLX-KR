@@ -169,9 +169,9 @@ Fame only gates this first offer: after arrival, nothing here locks the player o
 		<<elseif _atBand gte 2 and random(1, 3) is 1>>
 			<<if _atGuard>>
 				<<if random(1, 2) is 1>>
-					당신을 향해 걸어오던 두 사람이 방문객 ID의 후원 표식을 보고는 고개를 숙인 채 말없이 지나간다.
+					당신을 향해 걸어오던 두 사람이 게스트 ID의 후원 표식을 보고는 고개를 숙인 채 말없이 지나간다.
 				<<else>>
-					누군가 당신 쪽으로 걸어오다가 방문객 ID의 후원 표식을 보고 멈춰 서더니 다른 길로 간다.
+					누군가 당신 쪽으로 걸어오다가 게스트 ID의 후원 표식을 보고 멈춰 서더니 다른 길로 간다.
 				<</if>>
 			<<elseif _atBand is 2>>
 				<<if random(1, 2) is 1>>
@@ -196,7 +196,7 @@ Fame only gates this first offer: after arrival, nothing here locks the player o
 		<</if>>
 	<<case "civilian">>
 		<<if _atBand gte 3 and _atGuard>>
-			<<He>>【이가】 방문객 ID의 후원 표식을 본다. <<He>>【은는】 자리에 앉은 채 허리를 곧게 펴고 두 손을 탁자 위에 평평하게 올려놓는다. <<He>>【은는】 계속 당신을 힐끔거린다.
+			<<He>>【이가】 게스트 ID의 후원 표식을 본다. <<He>>【은는】 자리에 앉은 채 허리를 곧게 펴고 두 손을 탁자 위에 평평하게 올려놓는다. <<He>>【은는】 계속 당신을 힐끔거린다.
 		<<elseif _atBand gte 3>>
 			<<He>>【이가】 당신의 귀 뒤에 있는 불빛을 본다. <<He>>【은는】 <<his>> 잔을 탁자에 내려놓고 만나기로 한 사람이 있다고 말한다. 당신이 대답하기도 전에 <<he>>【은는】 일어나 가 버린다.
 		<<elseif _atBand is 2>>
@@ -204,7 +204,7 @@ Fame only gates this first offer: after arrival, nothing here locks the player o
 		<</if>>
 	<<case "criminal">>
 		<<if _atBand gte 2 and _atGuard>>
-			<<He>>【이가】 방문객 ID의 후원 표식을 보고 걸음을 늦춘다. <<He>>【은는】 당신 뒤쪽을 살피며 일행이 있는지 확인한다.
+			<<He>>【이가】 게스트 ID의 후원 표식을 보고 걸음을 늦춘다. <<He>>【은는】 당신 뒤쪽을 살피며 일행이 있는지 확인한다.
 		<<elseif _atBand gte 2>>
 			<<switch random(1, 3)>>
 			<<case 1>>
@@ -320,7 +320,7 @@ Fame only gates this first offer: after arrival, nothing here locks the player o
 <<widget "arcologyicon">><<icon `"arcology/" + _args[0] + ".png"`>><</widget>>
 
 /* How island systems and island NPCs address the player. Never used outside the island. */
-<<widget "arcologyHandle">><<print $xchange.arcology.handle or "Guest">><</widget>>
+<<widget "arcologyHandle">><<print $xchange.arcology.handle or "게스트">><</widget>>
 
 /* Island currency. */
 <<widget "arcologyCipher">><<print setup.arcology.cx($xchange.arcology.cipher)>><</widget>>
@@ -348,14 +348,14 @@ Fame only gates this first offer: after arrival, nothing here locks the player o
 	<<set _arcologyGuest to $xchange.arcology.guest>>
 	<<holo "메리디안 / 방문객 승인" `setup.arcology.hasRoom() ? "ok" : "denied"`>>
 		<<holoRow "사용자" `$xchange.arcology.handle or "방문객"`>>
-		<<holoRow "권한 등급" `({ guest: "방문객", resident: "거주민", citizen: "시민", authority: "당국" })[$xchange.arcology.clearance or "guest"] || ($xchange.arcology.clearance or "guest")`>>
-		<<holoRow "SPONSOR" `_arcologyGuest.sponsor ? _arcologyGuest.sponsor.toUpperCase() : "NONE"`>>
+		<<holoRow "권한 등급" `({ guest: "방문객", resident: "거주자", citizen: "시민", authority: "당국" })[$xchange.arcology.clearance or "guest"] || ($xchange.arcology.clearance or "guest")`>>
+		<<holoRow "후원자" `_arcologyGuest.sponsor ? (_arcologyGuest.sponsor is "Luchifen" ? "루치펜" : _arcologyGuest.sponsor) : "없음"`>>
 		<<if setup.arcology.hasRoom()>>
 			<<holoRow "객실" `setup.arcology.roomNumber() + ", 승인됨"`>>
 			<<holoRow "유효 기한" `setup.arcology.when(_arcologyGuest.until).toUpperCase()`>>
 			<<holoRow "결제" `_arcologyGuest.status is "sponsored" ? "후원자 부담" : "정산 완료"`>>
 		<<else>>
-			<<holoRow "ROOM" "NONE">>
+			<<holoRow "객실" "없음">>
 			<<holoRow "잔액" `setup.arcology.cxU(($xchange.arcology.cipher or 0))`>>
 			<<holoLine `_arcologyGuest.status is "revoked" ? "승인 취소됨" : "승인 만료됨"` "denied">>
 		<</if>>
@@ -367,13 +367,13 @@ This shows once when the ballroom opens, and sets _arcologyPartyMissed when the 
 <<widget "arcologyPartyNotice">>
 	<<set _arcologyPartyMissed to setup.arcology.partyMissed()>>
 	<<if _arcologyPartyMissed>>
-		<<holo "INCOMING / LUCHIFEN" "denied">>
-			<<holoLine "THE BALLROOM DOORS ARE CLOSED." "denied">>
-			<<holoLine "WAIT WHERE YOU ARE." "denied">>
+		<<holo "수신 / 루치펜" "denied">>
+			<<holoLine "무도회장 문이 닫혔습니다." "denied">>
+			<<holoLine "그 자리에서 기다리십시오." "denied">>
 		<</holo>>
 	<<elseif setup.arcology.partyOpen() and !$xchange.arcology.party.openNotified>>
 		<<set $xchange.arcology.party.openNotified to true>>
-		<<holoNotice "GLASSHOUSE" "THE BALLROOM IS OPEN. LUCHIFEN IS WAITING AT THE LIFT ON RELAY STREET." "warn">>
+		<<holoNotice "글래스하우스" "무도회장이 열렸습니다. 루치펜이 릴레이 가의 승강기 앞에서 기다리고 있습니다." "warn">>
 		<br>
 	<</if>>
 <</widget>>
@@ -385,17 +385,17 @@ This shows once when the ballroom opens, and sets _arcologyPartyMissed when the 
 		<div class="holo-head">아콜로지 교통망</div>
 		<div class="holo-body">
 			<<if _tv.escort is "loyalists">>
-				<<holoRow "TRANSFER STATUS" "MANDATORY">>
-				<<holoRow "DESTINATION" "TOWN DOCKS">>
-				<<holoRow "CLEARANCE" "REVOKED">>
-				<<holoRow "ROUTE CONTROL" "SECURITY AUTHORITY">>
+				<<holoRow "이송 상태" "의무">>
+				<<holoRow "목적지" "마을 부두">>
+				<<holoRow "권한 등급" "취소됨">>
+				<<holoRow "항로 통제" "보안 당국">>
 			<<else>>
 				<<holoRow "목적지" `_tv.to is "arcology" ? "아콜로지" : "메르 가 부두"`>>
 				<<holoRow "항로" `_tv.to is "arcology" ? "암호화됨" : "개방"`>>
-				<<holoRow "NAVIGATION" "ACTIVE">>
+				<<holoRow "항법" "작동 중">>
 			<</if>>
 			<div class="transit-bar" role="progressbar" aria-label="Journey progress" aria-valuemin="0" aria-valuemax="100" @aria-valuenow="_vs.pct"><span class="transit-fill" @style="'width: ' + _vs.pct + '%'"></span></div>
-			<<holoRow "JOURNEY PROGRESS" `_vs.pct + "%"`>>
+			<<holoRow "항해 진행" `_vs.pct + "%"`>>
 			<<holoRow "경과 시간" `setup.arcology.duration(_vs.elapsed)`>>
 			<<holoRow "남은 시간" `setup.arcology.duration(_vs.remaining)`>>
 			<<holoRow "총 항해 시간" `setup.arcology.duration(_vs.total)`>>
@@ -523,7 +523,7 @@ This shows once when the ballroom opens, and sets _arcologyPartyMissed when the 
 		<<case "eyesCamera">><<set _cyNoun to "카메라 눈">>
 		<<case "eyesGrey">><<set _cyNoun to "깜박이지 않는 회색 눈">>
 		<<case "eyesGlass">><<set _cyNoun to "유리 렌즈">>
-		<<case "accVisor">><<set _cyNoun to "visor">>
+		<<case "accVisor">><<set _cyNoun to "바이저">>
 		<<case "armIndustrial">><<set _cyNoun to "묵직한 금속 팔">>
 		<<case "armChrome">><<set _cyNoun to "은색 팔뚝">>
 		<<case "armBlack">><<set _cyNoun to "검은 금속 손">>

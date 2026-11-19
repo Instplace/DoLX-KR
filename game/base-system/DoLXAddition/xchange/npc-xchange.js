@@ -211,7 +211,7 @@ function npcXchangePillStatus(name) {
 		text += ` 효과는 ${days > 0 || hours > 0 ? [days > 0 ? days + "일" : "", hours > 0 ? hours + "시간" : ""].filter(Boolean).join(" ") + " 뒤에" : "한 시간 안에"} 사라집니다.`;
 	}
 
-	return { label: "X-Changed", colour, text };
+	return { label: "X-체인지됨", colour, text };
 }
 window.npcXchangePillStatus = npcXchangePillStatus;
 

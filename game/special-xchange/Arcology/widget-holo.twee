@@ -30,19 +30,19 @@
 	<<set _ha to $xchange.arcology>>
 	<<set _online to setup.arcology.online()>>
 	<<set _haNow to Time.date.timeStamp>>
-	<<set _cached to _online ? "" : " · CACHED">>
+	<<set _cached to _online ? "" : " · 캐시">>
 	<<set _haId to setup.arcology.guestId()>>
 	<<set _haRoom to setup.arcology.hasRoom()>>
 	<<if _ha.guest.status is "revoked">>
-		<<set _haClearance to "REVOKED">><<set _haTone to "denied">><<set _haAuth to "AUTHORIZATION REVOKED">>
+		<<set _haClearance to "취소됨">><<set _haTone to "denied">><<set _haAuth to "승인 취소됨">>
 	<<else>>
-		<<set _haClearance to (_ha.clearance or "guest").toUpperCase()>><<set _haTone to "warn">>
+		<<set _haClearance to ({ guest: "방문객", resident: "거주자", citizen: "시민", authority: "당국" })[_ha.clearance or "guest"] || (_ha.clearance or "guest")>><<set _haTone to "warn">>
 		<<if _haRoom>>
-			<<set _haAuth to _ha.guest.status is "sponsored" ? "SPONSORED GUEST" : "PAYING GUEST">>
+			<<set _haAuth to _ha.guest.status is "sponsored" ? "후원받는 방문객" : "결제 방문객">>
 		<<elseif ["sponsored", "paid"].includes(_ha.guest.status)>>
-			<<set _haAuth to "AUTHORIZATION EXPIRED">>
+			<<set _haAuth to "승인 만료됨">>
 		<<else>>
-			<<set _haAuth to "NO ROOM AUTHORIZATION">>
+			<<set _haAuth to "객실 승인 없음">>
 		<</if>>
 	<</if>>
 	<div class="holo-wrap"><div class="holo-journal">
@@ -79,15 +79,15 @@
 		</section>
 		<section class="holo holo-net" aria-label="Network" @data-state="_online ? 'ok' : 'pending'">
 			<div class="holo-head">네트워크</div>
-			<div class="holo-status" @data-tone="_online ? 'ok' : 'warn'"><span class="holo-dot" aria-hidden="true"></span><<print _online ? "CITY NETWORK CONNECTED" : "OUT OF RANGE">></div>
+			<div class="holo-status" @data-tone="_online ? 'ok' : 'warn'"><span class="holo-dot" aria-hidden="true"></span><<print _online ? "도시 네트워크 연결됨" : "범위 밖">></div>
 			<<if _online>>
-				<<holoRow "LAST SYNC" "NOW">>
+				<<holoRow "마지막 동기화" "방금">>
 			<<else>>
 				<<holoRow "마지막 동기화" `_ha.lastSync ? setup.arcology.when(_ha.lastSync).toUpperCase() : "등록 시점"`>>
-				<<holoLine "SHOWING CACHED DATA" "warn">>
+				<<holoLine "캐시된 데이터를 표시 중" "warn">>
 			<</if>>
 			<div class="holo-auth">
-				<span class="holo-badge" @data-tone="_ha.handle ? 'ok' : 'warn'"><<print _ha.handle ? "ID VERIFIED" : "ID PENDING">></span>
+				<span class="holo-badge" @data-tone="_ha.handle ? 'ok' : 'warn'"><<print _ha.handle ? "ID 인증됨" : "ID 대기 중">></span>
 				<span class="holo-badge" @data-tone="_haRoom and _ha.guest.status is 'sponsored' ? 'ok' : 'off'">후원자 연결</span>
 				<span class="holo-badge" @data-tone="_haTone">_haClearance 접근</span>
 			</div>
@@ -98,7 +98,7 @@
 			<<if _ha.voyage and _ha.voyage.arriveAt>>
 				<<set _objectives++>><<set _hvs to setup.arcology.voyageStatus()>>
 				<div class="holo-obj">
-					<div class="holo-obj-title"><<print _ha.voyage.to is "arcology" ? "IN TRANSIT TO ARCOLOGY" : "IN TRANSIT TO THE MAINLAND">></div>
+					<div class="holo-obj-title"><<print _ha.voyage.to is "arcology" ? "아콜로지로 이동 중" : "본토로 이동 중">></div>
 					<div class="transit-bar" role="progressbar" aria-label="Journey progress" aria-valuemin="0" aria-valuemax="100" @aria-valuenow="_hvs.pct"><span class="transit-fill" @style="'width: ' + _hvs.pct + '%'"></span></div>
 					<<holoRow "남은 시간" `setup.arcology.duration(_hvs.remaining)`>>
 				</div>
@@ -108,8 +108,8 @@
 				<div class="holo-obj">
 					<div class="holo-obj-title">미납 스택 부채</div>
 					<<holoRow "잔액" `setup.arcology.cxU(_ha.debt.amount)`>>
-					<<holoRow "STATUS" "ABSCONDED">>
-					<<holoLine "PAY AT THE PIER BOOTH. UNPAID DEBTORS ARE DETAINED ON ARRIVAL." "denied">>
+					<<holoRow "상태" "도주">>
+					<<holoLine "부두 부스에서 납부하십시오. 미납 채무자는 도착 즉시 구금됩니다." "denied">>
 				</div>
 			<</if>>
 			<<if _ha.party.status is "invited">>
@@ -117,15 +117,15 @@
 				<div class="holo-obj">
 					<div class="holo-obj-title">글래스하우스 가면무도회</div>
 					<<if _haNow gte _ha.party.end>>
-						<<holoLine "DOORS CLOSED" "denied">>
+						<<holoLine "문이 닫혔습니다" "denied">>
 					<<elseif _haNow gte _ha.party.at - 3600>>
-						<<holoLine "OPEN NOW" "ok">>
-						<<holoRow "MEET" "LUCHIFEN, GLASSHOUSE LIFT, RELAY STREET">>
+						<<holoLine "지금 입장 가능" "ok">>
+						<<holoRow "만남" "루치펜, 글래스하우스 승강기, 릴레이 가">>
 						<<holoRow "문이 닫히기까지" `setup.arcology.duration(_ha.party.end - _haNow)`>>
 					<<else>>
 						<<holoRow "일시" `setup.arcology.when(_ha.party.at).toUpperCase()`>>
 						<<holoRow "시작까지" `setup.arcology.duration(_ha.party.at - _haNow)`>>
-						<<holoRow "MEET" "LUCHIFEN, GLASSHOUSE LIFT, RELAY STREET">>
+						<<holoRow "만남" "루치펜, 글래스하우스 승강기, 릴레이 가">>
 					<</if>>
 				</div>
 			<<elseif _ha.party.status is "attending">>
@@ -142,7 +142,7 @@
 				<<set _objectives++>>
 				<div class="holo-obj">
 					<div class="holo-obj-title">후원 조건</div>
-					<<holoRow "REQUIREMENT" `_ha.redeem.sponsored ? "WIN LUCHIFEN'S ARRANGED BOUT" : "CHAMPION OF THE UNDERGROUND ARENA"`>>
+					<<holoRow "조건" `_ha.redeem.sponsored ? "루치펜이 주선한 시합에서 승리" : "지하 경기장 챔피언"`>>
 					<<holoLine `setup.arcology.arenaQualified() ? "조건 충족" : "아직 충족되지 않음"` `setup.arcology.arenaQualified() ? "ok" : "warn"`>>
 				</div>
 			<<elseif _ha.redeem.stage is "invited">>
@@ -157,13 +157,13 @@
 			<div class="holo-head">숙소<<print _cached>></div>
 			<<if _haRoom>>
 				<div class="holo-big">호텔 메리디안 · <<print setup.arcology.roomNumber()>></div>
-				<<holoRow "SPONSOR" `_ha.guest.sponsor ? _ha.guest.sponsor.toUpperCase() : "NONE"`>>
+				<<holoRow "후원자" `_ha.guest.sponsor ? (_ha.guest.sponsor is "Luchifen" ? "루치펜" : _ha.guest.sponsor) : "없음"`>>
 				<<holoRow "결제" `_ha.guest.status is "sponsored" ? "후원자 부담" : "정산 완료"`>>
 				<<holoRow "유효 기한" `setup.arcology.when(_ha.guest.until).toUpperCase()`>>
 				<<holoRow "남은 시간" `setup.arcology.duration(_ha.guest.until - _haNow)`>>
 			<<else>>
 				<div class="holo-big holo-big-off">객실 없음</div>
-				<<holoRow "NIGHTLY RATE" `setup.arcology.cxU(setup.arcologyPrice.peek("night").q)`>>
+				<<holoRow "1박 요금" `setup.arcology.cxU(setup.arcologyPrice.peek("night").q)`>>
 			<</if>>
 		</section>
 		<section class="holo holo-wallet" aria-label="Wallet">
@@ -184,7 +184,7 @@
 							<<link "도시 지도를 요청한다">><<run ArcologySfx.play("deny")>><<replace "#holoMapReply">><<holoLine "접근이 제한되었습니다. 권한이 부족합니다." "denied">><</replace>><<run setup.arcology.compose(document.getElementById("holoMapReply"), "decode")>><<removeclass "#holoMapTile" "holo-interfere">><<run void document.getElementById("holoMapTile").offsetWidth>><<addclass "#holoMapTile" "holo-interfere">><</link>>
 						<<else>>
 							<button type="button" class="transit-locked-btn" disabled>도시 지도를 요청한다</button>
-							<<holoLine "UNAVAILABLE: CITY NETWORK OUT OF RANGE" "denied">>
+							<<holoLine "이용 불가: 도시 네트워크 범위 밖" "denied">>
 						<</if>>
 						<div id="holoMapReply"></div>
 					</div>
@@ -198,7 +198,7 @@
 							<<link "환전소를 연다">><<replace "#customOverlayContent">><<arcologyHoloExchange>><</replace>><</link>>
 						<<else>>
 							<button type="button" class="transit-locked-btn" disabled>환전소를 연다</button>
-							<<holoLine "UNAVAILABLE: CITY NETWORK OUT OF RANGE" "denied">>
+							<<holoLine "이용 불가: 도시 네트워크 범위 밖" "denied">>
 						<</if>>
 					</div>
 				</div>
@@ -238,10 +238,10 @@
 		<div class="arcology-holo" id="arcologyHolo" role="dialog" aria-labelledby="arcologyHoloTitle" hidden>
 			<svg class="arcology-holo-shape" viewBox="0 0 200 120" aria-hidden="true" focusable="false"><path d="M30 70 Q40 30 80 34 Q110 12 140 30 Q178 36 170 66 Q182 96 140 98 Q112 112 82 100 Q40 104 30 70 Z"/></svg>
 			<div class="arcology-holo-body">
-				<p id="arcologyHoloTitle"><<print setup.arcology.online() ? "CITY NETWORK CONNECTED" : "CACHED CITY DATA">></p>
+				<p id="arcologyHoloTitle"><<print setup.arcology.online() ? "도시 네트워크 연결됨" : "캐시된 도시 데이터">></p>
 				<p>인터페이스: <<print !$xchange.arcology.implant ? "미장착" : setup.arcology.online() ? "온라인" : "범위 밖">></p>
 				<p>사용자: <<arcologyHandle>></p>
-				<p>권한 등급: <span class="arcology-holo-guest"><<print _arcologyRevoked ? "취소됨" : ($xchange.arcology.clearance or "guest").toUpperCase()>></span></p>
+				<p>권한 등급: <span class="arcology-holo-guest"><<print _arcologyRevoked ? "취소됨" : ({ guest: "방문객", resident: "거주자", citizen: "시민", authority: "당국" })[$xchange.arcology.clearance or "guest"] || ($xchange.arcology.clearance or "guest")>></span></p>
 				<p class="arcology-holo-noise" aria-hidden="true">&nbsp;</p>
 				<p class="arcology-holo-noise" aria-hidden="true">&nbsp;</p>
 				<p>도시 데이터 해독 중... <span class="arcology-holo-progress">0%</span></p>
@@ -297,12 +297,12 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 			<div class="acm-title">
 				<span class="acm-kicker">아콜로지 / 내비게이션</span>
 				<span class="acm-brand">도시 지도</span>
-				<span class="acm-badges"><span @class="'acm-state' + (_cmAuth ? '' : ' locked')"><<print _cmAuth ? "AUTHORIZED" : "ENCRYPTED">></span><span class="acm-sub"><<print setup.arcology.online() ? "LIVE POSITION" : "CACHED. LAST SYNC " + setup.arcologyNews.when($xchange.arcology.lastSync)>></span></span>
+				<span class="acm-badges"><span @class="'acm-state' + (_cmAuth ? '' : ' locked')"><<print _cmAuth ? "승인됨" : "암호화됨">></span><span class="acm-sub"><<print setup.arcology.online() ? "실시간 위치" : "캐시됨. 마지막 동기화 " + setup.arcologyNews.when($xchange.arcology.lastSync)>></span></span>
 			</div>
 			<<if _cmAuth>><div id="acmReadout" class="acm-readout" aria-live="polite"></div><</if>>
 		</header>
 		<div class="dbn-back"><<link "홀로로 돌아간다">><<run setup.arcology.holoQuiet = true>><<replace "#customOverlayContent">><<arcologyHoloJournal>><</replace>><</link>></div>
-		<<if _cmAuth>><div id="acmHost"></div><<else>><<holoLine "ACCESS RESTRICTED. INSUFFICIENT AUTHORIZATION." "denied">><</if>>
+		<<if _cmAuth>><div id="acmHost"></div><<else>><<holoLine "접근이 제한되었습니다. 권한이 부족합니다." "denied">><</if>>
 	</div></div>
 	<<run setTimeout(() => { const host = document.getElementById("acmHost"); if (host) arcologyRenderMap(host); setup.arcologyVisuals.fill(); })>>
 <</widget>>
@@ -357,7 +357,7 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 	<<set _nlCut to setup.arcologyNews.now() - 7 * setup.arcologyNews.DAY>>
 	<<set _nlUrgent to _nlAll.find(x => ["breaking", "alert"].includes(x.tone) and x.at gte setup.arcologyNews.now() - setup.arcologyNews.DAY)>>
 	<<if _nlUrgent and _nlSec is "latest">>
-		<div class="dbn-urgent" role="status"><span class="dbn-urgent-label"><<print _nlUrgent.tone is "breaking" ? "BREAKING" : "DEVELOPING">></span><span class="dbn-urgent-text"><<capture _nlUrgent>><<link _nlUrgent.title>><<arcologyNewsOpen _nlUrgent.id>><</link>><</capture>></span></div>
+		<div class="dbn-urgent" role="status"><span class="dbn-urgent-label"><<print _nlUrgent.tone is "breaking" ? "속보" : "진행 중">></span><span class="dbn-urgent-text"><<capture _nlUrgent>><<link _nlUrgent.title>><<arcologyNewsOpen _nlUrgent.id>><</link>><</capture>></span></div>
 	<</if>>
 	<<set _nlTop to _nlFeed.find(x => ["breaking", "investigation"].includes(x.tone) and x.at gte setup.arcologyNews.now() - 2 * setup.arcologyNews.DAY) or _nlFeed.find(x => !["notice", "reminder"].includes(x.k) and x.at gte _nlCut)>>
 	<<if _nlTop>><<arcologyNewsCard _nlTop "featured">><</if>>
@@ -384,12 +384,12 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 			<summary>보관함: 지난 보도 <<print _nlOld.length>>건</summary>
 			<ul class="dbn-archive-list">
 				<<for _nlA range _nlOld>>
-					<<capture _nlA>><li @data-tone="_nlA.tone"><span class="dbn-time"><<print setup.arcologyNews.when(_nlA.at)>></span> <span class="dbn-cat"><<print _nlA.cat>></span> <<if setup.arcologyNews.unread().includes(_nlA.id)>><span class="dbn-new">새 답글</span> <</if>><<link _nlA.title>><<arcologyNewsOpen _nlA.id>><</link>></li><</capture>>
+					<<capture _nlA>><li @data-tone="_nlA.tone"><span class="dbn-time"><<print setup.arcologyNews.when(_nlA.at)>></span> <span class="dbn-cat"><<print setup.arcologyNews.catNames[_nlA.cat] || _nlA.cat>></span> <<if setup.arcologyNews.unread().includes(_nlA.id)>><span class="dbn-new">새 답글</span> <</if>><<link _nlA.title>><<arcologyNewsOpen _nlA.id>><</link>></li><</capture>>
 				<</for>>
 			</ul>
 		</details>
 	<</if>>
-	<<if !_nlFeed.length>><<holoLine "NO ARTICLES SYNCED YET." "warn">><</if>>
+	<<if !_nlFeed.length>><<holoLine "아직 동기화된 기사가 없습니다." "warn">><</if>>
 <</widget>>
 
 /* One article card. _args[0]: article from setup.arcologyNews.feed(). _args[1]: "featured" for the large top card. */
@@ -398,7 +398,7 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 	<article @class="'dbn-card' + (_args[1] ? ' dbn-featured' : '')" @data-tone="_ncA.tone" @data-cat="_ncA.cat">
 		<div class="dbn-art" @data-news-art="_ncA.id" data-live aria-hidden="true"></div>
 		<div class="dbn-card-body">
-			<div class="dbn-meta"><span class="dbn-cat"><<print _ncA.cat>></span><<if _ncA.place>><span class="dbn-place"><<print _ncA.place>></span><</if>><<if setup.arcologyNews.unread().includes(_ncA.id)>><span class="dbn-new">새 답글</span><</if>></div>
+			<div class="dbn-meta"><span class="dbn-cat"><<print setup.arcologyNews.catNames[_ncA.cat] || _ncA.cat>></span><<if _ncA.place>><span class="dbn-place"><<print _ncA.place>></span><</if>><<if setup.arcologyNews.unread().includes(_ncA.id)>><span class="dbn-new">새 답글</span><</if>></div>
 			<div class="dbn-title"><<capture _ncA>><<link _ncA.title>><<arcologyNewsOpen _ncA.id>><</link>><</capture>></div>
 			<p class="dbn-dek"><<print _ncA.dek or _ncA.body[0]>></p>
 			<div class="dbn-foot">
@@ -416,11 +416,11 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 	<<set _naLive to setup.arcologyNews.mode is "journal" and setup.arcology.online()>>
 	<div class="dbn-back"><<link "모든 보도">><<replace "#holoNewsBody">><<arcologyNewsList>><</replace>><<run setup.arcologyNewsArt.later()>><</link>></div>
 	<<if !_na>>
-		<<holoLine "THIS ARTICLE IS NO LONGER AVAILABLE." "warn">>
+		<<holoLine "이 기사는 더 이상 볼 수 없습니다." "warn">>
 	<<else>>
 		<<set _naNew to setup.arcologyNews.unread().includes(_naId)>>
 		<article class="dbn-article" @data-tone="_na.tone" @data-cat="_na.cat">
-			<div class="dbn-meta"><span class="dbn-cat"><<print _na.cat>></span><<if _na.place>><span class="dbn-place"><<print _na.place>></span><</if>></div>
+			<div class="dbn-meta"><span class="dbn-cat"><<print setup.arcologyNews.catNames[_na.cat] || _na.cat>></span><<if _na.place>><span class="dbn-place"><<print _na.place>></span><</if>></div>
 			<div class="dbn-headline"><<print _na.title>></div>
 			<<if _na.dek>><p class="dbn-standfirst"><<print _na.dek>></p><</if>>
 			<div class="dbn-byline"><span><<print _na.byline>></span><span class="dbn-time"><<print setup.arcologyNews.when(_na.at)>></span></div>
@@ -450,7 +450,7 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 							<<else>>
 								<h2><<print _naSection.title>></h2>
 							<</if>>
-							<<for _naP range _naSection.paragraphs>><p @class="_naP.startsWith('Last reported') ? 'dbn-week-earlier' : ''"><<arcologyNewsParagraph _naP _naId>></p><</for>>
+							<<for _naP range _naSection.paragraphs>><p @class="_naP.startsWith('최근 보도') ? 'dbn-week-earlier' : ''"><<arcologyNewsParagraph _naP _naId>></p><</for>>
 						</section>
 					<</for>>
 				<<elseif _na.list>>
@@ -489,13 +489,13 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 					<<for _naC range setup.arcologyNews.threadView(_na)>><li @class="'dbn-d' + _naC.depth"><span class="dbn-handle"><<print _naC.h>><<if _naC.to>> <span class="dbn-to"><<print _naC.to>>에게 답글</span><</if>></span><span><<print _naC.t>></span></li><</for>>
 					<<set _naPosted to setup.arcologyNews.state().comments[_naId]>>
 					<<if _naPosted>>
-						<li class="mine"><span class="dbn-handle"><<print $xchange.arcology.handle or "Guest">></span><span><<print _naPosted.t or _na.options[_naPosted.i][0]>></span>
+						<li class="mine"><span class="dbn-handle"><<print $xchange.arcology.handle or "게스트">></span><span><<print _naPosted.t or _na.options[_naPosted.i][0]>></span>
 							<<set _naReplies to (_naPosted.r or []).filter(x => x.at lte setup.arcologyNews.now())>>
 							<<if _naReplies.length>>
 								<ul class="dbn-replies">
 									<<for _naRp range _naReplies>>
 										<li @class="_naRp.o ? 'official' : ''"><span class="dbn-handle"><<print _naRp.h>><<if _naRp.o>> <span class="dbn-verified">인증됨</span><</if>></span><span><<print _naRp.t>></span><<if _naNew>> <span class="dbn-new">신규</span><</if>></li>
-										<<if _naRp.n>><li class="dbn-modnote"><<holoLine "MODERATION NOTE ATTACHED TO YOUR HANDLE" "warn">></li><</if>>
+										<<if _naRp.n>><li class="dbn-modnote"><<holoLine "당신의 핸들에 운영 안내가 첨부되었습니다." "warn">></li><</if>>
 									<</for>>
 								</ul>
 							<</if>>

@@ -479,7 +479,7 @@ setup.pills = [
 		description: "강력한 진통제 한 병이다. 심한 통증을 빠르게 가라앉히지만 상당한 졸음을 일으킨다.",
 		onTakeMessage: "진통제를 삼킨다. 오래지 않아 통증이 가라앉지만 눈꺼풀이 무거워진다.",
 		warning_label: "경고: 심한 졸음을 일으킬 수 있습니다. 하루에 세 번을 넘게 복용하면 점점 위험한 부작용이 나타납니다.",
-		indicators: ["<span class='hpi_indic_green'>-- Pain</span>", "<span class='hpi_indic_blue'>+++ Tiredness</span>"],
+		indicators: ["<span class='hpi_indic_green'>-- 통증</span>", "<span class='hpi_indic_blue'>+++ 피로</span>"],
 		autoTake() {
 			return false;
 		},
@@ -515,7 +515,7 @@ setup.pills = [
 		},
 		warning_label:
 			"경고: 하루에 한 알을 넘게 복용하지 마십시오. 두 번째 알은 부작용을 일으킵니다. 세 알 이상 복용하면 일시적인 해리 상태가 되어 주변 상황을 이해하기 어려워집니다. 알을 추가할 때마다 효과가 더 오래 지속됩니다.",
-		indicators: ["<span class='hpi_indic_green'>--- Trauma</span>", "<span class='hpi_indic_green'>- Stress</span>"],
+		indicators: ["<span class='hpi_indic_green'>--- 트라우마</span>", "<span class='hpi_indic_green'>- 스트레스</span>"],
 		autoTake() {
 			return false;
 		},
@@ -552,7 +552,7 @@ setup.pills = [
 				: "You swallow a sleeping pill. You start to feel tired, but you still cannot relax. <span class='red'>The pill is not strong enough to help you sleep tonight.</span>";
 		},
 		warning_label: "경고: 자기 전에 한 알을 복용하십시오. 두 번째 알은 복용하지 마십시오. 잠에서 깨기 어려워질 수 있습니다.",
-		indicators: ["<span class='hpi_indic_green'>- Insomnia</span>", "<span class='hpi_indic_blue'>+ Oversleeping</span>"],
+		indicators: ["<span class='hpi_indic_green'>- 불면</span>", "<span class='hpi_indic_blue'>+ 과수면</span>"],
 		autoTake() {
 			return false;
 		},
@@ -587,9 +587,9 @@ setup.pills = [
 		warning_label:
 			"경고: 자기 전에 한 알을 복용하십시오. 두 번째 알을 복용하면 정신을 잃습니다. 자주 복용하면 의존성이 생겨 알약 없이는 잠들기 더 어려워질 수 있습니다.",
 		indicators: [
-			"<span class='hpi_indic_green'>-- Insomnia</span>",
-			"<span class='hpi_indic_blue'>++ Oversleeping</span>",
-			"<span class='hpi_indic_red'>Dependence</span>",
+			"<span class='hpi_indic_green'>-- 불면</span>",
+			"<span class='hpi_indic_blue'>++ 과수면</span>",
+			"<span class='hpi_indic_red'>의존</span>",
 		],
 		autoTake() {
 			return false;
@@ -623,7 +623,7 @@ setup.pills = [
 		description: "강력한 처방 진통제다. 한 알이면 통증이 크게 줄지만 몹시 피곤해진다.",
 		onTakeMessage: "처방 진통제를 삼킨다. 통증이 금세 사라지지만 몹시 졸려지기 시작한다.",
 		warning_label: "경고: 심한 졸음을 일으킵니다. 하루에 두 번을 넘게 복용하면 위험한 부작용이 나타날 수 있습니다.",
-		indicators: ["<span class='hpi_indic_green'>--- Pain</span>", "<span class='hpi_indic_blue'>+++ Tiredness</span>"],
+		indicators: ["<span class='hpi_indic_green'>--- 통증</span>", "<span class='hpi_indic_blue'>+++ 피로</span>"],
 		autoTake() {
 			return false;
 		},
@@ -728,7 +728,7 @@ setup.pills = [
 			"감각을 일시적으로 둔하게 만드는 속효성 외용 신경 억제제다. 한 번 바르면 16시간 동안 효과가 이어진다.",
 		onTakeMessage: "감도 저하 크림을 피부에 문지른다. 옷이 계속 닿는 감촉이 어느새 배경으로 멀어진다.",
 		warning_label: "경고: 하루에 한 번을 넘게 바르지 마십시오. 이 크림은 사용 중인 감도 증가 크림의 효과를 대체합니다.",
-		indicators: ["<span class='hpi_indic_blue'>--- Sensitivity</span>"],
+		indicators: ["<span class='hpi_indic_blue'>--- 감도</span>"],
 		autoTake() {
 			return false;
 		},
@@ -769,7 +769,7 @@ setup.pills = [
 		description: "온몸의 감각을 일시적으로 예민하게 만드는 속효성 외용 신경 자극제다. 한 번 바르면 16시간 동안 효과가 이어진다.",
 		onTakeMessage: "감도 증가 크림을 피부에 문지른다. 오래지 않아 살갗에 스치는 모든 것이 생생하고 산만하게 느껴진다.",
 		warning_label: "경고: 하루에 한 번을 넘게 바르지 마십시오. 이 크림은 사용 중인 감도 저하 크림의 효과를 대체합니다.",
-		indicators: ["<span class='hpi_indic_green'>+++ Sensitivity</span>"],
+		indicators: ["<span class='hpi_indic_green'>+++ 감도</span>"],
 		autoTake() {
 			return false;
 		},
@@ -867,6 +867,13 @@ const homePillDisplayNames = {
 	"asylum's prescription": "정신병원 처방약",
 	"Dr Harper's prescription": "하퍼 의사의 처방약",
 	"Hair Growth Formula": "모발 성장제",
+	"painkillers": "진통제",
+	"anti-anxiety tablets": "항불안제",
+	"sleeping pills": "수면제",
+	"prescription sleeping pills": "처방 수면제",
+	"prescription painkillers": "처방 진통제",
+	"sensitivity-decreasing cream": "감도 저하 크림",
+	"sensitivity-increasing cream": "감도 증가 크림",
 };
 
 function homePillDisplayName(name) {
@@ -898,7 +905,7 @@ function addElementToGrid(item) {
 			<div class="hpi_item">
 				<div class="hpi_icon">${item.frontIcon ? `<img class="icon infront" src="${item.frontIcon}"/>` : ""}<img class="icon" src="${item.icon}"/></div>
 				<div class="hpi_name" id="hpi_name_${itemName}">
-					${itemDisplayName}
+					${homePillDisplayName(item.name)}
 					${item.autoTake() === true ? `<span class="hpi_auto_label"> [자동]</span>` : ""}
 				</div>
 				<div class="hpi_count" onmouseenter="T.disableGridClick = true" onmouseleave="T.disableGridClick = false">${item.owned()}</div>

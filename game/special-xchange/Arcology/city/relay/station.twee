@@ -2,12 +2,12 @@
 <<location "arcology_xstation">><<set $outside to 0>><<effects>>
 당신은 X-체인지 스테이션으로 들어선다. 카운터 위에서 큰 알약 모양의 홀로그램이 허공에 천천히 돌고 있다.
 <br><br>
-현재 접근 등급으로 구매할 수 있는 품목을 보여 주는 화면이 눈에 들어온다.
+현재 권한 등급으로 구매할 수 있는 품목을 보여 주는 화면이 눈에 들어온다.
 <br>
-<<holo "X-CHANGE STATION / ACCESS">>
+<<holo "X-체인지 스테이션 / 이용 권한">>
 	<<holoRow "내 권한 등급" `(c => ({guest: "게스트", resident: "거주자", citizen: "시민", authority: "당국"})[c] || c.toUpperCase())($xchange.arcology.clearance or "guest")`>>
-	<<holoRow "GUEST PURCHASE LIMIT" `$daily.arcologyXStation ? "USED TODAY" : "1 PURCHASE AVAILABLE"`>>
-	<<holoLine "MORE SERVICES ARE ONLY AVAILABLE TO RESIDENTS OR HIGHER" "warn">>
+	<<holoRow "방문객 구매 한도" `$daily.arcologyXStation ? "오늘 사용함" : "1회 구매 가능"`>>
+	<<holoLine "더 많은 서비스는 거주자 이상만 이용할 수 있습니다" "warn">>
 <</holo>>
 <br>
 <<arcologyicon "news">><<link [[제품 안내서를 읽는다 (0:05)|Arcology X-Change Guide]]>><<pass 5>><</link>>
@@ -23,12 +23,12 @@
 <<location "arcology_xstation">><<set $outside to 0>><<effects>>
 카운터 옆에 X-체인지 알약 정보를 보여 주는 화면이 있다. 화면을 보자 차분한 목소리가 정보를 소리 내어 읽어 준다.
 <br><br>
-<<holo "X-CHANGE / PILL INFORMATION">>
-	<<holoRow "PINK PILL" "CHANGES YOUR BODY TO FEMALE">>
-	<<holoRow "BLUE PILL" "CHANGES YOUR BODY TO MALE">>
-	<<holoRow "BASIC" "3 PILLS PER PACK. EACH PILL LASTS ABOUT 1 DAY">>
-	<<holoRow "NOW" "1 PILL PER PACK. LASTS ABOUT 6 HOURS">>
-	<<holoLine "PILLS WITH LONGER EFFECTS AND SPECIAL TYPES ARE ONLY AVAILABLE TO RESIDENTS" "warn">>
+<<holo "X-체인지 / 알약 정보">>
+	<<holoRow "핑크 알약" "몸이 여성으로 바뀝니다">>
+	<<holoRow "블루 알약" "몸이 남성으로 바뀝니다">>
+	<<holoRow "베이직" "1팩에 3알. 알약 하나당 약 1일 지속">>
+	<<holoRow "나우" "1팩에 1알. 약 6시간 지속">>
+	<<holoLine "효과가 더 긴 알약과 특수 알약은 거주자만 이용할 수 있습니다" "warn">>
 <</holo>>
 <br>
 화면 맨 아래에 훨씬 작은 글씨로 쓴 경고가 눈에 띈다. <i>스테이션은 X-체인지를 사용하는 동안 이용자가 하는 일이나 다른 사람이 이용자에게 하는 일에 대해 책임지지 않습니다.</i>
@@ -39,7 +39,7 @@
 :: Arcology X-Change Counter
 <<location "arcology_xstation">><<set $outside to 0>><<effects>><<run ArcologySfx.cue("scan")>>
 카운터에서 직원이 귀 뒤의 작은 불빛에 스캐너를 겨눈다. 직원은 스캐너 화면을 확인하고 미소 짓는다.
-"게스트로 등록되어 계세요. 이 목록에서 하루에 한 가지 제품을 살 수 있고, 결제는 사이퍼로 하셔야 해요."
+"방문객으로 등록되어 계세요. 이 목록에서 하루에 한 가지 제품을 살 수 있고, 결제는 사이퍼로 하셔야 해요."
 <br><br>
 <<if $daily.arcologyXStation>>
 	<span class="blue">오늘은 이미 여기서 물건을 샀다</span>. 내일 더 살 수 있다.
@@ -70,7 +70,7 @@
 게스트 카운터를 지나자 X-체인지 스테이션의 다른 구역으로 가는 길을 큰 유리벽이 막고 있다.
 구역 안쪽에는 엘리베이터가 있지만, 부르는 버튼은 보이지 않는다.
 <br><br>
-홀로그램 화면에 서비스 목록과 각 서비스에 필요한 접근 등급이 표시돼 있다.
+홀로 화면에 서비스 목록과 각 서비스에 필요한 권한 등급이 표시돼 있다.
 <br><br>
 <<holo "X-체인지 스테이션 / 제한 서비스" `setup.arcology.hasClearance("resident") ? "ok" : "denied"`>>
 	<<holoRow "신체 맞춤 개조" `setup.arcology.hasClearance("resident") ? "이용 가능" : "거주자 권한 필요"`>>
@@ -100,7 +100,7 @@
 	당신이 다가가자 스캐너가 임플란트를 확인하고 붉은 불을 켠다. 엘리베이터 근처에 서 있던 경비가 이를 보고 당신 쪽으로 걸어온다.
 	"들어가실 수 없어요. 건물에서 나가 주세요."
 	<br>
-	<<holoNotice "THE GLASSHOUSE" "ENTRY DENIED. ACCESS BLOCKED." "denied">>
+	<<holoNotice "글래스하우스" "입장 거부. 접근이 차단되었습니다." "denied">>
 <<elseif _gdParty and _gdParty.status is "invited">>
 	당신이 다가가자 스캐너가 귀 뒤의 임플란트를 확인하고 금빛으로 빛난다. 직원이 태블릿으로 초대장을 확인하더니 당신에게 미소 짓는다.
 	<<if setup.arcology.partyOpen()>>
@@ -114,18 +114,18 @@
 	<<else>>
 		"초대받으신 시각: <<print setup.arcology.when(_gdParty.at)>>. 손님 입장은 그 한 시간 전부터 시작해요. 그때 다시 와 주세요."
 		<br>
-		<<holoNotice "THE GLASSHOUSE" "INVITATION CONFIRMED. ENTRY OPENS AT 19:00." "pending">>
+		<<holoNotice "글래스하우스" "초대가 확인되었습니다. 19:00에 입장이 시작됩니다." "pending">>
 	<</if>>
 <<elseif _gdParty and _gdParty.status is "done">>
 	스캐너가 귀 뒤의 임플란트를 확인하지만 불빛은 흰색 그대로다. 직원이 고개를 들고 당신을 알아본다.
 	"다시 오셨네요. 안타깝지만 오늘 밤 초대장이 없으세요. 위층은 비공개 행사에 쓰이고 있어서 들여보내 드릴 수 없어요."
 	<br>
-	<<holoNotice "THE GLASSHOUSE" "NO INVITATION FOR TONIGHT." "pending">>
+	<<holoNotice "글래스하우스" "오늘 밤 초대가 없습니다." "pending">>
 <<else>>
 	스캐너가 귀 뒤의 임플란트를 확인하지만 불빛은 흰색 그대로다. 당신이 다가가자 직원이 태블릿에서 고개를 든다.
 	"죄송하지만 글래스하우스에 들어가려면 초대장이 있어야 해요. 행사에 초대받으시면 알려 드리는 메시지가 갈 거예요."
 	<br>
-	<<holoNotice "THE GLASSHOUSE" "INVITATION REQUIRED." "pending">>
+	<<holoNotice "글래스하우스" "초대가 필요합니다." "pending">>
 <</if>>
 <br>
 <<getouticon>><<link [[나간다|Arcology Street]]>><<pass 2>><</link>>

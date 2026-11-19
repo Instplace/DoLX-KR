@@ -893,7 +893,7 @@ function playerPronoun() {
 }
 window.playerPronoun = playerPronoun;
 
-const PRONOUN_LABELS = { m: "he / him", f: "she / her", n: "they / them" };
+const PRONOUN_LABELS = { m: "남성형(그)", f: "여성형(그녀)", n: "중성형(그들)" };
 
 /**
  * Label for the "Currently used" line in the Identity settings tab.
@@ -906,7 +906,7 @@ function pronounSummaryLabel() {
 
 	const preferred = preferredPronounSet(pronouns);
 
-	if (preferred.length > 0) return preferred.map(gender => PRONOUN_LABELS[gender]).join(" or ");
+	if (preferred.length > 0) return preferred.map(gender => PRONOUN_LABELS[gender]).join(" 또는 ");
 	return PRONOUN_LABELS[playerPronoun()];
 }
 window.pronounSummaryLabel = pronounSummaryLabel;
@@ -1250,11 +1250,11 @@ window.playerFeltGender = playerFeltGender;
 function playerGenderWord() {
 	switch (playerFeltGender()) {
 		case "m":
-			return "boy";
+			return "소년";
 		case "f":
-			return "girl";
+			return "소녀";
 		default:
-			return "enby";
+			return "논바이너리";
 	}
 }
 window.playerGenderWord = playerGenderWord;
@@ -1263,18 +1263,18 @@ window.playerGenderWord = playerGenderWord;
 function playerGenderPossessive() {
 	switch (playerFeltGender()) {
 		case "m":
-			return "his";
+			return "그의";
 		case "f":
-			return "her";
+			return "그녀의";
 		default:
-			return "their";
+			return "그들의";
 	}
 }
 window.playerGenderPossessive = playerGenderPossessive;
 
 /* Shows "trans boy", "trans girl", or "trans enby" */
 function playerTransLabel() {
-	return "trans " + playerGenderWord();
+	return "트랜스 " + playerGenderWord();
 }
 window.playerTransLabel = playerTransLabel;
 

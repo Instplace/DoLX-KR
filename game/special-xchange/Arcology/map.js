@@ -34,7 +34,7 @@
 		soundTimer = setTimeout(() => panel.isConnected && !panel.hidden && ArcologySfx.play("deny"), setup.arcology.animated() ? 1300 : 300);
 		if (!setup.arcology.animated()) {
 			panel.classList.add("decoded");
-			if (progress) progress.textContent = "37% (HALTED)";
+			if (progress) progress.textContent = "37% (중단됨)";
 			panel.querySelector(".arcology-holo-close")?.focus();
 			orb.setAttribute("aria-expanded", "true");
 			return;
@@ -48,7 +48,7 @@
 				clearInterval(timer);
 				timer = null;
 				panel.classList.add("decoded");
-				if (progress) progress.textContent = "37% (HALTED)";
+				if (progress) progress.textContent = "37% (중단됨)";
 			}
 		}, 90);
 		const close = panel.querySelector(".arcology-holo-close");
@@ -116,8 +116,8 @@ window.arcologyDistrictFacts = function (id) {
 	const d = setup.arcology.districts[id];
 	const text = Story.has(d.passage) ? Story.get(d.passage).text : "";
 	const lines = text.split("\n").map(l => l.trim());
-	const desc = lines.find(l => /^You (are|arrive|walk|reach|step|enter)\b/.test(l) && !l.includes("<<")) ?? "";
-	const from = text.indexOf("Places of interest");
+	const desc = lines.find(l => /^당신은 /.test(l) && !l.includes("<<")) ?? "";
+	const from = text.indexOf("주요 장소");
 	const to = text.indexOf("<<arcologyStreets", from);
 	const block = from < 0 ? "" : text.slice(from, to < 0 ? undefined : to);
 	const places = [...block.matchAll(/\[\[([^|\]]+?)(?: \(\d+:\d+\))?\||<<link\s+"([^"]+?)(?: \(\d+:\d+\))?"/g)].map(m => m[1] || m[2]);
@@ -150,7 +150,7 @@ window.arcologyMapLayout = {
 		stillwater: [1140, 816],
 		stronghold: [520, 840],
 	},
-	landmarks: { hotel: ["Hotel Meridian", "relay"], glasshouse: ["The Glasshouse", "relay"] },
+	landmarks: { hotel: ["호텔 메리디안", "relay"], glasshouse: ["글래스하우스", "relay"] },
 	/* Parent first, so each route is drawn top-down. The private route only shows once Crown Avenue is recorded. */
 	routes: [
 		["pier", "relay"],
@@ -268,7 +268,7 @@ window.arcologyNav = {
 window.arcologyRenderMap = function (host, focus) {
 	const a = setup.arcology;
 	if (!a.mapAccess()) {
-		host.textContent = "ACCESS RESTRICTED. INSUFFICIENT AUTHORIZATION.";
+		host.textContent = "접근이 제한되었습니다. 권한이 부족합니다.";
 		return;
 	}
 	const L = window.arcologyMapLayout;
@@ -285,7 +285,7 @@ window.arcologyRenderMap = function (host, focus) {
 	const [bw, bh] = L.BOX;
 	const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
-	let svg = `<svg class="acm-svg" viewBox="-24 0 ${L.W + 48} ${L.H + 10}" role="group" aria-label="City map">`;
+	let svg = `<svg class="acm-svg" viewBox="-24 0 ${L.W + 48} ${L.H + 10}" role="group" aria-label="도시 지도">`;
 	let lines = "";
 	for (const [p, q, kind] of L.routes) {
 		if (!visible(p) || !visible(q)) continue;
@@ -313,7 +313,7 @@ window.arcologyRenderMap = function (host, focus) {
 		if (!known(id)) {
 			svg += `<g class="acm-node acm-unknown" data-id="${id}"><rect class="acm-ring" x="${x - 44}" y="${
 				y - 12
-			}" width="88" height="24" rx="12"/><text x="${x}" y="${y + 3.5}">UNRECORDED</text></g>`;
+			}" width="88" height="24" rx="12"/><text x="${x}" y="${y + 3.5}">미기록</text></g>`;
 			continue;
 		}
 		const cls = [
@@ -419,9 +419,9 @@ window.arcologyRenderMap = function (host, focus) {
 		const cell = (k, v, cls = "") => `<div class="acm-read ${cls}"><span>${k}</span><b>${esc(v)}</b></div>`;
 		const stops = path.length > 1 ? `${path.length - 1} STREET${path.length > 2 ? "S" : ""}` : target && target === here ? "ARRIVED" : "—";
 		readout.innerHTML =
-			cell("POSITION", here ? a.districts[here].name.toUpperCase() : "UNKNOWN") +
-			cell("DESTINATION", target ? a.districts[target].name.toUpperCase() : "NONE SET", target ? "set" : "") +
-			cell("ROUTE", target && !path.length ? "NO ROUTE" : stops);
+			cell("현재 위치", here ? a.districts[here].name.toUpperCase() : "알 수 없음") +
+			cell("목적지", target ? a.districts[target].name.toUpperCase() : "미설정", target ? "set" : "") +
+			cell("경로", target && !path.length ? "경로 없음" : stops);
 	}
 
 	const describe = id => {
@@ -431,30 +431,30 @@ window.arcologyRenderMap = function (host, focus) {
 		const next = a
 			.neighbours(id)
 			.filter(n => shown.includes(n))
-			.map(n => (known(n) ? a.districts[n].name : "unrecorded"));
-		const access = d.hidden ? (a.eliteAccess() ? "SPONSORED ACCESS" : "RESTRICTED") : "PUBLIC";
+			.map(n => (known(n) ? a.districts[n].name : "미기록"));
+		const access = d.hidden ? (a.eliteAccess() ? "후원 접근" : "제한") : "공개";
 		const facts = window.arcologyDistrictFacts(id);
 		/* The advisory repeats what Dome Broadcast published, not what is really happening there. */
 		const news = setup.arcologyNews.feed().find(x => x.d === id && x.k !== "weekly" && x.at > setup.arcologyNews.now() - 3 * 86400);
 		const row = (k, v) => `<div class="acm-row"><span>${k}</span><span>${v}</span></div>`;
 		const routeLine =
 			id === target
-				? '<div class="acm-nav">DESTINATION SET. EXITS ON YOUR ROUTE ARE MARKED <span class="arc-gps" aria-hidden="true"></span> <button type="button" class="acm-clear">Clear route</button></div>'
+				? '<div class="acm-nav">목적지가 설정되었습니다. 경로상의 출구가 <span class="arc-gps" aria-hidden="true"></span> 로 표시됩니다. <button type="button" class="acm-clear">경로 지우기</button></div>'
 				: id === here
-				? '<div class="acm-nav dim">YOU ARE HERE</div>'
+				? '<div class="acm-nav dim">현재 위치</div>'
 				: nav.open(id)
-				? '<div class="acm-nav dim">SELECT TO SET AS DESTINATION</div>'
-				: '<div class="acm-nav dim">NO ROUTE AVAILABLE</div>';
+				? '<div class="acm-nav dim">선택하면 목적지로 설정됩니다</div>'
+				: '<div class="acm-nav dim">이용 가능한 경로 없음</div>';
 		info.innerHTML =
 			`<div class="acm-name">${esc(d.name.toUpperCase())}</div>` +
 			routeLine +
 			(facts.desc ? `<p class="acm-desc">${esc(facts.desc)}</p>` : "") +
-			row("THREAT", `${a.tierNames[d.tier]}${id === here ? "" : " (LAST RECORDED)"}`) +
-			row("ACCESS", access) +
-			row("SHUTTLE STOP", d.bus ? "YES" : "NONE") +
-			(facts.places.length ? row("PLACES", esc(facts.places.join(", "))) : "") +
-			row("ROUTES", esc(next.join(", ") || "none")) +
-			(news ? `<div class="acm-advisory">DOME BROADCAST: ${esc(news.title)}</div>` : "");
+			row("위협", `${a.tierNames[d.tier]}${id === here ? "" : " (마지막 기록)"}`) +
+			row("출입", access) +
+			row("셔틀 정류장", d.bus ? "있음" : "없음") +
+			(facts.places.length ? row("주요 장소", esc(facts.places.join(", "))) : "") +
+			row("연결 구역", esc(next.join(", ") || "없음")) +
+			(news ? `<div class="acm-advisory">돔 방송: ${esc(news.title)}</div>` : "");
 		info.querySelector(".acm-clear")?.addEventListener("click", () => {
 			nav.clear();
 			window.arcologyRenderMap(host, id);

@@ -11,7 +11,7 @@ setup.arcology = {
 		return this.cxN(units) + " 사이퍼";
 	},
 	cxU(units) {
-		return this.cxN(units) + " CIPHER";
+		return this.cxN(units) + " 사이퍼";
 	},
 
 	now() {
@@ -192,8 +192,8 @@ setup.arcology = {
 		const today = new DateTime(Time.date.year, Time.date.month, Time.date.day);
 		const days = Math.floor((ts - today.timeStamp) / 86400);
 		const clock = String(target.hour).padStart(2, "0") + ":" + String(target.minute).padStart(2, "0");
-		if (days < 0) return String(target.day).padStart(2, "0") + "." + String(target.month).padStart(2, "0") + "." + target.year + " at " + clock;
-		if (days === 0) return (target.hour >= 17 ? "tonight" : "today") + " at " + clock;
+		if (days < 0) return String(target.day).padStart(2, "0") + "." + String(target.month).padStart(2, "0") + "." + target.year + " " + clock;
+		if (days === 0) return (target.hour >= 17 ? "오늘 밤" : "오늘") + " " + clock;
 		if (days === 1) return "내일 " + clock;
 		return days + "일 뒤 " + clock;
 	},
@@ -261,7 +261,7 @@ setup.arcology = {
 	/* "17H 24M" */
 	duration(seconds) {
 		const mins = Math.max(0, Math.round(seconds / 60));
-		return Math.floor(mins / 60) + "H " + String(mins % 60).padStart(2, "0") + "M";
+		return Math.floor(mins / 60) + "시간 " + String(mins % 60).padStart(2, "0") + "분";
 	},
 
 	/* Everything the transit screen shows is derived from voyage.arriveAt and voyage.hours, so a refresh or a reload can never move the journey on. Only links that run <<pass>> advance it. */
@@ -336,7 +336,7 @@ setup.arcology = {
 				};
 				a.holoTimers.push(
 					setTimeout(() => {
-						line.nodeValue = a.online() ? "CONNECTED" : "CACHE LOADED";
+						line.nodeValue = a.online() ? "연결됨" : "캐시 로드됨";
 						a.compose(boot, "quick", [line]);
 					}, 800),
 					setTimeout(finish, 1200)
@@ -913,7 +913,7 @@ setup.arcology = {
 		breakwater: {
 			map: [1.3, 5],
 			bus: true,
-			name: "방파제 로",
+			name: "브레이크워터 길",
 			passage: "Arcology Breakwater Road",
 			loc: "arcology_coast",
 			icon: "coast",
@@ -967,7 +967,7 @@ setup.arcology = {
 		},
 		underpass: {
 			map: [4.3, 7],
-			name: "Underpass",
+			name: "언더패스",
 			passage: "Arcology Underpass",
 			loc: "arcology_underpass",
 			icon: "underpass",
@@ -989,7 +989,7 @@ setup.arcology = {
 		ironworks: {
 			map: [5.6, 6],
 			bus: true,
-			name: "Ironworks",
+			name: "아이언웍스",
 			passage: "Arcology Ironworks",
 			loc: "arcology_ironworks",
 			icon: "ironworks",
@@ -1106,7 +1106,7 @@ setup.arcology = {
 		["skyline", "crown"],
 		["crown", "stillwater"],
 	],
-	tierNames: ["POLICED", "MONITORED", "CONTESTED", "HOSTILE", "LAWLESS"],
+	tierNames: ["치안 유지", "감시 중", "분쟁 지역", "적대 지역", "무법 지대"],
 
 	neighbours(id) {
 		return this.streetLinks.filter(link => link.includes(id)).map(link => (link[0] === id ? link[1] : link[0]));
@@ -1243,7 +1243,7 @@ setup.arcology = {
 				verify:
 					"상황실 담당자가 순찰대를 보내기 전에 신원 확인을 할 테니 가만히 있으라고 한다. 확인이 진행되는 동안 통신은 연결된 채로 있지만, 순찰대는 오지 않는다.",
 				suspect:
-					"Your record comes up, and the dispatcher's tone changes. \"Stay where you are. We'll want to talk to you about this.\" No patrol comes to help.",
+					"당신의 기록이 화면에 뜨자 상황실 담당자의 말투가 달라진다. \"그 자리에 계십시오. 이 건에 대해 이야기를 좀 해야겠습니다.\" 순찰대는 도우러 오지 않는다.",
 				hunted: '잠시 통신이 조용해진다. "그 자리에 계십시오." 담당자가 말한다. 당신은 출동하는 순찰대가 당신을 잡으러 오고 있음을 깨닫는다.',
 			}[out] ?? ""
 		);

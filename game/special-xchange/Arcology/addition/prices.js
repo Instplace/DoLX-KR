@@ -342,8 +342,8 @@ $(document).on(":passagedisplay.arcologyPrice", () => {
 	if (!priced.length) return;
 	P.timer = setTimeout(() => {
 		priced.addClass("expired").find("a").attr({ "aria-disabled": "true", tabindex: "-1" });
-		const box = $("<div class='arc-price-notice' role='status'>That price is no longer valid. </div>");
-		box.wiki('<<link "Check the prices again" `passage()`>><</link>>');
+		const box = $("<div class='arc-price-notice' role='status'>이 가격은 더 이상 유효하지 않습니다. </div>");
+		box.wiki('<<link "가격 다시 확인" `passage()`>><</link>>');
 		box.insertBefore(priced.first());
 	}, P.HOLD);
 });

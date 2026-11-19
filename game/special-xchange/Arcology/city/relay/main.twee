@@ -6,10 +6,10 @@
 <<if $xchange.arcology.debt and $daily.arcologyDebtScan is "caught">>
 	당신이 검색 아치 밑을 지나자 아치가 귀 뒤의 불빛을 확인한다. 게이트 위에 빨간 경고가 뜨고, 경비 둘이 동시에 당신 쪽으로 몸을 돌린다.
 	<br><br>
-	<<holo "CIVIC REGISTRY / DEBTOR" "denied">>
-		<<holoRow "HANDLE" `$xchange.arcology.handle`>>
+	<<holo "시민 등록소 / 채무자" "denied">>
+		<<holoRow "핸들" `$xchange.arcology.handle`>>
 		<<holoRow "미납액" `setup.arcology.cxU($xchange.arcology.debt.amount)`>>
-		<<holoLine "ABSCONDED FROM THE STACK. DETAIN." "denied">>
+		<<holoLine "스택에서 도주. 구금하라." "denied">>
 	<</holo>>
 	<br>
 	"도망쳤더군." 둘 중 하나가 당신의 팔을 붙잡고 말한다. "그러면 늘 뭔가 더 붙지."
@@ -68,10 +68,10 @@
 <br><br>
 <<if $xchange.arcology.debt.amount lte 0>>
 	<<unset $xchange.arcology.debt>>
-	<<holoNotice "CIVIC REGISTRY" "DEBT CLEARED. DEBTOR FLAG REMOVED." "ok">>
+	<<holoNotice "시민 등록소" "채무 정산 완료. 채무자 표시가 해제되었습니다." "ok">>
 <<else>>
-	<<set _holoMsg to setup.arcology.cxU(_paid) + " RECEIVED. " + setup.arcology.cxU($xchange.arcology.debt.amount) + " OUTSTANDING.">>
-	<<holoNotice "CIVIC REGISTRY" _holoMsg "warn">>
+	<<set _holoMsg to setup.arcology.cxU(_paid) + " 수령. " + setup.arcology.cxU($xchange.arcology.debt.amount) + " 남았습니다.">>
+	<<holoNotice "시민 등록소" _holoMsg "warn">>
 <</if>>
 <br>
 <<link [[다음|Arcology Pier]]>><</link>>
@@ -87,8 +87,8 @@
 
 :: Arcology Leave Warning
 <<effects>>
-<<holo "NAVIGATION / DEPARTURE" "denied">>
-	<<holoLine "NEXT LAUNCH ARRIVES ON THE MAINLAND AFTER THE BALLROOM CLOSES" "warn">>
+<<holo "항법 / 출발" "denied">>
+	<<holoLine "다음 연락선은 무도회장이 닫힌 뒤 본토에 도착합니다" "warn">>
 <</holo>>
 <br>
 지금 떠나면 루치펜이 당신을 이곳에 데려온 이유인 파티를 놓치게 된다. <span class="red">루치펜은 이 일이 자신에게 중요하다고 말했다</span>.
@@ -302,19 +302,19 @@
 <<if !setup.arcology.hasRoom()>>
 	<<print setup.arcology.roomNumber()>>호실의 문은 닫힌 채 열리지 않는다. 문 앞에 붉은 글자 한 줄이 떠오른다.
 	<br><br>
-	<<holo `"MERIDIAN / ROOM " + setup.arcology.roomNumber()` "denied">>
-		<<holoLine "GUEST KEY NOT VALID FOR THIS ROOM" "denied">>
+	<<holo `"메리디안 / 객실 " + setup.arcology.roomNumber()` "denied">>
+		<<holoLine "이 객실에는 게스트 키가 유효하지 않습니다" "denied">>
 	<</holo>>
 	<br>
 	<<getouticon>><<link [[로비로 다시 내려간다|Arcology Hotel]]>><<endevent>><</link>>
 	<br>
 <<else>>
 	<<set $storeLocation to "Arcology Hotel Bed">>
-	<<holo `"MERIDIAN / ROOM " + setup.arcology.roomNumber()`>>
-		<<holoRow "GUEST" `$xchange.arcology.handle`>>
-		<<holoRow "PRIVACY" "DO NOT DISTURB">>
-		<<holoRow "CLIMATE" "21 DEGREES">>
-		<<holoLine "HOUSEKEEPING COMPLETE" "ok">>
+	<<holo `"메리디안 / 객실 " + setup.arcology.roomNumber()`>>
+		<<holoRow "방문객" `$xchange.arcology.handle`>>
+		<<holoRow "프라이버시" "방해 금지">>
+		<<holoRow "실내 온도" "21도">>
+		<<holoLine "객실 정비 완료" "ok">>
 	<</holo>>
 	당신은 호텔 메리디안 <<print setup.arcology.roomFloor()>>층의 객실에 있다.
 	<<if Time.dayState is "night">>
@@ -350,8 +350,8 @@
 	<<nightmareCheck "Arcology Hotel Bed Sleep">>
 	<<generateSleepLinks "Arcology Hotel Bed Sleep">>
 <<elseif _arcologySleepCap gte 1>>
-	<<holo "INTERFACE / ALARM" "pending">>
-		<<holoLine `"WAKE IN " + _arcologySleepCap + (_arcologySleepCap is 1 ? " HOUR" : " HOURS") + ". ONE HOUR BEFORE THE BALLROOM OPENS"` "warn">>
+	<<holo "인터페이스 / 알람" "pending">>
+		<<holoLine `_arcologySleepCap + "시간 뒤에 기상합니다. 무도회장이 열리기 한 시간 전입니다"` "warn">>
 	<</holo>>
 	<br>
 	<<nightmareCheck "Arcology Hotel Bed Sleep">>
@@ -432,12 +432,12 @@
 <<if _ap.outcome is "guarded">>
 	<<arcologyVictorPronouns>>
 	<<if _apHotel>>
-		당신은 깨끗한 담요가 덮인 침대에서 깨어난다. 어두운 코트를 입은 키 큰 <<print _vman>>【이가】 문 가까이에 서서 직원 한 명과 낮은 목소리로 이야기하고 있다.
+		당신은 깨끗한 담요가 덮인 침대에서 깨어난다. 어두운 코트를 입은 키 큰 <<print (_vman is "woman" ? "여자" : "남자")>>【이가】 문 가까이에 서서 직원 한 명과 낮은 목소리로 이야기하고 있다.
 	<<else>>
-		당신은 깨끗한 담요가 덮인 푹신한 벤치에서 깨어난다. 어두운 코트를 입은 키 큰 <<print _vman>>【이가】 가까이에 서서 직원 한 명과 낮은 목소리로 이야기하고 있다.
+		당신은 깨끗한 담요가 덮인 푹신한 벤치에서 깨어난다. 어두운 코트를 입은 키 큰 <<print (_vman is "woman" ? "여자" : "남자")>>【이가】 가까이에 서서 직원 한 명과 낮은 목소리로 이야기하고 있다.
 	<</if>>
 	<br><br>
-	당신이 몸을 일으키려 하자 <<print _vhe>>【이가】 당신이 깨어난 것을 알아채고 말을 멈춘다. <<print _vHe>>【은는】 다가와 다친 데는 없는지 살피고 기분이 어떤지 묻는다. 당신은 아직 조금 힘이 없어서, <<print _vhe>>【은는】 당신이 제대로 일어나 앉을 때까지 시간을 준다.
+	당신이 몸을 일으키려 하자 <<print (_vhe is "she" ? "그녀" : "그")>>【이가】 당신이 깨어난 것을 알아채고 말을 멈춘다. <<print (_vHe is "She" ? "그녀" : "그")>>【은는】 다가와 다친 데는 없는지 살피고 기분이 어떤지 묻는다. 당신은 아직 조금 힘이 없어서, <<print (_vhe is "she" ? "그녀" : "그")>>【은는】 당신이 제대로 일어나 앉을 때까지 시간을 준다.
 <<elseif _ap.outcome is "robbed">>
 	<<if !_ap.resolved>>
 		<<set _ap.resolved to true>><<set _ap.loss to Math.min($xchange.arcology.cipher, random(1000, 2500))>>
