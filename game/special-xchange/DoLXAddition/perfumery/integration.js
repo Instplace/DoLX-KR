@@ -490,14 +490,14 @@
 		const p = scent();
 		if (!p) return [];
 		const lines = [`Fades in ${Math.ceil(p.remaining)} min, faster in rain.`];
-		if (p.attention * p.strength * 0.2 >= 0.05) lines.push("People in town notice you more.");
+		if (p.attention * p.strength * 0.2 >= 0.05) lines.push("마을 사람들이 당신을 더 쉽게 알아챕니다.");
 		if (isBestialityOnForAnyCreature() || V.monster === 1) {
 			const pull = ["wolf", "boar", "bear"].map(animal => wildlifePreview(animal, p, true));
-			if (pull.some(m => m >= 1.05)) lines.push("Forest animals find you more easily.");
-			else if (pull.every(m => m <= 0.95)) lines.push("Forest animals find you less easily.");
+			if (pull.some(m => m >= 1.05)) lines.push("숲속 동물이 당신을 더 쉽게 찾아냅니다.");
+			else if (pull.every(m => m <= 0.95)) lines.push("숲속 동물이 당신을 더 어렵게 찾아냅니다.");
 		}
-		if (["Poppy", "Robin"].some(npc => socialPreview(npc, p).score >= 0.2)) lines.push("Some people find it pleasant.");
-		if (p.intensity * p.strength > 2.5) lines.push("Some people find it too strong.");
+		if (["Poppy", "Robin"].some(npc => socialPreview(npc, p).score >= 0.2)) lines.push("일부 사람은 이 향을 좋아합니다.");
+		if (p.intensity * p.strength > 2.5) lines.push("일부 사람은 향이 너무 강하다고 느낍니다.");
 		return lines;
 	}
 	function wildlife(category) {
@@ -566,15 +566,15 @@
 	function feedback(b) {
 		const p = properties(b);
 		if (p.pleasantness < 30 && p.quality > 72)
-			return 'Poppy smells the paper again, then looks at your notes. "You made this well, but it smells awful. Was that what you wanted?"';
+			return '포피가 시향지 냄새를 다시 맡고는 당신의 노트를 본다. "잘 만들긴 했는데 냄새가 끔찍해. 이게 네가 원한 거야?"';
 		if (p.pleasantness < 25)
-			return 'Poppy coughs and moves the paper away. "That smells terrible! Put the cap back on the bottle before the whole room smells like it."';
+			return '포피가 기침하며 시향지를 멀리 치운다. "냄새가 지독해! 방 전체에 퍼지기 전에 병 뚜껑부터 닫아."';
 		if (p.extractionPurity < 0.55)
-			return 'Poppy checks your notes about the ingredients. "I think the problem started when you extracted this one. Try making the extract again before changing how much you use."';
+			return '포피가 재료에 관한 당신의 노트를 훑어본다. "문제는 이 재료를 추출할 때 시작된 것 같아. 쓰는 양을 바꾸기 전에 추출부터 다시 해 봐."';
 		if (p.distinctiveness > 60 && p.quality > 65)
 			return 'Poppy smells the paper again. "I wouldn\'t wear this myself, but you made something interesting. How did you come up with it?"';
 		if (p.nuances.includes("gourmand") && p.pleasantness > 65)
-			return 'Poppy checks the page where you compared the perfume to cookies. "You were right about the sweet smell. I thought it would cover up the flowers, but I can still smell them."';
+			return '포피가 향수를 쿠키에 견준 페이지를 확인한다. "단 냄새 얘기는 네 말이 맞았어. 꽃향기를 덮을 줄 알았는데, 아직 다 맡히네."';
 		return {
 			intense: 'Poppy moves the paper away from the nose. "That\'s strong! I can smell it without bringing it close. Did you want it that strong?"',
 			discordant:
@@ -582,8 +582,8 @@
 			original:
 				'Poppy reads your ingredient list, then smells the paper again. "I didn\'t expect these ingredients to smell like that together. What did you change?"',
 			familiar:
-				'Poppy places your sample beside the original perfume bottle. "It reminds me of this one, but yours smells different enough. You should keep your version."',
-			preferred: 'Poppy smells the paper again and smiles. "I like this one. The sweet smell comes first, but I can still smell the flowers afterwards."',
+				'포피가 당신의 샘플을 원래 향수병 옆에 놓는다. "이거랑 닮았는데, 네 건 충분히 달라. 네 버전을 계속 쓰는 게 좋겠어."',
+			preferred: '포피가 시향지 냄새를 다시 맡고 미소 짓는다. "이거 마음에 들어. 단 냄새가 먼저 오는데, 그 뒤에도 꽃향기가 맡혀."',
 			elegant: 'Poppy waits a moment before smelling the paper again. "It still smells good. I don\'t think you need to add anything else yet."',
 			beginner:
 				'Poppy moves the scented paper away from the open bottles before smelling it again. "That\'s better. The other perfumes were making it difficult to smell yours properly."',
@@ -611,7 +611,7 @@
 		Time.pass(5 * 60);
 		return `Poppy turns your handwritten label towards the light before accepting the bottle. ${
 			p.sweet > 0.4 && p.persistence > 0.5
-				? '"You made this for me? Keep a copy of those notes. I may want another when this runs out."'
+				? '"나한테 주려고 만든 거야? 이 노트는 사본을 남겨 둬. 이게 떨어지면 하나 더 부탁할지도 몰라."'
 				: "\"For me? I wouldn't have chosen this myself. That isn't a reason to put it away.\""
 		} ${response}`;
 	}

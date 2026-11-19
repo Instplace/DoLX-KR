@@ -5,7 +5,7 @@
 현재 접근 등급으로 구매할 수 있는 품목을 보여 주는 화면이 눈에 들어온다.
 <br>
 <<holo "X-CHANGE STATION / ACCESS">>
-	<<holoRow "YOUR ACCESS LEVEL" `($xchange.arcology.clearance or "guest").toUpperCase()`>>
+	<<holoRow "내 권한 등급" `(c => ({guest: "게스트", resident: "거주자", citizen: "시민", authority: "당국"})[c] || c.toUpperCase())($xchange.arcology.clearance or "guest")`>>
 	<<holoRow "GUEST PURCHASE LIMIT" `$daily.arcologyXStation ? "USED TODAY" : "1 PURCHASE AVAILABLE"`>>
 	<<holoLine "MORE SERVICES ARE ONLY AVAILABLE TO RESIDENTS OR HIGHER" "warn">>
 <</holo>>
@@ -47,7 +47,7 @@
 <<else>>
 	직원이 열린 하얀 알약 케이스를 가격표 옆에 놓고 당신의 선택을 기다린다.
 	<br><br>
-	<<set _xsItems to [["xchange_pink_basic", "Pink Basic, pack of 3", "pinkBasic", 3, "xchangePink"], ["xchange_blue_basic", "Blue Basic, pack of 3", "blueBasic", 3, "xchangeBlue"], ["xchange_pink_now", "Pink NOW", "pinkNow", 1, "xchangePink"], ["xchange_blue_now", "Blue NOW", "blueNow", 1, "xchangeBlue"]]>>
+	<<set _xsItems to [["xchange_pink_basic", "핑크 베이직 3개입", "pinkBasic", 3, "xchangePink"], ["xchange_blue_basic", "블루 베이직 3개입", "blueBasic", 3, "xchangeBlue"], ["xchange_pink_now", "핑크 나우", "pinkNow", 1, "xchangePink"], ["xchange_blue_now", "블루 나우", "blueNow", 1, "xchangeBlue"]]>>
 	<<for _xsItem range _xsItems>>
 		<<set _xsP to setup.arcologyPrice.quote(_xsItem[2])>>
 		<<set _xsLabel to _xsItem[1] + " (" + _xsP.label + ")">>
@@ -72,12 +72,12 @@
 <br><br>
 홀로그램 화면에 서비스 목록과 각 서비스에 필요한 접근 등급이 표시돼 있다.
 <br><br>
-<<holo "X-CHANGE STATION / RESTRICTED SERVICES" `setup.arcology.hasClearance("resident") ? "ok" : "denied"`>>
-	<<holoRow "BODY CUSTOMISATION" `setup.arcology.hasClearance("resident") ? "AVAILABLE" : "RESIDENT ACCESS REQUIRED"`>>
-	<<holoRow "SPECIALIST FORMULAS" `setup.arcology.hasClearance("resident") ? "AVAILABLE" : "RESIDENT ACCESS REQUIRED"`>>
-	<<holoRow "BLUEPRINT PRINTING" `setup.arcology.hasClearance("citizen") ? "AVAILABLE" : "CITIZEN ACCESS REQUIRED"`>>
-	<<holoRow "PILL MODIFICATION" `setup.arcology.hasClearance("citizen") ? "AVAILABLE" : "CITIZEN ACCESS REQUIRED"`>>
-	<<holoRow "PREMIUM SYNTHESIS" `setup.arcology.hasClearance("authority") ? "AVAILABLE" : "AUTHORITY ACCESS REQUIRED"`>>
+<<holo "X-체인지 스테이션 / 제한 서비스" `setup.arcology.hasClearance("resident") ? "ok" : "denied"`>>
+	<<holoRow "신체 맞춤 개조" `setup.arcology.hasClearance("resident") ? "이용 가능" : "거주자 권한 필요"`>>
+	<<holoRow "전문 조제식" `setup.arcology.hasClearance("resident") ? "이용 가능" : "거주자 권한 필요"`>>
+	<<holoRow "설계도 출력" `setup.arcology.hasClearance("citizen") ? "이용 가능" : "시민 권한 필요"`>>
+	<<holoRow "알약 개조" `setup.arcology.hasClearance("citizen") ? "이용 가능" : "시민 권한 필요"`>>
+	<<holoRow "프리미엄 합성" `setup.arcology.hasClearance("authority") ? "이용 가능" : "당국 권한 필요"`>>
 <</holo>>
 <br>
 <<if setup.arcology.hasClearance("resident")>>

@@ -549,7 +549,7 @@ const Furniture = (() => {
 			category: ["refrigerator"],
 			type: [],
 			cost: 1500,
-			description: "Keeps stored food and its effects fresh indefinitely.",
+			description: "보관한 음식과 그 효과를 영원히 신선하게 유지한다.",
 			iconFile: "refrigerator",
 			showCheck: "refrigerator",
 		});

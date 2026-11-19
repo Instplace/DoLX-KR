@@ -1766,7 +1766,7 @@ function xchangeEffectsMessages() {
 		element("span", "WARNING:", "yellow");
 		element(
 			"span",
-			"You've just loaded a save file featuring a character of unsupported sex or gender (quite likely a Vanilla herm). You've been forcefully turned into the available one to attempt to keep the mod's systems working, but proceeding from here onward is entirely ill-adviced and if you run into odd behaviour, that is expected.",
+			"방금 지원되지 않는 성별의 캐릭터(바닐라 헤름일 가능성이 높습니다)가 담긴 세이브 파일을 불러왔습니다. 모드의 시스템이 계속 작동하도록 사용 가능한 쪽으로 강제로 바뀌었지만, 이대로 진행하는 것은 전혀 권장되지 않으며 이상한 동작이 나타나도 정상입니다.",
 			"red"
 		);
 		br();
@@ -1777,8 +1777,8 @@ function xchangeEffectsMessages() {
 	/* Set by colosseumDrugTick when an arena dose wears off. */
 	if (V.colosseumDrugCrashMessage) {
 		delete V.colosseumDrugCrashMessage;
-		element("span", "The arena dose lets go of you all at once.", "red");
-		element("span", "Every hit it held off arrives at the same time, and none of it feels like it happened to you.", "red");
+		element("span", "경기장에서 맞은 약효가 한꺼번에 당신을 놓아 버린다.", "red");
+		element("span", "약효가 막아 주던 타격이 전부 동시에 밀려오는데, 어느 것도 당신에게 일어난 일처럼 느껴지지 않는다.", "red");
 		br();
 		br();
 	}
@@ -1788,7 +1788,7 @@ function xchangeEffectsMessages() {
 			element("span", "WARNING:", "yellow");
 			element(
 				"span",
-				"You haven't locked in your identity preferences yet. Please, head to your room and into Gameplay Settings > Modded Settings > Identity Settings, and check the box at the bottom that says 'Lock Choices'. Make sure to review your character's identity preferences before saving your settings.",
+				"아직 정체성 설정을 확정하지 않았습니다. 방으로 가서 게임플레이 설정 > 모드 설정 > 정체성 설정에서 맨 아래의 '선택 잠금' 체크 상자를 선택하십시오. 설정을 저장하기 전에 캐릭터의 정체성 설정을 꼭 확인하십시오.",
 				"red"
 			);
 			br();
@@ -1803,7 +1803,7 @@ function xchangeEffectsMessages() {
 	}
 
 	if (V.gamblingUpkeepFailedMessage) {
-		element("span", "The cops didn't receive their bribe this week. Your gambling ring has been raided.", "purple");
+		element("span", "경찰에게 이번 주 뇌물이 전달되지 않았다. 당신의 도박 조직이 급습을 당했다.", "purple");
 		fragment.append(wikifier("gggcrime", "thievery"));
 		br();
 		delete V.gamblingUpkeepFailedMessage;
@@ -1816,7 +1816,7 @@ function xchangeEffectsMessages() {
 		if (V.xchange && V.xchange.pill && V.xchange.pill.active && V.xchange.pill.effectsKnown === false) {
 			element(
 				"span",
-				"You've been dosed with an unidentified X-Change pill. There's no telling what it's done to you until you take an X-Change test.",
+				"정체 모를 X-체인지 알약을 먹게 되었다. X-체인지 검사를 하기 전에는 몸에 무슨 일이 일어났는지 알 수 없다.",
 				"pink"
 			);
 			br();
@@ -1824,7 +1824,7 @@ function xchangeEffectsMessages() {
 	}
 
 	if (V.xchange_passion_message) {
-		element("span", `Aphrodisiacs have been released into your bloodstream.`, "pink");
+		element("span", `흥분제가 혈류로 풀려 나왔다.`, "pink");
 		br();
 		delete V.xchange_passion_message;
 	}
@@ -1833,13 +1833,13 @@ function xchangeEffectsMessages() {
 		if (V.xchange_feartoxin_message === "start") {
 			element(
 				"span",
-				`Your heart pounds and your hands shake. Everything around you feels like a threat, and you can't hold yourself together. Nothing will calm you down while the drug is in you.`,
+				`심장이 쿵쾅거리고 손이 떨린다. 주변의 모든 것이 위협처럼 느껴지고, 몸을 가눌 수가 없다. 약기운이 남아 있는 동안에는 무엇도 당신을 진정시키지 못한다.`,
 				"red"
 			);
 		} else {
 			element(
 				"span",
-				`The drugged fear has faded. Your thoughts are your own again, and your trauma can start to settle, but what the drug did to you is still there.`,
+				`약이 만든 공포가 가셨다. 정신이 다시 당신의 것이 되었고 트라우마도 가라앉기 시작하지만, 약이 당신에게 한 짓은 그대로 남아 있다.`,
 				"blue"
 			);
 		}
@@ -1848,50 +1848,50 @@ function xchangeEffectsMessages() {
 	}
 
 	if (V.xchange_therapy_expired_message) {
-		element("span", `Your X-Change cleansing treatment has worn off. You're no longer protected against being pilled.`, "blue");
+		element("span", `X-체인지 해독 치료의 효과가 끝났다. 더는 알약 투여로부터 보호받지 못한다.`, "blue");
 		br();
 		delete V.xchange_therapy_expired_message;
 	}
 
 	if (V.xchangeFameMessage) {
-		element("span", "People have been gossiping about your X-Change escapades, and even the law has fully caught on.");
+		element("span", "사람들이 당신의 X-체인지 행각을 두고 수군거리고, 법의 눈에도 완전히 들어갔다.");
 		br();
-		element("span", "You no longer benefit from having two identities.", "red");
+		element("span", "더는 두 가지 정체성의 이점을 누릴 수 없다.", "red");
 		delete V.xchangeFameMessage;
 	}
 
 	if (V.antiPillSensitivityMessage) {
 		switch (V.antiPillSensitivityMessage) {
 			case "suspicious":
-				element("span", "The suspicious pill goes wrong; it leaves your skin itchy to the point of pain and oversensitive.", "pink");
+				element("span", "수상한 알약이 탈이 나서, 피부가 아플 만큼 가렵고 과민해진다.", "pink");
 				br();
 				break;
 			case "antipill":
-				element("span", "The anti-pill reacts badly; your skin turns itchy to the point of pain and oversensitive.", "pink");
+				element("span", "안티 알약이 나쁘게 반응해, 피부가 아플 만큼 가렵고 과민해진다.", "pink");
 				br();
 				break;
 			case "dumbbitch":
-				element("span", "The pill does more than dull your wits; it leaves your skin itchy to the point of pain and oversensitive.", "pink");
+				element("span", "알약은 정신을 무디게 하는 데서 그치지 않고, 피부를 아플 만큼 가렵고 과민하게 만든다.", "pink");
 				br();
 				break;
 			case "suspicious-insanity":
-				element("span", "The suspicious pill triggers a torturous itch, swallowed by your psychopathy.", "pink");
+				element("span", "수상한 알약이 고문 같은 가려움을 일으키지만, 당신의 광기에 삼켜진다.", "pink");
 				br();
 				break;
 			case "antipill-insanity":
-				element("span", "The anti-pill burns your skin, but your shattered perception numbs the itch.", "pink");
+				element("span", "안티 알약이 피부를 태우듯 쓰라리게 하지만, 산산이 부서진 감각이 가려움을 무디게 만든다.", "pink");
 				br();
 				break;
 			case "dumbbitch-insanity":
-				element("span", "The pill dulls your wits and sparks a painful itch, drowned out by absolute darkness.", "pink");
+				element("span", "알약이 정신을 무디게 하고 고통스러운 가려움을 일으키지만, 완전한 어둠 속에 묻혀 사라진다.", "pink");
 				br();
 				break;
 			case "generic-insanity":
-				element("span", "The pill goes wrong, leaving a burning itch ignored by the weight of your insanity.", "pink");
+				element("span", "알약이 탈이 나 타는 듯한 가려움이 남지만, 광기의 무게에 눌려 무시된다.", "pink");
 				br();
 				break;
 			default:
-				element("span", "The pill goes wrong; it leaves your skin itchy to the point of pain and oversensitive.", "pink");
+				element("span", "알약이 탈이 나서, 피부가 아플 만큼 가렵고 과민해진다.", "pink");
 				br();
 		}
 		delete V.antiPillSensitivityMessage;
@@ -1900,19 +1900,19 @@ function xchangeEffectsMessages() {
 	if (V.antiPillSensitivityEndMessage) {
 		switch (V.antiPillSensitivityEndMessage) {
 			case "suspicious":
-				element("span", "The suspicious pill's itchy, painful hypersensitivity finally fades.", "blue");
+				element("span", "수상한 알약 때문에 생긴 가렵고 아픈 과민 상태가 마침내 가라앉는다.", "blue");
 				br();
 				break;
 			case "antipill":
-				element("span", "The anti-pill's itchy, painful hypersensitivity finally fades.", "blue");
+				element("span", "안티 알약 때문에 생긴 가렵고 아픈 과민 상태가 마침내 가라앉는다.", "blue");
 				br();
 				break;
 			case "dumbbitch":
-				element("span", "The pill's itchy, painful hypersensitivity finally fades.", "blue");
+				element("span", "알약 때문에 생긴 가렵고 아픈 과민 상태가 마침내 가라앉는다.", "blue");
 				br();
 				break;
 			default:
-				element("span", "The botched pill's itchy, painful hypersensitivity finally fades.", "blue");
+				element("span", "잘못된 알약 때문에 생긴 가렵고 아픈 과민 상태가 마침내 가라앉는다.", "blue");
 				br();
 		}
 		delete V.antiPillSensitivityEndMessage;
@@ -1923,15 +1923,15 @@ function xchangeEffectsMessages() {
 			case "strong":
 				element(
 					"span",
-					"This body feels wrong after so long in the other one. You keep misjudging your reach, your balance and the length of your stride.",
+					"다른 몸에서 너무 오래 지낸 탓에 이 몸이 낯설게 느껴진다. 손이 닿는 거리와 균형, 보폭을 자꾸 잘못 가늠한다.",
 					"red"
 				);
 				break;
 			case "mild":
-				element("span", "Your body feels a little unfamiliar. Your balance and reach are slightly off.", "orange");
+				element("span", "몸이 조금 낯설다. 균형과 손이 닿는 거리가 약간 어긋난다.", "orange");
 				break;
 			case "end":
-				element("span", "You've gotten used to this body. Your movements feel natural again.", "green");
+				element("span", "이 몸에 익숙해졌다. 움직임이 다시 자연스럽게 느껴진다.", "green");
 				break;
 		}
 		br();
@@ -1941,31 +1941,31 @@ function xchangeEffectsMessages() {
 	if (!V.statFreeze && V.alcoholToleranceMessage) {
 		switch (V.alcoholToleranceMessage) {
 			case "developing":
-				element("span", "Your body is starting to adapt to being drunk.", "pink");
+				element("span", "몸이 취하는 데 적응하기 시작한다.", "pink");
 				br();
 				break;
 			case "moderate":
-				element("span", "Drunkenness has become something your body recognises.", "blue");
+				element("span", "취한다는 것이 몸이 알아보는 상태가 되었다.", "blue");
 				br();
 				break;
 			case "high":
-				element("span", "You've developed a strong tolerance to intoxication.", "green");
+				element("span", "취기에 대한 강한 내성이 생겼다.", "green");
 				br();
 				break;
 			case "full":
-				element("span", "Your body has fully adapted to being drunk.", "gold");
+				element("span", "몸이 취하는 데 완전히 적응했다.", "gold");
 				br();
 				break;
 			case "withdrawal":
-				element("span", "Your body has grown dependent on alcohol. While sober, withdrawal gradually increases your stress.", "red");
+				element("span", "몸이 술에 의존하게 되었다. 취하지 않은 동안에는 금단 증상으로 스트레스가 서서히 오른다.", "red");
 				br();
 				break;
 			case "fading":
-				element("span", "Without getting drunk regularly, your body's adaptation is beginning to fade.", "blue");
+				element("span", "정기적으로 취하지 않으면 몸의 적응이 사라지기 시작한다.", "blue");
 				br();
 				break;
 			case "recovered":
-				element("span", "Your body has fully recovered from chronic drunkenness.", "green");
+				element("span", "만성적인 취기에서 몸이 완전히 회복되었다.", "green");
 				br();
 				break;
 		}
@@ -1975,11 +1975,11 @@ function xchangeEffectsMessages() {
 	if (!V.statFreeze && V.cigaretteCravingMessage) {
 		switch (V.cigaretteCravingMessage) {
 			case "craving":
-				element("span", "You crave a cigarette.", "pink");
+				element("span", "담배가 당긴다.", "pink");
 				br();
 				break;
 			case "quit":
-				element("span", "The craving for cigarettes has finally left you.", "green");
+				element("span", "담배에 대한 갈망이 마침내 당신을 떠났다.", "green");
 				br();
 				break;
 		}
@@ -1987,8 +1987,8 @@ function xchangeEffectsMessages() {
 	}
 
 	if (V.painMedicationWarningMessage) {
-		element("span", "You are writhing in pain.", "red");
-		element("span", "Painkillers from the hospital pharmacy may help, or you could rest somewhere safe until it passes.", "blue");
+		element("span", "고통에 몸부림치고 있다.", "red");
+		element("span", "병원 약국의 진통제가 도움이 될 수 있다. 아니면 안전한 곳에서 고통이 지나갈 때까지 쉬어도 된다.", "blue");
 		br();
 		delete V.painMedicationWarningMessage;
 	}
@@ -1997,13 +1997,13 @@ function xchangeEffectsMessages() {
 		const pregnancy = xchangePregnancyBlocksPill();
 
 		if (V.xchange.pillPermanence === 1) {
-			element("span", "Seems you didn't turn back. Your pill's effects have become permanent", "red");
+			element("span", "원래대로 돌아오지 못한 것 같다. 알약의 효과가 영구적으로 굳었다", "red");
 			br();
 		} else if (pregnancy && typeof pillTimerPaused === "function" && pillTimerPaused()) {
-			element("span", "Seems you didn't turn back. The life growing inside you holds the changes in place.", "red");
+			element("span", "원래대로 돌아오지 못한 것 같다. 몸 안에서 자라는 생명이 변화를 붙들고 있다.", "red");
 			br();
 		} else {
-			element("span", "Seems you didn't turn back...", "red");
+			element("span", "원래대로 돌아오지 못한 것 같다...", "red");
 			br();
 		}
 		delete V.xchangePermanenceMessage;
@@ -2035,17 +2035,17 @@ function xchangeEffectsMessages() {
 
 	switch (V.xchangeRestoreMessage) {
 		case 1:
-			element("span", "Your body twists and turns as it returns to its original form.", "blue");
+			element("span", "몸이 뒤틀리고 비틀리며 원래 모습으로 돌아온다.", "blue");
 			br();
 			delete V.xchangeRestoreMessage;
 			break;
 		case 2:
-			element("span", "Despite having climaxed under the effects of Resistance, the pill did not become permanent.", "blue");
+			element("span", "레지스턴스의 효과 아래에서 절정했는데도 알약이 영구적으로 굳지는 않았다.", "blue");
 			br();
 			delete V.xchangeRestoreMessage;
 			break;
 		case 3:
-			element("span", "The pill's effects should be running out right about now.", "blue");
+			element("span", "알약의 효과가 슬슬 끝날 때가 되었다.", "blue");
 			br();
 			delete V.xchangeRestoreMessage;
 			break;
@@ -2055,26 +2055,26 @@ function xchangeEffectsMessages() {
 
 	switch (V.genderificationStressMessage) {
 		case 1:
-			element("span", "You have an urge to dress cute.", "purple");
+			element("span", "귀엽게 꾸미고 싶은 충동이 든다.", "purple");
 			fragment.append(wikifier("gggstress"));
 			br();
 			delete V.genderificationStressMessage;
 			break;
 		case 2:
-			element("span", "You are feeling cute and refreshed with your outfit.", "light-pink");
+			element("span", "차림새 덕분에 귀엽고 개운한 기분이 든다.", "light-pink");
 			fragment.append(wikifier("lstress"));
 			fragment.append(wikifier("ltiredness"));
 			br();
 			delete V.genderificationStressMessage;
 			break;
 		case 3:
-			element("span", "You have an urge to dress more manly.", "purple");
+			element("span", "더 남자답게 입고 싶은 충동이 든다.", "purple");
 			fragment.append(wikifier("gggstress"));
 			br();
 			delete V.genderificationStressMessage;
 			break;
 		case 4:
-			element("span", "You are feeling manly and vigourous in your fit.", "blue");
+			element("span", "옷차림 덕분에 남자답고 활기찬 기분이 든다.", "blue");
 			fragment.append(wikifier("lstress"));
 			fragment.append(wikifier("ltiredness"));
 			br();
@@ -2092,13 +2092,13 @@ function xchangeEffectsMessages() {
 
 	// Set when $identityCap keeps the identity meter above its minimum. Prevents hidden stress and trauma with no visible explanation.
 	if (V.identityCapMessage) {
-		element("span", "You try to think of yourself as less of a woman, and fail. That's simply who you are now.", "purple");
+		element("span", "스스로를 덜 여자라고 생각해 보려 하지만 실패한다. 이제는 그것이 바로 당신이다.", "purple");
 		br();
 		delete V.identityCapMessage;
 	}
 
 	if (V.binderPainMessage) {
-		element("span", "Your chest binder feels too tight, making your chest ache.", "red");
+		element("span", "가슴 압박대가 너무 조여서 가슴이 아프다.", "red");
 		br();
 		delete V.binderPainMessage;
 	}
@@ -2112,7 +2112,7 @@ function xchangeEffectsMessages() {
 		if (rubSlot) {
 			// The widget prints nothing useful here; it's called for the adjective it leaves in _text_output2 ("sensitive ", "tender ", ...).
 			wikifier("breastsensitivity");
-			element("span", `Your ${T.text_output2 ?? ""}nipples are rubbing against your ${V.worn[rubSlot].name}.`, "pink");
+			element("span", `당신의 ${T.text_output2 ?? ""}젖꼭지가 ${V.worn[rubSlot].name}에 쓸린다.`, "pink");
 			br();
 		}
 		delete V.breastSensitiveRubMessage;
@@ -2125,7 +2125,7 @@ function xchangeEffectsMessages() {
 		if (rubSlot) {
 			// <<genitalsensitivity>> leaves its adjective in _text_output, not _text_output2 like <<breastsensitivity>> does.
 			wikifier("genitalsensitivity");
-			element("span", `Your ${T.text_output ?? ""}${V.player.penisExist ? "penis" : "clit"} is rubbing against your ${V.worn[rubSlot].name}.`, "pink");
+			element("span", `당신의 ${T.text_output ?? ""}${V.player.penisExist ? "자지" : "클리토리스"}가 ${V.worn[rubSlot].name}에 쓸린다.`, "pink");
 			br();
 		}
 		delete V.genitalSensitiveRubMessage;
@@ -2133,14 +2133,14 @@ function xchangeEffectsMessages() {
 
 	if (V.perfumeFadedMessage) {
 		const name = V.perfumeFadedMessage;
-		element("span", V.perfumeWashedMessage ? `The scent of your ${name} is gone.` : `The scent of your ${name} has faded from your skin.`, "purple");
+		element("span", V.perfumeWashedMessage ? `당신의 ${name} 향이 사라졌다.` : `당신의 ${name} 향이 피부에서 옅어졌다.`, "purple");
 		br();
 		delete V.perfumeFadedMessage;
 		delete V.perfumeWashedMessage;
 	}
 
 	if (V.chastityArousalSpikeMessage) {
-		element("span", `Locked away like this, a sudden wave of arousal catches you off guard.`, "pink");
+		element("span", `이렇게 갇혀 있으니, 갑작스러운 흥분의 물결이 방심한 당신을 덮친다.`, "pink");
 		br();
 		delete V.chastityArousalSpikeMessage;
 	}
@@ -2151,8 +2151,8 @@ function xchangeEffectsMessages() {
 			element(
 				"span",
 				V.chastityPurityCalmMessage === "innocence"
-					? `You're locked away, but you don't know what you're supposed to be missing.`
-					: `You're locked away, but you don't mind. You don't feel any urge to resist.`,
+					? `갇혀 있지만, 무엇을 아쉬워해야 하는지 알지 못한다.`
+					: `갇혀 있지만, 신경 쓰이지 않는다. 저항하고 싶은 마음이 들지 않는다.`,
 				"teal"
 			);
 			br();
@@ -2163,25 +2163,25 @@ function xchangeEffectsMessages() {
 	}
 
 	if (V.chastityControlLostMessage) {
-		const control = V.chastityControlLostMessage === "remote" ? "vibrator remote" : "key to your chastity device";
-		element("span", `When you check your belongings, the ${control} is gone. Someone must have taken it while you were unconscious.`, "red");
+		const control = V.chastityControlLostMessage === "remote" ? "진동기 리모컨" : "정조대 열쇠";
+		element("span", `소지품을 확인해 보니 ${control}【이가】 없다. 의식을 잃은 사이 누군가 가져간 것이 분명하다.`, "red");
 		br();
 		delete V.chastityControlLostMessage;
 	}
 
 	if (V.vibratorRemoteGlitchMessage) {
-		element("span", `Without the remote, your vibrator changes setting on its own.`, "pink");
+		element("span", `리모컨이 없어서 진동기가 제멋대로 설정을 바꾼다.`, "pink");
 		br();
 		delete V.vibratorRemoteGlitchMessage;
 	}
 
 	// Tampered sensitivity-decreasing cream wearing off: the hoarded arousal crashes back all at once.
 	if (V.sensitivityFloodMessage) {
-		element("span", "The cream's numbness abruptly lifts,", "pink");
-		element("span", "and every sensation it had been quietly holding back floods over you all at once.", "red");
+		element("span", "크림의 마비감이 갑자기 걷히고,", "pink");
+		element("span", "그동안 조용히 막아 두었던 모든 감각이 한꺼번에 밀려든다.", "red");
 		br();
 		if (V.sensitivityFloodMessage === 2) {
-			element("span", "It's far too much to hold against! Your body seizes and gives in.", "pink");
+			element("span", "도저히 버틸 수 없는 양이다! 몸이 경직되더니 굴복한다.", "pink");
 			fragment.append(wikifier("orgasm"));
 			br();
 		}
@@ -2190,9 +2190,9 @@ function xchangeEffectsMessages() {
 
 	if (V.breederEdgingMessage) {
 		const omegaAnal = omegaTargetsAnus();
-		const breederTarget = omegaAnal && V.xchange?.pill?.breederEffect ? "pussy or ass." : omegaAnal ? "ass." : either("pussy.", "vagina.");
-		element("span", "Your body refuses to cum like this.", "purple");
-		element("span", "You crave some thick gooey semen in your " + breederTarget, "red");
+		const breederTarget = omegaAnal && V.xchange?.pill?.breederEffect ? "보지나 엉덩이" : omegaAnal ? "엉덩이" : either("보지", "질");
+		element("span", "이런 식으로는 몸이 절정을 거부한다.", "purple");
+		element("span", "당신의 " + breederTarget + " 속에 걸쭉하고 끈적한 정액이 간절하다.", "red");
 		if ((V.xchange.breederEdgingStress ?? 0) >= 300) fragment.append(wikifier("ggstress"));
 		else fragment.append(wikifier("gstress"));
 
@@ -2211,27 +2211,27 @@ function xchangeEffectsMessages() {
 		const swarmRelief = !!swarmAmounts && (swarmAmounts.genital?.[1] > 0 || swarmAmounts.butt?.[1] > 0);
 		const fromOralGate = V.sexual_addiction_toy_breakthrough_message === 3;
 		const pushedYou = fromOralGate
-			? "You stay on the edge so long that your body finally gives in."
+			? "너무 오래 한계 직전에 머물러, 몸이 마침내 굴복한다."
 			: swarmRelief
-			? `The ${swarmWord()} ${swarmAmounts.active?.[0] === 1 ? "pushes" : "push"} you over the edge, and your body finally gives in.`
-			: "The toy pushes you over the edge, and your body finally gives in.";
+			? `${swarmWord()}【이가】 ${swarmAmounts.active?.[0] === 1 ? "" : ""}당신을 한계 너머로 밀어붙이고, 몸이 마침내 굴복한다.`
+			: "장난감이 당신을 한계 너머로 밀어붙이고, 몸이 마침내 굴복한다.";
 		element("span", pushedYou, "purple");
 		if (fromOralGate) {
-			element("span", "The orgasm washes through you, but it feels hollow. Your mouth still aches to be filled.", "blue");
+			element("span", "절정이 몸을 훑고 지나가지만 공허하다. 입이 여전히 무언가로 채워지기를 갈망한다.", "blue");
 		} else if (fromBreederGate) {
 			const omegaAnal = omegaTargetsAnus();
 			const breederTarget = omegaAnal && pill?.breederEffect ? "holes" : omegaAnal ? "ass" : "womb";
 			element(
 				"span",
 				`The forced orgasm washes through you, but it feels hollow; your ${breederTarget} ${
-					breederTarget === "holes" ? "still ache" : "still aches"
+					breederTarget === "holes" ? "" : ""
 				} for hot seed.`,
 				"blue"
 			);
 		} else if (pill?.alphaEffect && V.player.penisExist) {
-			element("span", "The forced orgasm washes through you, but it feels hollow; your knot aches to lock inside a real partner.", "blue");
+			element("span", "강제로 맞은 절정이 몸을 훑고 지나가지만 공허하다. 당신의 혹이 진짜 상대 안에 잠기기를 갈망한다.", "blue");
 		} else {
-			element("span", "The orgasm washes through you, but it feels hollow; your body craves the real thing.", "blue");
+			element("span", "절정이 몸을 훑고 지나가지만 공허하다. 몸이 진짜를 갈망한다.", "blue");
 		}
 		fragment.append(wikifier("ggstress"));
 		fragment.append(wikifier("stress", 15));
@@ -2248,12 +2248,12 @@ function xchangeEffectsMessages() {
 		const unmet = V.sexual_addiction_message;
 		const holeLine =
 			alphaEffectActive && (V.statFreeze || V.hole_addict_trait !== 1 || V.xchange.genitalAddictFreeOrgasm)
-				? "Your knot aches to lock inside someone, and it demands it now!"
-				: "Your dick craves some pussy, and it demands it now!";
-		element("span", "Your body refuses to cum like this.", "purple");
-		if (unmet === 3) element("span", "You need real sex! Doesn't matter who does the fucking.", "red");
+				? "혹이 누군가의 안에 잠기기를 갈망하고, 지금 당장 그러라고 요구한다!"
+				: "자지가 보지를 갈망하고, 지금 당장 달라고 요구한다!";
+		element("span", "이런 식으로는 몸이 절정을 거부한다.", "purple");
+		if (unmet === 3) element("span", "진짜 섹스가 필요하다! 누가 박든 상관없다.", "red");
 		else if (unmet === 2) element("span", holeLine, "red");
-		else if (!V.statFreeze && V.penis_addict_trait === 1) element("span", "You need dick, and you need it deep inside you. Now!", "red");
+		else if (!V.statFreeze && V.penis_addict_trait === 1) element("span", "자지가 필요하다. 그것도 깊숙이 박힌 채로. 지금 당장!", "red");
 		else if ((!V.statFreeze && V.hole_addict_trait === 1 && V.player.penisExist) || alphaEffectActive) element("span", holeLine, "red");
 
 		br();
@@ -2263,8 +2263,8 @@ function xchangeEffectsMessages() {
 
 	if (V.oral_fixation_message) {
 		if (oralFixationActive()) {
-			if (!refusalShown) element("span", "Your body refuses to cum like this.", "purple");
-			element("span", "You need something in your mouth, or a fresh taste of cum on your tongue.", "red");
+			if (!refusalShown) element("span", "이런 식으로는 몸이 절정을 거부한다.", "purple");
+			element("span", "입에 뭔가를 물고 있거나, 혀 위에 갓 나온 정액 맛이 필요하다.", "red");
 			br();
 		}
 		delete V.oral_fixation_message;
@@ -2273,24 +2273,24 @@ function xchangeEffectsMessages() {
 	if (V.xtendMessage) {
 		switch (V.xtendMessage) {
 			case 1:
-				element("span", "Your body accepts the new genetic code.", "gold");
-				element("span", "Your penis will be larger when you turn back.", "green");
+				element("span", "몸이 새로운 유전 암호를 받아들인다.", "gold");
+				element("span", "원래 몸으로 돌아가면 자지가 더 커져 있을 것이다.", "green");
 				break;
 			case 2:
-				element("span", "You just lost all your penis size gains! And your dick will be smaller when you turn back.", "red");
+				element("span", "자지 크기 증가분을 전부 잃었다! 그리고 원래 몸으로 돌아가면 자지가 더 작아져 있을 것이다.", "red");
 				break;
 			case 3:
-				element("span", "Your original body's dick just shrank even further.", "red");
+				element("span", "원래 몸의 자지가 더욱 줄어들었다.", "red");
 				break;
 			case 4:
-				element("span", V.options.showExactMeasurements ? `Your dick shrank by ${V.xtendMessageValue}cm.` : "Your dick is smaller than it used to be.", "red");
+				element("span", V.options.showExactMeasurements ? `자지가 ${V.xtendMessageValue}cm 줄어들었다.` : "자지가 예전보다 작아졌다.", "red");
 				break;
 			case 5:
-				element("span", V.options.showExactMeasurements ? `Your dick grew by ${V.xtendMessageValue}cm.` : "Your dick is larger than it used to be.", "green");
+				element("span", V.options.showExactMeasurements ? `자지가 ${V.xtendMessageValue}cm 커졌다.` : "자지가 예전보다 커졌다.", "green");
 				break;
 			case 6:
-				element("span", "That genetic material was of inferior quality.", "gold");
-				element("span", "Your projected penis size remains unchanged.", "blue");
+				element("span", "그 유전 물질은 질이 떨어졌다.", "gold");
+				element("span", "예상 자지 크기는 변함이 없다.", "blue");
 				break;
 			default:
 				break;
@@ -2301,18 +2301,18 @@ function xchangeEffectsMessages() {
 	}
 
 	if (V.dumbBitchOrgasmMessage) {
-		element("span", "Your orgasm is frying your brain.", "red");
+		element("span", "절정이 뇌를 지져 놓고 있다.", "red");
 		fragment.append(wikifier("llstress"));
 		fragment.append(wikifier("lwillpower"));
 		if (V.dumbBitchOrgasmMessage === 1) {
 			element("span", "|");
-			element("span", "- School Grades", "red");
+			element("span", "- 학교 성적", "red");
 			br();
 		}
 		if (V.dumbBitchOrgasmMessage === 2) {
 			element(
 				"span",
-				either("Lockpicking is now like... just so hard or something.", "Everyone seems like... so trustworthy now.", "Malice?... Like... what's that?"),
+				either("자물쇠 따는 게 이제 뭐랄까... 너무 어려운 것 같아.", "다들 뭐랄까... 엄청 믿음직해 보여.", "악의?... 그게... 뭐야?"),
 				"red"
 			);
 			fragment.append(wikifier("lskulduggery"));
@@ -2321,9 +2321,9 @@ function xchangeEffectsMessages() {
 			element(
 				"span",
 				either(
-					"Everyone's so nice... Like, you should totally fuck more.",
-					"Sex is like... so yummy right now. You want it all.",
-					"You want to, like... feel g- good-er? Better? Oh just fuck~"
+					"다들 너무 착해... 있잖아, 완전 더 박아야 해.",
+					"섹스가 지금 뭐랄까... 엄청 맛있어. 전부 다 갖고 싶어.",
+					"기분이, 있잖아... 더 조- 좋아지고 싶어? 더? 아 그냥 박아~"
 				),
 				"lewd"
 			);
@@ -2336,7 +2336,7 @@ function xchangeEffectsMessages() {
 	}
 
 	if (V.refractoryPeriodMessage) {
-		element("span", "Your body is still recovering from your last orgasm.", "blue");
+		element("span", "방금 한 절정에서 아직 몸이 회복 중이다.", "blue");
 		br();
 		delete V.refractoryPeriodMessage;
 	}
@@ -2367,27 +2367,27 @@ function xchangeEffectsMessages() {
 	}
 
 	if (V.dysphoriaMessage) {
-		element("span", "You suffer from dysphoria.", "purple dysphoria-text");
+		element("span", "성별 불쾌감에 시달린다.", "purple dysphoria-text");
 		br();
 		delete V.dysphoriaMessage;
 	}
 
 	if (V.dysphoriaProcessingMessage) {
-		element("span", "You're slowly processing how you feel about your current self.", "blue");
+		element("span", "지금의 자신에 대해 어떻게 느끼는지 천천히 정리하는 중이다.", "blue");
 		fragment.append(wikifier("lwillpower"));
 		br();
 		delete V.dysphoriaProcessingMessage;
 	}
 
 	if (V.identityAcceptanceMessage) {
-		element("span", "You have learned to embrace a new aspect of yourself.", "green");
+		element("span", "자신의 새로운 면을 받아들이는 법을 배웠다.", "green");
 		br();
 		delete V.identityAcceptanceMessage;
 	}
 	if (V.identityFamiliarityMessage) {
 		element(
 			"span",
-			"Settling back into this feels strangely familiar. Your body remembers being at peace with it, and the comfort returns far quicker than the first time.",
+			"이 몸으로 돌아오니 이상하게 익숙하다. 몸이 이 상태에서 평온했던 때를 기억하고, 처음보다 훨씬 빠르게 편안함이 돌아온다.",
 			"green"
 		);
 		br();
@@ -2404,35 +2404,35 @@ function xchangeEffectsMessages() {
 	}
 
 	if (V.breakdownMessage) {
-		element("span", "The dysphoria has become too much.", "purple dysphoria-text");
-		element("span", "You begrudgingly surrender yourself to being this way.", "red");
+		element("span", "성별 불쾌감이 너무 커졌다.", "purple dysphoria-text");
+		element("span", "마지못해 이런 모습으로 사는 것에 굴복한다.", "red");
 		fragment.append(wikifier("lllwillpower"));
 		br();
 		delete V.breakdownMessage;
 	}
 
 	if (V.breakdownEndMessage) {
-		element("span", "You recover from your begrudging acceptance.", "green");
+		element("span", "마지못한 수용에서 회복한다.", "green");
 		br();
 		delete V.breakdownEndMessage;
 	}
 
 	if (V.suspiciousPillDebuffMessage) {
 		const skills = V.suspiciousPillDebuffMessage;
-		element("span", "Something went wrong with the suspicious pill.", "red");
+		element("span", "수상한 알약에 문제가 생겼다.", "red");
 		br();
-		element("span", `The botched transformation has weakened your ${skills.join(", ")}.`, "purple");
+		element("span", `엉터리 변신 때문에 약해진 것: ${skills.join(", ")}`, "purple");
 		br();
 		delete V.suspiciousPillDebuffMessage;
 	}
 
 	if (V.xchangeAlphaGrewPenisMessage) {
 		if (V.xchangeAlphaGrewPenisMessage === "end") {
-			element("span", "The ache from the Alpha pill fades. Your cock softens, then slowly shrinks away.", "purple");
+			element("span", "알파 알약의 욱신거림이 가라앉는다. 자지가 부드러워지더니 서서히 줄어들어 사라진다.", "purple");
 			br();
 		} else {
-			element("span", "You feel a growing ache between your legs.", "purple");
-			element("span", "The Alpha pill grows you a cock with a knot, without removing anything else.", "pink");
+			element("span", "다리 사이에서 욱신거림이 점점 커지는 것이 느껴진다.", "purple");
+			element("span", "알파 알약이 다른 것은 없애지 않고 혹 달린 자지를 자라게 한다.", "pink");
 			br();
 		}
 		delete V.xchangeAlphaGrewPenisMessage;
@@ -2440,13 +2440,13 @@ function xchangeEffectsMessages() {
 
 	if (V.xchange?.chastityAdaptedMessage) {
 		if (V.xchange.chastityAdaptedMessage === "feminize") {
-			element("span", "You feel your chastity device shift and reshape around your new anatomy, enclosing your new sex tightly.", "teal");
+			element("span", "정조대가 새 몸에 맞게 변형되어 새로운 성기를 단단히 감싸는 것이 느껴진다.", "teal");
 			br();
 		} else if (V.xchange.chastityAdaptedMessage === "butchify") {
-			element("span", "You feel your chastity device constrict and reform into a cage around your new anatomy, locking your new sex in place.", "teal");
+			element("span", "정조대가 조여들며 새 몸에 맞는 케이지 모양으로 바뀌어 새로운 성기를 가두는 것이 느껴진다.", "teal");
 			br();
 		} else if (V.xchange.chastityAdaptedMessage === "fellOff") {
-			element("span", "Your chastity cage has nothing left to enclose, and slips off into your wardrobe back home.", "teal");
+			element("span", "정조 케이지가 감쌀 것이 더 이상 없어서 집 옷장으로 미끄러져 빠졌다.", "teal");
 			br();
 		}
 		delete V.xchange.chastityAdaptedMessage;

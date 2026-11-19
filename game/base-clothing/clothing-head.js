@@ -4849,7 +4849,7 @@ function initHead() {
 			integrity_max: 200,
 			fabric_strength: 30,
 			reveal: 1,
-			word: "a pair of",
+			word: "",
 			plural: 1,
 			colour: "black",
 			colour_options: ["black", "blue", "brown", "green", "pink", "purple", "red", "tangerine", "teal", "white", "yellow", "neon blue"],
@@ -4861,7 +4861,7 @@ function initHead() {
 			warmth: 1,
 			cost: 5000,
 			description:
-				"Listen to music through the Music tab in your pocket while wearing these. They block outside noise, so you hear less of what happens around you.",
+				"착용하고 있으면 주머니 속 음악 탭으로 음악을 들을 수 있습니다. 바깥 소음을 막아 주기 때문에 주변에서 벌어지는 일이 덜 들립니다.",
 			shop: ["furniture"],
 			accessory: 1,
 			accessory_colour: 0,

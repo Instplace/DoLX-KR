@@ -139,12 +139,12 @@ const DoLSaveGuard = (() => {
 		const section = element("div", { class: "description" }, [
 			element(
 				"p",
-				"APK recovery backups are kept in app files, separately from WebView storage. " +
-					"Uninstalling or clearing app data also deletes these backups. Keep exported files elsewhere."
+				"APK 복구 백업은 WebView 저장소와 별도로 앱 파일에 보관됩니다. " +
+					"앱을 삭제하거나 앱 데이터를 지우면 이 백업도 함께 삭제됩니다. 내보낸 파일은 다른 곳에 보관하십시오."
 			),
 		]);
-		if (appBackupError) section.appendChild(element("p", { class: "red" }, "APK backup error: " + appBackupError));
-		if (backups.length === 0) section.appendChild(element("p", "No APK recovery backup is available yet."));
+		if (appBackupError) section.appendChild(element("p", { class: "red" }, "APK 백업 오류: " + appBackupError));
+		if (backups.length === 0) section.appendChild(element("p", "아직 사용할 수 있는 APK 복구 백업이 없습니다."));
 		for (const backup of backups) {
 			const status = element("span", "");
 			section.appendChild(
@@ -153,9 +153,9 @@ const DoLSaveGuard = (() => {
 					element("input", {
 						type: "button",
 						class: "saveMenuButton saveMenuConfirm",
-						value: "Restore APK backup",
+						value: "APK 백업 복원",
 						async onclick(event) {
-							if (!window.confirm("Load this APK backup? Any unsaved progress will be replaced.")) return;
+							if (!window.confirm("이 APK 백업을 불러오시겠습니까? 저장하지 않은 진행 상황은 모두 대체됩니다.")) return;
 							const button = event.currentTarget;
 							button.disabled = true;
 							try {
@@ -166,10 +166,10 @@ const DoLSaveGuard = (() => {
 								if (restorePayload(payload)) {
 									dismissLoss();
 									closeOverlay();
-								} else status.textContent = " Could not load this backup. Try an older copy or an exported file.";
+								} else status.textContent = " 이 백업을 불러올 수 없습니다. 더 오래된 사본이나 내보낸 파일을 시도해 보십시오.";
 							} catch (ex) {
 								appBackupError = String(ex);
-								status.textContent = " Could not read this backup: " + String(ex);
+								status.textContent = " 이 백업을 읽을 수 없습니다: " + String(ex);
 							} finally {
 								button.disabled = false;
 							}
@@ -311,7 +311,7 @@ const DoLSaveGuard = (() => {
 			localStorage.setItem(TOKEN_KEY, token);
 			return local == null ? "fresh" : "cleared";
 		} catch (ex) {
-			storageError = "Checking database reset: " + String(ex);
+			storageError = "데이터베이스 초기화 확인 중: " + String(ex);
 			return "unknown";
 		} finally {
 			if (db != null) db.close();
@@ -338,7 +338,7 @@ const DoLSaveGuard = (() => {
 		} catch (ex) {
 			/* A read that throws is a different failure from a read that returns nothing, and we
 			   cannot tell an evicted database from a broken one here. Say nothing rather than guess. */
-			storageError = "Reading save list: " + String(ex);
+			storageError = "세이브 목록 읽는 중: " + String(ex);
 			return false;
 		}
 
@@ -577,7 +577,7 @@ const DoLSaveGuard = (() => {
 			out.detailRows = idbInUse() ? (await idb.getSaveDetails()).length : null;
 		} catch (ex) {
 			out.detailRows = "error";
-			out.storageError = "Reading save list: " + String(ex);
+			out.storageError = "세이브 목록 읽는 중: " + String(ex);
 		}
 		return out;
 	}
@@ -589,7 +589,7 @@ const DoLSaveGuard = (() => {
 	 * @returns {string}
 	 */
 	function stamp(ms) {
-		if (!ms) return "unknown date";
+		if (!ms) return "알 수 없는 날짜";
 		return new Date(ms).toLocaleString();
 	}
 
@@ -598,7 +598,7 @@ const DoLSaveGuard = (() => {
 	 * @returns {string}
 	 */
 	function describeSlot(slot) {
-		const label = slot.saveName || slot.title || "unnamed save";
+		const label = slot.saveName || slot.title || "이름 없는 세이브";
 		const where = slot.slot === 0 ? "Autosave" : "Slot " + slot.slot;
 		return `${where}: ${label} (${stamp(slot.date)})`;
 	}
@@ -616,7 +616,7 @@ const DoLSaveGuard = (() => {
 				element("input", {
 					type: "button",
 					class: "saveMenuButton saveMenuConfirm",
-					value: "Restore backup copy",
+					value: "백업 사본 복원",
 					onclick() {
 						if (restoreLifeboat()) {
 							dismissLoss();
@@ -640,27 +640,27 @@ const DoLSaveGuard = (() => {
 
 		container.appendChild(
 			element("div", { class: "sneaky-warning" }, [
-				element("h3", "Your saved games were cleared"),
+				element("h3", "세이브 데이터가 지워졌습니다"),
 				element(
 					"p",
-					`${report.slots.length} save${report.slots.length === 1 ? " that was" : "s that were"} here on ${stamp(report.lastSeen)} ` +
-						`${report.slots.length === 1 ? "is" : "are"} gone. ` +
-						"The IndexedDB save database was reset or removed while its browser-side record remained. This can follow storage damage " +
-						"or site-data changes; the game cannot determine the exact cause. The missing saves cannot be recovered from IndexedDB."
+					`${stamp(report.lastSeen)}에 이곳에 있던 세이브 ${report.slots.length}개${report.slots.length === 1 ? "" : ""}가 ` +
+						`${report.slots.length === 1 ? "" : ""}사라졌습니다. ` +
+						"IndexedDB 세이브 데이터베이스가 초기화되었거나 삭제되었지만, 브라우저 쪽 기록은 남아 있습니다. 저장소 손상이나 " +
+						"사이트 데이터 변경 뒤에 일어날 수 있는 일이며, 게임은 정확한 원인을 알 수 없습니다. 사라진 세이브는 IndexedDB에서 복구할 수 없습니다."
 				),
 				element(
 					"ul",
 					report.slots.map(slot => element("li", describeSlot(slot)))
 				),
 				boat != null
-					? element("p", `A backup copy is still here: ${boat.saveName || boat.title || "unnamed save"}, day ${boat.days}, saved ${stamp(boat.date)}.`)
+					? element("p", `백업 사본이 아직 남아 있습니다: ${boat.saveName || boat.title || "이름 없는 세이브"}, ${boat.days}일째, ${stamp(boat.date)}에 저장됨.`)
 					: element(
 							"p",
 							appBackup() == null
-								? "No browser-side backup copy was available. An exported file is the only independent copy."
+								? "브라우저 쪽 백업 사본을 사용할 수 없었습니다. 내보낸 파일만이 유일한 독립 사본입니다."
 								: "No localStorage backup copy was available. Check the APK recovery copies in the Backups tab, or import an exported file."
 					  ),
-				element("p", "The backup and save-list record use the same browser or app storage. They can also disappear if all site data is cleared."),
+				element("p", "백업과 세이브 목록 기록은 같은 브라우저 또는 앱 저장소를 사용합니다. 사이트 데이터를 모두 지우면 함께 사라질 수 있습니다."),
 				element("div", actions),
 			])
 		);
@@ -675,23 +675,23 @@ const DoLSaveGuard = (() => {
 		const contents = [];
 		if (lifeboatBlocked) {
 			contents.push(
-				element("span", { class: "red" }, "The browser-side backup could not be updated. "),
-				"The previous backup, if any, has been kept. A deliberate slot save will retry it. "
+				element("span", { class: "red" }, "브라우저 쪽 백업을 갱신하지 못했습니다. "),
+				"이전 백업이 있다면 그대로 유지됩니다. 세이브 슬롯에 직접 저장하면 다시 시도합니다. "
 			);
 		}
 		if (state.persisted !== true) {
 			const status = state.requested
 				? state.persisted === false
-					? "Your browser did not allow protected storage. "
-					: "The storage request could not be completed. "
+					? "브라우저가 보호된 저장소를 허용하지 않았습니다. "
+					: "저장소 요청을 완료하지 못했습니다. "
 				: state.supported
-				? "Protected storage is not enabled. "
-				: "Your browser does not report whether storage is protected. ";
+				? "보호된 저장소가 켜져 있지 않습니다. "
+				: "브라우저가 저장소 보호 여부를 알려 주지 않습니다. ";
 
 			contents.push(
 				element("span", { class: "red" }, status),
-				isApp() ? "Clearing app data deletes saves stored in the app. " : "Clearing site data or browser storage reclamation can delete your saves. ",
-				"Export your save to a file to keep a separate backup!"
+				isApp() ? "앱 데이터를 지우면 앱에 저장된 세이브가 삭제됩니다. " : "사이트 데이터를 지우거나 브라우저가 저장소를 회수하면 세이브가 삭제될 수 있습니다. ",
+				"세이브를 파일로 내보내 따로 백업해 두십시오!"
 			);
 		}
 		if (!state.requested && state.persisted !== true && state.supported && navigator.storage != null && typeof navigator.storage.persist === "function") {
@@ -700,7 +700,7 @@ const DoLSaveGuard = (() => {
 				element("input", {
 					type: "button",
 					class: "saveMenuButton",
-					value: "Request persistent storage",
+					value: "영구 저장소 요청",
 					async onclick(event) {
 						event.currentTarget.disabled = true;
 						event.currentTarget.value = "Requesting...";
@@ -757,8 +757,8 @@ const DoLSaveGuard = (() => {
 			["Saves in localStorage mirror", String(data.mirrorSlots)],
 			["Storage persistent", data.persistence.supported ? String(data.persistence.persisted) : "unsupported"],
 			["Storage used", mb(data.usageBytes) + " of " + mb(data.quotaBytes)],
-			["Backup copy", data.lifeboat ? `${stamp(data.lifeboat.date)} (day ${data.lifeboat.days})` : data.lifeboatBlocked ? "blocked - no room" : "none"],
-			["APK file backups", appBackup() == null ? "unavailable in this build" : String(data.appBackups.length)],
+			["백업 사본", data.lifeboat ? `${stamp(data.lifeboat.date)} (${data.lifeboat.days}일째)` : data.lifeboatBlocked ? "공간 부족으로 차단됨" : "없음"],
+			["APK 파일 백업", appBackup() == null ? "이 빌드에서는 사용할 수 없음" : String(data.appBackups.length)],
 			["APK backup error", data.appBackupError || "none"],
 			["Last storage error", data.storageError || "none"],
 			["WebView / browser", data.userAgent],

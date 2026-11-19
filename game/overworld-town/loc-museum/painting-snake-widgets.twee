@@ -1415,7 +1415,7 @@
 							<</if>>
 							<<set _torchState to $hc.dungeonTorchState is "lit" ? "lit" : "snuffed">>
 							<<set _torchAction to "dungeon" + _torchState.toUpperFirst()>>
-							<<set _torchText to $hc.dungeonTorchState is "lit" ? "Take and light an unused torch" : "Take an unlit torch">>
+							<<set _torchText to $hc.dungeonTorchState is "lit" ? "쓰지 않은 횃불을 집어 불을 붙인다" : "꺼진 횃불을 가져간다">>
 							<<capture _torchTime, _torchState, _torchAction>>
 								| <<link [[`_torchText`|$passage]]>><<run hcItemAdd({ type: "torch", name: "torch", location: "held", origin: V.bus, time: _torchTime, state: _torchState, inSconce: false}, "held", _torchAction)>><</link>>
 							<</capture>>
@@ -1441,7 +1441,7 @@
 									<</if>>
 									<<set _torchState to "snuffed">>
 									<<set _torchAction to "dungeon" + _torchState.toUpperFirst()>>
-									<<set _torchText to "Put an unlit torch in " + _valueGucket.nameText>>
+									<<set _torchText to _valueGucket.nameText + "에 꺼진 횃불을 넣는다">>
 									<<capture _torchTime, _torchState, _torchAction>>
 										| <<link [[`_torchText`|$passage]]>><<run hcItemAdd({ type: "torch", name: "torch", location: _valueGucket.containerID, origin: V.bus, time: _torchTime, state: _torchState, inSconce: false}, _valueGucket.containerID, _torchAction)>><</link>>
 									<</capture>>
@@ -1588,7 +1588,7 @@
 							| <<link [[내려놓는다|$passage]]>><<set _item.location to $bus>><<set $itemAction to "down">><<set $itemActionObject to _item>><</link>>
 						<</if>>
 					<<elseif !_item.used and !_item.dirty>>
-						| <<link [[Return|$passage]]>><<run hcItemRemove(_item, "return")>><</link>>
+						| <<link [[되돌린다|$passage]]>><<run hcItemRemove(_item, "return")>><</link>>
 					<</if>>
 
 				<<else>>
@@ -1601,7 +1601,7 @@
 							| <<link [[숨긴다|$passage]]>><<set _item.location to $bus>><<set $itemAction to "dropStash">><<set $itemActionObject to _item>><</link>>
 						<</if>>
 					<<elseif _item.containerID>>
-						| <<link [[Put down|$passage]]>><<set _item.location to $bus>><<set $itemAction to "down">><<set $itemActionObject to _item>><</link>>
+						| <<link [[내려놓는다|$passage]]>><<set _item.location to $bus>><<set $itemAction to "down">><<set $itemActionObject to _item>><</link>>
 					<<elseif _item.dirty isnot undefined and _item.dirtyOnDrop>>
 						/* For items that can become dirty */
 						<<if _item.dirty gte 1>>
@@ -1610,7 +1610,7 @@
 							| <<link "떨어뜨린다 <span class='red'>(더러워짐!)</span>" $passage>><<set _item.location to $bus>><<set $itemAction to "dropDirty">><<set $itemActionObject to _item>><<set _item.dirty to 1>><</link>>
 						<</if>>
 					<<else>>
-						| <<link [[Drop|$passage]]>><<set _item.location to $bus>><<set $itemAction to "drop">><<set $itemActionObject to _item>><</link>>
+						| <<link [[떨어뜨린다|$passage]]>><<set _item.location to $bus>><<set $itemAction to "drop">><<set $itemActionObject to _item>><</link>>
 					<</if>>
 				<</if>>
 			<</if>>
@@ -1659,7 +1659,7 @@
 
 				/* Empty bucket back into well or lake */
 				<<if _itemsHere.includes("water") and _waterInThisContainer and !($bus is "garden" and _waterInThisContainer?.dirty gte 1 and !$hc.wellTainted)>>
-					<<set _linkText to $bus is "lake" ? "Empty into lake" : "Empty back into well">>
+					<<set _linkText to $bus is "lake" ? "호수에 비운다" : "우물에 다시 비운다">>
 					| <<link [[`_linkText (0:01)`|$passage]]>>
 						<<pass 1>>
 						<<run hcItemRemove(_waterInThisContainer)>>

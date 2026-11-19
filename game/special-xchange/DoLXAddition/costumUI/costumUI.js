@@ -16,13 +16,13 @@
 		Notes: "\u270E", // ✎
 
 		Statistics: "\u25A5", // ▥
-		"Extra stats (spoilers)": "\u2295", // ⊕
+		"추가 통계 (스포일러)": "\u2295", // ⊕
 		Feats: "\u2742", // ❂
 		Stats: "\u25A6", // ▦
 
 		Visual: "\u25C9", // ◉
 		NPCs: "\u265F", // ♟
-		"Alex's Farm": "\u2302", // ⌂
+		"알렉스의 농장": "\u2302", // ⌂
 		Teleport: "\u219C", // ↜
 		Other: "\u22EF", // ⋯
 
@@ -34,16 +34,16 @@
 		Backups: "\u21BA",
 		"Export/Import": "\u21C4", // ⇄
 
-		"Event Info": "\u25CE", // ◎
-		"Blackjack Guide": "\u2660", // ♠
+		"이벤트 정보": "\u25CE", // ◎
+		"블랙잭 가이드": "\u2660", // ♠
 		Layers: "\u25A9", // ▩
 		Colours: "\u25D2", // ◒
 		Model: "\u25B1", // ▱
 		"Start/Stop Animation": "\u25B6", // ▶
-		"Refresh Caches": "\u21BB", // ↻
-		"Outfit Editor": "\u2702", // ✂
+		"캐시 새로고침": "\u21BB", // ↻
+		"의상 편집기": "\u2702", // ✂
 		Bag: "\u25A2", // ▢
-		"Hand Mirror": "\u232C", // ⌬
+		"손거울": "\u232C", // ⌬
 		Music: "\u266B", // ♫
 	});
 

@@ -801,57 +801,57 @@
 
 	/* Journal text is rebuilt from short records, never stored as prose. */
 	const contextText = {
-		study: "while you studied together",
-		room: "in Robin's room",
-		chat: "while you talked",
-		school: "at school, in front of the others",
-		private: "when the two of you were alone",
-		library: "at the library desk",
-		cuddle: "by the fire",
-		field: "while you rested in the field",
-		brewing: "over the recipe cards",
-		cave: "in the cave",
-		tower: "by the tower fire",
-		pub: "in the pub",
+		study: "(함께 공부하는 동안)",
+		room: "(로빈의 방에서)",
+		chat: "(이야기를 나누는 동안)",
+		school: "(학교에서, 다른 아이들 앞에서)",
+		private: "(둘만 있을 때)",
+		library: "(도서관 책상에서)",
+		cuddle: "(불가에서)",
+		field: "(들판에서 쉬는 동안)",
+		brewing: "(레시피 카드를 앞에 두고)",
+		cave: "(동굴에서)",
+		tower: "(탑의 불가에서)",
+		pub: "(술집에서)",
 		class: "during class",
-		visit: "at the flat",
-		rent: "while collecting rent",
-		dinner: "at dinner",
-		hotel: "at the hotel",
-		mansion: "at the mansion",
-		table: "at Poppy's table",
-		hallway: "in the school corridor",
+		visit: "(집에서)",
+		rent: "(월세를 걷는 동안)",
+		dinner: "(저녁 식사 때)",
+		hotel: "(호텔에서)",
+		mansion: "(저택에서)",
+		table: "(포피의 식탁에서)",
+		hallway: "(학교 복도에서)",
 	};
 	const kindText = {
-		enjoy: "liked it",
-		personal: "recognised a favourite flower in it",
-		familiar: "recognised your usual scent",
-		craft: "respected the work more than the result",
-		curious: "was curious about how you made it",
-		discomfort: "found it too much",
-		dislike: "didn't care for it",
-		mild: "noticed it without much comment",
-		masked: "didn't like that it covered your own scent",
-		scent: "picked out your scent beneath it",
-		moor: "seemed to recognise something from the moor",
-		close: "noticed it up close",
-		gift: "received it as a gift",
-		teacher: "asked you to teach the technique",
-		familiar_poppy: "heard an echo of a personal fragrance in it",
-		unconventional: "didn't expect it to work",
-		disaster: "examined a spectacular failure",
-		"commission-excellent": "found it right for the occasion",
-		"commission-unexpected": "was surprised by how well it worked",
-		"commission-exception": "made an exception for your choice",
-		"commission-technical": "admired the skill but not the choice",
-		"commission-adequate": "accepted it without enthusiasm",
-		"commission-embarrassing": "thought it unfit for company",
-		"commission-defiance": "saw that you ignored the request",
+		enjoy: "마음에 들어 했습니다",
+		personal: "좋아하는 꽃향이 느껴진다고 알아봤습니다",
+		familiar: "평소 당신의 향이라고 알아봤습니다",
+		craft: "결과보다 만든 솜씨를 높이 샀습니다",
+		curious: "어떻게 만들었는지 궁금해했습니다",
+		discomfort: "너무 강하다고 느꼈습니다",
+		dislike: "별로 좋아하지 않았습니다",
+		mild: "별말 없이 알아차렸습니다",
+		masked: "당신 본래의 향이 가려진 것을 싫어했습니다",
+		scent: "그 아래에서 당신의 향을 가려냈습니다",
+		moor: "황야에서 맡아 본 무언가를 떠올린 듯했습니다",
+		close: "가까이에서 알아차렸습니다",
+		gift: "선물로 받았습니다",
+		teacher: "만드는 기술을 가르쳐 달라고 청했습니다",
+		familiar_poppy: "그 안에서 개인적인 향의 여운을 들었습니다",
+		unconventional: "그것이 통할 줄은 몰랐습니다",
+		disaster: "엄청난 실패작을 살펴봤습니다",
+		"commission-excellent": "그 자리에 딱 맞다고 여겼습니다",
+		"commission-unexpected": "의외로 잘 어울려 놀랐습니다",
+		"commission-exception": "당신의 선택을 예외로 인정했습니다",
+		"commission-technical": "솜씨에는 감탄했지만 선택은 아쉬워했습니다",
+		"commission-adequate": "큰 열의 없이 받아들였습니다",
+		"commission-embarrassing": "사람들 앞에 내놓기엔 부적절하다고 여겼습니다",
+		"commission-defiance": "당신이 의뢰를 무시한 것을 알아챘습니다",
 	};
 	function memoryText(m) {
-		const what = (m.c === "Poppy" && m.k === "familiar" ? kindText.familiar_poppy : kindText[m.k]) || "noticed it";
+		const what = (m.c === "Poppy" && m.k === "familiar" ? kindText.familiar_poppy : kindText[m.k]) || "알아차렸습니다";
 		const where = contextText[m.ctx] ? ` ${contextText[m.ctx]}` : "";
-		const detail = m.f?.[0] && m.f?.[1] ? ` The ${m.f[0]} side mattered; the ${m.f[1]} side less so.` : m.f?.[0] ? ` The ${m.f[0]} side stood out.` : "";
+		const detail = ((d) => (m.f?.[0] && m.f?.[1] ? ` ${d[m.f[0] + ""] || m.f[0]} 계열이 중요했고, ${d[m.f[1] + ""] || m.f[1]} 계열은 덜했습니다.` : m.f?.[0] ? ` ${d[m.f[0] + ""] || m.f[0]} 계열이 눈에 띄었습니다.` : ""))({ floral: "플로럴", "fresh floral": "프레시 플로럴", powdery: "파우더리", fruity: "프루티", citrus: "시트러스", green: "그린", herbal: "허브", aquatic: "아쿠아틱", woody: "우디", earthy: "어시", resinous: "레지너스", spicy: "스파이시", musky: "머스크", amber: "앰버", sweet: "달콤한", creamy: "크리미", gourmand: "구르망", roasted: "로스티드", smoky: "스모키", savoury: "감칠맛 나는" });
 		return `${m.c} ${what}${where}.${detail}${m.n > 1 ? ` (${m.n} times)` : ""}`;
 	}
 	function knownText(id) {
@@ -868,9 +868,9 @@
 		const label = ["Unknown", "Suspected", "Known", "Personal"][k.lvl];
 		const fav =
 			k.lvl >= 3 && profiles[id]?.favourite?.seen()
-				? ` A favourite flower helps: ${setup.foodstuff[profiles[id].favourite.material]?.name || profiles[id].favourite.material}.`
+				? ` 좋아하는 꽃이 도움이 됩니다: ${setup.foodstuff[profiles[id].favourite.material]?.name || profiles[id].favourite.material}.`
 				: "";
-		const parts = [likes.length ? `seems to like ${likes.join(" and ")}` : "", dislikes.length ? `seems to avoid ${dislikes.join(" and ")}` : ""].filter(
+		const parts = ((d) => [likes.length ? `${likes.map(f => d[f] || f).join(", ")} 계열을 좋아하는 듯합니다` : "", dislikes.length ? `${dislikes.map(f => d[f] || f).join(", ")} 계열을 피하는 듯합니다` : ""])({ floral: "플로럴", "fresh floral": "프레시 플로럴", powdery: "파우더리", fruity: "프루티", citrus: "시트러스", green: "그린", herbal: "허브", aquatic: "아쿠아틱", woody: "우디", earthy: "어시", resinous: "레지너스", spicy: "스파이시", musky: "머스크", amber: "앰버", sweet: "달콤한", creamy: "크리미", gourmand: "구르망", roasted: "로스티드", smoky: "스모키", savoury: "감칠맛 나는" }).filter(
 			Boolean
 		);
 		return `${label}: ${parts.length ? id + " " + parts.join(", ") + "." : "One reaction so far; not enough to tell."}${fav}`;
@@ -880,14 +880,14 @@
 		const s = V.perfumery?.characters;
 		const problems = [];
 		if (!s) return ["Character records not initialized yet (created on first reaction)."];
-		if (s.memories.length > 40) problems.push("Memory list exceeds 40.");
+		if (s.memories.length > 40) problems.push("기억 목록이 40개를 넘었습니다.");
 		const c = s.avery.commission;
-		if (c && !c.archived && c.rewarded) problems.push("Active commission already marked rewarded.");
-		if (c?.archived && !c.rewarded) problems.push("Delivered commission was never rewarded.");
-		if (s.avery.history.filter(h => h.id === c?.id).length > 1) problems.push("Commission delivered twice.");
+		if (c && !c.archived && c.rewarded) problems.push("진행 중인 의뢰가 이미 보상 완료로 표시되어 있습니다.");
+		if (c?.archived && !c.rewarded) problems.push("전달한 의뢰에 보상이 지급되지 않았습니다.");
+		if (s.avery.history.filter(h => h.id === c?.id).length > 1) problems.push("의뢰가 두 번 전달되었습니다.");
 		if (s.poppy.pending && !V.perfumery.bottles.some(b => b.id === s.poppy.pending.bottleId))
-			problems.push("Poppy event points to a missing bottle (it will be skipped).");
-		for (const [id, f] of Object.entries(s.familiar)) if (f.n > 5) problems.push(`${id} familiarity above cap.`);
+			problems.push("포피 이벤트가 존재하지 않는 병을 가리킵니다 (건너뜁니다).");
+		for (const [id, f] of Object.entries(s.familiar)) if (f.n > 5) problems.push(`${id} 친숙도가 상한을 넘었습니다.`);
 		return problems.length ? problems : ["No problems found."];
 	}
 	function debug(action, value) {
@@ -934,22 +934,22 @@
 		Doren: { regular: "Doren Talk", personal: "", special: "", tested: true },
 		Bailey: { regular: "Rent Pay", personal: "", special: "", tested: true },
 		Poppy: {
-			regular: "existing lessons and collaborations",
+			regular: "기존 수업과 협업",
 			personal: "",
-			special: "Five special events, rivalry, rescue, demonstration, Avery advice",
+			special: "특별 이벤트 다섯 개: 라이벌, 구출, 시연, 에이버리의 조언",
 			tested: true,
 		},
 	};
 	function lab({ host, el, button, section, select, signal, current, debugAction }) {
-		const d = section("Character reactions (preview never changes relationships)");
+		const d = section("캐릭터 반응 (미리보기는 관계를 바꾸지 않습니다)");
 		const who = select(
 			"Character",
 			Object.keys(profiles).map(k => [k, k]),
 			d
 		);
-		const owned = select("Source", [["lab", "Current lab formula"], ...(V.perfumery?.bottles || []).map(b => [String(b.id), b.name])], d);
+		const owned = select("원본", [["lab", "현재 실험실 배합"], ...(V.perfumery?.bottles || []).map(b => [String(b.id), b.name])], d);
 		const phase = select(
-			"Scent phase",
+			"향 단계",
 			[
 				["opening", "Opening"],
 				["heart", "Heart"],
@@ -958,7 +958,7 @@
 			d
 		);
 		const strength = select(
-			"Wear strength",
+			"착용 강도",
 			[
 				["1", "Fresh"],
 				["0.6", "Settled"],
@@ -967,36 +967,36 @@
 			d
 		);
 		const event = select(
-			"Poppy event",
+			"포피 이벤트",
 			poppyOrder.map(k => [k, k]),
 			d
 		);
 		const request = select(
-			"Avery request",
+			"에이버리 의뢰",
 			averyRequests.map((r, i) => [String(i), r.context]),
 			d
 		);
 		const framing = select(
-			"Avery framing",
+			"에이버리 접근 방식",
 			[
-				["asked", "Followed the brief"],
-				["own", "Own choices"],
-				["you", "Thinking of Avery"],
+				["asked", "의뢰를 따름"],
+				["own", "내 취향대로"],
+				["you", "에이버리를 떠올리며"],
 			],
 			d
 		);
-		button("Evaluate reaction", "charEval", d);
-		button("Check Poppy events", "charPoppy", d);
-		button("Judge as Avery commission", "charAvery", d);
-		button("Find suitable and unsuitable formulas", "charAverySearch", d);
-		button("Coverage matrix", "charCoverage", d);
-		button("Check for broken state", "charValidate", d);
-		button("Apply to save: queue Poppy event on chosen bottle", "charQueue", d);
-		button("Apply to save: reset Poppy special events only", "charResetPoppy", d);
-		button("Apply to save: Avery noticed (offer due)", "charAveryNoticed", d);
-		button("Apply to save: start Avery commission", "charAveryActive", d);
-		button("Apply to save: reset Avery commission only", "charResetAvery", d);
-		button("Apply to save: allow today's reactions again", "charResetReactions", d);
+		button("반응 평가", "charEval", d);
+		button("포피 이벤트 확인", "charPoppy", d);
+		button("에이버리 의뢰로 판정", "charAvery", d);
+		button("적합한 배합과 부적합한 배합 찾기", "charAverySearch", d);
+		button("적용 범위표", "charCoverage", d);
+		button("손상된 상태 점검", "charValidate", d);
+		button("저장에 적용: 선택한 병에 포피 이벤트 대기시키기", "charQueue", d);
+		button("저장에 적용: 포피 특별 이벤트만 초기화", "charResetPoppy", d);
+		button("저장에 적용: 에이버리가 알아챔 (제안 시점)", "charAveryNoticed", d);
+		button("저장에 적용: 에이버리 의뢰 시작", "charAveryActive", d);
+		button("저장에 적용: 에이버리 의뢰만 초기화", "charResetAvery", d);
+		button("저장에 적용: 오늘의 반응 다시 허용", "charResetReactions", d);
 		const out = el("pre", "", d);
 		const props = () => {
 			if (owned.value === "lab") return current();
@@ -1025,7 +1025,7 @@
 								wouldRecordMemory: r.eligible,
 								familiarity: s?.familiar?.[id] || null,
 								knowledge: s?.known?.[id] || null,
-								stat: profiles[id].stat || "none (no relationship change)",
+								stat: profiles[id].stat || "없음 (관계 변화 없음)",
 							},
 							null,
 							2
@@ -1063,7 +1063,7 @@
 						const r = averyRequests[Number(request.value)];
 						out.textContent = JSON.stringify(
 							{
-								state: V.perfumery?.characters?.avery || "not initialized",
+								state: V.perfumery?.characters?.avery || "초기화되지 않음",
 								offerReady: averyOfferReady(),
 								request: r,
 								judged: averyJudge(p, r, framing.value),
@@ -1083,7 +1083,7 @@
 								request: r,
 								suitable: pick(scored),
 								unsuitable: pick(scored.slice().reverse()),
-								note: "Paste a formula into the JSON box above, or store it as a bottle to test delivery.",
+								note: "위의 JSON 칸에 배합을 붙여 넣거나, 병으로 저장해 전달을 시험하십시오.",
 							},
 							null,
 							2
@@ -1173,35 +1173,35 @@
 	};
 	const words = {
 		floral: "flowers",
-		"fresh floral": "fresh flowers",
-		powdery: "face powder",
-		fruity: "ripe fruit",
+		"fresh floral": "싱그러운 꽃",
+		powdery: "화장 분",
+		fruity: "잘 익은 과일",
 		citrus: "lemons",
-		green: "cut grass",
+		green: "벤 풀",
 		herbal: "herbs",
 		aquatic: "rain",
 		woody: "wood",
 		earthy: "soil",
-		resinous: "pine sap",
+		resinous: "송진",
 		spicy: "spice",
-		musky: "warm skin",
-		amber: "warm honey",
+		musky: "따뜻한 살결",
+		amber: "따뜻한 꿀",
 		sweet: "sugar",
 		creamy: "cream",
 		gourmand: "baking",
 		roasted: "toast",
 		smoky: "smoke",
 		savoury: "cooking",
-		rancid: "old butter",
-		sulfurous: "rotten eggs",
-		acrid: "burning plastic",
+		rancid: "오래된 버터",
+		sulfurous: "썩은 달걀",
+		acrid: "타는 플라스틱",
 		moldy: "mould",
-		decaying: "something rotting",
+		decaying: "무언가 썩는 것",
 		pungent: "vinegar",
-		sour: "sour milk",
-		fermented: "old fruit",
+		sour: "상한 우유",
+		fermented: "오래된 과일",
 		sweaty: "sweat",
-		burnt: "burnt food",
+		burnt: "탄 음식",
 	};
 	const word = k => words[k] || "perfume";
 	const foulNotes = ["rancid", "sulfurous", "acrid", "moldy", "decaying", "pungent", "sour", "fermented", "sweaty", "burnt"];
@@ -1287,10 +1287,10 @@
 			});
 	}
 	function blocked(place) {
-		if (!P().enabled() || !daily[place]) return "Perfumery is off.";
-		if (V.daily[daily[place]]) return "Already happened today.";
-		if (V.exposed > 0) return "You're exposed.";
-		if (place === "street" && !V.outside) return "Not outdoors.";
+		if (!P().enabled() || !daily[place]) return "향수 기능이 꺼져 있습니다.";
+		if (V.daily[daily[place]]) return "오늘은 이미 일어났습니다.";
+		if (V.exposed > 0) return "당신은 노출된 상태입니다.";
+		if (place === "street" && !V.outside) return "야외가 아닙니다.";
 		return null;
 	}
 	/* Read-only. The weight this location's perfume event gets in the host's event pool. Kept small so vanilla events keep their share. */

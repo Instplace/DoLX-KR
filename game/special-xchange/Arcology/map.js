@@ -326,7 +326,7 @@ window.arcologyRenderMap = function (host, focus) {
 		].join(" ");
 		svg += `<g class="${cls.replace(/\s+/g, " ").trim()}" data-id="${id}" data-tier="${d.tier}" tabindex="0" role="button" aria-pressed="${
 			id === target
-		}" aria-label="${esc(d.name)}${id === here ? ", current position" : ""}${id === target ? ", destination" : ""}${d.hidden ? ", restricted district" : ""}">`;
+		}" aria-label="${esc(d.name)}${id === here ? ", 현재 위치" : ""}${id === target ? ", 목적지" : ""}${d.hidden ? ", 출입 제한 구역" : ""}">`;
 		svg += `<rect class="acm-ring" x="${x - bw / 2}" y="${y - bh / 2}" width="${bw}" height="${bh}" rx="6"/><rect class="acm-tier" x="${x - bw / 2}" y="${
 			y + bh / 2 - 3
 		}" width="${bw}" height="3" rx="1.5"/>`;
@@ -341,14 +341,14 @@ window.arcologyRenderMap = function (host, focus) {
 	const oldViewport = host.querySelector(".acm");
 	const scroll = oldViewport ? [oldViewport.scrollLeft, oldViewport.scrollTop] : null;
 	const scale = host.dataset.scale || "1";
-	host.innerHTML = `<div class="acm-tools" role="group" aria-label="Map controls"><label>Destination <select class="acm-dest-select"><option value="">Select a district</option>${shown
+	host.innerHTML = `<div class="acm-tools" role="group" aria-label="지도 조작"><label>목적지 <select class="acm-dest-select"><option value="">구역 선택</option>${shown
 		.filter(known)
 		.map(id => `<option value="${id}"${id === target ? " selected" : ""}>${esc(a.districts[id].name)}</option>`)
 		.join(
 			""
-		)}</select></label><div class="acm-view-tools"><button type="button" data-map="out" aria-label="Zoom out">−</button><button type="button" data-map="in" aria-label="Zoom in">+</button><button type="button" data-map="fit">Fit</button><button type="button" data-map="here">My position</button><button type="button" data-map="target"${
+		)}</select></label><div class="acm-view-tools"><button type="button" data-map="out" aria-label="축소">−</button><button type="button" data-map="in" aria-label="확대">+</button><button type="button" data-map="fit">전체 보기</button><button type="button" data-map="here">내 위치</button><button type="button" data-map="target"${
 		target ? "" : " disabled"
-	}>Destination</button></div></div><p class="acm-hint">Drag or scroll to explore. Select a recorded district to plan your walk.</p><div class="acm" tabindex="0" role="region" aria-label="Scrollable city map">${svg}</div><div class="acm-info" aria-live="polite"></div>`;
+	}>목적지</button></div></div><p class="acm-hint">드래그하거나 스크롤하여 둘러보십시오. 기록된 구역을 선택하면 이동 경로를 계획할 수 있습니다.</p><div class="acm" tabindex="0" role="region" aria-label="스크롤할 수 있는 도시 지도">${svg}</div><div class="acm-info" aria-live="polite"></div>`;
 	const viewport = host.querySelector(".acm");
 	const diagram = host.querySelector(".acm-svg");
 	const resize = value => {

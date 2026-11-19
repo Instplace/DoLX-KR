@@ -91,8 +91,8 @@
 		const state = featState(name);
 		let line;
 		if (state === "earned") line = '<span class="green">Earned in this save.</span>';
-		else if (state === "blocked") line = "Feats can't be earned in this save (cheats, debug, or soft mode are on).";
-		else line = done >= total ? "All done." : `${total - done} to go.`;
+		else if (state === "blocked") line = "이 세이브에서는 업적을 얻을 수 없습니다 (치트, 디버그 또는 소프트 모드가 켜져 있습니다).";
+		else line = done >= total ? "모두 완료했습니다." : `${total - done}개 남음.`;
 		return (
 			`<div class="con-feat${state === "earned" ? " con-feat--earned" : ""}"><img class="con-feat-coin" src="img/ui/coin-gold.gif" alt="" aria-hidden="true">` +
 			`<div class="con-feat-text"><span class="con-feat-title">${name}, a Level 3 feat</span><span>Complete all ${total} challenges to earn it. ${line}</span></div></div>`

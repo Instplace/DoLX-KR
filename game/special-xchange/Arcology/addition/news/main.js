@@ -18,7 +18,7 @@ setup.arcologyNews = {
 				...Object.values(this.orgs).map(o => o.name),
 				...Object.values(setup.arcology.districts).map(d => d.name),
 				...Object.values(this.places).map(p => p.name),
-				"the Glasshouse's host",
+				"글래스하우스의 호스트",
 				"Luchifen",
 			];
 			this.namesPattern = new RegExp(
@@ -36,7 +36,7 @@ setup.arcologyNews = {
 			.replace(this.namesPattern, " subject ")
 			.toLowerCase()
 			.replace(/\d+(?:[.:]\d+)*/g, " number ")
-			.replace(/[^a-z\s]/g, " ")
+			.replace(/[^a-z가-힣\s]/g, " ")
 			.replace(/\b(the|a|an|in|on|at|of|to|for|and|is|are|has|have)\b/g, " ")
 			.replace(/\s+/g, " ")
 			.trim();
@@ -131,28 +131,28 @@ setup.arcologyNews = {
 
 	/* Organisations and people the news may name. Only what is listed here can appear in an article. */
 	orgs: {
-		enforcement: { name: "Island Enforcement", kind: "authority", home: "civic" },
-		registry: { name: "the Civic Registry", kind: "authority", home: "civic" },
-		transit: { name: "City Transit", kind: "authority", home: "civic" },
-		halden: { name: "the Halden Trust", kind: "corp", home: "exchange" },
-		unitx: { name: "the Unit Exchange", kind: "corp", home: "exchange" },
-		kessler: { name: "Kessler Arms", kind: "corp", home: "forge" },
-		printworks: { name: "the Printworks", kind: "corp", home: "forge" },
-		foundry: { name: "Arcology Foundry", kind: "corp", home: "ironworks" },
-		compute: { name: "Compute Floor management", kind: "corp", home: "commerce" },
-		lumen: { name: "Lumen Clinic", kind: "corp", home: "medtech" },
-		meridian: { name: "Hotel Meridian", kind: "corp", home: "relay" },
-		tidewater: { name: "Tidewater Freight", kind: "corp", home: "pier" },
-		wire: { name: "the Wire Gate crew", kind: "crew", home: "stronghold" },
+		enforcement: { name: "섬 집행국", kind: "authority", home: "civic" },
+		registry: { name: "시민 등록소", kind: "authority", home: "civic" },
+		transit: { name: "도시 교통국", kind: "authority", home: "civic" },
+		halden: { name: "할든 트러스트", kind: "corp", home: "exchange" },
+		unitx: { name: "유닛 환전소", kind: "corp", home: "exchange" },
+		kessler: { name: "케슬러 암스", kind: "corp", home: "forge" },
+		printworks: { name: "프린트웍스", kind: "corp", home: "forge" },
+		foundry: { name: "아콜로지 주조소", kind: "corp", home: "ironworks" },
+		compute: { name: "컴퓨트 플로어 운영진", kind: "corp", home: "commerce" },
+		lumen: { name: "루멘 클리닉", kind: "corp", home: "medtech" },
+		meridian: { name: "호텔 메리디안", kind: "corp", home: "relay" },
+		tidewater: { name: "타이드워터 화물", kind: "corp", home: "pier" },
+		wire: { name: "와이어 게이트 패거리", kind: "crew", home: "stronghold" },
 		lowtide: { name: "Lowtide", kind: "crew", home: "flats" },
-		gutterline: { name: "the Gutterline", kind: "crew", home: "underpass" },
+		gutterline: { name: "거터라인", kind: "crew", home: "underpass" },
 		halcyon: { name: "Halcyon", kind: "venue", home: "neon" },
 		pulse: { name: "Pulse", kind: "venue", home: "neon" },
-		staticroom: { name: "the Static Room", kind: "venue", home: "neon" },
+		staticroom: { name: "스태틱 룸", kind: "venue", home: "neon" },
 		afterimage: { name: "Afterimage", kind: "venue", home: "relay" },
 		/* Public: hosts invitation-only gatherings at the Glasshouse. Never published: the residence, Victor, the player, the past.
 		   Only the "host" role is written for them, and the name shows once the player knows it. */
-		luchifen: { name: "the Glasshouse's host", kind: "person", pronoun: "they", home: "relay", roles: ["host"] },
+		luchifen: { name: "글래스하우스의 호스트", kind: "person", pronoun: "they", home: "relay", roles: ["host"] },
 	},
 
 	orgName(key) {
@@ -162,11 +162,11 @@ setup.arcologyNews = {
 
 	/* Workplaces an industrial story can affect. closable: the place really shuts while the story says so. */
 	places: {
-		foundry: { d: "ironworks", org: "foundry", closable: true, name: "the foundry" },
-		scrap: { d: "ironworks", org: "foundry", name: "the scrap yard" },
-		printworks: { d: "forge", org: "printworks", name: "the Printworks" },
-		kessler: { d: "forge", org: "kessler", name: "Kessler Arms' workshop" },
-		compute: { d: "commerce", org: "compute", closable: true, name: "the Compute Floor" },
+		foundry: { d: "ironworks", org: "foundry", closable: true, name: "주조소" },
+		scrap: { d: "ironworks", org: "foundry", name: "고철 야적장" },
+		printworks: { d: "forge", org: "printworks", name: "프린트웍스" },
+		kessler: { d: "forge", org: "kessler", name: "케슬러 암스의 공방" },
+		compute: { d: "commerce", org: "compute", closable: true, name: "컴퓨트 플로어" },
 	},
 
 	/* Story families: where they happen, who takes part, and how each stage leads to the next.

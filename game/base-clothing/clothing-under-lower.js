@@ -2678,7 +2678,7 @@ function initUnderLower() {
 			femininity: 300,
 			warmth: 1,
 			cost: 1200,
-			description: "Smooth silk, dotted all over.",
+			description: "매끈한 실크에 전체적으로 점무늬가 있습니다.",
 			shop: ["clothing"],
 			accessory: 1,
 			accessory_colour: 0,

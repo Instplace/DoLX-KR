@@ -67,7 +67,7 @@
 		const p = setup.perfumeryModel.calculate(b.formula, b.blending ?? 0.5, b.formula.age);
 		return descriptor(p.fingerprint, p);
 	}
-	function render(d, label = "Perfume bottle") {
+	function render(d, label = "향수병") {
 		const ns = "http://www.w3.org/2000/svg";
 		const svg = document.createElementNS(ns, "svg");
 		svg.setAttribute("viewBox", "0 0 64 70");
@@ -107,7 +107,7 @@
 	Macro.add("perfumeryIcon", {
 		handler() {
 			const b = this.args[0];
-			if (b?.formula) this.output.append(render(forBottle(b), b.name || "Recorded perfume"));
+			if (b?.formula) this.output.append(render(forBottle(b), b.name || "기록된 향수"));
 		},
 	});
 })();
@@ -131,9 +131,9 @@
 	});
 	const layerName = { top: "Opening", heart: "Heart", base: "Base" };
 	const layerHint = {
-		top: "The opening note is the first scent you notice. It fades as the heart of the perfume becomes clearer.",
-		heart: "The heart note gives the perfume its main character. It becomes more noticeable after the opening fades.",
-		base: "The base note is the smell that remains on your skin after the lighter scents fade.",
+		top: "오프닝 노트는 가장 먼저 느껴지는 냄새입니다. 향수의 하트가 또렷해지면서 옅어집니다.",
+		heart: "하트 노트는 향수의 중심이 되는 성격을 정합니다. 오프닝이 사라진 뒤에 더 뚜렷해집니다.",
+		base: "베이스 노트는 가벼운 냄새가 사라진 뒤에도 피부에 남는 냄새입니다.",
 	};
 	/* Nine tiles: three rows on every width, so the drawer never turns into a long scroll. */
 	const PAGE = 9;
@@ -145,14 +145,14 @@
 			[1, "Subtle"],
 			[1.8, "Noticeable"],
 			[2.4, "Strong"],
-			[Infinity, "Very strong"],
+			[Infinity, "매우 강함"],
 		]);
 	const concentrationWord = n =>
 		word(n, [
 			[18, "Light"],
 			[26, "Moderate"],
 			[34, "Strong"],
-			[Infinity, "Very intense"],
+			[Infinity, "아주 진함"],
 		]);
 	const scoreWord = n =>
 		word(n, [
@@ -164,13 +164,13 @@
 		]);
 	const qualityAssessment = p => {
 		const balance = word(p.quality, [
-			[40, "The fragrance is poorly balanced. The recipe, concentration, or blending needs more work."],
-			[60, "Some notes clash with each other. Adjusting their proportions or blending more carefully could help."],
-			[75, "The perfume is balanced, although some notes could blend more smoothly."],
-			[88, "You have made a well-balanced perfume, with the notes working comfortably together."],
-			[Infinity, "You have brought the ingredients together with exceptional care, giving the perfume a smooth, balanced construction."],
+			[40, "향의 균형이 맞지 않는다. 레시피와 농도, 블렌딩을 더 손봐야 한다."],
+			[60, "어떤 노트들은 서로 부딪힌다. 비율을 조정하거나 더 신중하게 블렌딩하면 나아질 수 있다."],
+			[75, "향수의 균형은 잡혀 있지만, 몇몇 노트는 더 부드럽게 어우러질 수 있다."],
+			[88, "균형이 잘 잡힌 향수를 만들었다. 노트들이 편안하게 어우러진다."],
+			[Infinity, "재료를 각별히 공들여 하나로 엮어, 부드럽고 균형 잡힌 향수를 완성했다."],
 		]);
-		return p.pleasantness < 30 ? `${balance} It still smells unpleasant; good workmanship cannot make every choice of ingredients appealing.` : balance;
+		return p.pleasantness < 30 ? `${balance} 그래도 냄새가 불쾌하다. 솜씨가 아무리 좋아도 모든 재료 조합을 매력적으로 만들 수는 없다.` : balance;
 	};
 	const meterWord = n =>
 		word(n, [
@@ -182,10 +182,10 @@
 	const hours = minutes => (minutes < 90 ? `about ${Math.round(minutes / 10) * 10} minutes` : `about ${Math.round(minutes / 30) / 2} hours`);
 	/* Workflow order. "notes" is the internal id for Compose. */
 	const stages = [
-		["prepare", "Prepare", "Collect an ingredient's scent and choose which parts to keep"],
-		["notes", "Compose", "Choose the scents for your perfume's opening, heart, and base"],
-		["blend", "Blend", "Carefully mix the opening, heart, and base notes together"],
-		["bottle", "Bottle", "Check the finished blend, then seal it in a bottle and give it a name"],
+		["prepare", "준비", "재료의 냄새를 모으고 남길 부분을 고릅니다"],
+		["notes", "구성", "향수의 오프닝, 하트, 베이스에 쓸 냄새를 고릅니다"],
+		["blend", "블렌딩", "오프닝, 하트, 베이스 노트를 조심스럽게 섞습니다"],
+		["bottle", "병입", "완성된 블렌드를 확인한 뒤 병에 봉하고 이름을 붙입니다"],
 	];
 	/* Where the gold band sits on each blending pass. */
 	const zones = [52, 36, 64];
@@ -250,10 +250,10 @@
 		function label(id) {
 			const base = setup.foodstuff[m.source(id)]?.name || m.source(id);
 			const title = base[0].toUpperCase() + base.slice(1);
-			if (!id.startsWith("aroma~")) return { title, sub: "Standard aroma", full: title, description: setup.perfumeryExtractionUI.description(id) };
+			if (!id.startsWith("aroma~")) return { title, sub: "표준 아로마", full: title, description: setup.perfumeryExtractionUI.description(id) };
 			const p = setup.perfumeryExtraction.resolve(id);
 			const facets = p.selected.slice(0, 2).join(" and ");
-			const finish = { stability: "stabilised", purity: "clarified", yield: "extra aroma" }[p.finish] || p.finish;
+			const finish = { stability: "안정화", purity: "정제", yield: "아로마 추가" }[p.finish] || p.finish;
 			return {
 				title,
 				sub: `${facets[0].toUpperCase() + facets.slice(1)} · ${finish}`,
@@ -266,7 +266,7 @@
 		const firstTime = station && !s.bottles.length && !s.journal.length;
 		const poppyHere = station && V.perfumeryVenue === "poppy" && api.availableTeacher();
 
-		const title = el("h2", station ? "The perfumer's table" : "Your perfume cabinet", root);
+		const title = el("h2", station ? "향수 제작 탁자" : "향수 보관장", root);
 		title.tabIndex = -1;
 		/* Supplies are listed in the journal; the table only says what changed. */
 		const status = el("p", "", root, "perf-status");
@@ -278,30 +278,30 @@
 		/* Lesson and collaboration briefs sit above the steps so they stay visible at every stage. */
 		if (station) {
 			const exercises = [
-				"Lesson 1: Make your first perfume using the ingredients Poppy gave you. Choose your ingredients, mix them, and put the finished perfume into a bottle.",
-				"Lesson 2: Load the perfume you made earlier. Use the same ingredients, but try changing how much of each one you use. You can also move ingredients between the opening, heart, and base notes. Make sure at least two ingredients share the same note.",
-				"Lesson 3: Load your previous perfume without changing its ingredients. Open the liquid settings in Blend and try changing the alcohol, the perfume strength, or the maturing time.",
-				"Lesson 4: Make a floral perfume using different flowers. Try to make the scents work well together, with a base scent that lasts longer.",
-				"You've finished Poppy's lessons! You can visit her at home to talk about the perfumes you've made.",
+				"수업 1: 포피가 준 재료로 첫 향수를 만드십시오. 재료를 고르고 섞은 다음, 완성한 향수를 병에 담으십시오.",
+				"수업 2: 앞서 만든 향수를 불러오십시오. 같은 재료를 쓰되, 각 재료의 양을 바꿔 보십시오. 재료를 오프닝, 하트, 베이스 사이에서 옮겨도 됩니다. 적어도 두 가지 재료는 같은 노트에 두십시오.",
+				"수업 3: 이전 향수를 재료를 바꾸지 말고 불러오십시오. 블렌딩 단계에서 액체 설정을 열어 스피릿, 아로마 농도, 숙성 시간을 바꿔 보십시오.",
+				"수업 4: 서로 다른 꽃으로 꽃향 향수를 만드십시오. 냄새가 서로 잘 어울리게 하고, 베이스 향이 더 오래가게 해 보십시오.",
+				"포피의 수업을 모두 마쳤습니다! 집으로 찾아가 만든 향수에 대해 이야기를 나눌 수 있습니다.",
 			];
 			const brief = {
-				opening: "Load Poppy's example perfume. One of its scents is too strong or too sweet. Change the recipe to make it smell better.",
-				challenge: "Make a perfume based on what you personally like. Choose your favourite ingredients and try to make them work well together.",
-				gift: "Load the perfume you gave Poppy earlier. Change one part of the recipe and see how it affects the result.",
-				demonstration: "Load one of your saved perfumes. Change one ingredient or setting, then show Poppy what you changed.",
-				rescue: "Load the failed perfume. Find out which ingredient is causing the problem and change the recipe to improve the smell.",
+				opening: "포피의 예시 향수를 불러오십시오. 냄새 하나가 너무 강하거나 너무 답니다. 레시피를 바꿔 더 좋은 냄새가 나게 하십시오.",
+				challenge: "당신이 직접 좋아하는 것을 바탕으로 향수를 만드십시오. 가장 좋아하는 재료를 골라 서로 잘 어울리게 해 보십시오.",
+				gift: "앞서 포피에게 준 향수를 불러오십시오. 레시피의 한 부분을 바꾸고 결과가 어떻게 달라지는지 확인하십시오.",
+				demonstration: "저장해 둔 향수 중 하나를 불러오십시오. 재료나 설정 하나를 바꾼 뒤, 무엇을 바꿨는지 포피에게 보여 주십시오.",
+				rescue: "실패한 향수를 불러오십시오. 어떤 재료가 문제인지 찾아내고 레시피를 바꿔 냄새를 개선하십시오.",
 				rivalry:
-					"Make a perfume with daisy in the opening note, rose in the heart note, and orchid in the base note. Try to make a better perfume than Poppy's.",
+					"오프닝 노트에 데이지, 하트 노트에 장미, 베이스 노트에 난초를 넣은 향수를 만드십시오. 포피의 것보다 더 좋은 향수를 만들어 보십시오.",
 			};
 			if (s.session?.kind === "lesson" && s.session.stage === "compose") {
 				const box = el("div", undefined, root, "perf-brief");
 				el("p", exercises[s.lesson], box);
-				if (s.lessonSample) button("Load last lesson's formula", "sample", box);
+				if (s.lessonSample) button("지난 수업의 배합 불러오기", "sample", box);
 			}
 			if (s.session?.kind === "collaboration" && s.session.stage === "compose") {
 				const box = el("div", undefined, root, "perf-brief");
 				el("p", brief[s.session.approach] || brief.gift, box);
-				button("Load Poppy's reference formula", "reference", box);
+				button("포피의 기준 배합 불러오기", "reference", box);
 			}
 		}
 
@@ -312,7 +312,7 @@
 		if (station) {
 			const nav = el("div", undefined, root, "perf-stepper");
 			nav.setAttribute("role", "tablist");
-			nav.setAttribute("aria-label", "Perfume making steps");
+			nav.setAttribute("aria-label", "향수 제작 단계");
 			tabs = {};
 			stages.forEach(([id, name], i) => {
 				const t = button("", "tab", nav, id, { cls: "perf-step" });
@@ -343,10 +343,10 @@
 			const cost = safe(() => m.validate(d.formula));
 			const blendDone = blending !== null && blended === JSON.stringify(d.formula);
 			const lacks = [];
-			if (!n) lacks.push({ text: "Add at least one aroma to the perfume.", fix: ["Compose", "notes"] });
+			if (!n) lacks.push({ text: "향수에 아로마를 하나 이상 넣으십시오.", fix: ["구성", "notes"] });
 			if (n && !cost) lacks.push({ text: validateMessage(), fix: ["Change liquid settings", "liquid"] });
-			if (n && cost && !blendDone) lacks.push({ text: "Blend the perfume.", fix: ["Blend it", "blend"] });
-			if (s.containers < 1) lacks.push({ text: "You have no empty bottles. They're sold at the cosmetics shop." });
+			if (n && cost && !blendDone) lacks.push({ text: "향수를 블렌딩하십시오.", fix: ["블렌딩하기", "blend"] });
+			if (s.containers < 1) lacks.push({ text: "빈 병이 없습니다. 화장품 가게에서 판매합니다." });
 			if (cost && s.solvent[d.formula.solvent] < cost.solvent)
 				lacks.push({
 					text: `This needs ${cost.solvent} ${d.formula.solvent} spirit and you have ${
@@ -359,11 +359,11 @@
 					const available = s.extraction.stock[id] || 0;
 					if (available < amount)
 						lacks.push({
-							text: `You need ${plural(amount, "measure")} of ${label(id).title} aroma, but have ${available}.`,
+							text: `${label(id).title} 아로마가 ${amount}단위 필요하지만 ${available}단위뿐입니다.`,
 							fix: ["Prepare more aroma", "prepare"],
 						});
 				}
-			if (s.bottles.length >= 24) lacks.push({ text: "Your cabinet is full (24 bottles). Discard one from the cabinet first." });
+			if (s.bottles.length >= 24) lacks.push({ text: "보관장이 가득 찼습니다(24병). 먼저 보관장에서 하나를 버리십시오." });
 			return { n, cost, blendDone, lacks, ready: !lacks.length };
 		}
 		function validateMessage() {
@@ -378,10 +378,10 @@
 			const c = check();
 			const left = stockLeft();
 			const state = {
-				prepare: left ? `${plural(left, "measure")} ready` : "No aromas yet",
+				prepare: left ? `${left}단위 준비됨` : "아직 아로마 없음",
 				notes: c.n ? `${plural(c.n, "measure")} added` : "Empty",
-				blend: c.blendDone ? "Blended" : c.n ? "Not blended" : "Needs aromas",
-				bottle: result ? "Bottled" : c.ready ? "Ready" : "Not ready",
+				blend: c.blendDone ? "블렌딩 완료" : c.n ? "블렌딩 전" : "아로마 필요",
+				bottle: result ? "병입 완료" : c.ready ? "준비됨" : "준비 안 됨",
 			};
 			const done = { prepare: left > 0 || c.n > 0, notes: c.n > 0, blend: c.blendDone, bottle: !!result };
 			for (const [id, name] of stages) {
@@ -402,15 +402,15 @@
 				? {
 						prepare: '"First, choose a flower. You can remove parts of its scent that you don\'t want before collecting the aroma."',
 						notes: c.n
-							? '"You have added enough for your first perfume. Now go to Blend."'
-							: '"Now choose the main scent for your perfume. Select Heart, then tap the aroma you collected to add it."',
+							? '"첫 향수에 쓸 재료는 충분히 넣었어. 이제 블렌딩으로 가 봐."'
+							: '"이제 향수의 중심이 될 냄새를 골라 봐. 하트를 선택하고, 모아 둔 아로마를 눌러서 넣으면 돼."',
 
-						bottle: '"Your perfume is ready to be bottled. Finish bottling it, then let me smell it."',
+						bottle: '"향수를 병에 담을 준비가 됐어. 병입을 마치고 나한테 향을 맡게 해 줘."',
 				  }
 				: {
-						prepare: "Choose a flower and check its scent. Remove any scent parts you don't want before collecting the aroma.",
-						notes: c.n ? "You have enough for your first perfume. Go to Blend." : "Select Heart, then tap the aroma you collected to add it to your perfume.",
-						bottle: "Check the ingredients you added, then bottle your perfume.",
+						prepare: "꽃을 고르고 냄새를 확인하십시오. 아로마를 모으기 전에 원하지 않는 냄새 부분은 빼십시오.",
+						notes: c.n ? "첫 향수에 충분한 재료가 있습니다. 블렌딩으로 가십시오." : "하트를 선택하고, 모아 둔 아로마를 눌러 향수에 넣으십시오.",
+						bottle: "넣은 재료를 확인한 뒤 향수를 병에 담으십시오.",
 				  };
 			if (!lines[d.tab]) return;
 			coach.hidden = false;
@@ -421,7 +421,7 @@
 		function head(panel, id, need) {
 			const box = el("div", undefined, panel, "perf-stage-head");
 			const [, name, what] = stages.find(x => x[0] === id);
-			el("small", `Step ${stages.findIndex(x => x[0] === id) + 1} of ${stages.length}`, box, "perf-stage-number");
+			el("small", `${stages.findIndex(x => x[0] === id) + 1}단계 / 총 ${stages.length}단계`, box, "perf-stage-number");
 			el("h3", name, box);
 			el("p", what + ".", box);
 			if (need) el("p", need, box, "perf-need");
@@ -429,7 +429,7 @@
 		}
 		function foot(panel, back, next, nextLabel, enabled = true) {
 			const row = el("div", undefined, panel, "perf-stage-foot");
-			if (back) button(`Back to ${stages.find(x => x[0] === back)[1]}`, "tab", row, back);
+			if (back) button(`${stages.find(x => x[0] === back)[1]} 단계로 돌아가기`, "tab", row, back);
 			if (next) {
 				const b = button(nextLabel, "tab", row, next, { cls: "perf-primary" });
 				b.disabled = !enabled;
@@ -489,14 +489,14 @@
 			name.textContent = (p?.name || "Untitled").slice(0, 18);
 			art.classList.toggle("perf-shaking", timing.running);
 			const caption = el("div", undefined, box, "perf-stage-caption");
-			el("strong", p ? p.name : c.n ? "Not ready" : "Empty bottle", caption);
+			el("strong", p ? p.name : c.n ? "준비 안 됨" : "빈 병", caption);
 			el(
 				"small",
 				p
-					? `${plural(c.n, "measure")} of aroma at ${d.formula.concentration}% concentration in ${d.formula.solvent} spirit.`
+					? `아로마 ${c.n}단위, 농도 ${d.formula.concentration}%, ${({ soft: "소프트", clear: "클리어", bright: "브라이트" })[d.formula.solvent] || d.formula.solvent} 스피릿.`
 					: c.n
 					? c.lacks[0]?.text || ""
-					: "Tap an aroma to add it.",
+					: "아로마를 눌러 넣으십시오.",
 				caption
 			);
 			const meters = el("dl", undefined, box, "perf-meters");
@@ -509,26 +509,26 @@
 				el("i", undefined, track).style.width = `${Math.round(clamp01(v) * 100)}%`;
 				el("b", p ? text || (advanced ? `${Math.round(clamp01(v) * 100)}%` : meterWord(v)) : "-", dd);
 			};
-			meter("How noticeable", p ? p.intensity / 2.6 : 0, p ? (p.intensity < 0.9 ? "Subtle" : p.intensity < 1.8 ? "Noticeable" : "Strong") : null);
-			meter("Wear time", p ? p.duration / 720 : 0, p ? hours(p.duration) : null);
+			meter("존재감", p ? p.intensity / 2.6 : 0, p ? (p.intensity < 0.9 ? "은은함" : p.intensity < 1.8 ? "뚜렷함" : "강함") : null);
+			meter("지속 시간", p ? p.duration / 720 : 0, p ? hours(p.duration) : null);
 			meter("Sweetness", p ? p.sweet : 0, p ? (p.sweet < 0.3 ? "Low" : p.sweet < 0.65 ? "Medium" : "High") : null);
-			meter("Animal appeal", p ? Math.max(0, p.animal) : 0, p ? (p.animal < 0.3 ? "Low" : p.animal < 0.65 ? "Medium" : "High") : null);
+			meter("동물 호감도", p ? Math.max(0, p.animal) : 0, p ? (p.animal < 0.3 ? "낮음" : p.animal < 0.65 ? "보통" : "높음") : null);
 			const help = el("details", undefined, box, "perf-property-help");
-			el("summary", "What these properties mean", help);
+			el("summary", "이 수치들의 의미", help);
 			el(
 				"p",
-				"Noticeability describes how easily other people can smell the perfume. A stronger perfume can make more people notice you, but some people dislike an overpowering scent.",
+				"존재감은 다른 사람이 향수 냄새를 얼마나 쉽게 맡을 수 있는지를 나타냅니다. 향이 강하면 더 많은 사람이 당신을 알아챌 수 있지만, 지나치게 진한 향을 싫어하는 사람도 있습니다.",
 				help
 			);
-			el("p", "Wear time is the duration of one application in dry conditions. Rain makes it fade twice as fast, and washing removes it.", help);
+			el("p", "지속 시간은 건조한 환경에서 한 번 뿌린 향이 유지되는 시간입니다. 비가 오면 두 배 빨리 사라지고, 씻으면 지워집니다.", help);
 			el(
 				"p",
-				"Sweetness only describes how sweet the smell is. It does not mean the perfume is better, because different people and animals like different scents.",
+				"단맛은 냄새가 얼마나 달콤한지만 나타냅니다. 사람과 동물마다 좋아하는 냄새가 다르므로 단맛이 높다고 더 좋은 향수라는 뜻은 아닙니다.",
 				help
 			);
 			el(
 				"p",
-				"Animal appeal is only part of an animal's response. Where animal encounters are enabled, the whole scent can make you easier or harder to find outside; the animal, concealment, and fading strength also matter.",
+				"동물 호감도는 동물이 보이는 반응의 일부일 뿐입니다. 동물과의 만남이 켜져 있으면 전체 향이 바깥에서 당신을 더 쉽게 또는 더 어렵게 찾게 만들 수 있으며, 동물의 종류와 몸을 숨겼는지 여부, 약해지는 향의 세기도 영향을 줍니다.",
 				help
 			);
 			return box;
@@ -542,7 +542,7 @@
 			head(
 				panel,
 				"prepare",
-				"Explore an ingredient's scent before collecting it. Collection uses one ingredient and takes the time shown; browsing and changing your choices cost nothing."
+				"재료를 모으기 전에 그 냄새를 살펴보십시오. 모으는 데에는 재료 하나가 쓰이고 표시된 시간이 걸립니다. 둘러보거나 선택을 바꾸는 데에는 아무것도 들지 않습니다."
 			);
 			extractionUI = setup.perfumeryExtractionUI.mount(
 				panel,
@@ -558,7 +558,7 @@
 				},
 				{ advanced }
 			);
-			if (stockLeft()) foot(panel, null, "notes", "Continue to Compose");
+			if (stockLeft()) foot(panel, null, "notes", "구성으로 계속");
 		}
 
 		function renderNotes() {
@@ -578,15 +578,15 @@
 			const drawer = el("section", undefined, bench, "perf-drawer");
 			if (!ready && !catalogue.some(e => e.kind === "raw" && left(e) > 0)) {
 				const empty = el("div", undefined, drawer, "perf-callout");
-				el("p", total ? "You've used every aroma you prepared." : "You have no prepared aromas yet. Aromas are made from flowers and food.", empty);
-				button("Prepare an aroma", "tab", empty, "prepare", { cls: "perf-primary" });
+				el("p", total ? "준비한 아로마를 모두 썼습니다." : "준비한 아로마가 아직 없습니다. 아로마는 꽃과 음식으로 만듭니다.", empty);
+				button("아로마 준비하기", "tab", empty, "prepare", { cls: "perf-primary" });
 			} else renderBrowser(drawer);
 			bottleStage(bench);
 			const chambers = el("section", undefined, bench, "perf-chambers");
 			for (const l of m.layers) chamber(chambers, l, total);
 			const tools = el("div", undefined, panel, "perf-steps");
 			if (d.undo.length) button("Undo", "undo", tools);
-			foot(panel, "prepare", total ? "blend" : null, "Continue to blending");
+			foot(panel, "prepare", total ? "blend" : null, "블렌딩으로 계속");
 		}
 		function chamber(parent, l, total) {
 			const count = Object.values(d.formula[l]).reduce((a, b) => a + b, 0);
@@ -595,10 +595,10 @@
 			const pick = button("", "layer", card, l, { cls: "perf-chamber-head" });
 			pick.setAttribute("aria-pressed", String(d.layer === l));
 			el("strong", `${layerName[l]} note`, pick);
-			el("span", d.layer === l ? "Adding here" : plural(count, "measure"), pick, "perf-chamber-tag");
+			el("span", d.layer === l ? "여기에 추가 중" : `${count}단위`, pick, "perf-chamber-tag");
 			el("small", layerHint[l], card);
 			const list = el("ul", undefined, card, "perf-chips");
-			if (!count) el("li", d.layer === l ? "Tap an aroma to add it here." : "Choose this note, then tap an aroma.", list, "perf-empty");
+			if (!count) el("li", d.layer === l ? "아로마를 눌러 여기에 넣으십시오." : "이 노트를 고른 뒤 아로마를 누르십시오.", list, "perf-empty");
 			for (const [id, n] of Object.entries(d.formula[l])) {
 				const info = label(id);
 				const chip = el("li", undefined, list, "perf-chip");
@@ -606,15 +606,15 @@
 				if (src) Object.assign(el("img", undefined, chip, "icon"), { src, alt: "" });
 				const name = el("span", info.title, chip, "perf-chip-name");
 				name.title = info.full;
-				button("−", "minus", chip, id, { layer: l, label: `One less ${info.full}`, cls: "perf-mini" });
-				el("output", String(n), chip).setAttribute("aria-label", `${n} measures of ${info.full}`);
-				button("+", "plus", chip, id, { layer: l, label: `One more ${info.full}`, cls: "perf-mini" });
+				button("−", "minus", chip, id, { layer: l, label: `${info.full} 하나 줄이기`, cls: "perf-mini" });
+				el("output", String(n), chip).setAttribute("aria-label", `${info.full} ${n}단위`);
+				button("+", "plus", chip, id, { layer: l, label: `${info.full} 하나 늘리기`, cls: "perf-mini" });
 				const moveLabel = el("label", undefined, chip, "perf-move");
-				el("span", "Move to", moveLabel, "perf-sr");
+				el("span", "옮길 노트", moveLabel, "perf-sr");
 				const move = el("select", undefined, moveLabel);
 				move.dataset.move = id;
 				move.dataset.from = l;
-				move.setAttribute("aria-label", `Move ${info.full} to another note`);
+				move.setAttribute("aria-label", `${info.full} 다른 노트로 옮기기`);
 				for (const note of m.layers) {
 					const o = el("option", layerName[note], move);
 					o.value = note;
@@ -655,7 +655,7 @@
 								id: src,
 								kind: "source",
 								title: name[0].toUpperCase() + name.slice(1),
-								sub: "Not prepared yet",
+								sub: "아직 준비하지 않음",
 								description: setup.perfumeryExtractionUI.description(src),
 								full: name,
 								family: "",
@@ -673,24 +673,24 @@
 		}
 		function renderBrowser(box) {
 			const f = d.filters;
-			el("h4", `Your aromas: adding to ${layerName[d.layer].toLowerCase()}`, box);
+			el("h4", `내 아로마: ${layerName[d.layer].toLowerCase()} 노트에 추가 중`, box);
 			const controls = el("div", undefined, box, "perf-filters");
 			const search = el("label", undefined, controls, "perf-search");
 			el("span", "Search", search, "perf-sr");
 			const q = el("input", undefined, search);
-			Object.assign(q, { type: "search", value: f.q, placeholder: "Search aromas", enterKeyHint: "search", autocomplete: "off" });
-			q.setAttribute("aria-label", "Search your aromas");
+			Object.assign(q, { type: "search", value: f.q, placeholder: "아로마 검색", enterKeyHint: "search", autocomplete: "off" });
+			q.setAttribute("aria-label", "내 아로마 검색");
 			q.dataset.filter = "q";
 			const more = el("details", undefined, controls, "perf-more-filters");
 			more.open = !!(f.family || f.affinity || f.kind || f.sort !== "name" || !f.owned);
-			el("summary", "Filter and sort", more);
+			el("summary", "필터와 정렬", more);
 			const extra = el("div", undefined, more, "perf-filters");
 			const ownedLabel = el("label", undefined, extra, "perf-check");
 			const owned = el("input", undefined, ownedLabel);
 			owned.type = "checkbox";
 			owned.checked = f.owned;
 			owned.dataset.filter = "owned";
-			ownedLabel.append(" Only what I have");
+			ownedLabel.append(" 가진 것만");
 			const select = (labelText, key, options) => {
 				const wrap = el("label", undefined, extra);
 				el("span", labelText, wrap);
@@ -703,19 +703,19 @@
 				sel.value = f[key];
 			};
 			const families = [...new Set(catalogue.map(e => e.family).filter(Boolean))].sort();
-			select("Scent family", "family", [["", "Any family"], ...families.map(x => [x, x])]);
-			select("Suits note", "affinity", [["", "Any note"], ...m.layers.map(l => [l, layerName[l]])]);
+			select("향 계열", "family", [["", "모든 계열"], ...families.map(x => [x, x])]);
+			select("어울리는 노트", "affinity", [["", "모든 노트"], ...m.layers.map(l => [l, layerName[l]])]);
 			select("Show", "kind", [
-				["", "All prepared aromas"],
-				["extract", "Custom extracts"],
-				["raw", "Standard aromas"],
-				["source", "Ingredients to prepare"],
+				["", "준비한 아로마 전체"],
+				["extract", "맞춤 추출물"],
+				["raw", "표준 아로마"],
+				["source", "준비할 재료"],
 			]);
 			select("Sort", "sort", [
 				["name", "Name"],
-				["left", "Amount left"],
-				["family", "Scent family"],
-				["affinity", "Best for this note"],
+				["left", "남은 양"],
+				["family", "향 계열"],
+				["affinity", "이 노트에 가장 알맞은 순"],
 			]);
 			const list = el("ul", undefined, box, "perf-tiles");
 			renderCards(list);
@@ -743,7 +743,7 @@
 			const pager = list.nextElementSibling?.classList.contains("perf-pager") ? list.nextElementSibling : null;
 			pager?.remove();
 			if (!rows.length) {
-				el("li", "Nothing matches. Clear the search or change the filters.", list, "perf-empty perf-tiles-empty");
+				el("li", "일치하는 항목이 없습니다. 검색어를 지우거나 필터를 바꾸십시오.", list, "perf-empty perf-tiles-empty");
 				return;
 			}
 			const pages = Math.ceil(rows.length / PAGE);
@@ -754,7 +754,7 @@
 				const source = e.kind === "source";
 				const tile = button("", source ? "extractSource" : "add", li, e.id, {
 					cls: "perf-tile",
-					label: source ? `Prepare an aroma from ${e.full}` : `Add ${e.full} to the ${d.layer} note, ${n} left`,
+					label: source ? `아로마 준비: ${e.full}` : `${e.full} 추가: ${({ top: "오프닝", heart: "하트", base: "베이스" })[d.layer] || d.layer} 노트, ${n}단위 남음`,
 				});
 				if (!source) {
 					tile.draggable = n > 0 && window.matchMedia("(pointer: fine)").matches;
@@ -763,9 +763,9 @@
 				const src = iconOf(e.id);
 				if (src) Object.assign(el("img", undefined, tile, "icon"), { src, alt: "", draggable: false });
 				el("strong", e.title, tile);
-				el("small", source ? `${n} in stock` : `${n} left · ${e.family}`, tile);
+				el("small", source ? `재고 ${n}개` : `${n}단위 남음 · ${e.family}`, tile);
 				el("small", e.description, tile, "perf-aroma-description");
-				tile.title = source ? `Prepare ${e.full}` : `${e.full}. Best in the ${e.affinity} note.`;
+				tile.title = source ? `${e.full} 준비` : `${e.full}. ${({ top: "오프닝", heart: "하트", base: "베이스" })[e.affinity] || e.affinity} 노트에 가장 잘 어울립니다.`;
 			}
 			if (pages > 1) {
 				const nav = el("div", undefined, null, "perf-pager");
@@ -783,22 +783,22 @@
 			const box = el("details", undefined, panel, "perf-liquid");
 			box.open = liquidOpen || (c.n > 0 && !c.cost);
 			box.dataset.liquid = "1";
-			el("summary", "Bottle settings", box);
+			el("summary", "병 설정", box);
 			el(
 				"p",
-				`${sv.name.replace(" perfumer's spirit", "").toLowerCase()} spirit with ${f.concentration}% aroma in a ${f.capacity}-measure bottle. ${
-					f.age ? `Leave it to mature for ${plural(f.age, "day")}.` : "No maturing time is required."
+				`스피릿: ${sv.name.replace(" perfumer's spirit", "").toLowerCase()} · 아로마 ${f.concentration}% · ${f.capacity}단위 병. ${
+					f.age ? `${f.age}일 동안 숙성시킵니다.` : "숙성 시간은 필요하지 않습니다."
 				}`,
 				box
 			);
 			el(
 				"p",
-				"For a straightforward first perfume, use clear spirit at 20% concentration in a 40-measure bottle, with no maturing time. You can keep your current settings or adjust them below.",
+				"간단한 첫 향수라면 클리어 스피릿, 농도 20%, 40단위 병, 숙성 없음으로 설정하십시오. 현재 설정을 그대로 두거나 아래에서 조정해도 됩니다.",
 				box,
 				"perf-hint"
 			);
 			const isDefault = f.solvent === "clear" && f.concentration === 20 && f.capacity === 40 && f.age === 0;
-			if (!isDefault) button("Use the recommended setting", "defaults", box);
+			if (!isDefault) button("권장 설정 사용", "defaults", box);
 			const fieldset = (legend, cls) => {
 				const fs = el("fieldset", undefined, box, cls);
 				el("legend", legend, fs);
@@ -814,14 +814,14 @@
 				el("strong", spirit.name, body);
 				el(
 					"span",
-					`${spirit.projection < 1 ? "Makes a gentler scent" : spirit.projection > 1.2 ? "Makes a more noticeable scent" : "Gives moderate scent strength"}; ${
-						spirit.evaporation < 1 ? "slows fading" : spirit.evaporation > 1.1 ? "fades sooner" : "fades at the normal rate"
-					}${spirit.purity > 0.9 ? "; turns sharp when very strong" : ""}.`,
+					`${spirit.projection < 1 ? "냄새가 더 은은해지고" : spirit.projection > 1.2 ? "냄새가 더 뚜렷해지고" : "냄새 세기가 보통이고"}, ${
+						spirit.evaporation < 1 ? "천천히 사라집니다" : spirit.evaporation > 1.1 ? "더 빨리 사라집니다" : "보통 속도로 사라집니다"
+					}${spirit.purity > 0.9 ? ". 아주 진하면 냄새가 날카로워집니다" : ""}.`,
 					body
 				);
-				el("small", `You have ${s.solvent[id]}${c.cost && f.solvent === id ? `; this needs ${c.cost.solvent}` : ""}.`, body);
+				el("small", `보유 ${s.solvent[id]}${c.cost && f.solvent === id ? `, 필요 ${c.cost.solvent}` : ""}.`, body);
 			}
-			const conc = fieldset("Aroma concentration", "perf-range");
+			const conc = fieldset("아로마 농도", "perf-range");
 			const rangeLabel = el("label", undefined, conc);
 			el("span", `${concentrationWord(f.concentration)} (${f.concentration}% aroma)`, rangeLabel, "perf-range-value");
 			const range = el("input", undefined, rangeLabel);
@@ -830,11 +830,11 @@
 			range.setAttribute("aria-valuetext", `${concentrationWord(f.concentration)}, ${f.concentration}%`);
 			el(
 				"small",
-				"Concentration is the proportion of aroma in the finished liquid. Raising it makes the scent stronger and longer lasting. The same aromas need less spirit and make fewer applications, leaving room for more aroma in the same bottle.",
+				"농도는 완성된 액체에서 아로마가 차지하는 비율입니다. 농도를 높이면 향이 더 강하고 오래갑니다. 같은 아로마에 쓰는 스피릿이 줄고 사용 횟수도 줄지만, 같은 병에 아로마를 더 넣을 여유가 생깁니다.",
 				conc,
 				"perf-hint"
 			);
-			const caps = fieldset("Bottle size", "perf-options perf-options-row");
+			const caps = fieldset("병 크기", "perf-options perf-options-row");
 			for (const n of [20, 40, 60]) {
 				const lab = el("label", undefined, caps, "perf-option");
 				const r = el("input", undefined, lab);
@@ -852,7 +852,7 @@
 					caps,
 					"perf-hint"
 				);
-			const ages = fieldset("Maturing", "perf-options perf-options-row");
+			const ages = fieldset("숙성", "perf-options perf-options-row");
 			const base = c.n ? safe(() => m.calculate({ ...f, age: 0 }, 0.7, 0)) : null;
 			for (const n of [0, 1, 3, 7, 14]) {
 				const lab = el("label", undefined, ages, "perf-option");
@@ -867,53 +867,53 @@
 					el(
 						"small",
 						advanced
-							? `Balance ${dq >= 0 ? "+" : ""}${Math.round(dq)}, stability ${Math.round(p.stability * 100)}%`
+							? `균형 ${dq >= 0 ? "+" : ""}${Math.round(dq)}, 안정성 ${Math.round(p.stability * 100)}%`
 							: dq > 2
-							? "Rounds out"
+							? "더 부드러워짐"
 							: dq < -1
-							? "Fresh parts fade"
-							: "Little change",
+							? "신선한 향이 약해짐"
+							: "변화 적음",
 						body
 					);
 				}
 			}
 			el(
 				"small",
-				"Resting can make the blend smoother, but too much time can dull fresh scents. You cannot wear the bottled perfume until the chosen days have passed.",
+				"숙성하면 블렌드가 더 부드러워질 수 있지만, 너무 오래 두면 신선한 향이 무뎌집니다. 정한 일수가 지나기 전에는 병입한 향수를 뿌릴 수 없습니다.",
 				ages,
 				"perf-hint"
 			);
 			if (c.cost) {
 				const cmp = el("details", undefined, box, "perf-compare");
 				cmp.open = !!d.pinned;
-				el("summary", "Compare with an earlier version", cmp);
+				el("summary", "이전 버전과 비교", cmp);
 				const row = el("div", undefined, cmp, "perf-steps");
-				button("Remember this version", "pin", row);
-				if (d.pinned) button("Swap with the remembered one", "swap", row);
+				button("이 버전 기억", "pin", row);
+				if (d.pinned) button("기억해 둔 버전과 바꾸기", "swap", row);
 				if (d.pinned) el("p", comparisonText(), cmp, "perf-comparison").setAttribute("aria-live", "polite");
 			}
 		}
 		function comparisonText() {
 			const now = safe(() => m.calculate(d.formula));
 			const before = safe(() => m.calculate(d.pinned));
-			if (!now || !before) return "Make the current formula valid to compare it.";
+			if (!now || !before) return "비교하려면 현재 배합을 유효하게 만드십시오.";
 			const diff = (a, b, small, more, less, same) => (Math.abs(a - b) < small ? same : a > b ? more : less);
 			return `Compared with the remembered version: ${diff(
 				now.intensity,
 				before.intensity,
 				0.02,
-				"stronger opening",
-				"gentler opening",
-				"similar opening"
-			)}, ${diff(now.duration, before.duration, 2, "lasts longer", "fades sooner", "similar wear")}, ${diff(
+				"오프닝이 더 강함",
+				"오프닝이 더 약함",
+				"오프닝이 비슷함"
+			)}, ${diff(now.duration, before.duration, 2, "더 오래감", "더 빨리 사라짐", "지속 시간 비슷함")}, ${diff(
 				now.quality,
 				before.quality,
 				0.2,
 				"smoother",
 				"rougher",
-				"similar balance"
+				"균형 비슷함"
 			)}.${
-				knowledge >= 3 ? ` Balance ${Math.round(before.quality)} to ${Math.round(now.quality)}; wear ${hours(before.duration)} to ${hours(now.duration)}.` : ""
+				knowledge >= 3 ? ` 균형 ${Math.round(before.quality)} → ${Math.round(now.quality)}, 지속 시간 ${hours(before.duration)} → ${hours(now.duration)}.` : ""
 			}`;
 		}
 
@@ -929,8 +929,8 @@
 			head(panel, "blend", null);
 			if (!c.n) {
 				const empty = el("div", undefined, panel, "perf-callout");
-				el("p", "There's nothing to blend yet.", empty);
-				button("Compose a perfume first", "tab", empty, "notes", { cls: "perf-primary" });
+				el("p", "아직 블렌딩할 것이 없습니다.", empty);
+				button("먼저 향수 구성하기", "tab", empty, "notes", { cls: "perf-primary" });
 				return;
 			}
 			const bench = el("div", undefined, panel, "perf-workbench perf-workbench-two perf-blend-bench");
@@ -941,24 +941,24 @@
 				return foot(panel, "notes", null);
 			}
 			if (c.blendDone) {
-				el("h4", "The blending is finished", side, "perf-done");
+				el("h4", "블렌딩이 끝났습니다", side, "perf-done");
 				const untimed = timing.scores.length === 0;
 				el(
 					"p",
 					untimed
-						? "You finish an untimed blend with steady, modest care. Careful timing could make the mixture smoother."
+						? "타이밍 없이 꾸준하고 무난한 정성으로 블렌딩을 마친다. 타이밍을 정확히 맞추면 혼합물이 더 부드러워질 수 있다."
 						: blending >= 0.86
-						? "You mix everything with a steady hand. The notes are blended smoothly, so the recipe turns out as well as it can."
+						? "안정된 손놀림으로 모든 것을 섞는다. 노트들이 부드럽게 어우러져, 레시피가 낼 수 있는 최고의 결과가 나온다."
 						: blending >= 0.65
-						? "You finish mixing, although steadier timing could help the notes blend more smoothly."
-						: "Your timing leaves the mixture uneven. You can try blending again, or bottle it and see how the recipe turns out.",
+						? "섞기를 마치지만, 타이밍이 더 안정적이었다면 노트들이 더 부드럽게 어우러졌을 것이다."
+						: "타이밍이 어긋나 혼합물이 고르지 않다. 다시 블렌딩해 보거나, 병에 담아 레시피가 어떤 결과를 내는지 볼 수 있다.",
 					side,
 					"perf-blend-assessment"
 				);
-				el("p", "Continue to Bottle to check your supplies and seal the perfume. Nothing has been spent yet.", side, "perf-hint");
-				button("Try blending again", "reblend", side);
+				el("p", "병입으로 넘어가 재료를 확인하고 향수를 봉하십시오. 아직 아무것도 소모되지 않았습니다.", side, "perf-hint");
+				button("다시 블렌딩", "reblend", side);
 				renderLiquid(side, c);
-				return foot(panel, "notes", "bottle", "Continue to bottling");
+				return foot(panel, "notes", "bottle", "병입으로 계속");
 			}
 			const pass = timing.scores.length;
 			const track = el("ol", undefined, side, "perf-stage-track");
@@ -969,15 +969,15 @@
 					"small",
 					i < pass
 						? timing.scores[i] >= 0.85
-							? "Blended smoothly"
+							? "부드럽게 블렌딩됨"
 							: timing.scores[i] >= 0.5
-							? "Slightly uneven"
+							? "약간 고르지 않음"
 							: "Uneven"
 						: i === pass
 						? timing.running
-							? "Blending now"
-							: "Ready to blend"
-						: "Not blended yet",
+							? "블렌딩 중"
+							: "블렌딩 준비됨"
+						: "아직 블렌딩 전",
 					li
 				);
 				if (i < pass) li.className = "perf-stage-done";
@@ -992,7 +992,7 @@
 			el("p", noteCharacter(layer), side, "perf-need");
 			el(
 				"p",
-				"Start blending and watch the white marker move across the bar. Press Stop when it reaches the golden area. You can wait for another crossing.",
+				"블렌딩 시작을 누르고 흰색 표시가 막대를 가로질러 움직이는 모습을 지켜보십시오. 금색 구역에 닿으면 정지를 누르십시오. 한 번 더 지나가기를 기다려도 됩니다.",
 				side,
 				"perf-timing-instructions"
 			);
@@ -1004,12 +1004,12 @@
 			const needle = el("b", undefined, bar, "perf-needle");
 			needle.style.transform = `translateX(${timing.pos}%)`;
 			const row = el("div", undefined, side, "perf-steps");
-			button(timing.running ? "Stop" : pass ? "Blend the next note" : "Start blending", timing.running ? "stopBlend" : "startBlend", row, undefined, {
+			button(timing.running ? "정지" : pass ? "다음 노트 블렌딩" : "블렌딩 시작", timing.running ? "stopBlend" : "startBlend", row, undefined, {
 				cls: "perf-primary perf-blend-go",
 			});
 			const feedback = el(
 				"p",
-				timing.last || (timing.running ? "You work the mixture gently as the scents begin to mingle." : ""),
+				timing.last || (timing.running ? "냄새들이 섞이기 시작하는 가운데 혼합물을 부드럽게 젓는다." : ""),
 				side,
 				"perf-timing-feedback"
 			);
@@ -1019,20 +1019,20 @@
 			if (lastScore !== undefined) feedback.dataset.result = lastScore >= 0.85 ? "smooth" : lastScore >= 0.5 ? "close" : "uneven";
 			if (!timing.running) {
 				const quick = el("details", undefined, side, "perf-quick-blend");
-				el("summary", "Blend without the timing challenge", quick);
+				el("summary", "타이밍 도전 없이 블렌딩", quick);
 				el(
 					"p",
-					"An untimed blend gives a fixed 55% blending-care result. Timing can do better or worse; accurate stops produce a smoother blend. No extra supplies are spent by either method.",
+					"타이밍 없는 블렌딩은 블렌딩 정성이 55%로 고정된 결과를 냅니다. 타이밍을 맞추면 더 좋거나 더 나쁜 결과가 나올 수 있으며, 정확히 멈출수록 블렌드가 더 부드러워집니다. 어느 쪽이든 추가 재료는 소모되지 않습니다.",
 					quick
 				);
-				button("Use an untimed blend", "gentle", quick);
+				button("타이밍 없이 블렌딩", "gentle", quick);
 			}
 			renderLiquid(side, c);
 			foot(panel, "notes", null);
 		}
 		function noteCharacter(l) {
 			const ids = Object.keys(d.formula[l]);
-			if (!ids.length) return "You have not assigned an aroma to this note. This blending step still affects the mixture as a whole.";
+			if (!ids.length) return "이 노트에는 배정한 아로마가 없습니다. 그래도 이 블렌딩 단계는 혼합물 전체에 영향을 줍니다.";
 			if (ids.length === 1) return label(ids[0]).description;
 			return `For this note, you are working with ${ids
 				.map(id => label(id).title)
@@ -1069,10 +1069,10 @@
 			const early = (timing.pos - zones[pass]) * timing.direction < 0;
 			timing.last = `${passes[pass][0]} ${Object.keys(d.formula[passes[pass][1]]).length ? "note" : "step"}: ${
 				score >= 0.85
-					? "You stop at just the right moment, bringing this part of the mixture together smoothly."
+					? "딱 맞는 순간에 멈춘다. 혼합물의 이 부분이 부드럽게 하나로 어우러진다."
 					: score >= 0.5
-					? `You stop a little ${early ? "early" : "late"}. This part of the blend comes together, but could be smoother.`
-					: "The timing is off, leaving this part of the mixture uneven."
+					? `조금 ${early ? "일찍" : "늦게"} 멈춘다. 블렌드의 이 부분은 하나로 어우러지지만 더 부드러울 수 있다.`
+					: "타이밍이 어긋나 혼합물의 이 부분이 고르지 않다."
 			}`;
 			if (timing.scores.length === 3) {
 				blending = 0.35 + (timing.scores.reduce((a, b) => a + b, 0) / 3) * 0.6;
@@ -1091,7 +1091,7 @@
 			panel.insertBefore(top, results);
 			head(top, "bottle", null);
 			if (c.lacks.length) {
-				el("h4", c.lacks.length === 1 ? "One thing left before bottling" : "Before bottling", top);
+				el("h4", c.lacks.length === 1 ? "병입 전에 한 가지가 남았습니다" : "병입 전에", top);
 				const list = el("ul", undefined, top, "perf-checklist");
 				for (const lack of c.lacks) {
 					const li = el("li", undefined, list, "perf-missing");
@@ -1107,25 +1107,25 @@
 			if (p) el("p", qualityAssessment(p), side, "perf-quality-assessment");
 			if (p?.description) el("p", p.description, side);
 			if (d.formula.age)
-				el("p", "This preview describes the perfume after its chosen maturing time. The fresh bottle will smell different while it rests.", side, "perf-hint");
+				el("p", "이 미리 보기는 정한 숙성 시간이 지난 뒤의 향수를 설명합니다. 갓 담은 병은 숙성되는 동안 냄새가 다를 것입니다.", side, "perf-hint");
 			if (p) {
 				const facts = el("dl", undefined, side, "perf-facts");
 				const fact = (k, v) => {
 					el("dt", k, facts);
 					el("dd", v, facts);
 				};
-				fact("How noticeable", projectionWord(p.intensity));
-				fact("Wear time per application", hours(p.duration));
-				fact("Ready", d.formula.age ? `in ${plural(d.formula.age, "day")}` : "Straight away");
+				fact("존재감", projectionWord(p.intensity));
+				fact("1회 뿌릴 때 지속 시간", hours(p.duration));
+				fact("사용 가능", d.formula.age ? `${d.formula.age}일 뒤` : "바로");
 			}
 			const cost = el("div", undefined, side, "perf-costs");
-			el("h4", "Bottling uses", cost);
+			el("h4", "병입에 쓰이는 것", cost);
 			const ul = el("ul", undefined, cost);
-			el("li", `1 empty bottle (you have ${s.containers})`, ul);
-			el("li", `${plural(c.cost.solvent, "measure")} of ${d.formula.solvent} spirit (you have ${s.solvent[d.formula.solvent]})`, ul);
-			for (const [id, n] of Object.entries(c.cost.needed)) el("li", `${plural(n, "measure")} of ${label(id).title} aroma`, ul);
-			el("li", "Bottling takes 20 minutes.", ul);
-			button("Bottle the perfume", "craft", side, undefined, { cls: "perf-primary perf-big" });
+			el("li", `빈 병 1개 (보유 ${s.containers}개)`, ul);
+			el("li", `${({ soft: "소프트", clear: "클리어", bright: "브라이트" })[d.formula.solvent] || d.formula.solvent} 스피릿 ${c.cost.solvent}단위 (보유 ${s.solvent[d.formula.solvent]}단위)`, ul);
+			for (const [id, n] of Object.entries(c.cost.needed)) el("li", `${label(id).title} 아로마 ${n}단위`, ul);
+			el("li", "병입에는 20분이 걸립니다.", ul);
+			button("향수 병입", "craft", side, undefined, { cls: "perf-primary perf-big" });
 		}
 		function renderResult(bottle) {
 			const p = api.properties(bottle);
@@ -1139,17 +1139,17 @@
 			const good = (p.nuances || []).filter(k => !setup.perfumeryIdentity.negative[k]);
 			const bad = (p.offNotes || []).map(o => o.name);
 			const balance = word(p.quality, [
-				[40, "clash with each other"],
-				[60, "do not quite mix well"],
-				[75, "mix reasonably well"],
-				[88, "mix smoothly"],
-				[Infinity, "mix very smoothly"],
+				[40, "서로 부딪힌다"],
+				[60, "그다지 어우러지지 않는다"],
+				[75, "그럭저럭 어우러진다"],
+				[88, "부드럽게 어우러진다"],
+				[Infinity, "아주 부드럽게 어우러진다"],
 			]);
 			const strength = word(p.intensity, [
 				[1, "faint"],
 				[1.8, "noticeable"],
 				[2.4, "strong"],
-				[Infinity, "very strong"],
+				[Infinity, "매우 강함"],
 			]);
 			el(
 				"p",
@@ -1159,8 +1159,8 @@
 				results,
 				"perf-result-summary"
 			);
-			if (bad.length) el("p", bad[0] === "acrid" ? "The first scent is unpleasantly sharp." : p.offNotes[0].cause, results, "perf-result-warning");
-			el("p", `You have enough perfume left for ${plural(bottle.uses, "application")}.`, results, "perf-result-uses");
+			if (bad.length) el("p", bad[0] === "acrid" ? "첫 냄새가 불쾌할 만큼 날카롭다." : p.offNotes[0].cause, results, "perf-result-warning");
+			el("p", `향수는 ${bottle.uses}회 뿌릴 만큼 남아 있다.`, results, "perf-result-uses");
 			if (!api.ready(bottle))
 				el(
 					"p",
@@ -1172,12 +1172,12 @@
 					"perf-result-warning"
 				);
 			const row = el("div", undefined, results, "perf-steps");
-			if (api.ready(bottle) && api.enabled()) button("Wear it now", "apply", row, bottle.id, { cls: "perf-primary" });
-			button("Save the formula", "save", row, bottle.id);
-			button("Make another", "again", row);
+			if (api.ready(bottle) && api.enabled()) button("지금 뿌리기", "apply", row, bottle.id, { cls: "perf-primary" });
+			button("배합 저장", "save", row, bottle.id);
+			button("다시 만들기", "again", row);
 			const details = el("details", undefined, results, "perf-result-details");
-			el("summary", "Full analysis", details);
-			if (!api.ready(bottle)) el("p", "This assessment describes the scent now; it can still change as the bottle matures.", details, "perf-hint");
+			el("summary", "전체 분석", details);
+			if (!api.ready(bottle)) el("p", "이 평가는 현재의 냄새를 설명한 것이며, 병이 숙성되면서 달라질 수 있습니다.", details, "perf-hint");
 			const rename = el("label", undefined, details, "perf-rename");
 			el("span", "Rename", rename);
 			const input = el("input", undefined, rename);
@@ -1199,11 +1199,11 @@
 			fact("Pleasantness", `${scoreWord(p.pleasantness)}${knowledge >= 3 ? ` (${Math.round(p.pleasantness)})` : ""}`);
 			if (V.perfumeryVenue === "poppy" && api.availableTeacher()) el("p", api.feedback(bottle), results, "perf-poppy");
 			if (V.perfumery.characters?.poppy?.pending?.bottleId === bottle.id) {
-				el("p", "Poppy doesn't hand the strip back. It looks like there is something to talk about.", results, "perf-poppy");
+				el("p", "포피가 시향지를 돌려주지 않는다. 이야기할 거리가 있는 모양이다.", results, "perf-poppy");
 				$(results).wiki("<<link [[Discuss this bottle|Poppy Perfumery Special]]>><</link>>");
 			}
 			if (s.session?.stage === "review" && s.session.bottleId === bottle.id) {
-				el("p", "Keep this sample for your comparison with Poppy. If Poppy is busy, you can show it later.", results, "perf-poppy");
+				el("p", "포피와 비교할 수 있도록 이 샘플을 간직하십시오. 포피가 바쁘면 나중에 보여 줄 수 있습니다.", results, "perf-poppy");
 				$(results).wiki("<<link [[Discuss the sample|Poppy Perfumery Debrief]]>><</link>>");
 			}
 		}
@@ -1211,7 +1211,7 @@
 		/* Cabinet and journal: their own page, reached by a link under the table. */
 		function describe(p) {
 			if (p.description) return `${p.description} ${projectionWord(p.intensity)}; wears ${hours(p.duration)}.`;
-			return `${p.family} fragrance. ${projectionWord(p.intensity)}; wears ${hours(p.duration)}.`;
+			return `${p.family} 계열 향. ${projectionWord(p.intensity)}, 지속 ${hours(p.duration)}.`;
 		}
 		function renderInventory() {
 			const teacherPresent = V.perfumeryVenue === "poppy" && api.availableTeacher();
@@ -1219,14 +1219,14 @@
 			cabinet.replaceChildren();
 			journal.replaceChildren();
 			el("h3", `Bottles (${s.bottles.length}/24)`, cabinet);
-			if (!s.bottles.length) el("p", "Your cabinet is empty. Bottled perfumes appear here.", cabinet);
+			if (!s.bottles.length) el("p", "보관장이 비어 있습니다. 병입한 향수가 여기에 나타납니다.", cabinet);
 			for (const b of s.bottles) {
 				const row = el("details", undefined, cabinet, "perf-bottle");
 				const sum = el("summary", undefined, row);
 				sum.append(setup.perfumeryIcons.render(setup.perfumeryIcons.forBottle(b), b.name));
 				el(
 					"span",
-					`${b.name} · ${plural(b.uses, "use")} · ${api.ready(b) ? "ready" : `${Math.ceil((b.made + b.formula.age * 86400 - V.timeStamp) / 3600)} h maturing`}`,
+					`${b.name} · ${b.uses}회 · ${api.ready(b) ? "사용 가능" : `숙성 중 ${Math.ceil((b.made + b.formula.age * 86400 - V.timeStamp) / 3600)}시간`}`,
 					sum
 				);
 				row.ontoggle = () => {
@@ -1239,15 +1239,15 @@
 					name.dataset.rename = b.id;
 					const actions = el("div", undefined, row, "perf-steps");
 					button("Wear", "apply", actions, b.id).disabled = !api.ready(b) || b.uses < 1 || !api.enabled();
-					button("Save formula", "save", actions, b.id);
-					if (canCompose) Wikifier.createInternalLink(actions, "Perfumery Workstation", "Copy into the draft", () => load(b.formula));
+					button("배합 저장", "save", actions, b.id);
+					if (canCompose) Wikifier.createInternalLink(actions, "Perfumery Workstation", "초안으로 복사", () => load(b.formula));
 					if (typeof pocketPerfumePack === "function") button(b.packed ? "Leave it here" : `Put in your ${pocketBagName()}`, "carry", actions, b.id);
-					if (teacherPresent) button("Offer to Poppy (5 min)", "gift", actions, b.id);
+					if (teacherPresent) button("포피에게 건네기 (5분)", "gift", actions, b.id);
 					button("Discard", "discard", actions, b.id).disabled = s.session?.stage === "review" && s.session.bottleId === b.id;
 				};
 			}
 			el("h3", `Formulas (${s.journal.length}/32)`, journal);
-			if (!s.journal.length) el("p", "Save a bottle's formula to make it again later.", journal);
+			if (!s.journal.length) el("p", "병의 배합을 저장하면 나중에 다시 만들 수 있습니다.", journal);
 			s.journal.forEach((entry, i) => {
 				const row = el("details", undefined, journal, "perf-bottle");
 				const sum = el("summary", undefined, row);
@@ -1270,7 +1270,7 @@
 					Object.assign(name, { value: entry.name, maxLength: 48 });
 					name.dataset.journalRename = i;
 					const actions = el("div", undefined, row, "perf-steps");
-					if (canCompose) Wikifier.createInternalLink(actions, "Perfumery Workstation", "Load as draft", () => load(entry.formula));
+					if (canCompose) Wikifier.createInternalLink(actions, "Perfumery Workstation", "초안으로 불러오기", () => load(entry.formula));
 					button("Remove", "forget", actions, i);
 				};
 			});
@@ -1311,7 +1311,7 @@
 			remember();
 			d.formula = m.copy(f);
 			edited();
-			notice("Formula loaded into your draft. Nothing has been used.");
+			notice("배합을 초안으로 불러왔습니다. 아무것도 소모되지 않았습니다.");
 			d.tab = "notes";
 			renderAll();
 		}
@@ -1323,7 +1323,7 @@
 			remember();
 			d.formula[note][id] = (d.formula[note][id] || 0) + 1;
 			edited();
-			notice(`Added ${label(id).title} to the ${layerName[note].toLowerCase()} note (${plural(d.formula[note][id], "measure")}).`);
+			notice(`${label(id).title} 추가: ${layerName[note].toLowerCase()} 노트 (${d.formula[note][id]}단위).`);
 		}
 		const focusAfter = selector => root.querySelector(selector)?.focus({ preventScroll: true });
 
@@ -1391,7 +1391,7 @@
 					if (action === "pin") {
 						m.validate(d.formula);
 						d.pinned = m.copy(d.formula);
-						notice("Remembered. Change something, then read the comparison.");
+						notice("기억했습니다. 무언가 바꾼 뒤 비교 결과를 확인하십시오.");
 						liquidOpen = true;
 					}
 					if (action === "swap" && d.pinned) {
@@ -1413,7 +1413,7 @@
 						edited();
 						blending = 0.55;
 						blended = JSON.stringify(d.formula);
-						timing.last = "You mix without testing your timing, settling for a modest, consistent finish.";
+						timing.last = "타이밍을 재지 않고 섞어, 무난하고 일정한 마무리에 만족한다.";
 						focus = ".perf-stage-foot .perf-primary";
 					}
 					if (action === "reblend") edited();
@@ -1425,7 +1425,7 @@
 						Object.assign(d, kept, { tab: "bottle" });
 						renderProgress();
 						renderResult(result);
-						notice(`Bottled ${result.name}. The aromas, the spirit, and a bottle were used; 20 minutes passed.`);
+						notice(`${result.name} 병입 완료. 아로마와 스피릿, 병 하나가 쓰였고 20분이 지났습니다.`);
 						focusAfter(".perf-result-head h3");
 						return;
 					}
@@ -1434,35 +1434,35 @@
 						serial = s.serial;
 						edited();
 						d.tab = stockLeft() ? "notes" : "prepare";
-						notice("Fresh draft. Your last bottle is in the cabinet.");
+						notice("새 초안입니다. 마지막 병은 보관장에 있습니다.");
 					}
 					if (action === "apply") {
 						api.apply(Number(id));
-						notice("You put on the perfume. It replaces any previous scent.");
+						notice("당신은 향수를 뿌린다. 이전에 뿌린 향은 사라진다.");
 						if (station) {
 							const uses = results.querySelector(".perf-result-uses");
 							if (uses && result)
-								uses.textContent = result.uses ? `You have enough perfume left for ${plural(result.uses, "application")}.` : "The bottle is empty.";
+								uses.textContent = result.uses ? `향수는 ${result.uses}회 뿌릴 만큼 남아 있다.` : "병이 비었다.";
 							b.disabled = true;
 							return;
 						}
 					}
 					if (action === "save") {
 						api.saveFormula(Number(id));
-						notice("Formula saved.");
+						notice("배합을 저장했습니다.");
 						if (station) return;
 					}
 					if (action === "forget") s.journal.splice(Number(id), 1);
 					if (action === "discard") {
 						s.bottles = s.bottles.filter(x => x.id !== Number(id));
-						notice("Bottle discarded.");
+						notice("병을 버렸습니다.");
 					}
 					if (action === "gift") notice(api.gift(Number(id)));
 					if (action === "carry") {
 						const bottle = s.bottles.find(x => x.id === Number(id));
 						const packing = !bottle.packed;
-						if (!pocketPerfumePack(bottle.id, packing)) notice("There's no room for it. Each kind of thing takes one slot in your pocket or bag.");
-						else notice(packing ? `${bottle.name} is in your ${pocketBagName()}. Wear it from the POCKET menu.` : `${bottle.name} is back in the cabinet.`);
+						if (!pocketPerfumePack(bottle.id, packing)) notice("넣을 자리가 없습니다. 주머니나 가방에서는 종류마다 한 칸씩 차지합니다.");
+						else notice(packing ? `${bottle.name}: ${pocketBagName()}에 넣었습니다. 주머니 메뉴에서 뿌릴 수 있습니다.` : `${bottle.name}: 보관장으로 돌려놓았습니다.`);
 					}
 					renderAll();
 					if (focus) focusAfter(focus);
@@ -1513,7 +1513,7 @@
 							d.formula[t.value][id] = (d.formula[t.value][id] || 0) + d.formula[from][id];
 							delete d.formula[from][id];
 							edited();
-							notice(`Moved ${label(id).title} to the ${t.value} note. It now shows at a different time.`);
+							notice(`${label(id).title} 이동: ${({ top: "오프닝", heart: "하트", base: "베이스" })[t.value] || t.value} 노트. 이제 향이 다른 시점에 나타납니다.`);
 							renderAll();
 							focusAfter(`[data-move="${CSS.escape(id)}"][data-from="${t.value}"]`);
 						}
@@ -1531,7 +1531,7 @@
 					}
 					if (t.dataset.journalRename !== undefined) {
 						const entry = s.journal[Number(t.dataset.journalRename)];
-						if (entry) entry.name = t.value.trim().slice(0, 48) || "Untitled formula";
+						if (entry) entry.name = t.value.trim().slice(0, 48) || "이름 없는 배합";
 					}
 					if (t.dataset.rename) {
 						const bottle = s.bottles.find(x => x.id === Number(t.dataset.rename));

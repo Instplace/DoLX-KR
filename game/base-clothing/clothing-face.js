@@ -1710,7 +1710,7 @@ function initFace() {
 			warmth: 1,
 			cost: 2000,
 			description:
-				"Ties behind your head. Without practice, covered eyes give skill checks a 30% chance to fail. Adaptability gradually removes this chance; uncovering your eyes gradually undoes that practice.",
+				"머리 뒤로 묶습니다. 익숙해지기 전에는 눈을 가리면 스킬 판정이 30% 확률로 실패합니다. 적응력이 이 확률을 서서히 없애 주며, 눈을 드러내고 있으면 쌓인 적응이 서서히 사라집니다.",
 			shop: ["forest", "adult"],
 			cursed: 0,
 			iconFile: "blindfold.png",
@@ -1736,7 +1736,7 @@ function initFace() {
 			gender: "n",
 			warmth: 1,
 			cost: 30000,
-			description: "A smooth white masquerade half-mask with white ribbons, like the one Luchifen supplies for the Glasshouse ballroom.",
+			description: "매끈한 흰색 가면무도회용 반가면입니다. 흰 리본이 달려 있으며, 루치펜이 글래스하우스 무도회장에 마련해 두는 것과 같은 모양입니다.",
 			shop: ["forest"],
 			accessory: 0,
 			accessory_colour: 0,

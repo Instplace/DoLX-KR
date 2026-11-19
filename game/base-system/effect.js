@@ -317,31 +317,31 @@ function effectsMakeup() {
 	if (V.beautyBoost) {
 		if (V.beautyBoost.bath > 0 && !V.beautyBoost._bathShown) {
 			V.beautyBoost._bathShown = true;
-			span("You feel refreshed from your bath, your skin glowing and every part of you clean.", "gold");
+			span("목욕한 덕에 상쾌하다. 피부가 빛나고 온몸이 깨끗하다.", "gold");
 			br();
 		} else if (V.beautyBoost.bath <= 0 && V.beautyBoost._bathShown) {
 			delete V.beautyBoost._bathShown;
-			span("The freshness from your bath has faded. You could use another wash.", "teal");
+			span("목욕의 상쾌함이 사라졌다. 한 번 더 씻는 게 좋겠다.", "teal");
 			br();
 		}
 
 		if (V.beautyBoost.perfume > 0 && !V.beautyBoost._perfumeShown) {
 			V.beautyBoost._perfumeShown = true;
-			span("The perfume on your skin makes you feel more alluring.", "gold");
+			span("피부에 밴 향수 덕에 한결 매력적으로 느껴진다.", "gold");
 			br();
 		} else if (V.beautyBoost.perfume <= 0 && V.beautyBoost._perfumeShown) {
 			delete V.beautyBoost._perfumeShown;
-			span("The glow from your perfume has worn off.", "teal");
+			span("향수의 은은한 빛이 가셨다.", "teal");
 			br();
 		}
 
 		if (V.beautyBoost.teeth > 0 && !V.beautyBoost._teethShown) {
 			V.beautyBoost._teethShown = true;
-			span("Your clean smile gives you a quiet confidence.", "gold");
+			span("깨끗한 미소가 조용한 자신감을 준다.", "gold");
 			br();
 		} else if (V.beautyBoost.teeth <= 0 && V.beautyBoost._teethShown) {
 			delete V.beautyBoost._teethShown;
-			span("The minty freshness in your mouth has worn off.", "teal");
+			span("입안의 박하향 상쾌함이 가셨다.", "teal");
 			br();
 		}
 
@@ -351,46 +351,46 @@ function effectsMakeup() {
 		if (V.beautyBoost.face > 0 && !V.beautyBoost._faceShown) {
 			V.beautyBoost._faceShown = true;
 			if (!bathActive) {
-				span("Your face feels fresh and clean.", "gold");
+				span("얼굴이 산뜻하고 깨끗하게 느껴진다.", "gold");
 				br();
 			}
 		} else if (V.beautyBoost.face <= 0 && V.beautyBoost._faceShown) {
 			delete V.beautyBoost._faceShown;
-			span("Your face no longer feels as fresh as before.", "teal");
+			span("얼굴이 예전만큼 산뜻하지 않다.", "teal");
 			br();
 		}
 
 		if (V.beautyBoost.hands > 0 && !V.beautyBoost._handsShown) {
 			V.beautyBoost._handsShown = true;
 			if (!bathActive) {
-				span("Your hands feel clean and refreshed.", "gold");
+				span("손이 깨끗하고 산뜻하게 느껴진다.", "gold");
 				br();
 			}
 		} else if (V.beautyBoost.hands <= 0 && V.beautyBoost._handsShown) {
 			delete V.beautyBoost._handsShown;
-			span("Your hands don't feel as clean anymore.", "teal");
+			span("손이 더는 깨끗하게 느껴지지 않는다.", "teal");
 			br();
 		}
 
 		if (V.beautyBoost.hygiene > 0 && !V.beautyBoost._hygieneShown) {
 			V.beautyBoost._hygieneShown = true;
 			if (!bathActive) {
-				span("You feel cleaner and more presentable.", "gold");
+				span("한결 깨끗하고 단정해진 느낌이다.", "gold");
 				br();
 			}
 		} else if (V.beautyBoost.hygiene <= 0 && V.beautyBoost._hygieneShown) {
 			delete V.beautyBoost._hygieneShown;
-			span("You don't feel quite as fresh down there anymore.", "teal");
+			span("아래쪽이 더는 예전만큼 산뜻하지 않다.", "teal");
 			br();
 		}
 
 		if (V.beautyBoost.tan > 0 && !V.beautyBoost._tanShown) {
 			V.beautyBoost._tanShown = true;
-			span("Your skin has a warm, sun-kissed glow.", "gold");
+			span("피부에 햇볕에 그을린 따뜻한 윤기가 돈다.", "gold");
 			br();
 		} else if (V.beautyBoost.tan <= 0 && V.beautyBoost._tanShown) {
 			delete V.beautyBoost._tanShown;
-			span("The glow from your tanning session has faded.", "teal");
+			span("태닝으로 얻은 윤기가 사라졌다.", "teal");
 			br();
 		}
 
@@ -398,12 +398,12 @@ function effectsMakeup() {
 		const spaActive = typeof getSpaBeautyBoost === "function" && getSpaBeautyBoost() > 0;
 		if (spaActive && !V.beautyBoost._spaShown) {
 			V.beautyBoost._spaShown = true;
-			span(`The effects of your ${spaBoost?.treatment || "spa treatment"} leave you looking carefully maintained.`, "gold");
+			span(`${spaBoost?.treatment || "스파 관리"} 덕분에 잘 가꾼 듯한 모습이다.`, "gold");
 			br();
 		} else if ((!spaActive || spaBoost?.expiredNotice) && V.beautyBoost._spaShown) {
 			delete V.beautyBoost._spaShown;
 			if (V.beautyBoost.spa) delete V.beautyBoost.spa.expiredNotice;
-			span("The expensive polish from your spa treatment has finally faded.", "teal");
+			span("스파 관리로 얻은 값비싼 윤기가 마침내 사라졌다.", "teal");
 			br();
 		} else if (spaBoost?.expiredNotice) {
 			delete V.beautyBoost.spa.expiredNotice;
@@ -414,11 +414,11 @@ function effectsMakeup() {
 	if (!V.statFreeze && typeof window.wellFedActive === "function" && V.pocket) {
 		if (window.wellFedActive() && !V.pocket._wellFedShown) {
 			V.pocket._wellFedShown = true;
-			span("You feel comfortably full and well fed.", "gold");
+			span("적당히 배가 부르고 잘 먹은 느낌이다.", "gold");
 			br();
 		} else if (!window.wellFedActive() && V.pocket._wellFedShown) {
 			delete V.pocket._wellFedShown;
-			span("Your stomach feels empty again. You are no longer well fed.", "teal");
+			span("배가 다시 비었다. 더는 잘 먹은 상태가 아니다.", "teal");
 			br();
 		}
 	}
@@ -426,11 +426,11 @@ function effectsMakeup() {
 	if (!V.statFreeze && typeof window.bloatedActive === "function" && V.pocket) {
 		if (window.bloatedActive() && !V.pocket._bloatedShown) {
 			V.pocket._bloatedShown = true;
-			span("Your stomach feels painfully bloated.", "red");
+			span("배가 고통스러울 만큼 더부룩하다.", "red");
 			br();
 		} else if (!window.bloatedActive() && V.pocket._bloatedShown) {
 			delete V.pocket._bloatedShown;
-			span("The bloated feeling finally passes.", "teal");
+			span("더부룩한 느낌이 마침내 가라앉았다.", "teal");
 			br();
 		}
 	}
@@ -620,13 +620,13 @@ function effects() {
 		// Acceptance of the belly earned by repetition rather than by praying about it - see the habituation floor in dailyPlayerEffects().
 		if (V.pregnancy_acceptance_message) {
 			const carrying = V.pregnancy_acceptance_message === "carrying";
-			const traitName = playerAwareTheyArePregnant() ? "Acceptance: Pregnant Belly" : "Acceptance: Pregnant Looking Belly";
+			const traitName = playerAwareTheyArePregnant() ? "수용: 임신한 배" : "수용: 임신한 것 같은 배";
 			delete V.pregnancy_acceptance_message;
 			element(
 				"span",
 				carrying
-					? `You've done this often enough that the weight out front is just how you are now. There's nothing left to brace against. You've gained the ${traitName} trait.`
-					: `You've carried enough times that the thought of swelling up again doesn't make you flinch. You've gained the ${traitName} trait, should your belly grow again.`,
+					? `이 일을 워낙 자주 겪은 탓에 몸 앞쪽의 무게는 이제 그저 당신의 일부다. 더는 버티며 막아낼 것이 없다. "${traitName}" 특성을 얻었다.`
+					: `여러 번 품어본 끝에, 다시 배가 부풀 수 있다는 생각에도 더는 움찔하지 않는다. 배가 다시 불러올 경우를 대비해 "${traitName}" 특성을 얻었다.`,
 				"green"
 			);
 			br();
@@ -1214,19 +1214,19 @@ function effects() {
 		if (V.school_herm_fade_message !== undefined) {
 			switch (V.school_herm_fade_message) {
 				case 0:
-					element("span", "Without both sets of parts to point at, the rumours about your genitalia die out at school.", "green");
+					element("span", "학교에서는 두 가지 성기를 모두 가리킬 수 없게 되어 당신의 성기에 대한 소문이 잠잠해진다.", "green");
 					break;
 				case 1:
-					element("span", "Your body no longer matches the rumours about your genitalia. Only a few cliques still repeat them.", "green");
+					element("span", "당신의 몸이 더는 성기에 대한 소문과 맞지 않는다. 몇몇 무리만 여전히 그 소문을 되풀이한다.", "green");
 					break;
 				case 2:
-					element("span", "Your body no longer matches the rumours about your genitalia, and most of the school has stopped believing them.", "teal");
+					element("span", "당신의 몸이 더는 성기에 대한 소문과 맞지 않게 되었고, 학교 대부분이 더는 그 소문을 믿지 않는다.", "teal");
 					break;
 				case 3:
-					element("span", "Your body no longer matches the rumours about your genitalia, and the gossip at school has quieted.", "teal");
+					element("span", "당신의 몸이 더는 성기에 대한 소문과 맞지 않게 되었고, 학교의 수군거림도 잦아들었다.", "teal");
 					break;
 				case 4:
-					element("span", "Your body no longer matches the rumours about your genitalia, and some at school have stopped believing them.", "teal");
+					element("span", "당신의 몸이 더는 성기에 대한 소문과 맞지 않게 되었고, 학교에서 일부는 더는 그 소문을 믿지 않는다.", "teal");
 					break;
 			}
 			delete V.school_herm_fade_message;
@@ -1256,7 +1256,7 @@ function effects() {
 		// Both messages are queued a tick before they print. Drop them silently if the trait was switched off in between.
 		if (!V.statFreeze && V.chastityAcclimatedTraitMessage) {
 			if (V.chastityAcclimatedTrait === 1) {
-				element("span", `Being locked away doesn't gnaw at you like it used to. You've gained the "Chastity Acclimated" trait.`, "gold");
+				element("span", `갇혀 지내는 일이 더는 예전처럼 마음을 갉아먹지 않는다. "정조대에 익숙해짐" 특성을 얻었다.`, "gold");
 				br();
 			}
 			delete V.chastityAcclimatedTraitMessage;
@@ -1264,7 +1264,7 @@ function effects() {
 
 		if (!V.statFreeze && V.arousalDesensitizedTraitMessage) {
 			if (!V.statFreeze && V.arousalDesensitizedTrait === 1) {
-				element("span", `Being turned on has stopped feeling urgent. You've gained the "Arousal Acclimated" trait.`, "gold");
+				element("span", `성적 흥분이 더는 다급하게 느껴지지 않는다. "흥분에 익숙해짐" 특성을 얻었다.`, "gold");
 				br();
 			}
 			delete V.arousalDesensitizedTraitMessage;
@@ -1272,19 +1272,19 @@ function effects() {
 
 		if (V.insanityTraitMessage) {
 			if (V.insanityTraitMessage === "gain") {
-				element("span", "The weight of everything you've endured finally cracks something inside. Your grip on reality is slipping. You've gained the", "red");
+				element("span", "지금껏 견뎌온 모든 것의 무게가 마침내 마음속 무언가를 갈라놓는다. 현실을 붙드는 힘이 느슨해진다. 당신은 ", "red");
 				element("span", '"Insanity"', "red");
 				element("span", "trait.", "red");
 			} else if (V.insanityTraitMessage === "gainPermanent") {
 				element(
 					"span",
-					"The weight of everything you've endured finally shatters something inside, and your mind can no longer mend on its own. Only Gwylan's touch could quiet it while the fracture remains. You've gained the",
+					"지금껏 견뎌온 모든 것의 무게가 마침내 마음속 무언가를 산산이 부수고, 이제 마음은 스스로 아물지 못한다. 균열이 남아 있는 동안에는 그윌란의 손길만이 그것을 가라앉힐 수 있다. 당신은 ",
 					"red"
 				);
 				element("span", '"Insanity"', "red");
-				element("span", "trait, permanently.", "red");
+				element("span", " 특성을 영구적으로 얻었다.", "red");
 			} else if (V.insanityTraitMessage === "loss") {
-				element("span", "As the worst of your trauma fades, your mind slowly knits itself back together. You've lost the", "lblue");
+				element("span", "트라우마의 가장 심한 부분이 가라앉으면서, 마음이 서서히 스스로 다시 이어붙는다. 당신은 ", "lblue");
 				element("span", '"Insanity"', "red");
 				element("span", "trait.", "lblue");
 			}
@@ -1645,7 +1645,7 @@ function effects() {
 	if (V.worn.genitals.name === "chastity parasite" && !V.player.penisExist && !V.statFreeze) {
 		V.worn.genitals.type.push("broken");
 		wikifier("genitalsruined");
-		element("span", "With nothing left to hold, your chastity parasite sloughs away.", "purple");
+		element("span", "더는 붙들 것이 없어, 당신의 기생형 정조대가 떨어져 나간다.", "purple");
 		br();
 	}
 
@@ -1710,7 +1710,7 @@ function effects() {
 			let display;
 			switch (messageKey) {
 				case "blindAdaptation":
-					element("span", "Sound, scent, and touch now tell you where things are even with your eyes covered. You have gained Adaptability.", "green");
+					element("span", "눈을 가려도 소리, 냄새, 촉감으로 주변 사물의 위치를 알 수 있게 되었다. 적응력을 얻었다.", "green");
 					break;
 				case "feats":
 					display = earnHourlyFeats();
@@ -2270,9 +2270,9 @@ function effects() {
 					if (state.phaseChanged) {
 						const capacity = autismSpectrumPhase();
 						const capacityText = {
-							settled: "Your head feels clear again. Things take the effort they should.",
-							strained: "You are still managing, but everything is starting to take more out of you.",
-							burnout: "This has been building for a while. Ordinary things have become hard work. You need a long rest.",
+							settled: "머리가 다시 맑아졌다. 일들이 마땅한 만큼의 힘만 든다.",
+							strained: "아직 버티고는 있지만, 모든 것이 점점 더 많은 힘을 요구하기 시작한다.",
+							burnout: "이 상태는 한동안 쌓여 왔다. 평범한 일들이 힘든 노동이 되었다. 오래 쉬어야 한다.",
 						};
 						element("span", capacityText[capacity] || capacityText.strained, capacity === "settled" ? "green" : capacity === "burnout" ? "red" : "pink");
 						br();
@@ -2281,15 +2281,15 @@ function effects() {
 						const focusDays = autismHyperfixationDaysRemaining();
 						const focusName = autismHyperfixationName();
 						const arrival = {
-							academic: `You first looked into ${focusName} because you had a question about it. Since then, you have kept thinking about it and looking for more information whenever you have the chance. ${focusName.toUpperFirst()} has become difficult to put aside.`,
-							physical: `You have caught yourself thinking about ${focusName} several times today. You keep wanting to do it again, even when you are not trying to practise or improve.`,
-							practical: `${focusName.toUpperFirst()} has become one of the parts of the day you look forward to most. You enjoy focusing on each step and seeing the result of your work.`,
-							combat: `You keep thinking about the same movement and how you could do it better. Each time you practise ${focusName}, you want to try it again with a small change.`,
-							inner: `You have been thinking more often about how you react, what you want, and when you should stand your ground. You keep going back over those thoughts because you want to understand yourself better.`,
+							academic: `${focusName}【을를】 처음 찾아본 것은 그것에 대해 궁금한 점이 있었기 때문이다. 그 뒤로도 계속 그것을 생각하며, 기회가 있을 때마다 더 많은 정보를 찾는다. ${focusName.toUpperFirst()}【은는】 내려놓기 어려운 것이 되었다.`,
+							physical: `오늘 ${focusName}【을를】 여러 번 떠올리고 있는 자신을 발견했다. 연습하거나 실력을 키우려는 게 아닐 때도 또 하고 싶어진다.`,
+							practical: `${focusName.toUpperFirst()}【은는】 하루 중 가장 기대되는 시간 중 하나가 되었다. 한 단계 한 단계에 집중하고 그 결과를 보는 것이 즐겁다.`,
+							combat: `같은 동작을 계속 떠올리며 어떻게 더 잘할 수 있을지 생각한다. ${focusName}【을를】 연습할 때마다 조금씩 바꿔서 다시 해 보고 싶어진다.`,
+							inner: `자신이 어떻게 반응하는지, 무엇을 원하는지, 언제 물러서지 말아야 하는지를 더 자주 생각하게 되었다. 스스로를 더 잘 이해하고 싶어서 그 생각을 자꾸 되짚는다.`,
 						};
 						element("span", arrival[autismHyperfixationCategory()] || arrival.academic, "gold");
 						br();
-						element("span", `It may remain your main interest for about ${focusDays} day${focusDays === 1 ? "" : "s"}.`, "gold");
+						element("span", `약 ${focusDays}일${focusDays === 1 ? "" : ""} 동안 가장 큰 관심사로 남을 수 있다.`, "gold");
 						br();
 					}
 					delete state.phaseChanged;
@@ -2303,24 +2303,24 @@ function effects() {
 						const where = V.location === "school" ? "school" : autismPrivacyTier() === "alone" ? "private" : "public";
 						const lines = {
 							school: [
-								"Someone asks you a simple question. You know the answer, but it takes longer than usual to put the words together. By the time you reply, they are watching you with concern.",
-								"You try to focus on what someone is saying, but every sound around you keeps getting your attention. Voices, moving chairs, the lights, and people in the corridor all make it harder to listen.",
-								"You try to speak and act the way you usually do at school, but keeping up takes more effort than you can manage. You pause more often, and even simple replies take time.",
+								"누군가 간단한 질문을 한다. 답은 알고 있지만 말을 엮는 데 평소보다 오래 걸린다. 대답할 때쯤 상대는 걱정스러운 얼굴로 당신을 지켜보고 있다.",
+								"누군가의 말에 집중하려 하지만 주변의 온갖 소리가 계속 주의를 끈다. 목소리, 의자 끄는 소리, 불빛, 복도의 사람들 때문에 듣기가 더 어렵다.",
+								"학교에서 늘 하던 대로 말하고 행동하려 하지만 따라가는 데 버거울 만큼 힘이 든다. 멈추는 일이 잦아지고 간단한 대답에도 시간이 걸린다.",
 							],
 							public: [
-								"You stop to decide which way to go. People walk around you while you think through each option, even though you normally make this choice without much effort.",
-								"You try to focus on where you are going, but every sound keeps pulling your attention away. Traffic, nearby conversations, doors opening, and your own footsteps all feel difficult to ignore.",
-								"Your movements become slower. Each step takes more effort, and getting to where you are going feels harder than it did a few minutes ago.",
+								"어느 길로 갈지 정하려고 멈춰 선다. 평소에는 힘들이지 않고 하던 선택인데, 당신이 하나하나 따져 보는 동안 사람들이 옆으로 비켜 지나간다.",
+								"가야 할 곳에 집중하려 하지만 온갖 소리가 계속 주의를 빼앗는다. 차 소리, 근처의 대화, 문 열리는 소리, 자신의 발소리까지 무시하기 어렵다.",
+								"움직임이 느려진다. 걸음마다 힘이 들고, 가려는 곳이 몇 분 전보다 더 멀게 느껴진다.",
 							],
 							private: [
-								"You sit down to do something, but you cannot make yourself start. You know what you need to do and where to begin, yet you stay where you are.",
-								"You notice yourself repeating the same small movement. You keep doing it because it feels easier than deciding what to do next.",
-								"You try to put your thoughts into words, but even simple sentences take longer to form. You are alone, so nobody is waiting for you to answer.",
+								"무언가를 하려고 자리에 앉지만 시작하지 못한다. 무엇을 해야 하고 어디서 시작할지도 알지만 그대로 앉아 있을 뿐이다.",
+								"같은 작은 동작을 되풀이하고 있는 자신을 알아차린다. 다음에 무엇을 할지 정하는 것보다 쉬워서 계속하게 된다.",
+								"생각을 말로 옮기려 하지만 간단한 문장조차 만드는 데 시간이 걸린다. 혼자라서 대답을 기다리는 사람은 없다.",
 							],
 						};
 						element("span", (lines[where] || lines.public).random(), "red");
 						br();
-						element("span", "You have reached Burnout.", "red");
+						element("span", "번아웃에 이르렀다.", "red");
 						br();
 					}
 					delete bState.burnoutEntered;
@@ -2359,33 +2359,33 @@ function effects() {
 					const state = ensureAutismSpectrumState();
 					if (Number.isFinite(state.fatigueNotice)) {
 						const lines = [
-							"Changing tasks without time to settle is jarring. It takes a moment to find your place again.",
-							"You have been handling demands for hours without a proper break. Keeping everything in order is getting harder.",
-							"The demands have been piling up for hours. Each new instruction takes more effort to sort out.",
-							"You have pushed through too much without enough recovery. Even familiar steps are becoming difficult.",
+							"충분히 자리 잡을 시간 없이 일을 바꾸는 것은 거슬린다. 제자리를 다시 찾는 데 잠시 걸린다.",
+							"제대로 쉬지 못한 채 몇 시간째 요구를 처리하고 있다. 모든 것을 정돈해 두기가 점점 힘들어진다.",
+							"요구가 몇 시간째 쌓이고 있다. 새 지시를 정리할 때마다 더 많은 힘이 든다.",
+							"충분히 회복하지 못한 채 너무 많이 밀어붙였다. 익숙한 단계조차 어려워지고 있다.",
 						];
 						element("span", lines[Math.clamp(state.fatigueNotice, 0, lines.length - 1)], state.fatigueNotice >= 2 ? "red" : "pink");
 						br();
 					}
 					if (state.reliefNotice) {
 						const reliefFocus = state.reliefNoticeFocus || autismHyperfixationName();
-						element("span", `You spend the time on ${reliefFocus}. It comes easier, and you feel calmer.`, "green");
+						element("span", `${reliefFocus}에 시간을 쏟는다. 한결 수월해지고 마음이 차분해진다.`, "green");
 						br();
 					}
 					if (state.coldStartNotice) {
-						element("span", "Starting the task feels difficult, even when you know what to do. Once you begin, it becomes easier.", "pink");
+						element("span", "무엇을 해야 하는지 알아도 일을 시작하는 것이 어렵게 느껴진다. 일단 시작하면 수월해진다.", "pink");
 						br();
 					}
 					if (state.meltdownNotice) {
 						element(
 							"span",
-							"It is too much at once. Sounds, instructions, and sensations stop fitting together. You need the demands to stop before you can recover.",
+							"한꺼번에 너무 많다. 소리, 지시, 감각이 서로 맞물리지 않는다. 회복하려면 요구가 멈춰야 한다.",
 							"red"
 						);
 						br();
 					}
 					if (state.meltdownEndNotice) {
-						element("span", "You can think clearly again. The worst of it has passed.", "green");
+						element("span", "다시 또렷하게 생각할 수 있다. 가장 힘든 고비는 지나갔다.", "green");
 						br();
 					}
 					delete state.coldStartNotice;

@@ -1057,7 +1057,7 @@ function initHandheld() {
 			femininity: 0,
 			warmth: 0,
 			cost: 2000,
-			description: "A shallow wicker trug, the sort carried to keep cut stems from crushing each other.",
+			description: "꺾은 줄기끼리 눌려 상하지 않도록 들고 다니는, 얕은 고리버들 바구니입니다.",
 			shop: ["forest"],
 			accessory: 0,
 			accessory_colour: 0,

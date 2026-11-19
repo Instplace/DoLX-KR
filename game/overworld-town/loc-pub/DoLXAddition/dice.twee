@@ -282,7 +282,7 @@
 				<<set $dice.event.drinkIntro to 2>>
 				<<set $dice.event.drinkEnabled to 1>>
 			<</if>>
-			<<set _text_output to "The <<group>> are goading each other, and just being rowdy overall.">>
+			<<set _text_output to "<<group>>【이가】 서로를 부추기며 전반적으로 시끌벅적하게 떠들고 있다.">>
 			<<print _text_output>>
 		<<else>>
 			<<if $dice.event.kiss>>
@@ -395,7 +395,7 @@
 									<<if $drinkGuarded>>
 										/* A sharp eye catches the undissolved grit at the bottom of the glass before it reaches your lips. */
 										<<run $dice.log.push('<span class="green">그 잔 바닥에 뭔가 가라앉아 있다</span>. 당신은 잔을 내려놓고 다른 잔을 집는다.')>>
-										<<run $dice.log.push('"Suit yourself," the <<person1>><<person>> says, a little too quickly.')>>
+										<<run $dice.log.push('"마음대로 해." <<person1>><<person>>【이가】 조금 너무 빠르게 말한다.')>>
 									<<else>>
 										<<xchange-random-spike>><<xchange-seen 2>>
 										<<if !$xchange.pill.genderflipEffect>><<xchange-addeffect "genderflip">><</if>>
@@ -416,7 +416,7 @@
 												"싸구려 쓰레기야, 저건. 또 바가지 썼군."
 											)>>
 										<</if>>
-										<<run $dice.log.push('"Gahahaha!" the <<person1>><<person>> laughs. "'+_comment+'"')>>
+										<<run $dice.log.push('"가하하하!" <<person1>><<person>>【이가】 웃는다. "'+_comment+'"')>>
 									<</if>>
 								<</if>>
 								<<drunk `either(30,30,30,60,60,120,180)`>>
@@ -744,7 +744,7 @@
 					<<set _wagerScale to [500,1000,3000][$dice.wagerLvl]>>
 					<<set _wagerAmount to random(1,8)*_wagerScale>>
 					<<dice-bet _player _wagerAmount>>
-					<<run $dice.log.push("The <<person"+_player+">><<person>> raises the stake by <<printmoney "+_wagerAmount+">>.")>>
+					<<run $dice.log.push("<<person"+_player+">><<person>>【이가】 판돈을 <<printmoney "+_wagerAmount+">>만큼 올린다.")>>
 					<<dice-compute-wagers "npc" false>>
 					<<exit>>
 				<</if>>
@@ -753,7 +753,7 @@
 		<<elseif _daresToMatchBet>>
 			<<dice-bet _player _raiseAmount>>
 			<<if _raiseAmount gt 0>>
-				<<run $dice.log.push("The <<person"+_player+">><<person>> matches the bet.")>>
+				<<run $dice.log.push("<<person"+_player+">><<person>>【이가】 같은 금액을 맞춘다.")>>
 			<</if>>
 
 			<!-- Consider raising the stakes if allowed -->
@@ -766,7 +766,7 @@
 					<<set _wagerScale to [500,1000,3000][$dice.wagerLvl]>>
 					<<set _wagerAmount to random(1,8)*_wagerScale>>
 					<<dice-bet _player _wagerAmount>>
-					<<run $dice.log.push("The <<person"+_player+">><<person>> raises the stake by <<printmoney "+_wagerAmount+">>.")>>
+					<<run $dice.log.push("<<person"+_player+">><<person>>【이가】 판돈을 <<printmoney "+_wagerAmount+">>만큼 올린다.")>>
 					<<dice-compute-wagers "npc" false>>
 					<<exit>>
 				<</if>>
@@ -824,9 +824,9 @@
 				<<capture _split, $dice.bets>>
 					<<set _gains to _split - $dice.bets[$dice.shooter]>>
 					<<if $dice.shooter is 0>>
-						<<run $dice.log.push("You won <<printmoney "+_gains+">>.")>>
+						<<run $dice.log.push("당신은 <<printmoney "+_gains+">>어치를 땄다.")>>
 					<<else>>
-						<<run $dice.log.push("The <<person"+$dice.shooter+">><<person>> won <<printmoney "+_gains+">>.")>>
+						<<run $dice.log.push("<<person"+$dice.shooter+">><<person>>【이가】 <<printmoney "+_gains+">>어치를 땄다.")>>
 					<</if>>
 				<</capture>>
 			<<else>>
@@ -843,9 +843,9 @@
 					<<capture _player, _split, $dice.bets>>
 						<<set _gains to _split - $dice.bets[_player]>>
 						<<if _player is 0>>
-							<<run $dice.log.push("You won <<printmoney "+_gains+">>.")>>
+							<<run $dice.log.push("당신은 <<printmoney "+_gains+">>어치를 땄다.")>>
 						<<else>>
-							<<run $dice.log.push("The <<person"+_player+">><<person>> won <<printmoney "+_gains+">>.")>>
+							<<run $dice.log.push("<<person"+_player+">><<person>>【이가】 <<printmoney "+_gains+">>어치를 땄다.")>>
 						<</if>>
 					<</capture>>
 				<<else>>
@@ -1096,7 +1096,7 @@
 			<</if>>
 			<<capture _player>>
 				<<if _player isnot 0>>
-					<<run $dice.log.push("The <<person"+_player+">><<person>> joins this round.")>>
+					<<run $dice.log.push("<<person"+_player+">><<person>>【이가】 이번 판에 참여한다.")>>
 				<<elseif $dice.altbet isnot undefined>>
 					<<run $dice.log.push('<span class="lewd">당신은 이번 판에 참여한다. 건 것: '+({"a kiss":"키스","an oral":"구강 봉사","your body":"당신의 몸","your outfit":"당신의 옷 전부","your top":"당신의 윗옷","your bottoms":"당신의 아래옷","your under outfit":"당신의 속옷 세트","your under top":"당신의 속옷 윗부분","your underwear":"당신의 속옷"}[$dice.altbet] || $dice.altbet)+", 값어치는</span> <<printmoney "+(_favoursValueMap[$dice.altbet]*(1+$dice.wagerLvl))+">>.")>>
 				<</if>>

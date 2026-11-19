@@ -387,7 +387,7 @@ const wardrobeSortKeys = [
 	["lewd", "Lewd"],
 	["integrity", "Integrity"],
 	["warmth", "Warmth"],
-	["outfit", "Outfit Status"],
+	["outfit", "세트 상태"],
 ];
 
 function wardrobeSortBy(slot, key) {

@@ -51,17 +51,17 @@ class CombatEditor {
 		const button = document.createElement("button");
 		button.classList.add("btn", "btn-info", "btn-icon", "combat-give-up");
 		if (allowance == null) {
-			button.title = "Stop fighting the labour";
+			button.title = "진통과 싸우기를 멈춥니다";
 		} else if (allowance === "consensual") {
 			button.title =
 				remaining > 0
-					? `Stop: end this encounter (${remaining} of ${CombatEditor.giveUpDailyLimits.consensual} left today)`
-					: "Stop: you have stopped too many encounters today";
+					? `중단: 이 만남을 끝냅니다 (오늘 ${remaining}/${CombatEditor.giveUpDailyLimits.consensual}번 남음)`
+					: "중단: 오늘 너무 많은 만남을 중단했습니다";
 		} else {
 			button.title =
 				remaining > 0
-					? `Give up: automatically lose this encounter (${remaining} of ${CombatEditor.giveUpDailyLimits.forced} left today)`
-					: "Give up: you have given up too many times today";
+					? `포기: 이 만남에서 자동으로 패배합니다 (오늘 ${remaining}/${CombatEditor.giveUpDailyLimits.forced}번 남음)`
+					: "포기: 오늘 너무 많이 포기했습니다";
 		}
 		button.innerHTML =
 			'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true">' +

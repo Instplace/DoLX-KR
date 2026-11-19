@@ -21,7 +21,7 @@
 		root.dataset.state = "intro";
 		root.classList.add("sr-ritual");
 		root.setAttribute("role", "region");
-		root.setAttribute("aria-label", "Trial of the " + game[0].toUpperCase() + game.slice(1));
+		root.setAttribute("aria-label", (({ current: "해류", stone: "돌", echo: "메아리" })[game] || game) + "의 시련");
 		const retreat = root.closest(".passage").querySelector(".sr-retreat");
 		retreat.addEventListener(
 			"click",
@@ -85,19 +85,19 @@
 				b.disabled = true;
 			});
 			if (game === "current") {
-				status.textContent = success ? "You reach the barrier handles." : "The current forces you back to the handholds.";
+				status.textContent = success ? "당신은 방벽의 손잡이에 닿는다." : "해류에 밀려 손잡이 자리로 돌아온다.";
 				root.querySelector(".sr-current-warning").textContent = success
-					? "The drain bolt is within reach."
-					: "Rest before retrying from the last sheltered crossing.";
+					? "배수 빗장이 손 닿는 곳에 있다."
+					: "마지막 은신처에서 숨을 돌린 뒤 다시 시도해야 한다.";
 			} else
 				status.textContent =
 					game === "stone"
 						? success
-							? "The last crack closes; the stone finally holds."
-							: "The barrier breaks apart, forcing you back to the handholds."
+							? "마지막 균열이 닫히고, 돌이 마침내 버텨 낸다."
+							: "방벽이 무너져 손잡이 자리로 밀려난다."
 						: success
-						? "The symbols shine together; you remember."
-						: "The memory scatters; you pull your hand from the carvings.";
+						? "문양들이 함께 빛나고, 당신은 기억해 낸다."
+						: "기억이 흩어지고, 당신은 새김에서 손을 뗀다.";
 			const next = el("div");
 			next.className = "sr-outcome";
 			$(next).wiki(
@@ -129,7 +129,7 @@
 			root.replaceChildren();
 		};
 		if (game === "current") {
-			status.textContent = "Swim through the ruins; avoid the rocks and resist the current.";
+			status.textContent = "유적 사이를 헤엄쳐 지나가십시오. 바위를 피하고 해류를 버티십시오.";
 			el("p", "Drag within the water, or hold arrow keys / WASD. Reach the glowing ring in each passage.", root, "sr-intro");
 			const ns = "http://www.w3.org/2000/svg";
 			const svg = document.createElementNS(ns, "svg");
@@ -138,9 +138,9 @@
 			svg.dataset.gestureOwner = "current";
 			svg.setAttribute("tabindex", "0");
 			svg.setAttribute("role", "group");
-			svg.setAttribute("aria-label", "Underwater passage. Hold arrow keys or WASD, or drag to swim. Reach the glowing ring on the right.");
+			svg.setAttribute("aria-label", "수중 통로. 방향키나 WASD를 누르고 있거나 끌어서 헤엄칩니다. 오른쪽의 빛나는 고리에 닿으십시오.");
 			root.append(svg);
-			const staminaLabel = el("label", "Stamina", root, "sr-pressure sr-stamina");
+			const staminaLabel = el("label", "지구력", root, "sr-pressure sr-stamina");
 			const meter = el("progress", "", staminaLabel);
 			meter.max = meter.value = 100;
 			const warning = el("p", "", root, "sr-current-warning");
@@ -155,7 +155,7 @@
 			// Keep the five-crossing save contract; older partial crossings stay earned.
 			const routes = [
 				{
-					name: "Gentle Current",
+					name: "잔잔한 해류",
 					end: 2,
 					rocks: [
 						[145, 24, 38, 102],
@@ -167,7 +167,7 @@
 					],
 				},
 				{
-					name: "Crossing Currents",
+					name: "교차하는 해류",
 					end: 4,
 					rocks: [
 						[126, 24, 36, 178],
@@ -181,7 +181,7 @@
 					],
 				},
 				{
-					name: "The Surge",
+					name: "급류",
 					end: 5,
 					rocks: [
 						[120, 24, 40, 126],
@@ -248,8 +248,8 @@
 				p = quest().current === 1 ? { x: 218, y: 180 } : quest().current === 3 ? { x: 220, y: 100 } : { x: 38, y: 180 };
 				stamina = 100;
 				clock = hitUntil = messageUntil = transition = 0;
-				status.textContent = route.name + ": swim to the glowing ring.";
-				warning.textContent = "The stone alcoves shelter you from the strongest water.";
+				status.textContent = route.name + ": 빛나는 고리까지 헤엄치십시오.";
+				warning.textContent = "돌 감실이 가장 센 물살을 막아 준다.";
 				svg.replaceChildren();
 				svg.classList.remove("sr-hit", "sr-surging", "sr-surge-warning");
 				draw("rect", { width: 480, height: 360 }, "sr-water");
@@ -350,7 +350,7 @@
 					for (let step = 0; step < steps; step++) {
 						const next = { x: p.x + ((dx + fx) * dt) / steps, y: p.y + ((dy + fy) * dt) / steps };
 						if (next.x < radius || next.x > 480 - radius || next.y < radius || next.y > 360 - radius) {
-							warning.textContent = "You lose your grip on the current!";
+							warning.textContent = "해류를 놓치고 만다!";
 							finish(false);
 							return;
 						}
@@ -359,7 +359,7 @@
 								stamina -= 17 - ability * 2;
 								hitUntil = clock + 0.7;
 								messageUntil = clock + 1.3;
-								warning.textContent = "You strike the stone wall!";
+								warning.textContent = "돌벽에 부딪힌다!";
 							}
 							break;
 						}
@@ -369,14 +369,14 @@
 					if (!reduced.matches) tail.setAttribute("transform", `rotate(${Math.sin(clock * 5) * 7})`);
 					if (clock > messageUntil) {
 						const message = impending
-							? "The water gathers; a powerful surge is coming!"
+							? "물이 모여든다. 거센 급류가 다가온다!"
 							: surge
-							? "The water surges through the passage!"
+							? "물이 통로를 휩쓸고 지나간다!"
 							: stamina < 25
-							? "Your arms are tiring; reach the sheltered ring!"
+							? "팔이 지쳐 간다. 은신처의 고리까지 닿아야 한다!"
 							: Math.hypot(fx, fy) > 25
-							? "The current drags you sideways!"
-							: "Keep clear of the stone edges.";
+							? "해류가 당신을 옆으로 끌어당긴다!"
+							: "돌 모서리에서 떨어져 있어야 한다.";
 						if (warning.textContent !== message) warning.textContent = message;
 					}
 					paint();
@@ -394,8 +394,8 @@
 						cost(10, 8);
 						release();
 						transition = 1.4;
-						status.textContent = "You reach a sheltered ring; the next passage opens.";
-						warning.textContent = "Brace against the stone before swimming on.";
+						status.textContent = "은신처의 고리에 닿는다. 다음 통로가 열린다.";
+						warning.textContent = "계속 헤엄치기 전에 돌에 몸을 기댄다.";
 					}
 				}
 				frame = requestAnimationFrame(tick);
@@ -458,21 +458,21 @@
 		}
 
 		if (game === "stone") {
-			status.textContent = "Seal the cracks before the barrier gives way.";
-			el("p", "Wide cracks need two presses; brace the barrier to release pressure.", root, "sr-intro");
-			const pressureLabel = el("label", "Water pressure", root, "sr-pressure");
+			status.textContent = "방벽이 무너지기 전에 균열을 메우십시오.";
+			el("p", "넓은 균열은 두 번 눌러야 합니다. 방벽을 받쳐 압력을 풀어 주십시오.", root, "sr-intro");
+			const pressureLabel = el("label", "수압", root, "sr-pressure");
 			const pressureMeter = el("progress", "", pressureLabel);
 			pressureMeter.max = 100;
 			pressureMeter.value = 0;
 			const grid = el("div", "", root, "sr-stone-wall");
 			grid.setAttribute("role", "group");
-			grid.setAttribute("aria-label", "Stone barrier. Arrow keys move between stones; Enter or Space repairs a crack.");
+			grid.setAttribute("aria-label", "돌 방벽. 방향키로 돌 사이를 이동하고, Enter나 Space로 균열을 수리합니다.");
 			const paths = [
 				"M0 50L24 42L40 54L53 33L64 57L80 47L100 50",
 				"M0 50L28 44L48 53L68 43L100 50M48 53L40 26L50 0M48 53L61 76L50 100",
 				"M0 50L20 39L37 57L53 31L65 65L80 44L100 50",
 			];
-			const positions = ["upper left", "upper middle", "upper right", "middle left", "centre", "middle right", "lower left", "lower middle", "lower right"];
+			const positions = ["왼쪽 위", "가운데 위", "오른쪽 위", "왼쪽 가운데", "중앙", "오른쪽 가운데", "왼쪽 아래", "가운데 아래", "오른쪽 아래"];
 			let cracks = Array(9).fill(null);
 			let pressure = 0;
 			let repairs = 0;
@@ -486,7 +486,7 @@
 				cell.className = "sr-stone-tile";
 				cell.disabled = true;
 				cell.tabIndex = i === 0 ? 0 : -1;
-				cell.setAttribute("aria-label", "Unbroken stone, " + positions[i]);
+				cell.setAttribute("aria-label", "멀쩡한 돌, " + positions[i]);
 				cell.addEventListener("keydown", event => {
 					const offset = { ArrowUp: -3, ArrowDown: 3, ArrowLeft: i % 3 ? -1 : 0, ArrowRight: i % 3 < 2 ? 1 : 0 }[event.key];
 					if (offset === undefined) return;
@@ -499,17 +499,17 @@
 				return cell;
 			});
 			const marks = el("div", "", root, "sr-supports");
-			marks.setAttribute("aria-label", "Secured supports");
+			marks.setAttribute("aria-label", "확보한 지지대");
 			const supports = Array.from({ length: 3 }, () => el("span", "", marks));
 			const warning = () =>
 				pressure >= 80
-					? "The barrier is beginning to give way!"
+					? "방벽이 무너지기 시작한다!"
 					: pressure >= 55
-					? "The pressure is rising; seal the spreading cracks!"
-					: "Cracks spread across the barrier; seal them quickly!";
+					? "압력이 오른다. 번지는 균열을 메워야 한다!"
+					: "방벽 전체로 균열이 번진다. 서둘러 메워야 한다!";
 			const paint = () => {
 				pressureMeter.value = Math.max(0, pressure);
-				pressureMeter.setAttribute("aria-valuetext", pressure >= 80 ? "Dangerously high" : pressure >= 55 ? "Rising" : "Holding steady");
+				pressureMeter.setAttribute("aria-valuetext", pressure >= 80 ? "위험할 만큼 높음" : pressure >= 55 ? "상승 중" : "안정적");
 				root.dataset.pressure = pressure >= 80 ? "danger" : pressure >= 55 ? "high" : "low";
 				cells.forEach((cell, i) => {
 					const crack = cracks[i];
@@ -531,11 +531,11 @@
 					}
 					const description = crack
 						? [
-								"Narrow crack, press once",
-								"Branching crack, seal before it spreads",
-								crack.hp === 2 ? "Wide crack, press twice" : "Wide crack closing, press once more",
+								"좁은 균열, 한 번 누르기",
+								"갈라지는 균열, 번지기 전에 메우기",
+								crack.hp === 2 ? "넓은 균열, 두 번 누르기" : "닫히는 넓은 균열, 한 번 더 누르기",
 						  ][crack.type]
-						: "Unbroken stone";
+						: "멀쩡한 돌";
 					cell.setAttribute("aria-label", description + ", " + positions[i]);
 					cell.disabled = !running || transitioning;
 				});
@@ -544,7 +544,7 @@
 					mark.textContent = i < quest().stone ? "✓" : "";
 				});
 				brace.disabled = !running || transitioning || braces === 0;
-				brace.textContent = braces === 0 ? "Brace locked" : "Brace the barrier";
+				brace.textContent = braces === 0 ? "받침 잠김" : "방벽 받치기";
 			};
 			const spawn = () => {
 				const empty = cells.map((cell, i) => (!cracks[i] && !cell.classList.contains("sr-sealed") ? i : -1)).filter(i => i >= 0);
@@ -593,7 +593,7 @@
 				spawn();
 				spawn();
 				paint();
-				status.textContent = "Cracks spread across the barrier; seal them quickly!";
+				status.textContent = "방벽 전체로 균열이 번진다. 서둘러 메워야 한다!";
 				cells.forEach(cell => {
 					cell.tabIndex = -1;
 				});
@@ -608,11 +608,11 @@
 				if (!crack) {
 					if (cells[i].classList.contains("sr-sealed")) return;
 					pressure += 10;
-					status.textContent = "That stone is sound; find a crack!";
+					status.textContent = "그 돌은 멀쩡하다. 균열을 찾아야 한다!";
 				} else {
 					crack.hp--;
 					pressure = Math.max(0, pressure - 4 - strength * 2);
-					status.textContent = crack.hp ? "The wide crack narrows; press it again!" : "The crack seals beneath your hand.";
+					status.textContent = crack.hp ? "넓은 균열이 좁아진다. 다시 눌러야 한다!" : "균열이 손 밑에서 메워진다.";
 					if (!crack.hp) {
 						cracks[i] = null;
 						repairs++;
@@ -645,17 +645,17 @@
 					} else {
 						transitioning = true;
 						paint();
-						status.textContent = "This support holds; the next is straining.";
+						status.textContent = "이 지지대는 버틴다. 다음 지지대가 삐걱댄다.";
 						if (!document.hidden) later(round, 1400);
 					}
 				}
 			};
-			const brace = button("Brace the barrier", () => {
+			const brace = button("방벽 받치기", () => {
 				if (!running || transitioning || !braces) return;
 				braces--;
 				pressure = Math.max(0, pressure - 25);
 				paint();
-				status.textContent = braces ? "You brace the barrier against the surge." : "The brace locks; keep sealing the cracks.";
+				status.textContent = braces ? "급류에 맞서 방벽을 받친다." : "받침이 잠긴다. 계속 균열을 메워야 한다.";
 			});
 			brace.className = "sr-stone-brace";
 			const start = button("Begin", () => {
@@ -668,7 +668,7 @@
 				clear();
 				cells.forEach(cell => cell.classList.remove("sr-sealed"));
 				if (!running) return;
-				if (document.hidden) status.textContent = "The trial is paused while you are away.";
+				if (document.hidden) status.textContent = "자리를 비운 동안 시련이 멈춰 있다.";
 				else if (transitioning) later(round, 1400);
 				else {
 					paint();
@@ -682,11 +682,11 @@
 			return;
 		}
 		if (game === "echo") {
-			status.textContent = "Remember the order in which the carvings glow.";
-			el("p", "Three mistakes end the attempt.", root, "sr-intro");
+			status.textContent = "새김이 빛나는 순서를 기억하십시오.";
+			el("p", "세 번 틀리면 도전이 끝납니다.", root, "sr-intro");
 			const board = el("div", "", root, "sr-echo-symbols");
 			board.setAttribute("role", "group");
-			board.setAttribute("aria-label", "Memory carvings");
+			board.setAttribute("aria-label", "기억의 새김");
 			const cells = symbols.map((name, i) => {
 				const cell = button(name, () => input(i), board);
 				cell.setAttribute("aria-label", name);
@@ -695,7 +695,7 @@
 				return cell;
 			});
 			const progress = el("div", "", root, "sr-echo-progress");
-			progress.setAttribute("aria-label", "Remembered symbols");
+			progress.setAttribute("aria-label", "기억한 문양");
 			const spoken = el("span", "", root, "sr-spoken");
 			spoken.setAttribute("aria-live", "assertive");
 			let pattern = [];
@@ -733,7 +733,7 @@
 				if (revealIndex === pattern.length) {
 					phase = "answering";
 					spoken.textContent = "";
-					status.textContent = "Now repeat the pattern.";
+					status.textContent = "이제 그 순서를 따라 누르십시오.";
 					cells.forEach(cell => {
 						cell.disabled = false;
 					});
@@ -767,7 +767,7 @@
 				cells.forEach(cell => {
 					cell.disabled = true;
 				});
-				status.textContent = "Watch the symbols carefully.";
+				status.textContent = "문양을 잘 지켜보십시오.";
 				schedule(reveal, 500);
 			};
 			const input = i => {
@@ -777,7 +777,7 @@
 					cells[i].classList.add("sr-accepted");
 					index++;
 					paintProgress();
-					status.textContent = "Keep the order in mind.";
+					status.textContent = "순서를 잘 기억하십시오.";
 					if (index === pattern.length) {
 						quest().echo++;
 						cost(15, 5);
@@ -790,7 +790,7 @@
 							finish(true);
 						} else {
 							phase = "transition";
-							status.textContent = quest().echo === 1 ? "A guardian waits beside the lower handholds." : "A guardian braces the frame before opening the gate.";
+							status.textContent = quest().echo === 1 ? "수호자가 아래쪽 손잡이 곁에서 기다린다." : "수호자가 문을 열기 전에 틀을 받친다.";
 							schedule(() => present(true), 1800);
 						}
 					}
@@ -807,7 +807,7 @@
 					cells.forEach(cell => {
 						cell.disabled = true;
 					});
-					status.textContent = concentration === 1 ? "The memory is almost gone; watch closely." : "The memory slips from your grasp.";
+					status.textContent = concentration === 1 ? "기억이 거의 사라졌다. 눈여겨보아야 한다." : "기억이 손아귀에서 빠져나간다.";
 					schedule(() => present(false), 1200);
 				}
 			};
@@ -824,7 +824,7 @@
 					remaining = Math.max(0, due - performance.now());
 					clear();
 					pausedMessage = status.textContent;
-					status.textContent = "The trial is paused while you are away.";
+					status.textContent = "자리를 비운 동안 시련이 멈춰 있다.";
 				} else {
 					status.textContent = pausedMessage;
 					if (pending) schedule(pending, remaining);

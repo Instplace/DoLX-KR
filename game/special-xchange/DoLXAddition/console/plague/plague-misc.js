@@ -11,12 +11,12 @@
 	const challenges = Object.freeze(
 		[
 			{ id: "foothold", name: "Foothold", diff: "easy", setup: { difficulty: "casual" }, goal: { type: "reach", n: 3, by: 30 } },
-			{ id: "harbour-fever", name: "Harbour Fever", diff: "easy", setup: { difficulty: "casual", origin: "coast" }, goal: { type: "reach", n: 4, by: 40 } },
-			{ id: "quiet-quarter", name: "A Quiet Quarter", diff: "easy", setup: { difficulty: "casual" }, goal: { type: "share", n: 0.25, by: 66 } },
-			{ id: "cold-start", name: "Cold Start", diff: "medium", setup: { difficulty: "normal", origin: "north" }, goal: { type: "reach", n: 6, by: 58 } },
-			{ id: "half-the-world", name: "Half the World", diff: "medium", setup: { difficulty: "normal" }, goal: { type: "share", n: 0.5, by: 70 } },
-			{ id: "no-blood", name: "No Blood Spilled", diff: "medium", setup: { difficulty: "normal" }, goal: { type: "win" }, rules: { noLethal: true } },
-			{ id: "lean-genome", name: "Lean Genome", diff: "medium", setup: { difficulty: "casual" }, goal: { type: "win" }, rules: { dnaCap: 24 } },
+			{ id: "harbour-fever", name: "항구 열병", diff: "easy", setup: { difficulty: "casual", origin: "coast" }, goal: { type: "reach", n: 4, by: 40 } },
+			{ id: "quiet-quarter", name: "조용한 구역", diff: "easy", setup: { difficulty: "casual" }, goal: { type: "share", n: 0.25, by: 66 } },
+			{ id: "cold-start", name: "한랭 출발", diff: "medium", setup: { difficulty: "normal", origin: "north" }, goal: { type: "reach", n: 6, by: 58 } },
+			{ id: "half-the-world", name: "세계의 절반", diff: "medium", setup: { difficulty: "normal" }, goal: { type: "share", n: 0.5, by: 70 } },
+			{ id: "no-blood", name: "피 한 방울 없이", diff: "medium", setup: { difficulty: "normal" }, goal: { type: "win" }, rules: { noLethal: true } },
+			{ id: "lean-genome", name: "간소한 유전체", diff: "medium", setup: { difficulty: "casual" }, goal: { type: "win" }, rules: { dnaCap: 24 } },
 			{
 				id: "lockdown",
 				name: "Lockdown",
@@ -24,7 +24,7 @@
 				setup: { difficulty: "normal", stage: 2, events: ["travelBan"] },
 				goal: { type: "reach", n: 6, by: 50 },
 			},
-			{ id: "race-the-cure", name: "Race the Cure", diff: "hard", setup: { difficulty: "normal" }, goal: { type: "win" }, rules: { cureBelow: 60 } },
+			{ id: "race-the-cure", name: "치료제와의 경주", diff: "hard", setup: { difficulty: "normal" }, goal: { type: "win" }, rules: { cureBelow: 60 } },
 			{ id: "blitz", name: "Blitz", diff: "hard", setup: { difficulty: "normal" }, goal: { type: "win", by: 92 } },
 		].map(c => Object.freeze(c))
 	);
@@ -41,11 +41,11 @@
 	]);
 	/* Opening conditions: a world event already under way, or the authorities already watching. */
 	const openings = Object.freeze([
-		{ id: "calm", text: "A calm start." },
-		{ id: "rain", text: "Heavy rain from the first day.", events: ["rain"] },
-		{ id: "cold", text: "A cold snap from the first day.", events: ["cold"] },
-		{ id: "festival", text: "The Town festival is on.", events: ["festival"] },
-		{ id: "watched", text: "Doctors are already watching.", stage: 1 },
+		{ id: "calm", text: "고요한 시작." },
+		{ id: "rain", text: "첫날부터 폭우.", events: ["rain"] },
+		{ id: "cold", text: "첫날부터 한파.", events: ["cold"] },
+		{ id: "festival", text: "마을 축제가 한창입니다.", events: ["festival"] },
+		{ id: "watched", text: "의사들이 이미 지켜보고 있습니다.", stage: 1 },
 	]);
 
 	function dailyFor(date = daily().utcDate()) {
@@ -58,7 +58,7 @@
 		return Object.freeze({
 			id: "daily-" + date,
 			date,
-			name: "Daily scenario",
+			name: "오늘의 시나리오",
 			diff: g.level,
 			setup: { difficulty: g.level === "easy" ? "casual" : "normal", origin: pick(regions), stage: opening.stage, events: opening.events },
 			opening: opening.text,
@@ -85,25 +85,25 @@
 	function describeGoal(c) {
 		const g = c.goal;
 		let text;
-		if (g.type === "reach") text = g.n >= Object.keys(data().regions).length ? "Reach every region" : `Reach ${g.n} regions`;
-		else if (g.type === "share") text = `Infect ${pct(g.n)} of everyone`;
-		else text = "Win the outbreak";
-		if (g.by) text += ` within ${g.by} days`;
+		if (g.type === "reach") text = g.n >= Object.keys(data().regions).length ? "모든 지역에 도달" : `${g.n}개 지역에 도달`;
+		else if (g.type === "share") text = `전체 인구의 ${pct(g.n)} 감염`;
+		else text = "발병에서 승리";
+		if (g.by) text += ` (${g.by}일 이내)`;
 		return text;
 	}
 	function describeRules(c) {
 		const r = c.rules || {};
 		const out = [];
-		if (r.noLethal) out.push("no Lethal symptoms");
-		if (r.dnaCap) out.push(`spend at most ${r.dnaCap} DNA on evolutions`);
-		if (r.cureBelow) out.push(`the cure must stay under ${r.cureBelow}%`);
+		if (r.noLethal) out.push("치명 증상 금지");
+		if (r.dnaCap) out.push(`진화에 쓰는 DNA는 최대 ${r.dnaCap}`);
+		if (r.cureBelow) out.push(`치료제는 ${r.cureBelow}% 미만을 유지해야 함`);
 		return out;
 	}
 	function describeSetup(c) {
 		const d = data();
 		const s = c.setup;
-		const parts = [`Bacteria`, d.difficulties[s.difficulty || "normal"].name, `starts in ${d.regions[s.origin || "town"].name}`];
-		if (s.stage) parts.push(`response already at ${d.response.stages[s.stage].name}`);
+		const parts = [`세균`, d.difficulties[s.difficulty || "normal"].name, `${d.regions[s.origin || "town"].name}에서 시작`];
+		if (s.stage) parts.push(`대응이 이미 ${d.response.stages[s.stage].name} 단계`);
 		(s.events || []).forEach(id => parts.push(d.events[id].name));
 		return parts.join(" · ");
 	}
@@ -126,9 +126,9 @@
 		const days = elapsed(game);
 		const ended = game.status !== "active";
 		let broken = null;
-		if (r.noLethal && bought(game).some(id => (data().upgrades[id].effects || {}).lethality > 0)) broken = "a Lethal symptom was evolved";
-		if (r.dnaCap && spent(game) > r.dnaCap) broken = `more than ${r.dnaCap} DNA was spent`;
-		if (r.cureBelow && game.cure >= r.cureBelow) broken = `the cure reached ${r.cureBelow}%`;
+		if (r.noLethal && bought(game).some(id => (data().upgrades[id].effects || {}).lethality > 0)) broken = "치명 증상을 진화시켰다";
+		if (r.dnaCap && spent(game) > r.dnaCap) broken = `DNA를 ${r.dnaCap}보다 많이 썼다`;
+		if (r.cureBelow && game.cure >= r.cureBelow) broken = `치료제가 ${r.cureBelow}%에 도달했다`;
 		let value;
 		let target;
 		let done;
@@ -150,14 +150,14 @@
 		let why = "";
 		if (done && !broken && !late) state = "done";
 		else if (broken) [state, why] = ["failed", broken];
-		else if (late || (g.by && days >= g.by && !done)) [state, why] = ["failed", `the ${g.by} days ran out`];
-		else if (ended && !done) [state, why] = ["failed", game.status === "won" ? "the outbreak ended first" : "the outbreak was stopped"];
+		else if (late || (g.by && days >= g.by && !done)) [state, why] = ["failed", `${g.by}일이 지났다`];
+		else if (ended && !done) [state, why] = ["failed", game.status === "won" ? "그보다 먼저 발병이 끝났다" : "발병이 저지되었다"];
 		const shown =
-			g.type === "reach" ? `${value} of ${target} regions` : g.type === "share" ? `${pct(value)} of ${pct(target)}` : `${pct(share(game))} infected so far`;
+			g.type === "reach" ? `${target}개 중 ${value}개 지역` : g.type === "share" ? `${pct(target)} 중 ${pct(value)}` : `지금까지 ${pct(share(game))} 감염`;
 		const extra = [];
-		if (g.by) extra.push(`day ${Math.min(days, g.by)} of ${g.by}`);
-		if (r.dnaCap) extra.push(`DNA spent ${spent(game)} of ${r.dnaCap}`);
-		if (r.cureBelow) extra.push(`cure ${Math.floor(game.cure)}% (limit ${r.cureBelow}%)`);
+		if (g.by) extra.push(`${g.by}일 중 ${Math.min(days, g.by)}일째`);
+		if (r.dnaCap) extra.push(`DNA ${r.dnaCap} 중 ${spent(game)} 사용`);
+		if (r.cureBelow) extra.push(`치료제 ${Math.floor(game.cure)}% (한도 ${r.cureBelow}%)`);
 		return { state, why, text: [shown, ...extra].join(" · "), fraction: Math.min(1, value / target) };
 	}
 
@@ -173,7 +173,7 @@
 		if (r.state === "active") return null;
 		ch.state = r.state;
 		ch.settledDay = elapsed(game);
-		if (r.state === "failed") return `Challenge failed: ${r.why}.`;
+		if (r.state === "failed") return `도전 실패: ${r.why}.`;
 		const m = meta();
 		if (ch.kind === "challenge") {
 			if (!m.challenges[c.id]) m.challenges[c.id] = daily().utcDate();
@@ -189,7 +189,7 @@
 				ch.paid = daily().pay(c.reward);
 			}
 		}
-		return `Challenge complete: ${c.name}.`;
+		return `도전 완료: ${c.name}.`;
 	}
 
 	/* The generator a run's days should use: seeded for the daily scenario, the game's normal one otherwise. */
@@ -238,15 +238,15 @@
 		const r = evaluate(game, c);
 		const state =
 			ch.state === "done"
-				? `<span class="green">Complete${ch.paid ? `, you earned ${formatMoney(ch.paid)}` : ""}${
-						ch.feat ? `. Every challenge done: feat earned, ${ch.feat}` : ""
+				? `<span class="green">완료${ch.paid ? `, ${formatMoney(ch.paid)} 획득` : ""}${
+						ch.feat ? `. 모든 도전 완료: 업적 획득, ${ch.feat}` : ""
 				  }</span>`
 				: ch.state === "failed"
 				? `<span class="red">Failed: ${esc(r.why || "objective missed")}</span>`
-				: "In progress";
+				: "진행 중";
 		return (
 			`<div class="con-banner plague-goal" role="status"><div class="con-daily-head"><strong>${esc(
-				ch.kind === "daily" ? `Daily scenario · ${c.date}` : c.name
+				ch.kind === "daily" ? `오늘의 시나리오 · ${c.date}` : c.name
 			)}</strong>${chip(c.diff)}</div>` + `<div>${esc(describe(c))}</div><div class="tama-sub">${esc(r.text)}</div><div>${state}</div></div>`
 		);
 	}
@@ -257,7 +257,7 @@
 	function startButton(id, label) {
 		const day = replacing();
 		return `<button type="button" class="plague-chal-start" data-plague-start="${esc(id)}"${
-			day ? ` data-confirm="Press again to replace your day ${day} outbreak"` : ""
+			day ? ` data-confirm="다시 누르면 ${day}일째 발병이 대체됩니다"` : ""
 		}>${esc(label)}</button>`;
 	}
 
@@ -283,27 +283,27 @@
 		const rec = dayRecord(c.date);
 		const reward = c.reward
 			? rec && rec.paid
-				? `${formatMoney(rec.paid)}, claimed today`
-				: `${formatMoney(c.reward)} on completion, not claimed yet`
-			: "None today";
+				? `${formatMoney(rec.paid)}, 오늘 수령함`
+				: `완료 시 ${formatMoney(c.reward)}, 아직 수령 전`
+			: "오늘은 없음";
 		let h =
 			`<section class="con-daily${
 				rec && rec.done ? " con-daily--done" : ""
-			}" aria-label="Today's scenario"><div class="con-daily-head"><span class="con-daily-date">Today's scenario, ${c.date} (UTC)</span>${chip(c.diff)}</div>` +
+			}" aria-label="오늘의 시나리오"><div class="con-daily-head"><span class="con-daily-date">오늘의 시나리오, ${c.date} (UTC)</span>${chip(c.diff)}</div>` +
 			`<p class="con-daily-goal">${goalIcon(c)}${esc(describe(c))}</p><dl class="con-facts">` +
 			`<dt>Setup</dt><dd>${esc(describeSetup(c))}</dd><dt>Opening</dt><dd>${esc(c.opening)}</dd>` +
 			`<dt>Reward</dt><dd>${esc(reward)}</dd>` +
 			`<dt>Status</dt><dd>${rec && rec.done ? '<span class="green">Completed</span>' : rec && rec.tries ? "Not completed yet" : "Not tried yet"}</dd>` +
-			`<dt>Best</dt><dd>${rec && rec.best !== null && rec.best !== undefined ? `Done in ${rec.best} days` : "None yet"}${
+			`<dt>최고 기록</dt><dd>${rec && rec.best !== null && rec.best !== undefined ? `${rec.best}일 만에 완료` : "아직 없음"}${
 				rec && rec.tries ? `, ${rec.tries} ${rec.tries === 1 ? "try" : "tries"}` : ""
 			}</dd>` +
 			`<dt>Next scenario</dt><dd>in ${daily().untilReset()} (midnight UTC)</dd></dl>` +
 			`${startButton("daily", rec && rec.tries ? "Retry today's scenario" : "Play today's scenario")}</section>`;
-		h += daily().history(m.daily, c.date, r => `done in ${r.best} days`);
+		h += daily().history(m.daily, c.date, r => `${r.best}일 만에 완료`);
 		const count = challenges.filter(x => done[x.id]).length;
 		h += `<h3 class="con-page-head">Challenges</h3><div class="con-progress"><div class="con-progress-head"><span>Completed</span><span class="con-progress-count">${count} of ${
 			challenges.length
-		}</span></div><div class="con-bar" role="progressbar" aria-label="Challenges completed" aria-valuemin="0" aria-valuemax="${
+		}</span></div><div class="con-bar" role="progressbar" aria-label="완료한 도전" aria-valuemin="0" aria-valuemax="${
 			challenges.length
 		}" aria-valuenow="${count}"><span class="con-bar-fill" style="width:${Math.round((count / challenges.length) * 100)}%"></span></div></div>`;
 		h += daily().featCard(daily().feats.outbreak, count, challenges.length);
@@ -319,7 +319,7 @@
 					`<div class="con-row${when ? " con-row--done" : ""}">${art ? `<span class="con-row-icon" aria-hidden="true">${art}</span>` : ""}` +
 					`<div class="con-row-main"><span class="con-row-title">${esc(ch.name)}</span>` +
 					`<span class="con-row-desc">${esc(describe(ch))}</span><span class="con-row-meta">${esc(describeSetup(ch))}</span>` +
-					`<span class="con-row-status">${when ? `Completed ${when}` : "Not completed"}</span></div>` +
+					`<span class="con-row-status">${when ? `완료 ${when}` : "미완료"}</span></div>` +
 					`<div class="con-row-action">${startButton(ch.id, when ? "Play again" : "Start")}</div></div>`;
 			}
 		}

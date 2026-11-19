@@ -37,8 +37,8 @@
 <</widget>>
 
 /* Luchifen in narration: "the silver figure" until their name is known. <<LuName>> starts a sentence. */
-<<widget "luName">><<print $xchange.silverStranger and $xchange.silverStranger.nameKnown ? "Luchifen" : "the silver figure">><</widget>>
-<<widget "LuName">><<print $xchange.silverStranger and $xchange.silverStranger.nameKnown ? "Luchifen" : "The silver figure">><</widget>>
+<<widget "luName">><<print $xchange.silverStranger and $xchange.silverStranger.nameKnown ? "루치펜" : "은빛 낯선 이">><</widget>>
+<<widget "LuName">><<print $xchange.silverStranger and $xchange.silverStranger.nameKnown ? "루치펜" : "은빛 낯선 이">><</widget>>
 
 /* Sets _arcologyInvite. The first offer needs at least £5 million total net wealth, love above 5 and every fame category below 400 on its own.
 Fame only gates this first offer: after arrival, nothing here locks the player out. */
@@ -240,7 +240,7 @@ Fame only gates this first offer: after arrival, nothing here locks the player o
 		<<switch _acl.kind>>
 		<<case "vision">>
 			<<set _aclPart to setup.arcology.cyberPart(_acl.slot, "vision")>>
-			<<set _aclNoun to ({ eyesRed: "red artificial eyes", eyesCamera: "camera eye", eyesGrey: "grey artificial eyes", eyesGlass: "glass eyes", accVisor: "visor" })[_aclPart] or "artificial eyes">>
+			<<set _aclNoun to ({ eyesRed: "붉은 인공 눈", eyesCamera: "카메라 눈", eyesGrey: "회색 인공 눈", eyesGlass: "유리 눈", accVisor: "바이저" })[_aclPart] or "인공 눈">>
 			<<if _aclPart is "accVisor">>
 				<<His>> 바이저가 당신의 움직임을 따라 돌아간다.
 			<<else>>
@@ -346,18 +346,18 @@ Fame only gates this first offer: after arrival, nothing here locks the player o
 /* Guest registration screen, shown at the hotel desk and on the room door. */
 <<widget "arcologyGuestPanel">>
 	<<set _arcologyGuest to $xchange.arcology.guest>>
-	<<holo "MERIDIAN / GUEST AUTHORIZATION" `setup.arcology.hasRoom() ? "ok" : "denied"`>>
-		<<holoRow "USER" `$xchange.arcology.handle or "Guest"`>>
-		<<holoRow "CLEARANCE" `($xchange.arcology.clearance or "guest").toUpperCase()`>>
+	<<holo "메리디안 / 방문객 승인" `setup.arcology.hasRoom() ? "ok" : "denied"`>>
+		<<holoRow "사용자" `$xchange.arcology.handle or "방문객"`>>
+		<<holoRow "권한 등급" `({ guest: "방문객", resident: "거주민", citizen: "시민", authority: "당국" })[$xchange.arcology.clearance or "guest"] || ($xchange.arcology.clearance or "guest")`>>
 		<<holoRow "SPONSOR" `_arcologyGuest.sponsor ? _arcologyGuest.sponsor.toUpperCase() : "NONE"`>>
 		<<if setup.arcology.hasRoom()>>
-			<<holoRow "ROOM" `setup.arcology.roomNumber() + ", AUTHORIZED"`>>
-			<<holoRow "VALID UNTIL" `setup.arcology.when(_arcologyGuest.until).toUpperCase()`>>
-			<<holoRow "PAYMENT" `_arcologyGuest.status is "sponsored" ? "COVERED BY SPONSOR" : "SETTLED"`>>
+			<<holoRow "객실" `setup.arcology.roomNumber() + ", 승인됨"`>>
+			<<holoRow "유효 기한" `setup.arcology.when(_arcologyGuest.until).toUpperCase()`>>
+			<<holoRow "결제" `_arcologyGuest.status is "sponsored" ? "후원자 부담" : "정산 완료"`>>
 		<<else>>
 			<<holoRow "ROOM" "NONE">>
-			<<holoRow "BALANCE" `setup.arcology.cxU(($xchange.arcology.cipher or 0))`>>
-			<<holoLine `_arcologyGuest.status is "revoked" ? "AUTHORIZATION REVOKED" : "AUTHORIZATION EXPIRED"` "denied">>
+			<<holoRow "잔액" `setup.arcology.cxU(($xchange.arcology.cipher or 0))`>>
+			<<holoLine `_arcologyGuest.status is "revoked" ? "승인 취소됨" : "승인 만료됨"` "denied">>
 		<</if>>
 	<</holo>>
 <</widget>>
@@ -390,15 +390,15 @@ This shows once when the ballroom opens, and sets _arcologyPartyMissed when the 
 				<<holoRow "CLEARANCE" "REVOKED">>
 				<<holoRow "ROUTE CONTROL" "SECURITY AUTHORITY">>
 			<<else>>
-				<<holoRow "DESTINATION" `_tv.to is "arcology" ? "ARCOLOGY" : "MER STREET DOCKS"`>>
-				<<holoRow "ROUTE" `_tv.to is "arcology" ? "ENCRYPTED" : "OPEN"`>>
+				<<holoRow "목적지" `_tv.to is "arcology" ? "아콜로지" : "메르 가 부두"`>>
+				<<holoRow "항로" `_tv.to is "arcology" ? "암호화됨" : "개방"`>>
 				<<holoRow "NAVIGATION" "ACTIVE">>
 			<</if>>
 			<div class="transit-bar" role="progressbar" aria-label="Journey progress" aria-valuemin="0" aria-valuemax="100" @aria-valuenow="_vs.pct"><span class="transit-fill" @style="'width: ' + _vs.pct + '%'"></span></div>
 			<<holoRow "JOURNEY PROGRESS" `_vs.pct + "%"`>>
-			<<holoRow "ELAPSED" `setup.arcology.duration(_vs.elapsed)`>>
-			<<holoRow "REMAINING" `setup.arcology.duration(_vs.remaining)`>>
-			<<holoRow "TOTAL CROSSING" `setup.arcology.duration(_vs.total)`>>
+			<<holoRow "경과 시간" `setup.arcology.duration(_vs.elapsed)`>>
+			<<holoRow "남은 시간" `setup.arcology.duration(_vs.remaining)`>>
+			<<holoRow "총 항해 시간" `setup.arcology.duration(_vs.total)`>>
 			<<holoLine _vs.line "ok">>
 		</div>
 	</div>
@@ -519,20 +519,20 @@ This shows once when the ballroom opens, and sets _arcologyPartyMissed when the 
 /* Names for implants that matter in a fight, matching arcologyCyberLook. Arg: part id. Sets _cyNoun. */
 <<widget "arcologyCyberNoun">>
 	<<switch _args[0]>>
-		<<case "eyesRed">><<set _cyNoun to "red lens">>
-		<<case "eyesCamera">><<set _cyNoun to "camera eye">>
-		<<case "eyesGrey">><<set _cyNoun to "unblinking grey eyes">>
-		<<case "eyesGlass">><<set _cyNoun to "glass lenses">>
+		<<case "eyesRed">><<set _cyNoun to "붉은 렌즈">>
+		<<case "eyesCamera">><<set _cyNoun to "카메라 눈">>
+		<<case "eyesGrey">><<set _cyNoun to "깜박이지 않는 회색 눈">>
+		<<case "eyesGlass">><<set _cyNoun to "유리 렌즈">>
 		<<case "accVisor">><<set _cyNoun to "visor">>
-		<<case "armIndustrial">><<set _cyNoun to "heavy metal arm">>
-		<<case "armChrome">><<set _cyNoun to "silver forearm">>
-		<<case "armBlack">><<set _cyNoun to "black metal hand">>
-		<<case "armPatched">><<set _cyNoun to "metal fingers">>
-		<<case "legBrace">><<set _cyNoun to "leg brace">>
-		<<case "legQuiet">><<set _cyNoun to "artificial leg">>
-		<<case "neuralJade">><<set _cyNoun to "jade disc">>
-		<<case "neuralCrown">><<set _cyNoun to "scalp lights">>
-		<<case "neuralStuds">><<set _cyNoun to "neck implants">>
+		<<case "armIndustrial">><<set _cyNoun to "묵직한 금속 팔">>
+		<<case "armChrome">><<set _cyNoun to "은색 팔뚝">>
+		<<case "armBlack">><<set _cyNoun to "검은 금속 손">>
+		<<case "armPatched">><<set _cyNoun to "금속 손가락">>
+		<<case "legBrace">><<set _cyNoun to "다리 보조기">>
+		<<case "legQuiet">><<set _cyNoun to "의족">>
+		<<case "neuralJade">><<set _cyNoun to "옥색 원판">>
+		<<case "neuralCrown">><<set _cyNoun to "두피의 불빛">>
+		<<case "neuralStuds">><<set _cyNoun to "목 임플란트">>
 		<<default>><<set _cyNoun to "">>
 	<</switch>>
 <</widget>>

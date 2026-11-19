@@ -109,17 +109,17 @@ function initFishingGear() {
 		     holdBonus   - chance that holding drains one extra point of stamina. */
 		rods: {
 			black: {
-				displayName: "Black Rod",
+				displayName: "검은 낚싯대",
 				icon: "fish/mod/rod/black.png",
 				order: 0,
 				tensionMult: 1,
 				exhaustMult: 1,
 				holdBonus: 0,
 				source: "starter",
-				blurb: "A basic fishing rod. Simple and reliable.",
+				blurb: "기본적인 낚싯대다. 단순하고 믿음직하다.",
 			},
 			silver: {
-				displayName: "Silver Rod",
+				displayName: "은 낚싯대",
 				icon: "fish/mod/rod/silver.png",
 				order: 1,
 				tensionMult: 0.9,
@@ -128,10 +128,10 @@ function initFishingGear() {
 				source: "shop",
 				price: 4500,
 				unlock: { fishCaught: 10 },
-				blurb: "A lighter rod that puts less strain on your line.",
+				blurb: "더 가벼운 낚싯대로, 낚싯줄에 걸리는 부담이 적다.",
 			},
 			gold: {
-				displayName: "Gold Rod",
+				displayName: "금 낚싯대",
 				icon: "fish/mod/rod/gold.png",
 				order: 2,
 				tensionMult: 0.8,
@@ -140,17 +140,17 @@ function initFishingGear() {
 				source: "shop",
 				price: 15000,
 				unlock: { fishCaught: 40, requestsCompleted: 3 },
-				blurb: "A strong rod that reduces strain and helps tire fish while holding.",
+				blurb: "튼튼한 낚싯대로, 부담을 줄여 주고 붙들고 있는 동안 물고기를 지치게 한다.",
 			},
 			bone: {
-				displayName: "Bone Rod",
+				displayName: "뼈 낚싯대",
 				icon: "fish/mod/rod/bone.png",
 				order: 3,
 				tensionMult: 1.15,
 				exhaustMult: 1.2,
 				holdBonus: 0,
 				source: "special",
-				blurb: "A rigid rod that tires fish faster and draws small fish, but puts more strain on you and the line.",
+				blurb: "뻣뻣한 낚싯대로, 물고기를 더 빨리 지치게 하고 작은 물고기를 끌어들이지만, 당신과 낚싯줄에 부담이 더 간다.",
 			},
 		},
 
@@ -161,17 +161,17 @@ function initFishingGear() {
 		     misreelPenalty - extra line-tension loss when a Reel fails its check. */
 		reels: {
 			black: {
-				displayName: "Black Reel",
+				displayName: "검은 릴",
 				icon: "fish/mod/reel/black.png",
 				order: 0,
 				reelMult: 1,
 				slackMult: 1,
 				misreelPenalty: 0,
 				source: "starter",
-				blurb: "A basic reel with no special effects.",
+				blurb: "특별한 효과가 없는 기본적인 릴이다.",
 			},
 			silver: {
-				displayName: "Silver Reel",
+				displayName: "은 릴",
 				icon: "fish/mod/reel/silver.png",
 				order: 1,
 				reelMult: 1.1,
@@ -180,10 +180,10 @@ function initFishingGear() {
 				source: "shop",
 				price: 3500,
 				unlock: { fishCaught: 10 },
-				blurb: "A smoother reel that pulls fish in faster.",
+				blurb: "더 부드러운 릴로, 물고기를 더 빨리 끌어당긴다.",
 			},
 			gold: {
-				displayName: "Gold Reel",
+				displayName: "금 릴",
 				icon: "fish/mod/reel/gold.png",
 				order: 2,
 				reelMult: 1.2,
@@ -192,17 +192,17 @@ function initFishingGear() {
 				source: "shop",
 				price: 12000,
 				unlock: { fishCaught: 40, requestsCompleted: 3 },
-				blurb: "A strong reel that pulls fish in faster and loses less distance when giving slack.",
+				blurb: "튼튼한 릴로, 물고기를 더 빨리 끌어당기고 줄을 풀어 줄 때 잃는 거리가 적다.",
 			},
 			bone: {
-				displayName: "Bone Reel",
+				displayName: "뼈 릴",
 				icon: "fish/mod/reel/bone.png",
 				order: 3,
 				reelMult: 1.5,
 				slackMult: 1,
 				misreelPenalty: 1.25,
 				source: "special",
-				blurb: "A powerful reel that pulls fish in much faster and draws small fish, but mistakes put more strain on the line.",
+				blurb: "강력한 릴로, 물고기를 훨씬 빨리 끌어당기고 작은 물고기를 끌어들이지만, 실수하면 낚싯줄에 부담이 더 간다.",
 			},
 		},
 
@@ -272,10 +272,10 @@ function initFishingGear() {
 
 	/* Foodstuff entries */
 	const smallFishFood = {
-		small_bass: { index: 166, name: "small bass", plural: "small bass", icon: "fish/mod/small-bass.png", sell_price: 220 },
-		small_carp: { index: 167, name: "small carp", plural: "small carp", icon: "fish/mod/small-carp.png", sell_price: 200 },
-		small_herring: { index: 168, name: "small herring", plural: "small herring", icon: "fish/mod/small-herring.png", sell_price: 180 },
-		small_trout: { index: 169, name: "small trout", plural: "small trout", icon: "fish/mod/small-trout.png", sell_price: 220 },
+		small_bass: { index: 166, name: "작은 베스", plural: "작은 베스", icon: "fish/mod/small-bass.png", sell_price: 220 },
+		small_carp: { index: 167, name: "작은 잉어", plural: "작은 잉어", icon: "fish/mod/small-carp.png", sell_price: 200 },
+		small_herring: { index: 168, name: "작은 청어", plural: "작은 청어", icon: "fish/mod/small-herring.png", sell_price: 180 },
+		small_trout: { index: 169, name: "작은 송어", plural: "작은 송어", icon: "fish/mod/small-trout.png", sell_price: 220 },
 	};
 	for (const [key, row] of Object.entries(smallFishFood)) {
 		setup.foodstuff[key] = {

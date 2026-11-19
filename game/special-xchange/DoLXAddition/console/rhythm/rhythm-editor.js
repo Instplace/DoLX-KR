@@ -39,7 +39,7 @@
 			class: "rh-canvas",
 			tabindex: 0,
 			"aria-label":
-				"Chart page. Tap an empty spot to add a note, tap a note to select it, drag to move it. Arrow keys move the selected note, Delete removes it.",
+				"채보 페이지. 빈 곳을 탭하면 노트를 추가하고, 노트를 탭하면 선택하며, 끌면 옮깁니다. 방향키로 선택한 노트를 옮기고, Delete 키로 지웁니다.",
 		});
 		const field = h("div", { class: "rh-field rh-field--edit", "data-gesture-owner": "rhythm-editor" }, canvas);
 		let view = new (R().Field)({ canvas, song, notes, reduced: true });
@@ -59,7 +59,7 @@
 		const clampToPage = t => Math.max(0, pageStart(), Math.min(pageStart() + pageInfo().length - 0.001, t));
 
 		const status = h("p", { class: "rh-progress-text", role: "status" }, message);
-		const dirtyMark = h("span", { class: "rh-tag rh-tag--warn", hidden: true }, "unsaved changes");
+		const dirtyMark = h("span", { class: "rh-tag rh-tag--warn", hidden: true }, "저장하지 않은 변경");
 		const pageLabel = h("span", { class: "rh-page-label" });
 		const selPanel = h("div", { class: "rh-sel" });
 
@@ -79,14 +79,14 @@
 			const count = pageCount();
 			pageIndex = Math.max(0, Math.min(count - 1, pageIndex));
 			const onPage = notes.filter(n => A().lineAt(song, n.t / 1000).page === pageIndex).length;
-			pageLabel.textContent = `Page ${pageIndex + 1} of ${count} · ${fmt(Math.max(0, pageStart()) * 1000)} · ${onPage} notes here, ${notes.length} in all`;
+			pageLabel.textContent = `페이지 ${pageIndex + 1}/${count} · ${fmt(Math.max(0, pageStart()) * 1000)} · 이 페이지 노트 ${onPage}개, 전체 ${notes.length}개`;
 			drawSelection();
 			if (!previewing) draw();
 		}
 
 		function drawSelection() {
 			if (!selected) {
-				selPanel.replaceChildren(h("span", { class: "rh-song-sub" }, "No note selected."));
+				selPanel.replaceChildren(h("span", { class: "rh-song-sub" }, "선택한 노트가 없습니다."));
 				return;
 			}
 			const n = selected;
@@ -105,11 +105,11 @@
 				h(
 					"span",
 					{ class: "rh-song-sub" },
-					`Selected: ${n.type} at ${fmt(n.t)}, across ${Math.round(n.x * 100)}%${n.type === "hold" ? `, held ${n.d} ms` : ""}`
+					`선택: ${({ tap: "탭", hold: "홀드", drag: "드래그" })[n.type] || n.type}, ${fmt(n.t)} 지점, 가로 ${Math.round(n.x * 100)}%${n.type === "hold" ? `, ${n.d} ms 동안 유지` : ""}`
 				),
 				h(
 					"div",
-					{ class: "rh-row", role: "group", "aria-label": "Note type" },
+					{ class: "rh-row", role: "group", "aria-label": "노트 종류" },
 					["tap", "hold", "drag"].map(type =>
 						button(
 							type[0].toUpperCase() + type.slice(1),
@@ -126,19 +126,19 @@
 					"div",
 					{ class: "rh-row" },
 					button(
-						`${step} ms earlier`,
+						`${step} ms 빠르게`,
 						change(() => (n.t -= step))
 					),
 					button(
-						`${step} ms later`,
+						`${step} ms 늦게`,
 						change(() => (n.t += step))
 					),
 					button(
-						"10 ms earlier",
+						"10 ms 빠르게",
 						change(() => (n.t -= 10))
 					),
 					button(
-						"10 ms later",
+						"10 ms 늦게",
 						change(() => (n.t += 10))
 					),
 					button(
@@ -155,11 +155,11 @@
 							"div",
 							{ class: "rh-row" },
 							button(
-								"Shorter hold",
+								"홀드 짧게",
 								change(() => (n.d -= step))
 							),
 							button(
-								"Longer hold",
+								"홀드 길게",
 								change(() => (n.d += step))
 							)
 					  )
@@ -167,7 +167,7 @@
 				h(
 					"div",
 					{ class: "rh-row" },
-					button("Delete note", () => {
+					button("노트 삭제", () => {
 						notes.splice(notes.indexOf(n), 1);
 						selected = null;
 						markDirty();
@@ -250,14 +250,14 @@
 		const offsetSec = () => (R().settings().offset + (song.trim || 0)) / 1000;
 		async function startPreview(fromHere, onlyPage) {
 			if (V.options?.audio !== 1) {
-				status.textContent = "DoL's audio is switched off in Options.";
+				status.textContent = "옵션에서 게임 소리가 꺼져 있습니다.";
 				return;
 			}
 			ui.stopPreview();
 			const src = await ui.audioSource(song);
 			if (!ui.root || src.cancelled || !canvas.isConnected) return;
 			if (src.missing) {
-				status.textContent = "This song's audio is missing. Link it from the Library tab to preview.";
+				status.textContent = "이 곡의 음원이 없습니다. 미리 들으려면 라이브러리 탭에서 연결하십시오.";
 				return;
 			}
 			const audio = ui.audio;
@@ -272,7 +272,7 @@
 				await audio.play();
 				if (!previewing || !canvas.isConnected) return;
 			} catch (e) {
-				status.textContent = "The browser would not play the music. Tap Play again.";
+				status.textContent = "브라우저가 음악을 재생하지 않았습니다. 재생을 다시 누르십시오.";
 				stopPreview();
 				return;
 			}
@@ -301,13 +301,13 @@
 			cancelAnimationFrame(raf);
 			raf = 0;
 			ui.audio.pause();
-			playBtn.textContent = "Play from this page";
-			pageBtn.textContent = "Play this page";
+			playBtn.textContent = "이 페이지부터 재생";
+			pageBtn.textContent = "이 페이지 재생";
 			refresh();
 		}
 
-		const pageBtn = button("Play this page", () => (previewing ? stopPreview() : startPreview(false, true)));
-		const playBtn = button("Play from this page", () => (previewing ? stopPreview() : startPreview(true, false)));
+		const pageBtn = button("이 페이지 재생", () => (previewing ? stopPreview() : startPreview(false, true)));
+		const playBtn = button("이 페이지부터 재생", () => (previewing ? stopPreview() : startPreview(true, false)));
 		const goPage = d => () => {
 			if (previewing) stopPreview();
 			pageIndex += d;
@@ -316,12 +316,12 @@
 		};
 
 		/* ---- tools ---- */
-		const typeGroup = h("div", { class: "rh-row", role: "group", "aria-label": "Type of new notes" });
-		const snapGroup = h("div", { class: "rh-row", role: "group", "aria-label": "Snap to" });
+		const typeGroup = h("div", { class: "rh-row", role: "group", "aria-label": "새 노트 종류" });
+		const snapGroup = h("div", { class: "rh-row", role: "group", "aria-label": "맞춤 단위" });
 		const drawTools = () => {
 			fill(
 				typeGroup,
-				h("span", { class: "rh-song-sub" }, "New notes:"),
+				h("span", { class: "rh-song-sub" }, "새 노트:"),
 				["tap", "hold", "drag"].map(type =>
 					button(
 						type[0].toUpperCase() + type.slice(1),
@@ -335,11 +335,11 @@
 			);
 			fill(
 				snapGroup,
-				h("span", { class: "rh-song-sub" }, "Snap to:"),
+				h("span", { class: "rh-song-sub" }, "맞춤 단위:"),
 				[
 					[1, "Beats"],
-					[2, "Half beats"],
-					[4, "Quarter beats"],
+					[2, "반 박자"],
+					[4, "1/4 박자"],
 				].map(([div, label]) =>
 					button(
 						label,
@@ -363,7 +363,7 @@
 			value: 0,
 			min: -5000,
 			max: 5000,
-			"aria-label": "Shift every note by this many milliseconds",
+			"aria-label": "모든 노트를 이동할 시간(밀리초)",
 		});
 		const bpm = h("input", { type: "number", class: "rh-input", min: 40, max: 300, step: 0.01, value: song.bpm, "aria-label": "BPM" });
 		const first = h("input", {
@@ -373,24 +373,24 @@
 			max: 60000,
 			step: 1,
 			value: song.offset,
-			"aria-label": "First beat in milliseconds",
+			"aria-label": "첫 박자 위치(밀리초)",
 		});
 		const applyShift = () => {
 			const ms = Math.round(Number(shift.value));
 			if (!ms || Math.abs(ms) > 5000) {
-				status.textContent = "Enter a shift between -5000 and 5000 ms.";
+				status.textContent = "-5000에서 5000 ms 사이의 이동량을 입력하십시오.";
 				return;
 			}
 			for (const n of notes) n.t = Math.max(0, n.t + ms);
 			markDirty();
-			status.textContent = `Moved every note ${Math.abs(ms)} ms ${ms > 0 ? "later" : "earlier"}.`;
+			status.textContent = `모든 노트를 ${Math.abs(ms)} ms ${ms > 0 ? "늦췄" : "당겼"}습니다.`;
 			refresh();
 		};
 		const applyGrid = () => {
 			const b = Number(bpm.value);
 			const o = Math.round(Number(first.value));
 			if (!(b >= 40 && b <= 300) || !(o >= -10000 && o <= 60000)) {
-				status.textContent = "BPM must be 40 to 300, the first beat -10000 to 60000 ms.";
+				status.textContent = "BPM은 40에서 300, 첫 박자는 -10000에서 60000 ms 사이여야 합니다.";
 				return;
 			}
 			song.bpm = b;
@@ -398,13 +398,13 @@
 			song.pageBeats = A().pageBeats(b);
 			view = new (R().Field)({ canvas, song, notes, reduced: true });
 			markDirty();
-			status.textContent = "Beat grid changed. Notes keep their times; snapping and pages now follow the new grid.";
+			status.textContent = "박자 격자가 바뀌었습니다. 노트의 시간은 그대로이며, 맞춤과 페이지는 이제 새 격자를 따릅니다.";
 			refresh();
 		};
 		const confirmRegen = h("div", { class: "rh-row", hidden: true });
 		confirmRegen.append(
-			h("span", null, "Replace this level's notes with a fresh automatic chart?"),
-			button("Yes, replace them", () => {
+			h("span", null, "이 난이도의 노트를 새로 자동 생성한 채보로 바꾸시겠습니까?"),
+			button("예, 바꿉니다", () => {
 				notes = A().generate(song, level).notes;
 				view = new (R().Field)({ canvas, song, notes, reduced: true });
 				selected = null;
@@ -412,14 +412,14 @@
 				markDirty();
 				refresh();
 			}),
-			button("Keep my notes", () => (confirmRegen.hidden = true))
+			button("내 노트 유지", () => (confirmRegen.hidden = true))
 		);
 
 		/* ---- saving ---- */
 		async function save() {
 			if (notes.length > L().limits.notes || notes.some(n => n.t > song.duration * 1000 + 5000 || (n.type === "hold" && n.d > 60000))) {
 				status.textContent =
-					"Charts can hold at most 6,000 notes, notes up to 5 seconds after the song, and holds up to 60 seconds. Shorten this chart before saving.";
+					"채보에는 노트를 최대 6,000개까지, 노트는 곡이 끝난 뒤 5초까지, 홀드는 최대 60초까지 넣을 수 있습니다. 저장하기 전에 이 채보를 줄이십시오.";
 				return null;
 			}
 			try {
@@ -448,7 +448,7 @@
 				await L().saveSong(target);
 				dirty = false;
 				dirtyMark.hidden = true;
-				status.textContent = isBuiltin ? `Saved as "${target.title}" in your Rhythm Library. Editing continues on that copy.` : "Saved.";
+				status.textContent = isBuiltin ? `리듬 라이브러리에 "${target.title}" 이름으로 저장했습니다. 편집은 그 사본에서 이어집니다.` : "저장했습니다.";
 				if (isBuiltin) {
 					cleanup.destroy();
 					if (canvas.isConnected) open(ui, target.id, level, status.textContent);
@@ -461,21 +461,21 @@
 		}
 		const confirmLeave = h("div", { class: "rh-row", hidden: true });
 		confirmLeave.append(
-			h("span", null, "Leave without saving your changes?"),
+			h("span", null, "변경 사항을 저장하지 않고 나가시겠습니까?"),
 			button("Leave", () => ui.menu("library")),
 			button("Stay", () => (confirmLeave.hidden = true))
 		);
 
 		const levelGroup = h(
 			"div",
-			{ class: "rh-levels", role: "group", "aria-label": "Chart to edit" },
+			{ class: "rh-levels", role: "group", "aria-label": "편집할 채보" },
 			levels.map(l =>
 				button(
 					levelName(l),
 					() => {
 						if (l === level) return;
 						if (dirty) {
-							status.textContent = "Save or revert this chart before switching level.";
+							status.textContent = "난이도를 바꾸기 전에 이 채보를 저장하거나 되돌리십시오.";
 							return;
 						}
 						cleanup.destroy();
@@ -528,30 +528,30 @@
 			h(
 				"div",
 				{ class: "rh-editor" },
-				h("div", { class: "rh-game-head" }, h("h3", { class: "rh-head" }, `Chart editor: ${song.title}`), dirtyMark),
+				h("div", { class: "rh-game-head" }, h("h3", { class: "rh-head" }, `채보 편집기: ${song.title}`), dirtyMark),
 				isBuiltin
-					? h("p", { class: "rh-song-sub" }, "This song comes with the game. Saving puts an edited copy in your Rhythm Library; the original stays as it is.")
+					? h("p", { class: "rh-song-sub" }, "이 곡은 게임에 포함된 곡입니다. 저장하면 편집한 사본이 리듬 라이브러리에 들어가며, 원본은 그대로 남습니다.")
 					: null,
 				levelGroup,
 				typeGroup,
 				snapGroup,
 				field,
-				h("div", { class: "rh-row" }, button("Previous page", goPage(-1)), pageLabel, button("Next page", goPage(1))),
+				h("div", { class: "rh-row" }, button("이전 페이지", goPage(-1)), pageLabel, button("다음 페이지", goPage(1))),
 				h("div", { class: "rh-row" }, pageBtn, playBtn),
 				selPanel,
-				h("h4", { class: "con-subhead" }, "Whole chart"),
-				h("div", { class: "rh-row" }, h("label", { class: "rh-field-row" }, h("span", null, "Shift every note (ms)"), shift), button("Shift", applyShift)),
+				h("h4", { class: "con-subhead" }, "채보 전체"),
+				h("div", { class: "rh-row" }, h("label", { class: "rh-field-row" }, h("span", null, "모든 노트 이동(ms)"), shift), button("이동", applyShift)),
 				h(
 					"div",
 					{ class: "rh-row" },
 					h("label", { class: "rh-field-row" }, h("span", null, "BPM"), bpm),
-					h("label", { class: "rh-field-row" }, h("span", null, "First beat (ms)"), first),
-					button("Apply beat grid", applyGrid)
+					h("label", { class: "rh-field-row" }, h("span", null, "첫 박자(ms)"), first),
+					button("박자 격자 적용", applyGrid)
 				),
 				h(
 					"div",
 					{ class: "rh-row" },
-					button("Make this level again automatically", () => (confirmRegen.hidden = false))
+					button("이 난이도 자동으로 다시 만들기", () => (confirmRegen.hidden = false))
 				),
 				confirmRegen,
 				status,
@@ -559,15 +559,15 @@
 					"div",
 					{ class: "rh-row" },
 					button("Save", () => save()),
-					button("Revert to saved", () => {
+					button("저장본으로 되돌리기", () => {
 						cleanup.destroy();
 						open(ui, id, level);
 					}),
-					button("Save and export", async () => {
+					button("저장 후 내보내기", async () => {
 						const target = await save();
 						if (target) ui.exportJson("song", { songIds: [target.id], name: target.title });
 					}),
-					button("Back to the library", () => (dirty ? (confirmLeave.hidden = false) : ui.menu("library")))
+					button("라이브러리로 돌아가기", () => (dirty ? (confirmLeave.hidden = false) : ui.menu("library")))
 				),
 				confirmLeave
 			),

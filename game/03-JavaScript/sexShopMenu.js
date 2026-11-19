@@ -554,9 +554,9 @@ setup.sextoys = [
 	{
 		index: 22,
 		name: "lube tube",
-		namecap: "Lube tube",
+		namecap: "윤활제 튜브",
 		name_underscore: "lube_tube",
-		description: "A small tube of lubricant suitable for sexual purposes. 3 uses per tube.",
+		description: "성적인 용도에 알맞은 작은 윤활제 튜브다. 한 튜브로 3번 쓸 수 있다.",
 		cost: 2000,
 		wearable: 0,
 		size: 2,

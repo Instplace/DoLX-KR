@@ -8,9 +8,9 @@
 <br><br>
 <<holo "CITY SHUTTLE / ROUTE BOARD">>
 	<<holoRow "STOP" `_ssFrom.name.toUpperCase()`>>
-	<<holoRow "FARE" `_ssFare gt 0 ? setup.arcology.cxU(_ssFare) : "WAIVED: SPONSORED GUEST"`>>
+	<<holoRow "요금" `_ssFare gt 0 ? setup.arcology.cxU(_ssFare) : "면제: 후원 방문객"`>>
 	<<set _ssShut to Object.keys(setup.arcology.districts).filter(id => setup.arcology.districts[id].bus and setup.arcologyNews.stopClosed(id))>>
-	<<if _ssShut.length>><<holoLine `"NOT IN SERVICE: " + _ssShut.map(id => setup.arcology.districts[id].name.toUpperCase()).join(", ")` "denied">><</if>>
+	<<if _ssShut.length>><<holoLine `"운행 중단: " + _ssShut.map(id => setup.arcology.districts[id].name.toUpperCase()).join(", ")` "denied">><</if>>
 	<<holoLine "RESTRICTED DISTRICTS ARE NOT SERVED ON PUBLIC ROUTES" "warn">>
 <</holo>>
 <br>
@@ -29,7 +29,7 @@
 		<<set _ssTo to setup.arcology.districts[_ssId]>>
 		<<if !_ssTo.bus or _ssId is $xchange.arcology.shuttleFrom or setup.arcologyNews.stopClosed(_ssId)>><<continue>><</if>>
 		<<set _ssTime to setup.arcology.shuttleTime($xchange.arcology.shuttleFrom, _ssId)>>
-		<<set _ssLabel to "Ride to " + _ssTo.name + " (0:" + String(_ssTime).padStart(2, "0") + ")">>
+		<<set _ssLabel to _ssTo.name + "까지 셔틀을 탄다 (0:" + String(_ssTime).padStart(2, "0") + ")">>
 		<<capture _ssId _ssTime _ssLabel _ssTo>><<arcologyicon _ssTo.icon>><<link _ssLabel "Arcology Shuttle Ride">><<set $xchange.arcology.shuttleTo to _ssId>><<set $xchange.arcology.cipher -= _ssFare>><<pass _ssTime>><</link>><</capture>>
 		<br>
 	<</for>>
@@ -64,7 +64,7 @@
 얼마나 여기에 머물겠는가?
 <br>
 <<for _alMin range [5, 10, 30, 60, 120]>>
-	<<set _alLabel to "Loiter for " + (_alMin lt 60 ? _alMin + " minutes" : _alMin is 60 ? "an hour" : (_alMin / 60) + " hours") + " (" + Math.floor(_alMin / 60) + ":" + String(_alMin % 60).padStart(2, "0") + ")">>
+	<<set _alLabel to (_alMin lt 60 ? _alMin + "분" : _alMin is 60 ? "1시간" : (_alMin / 60) + "시간") + " 동안 서성인다 (" + Math.floor(_alMin / 60) + ":" + String(_alMin % 60).padStart(2, "0") + ")">>
 	<<capture _alMin _alLabel>><<link _alLabel _alBack>><<pass _alMin>><<set $xchange.arcology.loiter to _alMin>><<unset $xchange.arcology.loiterBack>><</link>><</capture>>
 	<br>
 <</for>>

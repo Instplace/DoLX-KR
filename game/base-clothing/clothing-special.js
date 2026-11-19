@@ -677,9 +677,9 @@ function initSpecialClothes() {
 			icon: "clothes/fox_mask.png",
 		},
 		luchifen_mask: {
-			text: "white half-mask",
+			text: "흰 반가면",
 			requirements: () => V.xchange?.arcology?.outcome === "success" || !!V.xchange?.arcology?.party?.seen?.includes("mask"),
-			hint: "attend a masquerade far from the mainland",
+			hint: "본토에서 멀리 떨어진 곳의 가면무도회에 참석하기",
 			shop: ["forest"],
 			subsetOf: ["mask"],
 			feat: true,
@@ -747,9 +747,9 @@ function initSpecialClothes() {
 		},
 
 		kaiju: {
-			text: "kaiju costume",
+			text: "괴수 의상",
 			requirements: () => V.photo?.job === "kaiju" || V.specialClothesEvents?.includes("kaiju"),
-			hint: "take up a client job handing out flyers for Niki",
+			hint: "니키의 의뢰로 전단지 나눠 주는 일 맡기",
 			shop: ["forest"],
 			feat: true,
 			featCost: 2,
@@ -760,9 +760,9 @@ function initSpecialClothes() {
 		},
 
 		whitney_collar: {
-			text: "Whitney's collar",
+			text: "휘트니의 목줄",
 			requirements: () => V.whitneycollar === 1,
-			hint: "be collared by someone at school",
+			hint: "학교에서 누군가에게 목줄 채워지기",
 			shop: ["forest"],
 			feat: true,
 			featCost: 2,
@@ -856,11 +856,11 @@ function initSpecialClothes() {
 		},
 		// Modded
 		tidebloom: {
-			text: "tidebloom ring",
+			text: "조수꽃 반지",
 			requirements: () =>
 				V.specialClothesEvents?.includes("tidebloom") ||
 				V.badEndStats?.some(stat => stat.source === "Water Dragon Lab" && ["dragonLabVent", "dragonLabDischarged"].includes(stat.reasonEnd)),
-			hint: "leave the doctor's basement, one way or the other",
+			hint: "어떤 식으로든 의사의 지하실에서 벗어나기",
 			shop: ["forest"],
 			feat: true,
 			featCost: 15,

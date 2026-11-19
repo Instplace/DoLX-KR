@@ -10,16 +10,16 @@
 	const challenges = Object.freeze(
 		[
 			{ id: "warm-up", name: "Warm-Up", diff: "easy", foe: { strength: 0.7 }, rules: {} },
-			{ id: "clean-sweep", name: "Clean Sweep", diff: "easy", foe: { strength: 0.75 }, rules: { noHeal: true } },
-			{ id: "back-to-basics", name: "Back to Basics", diff: "easy", foe: { strength: 0.75 }, rules: { basics: true } },
-			{ id: "quick-work", name: "Quick Work", diff: "medium", foe: { strength: 0.8 }, rules: { maxTurns: 14 } },
+			{ id: "clean-sweep", name: "깔끔한 완승", diff: "easy", foe: { strength: 0.75 }, rules: { noHeal: true } },
+			{ id: "back-to-basics", name: "기본으로", diff: "easy", foe: { strength: 0.75 }, rules: { basics: true } },
+			{ id: "quick-work", name: "속전속결", diff: "medium", foe: { strength: 0.8 }, rules: { maxTurns: 14 } },
 			{ id: "untouchable", name: "Untouchable", diff: "medium", foe: { strength: 0.6 }, rules: { minHp: 0.4 } },
-			{ id: "toe-to-toe", name: "Toe to Toe", diff: "medium", foe: { strength: 0.9 }, rules: {} },
-			{ id: "signature-move", name: "Signature Move", diff: "medium", foe: { strength: 0.9 }, rules: { finisher: "element" } },
-			{ id: "iron-will", name: "Iron Will", diff: "hard", foe: { strength: 0.95 }, rules: { noHeal: true, maxTurns: 20 } },
-			{ id: "glass-cannon", name: "Glass Cannon", diff: "hard", foe: { strength: 0.7 }, rules: { minHp: 0.5 } },
+			{ id: "toe-to-toe", name: "정면 승부", diff: "medium", foe: { strength: 0.9 }, rules: {} },
+			{ id: "signature-move", name: "필살기", diff: "medium", foe: { strength: 0.9 }, rules: { finisher: "element" } },
+			{ id: "iron-will", name: "강철 의지", diff: "hard", foe: { strength: 0.95 }, rules: { noHeal: true, maxTurns: 20 } },
+			{ id: "glass-cannon", name: "유리 대포", diff: "hard", foe: { strength: 0.7 }, rules: { minHp: 0.5 } },
 			{ id: "heavyweight", name: "Heavyweight", diff: "hard", foe: { strength: 1.05 }, rules: {} },
-			{ id: "mirror-match", name: "Mirror Match", diff: "hard", foe: { strength: 0.9, mirror: true }, rules: {} },
+			{ id: "mirror-match", name: "거울 대결", diff: "hard", foe: { strength: 0.9, mirror: true }, rules: {} },
 		].map(c => Object.freeze(c))
 	);
 	const byId = id => challenges.find(c => c.id === id) || null;
@@ -42,7 +42,7 @@
 		return Object.freeze({
 			id: "daily-" + date,
 			date,
-			name: "Daily battle",
+			name: "오늘의 전투",
 			diff: t.level,
 			foe: { ...t.foe, type, pick: r() },
 			rules: t.rules,
@@ -64,33 +64,33 @@
 	function rulesText(c) {
 		const r = c.rules;
 		const out = [];
-		if (r.noHeal) out.push("no Rest or healing skills");
-		if (r.basics) out.push("Attack and Guard only");
-		if (r.maxTurns) out.push(`at most ${r.maxTurns} turns`);
-		if (r.minHp) out.push(`HP never below ${Math.round(r.minHp * 100)}%`);
-		if (r.finisher === "element") out.push("an own-element skill as the final blow");
+		if (r.noHeal) out.push("휴식·회복 스킬 사용 금지");
+		if (r.basics) out.push("공격과 방어만 사용");
+		if (r.maxTurns) out.push(`최대 ${r.maxTurns}턴 이내`);
+		if (r.minHp) out.push(`HP를 ${Math.round(r.minHp * 100)}% 아래로 내리지 않기`);
+		if (r.finisher === "element") out.push("마지막 일격은 자기 속성 스킬로");
 		return out;
 	}
 	/* With a pet, names the element it will really face (after the fairness swap in makeFoe). */
 	function foeText(c, pet = Tamagotchi.isAlive() ? V.tamagotchi : null) {
 		const f = c.foe;
 		const type = !f.mirror && pet ? makeFoe(c, pet).type : f.type;
-		const how = f.mirror ? "a mirror of your own pet" : type ? `a ${type} opponent` : "an opponent whose element has no edge over your pet";
+		const how = f.mirror ? "당신의 펫을 그대로 비춘 상대" : type ? `${({ fire: "불", water: "물", grass: "풀", electric: "전기" })[type] || type} 속성 상대` : "속성 우위가 없는 상대";
 		const s = f.strength;
 		const level =
-			s < 0.8 ? "weaker than your pet" : s < 0.97 ? "a little weaker than your pet" : s <= 1.03 ? "as strong as your pet" : "stronger than your pet";
+			s < 0.8 ? "펫보다 약함" : s < 0.97 ? "펫보다 조금 약함" : s <= 1.03 ? "펫과 비슷한 강함" : "펫보다 강함";
 		return `${how}, ${level}`;
 	}
 	function describe(c) {
 		const rules = rulesText(c);
-		return rules.length ? `Win with ${rules.join(" and ")}.` : "Win the battle.";
+		return rules.length ? `승리 조건: ${rules.join(", ")}.` : "전투에서 승리합니다.";
 	}
 
 	/* Whether this pet can attempt it at all (a Signature Move needs an own-element attack skill). */
 	function needs(c, pet = V.tamagotchi) {
 		if (c.rules.finisher === "element") {
 			const own = Tamagotchi.battleSkills().some(s => !s.heal && s.type === (pet && pet.type));
-			if (!own) return "Needs a learned attack skill of your pet's own element.";
+			if (!own) return "펫과 같은 속성의 공격 스킬을 익혀야 합니다.";
 		}
 		return "";
 	}
@@ -140,18 +140,18 @@
 			};
 		}
 		const names = Object.keys(setup.petForms.wild).filter(n => setup.petForms.wild[n].type === type);
-		return { ...base, name: names[Math.floor(rng() * names.length)] || "Wild beast", hp: base.maxHp, kind: "wild" };
+		return { ...base, name: names[Math.floor(rng() * names.length)] || "야생 짐승", hp: base.maxHp, kind: "wild" };
 	}
 
 	/* ---- starting and tracking ---- */
 	function blocked() {
-		if (!Tamagotchi.isAlive()) return "Your pet needs to be alive.";
-		if (Tamagotchi.isSleeping()) return "Your pet is asleep.";
+		if (!Tamagotchi.isAlive()) return "펫이 살아 있어야 합니다.";
+		if (Tamagotchi.isSleeping()) return "펫이 잠들어 있습니다.";
 		const b = Tamagotchi.battleState();
 		if (b && b.kind === "challenge") return "";
-		if (b) return "Finish the battle your pet is already in first.";
+		if (b) return "펫이 이미 참여 중인 전투를 먼저 끝내십시오.";
 		const t = Tamagotchi.status();
-		if (t.pendingAttack) return "Your pet is under attack. Deal with that first.";
+		if (t.pendingAttack) return "펫이 공격받고 있습니다. 먼저 그 일부터 처리하십시오.";
 		return "";
 	}
 
@@ -208,10 +208,10 @@
 		ch.minHp = Math.min(ch.minHp, knocked ? 0 : b.hp / Math.max(1, b.maxHp));
 		const r = c.rules;
 		if (ch.broken) return;
-		if (r.noHeal && action.heal) ch.broken = "your pet healed";
-		else if (r.basics && action.kind !== "attack" && action.kind !== "guard") ch.broken = "a move other than Attack or Guard was used";
-		else if (r.minHp && ch.minHp < r.minHp) ch.broken = `HP fell below ${Math.round(r.minHp * 100)}%`;
-		else if (r.maxTurns && b.turn >= r.maxTurns && !(b.over && b.result === "win")) ch.broken = `the ${r.maxTurns} turns ran out`;
+		if (r.noHeal && action.heal) ch.broken = "펫이 회복했다";
+		else if (r.basics && action.kind !== "attack" && action.kind !== "guard") ch.broken = "공격과 방어 이외의 행동을 했다";
+		else if (r.minHp && ch.minHp < r.minHp) ch.broken = `HP가 ${Math.round(r.minHp * 100)}% 밑으로 떨어졌다`;
+		else if (r.maxTurns && b.turn >= r.maxTurns && !(b.over && b.result === "win")) ch.broken = `${r.maxTurns}턴이 모두 지났다`;
 	}
 
 	/* Where the battle stands, for the objective strip. */
@@ -221,8 +221,8 @@
 		const c = defOf(ch);
 		const r = c.rules;
 		const bits = [];
-		if (r.maxTurns) bits.push(`turn ${Math.min(b.turn, r.maxTurns)} of ${r.maxTurns}`);
-		if (r.minHp) bits.push(`lowest HP ${Math.round(ch.minHp * 100)}% (limit ${Math.round(r.minHp * 100)}%)`);
+		if (r.maxTurns) bits.push(`${Math.min(b.turn, r.maxTurns)} / ${r.maxTurns}턴`);
+		if (r.minHp) bits.push(`최저 HP ${Math.round(ch.minHp * 100)}% (한계 ${Math.round(r.minHp * 100)}%)`);
 		return { c, broken: ch.broken, text: bits.join(" · ") };
 	}
 
@@ -237,7 +237,7 @@
 		const won = b.result === "win";
 		if (won && !why && c.rules.finisher === "element") {
 			const m = ch.lastMove;
-			if (!(m && m.kind === "attack" && m.skill && m.type === V.tamagotchi.type)) why = "the winning blow was not an own-element skill";
+			if (!(m && m.kind === "attack" && m.skill && m.type === V.tamagotchi.type)) why = "마지막 일격이 자기 속성 스킬이 아니었다";
 		}
 		const out = { result: won ? "win" : "lose", done: won && !why, why: won ? why : "", name: c.name, turns: b.turn, paid: 0, kind: ch.kind };
 		if (out.done) {
@@ -328,14 +328,14 @@
 			rec,
 			reward: c.reward
 				? rec && rec.paid
-					? `${formatMoney(rec.paid)}, claimed today`
-					: `${formatMoney(c.reward)} on completion, not claimed yet`
-				: "None today",
+					? `${formatMoney(rec.paid)}, 오늘 수령함`
+					: `완료 시 ${formatMoney(c.reward)}, 아직 수령 전`
+				: "오늘은 없음",
 			reset: daily().untilReset(),
 			art: foeArt(c),
 			foeName: Tamagotchi.isAlive() ? makeFoe(c, V.tamagotchi).name : "",
 			petArt: Tamagotchi.isAlive() && typeof PetArt !== "undefined" ? PetArt.icon(V.tamagotchi.species) : "",
-			history: daily().history(peek().daily, c.date, r => `won in ${r.best} turns`),
+			history: daily().history(peek().daily, c.date, r => `${r.best}턴 만에 승리`),
 		};
 	}
 	const progress = () => ({ count: challenges.filter(c => (peek().done || {})[c.id]).length, total: challenges.length });

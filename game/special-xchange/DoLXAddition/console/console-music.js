@@ -242,7 +242,7 @@
 		const s = settings();
 		const off = V.options?.audio !== 1;
 		return (
-			`<div class="console-sfx"><label class="console-sfx-row">Sound effects ` +
+			`<div class="console-sfx"><label class="console-sfx-row">효과음 ` +
 			`<input type="range" min="0" max="100" step="5" value="${Math.round(
 				s.volume * 100
 			)}" data-console-sfx="volume" aria-label="Sound effects volume"></label>` +

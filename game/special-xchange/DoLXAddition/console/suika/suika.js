@@ -586,8 +586,8 @@
 	const abilities = Object.freeze({
 		shake: Object.freeze({
 			label: "Shake",
-			desc: "Jolt the jar",
-			help: "Shake: jolt the jar so fruit knock together. Risky, fruit can bounce up over the line.",
+			desc: "병 흔들기",
+			help: "흔들기: 과일끼리 부딪히도록 병을 흔듭니다. 위험합니다. 과일이 선 위로 튀어 오를 수 있습니다.",
 			icon: '<path d="M9 3h6M10 3v3L7 10v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-9l-3-4V3"/><path d="M3 9v6M21 9v6"/>',
 			ready: game => game.hasFruit(),
 			use(game) {
@@ -602,8 +602,8 @@
 		}),
 		shuffle: Object.freeze({
 			label: "Shuffle",
-			desc: "Reroll this fruit",
-			help: "Shuffle: swap the fruit you are holding for a different small fruit.",
+			desc: "이 과일 다시 뽑기",
+			help: "셔플: 들고 있는 과일을 다른 작은 과일로 바꿉니다.",
 			icon: '<rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/><circle cx="15" cy="9" r="1.2" fill="currentColor"/><circle cx="9" cy="15" r="1.2" fill="currentColor"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/>',
 			ready: () => true,
 			use(game) {
@@ -613,21 +613,21 @@
 		}),
 		wand: Object.freeze({
 			label: "Wand",
-			desc: "Remove a fruit",
-			help: "Magic Wand: pick one of the five smallest fruit in the jar to remove it. No points.",
+			desc: "과일 제거",
+			help: "마법 지팡이: 병 안의 가장 작은 과일 다섯 개 중 하나를 골라 없앱니다. 점수는 없습니다.",
 			icon: '<path d="M4 20L14 10"/><path d="M17 3l1 2.3 2.4.4-1.8 1.6.5 2.4L17 8.5l-2.1 1.2.5-2.4-1.8-1.6 2.4-.4z"/>',
 			ready: game => game.hasWandTarget(),
 			/* Only opens the picker; the charge is spent when a fruit is picked (confirmWand). */
 			use(game) {
 				game.wand = { target: null };
-				game.announce("Magic Wand: pick a ringed fruit, or press Escape to cancel.");
+				game.announce("마법 지팡이: 고리가 있는 과일을 고르거나 Esc를 눌러 취소하십시오.");
 				return false;
 			},
 		}),
 		swap: Object.freeze({
 			label: "Swap",
-			desc: "Trade with Next",
-			help: "Swap: trade the fruit you are holding with the Next fruit.",
+			desc: "다음 과일과 교환",
+			help: "교환: 들고 있는 과일과 다음 과일을 바꿉니다.",
 			icon: '<path d="M4 8h15l-4-4"/><path d="M20 16H5l4 4"/>',
 			ready: game => game.heldTier !== game.nextTier,
 			use(game) {
@@ -640,19 +640,19 @@
 
 	/* First-time tutorial: a card above the jar while a scripted demo drops fruit. `drops` are [delay ms, tier, x]. */
 	const tutorialSteps = Object.freeze([
-		{ title: "Aim and drop", text: "Move along the top to aim, then tap, click, or press Space to drop.", drops: [[400, 0, 90]] },
+		{ title: "조준과 떨어뜨리기", text: "위쪽을 따라 움직여 조준한 뒤, 탭하거나 클릭하거나 스페이스 키를 눌러 떨어뜨리십시오.", drops: [[400, 0, 90]] },
 		{
 			title: "Merge",
-			text: "Two of the same fruit merge into the next one up. Bigger fruit score more.",
+			text: "같은 과일 두 개가 합쳐져 한 단계 위의 과일이 됩니다. 큰 과일일수록 점수가 높습니다.",
 			drops: [
 				[300, 0, 92],
 				[1700, 1, 97],
 			],
 		},
-		{ title: "The red line", text: "If the pile stays above the red line for 2.5 seconds, the run ends. It turns amber when the pile gets close.", drops: [] },
+		{ title: "빨간 선", text: "과일 더미가 2.5초 동안 빨간 선 위에 있으면 플레이가 끝납니다. 더미가 선에 가까워지면 주황색으로 변합니다.", drops: [] },
 		{
 			title: "Modes",
-			text: "Classic is the plain game. Arcade adds power-ups and combo points. Zen never ends. Challenges, records, and settings are in the Menu.",
+			text: "클래식은 기본 게임입니다. 아케이드는 파워업과 콤보 점수가 더해지고, 젠은 끝나지 않습니다. 도전 과제, 기록, 설정은 메뉴에 있습니다.",
 			drops: [],
 		},
 	]);
@@ -987,7 +987,7 @@
 			this.overflowTimer = rules.overflow(this.overflowTimer, anyOver, config.stepMs);
 			/* The warning is drawing only; the timer above is the original rule and alone decides the end. */
 			const danger = this.overflowTimer > 0 ? 2 : top < config.dangerY + config.warnMargin ? 1 : 0;
-			if (danger === 2 && this.danger !== 2 && !modes[this.mode].zen) this.announce("The pile is over the red line.");
+			if (danger === 2 && this.danger !== 2 && !modes[this.mode].zen) this.announce("과일 더미가 빨간 선을 넘었습니다.");
 			this.danger = danger;
 			if (this.overflowTimer >= config.overflowMs) {
 				if (modes[this.mode].zen) this.harvest("line");
@@ -1008,7 +1008,7 @@
 			}
 			this.overflowTimer = 0;
 			if (picked.length) {
-				const text = `Picked ${picked.length} fruit off the ${reason === "line" ? "top" : "jar"}`;
+				const text = `${reason === "line" ? "맨 위" : "병"}에서 과일 ${picked.length}개를 골라냈습니다`;
 				this.note = { text, at: this.time };
 				this.announce(text + ".");
 				sound().play("harvest");
@@ -1069,7 +1069,7 @@
 			if (!this.canDrop()) return false;
 			const limit = this.dropLimit();
 			if (limit && this.drops >= limit) {
-				this.note = { text: "No drops left", at: this.time };
+				this.note = { text: "더 떨어뜨릴 수 없음", at: this.time };
 				return false;
 			}
 			/* The safety cap: Zen makes room, the scored modes end the run plainly instead of deleting anything. */
@@ -1228,12 +1228,12 @@
 			let fraction = 0;
 			if (c) {
 				const r = content().evaluate(c, this);
-				name = c.diff === "daily" ? `Daily challenge · ${c.date}` : `${c.name} · ${c.diff[0].toUpperCase()}${c.diff.slice(1)}`;
+				name = c.diff === "daily" ? `일일 도전 과제 · ${c.date}` : `${c.name} · ${({ easy: "쉬움", medium: "보통", hard: "어려움" })[c.diff] || c.diff}`;
 				text = r.text;
 				fraction = r.fraction;
 			} else {
 				name = "Zen";
-				text = "No game over. Fruit that stay over the line are picked off.";
+				text = "게임 오버 없음. 선 위에 남은 과일은 골라냅니다.";
 			}
 			const sig = name + text + Math.round(fraction * 100);
 			if (!force && sig === this.goalSig) return;
@@ -1257,7 +1257,7 @@
 				this.aiming = false;
 				this.showOverlay(
 					"Paused",
-					"The fruit stay where they are until you come back.",
+					"과일은 돌아올 때까지 그 자리에 있습니다.",
 					{ label: "Resume", run: () => this.setPaused(false) },
 					this.menuAction()
 				);
@@ -1311,30 +1311,30 @@
 		showSummary(reason, result) {
 			const c = this.challenge;
 			const label = modes[this.mode].label;
-			let title = "Game over";
+			let title = "게임 오버";
 			let text;
-			if (reason === "won") title = this.mode === "daily" ? "Daily challenge complete" : "Challenge complete";
-			else if (reason === "failed" || (c && reason === "overflow")) title = this.mode === "daily" ? "Daily challenge failed" : "Challenge failed";
-			else if (reason === "full") title = "The jar is full";
-			const why = reason === "full" ? "The jar holds as many fruit as it can." : reason === "overflow" ? "The pile stayed over the line." : "";
+			if (reason === "won") title = this.mode === "daily" ? "일일 도전 과제 완료" : "도전 과제 완료";
+			else if (reason === "failed" || (c && reason === "overflow")) title = this.mode === "daily" ? "일일 도전 과제 실패" : "도전 과제 실패";
+			else if (reason === "full") title = "병이 가득 찼습니다";
+			const why = reason === "full" ? "병이 담을 수 있는 만큼 과일이 찼습니다." : reason === "overflow" ? "과일 더미가 선 위에 머물렀습니다." : "";
 			if (c) {
 				text = `${why ? why + " " : ""}${content().describe(c)} Score ${this.score}.`;
 				if (this.mode === "daily") {
-					text += ` Today's best ${progress().dailyDay(c.date)?.best || this.score}.`;
-					if (result.paid) text += ` You earned ${formatMoney(result.paid)}.`;
-					else if (reason === "won" && progress().dailyDay(c.date)?.paid) text += " Today's reward was already claimed.";
-				} else if (reason === "won" && !result.firstClear) text += " Already completed before.";
+					text += ` 오늘의 최고 ${progress().dailyDay(c.date)?.best || this.score}점.`;
+					if (result.paid) text += ` 받은 보상: ${formatMoney(result.paid)}.`;
+					else if (reason === "won" && progress().dailyDay(c.date)?.paid) text += " 오늘의 보상은 이미 받았습니다.";
+				} else if (reason === "won" && !result.firstClear) text += " 이미 완료한 도전 과제입니다.";
 			} else {
-				text = `${why} Score ${this.score}, ${label} best ${result.best || 0}.${result.newBest ? " That is a new best." : ""}`;
+				text = `${why} 점수 ${this.score}, ${label} 최고 ${result.best || 0}.${result.newBest ? " 새로운 최고 기록입니다." : ""}`;
 			}
 			const extra = [
-				`Biggest fruit: ${this.runInfo.largest >= 0 ? fruits[this.runInfo.largest].name : "none"}`,
+				`가장 큰 과일: ${this.runInfo.largest >= 0 ? fruits[this.runInfo.largest].name : "없음"}`,
 				`Drops: ${this.drops}`,
-				`Best chain: ${this.runInfo.maxChain}`,
+				`최고 연쇄: ${this.runInfo.maxChain}`,
 			];
-			if (this.rulesArcade) extra.push(`Combo points: ${this.comboBonus}`);
+			if (this.rulesArcade) extra.push(`콤보 점수: ${this.comboBonus}`);
 			if (this.newAchievements.length) extra.push(`Achievements: ${this.newAchievements.map(a => a.name).join(", ")}`);
-			const again = c ? (this.mode === "daily" ? "Try again" : "Retry") : "Play again";
+			const again = c ? (this.mode === "daily" ? "다시 도전" : "재도전") : "다시 플레이";
 			this.showOverlay(title, text, { label: again, run: () => this.restartSame() }, this.menuAction(), extra);
 			this.announce(`${title}. ${text}`, true);
 		}
@@ -1467,7 +1467,7 @@
 				run.mode === "challenge"
 					? content().challenges.find(c => c.id === run.challenge)?.name || "Challenge"
 					: run.mode === "daily"
-					? `Daily challenge ${run.daily}`
+					? `일일 도전 과제 ${run.daily}`
 					: mode
 					? mode.label
 					: "Unknown";
@@ -1475,21 +1475,21 @@
 				Number(run.drops) === 1 ? "drop" : "drops"
 			}. Resume it, or discard it to start fresh.`;
 			this.showOverlay(
-				"Saved run",
+				"저장된 플레이",
 				text,
 				{
-					label: "Resume run",
+					label: "플레이 이어하기",
 					run: () => {
 						const ok = this.restore(run);
 						progress().clearRun();
 						if (!ok) {
 							this.newGame();
-							this.toast("The saved run could not be read, so it was discarded.");
+							this.toast("저장된 플레이를 읽을 수 없어 삭제했습니다.");
 						}
 					},
 				},
 				{
-					label: "Discard saved run",
+					label: "저장된 플레이 삭제",
 					run: () => {
 						progress().clearRun();
 						this.newGame();
@@ -1560,8 +1560,8 @@
 
 		/* DoL shows its own feat banner; the toast says why it appeared. */
 		onFeat(name) {
-			this.toast(`Every achievement unlocked. Feat earned: ${name}`);
-			this.announce(`Feat earned: ${name}`, true);
+			this.toast(`모든 성과를 해금했습니다. 업적 획득: ${name}`);
+			this.announce(`업적 획득: ${name}`, true);
 		}
 
 		pushFx(fx) {
@@ -1845,7 +1845,7 @@
 			this.drawDangerLine(ctx);
 
 			if (this.wand) {
-				this.label(ctx, "Magic Wand: pick a ringed fruit", w / 2, config.dropY, 15, th.ink, 1);
+				this.label(ctx, "마법 지팡이: 고리가 있는 과일을 고르십시오", w / 2, config.dropY, 15, th.ink, 1);
 			} else if (!this.over && !this.idle) {
 				this.drawAim(ctx, s);
 			}
@@ -1915,7 +1915,7 @@
 				const seconds = ((config.overflowMs - this.overflowTimer) / 1000).toFixed(1);
 				ctx.fillStyle = th.line;
 				ctx.fillRect(0, dangerY - 6, w * left, 4);
-				this.label(ctx, modes[this.mode].zen ? `Picking off in ${seconds}s` : `Over the line ${seconds}s`, w / 2, dangerY - 16, 12, th.ink, 1);
+				this.label(ctx, modes[this.mode].zen ? `${seconds}초 뒤 골라냄` : `선 위 ${seconds}초`, w / 2, dangerY - 16, 12, th.ink, 1);
 			}
 		}
 
@@ -2096,7 +2096,7 @@
 		onPointerUp = e => {
 			if (this.wand && !this.paused && !this.over) {
 				const hit = this.wandHit(this.toWorldX(e.clientX), this.toWorldY(e.clientY));
-				if (!this.confirmWand(hit)) this.note = { text: "Tap a fruit with a gold ring", at: this.time };
+				if (!this.confirmWand(hit)) this.note = { text: "금색 고리가 있는 과일을 탭하십시오", at: this.time };
 				return;
 			}
 			if (!this.aiming) return;
@@ -2168,7 +2168,7 @@
 			this.disarm();
 			this.armedBtn = btn;
 			this.armedText = btn.textContent;
-			btn.textContent = this.idle ? "Press again to replace saved run" : armedText;
+			btn.textContent = this.idle ? "다시 누르면 저장된 플레이를 덮어씁니다" : armedText;
 			this.armTimer = setTimeout(() => this.disarm(), 3000);
 		}
 
@@ -2191,7 +2191,7 @@
 
 		onRestartClick = () => {
 			if (this.mode === "tutorial") return this.requestStart(this.el.restartBtn, "", progress().data().mode);
-			this.armOrRun(this.el.restartBtn, "Press again to restart", () => {
+			this.armOrRun(this.el.restartBtn, "다시 누르면 다시 시작합니다", () => {
 				if (this.idle) progress().clearRun();
 				this.restartSame();
 			});
@@ -2205,7 +2205,7 @@
 				progress().finishTutorial();
 				this.hideTip();
 			}
-			this.requestStart(btn, `Press again for ${modes[mode].label}`, mode);
+			this.requestStart(btn, `다시 누르면 ${modes[mode].label} 시작`, mode);
 		};
 
 		onAbilityClick = e => {
@@ -2302,7 +2302,7 @@
 			/* Never leave the passage half-built: report it like any other passage error and keep the rest usable. */
 			current = null;
 			console.error("Fruit game failed to start", e);
-			root.textContent = "The fruit game could not start. Go back to the console and open it again.";
+			root.textContent = "과일 게임을 시작할 수 없습니다. 콘솔로 돌아가 다시 여십시오.";
 		}
 		return current;
 	}

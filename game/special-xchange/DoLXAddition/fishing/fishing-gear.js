@@ -72,7 +72,7 @@ window.wormCanCount = wormCanCount;
 
 /* "Can of Worms | 7/20", or "Empty Can of Worms | 0/20". */
 function wormCanName() {
-	return wormCanCount() > 0 ? "Can of Worms" : "Empty Can of Worms";
+	return wormCanCount() > 0 ? "지렁이 통" : "빈 지렁이 통";
 }
 window.wormCanName = wormCanName;
 
@@ -214,7 +214,7 @@ window.baitUsable = baitUsable;
 
 /* The name and count shown in the bait list, the sidebar tooltip and the tackle summary. */
 function baitLabel(key) {
-	if (!key) return "No bait";
+	if (!key) return "미끼 없음";
 	if (key === "bait_worm" && wormCanOwned() && baitLooseStock(key) === 0) {
 		return `${wormCanName()} (${wormCanCount()} remaining)`;
 	}
@@ -345,9 +345,9 @@ function fishStowLabel(fish) {
 	const keep = fishKeepKey(fish);
 	const count = fishCatchCount(fish);
 	if (count > 1) {
-		return `Stow the ${count} ${fishNamePlural(keep)} away`;
+		return `${fishNamePlural(keep)} ${count}마리를 챙겨 넣는다`;
 	}
-	return `Stow the ${fishDisplayName(keep)} away`;
+	return `${fishDisplayName(keep)}【을를】 챙겨 넣는다`;
 }
 window.fishStowLabel = fishStowLabel;
 

@@ -108,8 +108,8 @@ window.pocketOutfitSyncSlot = pocketOutfitSyncSlot;
 /* Why a garment can't be packed right now, or "" if it can. */
 function pocketOutfitPackBlocked() {
 	const outfit = pocketOutfitEnsure();
-	if (outfit.pieces.length >= setup.pocketOutfit.maxPieces) return "That's as much as you can fold up and carry.";
-	if (outfit.pieces.length === 0 && V.pocket.bag.slots.length >= pocketCarryCapacity()) return "You've nothing free to carry it in.";
+	if (outfit.pieces.length >= setup.pocketOutfit.maxPieces) return "더는 접어서 들고 다닐 수 없다.";
+	if (outfit.pieces.length === 0 && V.pocket.bag.slots.length >= pocketCarryCapacity()) return "그것을 담아 갈 빈 곳이 없다.";
 	return "";
 }
 window.pocketOutfitPackBlocked = pocketOutfitPackBlocked;

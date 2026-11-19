@@ -475,7 +475,7 @@
 					<<run updateMoment()>>
 					<<set _plagueDnaGain to _plagueSkip.dnaGained>>
 					<<set _plagueDnaMsg to setup.plagueUi.dnaFeedback(_plagueSkip)>>
-					<<set _plagueAdvanceMsg to "Advanced " + _plagueSkip.days + (_plagueSkip.days is 1 ? " day" : " days") + ". " + (_plagueSkip.stops.length ? "Stopped on day " + _plagueSkip.stops[0].day + ": " + _plagueSkip.stops.map(s => s.text).join(" ") : "Nothing needed your attention.")>>
+					<<set _plagueAdvanceMsg to _plagueSkip.days + (_plagueSkip.days is 1 ? "일" : "일") + " 진행했다. " + (_plagueSkip.stops.length ? _plagueSkip.stops[0].day + "일째에 멈췄다: " + _plagueSkip.stops.map(s => s.text).join(" ") : "신경 쓸 일이 없었다.")>>
 					<<if $plagueGame.status is "active">>
 						<<plagueReplace "#plague-game">><<plagueGameBody>><</plagueReplace>>
 						<<run $("#plague-game .plague-advance-until a").first().trigger("focus")>>
@@ -648,7 +648,7 @@
 				<</for>>
 				<<for _plagueU range _plagueLane.nodes>>
 					<<set _plagueNs to _plagueEnded and ["available", "dna"].includes(_plagueU.planState) ? "unowned" : _plagueU.planState>>
-					<<set _plagueNsWord to {owned: "evolved", available: "can evolve", dna: "needs " + _plagueU.dnaShort + " more DNA", requires: "locked", excluded: "excluded by " + _plagueU.excludedByName, unowned: "not evolved"}[_plagueNs]>>
+					<<set _plagueNsWord to {owned: "진화함", available: "진화 가능", dna: "DNA " + _plagueU.dnaShort + " 더 필요", requires: "잠김", excluded: _plagueU.excludedByName + " 때문에 제외됨", unowned: "진화하지 않음"}[_plagueNs]>>
 					<div @class="'plague-node plague-node-' + _plagueNs + (_plagueU.id is _plagueSel.id ? ' plague-node-selected' : '')" @data-plague-upgrade="_plagueU.id" @data-plague-state="_plagueNs" @style="'--r:' + _plagueU.gridRow + ';--c:' + (_plagueU.col + 1) + ';--mr:' + _plagueU.mRow + ';--mc:' + _plagueU.mCol + ';--ms:' + _plagueU.mSpan">
 						<span class="plague-node-name"><<capture _plagueU, _plagueNs>><<link `'<span aria-hidden="true">' + _plagueU.name + '</span><span class="plague-sr">' + _plagueU.name + ', ' + _plagueU.cost + ' DNA, ' + _plagueNsWord + (_plagueU.rivals.length and _plagueNs isnot "excluded" ? ', 이것 또는 ' + _plagueU.rivalNames.join(' 또는 ') + ' 중 하나만' : '') + (_plagueU.id is _plagueSel.id ? ', 선택됨' : '') + '</span>'`>>
 							/* Kept apart from _plagueU, which the redraw's own loop overwrites. */
@@ -722,7 +722,7 @@
 							<<set _plagueEvolveMsg to _plagueD.name + " evolved.">>
 						<<else>>
 							<<run setup.plagueSfx.play("outbreak-denied")>>
-							<<set _plagueEvolveMsg to _plagueD.name + " can't be evolved right now.">>
+							<<set _plagueEvolveMsg to "지금은 진화할 수 없다: " + _plagueD.name + ".">>
 						<</if>>
 						<<set _plagueEvoPick[_plagueEvoTab] to _plagueD.id>>
 						<<plagueReplace "#plague-game">><<plagueEvolveBody>><</plagueReplace>>

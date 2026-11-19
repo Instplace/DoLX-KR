@@ -71,28 +71,28 @@ const Tamagotchi = (() => {
 		embit: {
 			name: "Embit",
 			type: "fire",
-			blurb: "A hot-headed little lizard.",
+			blurb: "성질 급한 작은 도마뱀.",
 			evolution: "blazilisk",
 			base: { hp: 28, atk: 8, def: 5, spd: 6, mp: 8 },
 		},
 		pudduck: {
 			name: "Pudduck",
 			type: "water",
-			blurb: "A calm, dependable duckling.",
+			blurb: "차분하고 믿음직한 오리 새끼.",
 			evolution: "pondswan",
 			base: { hp: 34, atk: 6, def: 7, spd: 4, mp: 8 },
 		},
 		sprout: {
 			name: "Sprout",
 			type: "grass",
-			blurb: "A sturdy little seedling.",
+			blurb: "튼튼한 작은 새싹.",
 			evolution: "oakguard",
 			base: { hp: 32, atk: 6, def: 8, spd: 4, mp: 8 },
 		},
 		voltpup: {
 			name: "Voltpup",
 			type: "electric",
-			blurb: "A jittery, lightning-fast pup.",
+			blurb: "초조하게 떨며 번개처럼 빠른 강아지.",
 			evolution: "thundrover",
 			base: { hp: 26, atk: 8, def: 5, spd: 8, mp: 8 },
 		},
@@ -100,10 +100,10 @@ const Tamagotchi = (() => {
 
 	/* Evolved forms. Reached by sacrificing skills (see evolve()); they inherit the base type and the pet's name. */
 	const EVOLVED = {
-		blazilisk: { name: "Blazilisk", type: "fire", blurb: "A towering ember serpent." },
-		pondswan: { name: "Pondswan", type: "water", blurb: "A regal river swan." },
-		oakguard: { name: "Oakguard", type: "grass", blurb: "A bark-plated sentinel." },
-		thundrover: { name: "Thundrover", type: "electric", blurb: "A storm-charged hound." },
+		blazilisk: { name: "Blazilisk", type: "fire", blurb: "우뚝 솟은 불씨 뱀." },
+		pondswan: { name: "Pondswan", type: "water", blurb: "위엄 있는 강의 백조." },
+		oakguard: { name: "Oakguard", type: "grass", blurb: "나무껍질로 무장한 파수꾼." },
+		thundrover: { name: "Thundrover", type: "electric", blurb: "폭풍을 두른 사냥개." },
 	};
 	/* Combined lookup so species helpers resolve both base and evolved ids. */
 	const speciesDef = id => SPECIES[id] || EVOLVED[id] || null;
@@ -136,11 +136,11 @@ const Tamagotchi = (() => {
 	};
 
 	const TRAININGS = {
-		strength: { name: "Strength training", stat: "atk", gain: 3, desc: "Raises Attack." },
-		endurance: { name: "Endurance training", stat: "maxHp", gain: 12, desc: "Raises max HP." },
-		agility: { name: "Agility drills", stat: "spd", gain: 3, desc: "Raises Speed." },
-		defense: { name: "Defence drills", stat: "def", gain: 3, desc: "Raises Defence." },
-		focus: { name: "Focus meditation", stat: "maxMp", gain: 5, desc: "Raises max MP." },
+		strength: { name: "힘 훈련", stat: "atk", gain: 3, desc: "공격력이 오릅니다." },
+		endurance: { name: "지구력 훈련", stat: "maxHp", gain: 12, desc: "최대 HP가 오릅니다." },
+		agility: { name: "민첩성 훈련", stat: "spd", gain: 3, desc: "속도가 오릅니다." },
+		defense: { name: "방어 훈련", stat: "def", gain: 3, desc: "방어력이 오릅니다." },
+		focus: { name: "집중 명상", stat: "maxMp", gain: 5, desc: "최대 MP가 오릅니다." },
 	};
 
 	const ENEMY_NAMES = {
@@ -171,7 +171,7 @@ const Tamagotchi = (() => {
 	const dayNum = () => Math.floor(now() / secondsPerDay);
 	const rand = n => Math.floor(Math.random() * n);
 	const typeMult = (atk, def) => (TYPE_CHART[atk] && TYPE_CHART[atk][def]) || 1;
-	const effNote = tm => (tm > 1 ? " Super effective!" : tm < 1 ? " Not very effective..." : "");
+	const effNote = tm => (tm > 1 ? " 효과가 굉장했다!" : tm < 1 ? " 효과가 별로였다..." : "");
 	const isBloodMoon = () => typeof Time !== "undefined" && typeof Time.isBloodMoon === "function" && Time.isBloodMoon();
 	/* The window in which a blood-moon boss can arm: the moon itself, or the last day of the month. */
 	const bloodMoonWindow = () => isBloodMoon() || (typeof Time !== "undefined" && Time.monthDay === Time.lastDayOfMonth);
@@ -644,17 +644,17 @@ const Tamagotchi = (() => {
 		return isAlive() && dayNum() >= V.tamagotchi.nextAttackDay;
 	}
 	function canTrain() {
-		if (!isAlive()) return { ok: false, reason: "your pet can't train right now" };
-		if (isSleeping()) return { ok: false, reason: "it's fast asleep" };
-		if (attackDue()) return { ok: false, reason: "your pet is under attack!" };
-		if (V.tamagotchi.pendingSkillChoice) return { ok: false, reason: "choose a new skill first" };
-		if (V.tamagotchi.energy < 15) return { ok: false, reason: "it's too tired to train" };
-		if (dayNum() <= V.tamagotchi.lastTrainDay) return { ok: false, reason: "it's already trained today" };
+		if (!isAlive()) return { ok: false, reason: "펫이 지금은 훈련할 수 없는 상태다" };
+		if (isSleeping()) return { ok: false, reason: "펫이 깊이 잠들어 있다" };
+		if (attackDue()) return { ok: false, reason: "펫이 공격받고 있다" };
+		if (V.tamagotchi.pendingSkillChoice) return { ok: false, reason: "먼저 새 스킬을 골라야 한다" };
+		if (V.tamagotchi.energy < 15) return { ok: false, reason: "너무 지쳐서 훈련할 수 없다" };
+		if (dayNum() <= V.tamagotchi.lastTrainDay) return { ok: false, reason: "오늘은 이미 훈련했다" };
 		return { ok: true };
 	}
 	function train(typeId) {
 		sync();
-		if (!TRAININGS[typeId]) return { ok: false, reason: "that training option is no longer available" };
+		if (!TRAININGS[typeId]) return { ok: false, reason: "그 훈련은 더 이상 선택할 수 없다" };
 		const cb = canTrain();
 		if (!cb.ok) return { ok: false, reason: cb.reason };
 		const t = V.tamagotchi;
@@ -784,7 +784,7 @@ const Tamagotchi = (() => {
 		const ty = types[rand(types.length)];
 		const maxHp = Math.round(pet.maxHp * Tuning.minibossHpMult);
 		return {
-			name: "Golem Sentinel",
+			name: "골렘 파수꾼",
 			type: ty,
 			maxHp,
 			hp: maxHp,
@@ -846,7 +846,7 @@ const Tamagotchi = (() => {
 		if (boss) {
 			e = makeBoss(pet);
 			kind = "boss";
-			intro = "The blood moon rises and a monstrous " + e.name + " descends on " + pet.name + "!";
+			intro = "붉은 달이 떠오르고, 괴물 같은 " + e.name + "의 그림자가 " + pet.name + "에게 드리운다!";
 		} else if (pet.evolved && Math.random() < Tuning.minibossChance) {
 			e = makeMiniboss(pet);
 			kind = "miniboss";
@@ -867,7 +867,7 @@ const Tamagotchi = (() => {
 		const pet = V.tamagotchi;
 		const e = makeEnemy(pet.wave, pet);
 		e.kind = "dungeon";
-		V.petBattle = newBattleState("dungeon", e, pet, "A dungeon " + e.name + " lunges at " + pet.name + "!");
+		V.petBattle = newBattleState("dungeon", e, pet, "던전에서 " + e.name + " 등장! " + pet.name + "에게 달려든다!");
 		return V.petBattle;
 	}
 	function newBattleState(kind, e, pet, intro) {
@@ -958,12 +958,12 @@ const Tamagotchi = (() => {
 			const r = dmgCalc(pAtk, e.def, 9, "normal", e.type, stab);
 			const dmg = Math.max(r.dmg, Math.max(1, Math.round(playerDamageFloor("attack", e.maxHp) * r.tm)));
 			e.hp = Math.max(0, e.hp - dmg);
-			log.push("You attack for " + dmg + " damage." + effNote(r.tm));
+			log.push("당신은 공격해 " + dmg + "의 피해를 입혔다." + effNote(r.tm));
 		} else if (action.kind === "guard") {
 			b.guarding = true;
 			const gain = Math.ceil(b.maxMp * Tuning.guardMpFrac);
 			b.mp = Math.min(b.maxMp, b.mp + gain);
-			log.push("You guard, bracing for the next blow and recovering " + gain + " MP.");
+			log.push("당신은 방어 태세로 다음 일격에 대비하며 MP를 " + gain + " 회복했다.");
 		} else if (action.kind === "rest") {
 			const h = Math.ceil(b.maxHp * Tuning.restHpFrac);
 			const m = Math.ceil(b.maxMp * Tuning.restMpFrac);
@@ -987,7 +987,7 @@ const Tamagotchi = (() => {
 				const r = dmgCalc(pAtk, e.def, sk.power, sk.type, e.type, stab);
 				const dmg = Math.max(r.dmg, Math.max(1, Math.round(playerDamageFloor("skill", e.maxHp) * r.tm)));
 				e.hp = Math.max(0, e.hp - dmg);
-				log.push("You use " + sk.name + " for " + dmg + " damage." + effNote(r.tm));
+				log.push("당신은 " + sk.name + " 스킬을 사용해 " + dmg + "의 피해를 입혔다." + effNote(r.tm));
 			}
 		} else {
 			return b;
@@ -997,12 +997,12 @@ const Tamagotchi = (() => {
 			/* The mirror copied your Revive: it gets back up once, just like your pet would. */
 			e.reviveUsed = true;
 			e.hp = Math.ceil(e.maxHp * 0.5);
-			log.push("The " + e.name + " collapses... but a mirrored Revive drags it back up with " + e.hp + " HP!");
+			log.push(e.name + "의 몸이 무너졌다... 하지만 거울에 비친 부활이 HP " + e.hp + " 상태로 다시 일으켜 세웠다!");
 		}
 		if (e.hp <= 0) {
 			b.over = true;
 			b.result = "win";
-			log.push("The " + enemyLabel(e) + " is defeated!");
+			log.push(enemyLabel(e) + " 격파!");
 			b.turn++;
 			b.log = log;
 			return b;
@@ -1025,11 +1025,11 @@ const Tamagotchi = (() => {
 				b.mp = fresh.maxMp;
 				b.reviveUsed = false; /* the fresh pet has its own Revive */
 				b.guarding = false;
-				log.push(fallenName + " falls! " + fresh.name + " charges in to take its place!");
+				log.push(fallenName + "의 체력이 바닥났다! " + fresh.name + "의 교체 투입!");
 			} else {
 				b.over = true;
 				b.result = "lose";
-				log.push(pet.name + " has fallen...");
+				log.push(pet.name + "의 힘이 다했다...");
 			}
 		}
 		b.turn++;
@@ -1183,22 +1183,22 @@ const Tamagotchi = (() => {
 		if (type === "hp") {
 			t.maxHp += Tuning.boosterHp;
 			clampStats(t);
-			return { type, label: "a Vitality Capsule", detail: "that raises its max HP by " + Tuning.boosterHp };
+			return { type, label: "활력 캡슐", detail: "(펫의 최대 HP +" + Tuning.boosterHp + ")" };
 		}
 		if (type === "mp") {
 			t.maxMp += Tuning.boosterMp;
 			clampStats(t);
-			return { type, label: "a Mana Crystal", detail: "that raises its max MP by " + Tuning.boosterMp };
+			return { type, label: "마나 크리스털", detail: "(펫의 최대 MP +" + Tuning.boosterMp + ")" };
 		}
 		if (type === "skill") {
 			const choices = unlearnedSkills();
 			const id = choices[rand(choices.length)];
 			if (!Array.isArray(t.skills)) t.skills = [];
 			t.skills.push(id);
-			return { type, label: "a Skill Disc", detail: "that teaches your pet " + SKILLS[id].name, skill: SKILLS[id].name };
+			return { type, label: "스킬 디스크", detail: "(펫이 " + SKILLS[id].name + " 스킬을 익힌다)", skill: SKILLS[id].name };
 		}
 		addElixir(1);
-		return { type: "elixir", label: "an Elixir", detail: "that revives your pet once when it dies" };
+		return { type: "elixir", label: "엘릭서", detail: "(죽었을 때 펫을 한 번 되살린다)" };
 	}
 	/* Robin's weekly booster odds fluctuate between 5% and 20%, fixed for the week (V.weekly clears each week). */
 	function boosterChancePct() {
@@ -1268,12 +1268,12 @@ const Tamagotchi = (() => {
 
 	/* --- UI data --- */
 	const stageLabel = {
-		egg: "an unhatched egg",
-		baby: "a wobbly baby",
-		child: "a playful child",
-		teen: "a gangly teen",
-		adult: "a happy, well-raised adult",
-		adultGrumpy: "a grumpy, neglected adult",
+		egg: "부화하지 않은 알",
+		baby: "비틀거리는 아기",
+		child: "장난기 많은 아이",
+		teen: "껑충한 십대",
+		adult: "행복하게 잘 자란 어른",
+		adultGrumpy: "투덜대는, 방치된 어른",
 		dead: "gone",
 		none: "nothing",
 	};
@@ -1469,7 +1469,7 @@ const Tamagotchi = (() => {
 		let h = art ? `<div class="tama-card tama-card--art">${art}<div class="tama-card-main">` : `<div class="tama-card">`;
 		h += `<div class="tama-head"><span class="tama-name">${esc(s.name)}</span> <span class="tama-sub">${esc(s.stageLabel)} &middot; ${esc(
 			s.speciesLabel
-		)} (${esc(s.typeLabel)})${s.evolved ? " &middot; evolved" : ""}</span></div>`;
+		)} (${esc(s.typeLabel)})${s.evolved ? " &middot; 진화함" : ""}</span></div>`;
 		h += `<div class="tama-row">${chip("HP", s.maxHp)}${chip("MP", s.maxMp)}${chip("ATK", s.atk)}${chip("DEF", s.def)}${chip("SPD", s.spd)}</div>`;
 		h += `<div class="tama-row">${care("Hunger", s.hungerWord, careClass(s.hunger, "hunger", s.sick))}${care(
 			"Mood",
@@ -1477,8 +1477,8 @@ const Tamagotchi = (() => {
 			careClass(s.happiness, "happiness", s.sick)
 		)}${care("Energy", s.energyWord, careClass(s.energy, "energy", s.sick))}</div>`;
 		h += `<div class="tama-meta">Trainings: ${s.trainCount} &middot; Wins: ${s.wins} &middot; Age: ${s.ageDays}d${
-			s.elixirs ? " &middot; Elixirs: " + s.elixirs : ""
-		}${s.keys ? " &middot; Keys: " + s.keys : ""} &middot; Skills: ${s.skillCount ? esc(s.skills.join(", ")) : "none yet"}</div>`;
+			s.elixirs ? " &middot; 엘릭서: " + s.elixirs : ""
+		}${s.keys ? " &middot; 열쇠: " + s.keys : ""} &middot; 스킬: ${s.skillCount ? esc(s.skills.join(", ")) : "아직 없음"}</div>`;
 		if (s.atCap) h += `<div class="tama-meta gold">Fully grown &mdash; this pet has reached its limits and looks after itself now.</div>`;
 		h += art ? `</div></div>` : `</div>`;
 		return h;

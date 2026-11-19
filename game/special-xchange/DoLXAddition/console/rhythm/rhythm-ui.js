@@ -7,7 +7,7 @@
 	const L = () => setup.rhythmLibrary;
 	const levels = ["easy", "normal", "hard"];
 	const levelName = l => l[0].toUpperCase() + l.slice(1);
-	const warning = "Automatically generated charts may not perfectly match your music. Some songs may require manual BPM or timing adjustments.";
+	const warning = "자동 생성된 채보는 음악과 완벽하게 맞지 않을 수 있습니다. 일부 곡은 BPM이나 타이밍을 직접 조정해야 할 수 있습니다.";
 
 	/* Small element builder: h("div", { class, text, onclick, ...attributes }, ...children). */
 	function h(tag, props, ...kids) {
@@ -575,7 +575,7 @@
 			];
 			const bar = h(
 				"div",
-				{ class: "rh-tabs", role: "group", "aria-label": "Rhythm game menu" },
+				{ class: "rh-tabs", role: "group", "aria-label": "리듬 게임 메뉴" },
 				tabs.map(([id, label]) => button(label, () => this.menu(id), { "aria-pressed": tab === id ? "true" : "false", class: "rh-tab" }))
 			);
 			const head = h(
@@ -609,7 +609,7 @@
 		storageNote() {
 			return L().persistent
 				? null
-				: h("p", { class: "rh-note" }, "This browser will not let the game keep a Rhythm Library, so songs you add last only until the page is closed.");
+				: h("p", { class: "rh-note" }, "이 브라우저에서는 게임이 리듬 라이브러리를 보관할 수 없어, 추가한 곡은 페이지를 닫을 때까지만 유지됩니다.");
 		}
 
 		/* ---- Play tab ---- */
@@ -625,15 +625,15 @@
 				"select",
 				{
 					class: "rh-select",
-					"aria-label": "Songs to show",
+					"aria-label": "표시할 곡",
 					onchange: e => {
 						this.source = e.target.value;
 						this.selected = null;
 						this.menu("play");
 					},
 				},
-				h("option", { value: "builtin" }, "Songs that come with the game"),
-				h("option", { value: "library" }, "My Rhythm Library"),
+				h("option", { value: "builtin" }, "게임에 포함된 곡"),
+				h("option", { value: "library" }, "내 리듬 라이브러리"),
 				lists.map(p => h("option", { value: p.id }, `Playlist: ${p.name}`))
 			);
 			select.value = this.source;
@@ -652,7 +652,7 @@
 			});
 			if (!songs.some(s => s.id === this.selected)) this.selected = songs[0]?.id ?? null;
 
-			const stage = h("section", { class: "rh-stage", "aria-label": "Selected song" });
+			const stage = h("section", { class: "rh-stage", "aria-label": "선택한 곡" });
 			const list = h("ul", { class: "rh-picks", "aria-label": "Songs" });
 			/* The stage, in the selected song's colours; the menu preview follows the selection. */
 			const drawStage = () => {
@@ -705,12 +705,12 @@
 									h("span", { class: "rh-song-title" }, s.title),
 									h("span", { class: "rh-song-sub" }, `${s.artist || "Unknown artist"} · ${Math.round(s.bpm)} BPM · ${time(s.duration)}`)
 								),
-								missing.has(s.id) ? h("span", { class: "rh-tag rh-tag--warn" }, "no audio") : null,
+								missing.has(s.id) ? h("span", { class: "rh-tag rh-tag--warn" }, "음원 없음") : null,
 								h(
 									"span",
 									{
 										class: `rh-pick-grade${best ? "" : " rh-pick-grade--none"}`,
-										"aria-label": best ? `Best on ${levelName(level)}: grade ${best.grade}` : `Not played on ${levelName(level)}`,
+										"aria-label": best ? `${({ easy: "쉬움", normal: "보통", hard: "어려움" })[level] || levelName(level)} 최고 기록: ${best.grade}등급` : `${({ easy: "쉬움", normal: "보통", hard: "어려움" })[level] || levelName(level)}: 플레이한 적 없음`,
 									},
 									best ? best.grade : "–"
 								),
@@ -724,7 +724,7 @@
 
 			const playAll =
 				this.source !== "builtin" && songs.length > 1
-					? button("Play all in order", () => {
+					? button("순서대로 모두 재생", () => {
 							this.queue = { ids: songs.map(s => s.id), index: 0 };
 							this.startById(songs[0].id, R().settings().level);
 					  })
@@ -753,8 +753,8 @@
 									"p",
 									{ class: "rh-note" },
 									this.source === "library"
-										? "Your library is empty. Add a music file from the Library tab."
-										: "This playlist is empty. Add songs to it from the Playlists tab."
+										? "라이브러리가 비어 있습니다. 라이브러리 탭에서 음악 파일을 추가하십시오."
+										: "이 재생 목록이 비어 있습니다. 재생 목록 탭에서 곡을 추가하십시오."
 							  )
 					)
 				),
@@ -796,10 +796,10 @@
 					"div",
 					{ class: "rh-stage-info" },
 					h("h3", { class: "rh-stage-title" }, song.title),
-					h("span", { class: "rh-song-sub" }, song.artist || "Unknown artist"),
+					h("span", { class: "rh-song-sub" }, song.artist || "알 수 없는 아티스트"),
 					h("span", { class: "rh-stage-meta" }, `${Math.round(song.bpm)} BPM · ${time(song.duration)} · ${notes} notes`),
-					own ? h("span", { class: "rh-tag" }, "your chart: keeps a best score, no rewards") : null,
-					missing ? h("span", { class: "rh-tag rh-tag--warn" }, "audio missing") : null
+					own ? h("span", { class: "rh-tag" }, "내 채보: 최고 점수만 기록되며 보상 없음") : null,
+					missing ? h("span", { class: "rh-tag rh-tag--warn" }, "음원 없음") : null
 				),
 				levelsRow,
 				h(
@@ -808,15 +808,15 @@
 					h(
 						"div",
 						{ class: "rh-stage-best" },
-						h("span", { class: "rh-k" }, `Best on ${levelName(level)}`),
+						h("span", { class: "rh-k" }, `${({ easy: "쉬움", normal: "보통", hard: "어려움" })[level] || levelName(level)} 최고 기록`),
 						h("span", { class: "rh-score" }, best ? pad7(best.score) : "-------"),
-						h("span", { class: "rh-song-sub" }, best ? `${best.grade}${best.ap ? " · all Perfect" : best.fc ? " · full combo" : ""}` : "Not played yet")
+						h("span", { class: "rh-song-sub" }, best ? `${best.grade}${best.ap ? " · 올 퍼펙트" : best.fc ? " · 풀 콤보" : ""}` : "아직 플레이하지 않음")
 					),
 					missing
-						? button("Link audio", () => this.relink(song), { class: "rh-btn rh-play" })
+						? button("음원 연결", () => this.relink(song), { class: "rh-btn rh-play" })
 						: button(`Play ${levelName(level)}`, () => this.start(song, level), {
 								class: `rh-btn rh-play ${levelColour[level]}`,
-								"aria-label": `Play ${song.title} on ${levelName(level)}`,
+								"aria-label": `${song.title} ${({ easy: "쉬움", normal: "보통", hard: "어려움" })[level] || levelName(level)} 난이도 재생`,
 						  })
 				),
 			];
@@ -830,16 +830,16 @@
 			return h(
 				"div",
 				{ class: "rh-daily-strip" },
-				h("span", { class: "rh-k" }, "Daily challenge"),
+				h("span", { class: "rh-k" }, "오늘의 도전"),
 				h("span", { class: "rh-daily-goal" }, c.goal),
 				h(
 					"span",
 					{ class: "rh-song-sub" },
-					day?.done ? "Completed today" : `${formatMoney(c.reward)} on completion · resets in ${setup.consoleDaily.untilReset()}`
+					day?.done ? "오늘 완료" : `완료 시 ${formatMoney(c.reward)} · ${setup.consoleDaily.untilReset()} 후 초기화`
 				),
 				day?.done
 					? null
-					: button("Select it", () => {
+					: button("선택", () => {
 							R().setSetting("level", c.level);
 							this.selected = c.songId;
 							redraw();
@@ -854,13 +854,13 @@
 			const card = h(
 				"div",
 				{ class: "rh-offer" },
-				h("strong", null, "New to the rhythm game?"),
-				h("span", null, "A short tutorial lets you try the line, taps, holds, drags, and pairs on a slow practice beat, with touch, mouse, or keys."),
+				h("strong", null, "리듬 게임이 처음이십니까?"),
+				h("span", null, "짧은 튜토리얼에서 느린 연습 박자에 맞춰 선, 탭, 홀드, 드래그, 쌍 노트를 터치, 마우스, 키보드로 연습해 볼 수 있습니다."),
 				h(
 					"div",
 					{ class: "rh-row" },
-					button("Start the tutorial", () => setup.rhythmTutorial.open(this), { class: "rh-btn rh-btn--main" }),
-					button("Not now", () => {
+					button("튜토리얼 시작", () => setup.rhythmTutorial.open(this), { class: "rh-btn rh-btn--main" }),
+					button("나중에", () => {
 						R().finishTutorial("skipped");
 						card.remove();
 					})
@@ -883,12 +883,12 @@
 			if (this.busy) return;
 			const screen = this.screenVersion;
 			if (V.options?.audio !== 1) {
-				this.notice("DoL's audio is switched off in Options, and this game needs its music. Turn audio on to play.");
+				this.notice("옵션에서 게임 소리가 꺼져 있는데, 이 게임은 음악이 필요합니다. 플레이하려면 소리를 켜십시오.");
 				return;
 			}
 			const chart = L().chartFor(song, level);
 			if (!chart.notes.length) {
-				this.notice(`The ${levelName(level)} chart of this song has no notes. Open it in the chart editor to add some.`);
+				this.notice(`이 곡의 ${({ easy: "쉬움", normal: "보통", hard: "어려움" })[level] || levelName(level)} 채보에는 노트가 없습니다. 채보 편집기에서 열어 노트를 추가하십시오.`);
 				return;
 			}
 			this.busy = true;
@@ -918,7 +918,7 @@
 					"div",
 					{ class: "rh-notice" },
 					h("p", { role: "alert" }, text),
-					button("Back to the song list", () => this.menu(), { "data-autofocus": true })
+					button("곡 목록으로 돌아가기", () => this.menu(), { "data-autofocus": true })
 				)
 			);
 		}
@@ -939,13 +939,13 @@
 			const progress = h("span", { class: "rh-progress-fill" });
 			const canvas = h("canvas", {
 				class: "rh-canvas",
-				"aria-label": `${song.title}. Tap or click the notes as the line crosses them, or use the lane keys ${keyLabels().join(" ")}. P or Escape pauses.`,
+				"aria-label": `${song.title}. 선이 노트를 가로지를 때 노트를 탭하거나 클릭하고, 또는 레인 키(${keyLabels().join(" ")})를 사용하십시오. P 또는 Escape 키로 일시정지합니다.`,
 			});
 			const overlay = h("div", { class: "rh-overlay", role: "dialog", "aria-modal": "false", "aria-labelledby": "rh-overlay-title" });
 			const field = h("div", { class: "rh-field", "data-gesture-owner": "rhythm" }, canvas, overlay);
 			const pauseBtn = h(
 				"button",
-				{ type: "button", class: "rh-btn rh-pause", onclick: () => pause(), "aria-keyshortcuts": "P Escape", "aria-label": "Pause" },
+				{ type: "button", class: "rh-btn rh-pause", onclick: () => pause(), "aria-keyshortcuts": "P Escape", "aria-label": "일시정지" },
 				h("span", { class: "rh-pause-icon", "aria-hidden": "true" })
 			);
 			const el = h(
@@ -1059,7 +1059,7 @@
 						/* The browser wants a fresh tap before it plays sound. */
 						phase = "paused";
 						play.stop();
-						setOverlay("Tap to start the music", "The browser is waiting for a tap before it plays sound.", [
+						setOverlay("탭하여 음악 시작", "브라우저가 소리를 재생하기 전에 탭을 기다리고 있습니다.", [
 							button("Start", () => countdown(play.time(), run)),
 						]);
 					});
@@ -1070,13 +1070,13 @@
 				/* Still loading: nothing to pause yet, but the way out is always there. */
 				if (phase === "loading") {
 					phase = "held";
-					setOverlay("Paused", "The song is still loading.", [
+					setOverlay("일시정지", "곡을 아직 불러오는 중입니다.", [
 						button("Resume", () => {
 							phase = "loading";
-							setOverlay("Loading the song", null);
+							setOverlay("곡을 불러오는 중", null);
 							waitReady();
 						}),
-						button("Quit to the song list", () => quit()),
+						button("곡 목록으로 나가기", () => quit()),
 					]);
 					return;
 				}
@@ -1093,7 +1093,7 @@
 				setOverlay("Paused", `${time(Math.max(0, audio.currentTime))} of ${time(song.duration)}`, [
 					button("Resume", () => countdown(pausedAt, run)),
 					button("Restart", () => restart()),
-					button("Quit to the song list", () => quit()),
+					button("곡 목록으로 나가기", () => quit()),
 				]);
 			};
 
@@ -1145,7 +1145,7 @@
 				if (!this.root || phase !== "results") return;
 				setup.consoleSfx?.play(result.cleared ? "rhythm-clear" : "rhythm-fail");
 				/* A moment on the field to see how it ended, then the results. */
-				setOverlay(result.ap ? "All Perfect" : result.fc ? "Full combo" : result.cleared ? "Cleared" : "Song over", null, [], true);
+				setOverlay(result.ap ? "올 퍼펙트" : result.fc ? "풀 콤보" : result.cleared ? "클리어" : "곡 종료", null, [], true);
 				this.later(() => {
 					if (phase === "results" && el.isConnected) this.results(song, level, result, outcome, eligible);
 				}, 1100);
@@ -1180,8 +1180,8 @@
 				if (phase === "results" || !audio.getAttribute("src")) return;
 				phase = "error";
 				if (play) play.stop();
-				setOverlay("This song could not play", "The browser could not read its audio file. If it is one of yours, link the file again from the Library tab.", [
-					button("Back to the song list", () => quit()),
+				setOverlay("이 곡을 재생할 수 없습니다", "브라우저가 음원 파일을 읽지 못했습니다. 직접 추가한 곡이라면 라이브러리 탭에서 파일을 다시 연결하십시오.", [
+					button("곡 목록으로 돌아가기", () => quit()),
 				]);
 			};
 			audio.addEventListener("pause", onAudioPause);
@@ -1222,7 +1222,7 @@
 				observer.observe(field);
 			}
 			play.still(0);
-			setOverlay("Loading the song", null);
+			setOverlay("곡을 불러오는 중", null);
 			if (audio.getAttribute("src") !== src) {
 				audio.src = src;
 				audio.load();
@@ -1263,10 +1263,10 @@
 			const s = R().settings();
 			const extra = [];
 			if (outcome.storageError) extra.push(outcome.storageError);
-			if (outcome.newBest) extra.push("A new best for this song.");
-			if (outcome.paid) extra.push(`Today's console reward: ${formatMoney(outcome.paid)}.`);
+			if (outcome.newBest) extra.push("이 곡의 최고 기록을 경신했습니다.");
+			if (outcome.paid) extra.push(`오늘의 콘솔 보상: ${formatMoney(outcome.paid)}.`);
 			for (const a of outcome.unlocked) extra.push(`Achievement: ${a}.`);
-			if (!eligible) extra.push("Your own and edited charts keep a best score but do not pay rewards.");
+			if (!eligible) extra.push("직접 추가했거나 편집한 채보는 최고 점수를 기록하지만 보상은 지급되지 않습니다.");
 			let offsetBlock = null;
 			if (r.meanError !== null && Math.abs(r.meanError) >= 15) {
 				const way = r.meanError > 0 ? "late" : "early";
@@ -1274,11 +1274,11 @@
 				offsetBlock = h(
 					"div",
 					{ class: "rh-offset-tip" },
-					h("p", null, `Your hits landed ${Math.abs(r.meanError)} ms ${way} on average. If that felt right to you, the timing offset can make up for it.`),
-					button(`Set the timing offset to ${next} ms`, e => {
+					h("p", null, `평균적으로 ${Math.abs(r.meanError)} ms ${r.meanError > 0 ? "늦게" : "일찍"} 쳤습니다. 그 느낌이 맞다면 타이밍 오프셋으로 보정할 수 있습니다.`),
+					button(`타이밍 오프셋을 ${next} ms로 설정`, e => {
 						R().setSetting("offset", next);
 						e.currentTarget.disabled = true;
-						e.currentTarget.textContent = `Timing offset is now ${next} ms`;
+						e.currentTarget.textContent = `타이밍 오프셋이 이제 ${next} ms입니다`;
 					})
 				);
 			}
@@ -1287,7 +1287,7 @@
 			const buttons = [
 				hasNext
 					? button(
-							"Next song",
+							"다음 곡",
 							() => {
 								queue.index++;
 								this.startById(queue.ids[queue.index], level);
@@ -1295,21 +1295,21 @@
 							{ "data-autofocus": true }
 					  )
 					: null,
-				button("Play again", () => this.start(song, level), hasNext ? {} : { "data-autofocus": true }),
-				button("Back to the song list", () => {
+				button("다시 하기", () => this.start(song, level), hasNext ? {} : { "data-autofocus": true }),
+				button("곡 목록으로 돌아가기", () => {
 					this.queue = null;
 					this.menu("play");
 				}),
 			];
 			const share = n => `${r.total ? (n / r.total) * 100 : 0}%`;
-			const rewards = [...(outcome.completed || []).map(name => `Challenge completed: ${name}.`), ...(outcome.feat ? [`Feat earned: ${R().masterFeat}.`] : [])];
+			const rewards = [...(outcome.completed || []).map(name => `도전 완료: ${name}.`), ...(outcome.feat ? [`업적 달성: ${R().masterFeat}.`] : [])];
 			if (outcome.daily)
 				rewards.unshift(
 					outcome.daily.met
 						? outcome.daily.first
-							? "Daily challenge completed."
-							: "Daily challenge met again (already completed today)."
-						: "Daily challenge not met this time."
+							? "오늘의 도전을 완료했습니다."
+							: "오늘의 도전을 다시 달성했습니다(오늘 이미 완료함)."
+						: "이번에는 오늘의 도전을 달성하지 못했습니다."
 				);
 			this.show(
 				h(
@@ -1333,14 +1333,14 @@
 						h(
 							"div",
 							{ class: "rh-result-main" },
-							h("span", { class: "rh-result-verdict" }, r.ap ? "All Perfect" : r.fc ? "Full combo" : r.cleared ? "Cleared" : "Not cleared"),
+							h("span", { class: "rh-result-verdict" }, r.ap ? "올 퍼펙트" : r.fc ? "풀 콤보" : r.cleared ? "클리어" : "클리어 실패"),
 							h("span", { class: "rh-score rh-score--big" }, pad7(r.score)),
-							h("span", { class: "rh-song-sub" }, `Accuracy ${r.acc.toFixed(2)}% · max combo ${r.maxCombo} of ${r.total}`)
+							h("span", { class: "rh-song-sub" }, `정확도 ${r.acc.toFixed(2)}% · 최대 콤보 ${r.maxCombo} / ${r.total}`)
 						)
 					),
 					h(
 						"div",
-						{ class: "rh-split", role: "img", "aria-label": `${r.perfect} Perfect, ${r.good} Good, ${r.miss} Miss` },
+						{ class: "rh-split", role: "img", "aria-label": `퍼펙트 ${r.perfect}, 굿 ${r.good}, 미스 ${r.miss}` },
 						h("span", { class: "rh-split-perfect", style: `width: ${share(r.perfect)}` }),
 						h("span", { class: "rh-split-good", style: `width: ${share(r.good)}` }),
 						h("span", { class: "rh-split-miss", style: `width: ${share(r.miss)}` })
@@ -1368,7 +1368,7 @@
 				)
 			);
 			this.silence();
-			this.say(`${r.cleared ? "Cleared" : "Not cleared"}, grade ${r.grade}, ${r.acc} percent.`);
+			this.say(`${r.cleared ? "클리어" : "클리어 실패"}, ${r.grade}등급, ${r.acc}퍼센트.`);
 		}
 
 		/* ---- Library tab ---- */
@@ -1379,9 +1379,9 @@
 				type: "file",
 				accept: "audio/*,.mp3,.ogg,.oga,.wav,.m4a,.aac,.flac,.webm",
 				class: "rh-file",
-				"aria-label": "Music file to add",
+				"aria-label": "추가할 음악 파일",
 			});
-			const json = h("input", { type: "file", accept: "application/json,.json", class: "rh-file", "aria-label": "Rhythm JSON file to import" });
+			const json = h("input", { type: "file", accept: "application/json,.json", class: "rh-file", "aria-label": "가져올 리듬 JSON 파일" });
 			const progress = h("p", { class: "rh-progress-text", role: "status" });
 			input.addEventListener("change", () => {
 				const file = input.files && input.files[0];
@@ -1396,7 +1396,7 @@
 			const songs = (await L().listSongs()).sort((a, b) => a.title.localeCompare(b.title));
 			const builtinPick = h(
 				"select",
-				{ class: "rh-select", "aria-label": "Built-in song to edit" },
+				{ class: "rh-select", "aria-label": "편집할 기본 곡" },
 				setup.rhythmBuiltins.map(b => h("option", { value: b.id }, b.title))
 			);
 			const rows = h("ul", { class: "rh-songs" });
@@ -1412,43 +1412,43 @@
 							{ class: "rh-song-main" },
 							h("span", { class: "rh-song-title" }, song.title),
 							h("span", { class: "rh-song-sub" }, `${song.artist || "Unknown artist"} · ${Math.round(song.bpm)} BPM · ${time(song.duration)}`),
-							missing ? h("span", { class: "rh-tag rh-tag--warn" }, "audio missing") : null
+							missing ? h("span", { class: "rh-tag rh-tag--warn" }, "음원 없음") : null
 						),
 						h(
 							"div",
 							{ class: "rh-song-actions" },
-							button("Details and timing", () => this.details(song.id)),
-							button("Edit chart", () => this.edit(song.id)),
-							missing ? button("Link audio", () => this.relink(song)) : null
+							button("세부 정보와 타이밍", () => this.details(song.id)),
+							button("채보 편집", () => this.edit(song.id)),
+							missing ? button("음원 연결", () => this.relink(song)) : null
 						)
 					)
 				);
 			}
 			put(
 				page,
-				h("h3", { class: "rh-head" }, "Rhythm Library"),
+				h("h3", { class: "rh-head" }, "리듬 라이브러리"),
 				h(
 					"p",
 					null,
-					"Add music files from this device (MP3, OGG, WAV, or anything else your browser plays). The game works out the beat and makes Easy, Normal, and Hard charts. Files stay in this browser and never go into your saves."
+					"이 기기의 음악 파일(MP3, OGG, WAV 등 브라우저가 재생할 수 있는 형식)을 추가하십시오. 게임이 박자를 분석해 쉬움, 보통, 어려움 채보를 만듭니다. 파일은 이 브라우저에만 남으며 세이브에는 들어가지 않습니다."
 				),
 				h("p", { class: "rh-warning" }, warning),
 				h(
 					"div",
 					{ class: "rh-row" },
-					h("label", { class: "rh-btn rh-file-label" }, "Add a music file", input),
-					h("label", { class: "rh-btn rh-file-label" }, "Import charts (JSON)", json),
-					songs.length ? button("Export the whole library", () => this.exportJson("library")) : null
+					h("label", { class: "rh-btn rh-file-label" }, "음악 파일 추가", input),
+					h("label", { class: "rh-btn rh-file-label" }, "채보 가져오기(JSON)", json),
+					songs.length ? button("라이브러리 전체 내보내기", () => this.exportJson("library")) : null
 				),
 				progress,
-				songs.length ? rows : h("p", { class: "rh-note" }, "No songs yet."),
-				h("h4", { class: "con-subhead" }, "Edit a built-in chart"),
-				h("p", { class: "rh-song-sub" }, "Saving puts an edited copy in your library; the original song and its rewards stay as they are."),
+				songs.length ? rows : h("p", { class: "rh-note" }, "아직 곡이 없습니다."),
+				h("h4", { class: "con-subhead" }, "기본 곡 채보 편집"),
+				h("p", { class: "rh-song-sub" }, "저장하면 편집한 사본이 라이브러리에 들어가며, 원래 곡과 그 보상은 그대로 남습니다."),
 				h(
 					"div",
 					{ class: "rh-row" },
 					builtinPick,
-					button("Open in the chart editor", () => this.edit(builtinPick.value))
+					button("채보 편집기에서 열기", () => this.edit(builtinPick.value))
 				),
 				this.storageNote()
 			);
@@ -1459,10 +1459,10 @@
 			const lim = L().limits;
 			if (file.size > lim.audioBytes) throw new Error(`That file is over ${lim.audioBytes / 1024 / 1024} MB. Pick a shorter song or a smaller file.`);
 			if (file.type && !file.type.startsWith("audio/") && !file.type.startsWith("video/")) throw new Error("That does not look like a music file.");
-			say("Reading the file...");
+			say("파일을 읽는 중...");
 			const bytes = await file.arrayBuffer();
 			const fingerprint = L().fingerprint(bytes);
-			say("Decoding the music...");
+			say("음악을 디코딩하는 중...");
 			const AC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
 			if (!AC) throw new Error("This browser cannot decode music files for analysis.");
 			const ctx = new AC(1, 2, 44100);
@@ -1477,7 +1477,7 @@
 			}
 			if (buffer.duration > lim.audioSeconds) throw new Error(`That song is over ${lim.audioSeconds / 60} minutes long. Pick a shorter one.`);
 			if (buffer.duration < 10) throw new Error("That file is under 10 seconds long, too short to chart.");
-			say("Finding the beat...");
+			say("박자를 찾는 중...");
 			await new Promise(resolve => setTimeout(resolve, 30));
 			const analysis = setup.rhythmAnalysis.analyse(buffer);
 			return { fingerprint, analysis, duration: buffer.duration };
@@ -1531,7 +1531,7 @@
 				type: "file",
 				accept: "audio/*,.mp3,.ogg,.oga,.wav,.m4a,.aac,.flac,.webm",
 				class: "rh-file",
-				"aria-label": "Music file to link",
+				"aria-label": "연결할 음악 파일",
 			});
 			const progress = h("p", { class: "rh-progress-text", role: "status" });
 			const choice = h("div", { class: "rh-row" });
@@ -1547,8 +1547,8 @@
 					const fresh = await L().getSong(song.id);
 					if (!fresh) throw new Error("That song is no longer in the library.");
 					const differences = [];
-					if (want?.fingerprint && want.fingerprint !== read.fingerprint) differences.push("it is not the exact file the chart was made from");
-					if (Math.abs(read.duration - fresh.duration) > 1.5) differences.push(`it is ${time(read.duration)} long, the chart expects ${time(fresh.duration)}`);
+					if (want?.fingerprint && want.fingerprint !== read.fingerprint) differences.push("채보를 만든 파일과 똑같은 파일이 아닙니다");
+					if (Math.abs(read.duration - fresh.duration) > 1.5) differences.push(`길이가 ${time(read.duration)}이며, 채보에 맞는 길이는 ${time(fresh.duration)}입니다`);
 					const link = async regenerate => {
 						if (fresh.audio?.fingerprint !== read.fingerprint) delete fresh.best;
 						fresh.audio = { name: file.name.slice(0, 200), size: file.size, type: (file.type || "").slice(0, 60), fingerprint: read.fingerprint };
@@ -1567,14 +1567,14 @@
 						await L().saveSong(fresh, file);
 						if (!this.root || !progress.isConnected) return;
 						this.menu("library");
-						this.say(`Linked the audio for ${fresh.title}.`);
+						this.say(`음원을 연결했습니다: ${fresh.title}.`);
 					};
 					if (!differences.length) await link(false);
 					else {
-						progress.textContent = `This file may not match: ${differences.join("; ")}. The chart's timing might be off.`;
+						progress.textContent = `이 파일은 맞지 않을 수 있습니다: ${differences.join("; ")}. 채보의 타이밍이 어긋날 수 있습니다.`;
 						choice.replaceChildren(
-							button("Link it and keep the charts", () => link(false).catch(e => (progress.textContent = L().storageMessage(e)))),
-							button("Link it and remake unedited charts from it", () => link(true).catch(e => (progress.textContent = L().storageMessage(e)))),
+							button("연결하고 채보 유지", () => link(false).catch(e => (progress.textContent = L().storageMessage(e)))),
+							button("연결하고 편집하지 않은 채보 다시 만들기", () => link(true).catch(e => (progress.textContent = L().storageMessage(e)))),
 							button("Cancel", () => this.menu("library"))
 						);
 					}
@@ -1588,15 +1588,15 @@
 				h(
 					"div",
 					{ class: "rh-notice" },
-					h("h3", { class: "rh-head" }, `Link audio: ${song.title}`),
+					h("h3", { class: "rh-head" }, `음원 연결: ${song.title}`),
 					h(
 						"p",
 						null,
 						want
-							? `This chart was made from "${want.name}"${want.size ? `, ${(want.size / 1024 / 1024).toFixed(1)} MB` : ""}. Pick your copy of that song.`
-							: "Pick the music file for this chart."
+							? `이 채보는 "${want.name}"${want.size ? `, ${(want.size / 1024 / 1024).toFixed(1)} MB` : ""} 파일로 만들었습니다. 그 곡의 사본을 고르십시오.`
+							: "이 채보에 쓸 음악 파일을 고르십시오."
 					),
-					h("label", { class: "rh-btn rh-file-label" }, "Choose the file", input),
+					h("label", { class: "rh-btn rh-file-label" }, "파일 선택", input),
 					progress,
 					choice,
 					button("Back", () => this.menu("library"))
@@ -1607,7 +1607,7 @@
 		async importJson(file, progress) {
 			if (this.busy) return;
 			if (file.size > L().limits.importBytes) {
-				progress.textContent = "That file is too large to be a rhythm chart (over 8 MB).";
+				progress.textContent = "이 파일은 리듬 채보로 쓰기에는 너무 큽니다(8 MB 초과).";
 				return;
 			}
 			this.busy = true;
@@ -1615,12 +1615,12 @@
 				const data = L().parse(await file.text());
 				const report = await L().merge(data);
 				const parts = [];
-				if (report.added.length) parts.push(`added ${report.added.length} song${report.added.length === 1 ? "" : "s"}`);
-				if (report.skipped.length) parts.push(`skipped ${report.skipped.length} already in your library`);
-				if (report.renamed.length) parts.push(`${report.renamed.length} kept apart from a different song with the same id`);
-				if (report.playlists.length) parts.push(`added playlist${report.playlists.length === 1 ? "" : "s"} ${report.playlists.join(", ")}`);
-				const text = `Import done: ${parts.join(", ") || "nothing new"}.${
-					report.missingAudio ? " Link your own copy of each song's audio before playing it." : ""
+				if (report.added.length) parts.push(`곡 ${report.added.length}${report.added.length === 1 ? "개" : "개"} 추가`);
+				if (report.skipped.length) parts.push(`이미 라이브러리에 있어 ${report.skipped.length}개 건너뜀`);
+				if (report.renamed.length) parts.push(`같은 ID의 다른 곡과 구분해 ${report.renamed.length}개 따로 보관`);
+				if (report.playlists.length) parts.push(`재생 목록${report.playlists.length === 1 ? "" : ""} ${report.playlists.join(", ")} 추가`);
+				const text = `가져오기 완료: ${parts.join(", ") || "새로운 것 없음"}.${
+					report.missingAudio ? " 곡을 재생하기 전에 각 곡의 음원 사본을 직접 연결하십시오." : ""
 				}`;
 				if (!this.root || !progress.isConnected) return;
 				await this.menu("library");
@@ -1628,7 +1628,7 @@
 				if (p) p.textContent = text;
 				this.say(text);
 			} catch (e) {
-				progress.textContent = e instanceof L().ImportError ? `Nothing was imported. ${e.message}` : L().storageMessage(e);
+				progress.textContent = e instanceof L().ImportError ? `아무것도 가져오지 못했습니다. ${e.message}` : L().storageMessage(e);
 			} finally {
 				this.busy = false;
 			}
@@ -1638,15 +1638,15 @@
 			try {
 				const data = await L().exportData(kind, opts);
 				if (!data.songs.length && !data.playlists.length) {
-					this.say("There is nothing to export yet.");
+					this.say("아직 내보낼 것이 없습니다.");
 					return;
 				}
 				const name = (opts.name || kind).replace(/[^A-Za-z0-9 _-]+/g, "").trim() || kind;
 				const blob = new Blob([JSON.stringify(data, null, 1)], { type: "application/json" });
 				saveAs(blob, `rhythm-${name}.json`);
-				this.say("Export saved.");
+				this.say("내보내기를 저장했습니다.");
 			} catch (e) {
-				this.say(e.message || "Export failed.");
+				this.say(e.message || "내보내기에 실패했습니다.");
 			}
 		}
 
@@ -1675,17 +1675,17 @@
 			const [bpmRow, bpm] = field(
 				"Tempo (BPM)",
 				{ type: "number", min: 40, max: 300, step: 0.01, value: song.bpm },
-				"Beats per minute. Not sure? Play the song and use 'Tap here on the beat' above."
+				"분당 박자 수입니다. 잘 모르겠다면 곡을 재생하고 위의 '박자에 맞춰 여기 탭'을 사용하십시오."
 			);
 			const [offRow, off] = field(
-				"First beat (ms)",
+				"첫 박자(ms)",
 				{ type: "number", min: -10000, max: 60000, step: 1, value: song.offset },
-				"How far into the file the first beat falls. Charts are built on beats counted from here."
+				"파일의 시작에서 첫 박자까지의 거리입니다. 채보는 여기서부터 센 박자를 기준으로 만들어집니다."
 			);
 			const [trimRow, trim] = field(
-				"Note nudge (ms)",
+				"노트 보정(ms)",
 				{ type: "number", min: -500, max: 500, step: 1, value: song.trim || 0 },
-				"Moves every note of this song later (plus) or earlier (minus) without remaking the charts."
+				"채보를 다시 만들지 않고 이 곡의 모든 노트를 뒤로(플러스) 또는 앞으로(마이너스) 옮깁니다."
 			);
 			const pages = h(
 				"select",
@@ -1697,8 +1697,8 @@
 
 			/* Tap tempo: tap along to the music for a BPM estimate. */
 			const taps = [];
-			const tapOut = h("span", { class: "rh-song-sub" }, "Tap on every beat, 8 times or more; the tempo box fills in.");
-			const tapBtn = button("Tap here on the beat", () => {
+			const tapOut = h("span", { class: "rh-song-sub" }, "모든 박자에 맞춰 8번 이상 탭하면 템포 칸이 채워집니다.");
+			const tapBtn = button("박자에 맞춰 여기 탭", () => {
 				const now = performance.now();
 				if (taps.length && now - taps[taps.length - 1] > 2000) taps.length = 0;
 				taps.push(now);
@@ -1706,41 +1706,41 @@
 					const span = (taps[taps.length - 1] - taps[0]) / (taps.length - 1);
 					const est = Math.round((60000 / span) * 10) / 10;
 					if (est < 40 || est > 300) {
-						tapOut.textContent = `That came to ${est} BPM, outside 40 to 300. Tap once per beat, in time with the music.`;
+						tapOut.textContent = `${est} BPM이 나왔는데, 40에서 300 범위를 벗어났습니다. 음악에 맞춰 박자마다 한 번씩 탭하십시오.`;
 						return;
 					}
-					tapOut.textContent = `About ${est} BPM from ${taps.length} taps, put in the tempo box. Save to keep it.`;
+					tapOut.textContent = `탭 ${taps.length}번으로 약 ${est} BPM이 나와 템포 칸에 넣었습니다. 저장하면 유지됩니다.`;
 					bpm.value = est;
 				}
 			});
-			const preview = button("Play the song", async () => {
+			const preview = button("곡 재생", async () => {
 				if (V.options?.audio !== 1) {
-					msg.textContent = "DoL's audio is switched off in Options.";
+					msg.textContent = "옵션에서 게임 소리가 꺼져 있습니다.";
 					return;
 				}
 				if (!this.audio.paused) {
 					this.audio.pause();
-					preview.textContent = "Play the song";
+					preview.textContent = "곡 재생";
 					return;
 				}
 				this.stopPreview();
 				const src = await this.audioSource(song);
 				if (src.cancelled || !preview.isConnected) return;
 				if (src.missing) {
-					msg.textContent = "Link the audio first.";
+					msg.textContent = "먼저 음원을 연결하십시오.";
 					return;
 				}
 				if (this.audio.getAttribute("src") !== src.src) this.audio.src = src.src;
 				this.audio.volume = Math.max(0, Math.min(1, (V.options?.mastervolume ?? 1) * R().settings().music));
-				this.audio.play().catch(() => (msg.textContent = "The browser would not play it."));
-				preview.textContent = "Stop the song";
+				this.audio.play().catch(() => (msg.textContent = "브라우저가 재생하지 않았습니다."));
+				preview.textContent = "곡 정지";
 			});
 			const remake = h(
 				"select",
-				{ class: "rh-select", "aria-label": "Charts when saving" },
-				h("option", { value: "" }, "Keep the charts as they are"),
-				h("option", { value: "unedited" }, "Remake the charts you have not edited"),
-				h("option", { value: "all" }, "Remake every chart, including edited ones")
+				{ class: "rh-select", "aria-label": "저장할 때 채보 처리" },
+				h("option", { value: "" }, "채보를 그대로 유지"),
+				h("option", { value: "unedited" }, "편집하지 않은 채보 다시 만들기"),
+				h("option", { value: "all" }, "편집한 것을 포함해 모든 채보 다시 만들기")
 			);
 
 			const save = async regenerate => {
@@ -1748,15 +1748,15 @@
 				const o = Math.round(Number(off.value));
 				const tr = Math.round(Number(trim.value));
 				if (!(b >= 40 && b <= 300)) {
-					msg.textContent = "BPM must be between 40 and 300.";
+					msg.textContent = "BPM은 40에서 300 사이여야 합니다.";
 					return;
 				}
 				if (!(o >= -10000 && o <= 60000)) {
-					msg.textContent = "The first beat must be between -10000 and 60000 ms.";
+					msg.textContent = "첫 박자는 -10000에서 60000 ms 사이여야 합니다.";
 					return;
 				}
 				if (!(tr >= -500 && tr <= 500)) {
-					msg.textContent = "The song's timing offset must be between -500 and 500 ms.";
+					msg.textContent = "곡의 타이밍 오프셋은 -500에서 500 ms 사이여야 합니다.";
 					return;
 				}
 				const fresh = await L()
@@ -1766,7 +1766,7 @@
 						return null;
 					});
 				if (!fresh) {
-					if (!msg.textContent) msg.textContent = "That song is no longer in the library.";
+					if (!msg.textContent) msg.textContent = "그 곡은 더 이상 라이브러리에 없습니다.";
 					return;
 				}
 				fresh.title =
@@ -1791,7 +1791,7 @@
 						}
 				try {
 					await L().saveSong(fresh);
-					msg.textContent = regenerate ? "Saved, and the charts were remade with this timing." : "Saved.";
+					msg.textContent = regenerate ? "저장했고, 이 타이밍으로 채보를 다시 만들었습니다." : "저장했습니다.";
 				} catch (e) {
 					msg.textContent = L().storageMessage(e);
 				}
@@ -1800,20 +1800,20 @@
 			const meta = h(
 				"dl",
 				{ class: "con-facts" },
-				h("dt", null, "Audio file"),
+				h("dt", null, "음원 파일"),
 				h(
 					"dd",
 					null,
 					song.audio
-						? `${song.audio.name || "unnamed"}${song.audio.size ? `, ${(song.audio.size / 1024 / 1024).toFixed(1)} MB` : ""}`
+						? `${song.audio.name || "이름 없음"}${song.audio.size ? `, ${(song.audio.size / 1024 / 1024).toFixed(1)} MB` : ""}`
 						: song.builtin
-						? "Built into the game"
+						? "게임에 내장"
 						: "none"
 				),
 				h("dt", null, "Length"),
 				h("dd", null, time(song.duration)),
-				h("dt", null, "Detected tempo"),
-				h("dd", null, song.analysis ? `${song.analysis.bpm} BPM, first beat at ${song.analysis.offset} ms` : "not analysed"),
+				h("dt", null, "감지된 템포"),
+				h("dd", null, song.analysis ? `${song.analysis.bpm} BPM, 첫 박자 ${song.analysis.offset} ms 지점` : "분석되지 않음"),
 				levels.map(l => {
 					const c = L().chartFor(song, l);
 					return [h("dt", null, levelName(l)), h("dd", null, `${c.notes.length} notes${c.edited ? ", edited by you" : ""}`)];
@@ -1821,8 +1821,8 @@
 			);
 			const confirmDelete = h("div", { class: "rh-row", hidden: true });
 			confirmDelete.append(
-				h("span", null, "Delete this song, its charts, and its audio from the library?"),
-				button("Yes, delete it", async () => {
+				h("span", null, "이 곡과 채보, 음원을 라이브러리에서 삭제하시겠습니까?"),
+				button("예, 삭제합니다", async () => {
 					try {
 						await L().deleteSong(id);
 					} catch (e) {
@@ -1831,9 +1831,9 @@
 					}
 					this.menu("library");
 				}),
-				button("Keep it", () => (confirmDelete.hidden = true))
+				button("유지", () => (confirmDelete.hidden = true))
 			);
-			const back = button("Back to the library", () => this.menu("library"));
+			const back = button("라이브러리로 돌아가기", () => this.menu("library"));
 			this.show(
 				h(
 					"div",
@@ -1855,32 +1855,32 @@
 						h(
 							"div",
 							{ class: "rh-detail-field" },
-							h("label", { class: "rh-field-row" }, h("span", null, "Line sweep"), pages),
-							h("span", { class: "rh-song-sub" }, "How many beats the line takes to cross the field once.")
+							h("label", { class: "rh-field-row" }, h("span", null, "선 이동 주기"), pages),
+							h("span", { class: "rh-song-sub" }, "선이 필드를 한 번 가로지르는 데 걸리는 박자 수입니다.")
 						),
-						h("label", { class: "rh-field-row" }, h("span", null, "When saving"), remake),
+						h("label", { class: "rh-field-row" }, h("span", null, "저장할 때"), remake),
 						h(
 							"div",
 							{ class: "rh-row" },
-							button("Save", () => save(remake.value === "all" ? "all" : !!remake.value), { class: "rh-btn rh-btn--main" })
+							button("저장", () => save(remake.value === "all" ? "all" : !!remake.value), { class: "rh-btn rh-btn--main" })
 						),
 						msg
 					),
 					h(
 						"section",
 						{ class: "rh-panel" },
-						h("h4", { class: "rh-panel-head" }, "Chart and audio file"),
+						h("h4", { class: "rh-panel-head" }, "채보와 음원 파일"),
 						h(
 							"div",
 							{ class: "rh-row" },
-							button("Edit the chart", () => this.edit(id)),
-							button("Export this song's charts", () => this.exportJson("song", { songIds: [id], name: song.title })),
-							button("Replace the audio file", () => this.relink(song))
+							button("채보 편집", () => this.edit(id)),
+							button("이 곡의 채보 내보내기", () => this.exportJson("song", { songIds: [id], name: song.title })),
+							button("음원 파일 교체", () => this.relink(song))
 						),
 						h(
 							"div",
 							{ class: "rh-row" },
-							button("Delete this song", () => (confirmDelete.hidden = false), { class: "rh-btn rh-btn--danger" })
+							button("이 곡 삭제", () => (confirmDelete.hidden = false), { class: "rh-btn rh-btn--danger" })
 						),
 						confirmDelete
 					)
@@ -1898,7 +1898,7 @@
 		async playlistsTab(page) {
 			await L().open();
 			const lists = await L().listPlaylists();
-			const name = h("input", { type: "text", class: "rh-input", maxlength: 80, placeholder: "Playlist name", "aria-label": "New playlist name" });
+			const name = h("input", { type: "text", class: "rh-input", maxlength: 80, placeholder: "재생 목록 이름", "aria-label": "새 재생 목록 이름" });
 			const msg = h("p", { class: "rh-progress-text", role: "status" });
 			const create = async () => {
 				const n = name.value
@@ -1906,7 +1906,7 @@
 					.trim()
 					.slice(0, 80);
 				if (!n) {
-					msg.textContent = "Give the playlist a name first.";
+					msg.textContent = "먼저 재생 목록에 이름을 지어 주십시오.";
 					return;
 				}
 				try {
@@ -1920,7 +1920,7 @@
 			put(
 				page,
 				h("h3", { class: "rh-head" }, "Playlists"),
-				h("div", { class: "rh-row" }, name, button("Create playlist", create)),
+				h("div", { class: "rh-row" }, name, button("재생 목록 만들기", create)),
 				msg,
 				lists.length
 					? h(
@@ -1940,7 +1940,7 @@
 								)
 							)
 					  )
-					: h("p", { class: "rh-note" }, "No playlists yet. Playlists can mix built-in songs and your own."),
+					: h("p", { class: "rh-note" }, "아직 재생 목록이 없습니다. 재생 목록에는 기본 곡과 직접 추가한 곡을 섞어 넣을 수 있습니다."),
 				this.storageNote()
 			);
 		}
@@ -1952,7 +1952,7 @@
 			if (!list) return this.menu("playlists");
 			const all = [...setup.rhythmBuiltins.map(b => L().builtinSong(b)), ...(await L().listSongs()).sort((a, b) => a.title.localeCompare(b.title))];
 			if (!this.root || screen !== this.screenVersion) return;
-			const titleOf = sid => all.find(s => s.id === sid)?.title || "(removed song)";
+			const titleOf = sid => all.find(s => s.id === sid)?.title || "(삭제된 곡)";
 			const msg = h("p", { class: "rh-progress-text", role: "status" });
 			const persist = async () => {
 				try {
@@ -1979,7 +1979,7 @@
 										[list.songs[i - 1], list.songs[i]] = [list.songs[i], list.songs[i - 1]];
 										persist();
 									},
-									{ disabled: i === 0, "aria-label": `Move ${titleOf(sid)} up` }
+									{ disabled: i === 0, "aria-label": `${titleOf(sid)} 위로 이동` }
 								),
 								button(
 									"Down",
@@ -1987,7 +1987,7 @@
 										[list.songs[i + 1], list.songs[i]] = [list.songs[i], list.songs[i + 1]];
 										persist();
 									},
-									{ disabled: i === list.songs.length - 1, "aria-label": `Move ${titleOf(sid)} down` }
+									{ disabled: i === list.songs.length - 1, "aria-label": `${titleOf(sid)} 아래로 이동` }
 								),
 								button(
 									"Remove",
@@ -2001,25 +2001,25 @@
 						)
 					)
 				);
-				if (!list.songs.length) entries.append(h("li", { class: "rh-note" }, "No songs in this playlist yet."));
+				if (!list.songs.length) entries.append(h("li", { class: "rh-note" }, "이 재생 목록에는 아직 곡이 없습니다."));
 			};
 			draw();
 			const pick = h(
 				"select",
-				{ class: "rh-select", "aria-label": "Song to add" },
+				{ class: "rh-select", "aria-label": "추가할 곡" },
 				all.map(s => h("option", { value: s.id }, `${s.title}${L().builtin(s.id) ? " (built in)" : ""}`))
 			);
-			const rename = h("input", { type: "text", class: "rh-input", maxlength: 80, value: list.name, "aria-label": "Playlist name" });
+			const rename = h("input", { type: "text", class: "rh-input", maxlength: 80, value: list.name, "aria-label": "재생 목록 이름" });
 			const confirmDelete = h("div", { class: "rh-row", hidden: true });
 			confirmDelete.append(
-				h("span", null, "Delete this playlist? Its songs stay in the library."),
-				button("Yes, delete it", async () => {
+				h("span", null, "이 재생 목록을 삭제하시겠습니까? 곡은 라이브러리에 남습니다."),
+				button("예, 삭제합니다", async () => {
 					await L()
 						.deletePlaylist(id)
 						.catch(() => {});
 					this.menu("playlists");
 				}),
-				button("Keep it", () => (confirmDelete.hidden = true))
+				button("유지", () => (confirmDelete.hidden = true))
 			);
 			this.show(
 				h(
@@ -2045,7 +2045,7 @@
 						"div",
 						{ class: "rh-row" },
 						pick,
-						button("Add to playlist", () => {
+						button("재생 목록에 추가", () => {
 							if (!pick.value || list.songs.length >= L().limits.playlistSongs) return;
 							list.songs.push(pick.value);
 							persist();
@@ -2055,15 +2055,15 @@
 					h(
 						"div",
 						{ class: "rh-row" },
-						button("Play this playlist", () => {
+						button("이 재생 목록 재생", () => {
 							this.source = id;
 							this.menu("play");
 						}),
-						button("Export playlist", () => this.exportJson("playlist", { playlistId: id, name: list.name })),
-						button("Delete playlist", () => (confirmDelete.hidden = false))
+						button("재생 목록 내보내기", () => this.exportJson("playlist", { playlistId: id, name: list.name })),
+						button("재생 목록 삭제", () => (confirmDelete.hidden = false))
 					),
 					confirmDelete,
-					button("Back to playlists", () => this.menu("playlists"))
+					button("재생 목록으로 돌아가기", () => this.menu("playlists"))
 				)
 			);
 		}
@@ -2074,7 +2074,7 @@
 
 		async settingsTab(page) {
 			const s = R().settings();
-			const music = h("input", { type: "range", min: 0, max: 100, step: 5, value: Math.round(s.music * 100), "aria-label": "Music volume", class: "rh-range" });
+			const music = h("input", { type: "range", min: 0, max: 100, step: 5, value: Math.round(s.music * 100), "aria-label": "음악 볼륨", class: "rh-range" });
 			music.addEventListener("input", () => {
 				R().setSetting("music", Number(music.value) / 100);
 				/* The preview follows the slider, so the change can be heard. */
@@ -2093,18 +2093,18 @@
 				max: 300,
 				step: 5,
 				value: s.offset,
-				"aria-label": "Timing offset in milliseconds",
+				"aria-label": "타이밍 오프셋(밀리초)",
 			});
 			const offsetMsg = h("span", { class: "rh-song-sub", role: "status" });
 			offset.addEventListener("change", () => {
 				const v = Math.round(Number(offset.value));
 				if (!(v >= -300 && v <= 300)) {
-					offsetMsg.textContent = "Use a number from -300 to 300.";
+					offsetMsg.textContent = "-300에서 300 사이의 숫자를 입력하십시오.";
 					offset.value = R().settings().offset;
 					return;
 				}
 				R().setSetting("offset", v);
-				offsetMsg.textContent = `Saved: ${v} ms.`;
+				offsetMsg.textContent = `저장했습니다: ${v} ms.`;
 			});
 			const reduced = h("input", { type: "checkbox", checked: s.reduced });
 			reduced.addEventListener("change", () => {
@@ -2116,11 +2116,11 @@
 
 			/* Lane keys: each button waits for the next key press. A key already on another lane swaps with it. */
 			const keyMsg = h("p", { class: "rh-song-sub", role: "status" });
-			const keyRow = h("div", { class: "rh-keys", role: "group", "aria-label": "Lane keys, left to right" });
+			const keyRow = h("div", { class: "rh-keys", role: "group", "aria-label": "레인 키, 왼쪽부터" });
 			const labelsSel = h(
 				"select",
-				{ class: "rh-select", "aria-label": "Show key labels on the field" },
-				h("option", { value: "auto" }, "When a keyboard and mouse are used"),
+				{ class: "rh-select", "aria-label": "필드에 키 표시" },
+				h("option", { value: "auto" }, "키보드와 마우스를 쓸 때"),
 				h("option", { value: "always" }, "Always"),
 				h("option", { value: "never" }, "Never")
 			);
@@ -2141,13 +2141,13 @@
 							{
 								type: "button",
 								class: "rh-key",
-								"aria-label": `Lane ${i + 1}: ${keyLabel(code)}. Press to change.`,
+								"aria-label": `레인 ${i + 1}: ${keyLabel(code)}. 눌러서 변경하십시오.`,
 								onclick: e => {
 									stopCapture();
 									const btn = e.currentTarget;
 									btn.classList.add("rh-key--wait");
 									btn.querySelector(".rh-key-cap").textContent = "?";
-									keyMsg.textContent = `Press a key for lane ${i + 1}, or Escape to keep ${keyLabel(code)}.`;
+									keyMsg.textContent = `레인 ${i + 1}에 쓸 키를 누르십시오. ${keyLabel(code)} 키를 유지하려면 Escape를 누르십시오.`;
 									capture = ev => {
 										/* Nothing else hears this press: not DoL's shortcuts, not the page. */
 										ev.preventDefault();
@@ -2157,15 +2157,15 @@
 										if (ev.code === "Escape") keyMsg.textContent = "Unchanged.";
 										else if (!R().keyAllowed(ev.code))
 											keyMsg.textContent = R().reservedKeys.includes(ev.code)
-												? `${keyLabel(ev.code)} is kept for pausing or for DoL's own shortcuts; pick another key.`
-												: `${ev.key || ev.code} cannot be a lane key; use a letter, punctuation, arrow, or number-pad key.`;
+												? `${keyLabel(ev.code)} 키는 일시정지나 게임 자체의 단축키용으로 예약되어 있습니다. 다른 키를 고르십시오.`
+												: `${ev.key || ev.code} 키는 레인 키로 쓸 수 없습니다. 글자, 문장 부호, 방향, 숫자 패드 키를 사용하십시오.`;
 										else {
 											const next = [...R().settings().keys];
 											const other = next.indexOf(ev.code);
 											if (other >= 0 && other !== i) {
 												next[other] = next[i];
-												keyMsg.textContent = `${keyLabel(ev.code)} was lane ${other + 1}; lanes ${other + 1} and ${i + 1} swapped keys.`;
-											} else keyMsg.textContent = `Lane ${i + 1} is now ${keyLabel(ev.code)}.`;
+												keyMsg.textContent = `${keyLabel(ev.code)} 키가 레인 ${other + 1}에 있었으므로 레인 ${other + 1}, ${i + 1}의 키를 서로 바꿨습니다.`;
+											} else keyMsg.textContent = `레인 ${i + 1}의 키가 이제 ${keyLabel(ev.code)}입니다.`;
 											next[i] = ev.code;
 											R().setSetting("keys", next);
 										}
@@ -2188,21 +2188,21 @@
 					"section",
 					{ class: "rh-panel" },
 					h("h3", { class: "rh-panel-head" }, "Sound"),
-					h("label", { class: "rh-field-row" }, h("span", null, "Music volume"), music),
-					h("label", { class: "rh-field-row rh-check" }, previews, h("span", null, "Play a preview of the selected song in the menu")),
+					h("label", { class: "rh-field-row" }, h("span", null, "음악 볼륨"), music),
+					h("label", { class: "rh-field-row rh-check" }, previews, h("span", null, "메뉴에서 선택한 곡의 미리 듣기 재생")),
 					sfx,
-					V.options?.audio !== 1 ? h("p", { class: "rh-note" }, "DoL's audio is switched off in Options, so songs will not play until it is on.") : null
+					V.options?.audio !== 1 ? h("p", { class: "rh-note" }, "옵션에서 게임 소리가 꺼져 있어, 켜기 전까지는 곡이 재생되지 않습니다.") : null
 				),
 				h(
 					"section",
 					{ class: "rh-panel" },
 					h("h3", { class: "rh-panel-head" }, "Timing"),
-					h("label", { class: "rh-field-row" }, h("span", null, "Timing offset (ms)"), offset),
+					h("label", { class: "rh-field-row" }, h("span", null, "타이밍 오프셋(ms)"), offset),
 					offsetMsg,
 					h(
 						"p",
 						{ class: "rh-song-sub" },
-						"If hits are judged late although you play with the beat, raise the offset; if early, lower it. Bluetooth headphones often need 150 or more. After each song the results page suggests a value from your own hits."
+						"박자에 맞춰 쳤는데도 판정이 늦게 나오면 오프셋을 올리고, 일찍 나오면 내리십시오. 블루투스 헤드폰은 대개 150 이상이 필요합니다. 곡이 끝나면 결과 화면이 실제 플레이를 바탕으로 한 값을 제안합니다."
 					)
 				),
 				h(
@@ -2212,25 +2212,25 @@
 					h(
 						"p",
 						{ class: "rh-song-sub" },
-						"The field is split into six lanes, one key each. A key hits the next note in its lane; hold it for holds; held keys also cover drag notes in their lane and the lanes either side. Press two keys together for a pair. P or Escape pauses."
+						"필드는 여섯 레인으로 나뉘며, 레인마다 키가 하나씩 있습니다. 키는 자기 레인의 다음 노트를 치고, 홀드는 키를 누르고 있어야 합니다. 누르고 있는 키는 자기 레인과 양옆 레인의 드래그 노트도 맡습니다. 쌍 노트는 두 키를 함께 누르십시오. P 또는 Escape 키로 일시정지합니다."
 					),
 					keyRow,
 					keyMsg,
 					h(
 						"div",
 						{ class: "rh-row" },
-						button("Reset to A S D J K L", () => {
+						button("A S D J K L로 되돌리기", () => {
 							stopCapture();
 							R().setSetting("keys", [...R().defaultKeys]);
-							keyMsg.textContent = "Lane keys reset.";
+							keyMsg.textContent = "레인 키를 되돌렸습니다.";
 							drawKeys();
 						}),
-						h("label", { class: "rh-field-row" }, h("span", null, "Key labels on the field"), labelsSel)
+						h("label", { class: "rh-field-row" }, h("span", null, "필드의 키 표시"), labelsSel)
 					),
 					h(
 						"p",
 						{ class: "rh-song-sub" },
-						"With a mouse, a click on either note of a pair hits both, since a mouse cannot click two places at once. Touch screens take each finger separately."
+						"마우스는 두 곳을 동시에 클릭할 수 없으므로, 쌍 노트 중 어느 쪽을 클릭해도 둘 다 맞습니다. 터치 화면은 손가락마다 따로 인식합니다."
 					)
 				),
 				h(
@@ -2241,7 +2241,7 @@
 						"label",
 						{ class: "rh-field-row rh-check" },
 						reduced,
-						h("span", null, "Fewer effects: no hit bursts, line trail, or menu animation (timing rings stay)")
+						h("span", null, "효과 줄이기: 명중 이펙트, 선의 잔상, 메뉴 애니메이션을 끕니다(타이밍 고리는 유지)")
 					)
 				)
 			);
@@ -2298,7 +2298,7 @@
 										  ),
 									x.done
 										? null
-										: h("span", { class: "rh-chal-state" }, x.target === 1 ? "Not yet" : `${x.value.toLocaleString()} of ${x.target.toLocaleString()}`)
+										: h("span", { class: "rh-chal-state" }, x.target === 1 ? "아직" : `${x.target.toLocaleString()} 중 ${x.value.toLocaleString()}`)
 								)
 							)
 						)
@@ -2309,8 +2309,8 @@
 				page,
 				h(
 					"section",
-					{ class: `rh-daily${day?.done ? " rh-daily--done" : ""}`, "aria-label": "Daily challenge" },
-					h("div", { class: "rh-daily-head" }, h("span", { class: "rh-k" }, `Daily challenge · ${c.date} (UTC)`), chip(c.level)),
+					{ class: `rh-daily${day?.done ? " rh-daily--done" : ""}`, "aria-label": "오늘의 도전" },
+					h("div", { class: "rh-daily-head" }, h("span", { class: "rh-k" }, `오늘의 도전 · ${c.date} (UTC)`), chip(c.level)),
 					h("div", { class: "rh-daily-body" }, cover(L().builtinSong(song)), h("p", { class: "rh-daily-goal" }, c.goal)),
 					h(
 						"dl",
@@ -2321,15 +2321,15 @@
 						h(
 							"dd",
 							null,
-							day?.done ? "Completed" : day?.tries ? `Not yet (${day.tries} ${day.tries === 1 ? "try" : "tries"}, best ${day.best}%)` : "Not tried yet"
+							day?.done ? "완료" : day?.tries ? `아직 (${day.tries}${day.tries === 1 ? "번" : "번"} 시도, 최고 ${day.best}%)` : "아직 시도하지 않음"
 						),
-						h("dt", null, "Next challenge"),
-						h("dd", null, `in ${setup.consoleDaily.untilReset()} (midnight UTC)`)
+						h("dt", null, "다음 도전"),
+						h("dd", null, `${setup.consoleDaily.untilReset()} 후 (UTC 자정)`)
 					),
 					day?.done
 						? null
 						: button(
-								"Play today's challenge",
+								"오늘의 도전 하기",
 								() => {
 									R().setSetting("level", c.level);
 									this.source = "builtin";
@@ -2338,13 +2338,13 @@
 								},
 								{ class: `rh-btn rh-play ${levelColour[c.level]}` }
 						  ),
-					h("p", { class: "rh-song-sub" }, "Only the built-in songs count for challenges and rewards. The daily challenge pays once per day.")
+					h("p", { class: "rh-song-sub" }, "도전과 보상은 기본 곡만 인정됩니다. 오늘의 도전은 하루에 한 번만 보상을 줍니다.")
 				),
 				h(
 					"div",
 					{ class: "rh-chal-total" },
 					h("span", { class: "rh-k" }, "Challenges"),
-					h("span", { class: "rh-song-sub" }, `${done} of ${status.length} completed`),
+					h("span", { class: "rh-song-sub" }, `${status.length}개 중 ${done}개 완료`),
 					h(
 						"span",
 						{ class: "rh-meter", "aria-hidden": "true" },
@@ -2372,7 +2372,7 @@
 								{ class: "rh-chal-main" },
 								h("span", { class: "rh-song-title" }, a.name),
 								h("span", { class: "rh-song-sub" }, a.desc),
-								h("span", { class: "rh-chal-state" }, d.achievements[a.id] ? `Earned ${d.achievements[a.id]}` : "Not yet")
+								h("span", { class: "rh-chal-state" }, d.achievements[a.id] ? `달성 ${d.achievements[a.id]}` : "아직")
 							)
 						)
 					)
@@ -2390,7 +2390,7 @@
 		} catch (e) {
 			current = null;
 			console.error("Rhythm game failed to start", e);
-			root.textContent = "The rhythm game could not start. Go back to the console and open it again.";
+			root.textContent = "리듬 게임을 시작할 수 없습니다. 콘솔로 돌아가 다시 열어 주십시오.";
 		}
 		return current;
 	}

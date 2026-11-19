@@ -84,7 +84,7 @@
 			let result;
 			if (request) request.onsuccess = () => (result = request.result);
 			tx.oncomplete = () => resolve(result);
-			tx.onabort = tx.onerror = () => reject(tx.error || new Error("Storage failed"));
+			tx.onabort = tx.onerror = () => reject(tx.error || new Error("저장에 실패했습니다"));
 		});
 	}
 
@@ -114,8 +114,8 @@
 	/* Turns a storage failure into a sentence the player can act on. */
 	function storageMessage(error) {
 		const name = error && error.name;
-		if (name === "QuotaExceededError") return "The browser has no room left for the Rhythm Library. Delete some songs and try again.";
-		return "The Rhythm Library could not be saved in this browser" + (error && error.message ? ` (${error.message})` : "") + ".";
+		if (name === "QuotaExceededError") return "브라우저에 리듬 라이브러리를 둘 공간이 남지 않았습니다. 곡을 몇 개 지우고 다시 시도하십시오.";
+		return "이 브라우저에는 리듬 라이브러리를 저장할 수 없습니다" + (error && error.message ? ` (${error.message})` : "") + ".";
 	}
 
 	/* ---- ids and fingerprints ---- */
@@ -178,7 +178,7 @@
 		return new Promise((resolve, reject) => {
 			const tx = db.transaction(["songs", "audio"], "readwrite");
 			tx.oncomplete = () => resolve();
-			tx.onabort = tx.onerror = () => reject(tx.error || new Error("Storage failed"));
+			tx.onabort = tx.onerror = () => reject(tx.error || new Error("저장에 실패했습니다"));
 			try {
 				tx.objectStore("songs").put(song, song.id);
 				tx.objectStore("audio").put(audioBlob, song.id);
@@ -284,18 +284,18 @@
 	const idOk = v => typeof v === "string" && /^[A-Za-z0-9:_-]{1,64}$/.test(v);
 
 	function cleanNotes(notes, durationMs, where) {
-		if (!Array.isArray(notes)) fail(`${where}: notes must be a list.`);
-		if (notes.length > limits.notes) fail(`${where}: more than ${limits.notes} notes.`);
+		if (!Array.isArray(notes)) fail(`${where}: 노트는 목록이어야 합니다.`);
+		if (notes.length > limits.notes) fail(`${where}: 노트가 ${limits.notes}개를 넘습니다.`);
 		return setup.rhythmAnalysis.tidy(
 			notes.map((n, i) => {
-				if (!isPlain(n)) fail(`${where}: note ${i + 1} is not a note.`);
-				const type = ["tap", "hold", "drag"].includes(n.type) ? n.type : fail(`${where}: note ${i + 1} has an unknown type.`);
+				if (!isPlain(n)) fail(`${where}: ${i + 1}번째 노트가 올바른 노트가 아닙니다.`);
+				const type = ["tap", "hold", "drag"].includes(n.type) ? n.type : fail(`${where}: ${i + 1}번째 노트의 종류를 알 수 없습니다.`);
 				const note = {
-					t: Math.round(num(n.t, 0, durationMs + 5000, `${where}: note ${i + 1} time`)),
-					x: Math.round(num(n.x, 0, 1, `${where}: note ${i + 1} position`) * 1000) / 1000,
+					t: Math.round(num(n.t, 0, durationMs + 5000, `${where}: ${i + 1}번째 노트의 시간`)),
+					x: Math.round(num(n.x, 0, 1, `${where}: ${i + 1}번째 노트의 위치`) * 1000) / 1000,
 					type,
 				};
-				if (type === "hold") note.d = Math.round(num(n.d, 50, 60000, `${where}: note ${i + 1} hold length`));
+				if (type === "hold") note.d = Math.round(num(n.d, 50, 60000, `${where}: ${i + 1}번째 노트의 홀드 길이`));
 				return note;
 			})
 		);
@@ -303,17 +303,17 @@
 
 	function cleanSong(s, i) {
 		const where = `Song ${i + 1}`;
-		if (!isPlain(s)) fail(`${where} is not a song.`);
+		if (!isPlain(s)) fail(`${where}: 곡이 아닙니다.`);
 		const song = {
 			id: idOk(s.id) ? s.id : newId("s"),
 			title: text(s.title) || "Untitled",
 			artist: text(s.artist),
 			source: "file",
 			bpm: num(s.bpm, 40, 300, `${where}: BPM`),
-			offset: Math.round(num(s.offset, -10000, 60000, `${where}: beat offset`)),
-			pageBeats: [2, 4, 8].includes(s.pageBeats) ? s.pageBeats : fail(`${where}: page length must be 2, 4, or 8 beats.`),
+			offset: Math.round(num(s.offset, -10000, 60000, `${where}: 첫 박자 위치`)),
+			pageBeats: [2, 4, 8].includes(s.pageBeats) ? s.pageBeats : fail(`${where}: 페이지 길이는 2, 4, 8박자 중 하나여야 합니다.`),
 			duration: num(s.duration, 1, limits.audioSeconds, `${where}: duration`),
-			trim: s.trim === undefined ? 0 : Math.round(num(s.trim, -500, 500, `${where}: timing offset`)),
+			trim: s.trim === undefined ? 0 : Math.round(num(s.trim, -500, 500, `${where}: 타이밍 오프셋`)),
 			audio: null,
 			analysis: null,
 			charts: {},
@@ -324,37 +324,37 @@
 			song.source = "builtin";
 		}
 		if (s.audio !== null && s.audio !== undefined) {
-			if (!isPlain(s.audio)) fail(`${where}: audio details are malformed.`);
+			if (!isPlain(s.audio)) fail(`${where}: 음원 정보가 올바르지 않습니다.`);
 			const fp = typeof s.audio.fingerprint === "string" && /^[a-z]{1,8}:[0-9a-f]{1,32}:[0-9]{1,12}$/.test(s.audio.fingerprint) ? s.audio.fingerprint : "";
 			song.audio = {
 				name: text(s.audio.name, 200),
-				size: s.audio.size === undefined ? 0 : Math.round(num(s.audio.size, 0, 4e9, `${where}: file size`)),
+				size: s.audio.size === undefined ? 0 : Math.round(num(s.audio.size, 0, 4e9, `${where}: 파일 크기`)),
 				type: text(s.audio.type, 60),
 				fingerprint: fp,
 			};
 		}
 		if (s.analysis !== null && s.analysis !== undefined) {
-			if (!isPlain(s.analysis)) fail(`${where}: analysis is malformed.`);
+			if (!isPlain(s.analysis)) fail(`${where}: 분석 정보가 올바르지 않습니다.`);
 			const a = s.analysis;
 			if (typeof a.slots !== "string" || !/^[0-9]{0,40000}$/.test(a.slots)) fail(`${where}: analysis beats are malformed.`);
 			if (typeof a.energy !== "string" || !/^[0-9]{0,5000}$/.test(a.energy)) fail(`${where}: analysis loudness is malformed.`);
 			song.analysis = {
 				bpm: num(a.bpm, 40, 300, `${where}: analysis BPM`),
-				offset: Math.round(num(a.offset, -10000, 60000, `${where}: analysis offset`)),
+				offset: Math.round(num(a.offset, -10000, 60000, `${where}: 분석 첫 박자 위치`)),
 				slots: a.slots,
 				energy: a.energy,
 			};
 		}
 		if (s.charts !== undefined) {
-			if (!isPlain(s.charts)) fail(`${where}: charts are malformed.`);
+			if (!isPlain(s.charts)) fail(`${where}: 채보 정보가 올바르지 않습니다.`);
 			for (const level of levelNames) {
 				const c = s.charts[level];
 				if (c === undefined) continue;
-				if (!isPlain(c)) fail(`${where}: the ${level} chart is malformed.`);
+				if (!isPlain(c)) fail(`${where}: ${({ easy: "쉬움", normal: "보통", hard: "어려움" })[level] || level} 채보가 올바르지 않습니다.`);
 				song.charts[level] = { edited: c.edited === true, notes: cleanNotes(c.notes, song.duration * 1000, `${where} (${level})`) };
 			}
 		}
-		if (!song.analysis && !levelNames.some(l => song.charts[l])) fail(`${where} has no charts and no analysis to make them from.`);
+		if (!song.analysis && !levelNames.some(l => song.charts[l])) fail(`${where}: 채보도, 채보를 만들 분석 정보도 없습니다.`);
 		if (song.builtin) song.analysis = song.analysis || builtin(song.builtin).analysis;
 		return song;
 	}
@@ -362,24 +362,24 @@
 	/* Parses and validates a shared file. Returns { kind, songs, playlists } or throws an ImportError with a reason. */
 	function parse(raw) {
 		if (typeof raw !== "string") fail("That file could not be read as text.");
-		if (raw.length > limits.importBytes) fail("That file is too large to be a rhythm chart (over 8 MB).");
+		if (raw.length > limits.importBytes) fail("이 파일은 리듬 채보로 쓰기에는 너무 큽니다(8 MB 초과).");
 		let data;
 		try {
 			data = JSON.parse(raw);
 		} catch (e) {
-			fail("That file is not valid JSON.");
+			fail("올바른 JSON 파일이 아닙니다.");
 		}
-		if (!isPlain(data) || data.format !== format) fail("That file is not a rhythm chart, playlist, or library.");
-		if (data.version !== version) fail(`That file uses version ${String(data.version).slice(0, 10)} of the format; this game reads version ${version}.`);
-		if (!["song", "playlist", "library"].includes(data.kind)) fail("That file does not say what it holds.");
-		const songs = data.songs === undefined ? [] : Array.isArray(data.songs) ? data.songs : fail("The song list is malformed.");
-		const lists = data.playlists === undefined ? [] : Array.isArray(data.playlists) ? data.playlists : fail("The playlist list is malformed.");
-		if (songs.length > limits.songs) fail(`That file has more than ${limits.songs} songs.`);
-		if (lists.length > limits.playlists) fail(`That file has more than ${limits.playlists} playlists.`);
+		if (!isPlain(data) || data.format !== format) fail("리듬 채보, 재생 목록, 라이브러리 파일이 아닙니다.");
+		if (data.version !== version) fail(`이 파일의 형식 버전은 ${String(data.version).slice(0, 10)}입니다. 이 게임은 ${version} 버전만 읽을 수 있습니다.`);
+		if (!["song", "playlist", "library"].includes(data.kind)) fail("이 파일에 무엇이 들어 있는지 적혀 있지 않습니다.");
+		const songs = data.songs === undefined ? [] : Array.isArray(data.songs) ? data.songs : fail("곡 목록이 올바르지 않습니다.");
+		const lists = data.playlists === undefined ? [] : Array.isArray(data.playlists) ? data.playlists : fail("재생 목록 정보가 올바르지 않습니다.");
+		if (songs.length > limits.songs) fail(`이 파일에는 곡이 ${limits.songs}개를 넘게 들어 있습니다.`);
+		if (lists.length > limits.playlists) fail(`이 파일에는 재생 목록이 ${limits.playlists}개를 넘게 들어 있습니다.`);
 		const playlists = lists.map((p, i) => {
-			if (!isPlain(p)) fail(`Playlist ${i + 1} is malformed.`);
-			if (!Array.isArray(p.songs) || p.songs.length > limits.playlistSongs) fail(`Playlist ${i + 1} has a malformed song list.`);
-			return { id: idOk(p.id) ? p.id : newId("p"), name: text(p.name, 80) || "Imported playlist", songs: p.songs.filter(idOk) };
+			if (!isPlain(p)) fail(`재생 목록 ${i + 1}번이 올바르지 않습니다.`);
+			if (!Array.isArray(p.songs) || p.songs.length > limits.playlistSongs) fail(`재생 목록 ${i + 1}번의 곡 목록이 올바르지 않습니다.`);
+			return { id: idOk(p.id) ? p.id : newId("p"), name: text(p.name, 80) || "가져온 재생 목록", songs: p.songs.filter(idOk) };
 		});
 		return { kind: data.kind, songs: songs.map(cleanSong), playlists };
 	}

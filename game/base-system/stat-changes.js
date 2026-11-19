@@ -103,15 +103,15 @@ const statChange = (() => {
 	 */
 	function getBeautyBoostSources() {
 		const sources = [];
-		if (V.xchange?.pill?.active && !playerHasXChangeBody()) sources.push("X-Change effects");
+		if (V.xchange?.pill?.active && !playerHasXChangeBody()) sources.push("X-체인지 효과");
 		if (V.beautyBoost) {
 			if (V.beautyBoost.bath > 0) sources.push("bathed");
-			if (V.beautyBoost.teeth > 0) sources.push("clean teeth");
-			if (V.beautyBoost.face > 0) sources.push("fresh face");
-			if (V.beautyBoost.hands > 0) sources.push("clean hands");
-			if (V.beautyBoost.hygiene > 0) sources.push("good hygiene");
-			if (V.beautyBoost.tan > 0) sources.push("healthy glow");
-			if (getSpaBeautyBoost() > 0) sources.push(V.beautyBoost.spa?.treatment || "spa treatment");
+			if (V.beautyBoost.teeth > 0) sources.push("깨끗한 치아");
+			if (V.beautyBoost.face > 0) sources.push("산뜻한 얼굴");
+			if (V.beautyBoost.hands > 0) sources.push("깨끗한 손");
+			if (V.beautyBoost.hygiene > 0) sources.push("좋은 위생");
+			if (V.beautyBoost.tan > 0) sources.push("건강한 윤기");
+			if (getSpaBeautyBoost() > 0) sources.push(V.beautyBoost.spa?.treatment || "스파 관리");
 		}
 		if (V.beautyBoost?.perfume > 0) sources.push("perfume");
 		if (V.makeup) {

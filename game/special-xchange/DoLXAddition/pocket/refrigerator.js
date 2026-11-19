@@ -77,8 +77,8 @@ function refrigeratorFoodRows(key) {
 	const rows = [];
 	[
 		["bedroom", "Orphanage"],
-		["cottage", "Farm cottage"],
-		["avery_mansion", "Avery's mansion"],
+		["cottage", "농장 오두막"],
+		["avery_mansion", "에이버리의 저택"],
 	].forEach(([location, label]) => {
 		const batches = V.furniture?.[location]?.refrigerator?.contents?.[key];
 		if (!Array.isArray(batches)) return;

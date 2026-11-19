@@ -152,11 +152,11 @@ ccmShop.pmanTmpAutoload = function (selectedPreset) {
  */
 ccmShop.pmanTmpRename = function (presetName) {
 	const presetValue = T.ccmLoaded.passed[presetName];
-	const newName = prompt("Rename preset", presetName);
+	const newName = prompt("프리셋 이름 바꾸기", presetName);
 
 	if (newName) {
 		if (T.ccmLoaded.passed[newName]) {
-			alert(`'${newName}' was not saved because another preset with the same name already exists.`);
+			alert(`같은 이름의 프리셋이 이미 있어 '${newName}' 이름으로 저장하지 못했습니다.`);
 			return true;
 		}
 
@@ -180,9 +180,9 @@ ccmShop.pmanTmpDelete = function (selectedPreset) {
  *{{{
  */
 ccmShop.pmanBtnPurge = function () {
-	const firstWarning = confirm("Are you sure you want to delete all presets? This is not reversible.");
+	const firstWarning = confirm("모든 프리셋을 삭제하시겠습니까? 되돌릴 수 없습니다.");
 	if (firstWarning) {
-		const secondWarning = confirm("Are you REALLY, REALLY SURE you want to delete ALL presets?");
+		const secondWarning = confirm("정말, 정말로 모든 프리셋을 삭제하시겠습니까?");
 
 		if (secondWarning) {
 			ccmUtils.presetPurge();
@@ -204,11 +204,11 @@ ccmShop.pmanDelete = function (preset) {
  */
 ccmShop.pmanRename = function (preset) {
 	const presetValue = ccmod.userPresets[preset];
-	const presetName = prompt("Rename preset", preset);
+	const presetName = prompt("프리셋 이름 바꾸기", preset);
 
 	if (presetName) {
 		if (V.ccmod.userPresets[presetName]) {
-			alert(`'${presetName}' was not saved because another preset with the same name already exists.`);
+			alert(`같은 이름의 프리셋이 이미 있어 '${presetName}' 이름으로 저장하지 못했습니다.`);
 			return true;
 		}
 
@@ -240,7 +240,7 @@ ccmShop.presetExport = function () {
 		});
 		saveAs(blob, "makeupPresets.txt");
 	} else {
-		alert("Nothing to export T_T");
+		alert("내보낼 것이 없습니다 T_T");
 	}
 };
 
@@ -249,7 +249,7 @@ ccmShop.presetExport = function () {
  */
 ccmShop.presetImport = function (presetsFile) {
 	if (!window.FileReader) {
-		alert("Browser not compatible with FileReader T_T");
+		alert("이 브라우저는 FileReader를 지원하지 않습니다 T_T");
 		return; // Browser is not compatible
 	}
 
@@ -275,7 +275,7 @@ ccmShop.presetImport = function (presetsFile) {
 			}
 			ccmShop.onFileLoaded();
 		} else {
-			alert(`Nothing to import! (${Object.keys(T.ccmLoaded.skip).length} skipped, ${T.ccmLoaded.errors} errors)`);
+			alert(`가져올 것이 없습니다! (건너뜀 ${Object.keys(T.ccmLoaded.skip).length}개, 오류 ${T.ccmLoaded.errors}개)`);
 		}
 	};
 

@@ -179,36 +179,36 @@ function npcXchangePillStatus(name) {
 	let body;
 	if (pill.hermEffect) {
 		colour = "purple";
-		body = "a hermaphrodite body";
+		body = "양성의 몸";
 	} else if (pill.genderflipEffect) {
 		colour = toFemale ? "pink" : "lblue";
-		body = toFemale ? "a female body" : "a male body";
+		body = toFemale ? "여성의 몸" : "남성의 몸";
 	} else if (pill.genderificationEffect) {
 		colour = "teal";
-		body = toFemale ? "a feminised body" : "a masculinised body";
+		body = toFemale ? "여성화된 몸" : "남성화된 몸";
 	}
 
-	let text = body ? `${name} is under an X-Change pill and currently has ${body}.` : `${name} is under an effect-only X-Change pill.`;
+	let text = body ? `${name}: X-체인지 알약의 영향을 받고 있으며 현재 ${body}입니다.` : `${name}: 효과만 적용되는 X-체인지 알약의 영향을 받고 있습니다.`;
 	if (pill.genderflipEffect) {
 		const pronouns = npc.pronoun === "f" ? "she/her" : "he/him";
 		/* genderChanged is only recorded since the "sex only" setting exists; older pills always flipped gender. */
 		text +=
 			pill.genderChanged === false
-				? ` Only ${name}'s sex changed: still referred to as ${pronouns}.`
-				: ` ${name}'s gender changed too: now referred to as ${pronouns}.`;
+				? ` ${name}의 신체적 성별만 바뀌었습니다. 호칭은 여전히 ${npc.pronoun === "f" ? "그녀" : "그"}입니다.`
+				: ` ${name}의 성별도 함께 바뀌었습니다. 이제 호칭은 ${npc.pronoun === "f" ? "그녀" : "그"}입니다.`;
 	}
 
 	if (pill.duration <= -1) {
-		text += " The change is permanent.";
+		text += " 변화는 영구적입니다.";
 	} else if (V.xchange.pillPermanence !== 1 && !!npc.pregnancy?.type) {
-		text += " The pill timer is paused by pregnancy.";
+		text += " 임신 중이라 알약 타이머가 멈춰 있습니다.";
 	} else {
 		const days = Math.floor(pill.duration / 24);
 		const hours = pill.duration % 24;
 		const parts = [];
 		if (days > 0) parts.push(`${days} day${days === 1 ? "" : "s"}`);
 		if (hours > 0) parts.push(`${hours} hour${hours === 1 ? "" : "s"}`);
-		text += ` Wears off in ${parts.length ? parts.join(" and ") : "less than an hour"}.`;
+		text += ` 효과는 ${days > 0 || hours > 0 ? [days > 0 ? days + "일" : "", hours > 0 ? hours + "시간" : ""].filter(Boolean).join(" ") + " 뒤에" : "한 시간 안에"} 사라집니다.`;
 	}
 
 	return { label: "X-Changed", colour, text };

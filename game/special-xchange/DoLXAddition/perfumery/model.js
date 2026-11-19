@@ -36,9 +36,9 @@
 		])
 	);
 	const solvents = {
-		soft: { name: "Soft perfumer's spirit", purity: 0.45, projection: 0.8, evaporation: 0.75, cost: 20 },
-		clear: { name: "Clear perfumer's spirit", purity: 0.75, projection: 1.1, evaporation: 1, cost: 30 },
-		bright: { name: "Bright perfumer's spirit", purity: 0.95, projection: 1.35, evaporation: 1.3, cost: 40 },
+		soft: { name: "조향용 소프트 스피릿", purity: 0.45, projection: 0.8, evaporation: 0.75, cost: 20 },
+		clear: { name: "조향용 클리어 스피릿", purity: 0.75, projection: 1.1, evaporation: 1, cost: 30 },
+		bright: { name: "조향용 브라이트 스피릿", purity: 0.95, projection: 1.35, evaporation: 1.3, cost: 40 },
 	};
 	const layers = ["top", "heart", "base"];
 	const clamp = (n, a, b) => Math.max(a, Math.min(b, n));
@@ -187,20 +187,20 @@
 		let text;
 		if (technique === "fold") {
 			if (p.volatility > 0.6) {
-				text = "You mix the ingredients gently. You can still smell the lighter scents clearly.";
+				text = "당신은 재료를 살살 섞는다. 가벼운 향이 아직 또렷하게 맡힌다.";
 			} else {
-				text = "You mix the ingredients gently, but some of the heavier ingredients are not blending very well.";
+				text = "당신은 재료를 살살 섞지만, 무거운 재료 몇 가지는 잘 섞이지 않는다.";
 			}
 		} else if (technique === "circle") {
 			if (p.persistence > 0.55) {
-				text = "You stir the mixture in circles. The scents that last longer are still easy to notice.";
+				text = "당신은 혼합물을 원을 그리며 젓는다. 오래 남는 향은 여전히 쉽게 알아챌 수 있다.";
 			} else {
-				text = "You stir the mixture in circles, but the lighter ingredients were already mixing well. Stirring more doesn't seem to change much.";
+				text = "당신은 혼합물을 원을 그리며 젓지만, 가벼운 재료는 이미 잘 섞여 있었다. 더 저어도 크게 달라지는 것 같지 않다.";
 			}
 		} else if (stage === 2) {
-			text = "You stop mixing for a moment. The small bubbles have disappeared, and you can smell the stronger scents more clearly.";
+			text = "당신은 잠시 젓기를 멈춘다. 작은 거품이 사라졌고, 더 강한 향이 한층 또렷하게 맡힌다.";
 		} else {
-			text = "You stop mixing for a moment. You can smell some of the ingredients separately, but they haven't completely blended together yet.";
+			text = "당신은 잠시 젓기를 멈춘다. 재료 몇 가지는 따로 구별해 맡을 수 있지만, 아직 완전히 섞이지는 않았다.";
 		}
 		return { score, text };
 	}
@@ -323,7 +323,7 @@
 		roasted: "Toasted",
 		smoky: "Ashen",
 		savoury: "Strange",
-		"fresh floral": "Dewlit",
+		"fresh floral": "이슬 머금은",
 	};
 	const descriptors = [...Object.keys(nouns), ...Object.keys(negative), "fresh floral"];
 	function canonical(f) {
@@ -436,45 +436,45 @@
 		};
 		const harshness = ((Math.max(0, f.concentration - 23) / 17) * m.solvents[f.solvent].purity * (0.4 + p.volatility)) / (1 + age / 4);
 		const decay = (Math.max(0, age - p.idealAge) / 9) * (1 - stability);
-		add("overpowering", Math.max(0, p.intensity - 2.2) * 0.4, "The perfume is too strong, making it difficult to smell the lighter scents.");
-		add("acrid", harshness * 0.65, "The perfume smells unpleasantly sharp when you first smell it.");
+		add("overpowering", Math.max(0, p.intensity - 2.2) * 0.4, "향수가 너무 강해서 가벼운 향을 맡기 어렵습니다.");
+		add("acrid", harshness * 0.65, "처음 맡을 때 향수 냄새가 불쾌할 만큼 날카롭습니다.");
 		add(
 			"muddy",
 			crowded * 0.12 + Math.max(0, 0.7 - p.harmony) * 0.7 + (1 - blending) * (1 - stability) * 0.5,
-			"Too many strong smells are mixed together, making it difficult to tell them apart."
+			"강한 냄새가 너무 많이 섞여 있어 서로 구별하기 어렵습니다."
 		);
 		add(
 			"stale",
 			decay + (scores.stale || 0) * (1 - stability),
-			"Some ingredients lose their smell too quickly, or the perfume has been left unused for too long. It no longer smells fresh."
+			"일부 재료의 향이 너무 빨리 사라졌거나, 향수를 너무 오래 쓰지 않고 두었습니다. 더 이상 신선한 냄새가 나지 않습니다."
 		);
 		add(
 			"rancid",
 			(scores.greasy || 0) * ((scores.fermented || 0) + decay) * 2,
-			"Oily and fermented smells mix together, making the perfume smell like spoiled food."
+			"기름진 냄새와 발효된 냄새가 섞여 향수에서 상한 음식 냄새가 납니다."
 		);
 		add(
 			"moldy",
 			(scores.musty || 0) * ((scores.fermented || 0) + decay) * 1.6,
-			"The perfume develops an unpleasant smell similar to damp clothes that have been left wet for too long."
+			"젖은 채로 너무 오래 방치한 눅눅한 옷과 비슷한 불쾌한 냄새가 향수에서 납니다."
 		);
 		add(
 			"decaying",
 			(scores.savoury || 0) * ((scores.fermented || 0) + decay) * 1.5,
-			"Some ingredients mix together and make the perfume smell like rotting food."
+			"일부 재료가 섞이면서 향수에서 썩는 음식 냄새가 납니다."
 		);
 		add(
 			"burnt",
 			(scores.roasted || 0) * harshness * 0.8 + (scores.burnt || 0) * Math.max(0, p.intensity - 1),
-			"The roasted smell becomes too strong, making the perfume smell like something that has been burned."
+			"구운 냄새가 너무 강해져 향수에서 타 버린 것 같은 냄새가 납니다."
 		);
 		add(
 			"medicinal",
 			(scores.herbal || 0) * ((scores.bitter || 0) + harshness) * 0.6,
-			"The strong, bitter smell of the herbs makes the perfume smell like medicine."
+			"허브의 강하고 쓴 냄새 때문에 향수에서 약 냄새가 납니다."
 		);
-		add("sour", (scores.sour || 0) * (1 - purity) + (scores.fermented || 0) * 0.3, "The sour smell becomes too strong and covers the sweeter smells.");
-		add("pungent", (scores.sulfurous || 0) * p.intensity * 0.35, "A strong smell similar to rotten eggs makes the perfume unpleasant.");
+		add("sour", (scores.sour || 0) * (1 - purity) + (scores.fermented || 0) * 0.3, "신 냄새가 너무 강해져서 더 달콤한 향을 덮어 버립니다.");
+		add("pungent", (scores.sulfurous || 0) * p.intensity * 0.35, "썩은 달걀과 비슷한 강한 냄새 때문에 향수가 불쾌합니다.");
 		if ((scores.floral || 0) > 0.25 && p.fresh > 0.3) scores["fresh floral"] = scores.floral * p.fresh;
 		const penalty = Object.entries(negative).reduce((sum, [k, n]) => sum + (scores[k] || 0) * n, 0);
 		const pleasantness = m.clamp(77 + p.human * 14 + p.harmony * 8 - penalty * 58 - harshness * 12, 0, 100);
@@ -518,28 +518,28 @@
 				defects.push({
 					name: k,
 					severity: m.clamp(scores[k], 0, 1),
-					cause: `The ${k} parts you kept from ${[...new Set(sources)].join(", ") || "your accords"} are still noticeable.`,
+					cause: `${[...new Set(sources)].join(", ") || "당신의 배합"}에서 남긴 ${({ bitter: "쓴맛", fermented: "발효취", musty: "곰팡내", greasy: "기름기", metallic: "금속내", sulfurous: "황 냄새", sweaty: "땀내", sour: "신맛", acrid: "매캐함", rancid: "산패취", moldy: "곰팡이 냄새", decaying: "부패취", burnt: "탄내", medicinal: "약 냄새", overpowering: "압도적인 향", muddy: "탁함", stale: "묵은내", pungent: "쏘는 냄새" })[k] || k} 성분이 아직 느껴집니다.`,
 				});
 			}
 		const sensory = {
-			bitter: "There is a bitter smell mixed with the sweeter scents.",
-			fermented: "It smells a little like overripe fruit or alcohol.",
-			musty: "There is a damp, earthy smell, like wet soil or old clothes.",
-			greasy: "The perfume has a heavy, oily smell that makes the lighter scents harder to notice.",
-			metallic: "There is a faint smell of metal, similar to coins.",
-			sulfurous: "There is an unpleasant smell, similar to rotten eggs.",
-			sweaty: "After a while, the perfume starts to smell like sweat.",
-			sour: "There is a sour smell mixed with the sweeter scents.",
-			acrid: "The first smell is very sharp and unpleasant, almost enough to make your nose sting.",
-			rancid: "There is an unpleasant smell, like cooking oil that has gone bad.",
-			moldy: "The perfume smells damp and old, like food that has started growing mold.",
-			decaying: "There is a smell similar to rotting food, which becomes stronger over time.",
-			burnt: "The roasted ingredients leave behind a burnt smell.",
-			medicinal: "The perfume smells like herbs and medicine, with a little bitterness.",
-			overpowering: "One smell is so strong that you can barely notice the others.",
-			muddy: "Several strong smells mix together, making it difficult to tell them apart.",
-			stale: "After the first scents fade, the perfume starts to smell like old grain or cereal.",
-			pungent: "The smell is very strong, and people can notice it even when they aren't close to you.",
+			bitter: "쓴 냄새가 더 달콤한 향과 섞여 있다.",
+			fermented: "너무 익은 과일이나 술 같은 냄새가 조금 난다.",
+			musty: "젖은 흙이나 오래된 옷 같은 눅눅하고 흙내 나는 냄새가 난다.",
+			greasy: "향수에서 묵직하고 기름진 냄새가 나서 가벼운 향이 잘 느껴지지 않는다.",
+			metallic: "동전 같은 금속 냄새가 희미하게 난다.",
+			sulfurous: "썩은 달걀과 비슷한 불쾌한 냄새가 난다.",
+			sweaty: "시간이 지나면 향수에서 땀 냄새가 나기 시작한다.",
+			sour: "신 냄새가 더 달콤한 향과 섞여 있다.",
+			acrid: "첫 냄새가 매우 날카롭고 불쾌해서 코가 따끔할 정도다.",
+			rancid: "상한 식용유 같은 불쾌한 냄새가 난다.",
+			moldy: "곰팡이가 피기 시작한 음식처럼 눅눅하고 오래된 냄새가 난다.",
+			decaying: "썩는 음식과 비슷한 냄새가 나며, 시간이 지날수록 강해진다.",
+			burnt: "구운 재료에서 탄내가 남는다.",
+			medicinal: "향수에서 허브와 약 냄새가 나며 쓴맛이 조금 섞여 있다.",
+			overpowering: "한 가지 냄새가 너무 강해서 다른 냄새는 거의 느껴지지 않는다.",
+			muddy: "여러 강한 냄새가 섞여 있어 서로 구별하기 어렵다.",
+			stale: "처음의 향이 사라지고 나면 향수에서 오래된 곡물이나 시리얼 냄새가 나기 시작한다.",
+			pungent: "냄새가 매우 강해서 가까이 있지 않은 사람도 알아챌 수 있다.",
 		};
 		const join = text => {
 			const parts = text.slice(text.indexOf(":") + 2).split(", ");
@@ -548,13 +548,13 @@
 		const description = `You first smell ${join(phases.opening)} scents before ${join(
 			phases.heart
 		)} scents become more noticeable. As the lighter scents fade, you can still smell ${join(phases.drydown)} scents on your skin. ${
-			p.intensity > 2.3 ? "The perfume has a very strong smell." : p.intensity < 1 ? "The perfume has a faint smell." : "The perfume has a noticeable smell."
+			p.intensity > 2.3 ? "향수 냄새가 매우 강하다." : p.intensity < 1 ? "향수 냄새가 희미하다." : "향수 냄새가 눈에 띈다."
 		} ${
 			defects.length
 				? sensory[defects.sort((a, b) => b.severity - a.severity)[0].name]
 				: stable > 0.7
-				? "It changes smoothly from one note to the next."
-				: "The smell changes as the lighter scents fade."
+				? "한 노트에서 다음 노트로 부드럽게 변한다."
+				: "가벼운 향이 사라지면서 냄새가 변한다."
 		}`;
 		return {
 			simulationOnly,

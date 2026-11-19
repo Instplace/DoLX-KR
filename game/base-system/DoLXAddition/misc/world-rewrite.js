@@ -120,11 +120,11 @@
 	function modeLabel(mode = getMode()) {
 		switch (mode) {
 			case "femaleOnly":
-				return "Female Only";
+				return "여성만";
 			case "maleOnly":
-				return "Male Only";
+				return "남성만";
 			default:
-				return "Mixed (Off)";
+				return "혼합 (끔)";
 		}
 	}
 
@@ -546,16 +546,16 @@
 		togglePanelLock(
 			$npcGenderGrid.find(".settingsToggleItem").eq(0),
 			active,
-			"This setting is unavailable because World Rewrite is active. Turn the override off to edit NPC gender distribution and orientation here."
+			"세계 덮어쓰기가 켜져 있어 이 설정을 사용할 수 없습니다. NPC 성별 분포와 성적 지향을 여기서 바꾸려면 덮어쓰기를 끄십시오."
 		);
-		togglePanelLock($npcGenderGrid.find(".settingsToggleItem").eq(1), active, "This setting is unavailable because World Rewrite is active.");
+		togglePanelLock($npcGenderGrid.find(".settingsToggleItem").eq(1), active, "세계 덮어쓰기가 켜져 있어 이 설정을 사용할 수 없습니다.");
 
 		/* Beast settings: beast gender distribution locked while override is active. */
-		const $beastPrefGrid = findGridByHeaderText($, "Beast Preferences");
+		const $beastPrefGrid = findGridByHeaderText($, "짐승 선호 설정");
 		togglePanelLock(
 			$beastPrefGrid.find(".settingsToggleItem").eq(0),
 			active,
-			"This setting is unavailable because World Rewrite is active. Turn the override off to edit beast gender distribution here."
+			"세계 덮어쓰기가 켜져 있어 이 설정을 사용할 수 없습니다. 짐승 성별 분포를 여기서 바꾸려면 덮어쓰기를 끄십시오."
 		);
 
 		/* Named NPC settings: lock social gender, but keep genitals/body controls editable. */
@@ -568,7 +568,7 @@
 		togglePanelLock(
 			$namedNpcGenderPanel,
 			active,
-			"This setting is unavailable because World Rewrite is active. Presentation gender is forced by the override; genitals below can still be edited."
+			"세계 덮어쓰기가 켜져 있어 이 설정을 사용할 수 없습니다. 표시되는 성별은 덮어쓰기로 고정되며, 아래의 성기 설정은 계속 바꿀 수 있습니다."
 		);
 		if (active && $namedNpcGenderPanel.length) {
 			$namedNpcGenderPanel.find("input[type='radio'][value='" + forced + "']").prop("checked", true);
@@ -578,12 +578,12 @@
 			return $(this).text().trim() === "Genders";
 		});
 		toggleAnchorsDisabled($genderAssignLink, active);
-		setRowNote($randomAssignRow, active ? "Randomly assigning named NPC genders is unavailable while World Rewrite is active." : "");
+		setRowNote($randomAssignRow, active ? "세계 덮어쓰기가 켜져 있는 동안에는 네임드 NPC의 성별을 무작위로 배정할 수 없습니다." : "");
 
 		/* NPC body parts: only the opposite-gender panels are locked. */
-		const $bodyGrid = findGridByHeaderText($, "NPC Body Parts");
-		const $breastPanel = findPanelByText($bodyGrid, "Average size of women's breasts");
-		const $penisPanel = findPanelByText($bodyGrid, "Average size of NPC penises");
+		const $bodyGrid = findGridByHeaderText($, "NPC 신체 부위");
+		const $breastPanel = findPanelByText($bodyGrid, "여성의 평균 가슴 크기");
+		const $penisPanel = findPanelByText($bodyGrid, "NPC 평균 자지 크기");
 		const $femaleGenitalPanel = $bodyGrid
 			.children(".solidBorderContainer")
 			.filter(function () {
@@ -596,15 +596,15 @@
 				return $(this).text().includes("Percentage of men that have only a penis");
 			})
 			.first();
-		const $straponPanel = findPanelByText($bodyGrid, "Percentage of women that have strap-on penises");
+		const $straponPanel = findPanelByText($bodyGrid, "페니스 밴드 자지를 가진 여성의 비율");
 
 		const lockBreast = mode === "maleOnly";
 		const lockPenis = false;
 		const lockFemaleGenital = mode === "maleOnly";
 		const lockMaleGenital = mode === "femaleOnly";
 		const lockStrapon = mode === "maleOnly";
-		const lockMsgF = "This setting is unavailable because Female Only World Rewrite is active.";
-		const lockMsgM = "This setting is unavailable because Male Only World Rewrite is active.";
+		const lockMsgF = "여성만 세계 덮어쓰기가 켜져 있어 이 설정을 사용할 수 없습니다.";
+		const lockMsgM = "남성만 세계 덮어쓰기가 켜져 있어 이 설정을 사용할 수 없습니다.";
 		togglePanelLock($breastPanel, lockBreast, lockMsgM);
 		togglePanelLock($penisPanel, lockPenis, "");
 		togglePanelLock($femaleGenitalPanel, lockFemaleGenital, lockMsgM);
@@ -626,7 +626,7 @@
 			$("input[type='radio'][name$='nnpcDisplayGender']").prop("disabled", true);
 			$("#autoNNPCGenderOverrideToggle .sex-rewrite-display-note, #manualNNPC .sex-rewrite-display-note").remove();
 			$('<span class="small-description sex-rewrite-display-note"></span>')
-				.text(" Gender locked by World Rewrite: " + modeText + ". Sidebar sprites use that gender for every NNPC. Slot, layer, and skin can still be changed.")
+				.text(" 세계 덮어쓰기로 성별이 고정되었습니다: " + modeText + ". 사이드바 스프라이트는 모든 NNPC에 이 성별을 사용합니다. 슬롯, 레이어, 피부는 계속 바꿀 수 있습니다.")
 				.appendTo("#autoNNPCGenderOverrideToggle");
 			if (
 				typeof window.Wikifier !== "undefined" &&

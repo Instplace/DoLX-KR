@@ -194,8 +194,8 @@ setup.arcology = {
 		const clock = String(target.hour).padStart(2, "0") + ":" + String(target.minute).padStart(2, "0");
 		if (days < 0) return String(target.day).padStart(2, "0") + "." + String(target.month).padStart(2, "0") + "." + target.year + " at " + clock;
 		if (days === 0) return (target.hour >= 17 ? "tonight" : "today") + " at " + clock;
-		if (days === 1) return "tomorrow at " + clock;
-		return "in " + days + " days, at " + clock;
+		if (days === 1) return "내일 " + clock;
+		return days + "일 뒤 " + clock;
 	},
 
 	hoursUntil(ts) {
@@ -248,7 +248,7 @@ setup.arcology = {
 	/* The room's floor in words, for "the twelfth floor". */
 	roomFloor() {
 		const words =
-			"- first second third fourth fifth sixth seventh eighth ninth tenth eleventh twelfth thirteenth fourteenth fifteenth sixteenth seventeenth eighteenth nineteenth twentieth twenty-first twenty-second twenty-third twenty-fourth twenty-fifth twenty-sixth twenty-seventh twenty-eighth twenty-ninth";
+			"- 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29";
 		return words.split(" ")[Math.floor(this.roomNumber() / 100)];
 	},
 
@@ -273,17 +273,17 @@ setup.arcology = {
 		const pct = Math.clamp(Math.floor((elapsed / total) * 100), 0, 100);
 		let lines;
 		if (v.escort === "loyalists") {
-			lines = ["Transfer logged.", "Passenger cabin secured.", "Route held by security authority.", "No deviation permitted."];
+			lines = ["이동 기록 완료.", "승객 객실 보안 확보.", "경로는 보안 당국이 장악 중.", "경로 이탈은 허용되지 않음."];
 		} else if (v.to === "arcology") {
 			lines = [
-				"Tracking moving destination...",
-				"Adjusting navigation coordinates...",
-				"Signal synchronized.",
-				"Drift vector updated.",
-				"Destination beacon reacquired.",
+				"이동 중인 목적지를 추적하는 중...",
+				"항법 좌표를 조정하는 중...",
+				"신호 동기화 완료.",
+				"표류 벡터 갱신됨.",
+				"목적지 비콘을 다시 포착함.",
 			];
 		} else {
-			lines = ["Mainland beacon locked.", "Route clear.", "Holding course.", "Arcology signal weakening..."];
+			lines = ["본토 비콘 고정.", "경로 이상 없음.", "항로 유지 중.", "아콜로지 신호가 약해지는 중..."];
 		}
 		return { total, remaining, elapsed, pct, line: lines[Math.floor(elapsed / 7200) % lines.length] };
 	},
@@ -492,11 +492,11 @@ setup.arcology = {
 		return Math.min(100, Math.round(reads + alert + Math.min(48, Math.min(14, weak) + strong)));
 	},
 	threatBands: [
-		{ label: "LOW PROFILE", note: "Residents treat you like any other guest." },
-		{ label: "WATCHED", note: "A few security scanners have your face on record. No one has acted on it yet." },
-		{ label: "FLAGGED", note: "Security is sharing your profile and is more alert." },
-		{ label: "DANGEROUS", note: "You are considered dangerous. Armed resistance is more likely." },
-		{ label: "HUNTED", note: "People with money are paying others to find you." },
+		{ label: "눈에 띄지 않음", note: "주민들이 당신을 여느 방문객처럼 대한다." },
+		{ label: "감시받는 중", note: "보안 스캐너 몇 대가 당신의 얼굴을 기록해 두었다. 아직 아무도 조치를 취하지 않았다." },
+		{ label: "요주의", note: "보안 쪽에서 당신의 프로필을 공유하며 더 경계하고 있다." },
+		{ label: "위험 인물", note: "당신은 위험한 인물로 간주된다. 무장 저항이 일어날 가능성이 더 높다." },
+		{ label: "쫓기는 중", note: "돈 있는 자들이 당신을 찾아내라며 사람을 사고 있다." },
 	],
 	/* 0 to 4, an index into threatBands. */
 	threatBand() {
@@ -908,12 +908,12 @@ setup.arcology = {
 	   hidden: never listed in Holo until visited. Links are two-way and listed on one side only.
 	   map: position on the Holo city map, in street units. bus: has a shuttle stop. */
 	districts: {
-		pier: { map: [0, 3], name: "Arcology Pier", passage: "Arcology Pier", loc: "arcology_pier", icon: "pier", area: "pier", tier: 2, time: 5 },
-		relay: { map: [1.3, 3], bus: true, name: "Relay Street", passage: "Arcology Street", loc: "arcology", icon: "street", area: "street", tier: 2, time: 5 },
+		pier: { map: [0, 3], name: "아콜로지 부두", passage: "Arcology Pier", loc: "arcology_pier", icon: "pier", area: "pier", tier: 2, time: 5 },
+		relay: { map: [1.3, 3], bus: true, name: "릴레이 가", passage: "Arcology Street", loc: "arcology", icon: "street", area: "street", tier: 2, time: 5 },
 		breakwater: {
 			map: [1.3, 5],
 			bus: true,
-			name: "Breakwater Road",
+			name: "방파제 로",
 			passage: "Arcology Breakwater Road",
 			loc: "arcology_coast",
 			icon: "coast",
@@ -924,7 +924,7 @@ setup.arcology = {
 		flats: {
 			map: [2.2, 6.4],
 			bus: true,
-			name: "Dockside Flats",
+			name: "독사이드 플랫츠",
 			passage: "Arcology Dockside Flats",
 			loc: "arcology_flats",
 			icon: "flats",
@@ -935,7 +935,7 @@ setup.arcology = {
 		exchange: {
 			map: [3.4, 3],
 			bus: true,
-			name: "Exchange Square",
+			name: "익스체인지 광장",
 			passage: "Arcology Exchange Square",
 			loc: "arcology_exchange",
 			icon: "exchange",
@@ -946,7 +946,7 @@ setup.arcology = {
 		market: {
 			map: [3.4, 5.2],
 			bus: true,
-			name: "Market Street",
+			name: "마켓 가",
 			passage: "Arcology Market Street",
 			loc: "arcology_market",
 			icon: "market",
@@ -957,7 +957,7 @@ setup.arcology = {
 		neon: {
 			map: [2.8, 7.6],
 			bus: true,
-			name: "Neon Strip",
+			name: "네온 스트립",
 			passage: "Arcology Neon Strip",
 			loc: "arcology_neon",
 			icon: "neon",
@@ -978,7 +978,7 @@ setup.arcology = {
 		forge: {
 			map: [4.7, 4.3],
 			bus: true,
-			name: "Forge Lane",
+			name: "포지 골목",
 			passage: "Arcology Forge Lane",
 			loc: "arcology_forge",
 			icon: "forge",
@@ -999,7 +999,7 @@ setup.arcology = {
 		},
 		stronghold: {
 			map: [6.7, 7.2],
-			name: "Stronghold Quarter",
+			name: "스트롱홀드 구역",
 			passage: "Arcology Stronghold Quarter",
 			loc: "arcology_stronghold",
 			icon: "stronghold",
@@ -1010,7 +1010,7 @@ setup.arcology = {
 		commerce: {
 			map: [3.4, 1.3],
 			bus: true,
-			name: "Commerce Walk",
+			name: "커머스 워크",
 			passage: "Arcology Commerce Walk",
 			loc: "arcology_commerce",
 			icon: "commerce",
@@ -1021,7 +1021,7 @@ setup.arcology = {
 		civic: {
 			map: [5.4, 2.6],
 			bus: true,
-			name: "Civic Boulevard",
+			name: "시빅 대로",
 			passage: "Arcology Civic Boulevard",
 			loc: "arcology_civic",
 			icon: "civic",
@@ -1032,7 +1032,7 @@ setup.arcology = {
 		medtech: {
 			map: [6.8, 3.6],
 			bus: true,
-			name: "Medtech Street",
+			name: "메드테크 가",
 			passage: "Arcology Medtech Street",
 			loc: "arcology_medtech",
 			icon: "clinic",
@@ -1043,7 +1043,7 @@ setup.arcology = {
 		signal: {
 			map: [6.8, 1.8],
 			bus: true,
-			name: "Signal Avenue",
+			name: "시그널 가",
 			passage: "Arcology Signal Avenue",
 			loc: "arcology_signal",
 			icon: "signal",
@@ -1054,7 +1054,7 @@ setup.arcology = {
 		skyline: {
 			map: [5.4, 1],
 			bus: true,
-			name: "Skyline Avenue",
+			name: "스카이라인 가",
 			passage: "Arcology Skyline Avenue",
 			loc: "arcology_skyline",
 			icon: "skyline",
@@ -1064,7 +1064,7 @@ setup.arcology = {
 		},
 		crown: {
 			map: [6.8, 0],
-			name: "Crown Avenue",
+			name: "크라운 가",
 			passage: "Arcology Crown Avenue",
 			loc: "arcology_crown",
 			icon: "crown",
@@ -1075,7 +1075,7 @@ setup.arcology = {
 		},
 		stillwater: {
 			map: [8.1, 0],
-			name: "Stillwater Court",
+			name: "스틸워터 코트",
 			passage: "Arcology Stillwater Court",
 			loc: "arcology_stillwater",
 			icon: "stillwater",
@@ -1239,12 +1239,12 @@ setup.arcology = {
 	policeText(out) {
 		return (
 			{
-				late: "The dispatcher logs the call, but says no patrol is free to come now. You'll have to keep yourself safe until one is available.",
+				late: "상황실 담당자가 신고를 접수하지만, 지금은 출동할 수 있는 순찰대가 없다고 한다. 순찰대가 올 때까지는 스스로 몸을 지켜야 한다.",
 				verify:
-					"The dispatcher asks you to hold still for an identity check before anyone is sent. The check runs, the line stays open, and no patrol is sent.",
+					"상황실 담당자가 순찰대를 보내기 전에 신원 확인을 할 테니 가만히 있으라고 한다. 확인이 진행되는 동안 통신은 연결된 채로 있지만, 순찰대는 오지 않는다.",
 				suspect:
 					"Your record comes up, and the dispatcher's tone changes. \"Stay where you are. We'll want to talk to you about this.\" No patrol comes to help.",
-				hunted: 'The line goes quiet for a moment. "Remain where you are," the dispatcher says. You realise the patrol being sent is coming for you.',
+				hunted: '잠시 통신이 조용해진다. "그 자리에 계십시오." 담당자가 말한다. 당신은 출동하는 순찰대가 당신을 잡으러 오고 있음을 깨닫는다.',
 			}[out] ?? ""
 		);
 	},

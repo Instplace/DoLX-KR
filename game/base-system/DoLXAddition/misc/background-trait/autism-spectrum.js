@@ -21,15 +21,15 @@ const autismSpectrumStats = Object.freeze({
 	striking: "striking",
 	kicking: "kicking",
 	seductionskill: "seduction",
-	oralskill: "oral skill",
-	vaginalskill: "vaginal skill",
-	penileskill: "penile skill",
-	handskill: "hand skill",
-	analskill: "anal skill",
-	feetskill: "foot skill",
-	bottomskill: "bottom skill",
-	thighskill: "thigh skill",
-	chestskill: "chest skill",
+	oralskill: "입 스킬",
+	vaginalskill: "보지 스킬",
+	penileskill: "자지 스킬",
+	handskill: "손 스킬",
+	analskill: "애널 스킬",
+	feetskill: "발 스킬",
+	bottomskill: "엉덩이 스킬",
+	thighskill: "허벅지 스킬",
+	chestskill: "가슴 스킬",
 });
 
 /* Subjects that are especially draining to study while in Burnout. */
@@ -573,7 +573,7 @@ function autismUpdateOverload() {
 
 function autismHyperfixationName() {
 	if (!playerHasAutismSpectrum()) return "";
-	return autismSpectrumStats[ensureAutismSpectrumState().hyperfixation] || "something new";
+	return autismSpectrumStats[ensureAutismSpectrumState().hyperfixation] || "새로운 것";
 }
 
 function autismHyperfixationDaysRemaining() {
@@ -599,7 +599,7 @@ function autismKylarTrainingFocus() {
 }
 
 function autismKylarTrainingName() {
-	return autismSpectrumStats[autismKylarTrainingFocus()] || "something new";
+	return autismSpectrumStats[autismKylarTrainingFocus()] || "새로운 것";
 }
 
 function autismKylarTrainingAvailable() {
@@ -862,32 +862,32 @@ function autismQueueAmbient() {
 const autismAmbientLines = Object.freeze({
 	strained: {
 		loud: [
-			"There are too many sounds around you to ignore. You can still pick out individual voices and noises, but doing so takes more concentration than usual.",
-			"Somebody laughs close behind you. You tense and turn towards the sound before realising they were not speaking to you.",
-			"You keep noticing every nearby conversation. You try to ignore them, but your attention moves back whenever someone speaks.",
+			"주변에 무시하기엔 소리가 너무 많다. 개별 목소리와 소음을 가려낼 수는 있지만, 평소보다 훨씬 집중해야 한다.",
+			"바로 뒤에서 누군가 웃는다. 당신은 몸이 굳은 채 소리 나는 쪽으로 돌아보고서야 그들이 당신에게 한 말이 아니었음을 깨닫는다.",
+			"가까이서 오가는 대화가 하나하나 계속 귀에 들어온다. 무시하려 해 보지만 누군가 말할 때마다 주의가 그쪽으로 되돌아간다.",
 		],
 		bright: [
-			"Sunlight reflects off the pavement and makes you narrow your eyes. You start watching the ground ahead because looking around is becoming uncomfortable.",
-			"You narrow your eyes against the glare, relax them when you notice, then find yourself doing it again a few seconds later.",
+			"햇빛이 포장도로에 반사되어 눈이 절로 가늘어진다. 주위를 둘러보는 것이 점점 불편해져서 앞쪽 바닥만 보며 걷기 시작한다.",
+			"눈부심에 눈을 가늘게 뜨고, 알아채면 풀었다가, 몇 초 뒤 또 그러고 있는 자신을 발견한다.",
 		],
 		both: [
-			"The glare makes you narrow your eyes while nearby voices keep pulling your attention away. You can manage both, but concentrating on anything else is becoming difficult.",
-			"The area is bright and crowded with noise. As you move through it, you start choosing quieter parts of the route without thinking much about where you originally meant to walk.",
+			"눈부심에 눈이 가늘어지는 동안에도 가까운 목소리들이 계속 주의를 잡아끈다. 둘 다 견딜 수는 있지만, 다른 일에 집중하기가 점점 어려워진다.",
+			"이곳은 밝고 소음으로 북적인다. 지나가는 동안 원래 어디로 가려 했는지는 별로 생각하지 않은 채, 조용한 쪽 길을 골라 걷게 된다.",
 		],
 	},
 	burnout: {
 		loud: [
-			"You hear voices, footsteps, traffic, and other nearby noises at the same time. You struggle to identify individual sounds long enough to decide which ones matter.",
-			"The sounds around you blur together. Focusing on one takes effort, and you lose track of it whenever another noise interrupts.",
-			"You react to every nearby noise now, even when it has nothing to do with you. You try to focus on one sound at a time, but another interrupts before you can.",
+			"목소리, 발소리, 차 소리, 그 밖의 주변 소음이 한꺼번에 들린다. 어떤 소리가 중요한지 정할 만큼 오래 개별 소리를 구분해 내기가 힘겹다.",
+			"주변의 소리들이 하나로 뭉개진다. 하나에 집중하려면 애를 써야 하고, 다른 소음이 끼어들 때마다 그 소리를 놓친다.",
+			"이제는 당신과 아무 상관 없는 소리에도 하나하나 반응한다. 한 번에 하나의 소리에만 집중하려 하지만, 그러기 전에 다른 소리가 끼어든다.",
 		],
 		bright: [
-			"The light makes it difficult to keep your eyes fully open. You watch the darker parts of the ground as you walk so you do not have to look directly at the glare.",
-			"You realise you have been walking with your eyes partly closed. When you try to open them properly, the glare makes you narrow them again.",
+			"빛 때문에 눈을 제대로 뜨고 있기가 어렵다. 눈부신 빛을 직접 보지 않으려고 걸으면서 바닥의 어두운 부분만 본다.",
+			"눈을 반쯤 감은 채 걷고 있었다는 것을 깨닫는다. 제대로 뜨려 해 보지만 눈부심에 다시 가늘어진다.",
 		],
 		both: [
-			"The glare hurts your eyes, and each nearby noise interrupts your thoughts. You look for somewhere darker and quieter where it would be easier to concentrate.",
-			"You struggle to ignore any of the light or noise around you. Your eyes stay narrowed while each new sound pulls your attention away from what you were trying to do.",
+			"눈부심에 눈이 아프고, 가까이서 나는 소리마다 생각이 끊긴다. 집중하기 더 쉬운, 더 어둡고 조용한 곳을 찾는다.",
+			"주변의 빛과 소음 중 어느 것도 무시하기가 힘들다. 눈은 계속 가늘게 뜬 채이고, 새로운 소리가 들릴 때마다 하려던 일에서 주의가 끌려 나간다.",
 		],
 	},
 });
@@ -1146,7 +1146,7 @@ function autismObligations() {
 	if (Number.isFinite(due) && due <= autismRentNoticeDays) {
 		const owed = (Number(V.rentMoney) || 0) + (Number(V.babyRent) || 0);
 		if (owed > 0 && (Number(V.baileyDeposit) || 0) < owed) {
-			list.push({ label: due <= 0 ? "rent overdue" : `rent due in ${due} ${due === 1 ? "day" : "days"}`, weight: autismObligationWeights.rent });
+			list.push({ label: due <= 0 ? "월세 연체" : `월세 납부일까지 ${due}일 남음`, weight: autismObligationWeights.rent });
 		}
 	}
 
@@ -1155,13 +1155,13 @@ function autismObligations() {
 		const outstanding = Math.max(0, (Number(discipline.serviceRequired) || 0) - (Number(discipline.serviceDone) || 0));
 		if (outstanding > 0) {
 			list.push({
-				label: `${outstanding} community service ${outstanding === 1 ? "session" : "sessions"} left`,
+				label: `사회봉사 ${outstanding}회 남음`,
 				weight: autismObligationWeights.service,
 			});
 		}
 		const daysLeft = Math.max(0, Number(discipline.daysLeft) || 0);
 		if (daysLeft > 0)
-			list.push({ label: `${daysLeft} school ${daysLeft === 1 ? "day" : "days"} of suspension left`, weight: autismObligationWeights.suspension });
+			list.push({ label: `정학 ${daysLeft}일 남음`, weight: autismObligationWeights.suspension });
 	}
 	return list;
 }
@@ -1219,11 +1219,11 @@ function autismColdStart(phase) {
 
 /* These describe difficulty starting a task, not being bad at it. Once the PC starts, the task is normal. */
 const autismColdStartLines = Object.freeze([
-	"You know what you need to do and how to do it, but you still cannot make yourself start. You stand there for a while, waiting for your body to move.",
-	"You get everything ready, then check it all again. You know nothing else needs preparing, but starting still feels difficult.",
-	"The hardest part is beginning. Once you finally start, the work itself feels easier than the effort it took to get moving.",
-	"Your hands know what to do, but you still hesitate before using them. You try to make yourself begin, but your body does not respond straight away.",
-	"You have already gone through the task several times in your head. None of that gets the work done, and you already feel tired before you begin.",
+	"해야 할 일도, 하는 방법도 알지만 도무지 시작할 수가 없다. 몸이 움직여 주기를 기다리며 한동안 그 자리에 서 있는다.",
+	"모든 준비를 마치고 나서 전부 다시 확인한다. 더 준비할 것이 없다는 걸 알면서도 시작하기는 여전히 어렵게 느껴진다.",
+	"가장 어려운 것은 시작이다. 마침내 시작하고 나면 일 자체는 움직이기까지 들인 노력보다 쉽게 느껴진다.",
+	"손은 무엇을 해야 하는지 알지만, 막상 쓰려니 망설여진다. 스스로를 시작하게 만들려 해 보지만 몸은 곧바로 반응하지 않는다.",
+	"머릿속으로 이미 그 일을 여러 번 해 보았다. 그런다고 일이 끝나는 것은 아니고, 시작하기도 전에 벌써 지쳐 있다.",
 ]);
 
 function autismColdStartLine() {
@@ -1505,12 +1505,12 @@ const autismMaskingProseCooldownHours = 4;
 const autismMaskingProseChance = 40;
 
 const autismMaskingLines = Object.freeze([
-	"You check whether your expression looks friendly, then find yourself checking it again a minute later. Keeping track of these changes takes concentration.",
-	"You notice that you are silently rehearsing a friendlier tone in case you need to speak, but find it difficult to stop checking how you might sound.",
-	"You think of possible replies, preparing for questions nobody has asked yet.",
-	"You notice that you have been keeping your shoulders in the same position. You relax them, then immediately wonder how you are supposed to hold them.",
-	"You keep wondering whether your expression looks natural. Each time you adjust it, you start thinking about it again.",
-	"You keep checking where you are looking and how long you have looked there, trying to decide when to look away.",
+	"표정이 친근해 보이는지 확인하고, 일 분 뒤 또다시 확인하고 있는 자신을 발견한다. 이런 변화를 계속 신경 쓰는 데에도 집중이 필요하다.",
+	"말을 해야 할 때를 대비해 더 친근한 말투를 속으로 연습하고 있다는 것을 알아차리지만, 어떻게 들릴지 확인하는 일을 멈추기가 어렵다.",
+	"아직 아무도 묻지 않은 질문에 대비해 가능한 대답들을 떠올려 둔다.",
+	"어깨를 계속 같은 자세로 두고 있었다는 것을 알아차린다. 힘을 풀었다가, 곧바로 어깨를 어떻게 두어야 하는 건지 헷갈린다.",
+	"표정이 자연스러워 보이는지 계속 신경이 쓰인다. 고칠 때마다 다시 그 생각이 시작된다.",
+	"어디를 보고 있는지, 얼마나 오래 보았는지 계속 확인하며 언제 시선을 돌릴지 가늠한다.",
 ]);
 
 /* The one "is the mask high" question, so scenes stop inventing their own thresholds. */
@@ -1545,17 +1545,17 @@ function autismQueueMaskingProse() {
 
 /* The PC is using something prepared instead of improvising. Easier, but not easy. */
 const autismComposedLines = Object.freeze([
-	"You use the expression you practised earlier. You still have to think about it, but you already know what your face should do.",
-	"You remember the sentences you practised earlier. Having words ready makes the possibility of speaking feel easier to manage.",
-	"You recall the tone you practised in front of the mirror, keeping it ready in case you need it.",
-	"You settle into the posture you practised earlier. For a while, you do not have to keep correcting it.",
+	"미리 연습해 둔 표정을 짓는다. 여전히 생각을 해야 하지만, 얼굴이 어떻게 해야 하는지는 이미 알고 있다.",
+	"미리 연습해 둔 문장들이 떠오른다. 말이 준비되어 있으니 말해야 할지도 모른다는 가능성이 한결 감당할 만하게 느껴진다.",
+	"거울 앞에서 연습한 말투를 떠올리며, 필요할 때를 대비해 준비해 둔다.",
+	"미리 연습해 둔 자세로 자리를 잡는다. 한동안은 계속 고쳐 앉지 않아도 된다.",
 ]);
 
 /* A rehearsed response runs out mid-interaction, and the PC goes back to responding normally. */
 const autismComposureLapsedLines = Object.freeze([
-	"The preparation that helped earlier feels harder to draw on now. You start checking your expression and posture again.",
-	"The replies you practised are harder to remember. You worry about finding the words if someone asks you something.",
-	"You no longer feel as prepared as you did earlier. Holding your expression steady takes more of your attention again.",
+	"아까는 도움이 되었던 준비가 이제는 꺼내 쓰기 어렵게 느껴진다. 표정과 자세를 다시 확인하기 시작한다.",
+	"연습한 대답이 잘 떠오르지 않는다. 누가 무언가를 물으면 적당한 말을 찾을 수 있을지 걱정이 된다.",
+	"아까만큼 준비되었다는 느낌이 들지 않는다. 표정을 흐트러뜨리지 않는 데 다시 더 많은 주의가 든다.",
 ]);
 
 function autismMaskingLine() {
@@ -1789,18 +1789,18 @@ function autismCheckupTopic() {
  */
 const autismBurnoutLines = Object.freeze({
 	social: [
-		"You take longer to answer than usual. Sometimes you respond to the exact words someone used, then realise from their reaction that they meant something else.",
-		"Making up a reply is difficult. You keep using familiar answers and phrases because thinking of something new takes too much effort.",
-		"You understand what people are saying, but finding the words to answer takes longer. Sometimes you know what you want to say and still cannot get the sentence out properly.",
+		"평소보다 대답이 늦다. 때로는 상대가 쓴 말 그대로에 대답했다가, 상대의 반응을 보고서야 다른 뜻이었다는 것을 깨닫는다.",
+		"대답을 지어내기가 어렵다. 새로운 말을 떠올리는 데 너무 큰 노력이 들어서, 익숙한 대답과 표현만 계속 쓴다.",
+		"사람들이 하는 말은 이해하지만, 대답할 말을 찾는 데 시간이 더 걸린다. 하고 싶은 말을 알면서도 문장을 제대로 꺼내지 못할 때가 있다.",
 	],
 	work: [
-		"You follow the same steps in the same order you usually use. Stopping to decide what to do next feels harder than simply continuing with what you already know.",
-		"You still finish your work, but everything takes longer. You check simple steps again because it is harder to remember whether you already did them.",
-		"When something unexpected happens, you have to stop. You need time to work out what changed and what to do before you can continue.",
+		"늘 하던 순서대로 같은 단계를 밟는다. 멈춰서 다음에 무엇을 할지 정하는 것은 이미 아는 일을 그냥 계속하는 것보다 어렵게 느껴진다.",
+		"일은 여전히 끝내지만 모든 것이 더 오래 걸린다. 간단한 단계도 이미 했는지 기억해 내기가 어려워서 다시 확인한다.",
+		"예상치 못한 일이 생기면 멈춰야 한다. 계속하려면 무엇이 달라졌고 무엇을 해야 하는지 파악할 시간이 필요하다.",
 	],
 	decide: [
-		"Even a small choice takes longer than it should. You look through the options one at a time because considering all of them together is too difficult.",
-		"You choose the familiar option because you already know what will happen. Working through the other choices feels like more than you can manage right now.",
+		"작은 선택 하나에도 필요 이상으로 오래 걸린다. 선택지를 한꺼번에 따져 보기가 너무 어려워서 하나씩 차례로 살펴본다.",
+		"무슨 일이 일어날지 이미 알고 있기에 익숙한 쪽을 고른다. 다른 선택지를 따져 보는 것은 지금의 당신에게 벅찬 일처럼 느껴진다.",
 	],
 });
 
@@ -1823,10 +1823,10 @@ function autismIsFocus(stat) {
 
 /* Prose for doing the thing the PC is currently fixed on. */
 const autismFocusEngagedLines = Object.freeze([
-	"You become so focused on what you are doing that everything else fades from your attention. For a while, you barely notice anything beyond the task in front of you.",
-	"You look up and realise you have lost track of your surroundings. Your attention soon returns to what you were doing.",
-	"You keep going longer than you planned. Even when you know you should stop, pulling yourself away feels harder than continuing.",
-	"You did not have to make yourself start this. Once you began, you kept going without needing to push yourself.",
+	"하고 있는 일에 너무 몰두해서 나머지는 모두 의식에서 멀어진다. 한동안은 눈앞의 일 말고는 거의 아무것도 눈에 들어오지 않는다.",
+	"고개를 들고서야 주변이 어떻게 돌아가는지 놓치고 있었음을 깨닫는다. 주의는 곧 하던 일로 되돌아간다.",
+	"계획한 것보다 오래 계속한다. 멈춰야 한다는 것을 알면서도, 손을 떼는 것이 계속하는 것보다 더 어렵게 느껴진다.",
+	"이 일은 억지로 시작할 필요가 없었다. 일단 시작하자 스스로를 몰아붙이지 않아도 계속하게 된다.",
 ]);
 
 function autismFocusEngagedLine() {
@@ -1835,11 +1835,11 @@ function autismFocusEngagedLine() {
 
 /* Private recovery text for when nothing is being held up. */
 const autismUnmaskedLines = Object.freeze([
-	"You stopped thinking about what expression your face should have. A few minutes pass before you even notice.",
-	"You have not worried about how long the silence lasts since you got here.",
-	"You sit however feels comfortable. You are not trying to make your posture look normal for anyone.",
-	"You let your thoughts wander without rehearsing how you would explain them.",
-	"At some point, you stopped checking everything you said and did before doing it. You only notice after a while.",
+	"얼굴에 어떤 표정을 지어야 할지 생각하기를 멈추었다. 알아차리기까지 몇 분이 흐른다.",
+	"이곳에 온 뒤로 침묵이 얼마나 이어지는지 신경 쓰지 않았다.",
+	"편한 대로 앉는다. 누구에게 보이려고 자세를 평범하게 꾸미는 것이 아니다.",
+	"생각을 어떻게 설명할지 연습하지 않고 그냥 흘러가는 대로 둔다.",
+	"어느 순간부터 하기 전에 말과 행동을 일일이 확인하는 일을 그만두었다. 한참 지나서야 그것을 알아차린다.",
 ]);
 
 /*

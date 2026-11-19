@@ -65,7 +65,7 @@ setup.plagueSetup = (() => {
 		if (kind === "pathogen" && pathogenPlayable(meta, id)) state.pathogen = id;
 		else if (kind === "difficulty" && difficultyPlayable(meta, id)) state.difficulty = id;
 		else if (kind === "origin" && d.regions[id]) state.origin = id;
-		else return no("That choice is not available.");
+		else return no("그 선택지는 사용할 수 없습니다.");
 		return OK;
 	}
 
@@ -78,15 +78,15 @@ setup.plagueSetup = (() => {
 
 	function go(state, stepId) {
 		const i = stepIndex(stepId);
-		if (i < 0 || i > state.reached) return no("Finish the earlier steps first.");
-		if (i > stepIndex("details") && !cleanName(state.name)) return no("Give your outbreak a name.");
+		if (i < 0 || i > state.reached) return no("앞 단계를 먼저 마치십시오.");
+		if (i > stepIndex("details") && !cleanName(state.name)) return no("발병에 이름을 붙이십시오.");
 		state.step = stepId;
 		return OK;
 	}
 
 	function next(state) {
 		const i = stepIndex(state.step);
-		if (i === stepIndex("details") && !cleanName(state.name)) return no("Give your outbreak a name.");
+		if (i === stepIndex("details") && !cleanName(state.name)) return no("발병에 이름을 붙이십시오.");
 		if (i >= steps.length - 1) return no("");
 		state.step = steps[i + 1].id;
 		state.reached = Math.max(state.reached, i + 1);
@@ -121,14 +121,14 @@ setup.plagueSetup = (() => {
 
 	function equip(state, meta, slot, id) {
 		const d = data();
-		if (!d.traits[id]) return no("That trait does not exist.");
-		if (!Number.isInteger(slot) || slot < 0 || slot >= slotList(state).length || slot >= slotCount(meta)) return no("That slot is not unlocked.");
+		if (!d.traits[id]) return no("그런 특성은 없습니다.");
+		if (!Number.isInteger(slot) || slot < 0 || slot >= slotList(state).length || slot >= slotCount(meta)) return no("그 슬롯은 아직 열리지 않았습니다.");
 		const st = traitState(state, meta, id, slot);
 		if (st.state === "equipped") return OK;
-		if (st.state === "elsewhere") return no(`${d.traits[id].name} is already in slot ${st.slot + 1}.`);
+		if (st.state === "elsewhere") return no(`${d.traits[id].name}: 이미 ${st.slot + 1}번 슬롯에 있습니다.`);
 		if (st.state === "covered")
-			return no(`${d.traitCategories[d.traits[id].category].name} is already covered by ${d.traits[st.by].name} in slot ${st.slot + 1}.`);
-		if (st.state === "locked") return no(`${d.traits[id].name} is not unlocked.`);
+			return no(`${d.traitCategories[d.traits[id].category].name} 계열은 이미 ${st.slot + 1}번 슬롯에 채워져 있습니다 (${d.traits[st.by].name}).`);
+		if (st.state === "locked") return no(`${d.traits[id].name}: 아직 해금되지 않았습니다.`);
 		state.slots[slot] = id;
 		state.pick = id;
 		return OK;
@@ -148,22 +148,22 @@ setup.plagueSetup = (() => {
 		const d = data();
 		const errors = [];
 		const s = state || {};
-		if (!pathogenPlayable(meta, s.pathogen)) errors.push("Choose an available pathogen.");
-		if (!difficultyPlayable(meta, s.difficulty)) errors.push("Choose an available difficulty.");
-		if (!d.regions[s.origin]) errors.push("Choose a starting region.");
+		if (!pathogenPlayable(meta, s.pathogen)) errors.push("사용 가능한 병원체를 고르십시오.");
+		if (!difficultyPlayable(meta, s.difficulty)) errors.push("사용 가능한 난이도를 고르십시오.");
+		if (!d.regions[s.origin]) errors.push("시작 지역을 고르십시오.");
 		const name = cleanName(s.name);
-		if (!name) errors.push("Give your outbreak a name.");
-		if (s.slots !== undefined && !Array.isArray(s.slots)) errors.push("The trait slots are not valid.");
+		if (!name) errors.push("발병에 이름을 붙이십시오.");
+		if (s.slots !== undefined && !Array.isArray(s.slots)) errors.push("특성 슬롯이 올바르지 않습니다.");
 		const slots = slotList(s);
 		const equipped = slots.filter(Boolean);
-		if (slots.length > slotCount(meta) || equipped.length > slotCount(meta)) errors.push("Too many traits for the unlocked slots.");
+		if (slots.length > slotCount(meta) || equipped.length > slotCount(meta)) errors.push("해금된 슬롯보다 특성이 너무 많습니다.");
 		const seen = new Set();
 		const cats = new Set();
 		equipped.forEach(id => {
-			if (!d.traits[id] || !sim().traitAvailable(metaView(meta), id)) return errors.push("A chosen trait is not available.");
-			if (seen.has(id)) errors.push(`${d.traits[id].name} is chosen twice.`);
+			if (!d.traits[id] || !sim().traitAvailable(metaView(meta), id)) return errors.push("고른 특성을 사용할 수 없습니다.");
+			if (seen.has(id)) errors.push(`${d.traits[id].name}: 두 번 선택되었습니다.`);
 			seen.add(id);
-			if (cats.has(d.traits[id].category)) errors.push(`Only one ${d.traitCategories[d.traits[id].category].name} trait can be equipped.`);
+			if (cats.has(d.traits[id].category)) errors.push(`${d.traitCategories[d.traits[id].category].name} 계열 특성은 하나만 장착할 수 있습니다.`);
 			cats.add(d.traits[id].category);
 		});
 		return {
@@ -207,7 +207,7 @@ setup.plagueSetup = (() => {
 
 	function useLast(state, meta) {
 		const fit = fitLastSetup(meta);
-		if (!fit) return no("There is no earlier setup.");
+		if (!fit) return no("이전 설정이 없습니다.");
 		["pathogen", "difficulty", "origin"].forEach(k => {
 			if (fit[k]) state[k] = fit[k];
 		});
@@ -293,8 +293,8 @@ setup.plagueSetup = (() => {
 					.map(([id, t]) => {
 						const st = traitState(state, meta, id, slot);
 						const words = {
-							equipped: `In slot ${slot + 1}`,
-							elsewhere: `In slot ${st.slot + 1}`,
+							equipped: `${slot + 1}번 슬롯에 장착됨`,
+							elsewhere: `${st.slot + 1}번 슬롯에 있음`,
 							covered: `${c.name} covered`,
 							locked: "Locked",
 							available: "Available",
@@ -319,11 +319,11 @@ setup.plagueSetup = (() => {
 			detail.action = st === "available" ? "equip" : st === "equipped" ? "clear" : "none";
 			detail.note =
 				st === "covered"
-					? `${detail.category} is already covered by ${d.traits[detail.by].name} in slot ${detail.slot + 1}. Clear that slot to use this trait.`
+					? `${detail.category} 계열은 이미 ${detail.slot + 1}번 슬롯에 채워져 있습니다 (${d.traits[detail.by].name}). 이 특성을 쓰려면 그 슬롯을 비우십시오.`
 					: st === "elsewhere"
-					? `Already in slot ${detail.slot + 1}.`
+					? `이미 ${detail.slot + 1}번 슬롯에 있습니다.`
 					: st === "locked"
-					? "Not yet unlocked."
+					? "아직 해금되지 않았습니다."
 					: "";
 		}
 		return { slots, categories, detail, openSlot: slot + 1 };
@@ -446,7 +446,7 @@ setup.plagueUi = (() => {
 		const days = r.isolated ? isolationDays(game, id) : 0;
 		const parts = [`${pct(r.infectedPct)} infected`, tierNames[tier]];
 		if (r.dead > 0) parts.push(`${pct(r.deadPct)} dead`);
-		if (r.isolated) parts.push(`isolated${days ? `, ${days} ${days === 1 ? "day" : "days"} left` : ""}`);
+		if (r.isolated) parts.push(`격리${days ? `, ${days}${days === 1 ? "일" : "일"} 남음` : ""}`);
 		return {
 			id,
 			name: r.name,
@@ -489,7 +489,7 @@ setup.plagueUi = (() => {
 				y2: b.y,
 				midX: (a.x + b.x) / 2,
 				midY: (a.y + b.y) / 2,
-				label: `${d.regions[rt.a].name} to ${d.regions[rt.b].name} by ${d.routeTypes[rt.type].name}${closed ? ", closed by isolation" : ""}`,
+				label: `${d.regions[rt.a].name}에서 ${d.regions[rt.b].name}까지 (${d.routeTypes[rt.type].name})${closed ? ", 격리로 폐쇄됨" : ""}`,
 			};
 		});
 	}
@@ -524,13 +524,13 @@ setup.plagueUi = (() => {
 
 	function mutationFeedback(summary) {
 		const upgrades = setup.plagueData.upgrades;
-		return ((summary && summary.mutations) || []).map(id => `Mutation: ${upgrades[id].name} evolved spontaneously.`).join(" ");
+		return ((summary && summary.mutations) || []).map(id => `돌연변이 진화: ${upgrades[id].name}.`).join(" ");
 	}
 
 	function dayFeedback(summary, game) {
 		const lines = [mutationFeedback(summary)];
 		const def = summary && summary.entrenchment && setup.plagueData.pathogens[game.disease].entrenchment;
-		if (def) lines.push(`Entrenchment increased to ${def.names[summary.entrenchment - 1]}.`);
+		if (def) lines.push(`고착 단계 상승: ${def.names[summary.entrenchment - 1]}.`);
 		return lines.filter(Boolean).join(" ");
 	}
 
@@ -646,7 +646,7 @@ setup.plagueUi = (() => {
 						mRow: mRow + 1,
 						ids: members.map(u => u.id),
 						chosen: owned ? owned.name : "",
-						label: owned ? `Chose ${owned.name}` : "Pick one",
+						label: owned ? `선택: ${owned.name}` : "하나 선택",
 					});
 				});
 				if (forks.some(f => f.lane === lane.id && f.row === row)) mRow++;

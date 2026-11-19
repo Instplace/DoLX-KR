@@ -62,7 +62,7 @@ const events = [
 		failuretext: "에이버리와의 발렌타인 데이트를 놓쳤습니다.",
 	},
 	{
-		name: "blackmail task",
+		name: "협박 과제",
 		condition() {
 			const blackmail = V.xchange?.blackmail;
 			if (!blackmail?.intro || !blackmail.activeQuest || blackmail.conclusionPending) return false;
@@ -80,7 +80,7 @@ const events = [
 		text: "<<blackmail-marker>>",
 	},
 	{
-		name: "blackmail conclusion",
+		name: "협박 결말",
 		condition() {
 			const blackmail = V.xchange?.blackmail;
 			// The conclusion letter stays in the bedroom until read and blocks future deliveries.
@@ -257,7 +257,7 @@ const events = [
 		text: "내일 클리프 가에서 학교 연극제가 열립니다.",
 	},
 	{
-		name: "bailey date",
+		name: "베일리 데이트",
 		condition() {
 			return (V.baileyDateScheduled || V.baileyDateAllNightScheduled) && V.rentTime > 0 && !V.baileyDateAttended;
 		},
@@ -268,7 +268,7 @@ const events = [
 		failuretext: "베일리와의 약속에 나타나지 않았습니다.",
 	},
 	{
-		name: "bailey halloween gala",
+		name: "베일리 할로윈 무도회",
 		condition() {
 			return (
 				V.baileyHalloweenScheduled === Time.year &&

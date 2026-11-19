@@ -516,12 +516,12 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 			if (arm !== "left") return result;
 			result.text =
 				swellBodyEligible && V.penisuse === "breasts" && [0, "disabled"].includes(V.mouth) && genitalsExposed() && breastsExposed()
-					? "You press your breasts around the huge length of your swollen penis."
-					: "Your body can no longer maintain the position.";
+					? "당신은 가슴으로 부풀어 오른 자지의 거대한 길이를 감싸 누른다."
+					: "당신의 몸이 더는 그 자세를 유지하지 못한다.";
 			if (swellBodyEligible && V.penisuse === "breasts" && [0, "disabled"].includes(V.mouth) && genitalsExposed() && breastsExposed()) {
 				result.options.push({
 					action: "mswelltitfuck",
-					text: "Rock your hips between your breasts",
+					text: "가슴 사이에서 허리를 흔든다",
 					colour: "purple",
 					otherElements: "<<combataware 3>>",
 				});
@@ -921,7 +921,7 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 					if (swellBodyEligible && V.penisuse === 0) {
 						result.options.push({
 							action: "mswellautofellatio",
-							text: "Take your swollen penis into your mouth",
+							text: "부풀어 오른 자지를 입에 넣는다",
 							colour: "purple",
 							otherElements: "<<combataware 3>>",
 						});
@@ -970,7 +970,7 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 				if (swellBodyEligible && genitalsExposed()) {
 					result.options.push({
 						action: "mswellautofellatio",
-						text: "Fuck your mouth with your swollen penis",
+						text: "부풀어 오른 자지로 입을 쑤신다",
 						colour: "purple",
 						otherElements: !corruptionCheck ? "<<combataware 3>>" : undefined,
 					});

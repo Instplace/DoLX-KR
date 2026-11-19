@@ -83,7 +83,7 @@
 			<<if _online>>
 				<<holoRow "LAST SYNC" "NOW">>
 			<<else>>
-				<<holoRow "LAST SYNC" `_ha.lastSync ? setup.arcology.when(_ha.lastSync).toUpperCase() : "AT REGISTRATION"`>>
+				<<holoRow "마지막 동기화" `_ha.lastSync ? setup.arcology.when(_ha.lastSync).toUpperCase() : "등록 시점"`>>
 				<<holoLine "SHOWING CACHED DATA" "warn">>
 			<</if>>
 			<div class="holo-auth">
@@ -100,14 +100,14 @@
 				<div class="holo-obj">
 					<div class="holo-obj-title"><<print _ha.voyage.to is "arcology" ? "IN TRANSIT TO ARCOLOGY" : "IN TRANSIT TO THE MAINLAND">></div>
 					<div class="transit-bar" role="progressbar" aria-label="Journey progress" aria-valuemin="0" aria-valuemax="100" @aria-valuenow="_hvs.pct"><span class="transit-fill" @style="'width: ' + _hvs.pct + '%'"></span></div>
-					<<holoRow "REMAINING" `setup.arcology.duration(_hvs.remaining)`>>
+					<<holoRow "남은 시간" `setup.arcology.duration(_hvs.remaining)`>>
 				</div>
 			<</if>>
 			<<if _ha.debt>>
 				<<set _objectives++>>
 				<div class="holo-obj">
 					<div class="holo-obj-title">미납 스택 부채</div>
-					<<holoRow "BALANCE" `setup.arcology.cxU(_ha.debt.amount)`>>
+					<<holoRow "잔액" `setup.arcology.cxU(_ha.debt.amount)`>>
 					<<holoRow "STATUS" "ABSCONDED">>
 					<<holoLine "PAY AT THE PIER BOOTH. UNPAID DEBTORS ARE DETAINED ON ARRIVAL." "denied">>
 				</div>
@@ -121,10 +121,10 @@
 					<<elseif _haNow gte _ha.party.at - 3600>>
 						<<holoLine "OPEN NOW" "ok">>
 						<<holoRow "MEET" "LUCHIFEN, GLASSHOUSE LIFT, RELAY STREET">>
-						<<holoRow "DOORS CLOSE IN" `setup.arcology.duration(_ha.party.end - _haNow)`>>
+						<<holoRow "문이 닫히기까지" `setup.arcology.duration(_ha.party.end - _haNow)`>>
 					<<else>>
-						<<holoRow "WHEN" `setup.arcology.when(_ha.party.at).toUpperCase()`>>
-						<<holoRow "STARTS IN" `setup.arcology.duration(_ha.party.at - _haNow)`>>
+						<<holoRow "일시" `setup.arcology.when(_ha.party.at).toUpperCase()`>>
+						<<holoRow "시작까지" `setup.arcology.duration(_ha.party.at - _haNow)`>>
 						<<holoRow "MEET" "LUCHIFEN, GLASSHOUSE LIFT, RELAY STREET">>
 					<</if>>
 				</div>
@@ -143,7 +143,7 @@
 				<div class="holo-obj">
 					<div class="holo-obj-title">후원 조건</div>
 					<<holoRow "REQUIREMENT" `_ha.redeem.sponsored ? "WIN LUCHIFEN'S ARRANGED BOUT" : "CHAMPION OF THE UNDERGROUND ARENA"`>>
-					<<holoLine `setup.arcology.arenaQualified() ? "REQUIREMENT MET" : "NOT YET MET"` `setup.arcology.arenaQualified() ? "ok" : "warn"`>>
+					<<holoLine `setup.arcology.arenaQualified() ? "조건 충족" : "아직 충족되지 않음"` `setup.arcology.arenaQualified() ? "ok" : "warn"`>>
 				</div>
 			<<elseif _ha.redeem.stage is "invited">>
 				<<set _objectives++>>
@@ -158,9 +158,9 @@
 			<<if _haRoom>>
 				<div class="holo-big">호텔 메리디안 · <<print setup.arcology.roomNumber()>></div>
 				<<holoRow "SPONSOR" `_ha.guest.sponsor ? _ha.guest.sponsor.toUpperCase() : "NONE"`>>
-				<<holoRow "PAYMENT" `_ha.guest.status is "sponsored" ? "COVERED BY SPONSOR" : "SETTLED"`>>
-				<<holoRow "VALID UNTIL" `setup.arcology.when(_ha.guest.until).toUpperCase()`>>
-				<<holoRow "TIME LEFT" `setup.arcology.duration(_ha.guest.until - _haNow)`>>
+				<<holoRow "결제" `_ha.guest.status is "sponsored" ? "후원자 부담" : "정산 완료"`>>
+				<<holoRow "유효 기한" `setup.arcology.when(_ha.guest.until).toUpperCase()`>>
+				<<holoRow "남은 시간" `setup.arcology.duration(_ha.guest.until - _haNow)`>>
 			<<else>>
 				<div class="holo-big holo-big-off">객실 없음</div>
 				<<holoRow "NIGHTLY RATE" `setup.arcology.cxU(setup.arcologyPrice.peek("night").q)`>>
@@ -169,7 +169,7 @@
 		<section class="holo holo-wallet" aria-label="Wallet">
 			<div class="holo-head">지갑<<print _cached>></div>
 			<div class="holo-amount"><<print setup.arcology.cxN(_ha.cipher or 0)>> <span>사이퍼</span></div>
-			<<if _ha.vault>><<holoRow "VAULT" `setup.arcology.cxU(_ha.vault)`>><</if>>
+			<<if _ha.vault>><<holoRow "금고" `setup.arcology.cxU(_ha.vault)`>><</if>>
 		</section>
 		<section class="holo holo-services" aria-label="Network services" @data-state="_online ? 'ok' : 'denied'">
 			<div class="holo-head">서비스</div>
@@ -510,7 +510,7 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 						<</for>>
 					</div>
 				<<elseif !_naPosted and _na.options.length>>
-					<<holoLine `setup.arcologyNews.mode is "lobby" ? "TO COMMENT, OPEN THE NEWS ON YOUR HOLO." : "COMMENTS NEED A CITY NETWORK CONNECTION."` "warn">>
+					<<holoLine `setup.arcologyNews.mode is "lobby" ? "댓글을 달려면 홀로에서 뉴스를 여십시오." : "댓글을 달려면 도시 네트워크 연결이 필요합니다."` "warn">>
 				<</if>>
 			<</if>>
 		</article>

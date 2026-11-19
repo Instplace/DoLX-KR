@@ -123,7 +123,7 @@ const ccmUtils = {
 			for (const slot of ["tmp", "tmp1"]) {
 				if (!map[slot]?.canvasfilter) {
 					map[slot] = {
-						name: "color picker slot",
+						name: "색상 선택 슬롯",
 						canvasfilter: this.filterGen(),
 					};
 				}
@@ -166,7 +166,7 @@ const ccmUtils = {
 					};
 				} else {
 					setup.colours[`${category}_map`][entry[0]] = {
-						name: "color picker slot",
+						name: "색상 선택 슬롯",
 						canvasfilter: this.filterGen(),
 					};
 				}

@@ -4964,7 +4964,7 @@ function initNeck() {
 			gender: "n",
 			warmth: 1,
 			cost: 0,
-			description: "A dark leather collar with a lotus flower clasp at the throat. There is no name tag. No bold letters. Just the lotus.",
+			description: "목 앞에 연꽃 모양 잠금쇠가 달린 짙은 가죽 목줄입니다. 이름표는 없습니다. 굵은 글씨도 없습니다. 오직 연꽃뿐입니다.",
 			shop: [],
 			collared: 1,
 			accessory: 0,

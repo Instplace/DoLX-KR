@@ -3717,7 +3717,7 @@ function masturbationEffectsVaginaAnus({ span, otherElement, additionalEffect, s
 			wikifier("vaginalstat");
 			wikifier("drugs", 10);
 			wikifier("vaginaraped");
-			wikifier("takeTempleVirginity", "'a phallus plant'", "vaginal");
+			wikifier("takeTempleVirginity", "'남근 식물'", "vaginal");
 			if (V.player.virginity.vaginal === true) {
 				fragment.append(span("당신은 몸을 낮춰 식물이 당신을 꿰뚫게 한다."));
 				fragment.append(" ");
@@ -3768,7 +3768,7 @@ function masturbationEffectsVaginaAnus({ span, otherElement, additionalEffect, s
 				wikifier("arousal", 1000, "vaginal");
 				wikifier("vaginalstat");
 				wikifier("vaginaraped");
-				fragment.append(span(`You lower yourself onto the ${toyDisplay(altText.selectedToy)}, pushing it deep inside you.`));
+				fragment.append(span(`당신은 ${toyDisplay(altText.selectedToy)} 위로 몸을 낮추어 그것을 몸 깊숙이 밀어 넣는다.`));
 				fragment.append(" ");
 				fragment.append(wikifier("takeVirginity", JSON.stringify("your " + toyDisplay(altText.selectedToy)), "vaginal"));
 				fragment.append(" ");
@@ -3873,7 +3873,7 @@ function masturbationEffectsVaginaAnus({ span, otherElement, additionalEffect, s
 			if (V.settings.toyVirginityEnabled && !altText.selectedToy?.type?.includes("vibrator") && V.player.virginity.anal === true) {
 				wikifier("arousal", 1000, "anal");
 				wikifier("analstat");
-				fragment.append(span(`You lower yourself onto the ${toyDisplay(altText.selectedToy)}, pushing it deep inside you.`));
+				fragment.append(span(`당신은 ${toyDisplay(altText.selectedToy)} 위로 몸을 낮추어 그것을 몸 깊숙이 밀어 넣는다.`));
 				fragment.append(" ");
 				fragment.append(wikifier("takeVirginity", JSON.stringify("your " + toyDisplay(altText.selectedToy)), "anal"));
 				fragment.append(" ");

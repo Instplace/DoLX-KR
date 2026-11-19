@@ -1648,7 +1648,7 @@ function speechDailyCheck() {
 		const pool = ["meek", "shy", "neutral", "confident", "bratty"];
 		V.speechDailyAttitude = pool[random(0, pool.length - 1)];
 		V.speechDailyAttitudeDay = Time.days;
-		V.speechDailyMessage = `Today you feel especially ${V.speechDailyAttitude}.`;
+		V.speechDailyMessage = `오늘은 유난히 ${({ meek: "순종적인", shy: "수줍은", neutral: "중립적인", confident: "자신만만한", bratty: "반항적인" })[V.speechDailyAttitude] || V.speechDailyAttitude} 기분이 든다.`;
 		V.speechDailyMessagePending = 1;
 	} else {
 		delete V.speechDailyAttitude;
@@ -1730,7 +1730,7 @@ function repairBeautyBoostShape() {
 		V.beautyBoost.spa = {
 			amount: Number.isFinite(V.beautyBoost.spa) ? V.beautyBoost.spa : 0,
 			expires: 0,
-			treatment: "spa treatment",
+			treatment: "스파 시술",
 		};
 	}
 	if (typeof V.beautyBoost.spa !== "object") V.beautyBoost.spa = { amount: 0, expires: 0, treatment: "spa treatment" };
@@ -1742,7 +1742,7 @@ function repairBeautyBoostShape() {
 		V.beautyBoost.nails = {
 			amount: Number.isFinite(V.beautyBoost.nails) ? V.beautyBoost.nails : 0,
 			expires: 0,
-			treatment: "salon manicure",
+			treatment: "살롱 매니큐어",
 		};
 	}
 	if (typeof V.beautyBoost.nails !== "object") V.beautyBoost.nails = { amount: 0, expires: 0, treatment: "salon manicure" };

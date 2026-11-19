@@ -1006,7 +1006,7 @@
 	/* The miniboss. Its rune core and visor take the colour of its (random) element. */
 	const runeColour = { fire: "#ff7a2a", water: "#4fc3ff", grass: "#7ee04f", electric: "#ffe23f", normal: "#e8e8e8" };
 	const golem = {
-		name: "Golem Sentinel",
+		name: "골렘 파수꾼",
 		kind: "miniboss",
 		head: { x: 60, y: 33, r: 21 },
 		palette: { o: "#515b70", body: "#a7b2c4", dark: "#7c8ba3", light: "#d1d9df", moss: "#90ab89", eye: "#e9ca78", rune: "#e9ca78" },
