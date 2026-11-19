@@ -289,7 +289,7 @@
 			<<elseif _daysUntilBloodMoon is 1>>
 				붉은 달까지 1일
 			<<else>>
-				<<Number _daysUntilBloodMoon>> days until the blood moon
+				붉은 달까지 <<Number _daysUntilBloodMoon>>일
 			<</if>>
 		</span></b>
 		<br><br>
@@ -830,10 +830,10 @@
 					<<if !_valueVanished.fromCont>>
 						<br>
 						<<if _valueVanished.type is "water">>
-							Water from a bucket had leaked
+							양동이에서 샌 물【은는】
 						<<else>>
 							<<print hcItemName(_valueVanished, "cap", "vanished")>>
-							<<if ["clutter", "sheets", "herbs", "bones"].includes(_valueVanished.type)>>were<<else>>was<</if>> found
+							<<if ["clutter", "sheets", "herbs", "bones"].includes(_valueVanished.type)>><<else>><</if>>【은는】
 						<</if>>
 						<<if _valueVanished.timeStamp>>
 							<<set _vanishedTime to new DateTime(_valueVanished.timeStamp)>>
@@ -844,15 +844,15 @@
 									yesterday
 								<<default>>
 									/* This should be impossible to reach unless the player hides from civilisation. */
-									<<number _vanishedDayDifference>> days ago
+									<<number _vanishedDayDifference>>일 전
 							<</switch>>
 							<<switch _vanishedTime.dayState>>
 								<<case "night" "day">>
-									during the _vanishedTime.dayState
+									<<= _vanishedTime.dayState === "night" ? "밤" : "낮">> 동안
 								<<case "dusk">>
 									before nightfall
 								<<default>>
-									at _vanishedTime.dayState
+									<<= _vanishedTime.dayState>>에
 							<</switch>>
 						<</if>>
 						<<switch _valueVanished.location>>
@@ -873,15 +873,15 @@
 							<<case "training">>
 								in the training room.
 							<<default>>
-								in the _valueVanished.location.
+								<<= hcTranslateName(_valueVanished.location)>>에서
 						<</switch>>
-						<<if ["clutter", "sheets", "herbs", "bones"].includes(_valueVanished.type)>>They were<<else>>It was<</if>>
+						<<if ["clutter", "sheets", "herbs", "bones"].includes(_valueVanished.type)>>발견되었다. 그것들은<<else>>발견되었다. 그것은<</if>>
 						<<if _valueVanished.type is "water">>
 							cleaned up.
 						<<elseif _valueVanished.dirty gte 2 or _valueVanished.state is "burnt">>
-							promptly burned.
+							즉시 불태워졌다.
 						<<elseif _valueVanished.persists>>
-							returned to the _valueVanished.origin.
+							<<print ({barracks:"병영", bed:"침상", cell:"감옥", cloister:"회랑", debug:"디버그", dining:"식당", disposal:"처리 수로", forest:"숲", garden:"정원", guardhouse:"경비실", lake:"호수", prayerroom:"기도실", pyre:"장작더미", quarters:"병영", temple:"신전", training:"훈련장"})[_valueVanished.origin] || hcTranslateName(_valueVanished.origin)>>【으로로】 돌려보내졌다.
 						<<else>>
 							returned.
 						<</if>>
@@ -986,69 +986,69 @@
 		<</switch>>
 		<br>
 		<<if _prisonerClothesItem>>
-			<<worldFemale 'She' 'He'>> wears a _prisonerClothesItem.nameText.
+			<<worldFemale '그녀' '그'>>【은는】 <<print hcTranslateName(_prisonerClothesItem.nameText || _prisonerClothesItem.name)>>【을를】 입고 있다.
 			<<if _prisonerSheet>>
-				<span class="blue">A bedsheet covers <<worldFemale 'her' 'his'>> lower body.</span>
+				<span class="blue">침대 시트가 <<worldFemale '그녀의' '그의'>> 하반신을 덮고 있다.</span>
 			<</if>>
 		<<else>>
 			<<if !$prisoner.bandagesOn>>
-				<span class="red"><<worldFemale 'She' 'He'>> is fully naked.</span>
+				<span class="red"><<worldFemale '그녀' '그'>>【은는】 완전히 발가벗고 있다.</span>
 			<<else>>
-				<span class="lewd"><<worldFemale 'She' 'He'>> is naked, save for <<worldFemale 'her' 'his'>> bandages.</span>
+				<span class="lewd"><<worldFemale '그녀' '그'>>【은는】 붕대만을 두른 채 발가벗고 있다.</span>
 			<</if>>
 			<<if _prisonerSheet>>
-				<span class="blue">A bedsheet covers <<worldFemale 'her' 'his'>> lower body.</span>
+				<span class="blue">침대 시트가 <<worldFemale '그녀의' '그의'>> 하반신을 덮고 있다.</span>
 			<<elseif Time.dayState is "night">>
-				<span class="red"><<worldFemale 'She' 'He'>> shivers.</span>
+				<span class="red"><<worldFemale '그녀' '그'>>【은는】 몸을 떨고 있다.</span>
 			<</if>>
 		<</if>>
 		<br>
 		<<switch $prisoner.cleanBody>>
-			<<case 4>><span class="green"><<worldFemale 'Her' 'His'>> body is clean.</span>
-			<<case 3>><span class="teal"><<worldFemale 'Her' 'His'>> body is mostly clean.</span>
-			<<case 2>><span class="purple">Dirt clings to <<worldFemale 'her' 'his'>> body.</span>
-			<<case 1>><span class="pink">Dirt and grime stick to <<worldFemale 'her' 'his'>> body.</span>
-			<<case 0>><span class="red">Black, ichorous fluid trails down <<worldFemale 'her' 'his'>> body.</span>
+			<<case 4>><span class="green"><<worldFemale '그녀의' '그의'>> 몸은 깨끗하다.</span>
+			<<case 3>><span class="teal"><<worldFemale '그녀의' '그의'>> 몸은 대부분 깨끗하다.</span>
+			<<case 2>><span class="purple"><<worldFemale '그녀의' '그의'>> 몸에 흙먼지가 들러붙어 있다.</span>
+			<<case 1>><span class="pink"><<worldFemale '그녀의' '그의'>> 몸에 흙먼지와 찌든 때가 들러붙어 있다.</span>
+			<<case 0>><span class="red">검은색의 고름 같은 액체가 <<worldFemale '그녀의' '그의'>> 몸을 타고 흘러내린다.</span>
 		<</switch>>
 		<<if !$prisonerEvents.includes("wash") and ($prisoner.bandagesOn or _prisonerClothesItem)>>
-			<span class="pink"><i><<worldFemale 'She' 'He'>> must be fully naked to be washed.</i></span>
+			<span class="pink"><i><<worldFemale '그녀' '그'>>【을를】 씻기려면 옷을 완전히 벗겨야 한다.</i></span>
 		<</if>>
 		<br>
 		<<if $prisoner.bandagesOn>>
 			<<switch $prisoner.cleanBandages>>
-				<<case 4>><span class="green"><<worldFemale 'Her' 'His'>> bandages are fresh.</span>
-				<<case 3>><span class="teal"><<worldFemale 'Her' 'His'>> bandages are clean.</span>
-				<<case 2>><span class="purple"><<worldFemale 'Her' 'His'>> bandages are frayed and reddened.</span>
-				<<case 1>><span class="pink"><<worldFemale 'Her' 'His'>> bandages are filthy.</span>
-				<<case 0>><span class="red"><<worldFemale 'Her' 'His'>> bandages are tainted.</span>
+				<<case 4>><span class="green"><<worldFemale '그녀의' '그의'>> 붕대는 새것이다.</span>
+				<<case 3>><span class="teal"><<worldFemale '그녀의' '그의'>> 붕대는 깨끗하다.</span>
+				<<case 2>><span class="purple"><<worldFemale '그녀의' '그의'>> 붕대는 해져 있고 피로 붉게 물들어 있다.</span>
+				<<case 1>><span class="pink"><<worldFemale '그녀의' '그의'>> 붕대는 불결하다.</span>
+				<<case 0>><span class="red"><<worldFemale '그녀의' '그의'>> 붕대는 오염되어 있다.</span>
 			<</switch>>
 		<<else>>
-			<span class="purple"><<worldFemale 'Her' 'His'>> bandages have been removed, and <<= $prisoner.harmedRecently gt 0 and $prisonerEvents.includes("punishmentIntro") ? "fresh wounds" : "her injuries">> are exposed.</span>
+			<span class="purple"><<worldFemale '그녀의' '그의'>> 붕대가 제거되었고, <<= $prisoner.harmedRecently gt 0 and $prisonerEvents.includes("punishmentIntro") ? "갓 입은 상처" : "상처">>【이가】 드러나 있다.</span>
 		<</if>>
 		<br>
 	<</if>>
 	<<if $prisonerEvents.includes("hunger")>>
 		<<if $hc.daily.fed>>
-			<span class="green"><<worldFemale 'She' 'He'>>'s been fed today.</span>
+			<span class="green"><<worldFemale '그녀' '그'>>【은는】 오늘 음식을 먹었다.</span>
 		<<else>>
-			<span class="pink"><<worldFemale 'She' 'He'>> hasn't been fed today.</span>
+			<span class="pink"><<worldFemale '그녀' '그'>>【은는】 오늘 음식을 먹지 못했다.</span>
 		<</if>>
 		<br>
 	<</if>>
 	<<if $prisonerEvents.includes("wash")>>
 		<<if $hc.daily.washed>>
 			<<if $hcChallenge.prisonerClean and $prisoner.cleanBody lt 4>>
-				<span class="blue"><<worldFemale 'She' 'He'>>'s been washed today,</span> <span class="purple">but <<worldFemale 'her' 'his'>> wounds are too foul to clean in a single session.</span>
+				<span class="blue"><<worldFemale '그녀' '그'>>【은는】 오늘 몸을 씻었으나,</span> <span class="purple">상처가 너무나도 더러워 한 번에 다 씻어낼 수 없다.</span>
 				<<if $prisoner.bandagesOn or _prisonerClothesItem>>
-					<span class="purple italic"><<worldFemale 'She' 'He'>> must be fully naked to be washed.</span>
+					<span class="purple italic"><<worldFemale '그녀' '그'>>【을를】 씻기려면 옷을 완전히 벗겨야 한다.</span>
 				<</if>>
 			<<else>>
-				<span class="green"><<worldFemale 'She' 'He'>>'s been washed today.</span>
+				<span class="green"><<worldFemale '그녀' '그'>>【은는】 오늘 몸을 씻었다.</span>
 			<</if>>
 		<<else>>
-			<span class="pink"><<worldFemale 'She' 'He'>> hasn't been washed today.
+			<span class="pink"><<worldFemale '그녀' '그'>>【은는】 오늘 몸을 씻지 않았다.
 			<<if $prisoner.bandagesOn or _prisonerClothesItem>>
-				<i><<worldFemale 'She' 'He'>> must be fully naked to be washed.</i>
+				<i><<worldFemale '그녀' '그'>>【을를】 씻기려면 옷을 완전히 벗겨야 한다.</i>
 			<</if>>
 			</span>
 		<</if>>
@@ -1056,11 +1056,11 @@
 	<</if>>
 	<<if $prisonerEvents.includes("brand")>>
 		<<if $hc.daily.treated>>
-			<span class="green"><<worldFemale 'Her' 'His'>> burns have been treated.</span>
+			<span class="green"><<worldFemale '그녀의' '그의'>> 화상은 치료되었다.</span>
 		<<else>>
-			<span class="red"><<worldFemale 'Her' 'His'>> burns haven't been treated.
+			<span class="red"><<worldFemale '그녀의' '그의'>> 화상은 치료되지 않았다.
 			<<if $prisoner.bandagesOn or _prisonerClothesItem>>
-				<i><<worldFemale 'She' 'He'>> must be fully naked to treat them.</i>
+				<i>화상을 치료하려면 옷을 완전히 벗겨야 한다.</i>
 			<</if>>
 			</span>
 		<</if>>
@@ -1097,30 +1097,30 @@
 		<<switch $prisoner.state>>
 			<<case "lucid">>
 				<<set $prisoner.state to "awake">>
-				<span class="gold"><<worldFemale 'She' 'He'>> seems to be lucid again.</span>
+				<span class="gold"><<worldFemale '그녀' '그'>>【은는】 다시 정신이 맑아진 듯하다.</span>
 			<<case "awake">>
-				<<worldFemale 'She' 'He'>>'s currently awake.
+				<<worldFemale '그녀' '그'>>【은는】 현재 깨어 있다.
 			<<case "asleep">>
-				<span class="blue"><<worldFemale 'She' 'He'>>'s currently asleep.</span>
+				<span class="blue"><<worldFemale '그녀' '그'>>【은는】 현재 잠들어 있다.</span>
 			<<case "dogs">>
 				<<if $hc.dogs.includes("loud")>>
-					<span class="red"><<worldFemale 'She' 'He'>> writhes on the ground, lashing out as a dog barks outside.</span>
+					<span class="red"><<worldFemale '그녀' '그'>>【은는】 밖에서 짖는 개 소리에 발작하듯 바닥을 뒹군다.</span>
 				<<else>>
-					<span class="red"><<worldFemale 'She' 'He'>> writhes on the ground.</span>
+					<span class="red"><<worldFemale '그녀' '그'>>【은는】 바닥에서 몸부림친다.</span>
 				<</if>>
 			<<default>>
-				<span class="red"><<worldFemale 'She' 'He'>> doesn't seem to be aware of <<worldFemale 'her' 'his'>> surroundings.</span>
+				<span class="red"><<worldFemale '그녀' '그'>>【은는】 주위 상황을 인지하지 못하는 듯하다.</span>
 		<</switch>>
 		<<if $hcAction is "enter">>
 			<<if $prisoner.state is "awake">>
 				<<if $prisoner.harmed gte Math.floor($prisoner.love / 6)>>
-					<span class="red"><<worldFemale 'She' 'He'>> glares with hatred as you enter.</span>
+					<span class="red">당신이 들어가자 <<worldFemale '그녀' '그'>>【은는】 증오를 담아 노려본다.</span>
 				<<elseif $prisoner.love gte 60>>
-					<span class="green"><<worldFemale 'She' 'He'>> warmly smiles at you as you enter.</span>
+					<span class="green">당신이 들어가자 <<worldFemale '그녀' '그'>>【은는】 당신을 향해 따뜻하게 미소 짓는다.</span>
 				<<elseif $prisoner.love gte 25 and $prisonerEvents.includes("tongue")>>
-					<span class="teal">The tension in <<worldFemale 'her' 'his'>> body fades as you enter. <<worldFemale 'She' 'He'>> seems relieved that it's you.</span>
+					<span class="teal">당신이 들어가자 <<worldFemale '그녀의' '그의'>> 몸에서 긴장이 풀린다. <<worldFemale '그녀' '그'>>【은는】 당신인 것을 알고 안도하는 듯하다.</span>
 				<<else>>
-					<span class="pink"><<worldFemale 'She' 'He'>> tenses up as you enter.</span>
+					<span class="pink">당신이 들어가자 <<worldFemale '그녀' '그'>>【은는】 몸을 긴장시킨다.</span>
 				<</if>>
 			<</if>>
 		<</if>>
@@ -1150,20 +1150,20 @@
 						당신은 밧줄과 윈치를 이용해 우물로 양동이를 내린다. 그리고 물이 가득 찬 양동이를 끌어올린다.
 					<</if>>
 				<</if>>
-			<<case "pickUp">>You pick up _itemText.
+			<<case "pickUp">>당신은 _itemText【을를】 줍는다.
 			<<case "return">>
 				<<if ["bucket", "snuffer"].includes($itemActionObject.type)>>
-					You hang _itemText back up.
+					당신은 _itemText【을를】 다시 걸어둔다.
 				<<else>>
-					You put _itemText back where you found <<= $itemActionObject.type is "herbs" ? "them" : "it">>.
+					당신은 _itemText【을를】 원래 있던 자리에 되돌려놓는다.
 				<</if>>
-			<<case "down">>You put down _itemText.
-			<<case "drop">>You drop _itemText.
-			<<case "dropStash">>You stash _itemText under your bed.
-			<<case "dropDirty">>You drop _itemText, and it becomes dirty.
-			<<case "dropStashDirty">>You stash _itemText under your bed, and it becomes dirty.
+			<<case "down">>당신은 _itemText【을를】 내려놓는다.
+			<<case "drop">>당신은 _itemText【을를】 떨어뜨린다.
+			<<case "dropStash">>당신은 _itemText【을를】 침대 밑에 숨긴다.
+			<<case "dropDirty">>당신은 _itemText【을를】 떨어뜨렸다. 그것은 더러워진다.
+			<<case "dropStashDirty">>당신은 _itemText【을를】 침대 밑에 숨겼다. 그것은 더러워진다.
 			<<case "disposal">>
-				You throw _itemText into the disposal channel.
+				당신은 _itemText【을를】 폐기 수로에 던져 넣는다.
 				<<if _itemText is "clothes">>
 					이제 사악한 자들이 숨을 두 번째 가죽은 없다.
 				<</if>>
@@ -1177,10 +1177,10 @@
 					당신은 <span class="blue"><<print hcTranslateName($itemActionObject.state)>> 횃불이 제물로 받아들여지지 않을 것</span>이라고 느낀다.
 				<</if>>
 
-			<<case "putInBucket">>You put _itemText in a bucket. <<if ["snuffer"].includes($itemActionObject.type)>>It rattles around noisily.<</if>>
-			<<case "fromBucket">>You take _itemText from the bucket.
+			<<case "putInBucket">>당신은 _itemText【을를】 양동이에 넣는다. <<if ["snuffer"].includes($itemActionObject.type)>>그것이 요란하게 달그락거린다.<</if>>
+			<<case "fromBucket">>당신은 양동이에서 _itemText【을를】 꺼낸다.
 			<<case "emptyDisposal">>
-				You dump _itemText into the disposal channel.
+				당신은 _itemText【을를】 폐기 수로에 버린다.
 				<<if $torchOffering>>
 					/* it should not be possible to put lit torches in a bucket, so no need to account for them */
 					<<unset $torchOffering>>
@@ -1188,17 +1188,17 @@
 				<</if>>
 			<<case "emptyWell">>
 				<<if $bus is "lake">>
-					You empty _itemText into the lake.
+					당신은 _itemText【을를】 호수에 비운다.
 				<<else>>
-					You empty _itemText back into the well.
+					당신은 _itemText【을를】 우물에 다시 비운다.
 				<</if>>
 			<<case "emptyGarden">>
-				You dump out _itemText at the edge of the forest.
+				당신은 _itemText【을를】 숲 가장자리에 쏟아버린다.
 			<<case "kick">>
 				<<if !["disposal", "forest", "lake"].includes($bus)>>
-					<span class="red">You kick over _itemText. The water makes a horrible mess everywhere. <<hopelessCycleSus 2>></span>
+					<span class="red">당신은 _itemText【을를】 발로 차서 넘어뜨린다. 쏟아진 물이 사방을 끔찍하게 어지럽힌다. <<hopelessCycleSus 2>></span>
 				<<else>>
-					You kick over _itemText.
+					당신은 _itemText【을를】 발로 차서 넘어뜨린다.
 				<</if>>
 			<<case "pickUpLit">>당신은 불타는 횃불을 재빨리 집어 든다.
 			<<case "pickUpSnuffed">>당신은 불이 꺼진 횃불을 줍는다.
@@ -1225,8 +1225,8 @@
 			<<case "disposalBurnt" "disposalSnuffed">>당신은 불이 꺼진 횃불을 폐기 수로에 던져 넣는다.
 			<<case "disposalLit">>당신은 여전히 불타고 있는 횃불을 폐기 수로에 던져 넣고, 그것은 즉시 꺼진다.
 
-			<<case "clean">>You diligently scrub _itemText clean.
-			<<case "burn">>You commit _itemText to the pyre.
+			<<case "clean">>당신은 _itemText【을를】 부지런히 문질러 닦는다.
+			<<case "burn">>당신은 _itemText【을를】 장작더미에 처넣어 태운다.
 				<<if $itemActionObject.dirty gte 2>>
 					당신의 형제자매들은 당신의 제물에 흡족해하는 것 같다. <<stress -6>><<purity 5>><<lstress>><<gpurity>><<hopelessCycleSus -2>>
 				<</if>>
@@ -1236,19 +1236,19 @@
 			<<case "undressPrisoner">>
 				당신은 <<print window.KR.gatPersonNameDictKR($prisoner.name)>>의 옷을 벗긴다.
 				<<if $prisoner.harmed gte Math.floor($prisoner.love / 6)>>
-					<<worldFemale 'She' 'He'>> doesn't make it easy.
+					<<worldFemale '그녀' '그'>>【은는】 가만히 있지 않는다.
 				<<elseif $prisoner.love gte 45>>
-					<<worldFemale 'She' 'He'>> glares at you suggestively.
+					<<worldFemale '그녀' '그'>>【은는】 묘한 눈빛으로 당신을 노려본다.
 				<</if>>
 			<<case "undressPrisonerAsleep">>
 				당신은 <<print window.KR.gatPersonNameDictKR($prisoner.name)>>의 옷을 벗긴다.
 				<<if $prisoner.love gte 45>>
-					<<worldFemale 'She' 'He'>> quickly wakes up, but calms down upon seeing that it's you.
+					<<worldFemale '그녀' '그'>>【은는】 화들짝 깨어나지만, 당신임을 알아보고는 진정한다.
 				<<else>>
-					<<worldFemale 'She' 'He'>> quickly wakes up and tries to push you away.
+					<<worldFemale '그녀' '그'>>【은는】 재빨리 깨어나 당신을 밀쳐내려 한다.
 				<</if>>
 			<<case "dressPrisoner">>당신은 <<print window.KR.gatPersonNameDictKR($prisoner.name)>>에게 <<print hcTranslateName($itemActionObject.nameText || $itemActionObject.name)>>【을를】 입힌다.
-			<<case "bandagesRemove">>You remove <<worldFemale 'her' 'his'>> bandages. <<if $hc.daily.treatedDayBefore>><<run delete $hc.daily.treatedDayBefore>>The spent medicinal herbs fall away from <<worldFemale 'her' 'his'>> body.<</if>>
+			<<case "bandagesRemove">>당신은 <<worldFemale '그녀의' '그의'>> 붕대를 풀어낸다. <<if $hc.daily.treatedDayBefore>><<run delete $hc.daily.treatedDayBefore>>다 쓴 약초가 <<worldFemale '그녀의' '그의'>> 몸에서 떨어져 나간다.<</if>>
 			<<case "bandagesApply">>당신은 <<print hcTranslateName($itemActionObject.nameText || $itemActionObject.name)>>【을를】 감아준다.
 
 			<<case "petTheDog">>당신은 개를 쓰다듬는다. 녀석은 행복하게 당신 주위를 펄쩍거리며 뛴다.
@@ -1386,7 +1386,7 @@
 			/* Protect the player from themselves */
 			<<if $hcItems.filter(tooMany => tooMany.type is _valueHere).length gte 8>>
 				<<set _outOfStock to true>>
-				<<hcicon _valueHere>><<print _valueHere.toUpperFirst()>> <span class="red">(you've taken too many!)</span>
+				<<hcicon _valueHere>><<print hcTranslateName(_valueHere).toUpperFirst()>> <span class="red">(너무 많이 가져갔습니다!)</span>
 			<<elseif _valueHere is "torch">>
 				<<set _outOfStock to false>>
 				<<if $hc.dungeonTorchState is "snuffed">>
@@ -1395,11 +1395,11 @@
 					<<hcicon "torch-burnt">>횃불 <span class="red">(다 탐)</span>
 				<<else>>
 					<<set _torchTimeDisplay to $hcChallenge.torchFaster ? Math.clamp(Math.floor($hc.dungeonTorchTime/2),1,12) : $hc.dungeonTorchTime>>
-					<<hcicon "torch">>Torches <span class="orange">(<<number _torchTimeDisplay>> <<pluralise _torchTimeDisplay "hour">>)</span>
+					<<hcicon "torch">>횃불 <span class="orange">(<<number _torchTimeDisplay>>시간)</span>
 				<</if>>
 			<<else>>
 				<<set _outOfStock to false>>
-				<<hcicon _valueHere>><<print _valueHere.toUpperFirst()>> <span class="green">(plentiful)</span>
+				<<hcicon _valueHere>><<print hcTranslateName(_valueHere).toUpperFirst()>> <span class="green">(풍부함)</span>
 			<</if>>
 			/* If an absurd amount hasn't been taken and dropped, and has a free hand */
 			<<if !_outOfStock>>
@@ -1446,7 +1446,7 @@
 										| <<link [[`_torchText`|$passage]]>><<run hcItemAdd({ type: "torch", name: "torch", location: _valueGucket.containerID, origin: V.bus, time: _torchTime, state: _torchState, inSconce: false}, _valueGucket.containerID, _torchAction)>><</link>>
 									<</capture>>
 								<<else>>
-									| <<link [[`Place in _valueGucket.nameText`|$passage]]>>
+									| <<link [[`_valueGucket.nameText에 넣는다`|$passage]]>>
 										<<run hcItemAdd(_valueHere, _valueGucket.containerID, ("putIn" + _valueGucket.name.toUpperFirst()))>>
 									<</link>>
 								<</if>>
@@ -1472,7 +1472,7 @@
 
 	/* Held items */
 	<<if _itemsHeld.length>>
-		<b><u>Items held:</u><<if _itemsHeld.length gte 2>> <span class="red">(hands full!)</span><</if>></b><br>
+		<b><u>소지한 물건:</u><<if _itemsHeld.length gte 2>> <span class="red">(손이 가득 참!)</span><</if>></b><br>
 		<<for _labelHeld, _valueHeld range _itemsHeld>>
 			<<hopelessCycleItemOptions _valueHeld>>
 		<</for>>
@@ -1490,9 +1490,9 @@
 	<</if>>
 	<<if _item.type is "torch">>
 		<<if _item.state is "snuffed">>
-			<<hcicon _item>><<print _displayName>> <span class="blue">(snuffed)</span>
+			<<hcicon _item>><<print _displayName>> <span class="blue">(꺼짐)</span>
 		<<elseif _item.state is "burnt">>
-			<<hcicon _item>><<print _displayName>> <span class="red">(burnt out)</span>
+			<<hcicon _item>><<print _displayName>> <span class="red">(다 탐)</span>
 		<<else>>
 			<<set _torchTimeDisplay to $hcChallenge.torchFaster ? _item.time/2 : _item.time>>
 			<<hcicon _item>><<print _displayName>> <span class="orange">(<<number _torchTimeDisplay>> <<pluralise _torchTimeDisplay "hour">>)</span>
@@ -1541,11 +1541,11 @@
 					<<set _toBeItemAction to "pickUp" + _item.state.toUpperFirst()>>
 					<<if _item.inSconce>><<set _toBeItemAction += "Sconce">><</if>>
 					<<capture _toBeItemAction>>
-						| <<link [[Take|$passage]]>><<set _item.location to "held">><<set _item.inSconce to false>><<set $itemAction to _toBeItemAction>><</link>>
+						| <<link [[가져간다|$passage]]>><<set _item.location to "held">><<set _item.inSconce to false>><<set $itemAction to _toBeItemAction>><</link>>
 					<</capture>>
 				<<else>>
 					/* Other items */
-					| <<link [[Pick up|$passage]]>><<set _item.location to "held">><<run delete _item.vanishesIn>><<set $itemAction to "pickUp">><<set $itemActionObject to _item>><</link>>
+					| <<link [[집어든다|$passage]]>><<set _item.location to "held">><<run delete _item.vanishesIn>><<set $itemAction to "pickUp">><<set $itemActionObject to _item>><</link>>
 				<</if>>
 			<</if>>
 
@@ -1583,9 +1583,9 @@
 						<</link>><<if _item.dirty and _item.name is "stolen food">><<hopelessCycleSus 1>><<elseif _item.dirty is 0>><<hopelessCycleSus -2>><</if>>
 					<<elseif _item.containerID>>
 						<<if _itemsInThisContainer.length is 0>>
-							| <<link [[Return|$passage]]>><<run hcItemRemove(_item, "return")>><</link>>
+							| <<link [[되돌린다|$passage]]>><<run hcItemRemove(_item, "return")>><</link>>
 						<<else>>
-							| <<link [[Put down|$passage]]>><<set _item.location to $bus>><<set $itemAction to "down">><<set $itemActionObject to _item>><</link>>
+							| <<link [[내려놓는다|$passage]]>><<set _item.location to $bus>><<set $itemAction to "down">><<set $itemActionObject to _item>><</link>>
 						<</if>>
 					<<elseif !_item.used and !_item.dirty>>
 						| <<link [[Return|$passage]]>><<run hcItemRemove(_item, "return")>><</link>>
@@ -1596,18 +1596,18 @@
 					/* Drop */
 					<<if $bus is "bed">>
 						<<if _item.dirty is 0 and _item.dirtyOnDrop>>
-							| <<link "Stash <span class='red'>(will dirty!)</span>" $passage>><<set _item.location to $bus>><<set $itemAction to "dropStashDirty">><<set $itemActionObject to _item>><<set _item.dirty to 1>><</link>>
+							| <<link "숨긴다 <span class='red'>(더러워짐!)</span>" $passage>><<set _item.location to $bus>><<set $itemAction to "dropStashDirty">><<set $itemActionObject to _item>><<set _item.dirty to 1>><</link>>
 						<<else>>
-							| <<link [[Stash|$passage]]>><<set _item.location to $bus>><<set $itemAction to "dropStash">><<set $itemActionObject to _item>><</link>>
+							| <<link [[숨긴다|$passage]]>><<set _item.location to $bus>><<set $itemAction to "dropStash">><<set $itemActionObject to _item>><</link>>
 						<</if>>
 					<<elseif _item.containerID>>
 						| <<link [[Put down|$passage]]>><<set _item.location to $bus>><<set $itemAction to "down">><<set $itemActionObject to _item>><</link>>
 					<<elseif _item.dirty isnot undefined and _item.dirtyOnDrop>>
 						/* For items that can become dirty */
 						<<if _item.dirty gte 1>>
-							| <<link [[Drop|$passage]]>><<set _item.location to $bus>><<set $itemAction to "drop">><<set $itemActionObject to _item>><</link>>
+							| <<link [[떨어뜨린다|$passage]]>><<set _item.location to $bus>><<set $itemAction to "drop">><<set $itemActionObject to _item>><</link>>
 						<<else>>
-							| <<link "Drop <span class='red'>(will dirty!)</span>" $passage>><<set _item.location to $bus>><<set $itemAction to "dropDirty">><<set $itemActionObject to _item>><<set _item.dirty to 1>><</link>>
+							| <<link "떨어뜨린다 <span class='red'>(더러워짐!)</span>" $passage>><<set _item.location to $bus>><<set $itemAction to "dropDirty">><<set $itemActionObject to _item>><<set _item.dirty to 1>><</link>>
 						<</if>>
 					<<else>>
 						| <<link [[Drop|$passage]]>><<set _item.location to $bus>><<set $itemAction to "drop">><<set $itemActionObject to _item>><</link>>
@@ -1620,7 +1620,7 @@
 
 				/* Fill empty container with water from well or lake */
 				<<if _itemsHere.includes("water") and _itemsInThisContainer.length is 0>>
-					| <<link [[Fill with water (0:02)|$passage]]>><<pass 2>><<tiredness 2>><<run console.warn(_item)>><<run hcItemAdd("water", _item.containerID, "water")>><</link>><<gtiredness>>
+					| <<link [[물을 채운다 (0:02)|$passage]]>><<pass 2>><<tiredness 2>><<run console.warn(_item)>><<run hcItemAdd("water", _item.containerID, "water")>><</link>><<gtiredness>>
 				<</if>>
 
 				/* Emptying containers into disposal channel */
@@ -1683,28 +1683,28 @@
 		<<if _item.type is "torch">>
 			<<if _item.state is "snuffed">>
 				<<if (hcItemCanReach("torch", t => t.state is "lit") or $bus is "guardhouse" and $hc.dungeonTorchState is "lit")>>
-					| <<link [[Re-ignite (0:01)|$passage]]>><<pass 1>><<set _item.state to "lit">><<set $itemAction to "reignite">><</link>>
+					| <<link [[불씨를 살린다 (0:01)|$passage]]>><<pass 1>><<set _item.state to "lit">><<set $itemAction to "reignite">><</link>>
 				<<elseif $bus is "pyre" and _canIgnite is true>>
-					| <<link [[Re-ignite (0:01)|$passage]]>><<pass 1>><<set _item.state to "lit">><<set $itemAction to "reignitePyre">><</link>>
+					| <<link [[불을 붙인다 (0:01)|$passage]]>><<pass 1>><<set _item.state to "lit">><<set $itemAction to "reignitePyre">><</link>>
 				<</if>>
 				<<if _item.time lt 6 and $bus is "guardhouse">>
-					| <<link [[Refresh burn time (0:05)|$passage]]>><<pass 5>><<set _item.time += 4>><<set $itemAction to "refresh">><</link>>
+					| <<link [[횃대를 다시 밝힌다 (0:05)|$passage]]>><<pass 5>><<set _item.time += 4>><<set $itemAction to "refresh">><</link>>
 				<</if>>
 			<</if>>
 			<<if _item.state is "lit">>
 				<<if hcItemCanReach("snuffer")>>
-					| <<link [[Snuff (0:01)|$passage]]>><<pass 1>><<set _item.state to "snuffed">><<set $itemAction to "snuff">><</link>>
+					| <<link [[불을 끈다 (0:01)|$passage]]>><<pass 1>><<set _item.state to "snuffed">><<set $itemAction to "snuff">><</link>>
 					<<if _item.origin is $bus>>
-						| <<link [[Snuff and return (0:01)|$passage]]>><<pass 1>><<run hcItemRemove(_item, "dungeonBack")>><</link>>
+						| <<link [[끄고 반납한다 (0:01)|$passage]]>><<pass 1>><<run hcItemRemove(_item, "dungeonBack")>><</link>>
 					<</if>>
 				<</if>>
 			<<elseif _item.location is "held">>
 				<<if _item.origin is $bus>>
-					| <<link [[Return|$passage]]>><<run hcItemRemove(_item, "dungeonBack")>><</link>>
+					| <<link [[반납한다|$passage]]>><<run hcItemRemove(_item, "dungeonBack")>><</link>>
 				<<elseif $bus is "bed">>
-					| <<link [[Stash|$passage]]>><<set _item.location to $bus>><<set $itemAction to "dropStash">><<set $itemActionObject to _item>><</link>>
+					| <<link [[숨긴다|$passage]]>><<set _item.location to $bus>><<set $itemAction to "dropStash">><<set $itemActionObject to _item>><</link>>
 				<<else>>
-					| <<link [[Drop|$passage]]>><<set _item.location to $bus>><<set $itemAction to "drop">><<set $itemActionObject to _item>><</link>>
+					| <<link [[떨어뜨린다|$passage]]>><<set _item.location to $bus>><<set $itemAction to "drop">><<set $itemActionObject to _item>><</link>>
 				<</if>>
 			<</if>>
 			<<if _hcSconces.includes($bus) and !_item.inSconce>>
@@ -1717,14 +1717,14 @@
 						<</link>>
 					<</capture>>
 				<<else>>
-					| <<link [[Place in sconce|$passage]]>><<set _item.location to $bus>><<set _item.inSconce to true>><<set $itemAction to "put" + $bus.toUpperFirst()>><</link>>
+					| <<link [[벽걸이 등에 꽂는다|$passage]]>><<set _item.location to $bus>><<set _item.inSconce to true>><<set $itemAction to "put" + $bus.toUpperFirst()>><</link>>
 				<</if>>
 			<</if>>
 			<<if $bus is "disposal">>
 				<<if !$hc.glassfingers and _item.state is "lit">>
-					| <<link [[Dispose of|Hopeless Cycle Disposal Glassfingers]]>><<set $hc.glassfingers to true>><<run hcItemRemove(_item, ("disposal" + _item.state.toUpperFirst()))>><</link>>
+					| <<link [[버린다|Hopeless Cycle Disposal Glassfingers]]>><<set $hc.glassfingers to true>><<run hcItemRemove(_item, ("disposal" + _item.state.toUpperFirst()))>><</link>>
 				<<else>>
-					| <<link [[Dispose of|$passage]]>><<run hcItemRemove(_item, ("disposal" + _item.state.toUpperFirst()))>><</link>>
+					| <<link [[버린다|$passage]]>><<run hcItemRemove(_item, ("disposal" + _item.state.toUpperFirst()))>><</link>>
 				<</if>>
 			<</if>>
 		<</if>>
@@ -1737,7 +1737,7 @@
 				<<capture _valueGucket, _waterInThatContainer>>
 					/* Extinguish torch with water in container */
 					<<if _item.type is "torch" and _item.state is "lit" and _waterInThatContainer>>
-						| <<link [[`Extinguish in _valueGucket.nameText (0:01)`|$passage]]>>
+						| <<link [[`_valueGucket.nameText【으로로】 끈다 (0:01)`|$passage]]>>
 							<<pass 1>><<set _item.time to 0>>
 							<<set _item.state to "burnt">>
 							<<set $itemAction to "extinguish">>
@@ -1746,14 +1746,14 @@
 					<</if>>
 					/* Wash item with water in container */
 					<<if _item.dirty and _waterInThatContainer?.dirty lt 2 and _item.type isnot "clutter">>
-						| <<link [[`Clean in _valueGucket.nameText (0:05)`|$passage]]>>
+						| <<link [[`_valueGucket.nameText【으로로】 씻는다 (0:05)`|$passage]]>>
 							<<pass 5>><<set _item.dirty to 0>><<set $itemAction to "clean">><<set $itemActionObject to _item>>
 							<<if _item.name is "bloodstained sack">><<set _item.name to "torn vegetable sack">><</if>><<hcWash _waterInThatContainer>>
 						<</link>>
 					<</if>>
 					/* Put item in container */
 					<<if _itemsInThatContainer.length lt _valueGucket.capacity and !_waterInThatContainer and _item.state isnot "lit" and !_hcBlacklist.includes(_item.type)>>
-						| <<link [[`Place in _valueGucket.nameText`|$passage]]>>
+						| <<link [[`_valueGucket.nameText에 넣는다`|$passage]]>>
 							<<set _item.location to _valueGucket.containerID>>
 							<<if _item.inSconce>><<set _item.inSconce to false>><</if>>
 							<<set $itemAction to "putIn" + _valueGucket.name.toUpperFirst()>>
@@ -1769,7 +1769,7 @@
 			<<for _labelCont, _valueCont range _itemsInThisContainer>>
 				<<capture _valueCont>>
 					<<set _linkName to _valueCont.nameText ? _valueCont.nameText : _valueCont.name>>
-					| <<link [[`Take _linkName`|$passage]]>>
+					| <<link [[`_linkName【을를】 가져간다`|$passage]]>>
 						<<set _valueCont.location to "held">><<run delete _item.vanishesIn>><<run delete _valueCont.vanishesIn>>
 						<<set $itemAction to "from" + _item.name.toUpperFirst()>><<set $itemActionObject to _valueCont>>
 					<</link>>
@@ -1779,7 +1779,7 @@
 
 		/* Disposal (excluding torches) */
 		<<if $bus is "disposal" and !_item.persists and _item.name isnot "torch">>
-			| <<link [[Dispose of|$passage]]>><<run hcItemRemove(_item, "disposal")>><</link>>
+			| <<link [[버린다|$passage]]>><<run hcItemRemove(_item, "disposal")>><</link>>
 		<</if>>
 
 		/* Pyre */
@@ -1802,9 +1802,9 @@
 		/* Specific actions */
 		<<if _item.type is "clothes" and $bus is "cell" and _canSee and !_clothesCurrent and $prisonerEvents.includes("wash")>>
 			<<if !$prisonerEvents.includes("newClothes") and !_item.dirty>>
-				| <<link [[Dress <<worldFemale 'her' 'him'>> (0:05)|Hopeless Cycle Cell Clean Clothes]]>><<pass 5>><<stress 24>><<trauma 12>><<set _item.location to "prisoner">><</link>><<ggstress>><<gtrauma>><<hopelessCycleLove 2>><<hopelessCycleSus 1>>
+				| <<link [[입혀 준다 (0:05)|Hopeless Cycle Cell Clean Clothes]]>><<pass 5>><<stress 24>><<trauma 12>><<set _item.location to "prisoner">><</link>> <<ggstress>><<gtrauma>><<hopelessCycleLove 2>><<hopelessCycleSus 1>>
 			<<else>>
-				| <<link [[Dress <<worldFemale 'her' 'him'>> (0:05)|$passage]]>><<pass 5>><<set $itemAction to "dressPrisoner">><<set $itemActionObject to _item>><<set _item.location to "prisoner">><</link>>
+				| <<link [[입혀 준다 (0:05)|$passage]]>><<pass 5>><<set $itemAction to "dressPrisoner">><<set $itemActionObject to _item>><<set _item.location to "prisoner">><</link>>
 			<</if>>
 		<</if>>
 	<</capture>>
@@ -1812,7 +1812,7 @@
 <</widget>>
 
 <<widget "hopelessCyclePassout">>
-	<span class="narration">The gaoler had pushed <<worldMale 'himself' 'herself'>> too much.</span>
+	<span class="narration">간수는 자신을 너무 한계까지 몰아붙였다.</span>
 	<br><br>
 	<<set $stress -= 7000>>
 	<<pass 1 hour>>
@@ -1860,13 +1860,13 @@
 	<<if $prisoner.loveRevealed>>
 		<<set _plus to _args[0]>>
 		<<switch _plus>>
-			<<case 3>><<set _text_output to " | <span class='green'>+ + + Love</span>">>
-			<<case 2>><<set _text_output to " | <span class='green'>+ + Love</span>">>
-			<<case 1>><<set _text_output to " | <span class='green'>+ Love</span>">>
-			<<case -1>><<set _text_output to " | <span class='red'>- Love</span>">>
-			<<case -2>><<set _text_output to " | <span class='red'>- - Love</span>">>
-			<<case -3>><<set _text_output to " | <span class='red'>- - - Love</span>">>
-			<<default>><<set _text_output to " | <span class='green'>+ Love</span>">>
+			<<case 3>><<set _text_output to " | <span class='green'>+ + + 사랑</span>">>
+			<<case 2>><<set _text_output to " | <span class='green'>+ + 사랑</span>">>
+			<<case 1>><<set _text_output to " | <span class='green'>+ 사랑</span>">>
+			<<case -1>><<set _text_output to " | <span class='red'>- 사랑</span>">>
+			<<case -2>><<set _text_output to " | <span class='red'>- - 사랑</span>">>
+			<<case -3>><<set _text_output to " | <span class='red'>- - - 사랑</span>">>
+			<<default>><<set _text_output to " | <span class='green'>+ 사랑</span>">>
 		<</switch>>
 	<</if>>
 <</silently>><<if _text_output>><<print _text_output>><</if>><</widget>>
@@ -1876,13 +1876,13 @@
 	<<if $hc.suspicionRevealed>>
 		<<set _plus to _args[0]>>
 		<<switch _plus>>
-			<<case 3>><<set _text_output to " | <span class='red'>+ + + Suspicion</span>">>
-			<<case 2>><<set _text_output to " | <span class='red'>+ + Suspicion</span>">>
-			<<case 1>><<set _text_output to " | <span class='red'>+ Suspicion</span>">>
-			<<case -1>><<set _text_output to " | <span class='teal'>- Suspicion</span>">>
-			<<case -2>><<set _text_output to " | <span class='teal'>- - Suspicion</span>">>
-			<<case -3>><<set _text_output to " | <span class='teal'>- - - Suspicion</span>">>
-			<<default>><<set _text_output to " | <span class='red'>+ Suspicion</span>">>
+			<<case 3>><<set _text_output to " | <span class='red'>+ + + 의심</span>">>
+			<<case 2>><<set _text_output to " | <span class='red'>+ + 의심</span>">>
+			<<case 1>><<set _text_output to " | <span class='red'>+ 의심</span>">>
+			<<case -1>><<set _text_output to " | <span class='teal'>- 의심</span>">>
+			<<case -2>><<set _text_output to " | <span class='teal'>- - 의심</span>">>
+			<<case -3>><<set _text_output to " | <span class='teal'>- - - 의심</span>">>
+			<<default>><<set _text_output to " | <span class='red'>+ 의심</span>">>
 		<</switch>>
 	<</if>>
 <</silently>><<if _text_output>><<print _text_output>><</if>><</widget>>
@@ -1971,9 +1971,9 @@
 	<br>
 	<<for _label, _value range _endings>>
 		<<if $hcEndings.includes(_label)>>
-			<span class="narration">Ending _label: <span @class="_value.colour">_value.name</span> | _value.revealed</span>
+			<span class="narration">엔딩 _label: <span @class="_value.colour">_value.name</span> | _value.revealed</span>
 		<<else>>
-			<span class="narration">Ending ? | Hint: _value.hint</span>
+			<span class="narration">엔딩 ? | 힌트: _value.hint</span>
 		<</if>>
 		<br>
 	<</for>>
@@ -2242,7 +2242,7 @@
 		<</if>>
 	<</for>>
 	<<if _list.length gt $hcChallengesRun.length>>
-		<span class="green bold">New record: <<print _list.length>>/<<print setup.hopelessCycleChallenges.length>>!</span> Previous record: <<print $hcChallengesRun.length>>/<<print setup.hopelessCycleChallenges.length>>
+		<span class="green bold">신기록: <<print _list.length>>/<<print setup.hopelessCycleChallenges.length>>!</span> 이전 기록: <<print $hcChallengesRun.length>>/<<print setup.hopelessCycleChallenges.length>>
 		<<set $hcChallengesRun to _list>>
 		<br><br>
 	<</if>>
