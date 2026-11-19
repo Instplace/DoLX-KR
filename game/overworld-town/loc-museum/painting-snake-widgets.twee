@@ -1309,22 +1309,42 @@
 		<<set _containersHeld to _containers.filter(cont => cont.location is "held").length>>
 		<<set _containersHeldIndex to 0>>
 		<<run _containers.forEach((gucket, index) => {
-			gucket.nameText = hcTranslateName(gucket.name);
-			gucket.tooltip = null;
-			if (gucket.location is V.bus) {
-				if (_containersHere gte 2) {
-					_containersHereIndex++;
-					_int = _containersHereIndex;
-					gucket.nameText = ordinalSuffixOf(_int) + " " + gucket.name;
-				}
-			} else {
-				if (_containersHeld gte 2) {
-					_containersHeldIndex++;
-					_int = _containersHeldIndex;
-					gucket.nameText = ordinalSuffixOf(_int) + " held " + gucket.name;
-				} else {
-					gucket.nameText = gucket.nameText;
-				}
+	gucket.nameText = hcTranslateName(gucket.name);
+	gucket.tooltip = null;
+	if (gucket.location is V.bus) {
+		if (_containersHere gte 2) {
+			_containersHereIndex++;
+			_int = _containersHereIndex;
+			gucket.nameText = _int + "번째 " + gucket.nameText;
+		}
+	} else {
+		if (_containersHeld gte 2) {
+			_containersHeldIndex++;
+			_int = _containersHeldIndex;
+			gucket.nameText = _int + "번째 " + gucket.nameText;
+		} else {
+			gucket.nameText = gucket.nameText;
+		}
+	}
+	let gucketItems = V.hcItems.filter(thing => thing.location === gucket.containerID);
+	if (gucketItems.length is 0) {
+		gucket.nameText += " <span class='black'>(비어 있음)</span>";
+	} else {
+		let water = gucketItems.find(thing => thing.type === "water");
+		if (water) {
+			water.nameText = hcTranslateName(water.name);
+			switch (water.dirty) {
+				case 0:
+					gucket.nameText += " <span class='teal'>(깨끗한 물";
+					break;
+				case 1:
+					gucket.nameText += " <span class='blue'>(사용한 물";
+					water.nameText = "사용한 물";
+					break;
+				default:
+					gucket.nameText += " <span class='purple'>(오염된 물";
+					water.nameText = "오염된 물";
+					break;
 			}
 			if (V.hcChallenge.waterLeaky) {
 				gucket.nameText += ", " + water.time + "시간)</span>";

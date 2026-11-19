@@ -974,42 +974,42 @@
 <<set _maturity to (_amount >= setup.hbsc.MIN_FIXED_TERM_OPEN and _aer > 0 ? setup.hbsc.calcFixedTermMaturity(_amount, _months) : 0)>>
 
 <<if _months is undefined or setup.hbsc.getFixedTermPlan(_months) is null or (_source !== "money" && _source !== "deposit")>>
-	The teller looks at the terminal. "Let's do that in order. Choose the term and where the money will come from first."
+	창구 직원이 단말기를 들여다본다. "순서대로 하죠. 먼저 기간과 자금의 출처부터 골라 주세요."
 	<br><br>
-	<<link [[Next|HBSC Bank Fixed-Term Amount]]>><</link>>
+	<<link [[다음|HBSC Bank Fixed-Term Amount]]>><</link>>
 <<elseif _amount < setup.hbsc.MIN_FIXED_TERM_OPEN>>
-	The teller gives you an apologetic look. "Sorry, I can't lock away that amount. Fixed-term deposits need at least <<printmoney setup.hbsc.MIN_FIXED_TERM_OPEN>>."
+	창구 직원이 미안한 표정으로 당신을 본다. "죄송해요, 그 금액은 묶어 둘 수 없어요. 정기 예금은 최소 <<printmoney setup.hbsc.MIN_FIXED_TERM_OPEN>> 이상이어야 해요."
 	<br><br>
-	<<link [[Next|HBSC Bank Fixed-Term Amount]]>><</link>>
+	<<link [[다음|HBSC Bank Fixed-Term Amount]]>><</link>>
 <<elseif _amount > _available>>
-	The teller checks the screen and shakes <<his>> head. "Sorry, I can't lock away <<printmoney _amount>> from <<print _sourceLabel>> right now. You only have <<printmoney _available>> available there."
+	창구 직원이 화면을 확인하고 고개를 젓는다. "죄송해요, 지금은 <<print _sourceLabel>>에서 <<printmoney _amount>>【을를】 묶어 둘 수 없어요. 거기엔 <<printmoney _available>>만 쓸 수 있어요."
 	<br><br>
-	<<link [[Next|HBSC Bank Fixed-Term Amount]]>><</link>>
+	<<link [[다음|HBSC Bank Fixed-Term Amount]]>><</link>>
 <<elseif not (_aer > 0)>>
-	The teller taps the brochure. "Sorry, that amount doesn't fit one of our available rate bands. Try a different amount."
+	창구 직원이 안내 책자를 톡톡 두드린다. "죄송해요, 그 금액은 저희 금리 구간 어디에도 맞지 않아요. 다른 금액으로 해 보세요."
 	<br><br>
-	<<link [[Next|HBSC Bank Fixed-Term Amount]]>><</link>>
+	<<link [[다음|HBSC Bank Fixed-Term Amount]]>><</link>>
 <<else>>
-	The teller turns the screen towards you and taps the summary box. "Please check these details before I book it in."
+	창구 직원이 화면을 당신 쪽으로 돌리고 요약 상자를 가리킨다. "접수하기 전에 내용을 확인해 주세요."
 	<br><br>
 
 	<div class="hbsc-brochure">
-		<span class="gold">Overview</span><br>
-		• You are locking away exactly <<printmoney _amount>><br>
-		• This will be taken now from: <<print _sourceLabel>><br>
-		• Term: <<print _months>> month(s)<br>
-		• Rate: <<print _aer>>% per year<br>
+		<span class="gold">개요</span><br>
+		• 묶어 둘 금액: 정확히 <<printmoney _amount>><br>
+		• 지금 출금되는 곳: <<print _sourceLabel>><br>
+		• 기간: <<print _months>>개월<br>
+		• 금리: 연 <<print _aer>>%<br>
 		<<set _interestEarned to setup.hbsc.roundMoney(_maturity.total - _amount)>>
-		• Interest earned over <<print _months>> month(s): <<printmoney _interestEarned>><br>
-		• Estimated total at maturity: <<printmoney _maturity.total>>
+		• <<print _months>>개월 동안 붙는 이자: <<printmoney _interestEarned>><br>
+		• 만기 시 예상 총액: <<printmoney _maturity.total>>
 	</div>
 	<br>
-	<span class="gold">Note:</span> <i>This money is locked away until the term ends.</i>
+	<span class="gold">참고:</span> <i>이 돈은 기간이 끝날 때까지 묶여 있습니다.</i>
 	<br><br>
 
-	<<link [[Yes, lock this away|HBSC Bank Fixed-Term Open Result]]>><</link>>
+	<<link [[예, 묶어 둔다|HBSC Bank Fixed-Term Open Result]]>><</link>>
 	<br>
-	<<link [[No, let me change the amount|HBSC Bank Fixed-Term Amount]]>><</link>>
+	<<link [[아니요, 금액을 바꾼다|HBSC Bank Fixed-Term Amount]]>><</link>>
 <</if>>
 
 :: HBSC Bank Fixed-Term Open Result
@@ -1019,54 +1019,54 @@
 <<set $hbsc.ftAmount to 0>><<set $hbsc.ftAmountInput to "">>
 
 <<if _result.ok>>
-	The teller takes the slip, books it in, and slides a receipt across the counter. "Done. That's locked away now until it matures, earning the rate we agreed."
+	창구 직원이 전표를 받아 접수하고 영수증을 카운터 너머로 밀어 준다. "완료됐어요. 만기가 될 때까지 묶여 있고, 합의한 금리가 적용돼요."
 	<br><br>
 
 	<div class="hbsc-brochure">
-		<span class="gold">Fixed-term deposit opened</span><br>
-		• Amount locked away: <<printmoney _result.amount>><br>
-		• Taken from:
+		<span class="gold">정기 예금을 개설했습니다</span><br>
+		• 묶어 둔 금액: <<printmoney _result.amount>><br>
+		• 출금처:
 		<<if _result.source is "deposit">>
-			your HBSC savings
+			HBSC 저축
 		<<else>>
-			cash on hand
+			보유 현금
 		<</if>>
 		<br>
-		• Term: <<print _result.months>> month(s)<br>
-		• Rate: <<print _result.aer>>% per year<br>
-		• Matures in: <<print Math.max(0, (_result.term.matureOnDay - Time.days))>> days
+		• 기간: <<print _result.months>>개월<br>
+		• 금리: 연 <<print _result.aer>>%<br>
+		• 만기까지: <<print Math.max(0, (_result.term.matureOnDay - Time.days))>>일
 	</div>
 	<br>
 	<<set $hbsc.ftMonths to 0>><<set $hbsc.ftSource to "">>
 	<<hbscOptions>>
 <<elseif _result.reason is "noAccount">>
-	The teller folds <<his>> hands. "You'll need an HBSC account before I can open a fixed-term deposit."
+	창구 직원이 두 손을 모은다. "정기 예금을 개설하려면 먼저 HBSC 계좌가 있어야 해요."
 	<br><br>
-	<<icon "access-card.png">><<link [[Open an HBSC account|HBSC Bank Account]]>><</link>>
+	<<icon "access-card.png">><<link [[HBSC 계좌를 개설한다|HBSC Bank Account]]>><</link>>
 <<elseif _result.reason is "invalidAmount">>
-	The teller tilts <<his>> head. "Sorry, I need a valid amount of at least <<printmoney setup.hbsc.MIN_FIXED_TERM_OPEN>> before I can open that fixed-term deposit."
+	창구 직원이 고개를 갸웃한다. "죄송해요, 정기 예금을 개설하려면 <<printmoney setup.hbsc.MIN_FIXED_TERM_OPEN>> 이상의 올바른 금액이 필요해요."
 	<br><br>
-	<<link [[Next|HBSC Bank Fixed-Term Amount]]>><</link>>
+	<<link [[다음|HBSC Bank Fixed-Term Amount]]>><</link>>
 <<elseif _result.reason is "banned">>
-	The teller checks the account notes. "Sorry. Because you tried to sneak around inside the branch, counter service is suspended for <span class = "red"><<print _result.remaining>> more day<<print _result.remaining is 1 ? "" : "s">></span>."
+	창구 직원이 계좌 메모를 확인한다. "죄송해요. 지점 안에서 몰래 돌아다니려 하셨기 때문에 창구 이용이 <span class = "red"><<print _result.remaining>>일 더</span> 정지돼요."
 	<br><br>
-	<<if $hbsc.lastPenaltyAmount > 0>>The teller adds, "The security penalty already taken from your savings was <<printmoney $hbsc.lastPenaltyAmount>>."<br><br><<set $hbsc.penaltyWarningPending to false>><</if>>
+	<<if $hbsc.lastPenaltyAmount > 0>>창구 직원이 덧붙인다. "이미 저축에서 빠져나간 보안 위약금은 <<printmoney $hbsc.lastPenaltyAmount>>【이】에요."<br><br><<set $hbsc.penaltyWarningPending to false>><</if>>
 	<br><br>
 	<<getouticon>><<link [[떠난다|High Street]]>><<endevent>><</link>>
 <<elseif _result.reason is "invalidBand">>
-	The teller taps the brochure. "Sorry, that amount doesn't fit one of our fixed-term rate bands. Try a different amount."
+	창구 직원이 안내 책자를 톡톡 두드린다. "죄송해요, 그 금액은 정기 예금 금리 구간 어디에도 맞지 않아요. 다른 금액으로 해 보세요."
 	<br><br>
-	<<link [[Next|HBSC Bank Fixed-Term Amount]]>><</link>>
+	<<link [[다음|HBSC Bank Fixed-Term Amount]]>><</link>>
 <<elseif _result.reason is "insufficientMoney">>
-	The teller looks at the screen and gives you an apologetic look. "Sorry, I can't lock away <<printmoney _requested>> from your cash any more. Choose a smaller amount or use another source."
+	창구 직원이 화면을 보고 미안한 표정으로 당신을 본다. "죄송해요, 이제 현금에서 <<printmoney _requested>>【을를】 묶어 둘 수 없어요. 더 적은 금액을 고르거나 다른 출처를 이용해 주세요."
 	<br><br>
-	<<link [[Next|HBSC Bank Fixed-Term Amount]]>><</link>>
+	<<link [[다음|HBSC Bank Fixed-Term Amount]]>><</link>>
 <<elseif _result.reason is "insufficientDeposit">>
-	The teller looks at the screen and gives you an apologetic look. "Sorry, I can't lock away <<printmoney _requested>> from your HBSC savings balance any more. Choose a smaller amount or use another source."
+	창구 직원이 화면을 보고 미안한 표정으로 당신을 본다. "죄송해요, 이제 HBSC 저축 잔액에서 <<printmoney _requested>>【을를】 묶어 둘 수 없어요. 더 적은 금액을 고르거나 다른 출처를 이용해 주세요."
 	<br><br>
-	<<link [[Next|HBSC Bank Fixed-Term Amount]]>><</link>>
+	<<link [[다음|HBSC Bank Fixed-Term Amount]]>><</link>>
 <<else>>
-	The teller shakes <<his>> head. "I can't open that fixed-term deposit right now."
+	창구 직원이 고개를 젓는다. "지금은 그 정기 예금을 개설해 드릴 수 없어요."
 	<br><br>
 	<<hbscOptions>>
 <</if>>
@@ -1074,11 +1074,11 @@
 :: HBSC Bank Fixed-Term Manage
 <<effects>>
 <<if $hbsc.fixedTerms.length <= 0>>
-	The teller looks at the screen. "You don't have any fixed-term deposits to manage right now."
+	창구 직원이 화면을 본다. "지금은 관리할 정기 예금이 없어요."
 	<br><br>
 	<<hbscOptions>>
 <<else>>
-	"Here are your fixed-term deposits," the teller says, turning the screen towards you and scrolling through the list.
+	"정기 예금 목록이에요." 창구 직원이 화면을 당신 쪽으로 돌려 목록을 넘기며 말한다.
 	<br><br>
 
 	<<for _i = 0; _i < $hbsc.fixedTerms.length; _i++>>
@@ -1086,24 +1086,24 @@
 		<<if _term>>
 			<<capture _term, _i>>
 				<div class="hbsc-brochure">
-					<span class="gold">Deposit <<print _i + 1>></span><br>
-					• Amount Locked Away: <<printmoney _term.principal>><br>
-					• Term: <<print _term.months>> month(s)<br>
-					• Rate: <<print _term.aer>>% per year<br>
-					• Status:
+					<span class="gold">예금 <<print _i + 1>></span><br>
+					• 묶어 둔 금액: <<printmoney _term.principal>><br>
+					• 기간: <<print _term.months>>개월<br>
+					• 금리: 연 <<print _term.aer>>%<br>
+					• 상태:
 					<<if _term.status is "matured">>
-						Matured
+						만기
 					<<else>>
-						Active
+						진행 중
 					<</if>>
 					<br>
 					<<if _term.status is "matured">>
-						• Total Ready to Collect: <<printmoney _term.maturityTotal>>
+						• 수령 가능 총액: <<printmoney _term.maturityTotal>>
 					<<else>>
-						• Days Remaining: <<print Math.max(0, (_term.matureOnDay - Time.days))>>
+						• 남은 일수: <<print Math.max(0, (_term.matureOnDay - Time.days))>>
 					<</if>>
 					<br>
-					<<link [[View this deposit|HBSC Bank Fixed-Term Detail]]>><<set $hbsc.selectedFixedTermId to _term.id>><</link>>
+					<<link [[이 예금을 본다|HBSC Bank Fixed-Term Detail]]>><<set $hbsc.selectedFixedTermId to _term.id>><</link>>
 				</div>
 			<</capture>>
 		<</if>>
@@ -1114,64 +1114,64 @@
 <<effects>>
 <<set _term to setup.hbsc.getFixedTermById($hbsc.selectedFixedTermId)>>
 <<if _term is null>>
-	The teller looks at the screen. "I can't find that fixed-term deposit any more. It may already have been collected."
+	창구 직원이 화면을 본다. "그 정기 예금을 찾을 수가 없어요. 이미 수령하셨을지도 몰라요."
 	<br><br>
 	<<hbscOptions>>
 <<else>>
 	<div class="hbsc-brochure">
-		<span class="gold">Fixed-term deposit details</span><br>
-		• Amount Locked Away: <<printmoney _term.principal>><br>
-		• Term: <<print _term.months>> month(s)<br>
-		• Rate: <<print _term.aer>>% per year<br>
-		• Status:
+		<span class="gold">정기 예금 상세</span><br>
+		• 묶어 둔 금액: <<printmoney _term.principal>><br>
+		• 기간: <<print _term.months>>개월<br>
+		• 금리: 연 <<print _term.aer>>%<br>
+		• 상태:
 		<<if _term.status is "matured">>
-			Matured
+			만기
 		<<else>>
-			Active
+			진행 중
 		<</if>>
 		<br>
 		<<if _term.status is "matured">>
-			• Total Ready to Collect: <<printmoney _term.maturityTotal>>
+			• 수령 가능 총액: <<printmoney _term.maturityTotal>>
 		<<else>>
 			<<set _heldToTerm to setup.hbsc.calcFixedTermMaturity(_term.principal, _term.months)>>
-			• Days Passed: <<print _term.elapsedDays>><br>
-			• Days Remaining: <<print Math.max(0, (_term.matureOnDay - Time.days))>><br>
-			• Total if held to maturity: <<printmoney _heldToTerm.total>>
+			• 경과 일수: <<print _term.elapsedDays>><br>
+			• 남은 일수: <<print Math.max(0, (_term.matureOnDay - Time.days))>><br>
+			• 만기까지 유지할 경우 총액: <<printmoney _heldToTerm.total>>
 		<</if>>
 	</div>
 	<br>
 
 	<<if _term.status is "matured">>
-		Choose where to send the matured money.
+		만기가 된 돈을 보낼 곳을 고르세요.
 		<br><br>
-		<<link [[Collect into your HBSC savings balance|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to "full">><<set $hbsc.ftCloseTarget to "deposit">><</link>>
+		<<link [[HBSC 저축 잔액으로 수령한다|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to "full">><<set $hbsc.ftCloseTarget to "deposit">><</link>>
 		<br>
-		<<link [[Collect as cash|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to "full">><<set $hbsc.ftCloseTarget to "money">><</link>>
+		<<link [[현금으로 수령한다|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to "full">><<set $hbsc.ftCloseTarget to "money">><</link>>
 		<br>
 	<<else>>
 		<<set _earned to setup.hbsc.calcFixedTermEarnedInterest(_term.principal, _term.months, _term.elapsedDays)>>
 		<<set _fullPreview to setup.hbsc.calcFixedTermEarlyWithdrawal(_term.principal, _term.months, _term.elapsedDays, $hbsc.account.level, "full")>>
 
 		<div class="black">
-			<i>If you close it now, the bank estimates you would receive <<printmoney _fullPreview.totalReturned>> after the early-withdrawal fee.</i>
+			<i>지금 해지하면 중도 인출 수수료를 뗀 뒤 <<printmoney _fullPreview.totalReturned>>【을를】 받게 될 것으로 은행은 추산합니다.</i>
 		</div>
 		<br>
 
-		<<link [[Close it now and return the money to HBSC savings|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to "full">><<set $hbsc.ftCloseTarget to "deposit">><</link>>
+		<<link [[지금 해지하고 HBSC 저축으로 돌려받는다|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to "full">><<set $hbsc.ftCloseTarget to "deposit">><</link>>
 		<br>
-		<<link [[Close it now and take the money as cash|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to "full">><<set $hbsc.ftCloseTarget to "money">><</link>>
+		<<link [[지금 해지하고 현금으로 받는다|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to "full">><<set $hbsc.ftCloseTarget to "money">><</link>>
 		<br>
 
 		<<if setup.hbsc.canHalfWithdraw(_term)>>
 			<<set _halfPreview to setup.hbsc.calcFixedTermEarlyWithdrawal(_term.principal, _term.months, _term.elapsedDays, $hbsc.account.level, "half")>>
-			<<link [[Withdraw half into HBSC savings and keep the rest invested|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to "half">><<set $hbsc.ftCloseTarget to "deposit">><</link>>
+			<<link [[절반만 HBSC 저축으로 인출하고 나머지는 계속 운용한다|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to "half">><<set $hbsc.ftCloseTarget to "deposit">><</link>>
 			<br>
-			<<link [[Take an early half withdrawal as cash|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to "half">><<set $hbsc.ftCloseTarget to "money">><</link>>
+			<<link [[중도에 절반을 현금으로 인출한다|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to "half">><<set $hbsc.ftCloseTarget to "money">><</link>>
 			<br>
 		<</if>>
 		<br>
 	<</if>>
-<<icon "email.png">><<link [[Back|HBSC Bank Fixed-Term Deposit]]>><</link>>
+<<icon "email.png">><<link [[뒤로|HBSC Bank Fixed-Term Deposit]]>><</link>>
 <</if>>
 
 :: HBSC Bank Fixed-Term Close Result
@@ -1181,46 +1181,46 @@
 <<set $hbsc.ftCloseKind to "">><<set $hbsc.ftCloseTarget to "">>
 <<if _result.ok>>
 	<<if _result.term.status is "active">>
-		The teller confirms the early half withdrawal and updates the fixed-term deposit that remains.
+		창구 직원이 중도 절반 인출을 확인하고 남은 정기 예금을 갱신한다.
 	<<else>>
-		The teller processes the payout, stamps the closure slip, and closes the fixed-term deposit.
+		창구 직원이 지급을 처리하고 해지 전표에 도장을 찍은 뒤 정기 예금을 해지한다.
 	<</if>>
 	<br><br>
 
 	<div class="hbsc-brochure">
-		<span class="gold">Payout summary</span><br>
-		• Original Amount Returned: <<printmoney _result.payout.principalReturned>><br>
-		• Interest Earned: <<printmoney _result.payout.earnedInterest>><br>
-		• Early-Withdrawal Fee:
+		<span class="gold">지급 내역</span><br>
+		• 반환된 원금: <<printmoney _result.payout.principalReturned>><br>
+		• 발생한 이자: <<printmoney _result.payout.earnedInterest>><br>
+		• 중도 인출 수수료:
 		<<if _result.payout.penaltyRate > 0>>
-			<<print _result.payout.penaltyRate>>% of earned interest (<<printmoney _result.payout.penalty>>)
+			이자의 <<print _result.payout.penaltyRate>>% (<<printmoney _result.payout.penalty>>)
 		<<else>>
 			없음
 		<</if>>
 		<br>
-		• Total Paid Out: <<printmoney _result.payout.totalReturned>>
+		• 총 지급액: <<printmoney _result.payout.totalReturned>>
 	</div>
 	<br>
 
 	<<if _target is "money">>
-		You tuck the money away.
+		당신은 돈을 챙겨 넣는다.
 	<<else>>
-		The money has been sent to your HBSC savings balance.
+		돈이 HBSC 저축 잔액으로 들어간다.
 	<</if>>
 	<br><br>
 	<<hbscOptions>>
 <<elseif _result.reason is "depositCapExceeded">>
-	The teller taps the screen. "Your current savings tier doesn't have enough space to receive that payout. You can collect it as cash instead, or upgrade your account first."
+	창구 직원이 화면을 톡톡 두드린다. "현재 저축 등급으로는 그 지급액을 받을 여유가 부족해요. 대신 현금으로 수령하시거나, 먼저 계좌를 업그레이드하셔도 돼요."
 	<br><br>
-	<<link [[Collect it as cash instead|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to _kind>><<set $hbsc.ftCloseTarget to "money">><</link>>
+	<<link [[대신 현금으로 수령한다|HBSC Bank Fixed-Term Close Result]]>><<set $hbsc.ftCloseKind to _kind>><<set $hbsc.ftCloseTarget to "money">><</link>>
 <<elseif _result.reason is "banned">>
-	The teller checks the account notes. "Sorry. Because you tried to sneak around inside the branch, counter service is suspended for <span class = "red"><<print _result.remaining>> more day<<print _result.remaining is 1 ? "" : "s">></span>."
+	창구 직원이 계좌 메모를 확인한다. "죄송해요. 지점 안에서 몰래 돌아다니려 하셨기 때문에 창구 이용이 <span class = "red"><<print _result.remaining>>일 더</span> 정지돼요."
 	<br><br>
-	<<if $hbsc.lastPenaltyAmount > 0>>The teller adds, "The security penalty already taken from your savings was <<printmoney $hbsc.lastPenaltyAmount>>."<br><br><<set $hbsc.penaltyWarningPending to false>><</if>>
+	<<if $hbsc.lastPenaltyAmount > 0>>창구 직원이 덧붙인다. "이미 저축에서 빠져나간 보안 위약금은 <<printmoney $hbsc.lastPenaltyAmount>>【이】에요."<br><br><<set $hbsc.penaltyWarningPending to false>><</if>>
 	<br><br>
 	<<getouticon>><<link [[떠난다|High Street]]>><<endevent>><</link>>
 <<else>>
-	The teller frowns at the terminal. "I can't process that collection right now."
+	창구 직원이 단말기를 보며 얼굴을 찌푸린다. "지금은 그 수령을 처리해 드릴 수 없어요."
 	<br><br>
 	<<hbscOptions>>
 <</if>>
@@ -1235,42 +1235,42 @@
 
 <<if setup.hbsc.isBanned()>>
 	<<set _remaining to setup.hbsc.getBanRemainingDays()>>
-	The teller checks the account notes. "Sorry. Because you tried to sneak around inside the branch, counter service is suspended for <span class="red"><<print _remaining>> more day<<print _remaining is 1 ? "" : "s">></span>."
+	창구 직원이 계좌 메모를 확인한다. "죄송해요. 지점 안에서 몰래 돌아다니려 하셨기 때문에 창구 이용이 <span class="red"><<print _remaining>>일 더</span> 정지돼요."
 	<br><br>
 	<<getouticon>><<link [[떠난다|High Street]]>><<endevent>><</link>>
 <<else>>
-	The teller pulls up the personal lending screen. "We can advance you cash in small amounts. The terms are simple: you repay one and a half times whatever you borrow. Miss it for a month and we'll arrange collection through your landlord."
+	창구 직원이 개인 대출 화면을 띄운다. "소액 현금은 빌려 드릴 수 있어요. 조건은 간단해요. 빌린 금액의 1.5배를 갚으시면 돼요. 한 달 동안 못 갚으시면 집주인을 통해 수금하도록 조치할 거예요."
 	<br><br>
 
 	<div class="hbsc-brochure">
-		<span class="gold">Loan summary</span><br>
-		&bull; Cash on hand: <<printmoney $money>><br>
-		&bull; Outstanding balance to repay: <<printmoney _owed>><br>
-		&bull; Borrowed principal: <<printmoney _principal>> of <<printmoney setup.hbsc.LOAN_PRINCIPAL_MAX>><br>
-		&bull; Available to borrow now: <<printmoney _borrowable>><br>
+		<span class="gold">대출 요약</span><br>
+		&bull; 보유 현금: <<printmoney $money>><br>
+		&bull; 상환해야 할 남은 잔액: <<printmoney _owed>><br>
+		&bull; 빌린 원금: <<printmoney _principal>> (한도 <<printmoney setup.hbsc.LOAN_PRINCIPAL_MAX>>)<br>
+		&bull; 지금 빌릴 수 있는 금액: <<printmoney _borrowable>><br>
 		<<if $hbsc.loan.autoRepay and _owed gt 0>>
-			&bull; <span class="red">Overdue:</span> Bailey is collecting <<printmoney `setup.hbsc.loanRentSurchargeAmount ? setup.hbsc.loanRentSurchargeAmount() : setup.hbsc.LOAN_RENT_SURCHARGE`>> a week from your rent.<br>
+			&bull; <span class="red">연체:</span> 베일리가 매주 집세에서 <<printmoney `setup.hbsc.loanRentSurchargeAmount ? setup.hbsc.loanRentSurchargeAmount() : setup.hbsc.LOAN_RENT_SURCHARGE`>>씩 걷어 가고 있습니다.<br>
 		<</if>>
 	</div>
 	<br>
 
 	<<if _borrowable gt 0>>
-		<<schoolicon "library desk">><<link [[Borrow|HBSC Bank Loan Result]]>><<set $hbsc.loan.action to "borrow">><</link>> (<span class="gold"><<printmoney _borrowable>></span>)
+		<<schoolicon "library desk">><<link [[빌린다|HBSC Bank Loan Result]]>><<set $hbsc.loan.action to "borrow">><</link>> (<span class="gold"><<printmoney _borrowable>></span>)
 		<br>
 	<<else>>
-		<i>You've reached the lending limit. Repay some of your balance to borrow more.</i>
+		<i>대출 한도에 도달했습니다. 더 빌리려면 잔액 일부를 먼저 갚으십시오.</i>
 		<br>
 	<</if>>
 
 	<<if _repayChunk gt 0>>
-		<<schoolicon "library desk">><<link [[Repay a little|HBSC Bank Loan Result]]>><<set $hbsc.loan.action to "repayChunk">><</link>> (<span class="gold"><<printmoney _repayChunk>></span>)
+		<<schoolicon "library desk">><<link [[조금 갚는다|HBSC Bank Loan Result]]>><<set $hbsc.loan.action to "repayChunk">><</link>> (<span class="gold"><<printmoney _repayChunk>></span>)
 		<br>
 		<<if _repayAll gt _repayChunk>>
-			<<schoolicon "library desk">><<link [[Repay everything|HBSC Bank Loan Result]]>><<set $hbsc.loan.action to "repayAll">><</link>> (<span class="gold"><<printmoney _repayAll>></span>)
+			<<schoolicon "library desk">><<link [[전부 갚는다|HBSC Bank Loan Result]]>><<set $hbsc.loan.action to "repayAll">><</link>> (<span class="gold"><<printmoney _repayAll>></span>)
 			<br>
 		<</if>>
 	<<elseif _owed gt 0>>
-		<i>You don't have the cash to repay anything right now.</i>
+		<i>지금은 갚을 현금이 없습니다.</i>
 		<br>
 	<</if>>
 	<br>
@@ -1285,34 +1285,34 @@
 <<if _action is "borrow">>
 	<<set _result to setup.hbsc.borrowLoan()>>
 	<<if _result.ok>>
-		The teller counts out <<printmoney _result.amount>> and slides it across the counter. "There you go. That's added to what you owe us."
+		창구 직원이 <<printmoney _result.amount>>【을를】 세어 카운터 너머로 밀어 준다. "여기 있어요. 저희에게 갚으실 금액에 더해졌어요."
 		<br><br>
-		Your outstanding balance is now <<printmoney _result.owed>>.
+		남은 대출 잔액은 이제 <<printmoney _result.owed>>【이】다.
 		<br><br>
 	<<elseif _result.reason is "banned">>
-		The teller shakes <<his>> head. "Counter service is suspended right now."
+		창구 직원이 고개를 젓는다. "지금은 창구 업무가 정지돼 있어요."
 		<br><br>
 	<<else>>
-		The teller shakes <<his>> head. "You've hit your lending limit. Pay some back first."
+		창구 직원이 고개를 젓는다. "대출 한도에 도달하셨어요. 먼저 일부를 갚아 주세요."
 		<br><br>
 	<</if>>
 <<elseif _action is "repayChunk" or _action is "repayAll">>
 	<<set _target to (_action is "repayAll" ? Math.min($hbsc.loan.owed, $money) : Math.min($hbsc.loan.owed, $money, setup.hbsc.LOAN_CHUNK))>>
 	<<set _result to setup.hbsc.repayLoan(_target)>>
 	<<if _result.ok>>
-		The teller takes <<printmoney _result.paid>> and updates your account.
+		창구 직원이 <<printmoney _result.paid>>【을를】 받아 계좌를 갱신한다.
 		<<if _result.owed gt 0>>
-			"You've still got <<printmoney _result.owed>> to go."
+			"아직 <<printmoney _result.owed>>【이가】 남았어요."
 		<<else>>
-			<span class="green">"That clears your loan in full. Pleasure doing business."</span>
+			<span class="green">"대출이 전액 상환됐어요. 좋은 거래였어요."</span>
 		<</if>>
 		<br><br>
 	<<else>>
-		The teller checks the screen. "There's nothing to repay, or you're short on cash."
+		창구 직원이 화면을 확인한다. "갚을 금액이 없거나 현금이 부족하신 것 같아요."
 		<br><br>
 	<</if>>
 <<else>>
-	The teller waits for you to decide.
+	창구 직원이 당신의 결정을 기다린다.
 	<br><br>
 <</if>>
 <<hbscOptions>>
@@ -1321,37 +1321,37 @@
 <<effects>>
 <<run setup.hbsc.ensureState()>>
 <<if $hbsc.account.level lt 1>>
-	You need an HBSC account before you can request a debit card.
+	체크카드를 신청하려면 HBSC 계좌가 있어야 합니다.
 <<elseif setup.hbsc.isBanned()>>
-	Counter service is suspended. You can still report a stolen card at the entrance.
+	창구 이용이 정지된 상태입니다. 도난당한 카드 신고는 입구에서 여전히 할 수 있습니다.
 <<elseif !$hbsc.card>>
-	"Your first debit card is free," the teller says. "Payments come out of your savings. You can still withdraw cash when you need it."
+	"첫 체크카드는 무료예요." 창구 직원이 말한다. "결제 금액은 저축에서 빠져나가요. 현금이 필요하면 언제든 인출하실 수 있고요."
 	<br><br>
-	<<link [[Request a debit card (0:05)|HBSC Bank Card]]>><<run setup.hbsc.issueCard()>><<pass 5>><</link>>
+	<<link [[체크카드를 신청한다 (0:05)|HBSC Bank Card]]>><<run setup.hbsc.issueCard()>><<pass 5>><</link>>
 <<else>>
-	Savings available: <<printmoney $hbsc.account.deposit>>.
+	사용 가능한 저축: <<printmoney $hbsc.account.deposit>>.
 	<br><br>
 	<<hbscCardStatus>>
 	<br><br>
 	<<switch $hbsc.card.status>>
 		<<case "active">>
-			<label><<checkbox "$hbsc.card.preferred" false true autocheck>> Pay by card where accepted.</label>
+			<label><<checkbox "$hbsc.card.preferred" false true autocheck>> 카드를 받는 곳에서는 카드로 결제한다.</label>
 			<br>
-			Clothes, groceries, furniture, toys, haircuts, tattoos, cafe and pub orders, arcade games, bus fares, lessons, and hospital and pharmacy services accept your card. Your card pays the full bill when savings cover it; otherwise you pay cash. Cash left in closed shops, gifts, bribes, bets, and bank deposits still need carried money.
+			옷, 식료품, 가구, 장난감, 이발, 문신, 카페와 펍 주문, 오락실 게임, 버스 요금, 수업, 병원과 약국 서비스에서 카드를 사용할 수 있습니다. 저축으로 전액을 감당할 수 있으면 카드가 전액을 결제하고, 그렇지 않으면 현금으로 내야 합니다. 문 닫은 가게에 남겨 둔 현금, 선물, 뇌물, 내기, 은행 입금에는 여전히 소지한 현금이 필요합니다.
 		<<case "stolen">>
-			<<link [[Report your stolen card (0:05)|HBSC Bank Card]]>><<run setup.hbsc.reportCard()>><<pass 5>><</link>>
-			<br>Reporting is free and blocks further charges immediately.
+			<<link [[도난당한 카드를 신고한다 (0:05)|HBSC Bank Card]]>><<run setup.hbsc.reportCard()>><<pass 5>><</link>>
+			<br>신고는 무료이며, 이후의 결제는 즉시 차단됩니다.
 		<<case "blocked">>
-			A replacement costs <<printmoney setup.hbsc.CARD_REPLACEMENT_FEE>> and takes <<print setup.hbsc.CARD_REPLACEMENT_DAYS>> days. You can withdraw cash while you wait. Past unauthorised charges are not refunded.
+			재발급 비용은 <<printmoney setup.hbsc.CARD_REPLACEMENT_FEE>>【이】고 <<print setup.hbsc.CARD_REPLACEMENT_DAYS>>일이 걸립니다. 기다리는 동안에도 현금은 인출할 수 있습니다. 이미 발생한 무단 결제는 환불되지 않습니다.
 			<br>
 			<<if Math.max($money, $hbsc.account.deposit) gte setup.hbsc.CARD_REPLACEMENT_FEE>>
-				<<link [[Order a replacement card (0:10)|HBSC Bank Card]]>><<run setup.hbsc.orderReplacementCard()>><<pass 10>><</link>>
+				<<link [[재발급 카드를 신청한다 (0:10)|HBSC Bank Card]]>><<run setup.hbsc.orderReplacementCard()>><<pass 10>><</link>>
 			<<else>>
-				You cannot afford the replacement fee yet. Your stolen card remains blocked.
+				아직 재발급 비용을 낼 수 없습니다. 도난당한 카드는 계속 차단된 상태입니다.
 			<</if>>
 		<<case "replacement">>
 			<<if Time.days gte $hbsc.card.readyDay>>
-				<<link [[Collect your replacement card (0:05)|HBSC Bank Card]]>><<run setup.hbsc.collectReplacementCard()>><<pass 5>><</link>>
+				<<link [[재발급 카드를 수령한다 (0:05)|HBSC Bank Card]]>><<run setup.hbsc.collectReplacementCard()>><<pass 5>><</link>>
 			<</if>>
 	<</switch>>
 <</if>>
@@ -1363,32 +1363,32 @@
 <<set _level to $hbsc.account.level>><<set _deposit to $hbsc.account.deposit>>
 <<if _level < 1>>
 	<<speechresolve>>
-	"Can you set up automatic payments for me? Something that handles my regular bills?" you ask.
+	"자동이체 좀 설정해 주실 수 있나요? 정기적으로 나가는 요금을 알아서 처리해 주는 걸로요." 당신이 묻는다.
 	<br><br>
-	The teller gives an apologetic smile. "Standing orders are tied to a savings account, I'm afraid. Open one with us first and we can route your recurring payments straight from your balance."
+	창구 직원이 미안한 미소를 짓는다. "자동이체는 저축 계좌에 묶여 있어서요. 먼저 저희 쪽에서 계좌를 개설하시면 정기적으로 나가는 결제를 잔액에서 바로 빠져나가게 해 드릴 수 있어요."
 	<br><br>
 	<<hbscOptions>>
 <<else>>
 	<<speechresolve>>
 	<<if ((_speechAttitudeResolved is "meek") or (_speechAttitudeResolved is "shy") or (_speechAttitudeResolved is "docile"))>>
-		"Could you help me with regular weekly payments, please?" you ask quietly.
+		"저, 매주 나가는 정기 결제를 도와주실 수 있을까요...?" 당신이 조용히 묻는다.
 	<<elseif ((_speechAttitudeResolved is "polite") or (_speechAttitudeResolved is "flamboyant"))>>
-		"I was wondering if you could help me set up some recurring payments?" you ask.
+		"혹시 정기 결제를 설정하는 걸 도와주실 수 있을까요?" 당신이 묻는다.
 	<<elseif (_speechAttitudeResolved is "confident")>>
-		"I want to set up automatic payments for my regular bills," you say.
+		"정기적으로 나가는 요금을 자동이체로 설정하고 싶어요." 당신이 말한다.
 	<<elseif ((_speechAttitudeResolved is "bratty") or (_speechAttitudeResolved is "cruel"))>>
-		"Set up my regular payments so I don't have to deal with them," you say.
+		"정기 결제 좀 설정해 줘요. 일일이 신경 쓰기 싫으니까." 당신이 말한다.
 	<<else>>
-		"Can you help me with weekly payments? The ones that keep coming back?" you ask.
+		"매주 반복되는 결제를 도와주실 수 있나요? 계속 돌아오는 그 요금들요." 당신이 묻는다.
 	<</if>>
 	<br><br>
-	"Of course," the teller says brightly. "We call those <i>standing orders</i>. 
-    You tell me which regular payments to cover, and whenever one falls due we draw it straight from your savings balance. No need to carry the cash or be there in person."
+	"물론이죠." 창구 직원이 밝게 말한다. "그런 걸 <i>자동이체</i>라고 해요.
+    어떤 정기 결제를 처리할지 말씀해 주시면, 납부일마다 저축 잔액에서 바로 빼 드려요. 현금을 들고 다니거나 직접 오실 필요가 없어요."
 	<br><br>
 	<<set _hbscCancelled to $hbsc.notices.filter(n => n and n.type is "autoPayCancelled")>>
 	<<if _hbscCancelled.length > 0>>
 		<div class="hbsc-brochure">
-			<span class="red">Recently cancelled, due to insufficient savings:</span><br>
+			<span class="red">최근 해지됨, 저축 부족:</span><br>
 			<<for _i, _c range _hbscCancelled>>
 				&bull; <<print _c.label>><br>
 			<</for>>
@@ -1397,14 +1397,14 @@
 		<<run $hbsc.notices = $hbsc.notices.filter(n => !(n and n.type is "autoPayCancelled"))>>
 	<</if>>
 	<div class="hbsc-brochure">
-		<span class="gold">How a standing order works</span><br>
-		&bull; The payment is taken from your savings balance.<br>
-		&bull; It only goes through if your balance covers the full amount when it falls due.<br>
-		&bull; If your savings can't cover it when it's due, the order is cancelled automatically.<br>
-		&bull; You can switch any order on or off, free of charge.
+		<span class="gold">자동이체 이용 방식</span><br>
+		&bull; 결제 금액은 저축 잔액에서 빠져나갑니다.<br>
+		&bull; 납부일에 잔액이 전액을 감당할 수 있을 때만 결제됩니다.<br>
+		&bull; 납부일에 저축이 모자라면 해당 자동이체는 자동으로 해지됩니다.<br>
+		&bull; 자동이체는 언제든 무료로 켜고 끌 수 있습니다.
 	</div>
 	<br>
-	<span class="gold">Your savings balance:</span> <<printmoney _deposit>>
+	<span class="gold">저축 잔액:</span> <<printmoney _deposit>>
 	<br><br>
 	<<set _apAvail to {
 		bailey:       (def $rentMoney and $rentMoney gt 0 and $tutorial isnot 0),
@@ -1419,22 +1419,22 @@
 			<<set _anyShown to true>>
 			<<set _on to setup.hbsc.isAutoPayEnabled(_bill.id)>>
 			<span class="teal"><<print _bill.label>></span>:
-			<<if _on>><span class="green">On</span><<else>><span class="red">Off</span><</if>>
+			<<if _on>><span class="green">켜짐</span><<else>><span class="red">꺼짐</span><</if>>
 			<br>
 			<i><<print _bill.blurb>></i>
 			<br>
 			<<capture _bill>>
 				<<if _on>>
-					<<link "Cancel this standing order" "HBSC Bank Standing Orders">><<run setup.hbsc.setAutoPay(_bill.id, false)>><</link>>
+					<<link "자동이체를 해지한다" "HBSC Bank Standing Orders">><<run setup.hbsc.setAutoPay(_bill.id, false)>><</link>>
 				<<else>>
-					<<link "Set up this standing order" "HBSC Bank Standing Orders">><<run setup.hbsc.setAutoPay(_bill.id, true)>><</link>>
+					<<link "자동이체를 신청한다" "HBSC Bank Standing Orders">><<run setup.hbsc.setAutoPay(_bill.id, true)>><</link>>
 				<</if>>
 			<</capture>>
 			<br><br>
 		<</if>>
 	<</for>>
 	<<if not _anyShown>>
-		The teller checks the system. "It doesn't look like you have any regular payments we can take on right now. Come back if that changes."
+		창구 직원이 시스템을 확인한다. "지금은 저희가 대신 처리해 드릴 수 있는 정기 결제가 없는 것 같아요. 상황이 바뀌면 다시 들러 주세요."
 		<br><br>
 	<</if>>
 	<<hbscOptions>>

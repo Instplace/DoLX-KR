@@ -48,7 +48,7 @@
 	<br><br>
 
 	<<if $farmersProduce.money gt 0>>
-		<<highicon>><<link [[Collect money (<<printmoney $farmersProduce.money>>)|Farmers Centre Money Collection]]>><</link>>
+		<<highicon>><<link [[돈을 수령한다 (<<printmoney $farmersProduce.money>>)|Farmers Centre Money Collection]]>><</link>>
 		<br>
 	<</if>>
 	<<socialiseicon "ask">><<link [[농산물 판매에 대해 문의한다|Farmers Centre Produce Sale]]>><</link>>
@@ -61,7 +61,7 @@
 
 :: Farmers Centre Money Collection
 
-The <<person>> enters the factory proper, and emerges with a wad of notes. You've made <<income $farmersProduce.money "factoryProduce">><<if divineTfIncome($farmersProduce.money, "factoryProduce") gt $farmersProduce.money>>; more than you were quoted, it seems your reputation earns a little extra<</if>>.
+<<person>>【이가】 공장 안으로 들어갔다가 지폐 뭉치를 들고 나온다. 당신은 <<income $farmersProduce.money "factoryProduce">>【을를】 벌었다<<if divineTfIncome($farmersProduce.money, "factoryProduce") gt $farmersProduce.money>>; 제시받은 금액보다 많은 걸 보니, 당신의 평판 덕에 조금 더 얹어 준 모양이다<</if>>.
 <<set $farmersProduce.money to 0>>
 <br><br>
 <<getouticon>><<link [[떠난다|Farmers Centre]]>><</link>>
@@ -69,7 +69,7 @@ The <<person>> enters the factory proper, and emerges with a wad of notes. You'v
 :: Farmers Centre Produce Sale
 그 <<person>>【이가】 노트북을 연다. "그래서 뭘 가져왔지?"
 <br><br>
-<i>The factory sells some of your produce each day at noon. You can collect your earnings here whenever you like. High business fame helps the factory sell produce faster.</i>
+<i>공장은 매일 정오에 농산물 일부를 판매합니다. 판매 대금은 언제든 원할 때 이곳에서 수령할 수 있습니다. 사업 명성이 높으면 공장이 농산물을 더 빨리 팔 수 있습니다.</i>
 <br><br>
 <<set $farmersProduce.toSell to {}>>
 <<set _foodstuffKeys to Object.keys($foodstuff)>>
@@ -94,19 +94,19 @@ The <<person>> enters the factory proper, and emerges with a wad of notes. You'v
 
 :: Farmers Centre Produce Sale Confirm
 
-The gate shudders open, and a lorry rumbles out, on its way to collect your produce.
+문이 덜컹거리며 열리고, 트럭 한 대가 당신의 농산물을 실으러 굉음을 내며 나간다.
 <<if $farmersProduce.dragonEggShipment>>
 	<br><br><<endevent>>
 	<<generate1>><<person1>><<wearProp "waterdragon egg 1">>
-	A manager arrives before the lorry clears the yard, holding a padded crate and a clipboard.
-	<<He>> stares at the large, pearl-coloured egg. "Is that meant to be a decoration?"
+	트럭이 마당을 벗어나기도 전에 관리자 한 명이 완충재를 댄 상자와 클립보드를 들고 도착한다.
+	<<He>>【은는】 진주빛의 커다란 알을 빤히 쳐다본다. "저건 장식용인가요?"
 	<br><br>
-	You glance at the egg, then back at <<him>>. "I don't think decorations usually need that much padding?"
+	당신은 알을 흘끗 본 뒤 다시 <<him>>【을를】 바라본다. "장식품에 보통 저렇게까지 완충재가 필요하진 않을 것 같은데요?"
 	<br><br>
-	<<He>> looks at it again. "It is just a decoration, though, right?"
+	<<He>>【은는】 알을 다시 쳐다본다. "그래도 그냥 장식품이 맞죠?"
 	<br><br>
-	The shell catches the depot lights. <<He>> opens <<his>> mouth, as if about to ask again, then decides against it.
-	Together, you place the egg in a crate by itself. Foam is packed tightly around it before the lid is sealed and marked for special handling.
+	알껍데기가 집하장 불빛을 받아 반짝인다. <<He>>【은는】 다시 물어보려는 듯 입을 열었다가 이내 그만둔다.
+	당신들은 알을 따로 상자 하나에 넣는다. 주위를 발포 완충재로 빈틈없이 채운 뒤 뚜껑을 봉하고 특수 취급 표시를 붙인다.
 	<<unset $farmersProduce.dragonEggShipment>>
 <</if>>
 <br><br>
@@ -283,7 +283,7 @@ The gate shudders open, and a lorry rumbles out, on its way to collect your prod
 					<<set _max to $foodstuff[_item].amount - ($foodstuff[_item].amount % _step)>>
 					<<set _base to bulkProduceValue(setup.foodstuff[_item], _step)>>
 					<<set _title to setup.foodstuff[_item].plural.toLocaleUpperFirst()>>
-					| Value per <<print _step>>: <<printmoney _base>>
+					| <<print _step>>개당 가치: <<printmoney _base>>
 					<<numberStepper "_title" 0 {
 						callback: (value, arr) => {
 							V.farmersProduce.toSell[arr[0]] = value;
@@ -371,33 +371,33 @@ The gate shudders open, and a lorry rumbles out, on its way to collect your prod
 <<widget "farmUpgradeOptions">>
 	<<if $factoryUpgrades.qualityControl is undefined>>
 		<<if setup.inflation.canAfford(250000)>>
-			<<link [[Basic Quality Assurance (<<printprice 250000>>)|Farmers Centre Upgrades]]>><<money -250000>><<set $factoryUpgrades.qualityControl to 1>><</link>> <<note "+5% Price" "green">>
+			<<link [[기본 품질 보증 (<<printprice 250000>>)|Farmers Centre Upgrades]]>><<money -250000>><<set $factoryUpgrades.qualityControl to 1>><</link>> <<note "+5% 가격" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 250000>> to purchase Basic Quality Assurance.</span>
+			<span class="blue">기본 품질 보증【을를】 구매하려면 <<printprice 250000>>【이가】 필요하다.</span>
 		<</if>>
 	<<elseif $factoryUpgrades.qualityControl is 1>>
 		<<if setup.inflation.canAfford(600000)>>
-			<<link [[Advanced Inspections (<<printprice 600000>>)|Farmers Centre Upgrades]]>><<money -600000>><<set $factoryUpgrades.qualityControl to 2>><</link>> <<note "+10% Price" "green">>
+			<<link [[고급 검수 (<<printprice 600000>>)|Farmers Centre Upgrades]]>><<money -600000>><<set $factoryUpgrades.qualityControl to 2>><</link>> <<note "+10% 가격" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 600000>> to purchase Advanced Inspections.</span>
+			<span class="blue">고급 검수【을를】 구매하려면 <<printprice 600000>>【이가】 필요하다.</span>
 		<</if>>
 	<<elseif $factoryUpgrades.qualityControl is 2>>
 		<<if setup.inflation.canAfford(1200000)>>
-			<<link [[Precision Sorting System (<<printprice 1200000>>)|Farmers Centre Upgrades]]>><<money -1200000>><<set $factoryUpgrades.qualityControl to 3>><</link>> <<note "+15% Price" "green">>
+			<<link [[정밀 선별 시스템 (<<printprice 1200000>>)|Farmers Centre Upgrades]]>><<money -1200000>><<set $factoryUpgrades.qualityControl to 3>><</link>> <<note "+15% 가격" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 1200000>> to purchase Precision Sorting System.</span>
+			<span class="blue">정밀 선별 시스템【을를】 구매하려면 <<printprice 1200000>>【이가】 필요하다.</span>
 		<</if>>
 	<<elseif $factoryUpgrades.qualityControl is 3>>
 		<<if setup.inflation.canAfford(2000000)>>
-			<<link [[Automated Grading Machines (<<printprice 2000000>>)|Farmers Centre Upgrades]]>><<money -2000000>><<set $factoryUpgrades.qualityControl to 4>><</link>> <<note "+20% Price" "green">>
+			<<link [[자동 등급 분류기 (<<printprice 2000000>>)|Farmers Centre Upgrades]]>><<money -2000000>><<set $factoryUpgrades.qualityControl to 4>><</link>> <<note "+20% 가격" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 2000000>> to purchase Automated Grading Machines.</span>
+			<span class="blue">자동 등급 분류기【을를】 구매하려면 <<printprice 2000000>>【이가】 필요하다.</span>
 		<</if>>
 	<<elseif $factoryUpgrades.qualityControl is 4>>
 		<<if setup.inflation.canAfford(3500000)>>
-			<<link [[Premium Certification (<<printprice 3500000>>)|Farmers Centre Upgrades]]>><<money -3500000>><<set $factoryUpgrades.qualityControl to 5>><</link>> <<note "+25% Price" "green">>
+			<<link [[프리미엄 인증 (<<printprice 3500000>>)|Farmers Centre Upgrades]]>><<money -3500000>><<set $factoryUpgrades.qualityControl to 5>><</link>> <<note "+25% 가격" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 3500000>> to purchase Premium Certification.</span>
+			<span class="blue">프리미엄 인증【을를】 구매하려면 <<printprice 3500000>>【이가】 필요하다.</span>
 		<</if>>
 	<<else>>
 		<span class="green">품질 관리는 더 올릴 수 없을 만큼 훌륭하다.</span>
@@ -405,33 +405,33 @@ The gate shudders open, and a lorry rumbles out, on its way to collect your prod
 	<br>
 	<<if $factoryUpgrades.packaging is undefined>>
 		<<if setup.inflation.canAfford(300000)>>
-			<<link [[Simple Packaging (<<printprice 300000>>)|Farmers Centre Upgrades]]>><<money -300000>><<set $factoryUpgrades.packaging to 1>><</link>> <<note "+5% Price" "green">>
+			<<link [[단순 포장 (<<printprice 300000>>)|Farmers Centre Upgrades]]>><<money -300000>><<set $factoryUpgrades.packaging to 1>><</link>> <<note "+5% 가격" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 300000>> to purchase Simple Packaging.</span>
+			<span class="blue">단순 포장【을를】 구매하려면 <<printprice 300000>>【이가】 필요하다.</span>
 		<</if>>
 	<<elseif $factoryUpgrades.packaging is 1>>
 		<<if setup.inflation.canAfford(750000)>>
-			<<link [[Enhanced Packaging Design (<<printprice 750000>>)|Farmers Centre Upgrades]]>><<money -750000>><<set $factoryUpgrades.packaging to 2>><</link>> <<note "+10% Price" "green">>
+			<<link [[개선된 포장 디자인 (<<printprice 750000>>)|Farmers Centre Upgrades]]>><<money -750000>><<set $factoryUpgrades.packaging to 2>><</link>> <<note "+10% 가격" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 750000>> to purchase Enhanced Packaging Design.</span>
+			<span class="blue">개선된 포장 디자인【을를】 구매하려면 <<printprice 750000>>【이가】 필요하다.</span>
 		<</if>>
 	<<elseif $factoryUpgrades.packaging is 2>>
 		<<if setup.inflation.canAfford(1500000)>>
-			<<link [[Reinforced Materials (<<printprice 1500000>>)|Farmers Centre Upgrades]]>><<money -1500000>><<set $factoryUpgrades.packaging to 3>><</link>> <<note "+15% Price" "green">>
+			<<link [[강화 자재 (<<printprice 1500000>>)|Farmers Centre Upgrades]]>><<money -1500000>><<set $factoryUpgrades.packaging to 3>><</link>> <<note "+15% 가격" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 1500000>> to purchase Reinforced Materials.</span>
+			<span class="blue">강화 자재【을를】 구매하려면 <<printprice 1500000>>【이가】 필요하다.</span>
 		<</if>>
 	<<elseif $factoryUpgrades.packaging is 3>>
 		<<if setup.inflation.canAfford(2500000)>>
-			<<link [[Eco-Friendly Packaging (<<printprice 2500000>>)|Farmers Centre Upgrades]]>><<money -2500000>><<set $factoryUpgrades.packaging to 4>><</link>> <<note "+20% Price" "green">>
+			<<link [[친환경 포장 (<<printprice 2500000>>)|Farmers Centre Upgrades]]>><<money -2500000>><<set $factoryUpgrades.packaging to 4>><</link>> <<note "+20% 가격" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 2500000>> to purchase Eco-Friendly Packaging.</span>
+			<span class="blue">친환경 포장【을를】 구매하려면 <<printprice 2500000>>【이가】 필요하다.</span>
 		<</if>>
 	<<elseif $factoryUpgrades.packaging is 4>>
 		<<if setup.inflation.canAfford(4000000)>>
-			<<link [[Luxury Presentation (<<printprice 4000000>>)|Farmers Centre Upgrades]]>><<money -4000000>><<set $factoryUpgrades.packaging to 5>><</link>> <<note "+25% Price" "green">>
+			<<link [[고급 연출 (<<printprice 4000000>>)|Farmers Centre Upgrades]]>><<money -4000000>><<set $factoryUpgrades.packaging to 5>><</link>> <<note "+25% 가격" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 4000000>> to purchase Luxury Presentation.</span>
+			<span class="blue">고급 연출【을를】 구매하려면 <<printprice 4000000>>【이가】 필요하다.</span>
 		<</if>>
 	<<else>>
 		<span class="green">포장은 더 올릴 수 없을 만큼 훌륭하다.</span>
@@ -439,53 +439,53 @@ The gate shudders open, and a lorry rumbles out, on its way to collect your prod
 	<br>
 	<<if $factoryUpgrades.distribution is undefined>>
 		<<if setup.inflation.canAfford(400000)>>
-			<<link [[Basic Distribution Routes (<<printprice 400000>>)|Farmers Centre Upgrades]]>>
+			<<link [[기본 유통 경로 (<<printprice 400000>>)|Farmers Centre Upgrades]]>>
 				<<money -400000>>
 				<<set $factoryUpgrades.distribution to 1>>
 			<</link>>
 			<<note "+10% 수량" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 400000>> to purchase Basic Distribution Routes.</span>
+			<span class="blue">기본 유통 경로【을를】 구매하려면 <<printprice 400000>>【이가】 필요하다.</span>
 		<</if>>
 	<<elseif $factoryUpgrades.distribution is 1>>
 		<<if setup.inflation.canAfford(1000000)>>
-			<<link [[Regional Freight Hubs (<<printprice 1000000>>)|Farmers Centre Upgrades]]>>
+			<<link [[지역 화물 거점 (<<printprice 1000000>>)|Farmers Centre Upgrades]]>>
 				<<money -1000000>>
 				<<set $factoryUpgrades.distribution to 2>>
 			<</link>>
 			<<note "+20% 수량" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 1000000>> to purchase Regional Freight Hubs.</span>
+			<span class="blue">지역 화물 거점【을를】 구매하려면 <<printprice 1000000>>【이가】 필요하다.</span>
 		<</if>>
 	<<elseif $factoryUpgrades.distribution is 2>>
 		<<if setup.inflation.canAfford(2000000)>>
-			<<link [[National Logistics Coordination (<<printprice 2000000>>)|Farmers Centre Upgrades]]>>
+			<<link [[전국 물류 조율 (<<printprice 2000000>>)|Farmers Centre Upgrades]]>>
 				<<money -2000000>>
 				<<set $factoryUpgrades.distribution to 3>>
 			<</link>>
 			<<note "+30% 수량" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 2000000>> to purchase National Logistics Coordination.</span>
+			<span class="blue">전국 물류 조율【을를】 구매하려면 <<printprice 2000000>>【이가】 필요하다.</span>
 		<</if>>
 	<<elseif $factoryUpgrades.distribution is 3>>
 		<<if setup.inflation.canAfford(3500000)>>
-			<<link [[Global Shipping Lines (<<printprice 3500000>>)|Farmers Centre Upgrades]]>>
+			<<link [[글로벌 해운 노선 (<<printprice 3500000>>)|Farmers Centre Upgrades]]>>
 				<<money -3500000>>
 				<<set $factoryUpgrades.distribution to 4>>
 			<</link>>
 			<<note "+40% 수량" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 3500000>> to purchase Global Shipping Lines.</span>
+			<span class="blue">글로벌 해운 노선【을를】 구매하려면 <<printprice 3500000>>【이가】 필요하다.</span>
 		<</if>>
 	<<elseif $factoryUpgrades.distribution is 4>>
 		<<if setup.inflation.canAfford(6000000)>>
-			<<link [[Elite Worldwide Partnership (<<printprice 6000000>>)|Farmers Centre Upgrades]]>>
+			<<link [[엘리트 세계 제휴 (<<printprice 6000000>>)|Farmers Centre Upgrades]]>>
 				<<money -6000000>>
 				<<set $factoryUpgrades.distribution to 5>>
 			<</link>>
 			<<note "+50% 수량" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 6000000>> to purchase Elite Worldwide Partnership.</span>
+			<span class="blue">엘리트 세계 제휴【을를】 구매하려면 <<printprice 6000000>>【이가】 필요하다.</span>
 		<</if>>
 	<<else>>
 		<span class="green">유통은 더 올릴 수 없을 만큼 훌륭하다.</span>
@@ -493,53 +493,53 @@ The gate shudders open, and a lorry rumbles out, on its way to collect your prod
 	<br>
 	<<if $factoryUpgrades.marketing is undefined>>
 		<<if setup.inflation.canAfford(300000)>>
-			<<link [[Local Promo Ads (<<printprice 300000>>)|Farmers Centre Upgrades]]>>
+			<<link [[지역 홍보 광고 (<<printprice 300000>>)|Farmers Centre Upgrades]]>>
 				<<money -300000>>
 				<<set $factoryUpgrades.marketing to 1>>
 			<</link>>
 			<<note "+10% 수량" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 300000>> to purchase Local Promo Ads.</span>
+			<span class="blue">지역 홍보 광고【을를】 구매하려면 <<printprice 300000>>【이가】 필요하다.</span>
 		<</if>>
 	<<elseif $factoryUpgrades.marketing is 1>>
 		<<if setup.inflation.canAfford(750000)>>
-			<<link [[Regional Marketing Push (<<printprice 750000>>)|Farmers Centre Upgrades]]>>
+			<<link [[지역 마케팅 강화 (<<printprice 750000>>)|Farmers Centre Upgrades]]>>
 				<<money -750000>>
 				<<set $factoryUpgrades.marketing to 2>>
 			<</link>>
 			<<note "+20% 수량" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 750000>> to purchase Regional Marketing Push.</span>
+			<span class="blue">지역 마케팅 강화【을를】 구매하려면 <<printprice 750000>>【이가】 필요하다.</span>
 		<</if>>
 	<<elseif $factoryUpgrades.marketing is 2>>
 		<<if setup.inflation.canAfford(1500000)>>
-			<<link [[National Branding Campaign (<<printprice 1500000>>)|Farmers Centre Upgrades]]>>
+			<<link [[전국 브랜딩 캠페인 (<<printprice 1500000>>)|Farmers Centre Upgrades]]>>
 				<<money -1500000>>
 				<<set $factoryUpgrades.marketing to 3>>
 			<</link>>
 			<<note "+30% 수량" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 1500000>> to purchase National Branding Campaign.</span>
+			<span class="blue">전국 브랜딩 캠페인【을를】 구매하려면 <<printprice 1500000>>【이가】 필요하다.</span>
 		<</if>>
 	<<elseif $factoryUpgrades.marketing is 3>>
 		<<if setup.inflation.canAfford(2500000)>>
-			<<link [[Influencer & Media Partnerships (<<printprice 2500000>>)|Farmers Centre Upgrades]]>>
+			<<link [[인플루언서·미디어 제휴 (<<printprice 2500000>>)|Farmers Centre Upgrades]]>>
 				<<money -2500000>>
 				<<set $factoryUpgrades.marketing to 4>>
 			<</link>>
 			<<note "+40% 수량" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 2500000>> to purchase Influencer & Media Partnerships.</span>
+			<span class="blue">인플루언서·미디어 제휴【을를】 구매하려면 <<printprice 2500000>>【이가】 필요하다.</span>
 		<</if>>
 	<<elseif $factoryUpgrades.marketing is 4>>
 		<<if setup.inflation.canAfford(4000000)>>
-			<<link [[Global Brand Outreach (<<printprice 4000000>>)|Farmers Centre Upgrades]]>>
+			<<link [[글로벌 브랜드 확장 (<<printprice 4000000>>)|Farmers Centre Upgrades]]>>
 				<<money -4000000>>
 				<<set $factoryUpgrades.marketing to 5>>
 			<</link>>
 			<<note "+50% 수량" "green">>
 		<<else>>
-			<span class="blue">You need <<printprice 4000000>> to purchase Global Brand Outreach.</span>
+			<span class="blue">글로벌 브랜드 확장【을를】 구매하려면 <<printprice 4000000>>【이가】 필요하다.</span>
 		<</if>>
 	<<else>>
 		<span class="green">마케팅은 더 올릴 수 없을 만큼 훌륭하다.</span>

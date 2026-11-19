@@ -16,11 +16,11 @@
 /* An antidote taken while the pill timer is frozen never triggers at all, so it replaces the usual agony message rather than following it.
    The reason stays hidden on purpose: an unnoticed pregnancy shouldn't be given away by a pill menu. */
 <<if $xchangeAntidoteFizzle>>
-	<span class="purple">You down the pill with some hesitation after having read the warning label.</span>
+	<span class="purple">경고 라벨을 읽고 나서 망설이며 알약을 삼킨다.</span>
 	<br><br>
-	You brace yourself for everything the label promised, and wait. Nothing comes. No pain, no fever, no relief. Nothing at all, as if you'd swallowed a sugar tablet. <span class="pink">This doesn't feel right.</span>
+	라벨이 약속한 모든 것에 대비해 마음을 다잡고 기다린다. 아무 일도 일어나지 않는다. 통증도, 열도, 안도감도 없다. 설탕 알약이라도 삼킨 것처럼 아무것도 없다. <span class="pink">뭔가 이상하다.</span>
 	<br><br>
-	<span class="red">You wonder what could be making the pill have no effect.</span>
+	<span class="red">무엇 때문에 알약이 아무 효과도 내지 못하는지 의아하다.</span>
 <<else>>
 	<<print $lastPillTakenDescription>>
 <</if>>
@@ -41,7 +41,7 @@
 <</if>>
 <<if $pocketPillReturn>>
 	<<set _pocketPillDestination to $pocketPillReturn>>
-	<<link [[Return|_pocketPillDestination]]>><<unset $pocketPillReturn>><</link>>
+	<<link [[돌아간다|_pocketPillDestination]]>><<unset $pocketPillReturn>><</link>>
 <<else>>
 	<<link [[돌아간다|PillCollection]]>><</link>>
 <</if>>
@@ -49,7 +49,7 @@
 :: PillCollection
 <<if $pocketPillReturn>>
 	<<set _pocketPillDestination to $pocketPillReturn>>
-	<<link [[Return|_pocketPillDestination]]>><<unset $pocketPillReturn>><</link>>
+	<<link [[돌아간다|_pocketPillDestination]]>><<unset $pocketPillReturn>><</link>>
 <<else>>
 
 <<set $outside to 0>><<effects>>
@@ -85,16 +85,16 @@
 <<set _painkillerDoses to Math.max(_painkillerLimit + 1, painkillerDosesToday())>>
 <<set _painkillerOverdose to _painkillerDoses - _painkillerLimit>>
 <<unset $overdosePillsTaken>>
-You swallow another painkiller. After a while, you start to feel unwell.
+진통제를 한 알 더 삼킨다. 잠시 후, 몸이 안 좋아지기 시작한다.
 <br><br>
 <<if _painkillerOverdose lte 2>>
-	Your stomach feels sick and your head grows heavy. You steady yourself as a wave of dizziness passes.
+	속이 메스껍고 머리가 무거워진다. 어지러움이 지나가는 동안 몸을 가눈다.
 	<<set _painkillerTime to _painkillerOverdose * 2>>
 	<<stress `_painkillerOverdose * 3`>>
 	<<tiredness `_painkillerOverdose * 3`>>
 	<<gstress>><<gtiredness>>
 <<elseif _painkillerOverdose lte 4>>
-	You suddenly feel dizzy and sit down before you fall. Your vision blurs and your hands begin to shake. You stay there until you feel able to stand again.
+	갑자기 어지러워 쓰러지기 전에 주저앉는다. 시야가 흐려지고 손이 떨리기 시작한다. 다시 일어설 수 있을 때까지 그대로 있는다.
 	<<set _painkillerTime to _painkillerOverdose * 5>>
 	<<stress `_painkillerOverdose * 3`>>
 	<<trauma _painkillerOverdose>>
@@ -103,7 +103,7 @@ You swallow another painkiller. After a while, you start to feel unwell.
 	<<awareness -1>>
 	<<ggstress>><<gtrauma>><<gpain>><<ggtiredness>>
 <<else>>
-	Nausea hits you hard. Your heart beats quickly and you struggle to stay on your feet. The room starts to spin, forcing you down onto the floor until you begin to recover.
+	구역질이 세게 몰려온다. 심장이 빠르게 뛰고 서 있기조차 힘겹다. 방이 빙글빙글 돌기 시작해, 회복되기 시작할 때까지 바닥에 주저앉을 수밖에 없다.
 	<<set _painkillerTime to Math.min(120, _painkillerOverdose * 10)>>
 	<<set _painkillerStress to Math.min(30, _painkillerOverdose * 3)>>
 	<<set _painkillerTrauma to Math.min(20, _painkillerOverdose * 2)>>
@@ -117,40 +117,40 @@ You swallow another painkiller. After a while, you start to feel unwell.
 	<<gggstress>><<ggtrauma>><<ggpain>><<gggtiredness>>
 <</if>>
 <br><br>
-<<link [[Recover|PillCollection]]>><<pass _painkillerTime>><</link>>
+<<link [[회복한다|PillCollection]]>><<pass _painkillerTime>><</link>>
 
 :: PillCollectionSleepOverdose
 <<set $outside to 0>><<effects>><<passout>><<tiredness 5>>
-You take another sleeping pill before the last one has worn off.
+마지막 약 기운이 가시기 전에 수면제를 한 알 더 삼킨다.
 <br><br>
-A few minutes later, your legs begin to feel weak. You put the packet down and try to steady yourself, but your vision blurs. You sink to the floor before you can reach the bed.
+몇 분 뒤, 다리에 힘이 빠지기 시작한다. 약 포장을 내려놓고 몸을 가누려 하지만 시야가 흐려진다. 침대에 닿기도 전에 바닥에 주저앉는다.
 <br><br>
-<<link [[You lose consciousness...|PillCollectionSleepOverdoseWake]]>><<pass 3 hours>><</link>>
+<<link [[의식을 잃는다...|PillCollectionSleepOverdoseWake]]>><<pass 3 hours>><</link>>
 
 :: PillCollectionSleepOverdoseWake
 <<set $outside to 0>><<effects>><<run consumeSleepAid()>>
-You wake on the floor several hours later. Your head hurts, your body feels heavy, and you cannot remember falling asleep.
+몇 시간 뒤 바닥에서 깨어난다. 머리가 아프고 몸이 무겁고, 잠든 기억이 없다.
 <br><br>
-<span class="red">You still feel exhausted.</span>
+<span class="red">여전히 기진맥진하다.</span>
 <<stress 4>><<tiredness 10>><<pain 5>><<ggstress>><<gtiredness>><<gpain>>
 <br><br>
-<<link [[Get up|PillCollection]]>><</link>>
+<<link [[일어난다|PillCollection]]>><</link>>
 
 :: PillCollectionCalmorylPassOut
 <<set $outside to 0>><<effects>><<passout>>
-You swallow another anti-anxiety tablet. Before you can put the packet away, your vision starts to blur.
+항불안제를 한 알 더 삼킨다. 포장을 치우기도 전에 시야가 흐려지기 시작한다.
 <br><br>
-You reach for something to steady yourself, but your legs suddenly give way. You fall to the floor as everything around you goes dark.
+붙잡고 몸을 가눌 것을 더듬어 찾지만, 다리가 갑자기 풀린다. 주변의 모든 것이 어둠에 잠기며 바닥에 쓰러진다.
 <br><br>
-<<link [[Everything fades to black...|PillCollectionCalmorylWake]]>><<pass 60>><</link>>
+<<link [[모든 것이 어둠 속으로 사라진다...|PillCollectionCalmorylWake]]>><<pass 60>><</link>>
 
 :: PillCollectionCalmorylWake
 <<set $outside to 0>><<effects>>
-You open your eyes about an hour later. Your head feels heavy, and it takes you a few seconds to remember what happened.
+약 한 시간 뒤 눈을 뜬다. 머리가 무겁고, 무슨 일이 있었는지 기억해 내는 데 몇 초가 걸린다.
 <br><br>
-You try to move, but your body still feels weak and unsteady.<<tiredness 5>><<gtiredness>>
+움직이려 하지만 몸은 여전히 힘이 없고 불안정하다.<<tiredness 5>><<gtiredness>>
 <br><br>
-<<link [[Try to get up|PillCollection]]>><</link>>
+<<link [[일어나 본다|PillCollection]]>><</link>>
 
 :: PillCollectionSecondDose
 <<set $outside to 0>><<effects>>

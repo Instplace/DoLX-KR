@@ -6,7 +6,7 @@ function buildEyeDetails() {
 	const eyeMap = setup.colours.eyes_map;
 
 	function getEyeDisplayName(key) {
-		const entry = colourMap[key];
+		const entry = eyeMap[key];
 		if (!entry) return key;
 
 		if (typeof entry.name === "string" && !/^colorWheelTemporary\d+$/.test(entry.name)) {
