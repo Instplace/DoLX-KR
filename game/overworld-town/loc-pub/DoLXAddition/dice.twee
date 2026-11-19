@@ -1098,7 +1098,7 @@
 				<<if _player isnot 0>>
 					<<run $dice.log.push("The <<person"+_player+">><<person>> joins this round.")>>
 				<<elseif $dice.altbet isnot undefined>>
-					<<run $dice.log.push('<span class="lewd">You joined this round by betting '+$dice.altbet+" valued at</span> <<printmoney "+(_favoursValueMap[$dice.altbet]*(1+$dice.wagerLvl))+">>.")>>
+					<<run $dice.log.push('<span class="lewd">당신은 이번 판에 참여한다. 건 것: '+({"a kiss":"키스","an oral":"구강 봉사","your body":"당신의 몸","your outfit":"당신의 옷 전부","your top":"당신의 윗옷","your bottoms":"당신의 아래옷","your under outfit":"당신의 속옷 세트","your under top":"당신의 속옷 윗부분","your underwear":"당신의 속옷"}[$dice.altbet] || $dice.altbet)+", 값어치는</span> <<printmoney "+(_favoursValueMap[$dice.altbet]*(1+$dice.wagerLvl))+">>.")>>
 				<</if>>
 			<</capture>>
 		<</for>>
@@ -1116,7 +1116,7 @@
 		<<if $dice.shooter is 0>>
 			<<dice-betting-interface>>
 
-			<<link [[Confirm (0:02)|Pub Dice Minigame Wager]]>>
+			<<link [[확정한다 (0:02)|Pub Dice Minigame Wager]]>>
 				<<set $wagerstage to 2>>
 				<<set $phase to 2>>
 				<<dice-pc-bet _bet>>
@@ -1126,7 +1126,7 @@
 			<br>
 			<<dice-stake>>
 			<<if _stake gt $dice.currentBet and $dice.money[0] gt 0>>
-				<<link [[Confirm max bet (0:02)|Pub Dice Minigame Wager]]>>
+				<<link [[최대 판돈으로 확정한다 (0:02)|Pub Dice Minigame Wager]]>>
 					<<set $wagerstage to 2>>
 					<<set $phase to 2>>
 					<<dice-pc-bet Infinity>>
@@ -1139,7 +1139,7 @@
 		<<else>>
 			<<dice-betting-interface>>
 
-			<<link [[Confirm (0:02)|Pub Dice Minigame Wager]]>>
+			<<link [[확정한다 (0:02)|Pub Dice Minigame Wager]]>>
 				<<set $wagerstage to 2>>
 				<<set $phase to 2>>
 				<<dice-pc-bet _bet>>
@@ -1150,7 +1150,7 @@
 			<br>
 			<<dice-stake>>
 			<<if _stake gt $dice.currentBet and $dice.money[0] gt 0>>
-				<<link [[Confirm max bet (0:02)|Pub Dice Minigame Wager]]>>
+				<<link [[최대 판돈으로 확정한다 (0:02)|Pub Dice Minigame Wager]]>>
 					<<set $wagerstage to 2>>
 					<<set $phase to 2>>
 					<<dice-pc-bet Infinity>>
@@ -1165,19 +1165,19 @@
 	<<elseif $wagerstage is 2>> /* Confirmation of Pot / NPCs match current bet */
 
 		<<dice-log>>
-		Now that all bets are in...<br>
+		이제 모든 판돈이 들어왔다...<br>
 
 		<<dice-display>>
 		<br>
 
 		<<if $dice.shooter is 0>>
-			<<link [[Roll (0:02)|Pub Dice Minigame]]>>
+			<<link [[굴린다 (0:02)|Pub Dice Minigame]]>>
 				<<dice-roll>><<pass 2>>
 			<</link>>
 		<<else>>
-			The shooter's about to roll.
+			슈터가 곧 주사위를 굴린다.
 			<br>
-			<<link [[Next (0:02)|Pub Dice Minigame]]>>
+			<<link [[다음 (0:02)|Pub Dice Minigame]]>>
 				<<dice-roll>><<pass 2>>
 			<</link>>
 		<</if>>
@@ -1188,25 +1188,25 @@
 		<<dice-compute-wagers "npc" true>>
 
 		<<dice-log>>
-		Everyone's eyes are intensely focused on <<= $dice.shooter is 0? "you": "the shooter">>. Watching each and every move.<br>
+		모두의 시선이 <<= $dice.shooter is 0? "당신": "슈터">>에게 쏠려 있다. 하나하나의 움직임을 놓치지 않고 지켜본다.<br>
 		
 		<<dice-display>>
 		<<dice-betting-interface>>
 
 		<<if $dice.bets[0] eq $dice.currentBet>>
 			<<if $dice.shooter is 0>>
-				<<link [[Roll (0:02)|Pub Dice Minigame]]>>
+				<<link [[굴린다 (0:02)|Pub Dice Minigame]]>>
 					<<dice-roll>><<pass 2>>
 				<</link>>
 			<<else>>
-				The shooter's about to roll.
+				슈터가 곧 주사위를 굴린다.
 				<br>
-				<<link [[Next (0:02)|Pub Dice Minigame]]>>
+				<<link [[다음 (0:02)|Pub Dice Minigame]]>>
 					<<dice-roll>><<pass 2>>
 				<</link>>
 			<</if>>
 			<br>
-			<<link [[Up the stakes (0:02)|Pub Dice Minigame Wager]]>>
+			<<link [[판돈을 올린다 (0:02)|Pub Dice Minigame Wager]]>>
 				<<set $wagerstage to 2>>
 				<<set $phase to 2>>
 				<<dice-pc-bet _bet>>
@@ -1216,7 +1216,7 @@
 			<br>
 			<<dice-stake>>
 			<<if _stake gt $dice.currentBet and $dice.money[0] gt 0>>
-				<<link [[Max out the stakes (0:02)|Pub Dice Minigame Wager]]>>
+				<<link [[판돈을 최대로 올린다 (0:02)|Pub Dice Minigame Wager]]>>
 					<<set $wagerstage to 2>>
 					<<set $phase to 2>>
 					<<dice-pc-bet Infinity>>
@@ -1226,7 +1226,7 @@
 				<br>
 			<</if>>
 		<<else>>
-			<<link [[Confirm (0:02)|Pub Dice Minigame Wager]]>>
+			<<link [[확정한다 (0:02)|Pub Dice Minigame Wager]]>>
 				<<set $wagerstage to 2>>
 				<<set $phase to 2>>
 				<<dice-pc-bet _bet>>
@@ -1236,7 +1236,7 @@
 			<br>
 			<<dice-stake>>
 			<<if _stake gt $dice.currentBet and $dice.money[0] gt 0>>
-				<<link [[Confirm max bet (0:02)|Pub Dice Minigame Wager]]>>
+				<<link [[최대 판돈으로 확정한다 (0:02)|Pub Dice Minigame Wager]]>>
 					<<set $wagerstage to 2>>
 					<<set $phase to 2>>
 					<<dice-pc-bet Infinity>>
@@ -1246,7 +1246,7 @@
 				<br>
 			<</if>>
 			<<if $dice.shooter isnot 0>>
-				<<link [[Withdraw (0:05)|Pub Dice Minigame]]>>
+				<<link [[기권한다 (0:05)|Pub Dice Minigame]]>>
 					<<set $dice.positions[0] to "Withdrew">>
 					<<for $dice.round.result is undefined>>
 						<<dice-roll>><<dice-compute-result>>
@@ -1255,7 +1255,7 @@
 				<</link>>
 				<br>
 			<<else>>
-				<<link [[Withdraw (0:05)|Pub Dice Minigame]]>>
+				<<link [[기권한다 (0:05)|Pub Dice Minigame]]>>
 					<<set $dice.positions[0] to "Withdrew">>
 					<<pass 5>>
 				<</link>>
@@ -1264,7 +1264,7 @@
 		<</if>>
 
 	<<else>>
-		THIS IS A BUG. YOU SHOULDN'T BE HERE. PLEASE, REPORT THIS.
+		버그입니다. 이곳에 있어서는 안 됩니다. 제보해 주십시오.
 		<<run console.error(`Betting Stage: {$wagerstage}`)>>
 	<</if>>
 	<br>
@@ -1284,21 +1284,21 @@
 
 	/* Every opponent knocked out, rather than an exact penny total */
 	<<if $dice.status[1] is "Out" and $dice.status[2] is "Out" and $dice.status[3] is "Out">>
-		Having wiped the floor with your opponents, you leave satisfied in the knowledge that you earned <<printmoney _displayNetChange>> fair and square, as a champion.<<stress -30>><<llstress>>
+		상대를 완전히 쓸어버린 당신은, 챔피언으로서 정정당당하게 <<printmoney _displayNetChange>>【을를】 벌었다는 사실에 만족하며 자리를 뜬다.<<stress -30>><<llstress>>
 	
 	<<elseif _netChange gte 0>>
-		You decide to quit playing while you're still ahead. You managed to earn <<printmoney _displayNetChange>>.<<stress -5>><<lstress>>
+		앞서 있을 때 그만두기로 한다. <<printmoney _displayNetChange>>【을를】 벌었다.<<stress -5>><<lstress>>
 	
 	<<elseif _netChange gt -(_startingMoney)>>
-		You decide to cut your losses, leaving while you still have some dignity left. You lost <<printmoney `-_netChange`>>.<<stress 5>><<gstress>>
+		손실을 줄이기로 하고, 아직 체면이 남아 있을 때 자리를 뜬다. <<printmoney `-_netChange`>>【을를】 잃었다.<<stress 5>><<gstress>>
 
 	<<else>>
-		Having suffered a crushing defeat,<<if $dice.altbetcount gt 0>> even to the point of selling yourself off for a couple extra chances to recover,<</if>> you pick up what's left of your pride and leave as the <<group>> mock you in the background. You lost <<printmoney `-_netChange`>>.<<stress 30>><<ggstress>>
+		참담한 패배를 맛본 당신은,<<if $dice.altbetcount gt 0>> 만회할 기회를 몇 번 더 얻으려 자기 자신까지 팔아넘기고도,<</if>> 남은 자존심을 주워 들고, 뒤에서 조롱하는 <<group>>【을를】 뒤로한 채 자리를 뜬다. <<printmoney `-_netChange`>>【을를】 잃었다.<<stress 30>><<ggstress>>
 
 	<</if>>
 	<br><br>
 
-	<<link [[Next|Pub]]>><<dice-endgame>><</link>> /* dice-endgame already calls <<endevent>> */
+	<<link [[다음|Pub]]>><<dice-endgame>><</link>> /* dice-endgame already calls <<endevent>> */
 
 :: Pub Dice Minigame Kiss
 	<<effects>>
@@ -1312,36 +1312,36 @@
 	<</for>>
 	
 	<<if $dice.event.roundLoss.count(0) gt 1>>
-		You try making a quick show of fulfilling your promise by giving simple pecks to each of the winners. But as you approach the last one, leaning forward,
+		당신은 승자들에게 하나씩 가볍게 입을 맞춰 약속을 이행하는 시늉을 한다. 하지만 마지막 한 명에게 몸을 숙이는 순간,
 	<<else>>
-		You try making a quick show of fulfilling your promise by giving a simple peck to the winner, but as you lean forward 
+		당신은 승자에게 가볍게 입을 맞춰 약속을 이행하는 시늉을 하지만, 몸을 숙이는 순간
 	<</if>>
-	the <<= "<<person"+_lastNPC+">>">><<person>> pulls you in, forcing you to sit on <<his>> lap.
+	그 <<= "<<person"+_lastNPC+">>">><<person>>【이가】 당신을 끌어당겨 <<his>> 무릎 위에 억지로 앉힌다.
 	<br><br>
 
-	Still stunned by the unexpected move, you lay motionless as the <<person>> cups your cheek gently, before planting a deep kiss into your lips. Your eyes open wide, shocked by the sudden bold act. You feel <<him>> force <<his>> tongue into your mouth, gleefully exploring its depths.
+	뜻밖의 행동에 얼어붙은 채 가만히 있자, 그 <<person>>【이가】 당신의 뺨을 부드럽게 감싸 쥐더니 입술에 깊은 키스를 한다. 갑작스럽고 대담한 짓에 놀라 눈이 휘둥그레진다. <<his>> 혀가 입안으로 억지로 밀고 들어와 구석구석을 신나게 탐하는 것이 느껴진다.
 	<br><br>
 
-	Recovering from the shock, you allow <<him>> to continue <<his>> tongue's ministrations, while also reciprocating the appendage's caresses with some of your own. <<arousal 50 "lips">><<garousal>>
+	충격에서 벗어난 당신은 <<him>>【이가】 계속 <<his>> 혀로 애무하도록 내버려 두고, 그 혀의 움직임에 당신의 혀로 화답하기도 한다. <<arousal 50 "lips">><<garousal>>
 	<br><br>
 	
-	Seeing as you've consented to <<his>> advances, the <<personsimple>> grows bolder. With one hand, <<he>> sneaks <<his>> way into your chest, fondling your nipples with intent. <<arousal 300 "breasts">> And with the other, <<he>> cups your groin atop your clothes with practiced dexterity, exerting pleasant pressure into your now engorging genitals. <<arousal 100 "genitals">><<gggarousal>>
+	당신이 접근을 받아들인 것을 보고 <<personsimple>>【은는】 더 대담해진다. 한 손으로는 슬그머니 가슴께로 파고들어 젖꼭지를 의도적으로 주무른다. <<arousal 300 "breasts">> 다른 손으로는 능숙한 솜씨로 옷 위에서 사타구니를 감싸 쥐고, 이미 부풀어 오른 성기에 기분 좋은 압박을 가한다. <<arousal 100 "genitals">><<gggarousal>>
 	<br><br> 
 
-	Taking a moment to breathe, your lips part with each other, yet the fondling continues. <<silently>><<arousal 100 "breasts">><</silently>><<arousal 100 "genitals">><<ggarousal>>
+	숨을 돌리느라 입술이 떨어지지만, 주무르는 손길은 계속된다. <<silently>><<arousal 100 "breasts">><</silently>><<arousal 100 "genitals">><<ggarousal>>
 	<br><br>
 
-	"You're getting flustered," <<he>> asserts. "I can tell." Pushing boundaries even further, the <<personsimple>> tries to slip <<his>> hand under your clothes, parting your legs slightly to facilitate <<his>> intrusion, should you allow <<him>> to continue.
+	"당황했네." <<he>>【이가】 단언한다. "다 보여." 한계를 더 밀어붙이려는 듯 그 <<personsimple>>【은는】 당신이 계속하게 두기만 하면 옷 속으로 손을 밀어 넣으려 하며, 침입하기 쉽도록 당신의 다리를 살짝 벌린다.
 	<br><br>
 
 	<<willpowercheck>>
 	<<if $willpowerSuccess>>
-		<<link [[Resist|Pub Dice Minigame Kiss Resist]]>><</link>>
+		<<link [[저항한다|Pub Dice Minigame Kiss Resist]]>><</link>>
 	<<else>>
-		<span class="lewd">You're <<if effectiveDrunk() gt 0>>either too drunk or <</if>>too horny to resist.</span>
+		<span class="lewd">당신은 <<if effectiveDrunk() gt 0>>너무 취했거나 <</if>>너무 달아올라서 저항할 수 없다.</span>
 	<</if>>
 	<br>
-	<<link [[Give in|Pub Dice Minigame Sex]]>>
+	<<link [[굴복한다|Pub Dice Minigame Sex]]>>
 		<<set $sexstart to 1>>
 		<<saveNPC 0 "dice_npc_1">>
 		<<saveNPC 1 "dice_npc_2">>
@@ -1354,16 +1354,16 @@
 :: Pub Dice Minigame Kiss Resist
 	<<effects>>
 
-	Before the <<person>> could take things any further you pull <<his>> hands away. And with a show of willpower, you extricate yourself from <<his>> grasp.
+	그 <<person>>【이가】 더 나가기 전에 당신은 <<his>> 손을 떼어낸다. 그리고 의지력을 짜내 <<his>> 손아귀에서 몸을 빼낸다.
 	<br><br>
 
-	The <<personsimple>> has left you a panting hot mess. But luckily you still have your wits about you, allowing you to regain control.
+	그 <<personsimple>>【은는】 당신을 헐떡이는 엉망진창으로 만들어 놓았다. 하지만 다행히 아직 정신은 붙어 있어 다시 스스로를 다잡을 수 있다.
 	<br><br>
 
-	You feel <<his>> gaze exploring you lustfully as you head back to your seat, before finally resuming the game.
+	자리로 돌아가 마침내 게임을 다시 시작하는 동안, <<his>> 시선이 음탕하게 당신을 훑는 것이 느껴진다.
 	<br><br>
 
-	<<link [[Next|Pub Dice Minigame]]>><</link>>
+	<<link [[다음|Pub Dice Minigame]]>><</link>>
 	<br>
 
 
@@ -1381,13 +1381,13 @@
 		<</if>>
 	<</for>>
 
-	"Come," the <<= "<<person"+_lastNPC+">>">><<person>> says. "Don't keep us waiting."
+	"이리 와." 그 <<= "<<person"+_lastNPC+">>">><<person>>【이가】 말한다. "기다리게 하지 마."
 	<br><br>
 
-	You drop to your knees, and crawl beneath the table. The <<group>> chat excitedly among themselves.
+	당신은 무릎을 꿇고 테이블 밑으로 기어간다. <<group>>【이가】 자기들끼리 신이 나서 수군거린다.
 	<br><br>
 
-	<<link [[Proceed|Pub Dice Minigame Oral 2]]>><</link>>
+	<<link [[진행한다|Pub Dice Minigame Oral 2]]>><</link>>
 	<br>
 
 :: Pub Dice Minigame Oral 2
@@ -1396,7 +1396,7 @@
 	<<if $dicewinners.length gt 0>>
 
 		<<set $n to $dicewinners.shift()>>
-		You crawl to the <<= "<<person"+$n+">>">><<person>>.
+		당신은 <<= "<<person"+$n+">>">><<person>>에게 기어간다.
 
 		<<if $pronoun is "f">>
 			당신은 <<his>> 스커트를 들어 올리고,
@@ -1404,13 +1404,13 @@
 			당신은 <<his>> 바지 지퍼를 내리고,
 		<</if>>
 		<<if $NPCList[($n - 1)].penis isnot "none" and !npcHasStrapon($n - 1)>>
-			letting out <<his>> <<print $NPCList[($n - 1)].penisdesc>>.
+			<<his>> <<print $NPCList[($n - 1)].penisdesc>>【을를】 꺼내 드러낸다.
 			<br><br>
 
-			As you promised, you have to use your mouth.
+			약속한 대로, 입을 써야 한다.
 			<br><br>
 
-			<<link [[Lick|Pub Dice Minigame Oral Penis]]>><<arousal 600 "mouth">><</link>>
+			<<link [[핥는다|Pub Dice Minigame Oral Penis]]>><<arousal 600 "mouth">><</link>>
 			<<skill_difficulty `currentSkillValue("oralskill")` "Oral Skill" 1 1000>>
 			<<garousal>>
 			<br>
@@ -1418,10 +1418,10 @@
 			<<his>> 음부를 드러낸다.
 			<br><br>
 
-			As promised, you have to use your mouth.
+			약속한 대로, 입을 써야 한다.
 			<br><br>
 
-			<<link [[Lick|Pub Dice Minigame Oral Vagina]]>><<arousal 600 "mouth">><</link>>
+			<<link [[핥는다|Pub Dice Minigame Oral Vagina]]>><<arousal 600 "mouth">><</link>>
 			<<skill_difficulty `currentSkillValue("oralskill")` "Oral Skill" 1 1000>>
 			<<garousal>>
 			<br>
@@ -1431,7 +1431,7 @@
 		모두 끝났다. 당신은 테이블 밑에서 기어 나온다.
 		<br><br>
 
-		<<link [[Next|Pub Dice Minigame]]>><</link>>
+		<<link [[다음|Pub Dice Minigame]]>><</link>>
 		<br>
 	<</if>>
 
@@ -1439,7 +1439,7 @@
 :: Pub Dice Minigame Oral Penis
 	<<effects>><<set $outside to 0>>
 
-	You stroke the tip of the <<print $NPCList[($n - 1)].penisdesc>> with your tongue, feeling the blood pulse into it. You <<oraltext>> lick up and down the shaft, then circle around the glans.
+	당신은 혀끝으로 <<print $NPCList[($n - 1)].penisdesc>>의 끝을 쓰다듬으며 피가 몰려 맥이 뛰는 것을 느낀다. <<oraltext>> 기둥을 위아래로 핥아 올리고 내린 다음 귀두 둘레를 빙 돈다.
 
 	<<if currentSkillValue("oralskill") gte random(1, 1000)>>
 		<span class="green">그 <<person>>【이가】 움찔하더니,</span> 정액을 뿜어낸다.
@@ -1450,18 +1450,18 @@
 			<</if>>
 		<br><br>
 
-		<<link [[Next|Pub Dice Minigame Oral 2]]>><</link>>
+		<<link [[다음|Pub Dice Minigame Oral 2]]>><</link>>
 		<br>
 
 	<<else>>
-		<span class="red">The <<person>> grasps the back of your hair,</span> <span class="pink">and pushes <<his>> phallus against your mouth.</span> <<He>> won't accept anything else. You'll have to comply, having failed to make <<him>> cum without.
+		<span class="red">그 <<person>>【이가】 당신의 뒷머리를 움켜쥐고,</span> <span class="pink"><<his>> 음경을 당신의 입에 밀어붙인다.</span> <<He>>【은는】 다른 것은 받아들이지 않는다. 억지로 하지 않고서는 <<him>>【을를】 사정시키지 못했으니, 따를 수밖에 없다.
 		<br><br>
 
 		<<oralskill 5>>
 		<span class="gold">입으로 쾌락을 주는 능력에 더 자신감이 생긴다.</span>
 		<br><br>
 
-		<<link [[Suck|Pub Dice Minigame Oral Penis 2]]>><<arousal 600 "mouth">><</link>><<garousal>><<oralvirginitywarning>>
+		<<link [[빤다|Pub Dice Minigame Oral Penis 2]]>><<arousal 600 "mouth">><</link>><<garousal>><<oralvirginitywarning>>
 		<br>
 	<</if>>
 
@@ -1472,16 +1472,16 @@
 
 	당신은 혀로 그 <<persons>> 음부를 튕기듯 핥은 다음, <<oraltext>> 혀끝으로 <<his>> 음순을 위아래로 훑고, <<his>> 클리토리스 주변을 맴돈다.
 	<<if currentSkillValue("oralskill") gte random(1, 1000)>>
-		<span class="green"><<He>> twitches</span> and grasps your head between <<his>> thighs as you push <<him>> over the edge.
+		<span class="green"><<He>>【이가】 움찔하더니</span> 당신이 <<him>>【을를】 절정으로 몰아붙이자 허벅지 사이에 당신의 머리를 끼운다.
 		<br><br>
 
-		<<link [[Next|Pub Dice Minigame Oral 2]]>><</link>>
+		<<link [[다음|Pub Dice Minigame Oral 2]]>><</link>>
 		<br>
 	<<else>>
-		<span class="red">The <<person>> grasps the back of your hair,</span> <span class="pink">and pushes your head against <<his>> groin.</span> <<He>> demands more from you. You'll have to comply, having failed to make <<him>> cum otherwise.
+		<span class="red">그 <<person>>【이가】 당신의 뒷머리를 움켜쥐고,</span> <span class="pink">당신의 머리를 <<his>> 사타구니에 밀어붙인다.</span> <<He>>【은는】 더 많은 것을 요구한다. 달리는 <<him>>【을를】 사정시키지 못했으니, 따를 수밖에 없다.
 		<br><br>
 
-		<<link [[Lick with vigour|Pub Dice Minigame Oral Vagina 2]]>><<arousal 600 "mouth">><</link>><<garousal>>
+		<<link [[힘차게 핥는다|Pub Dice Minigame Oral Vagina 2]]>><<arousal 600 "mouth">><</link>><<garousal>>
 		<br>
 	<</if>>
 
@@ -1489,7 +1489,7 @@
 :: Pub Dice Minigame Oral Penis 2
 	<<effects>><<set $outside to 0>>
 
-	Your lips part as the <<person>> pushes your face against <<his>> <<print $NPCList[($n - 1)].penisdesc>>. With a final shove, <<he>> pushes it into your mouth.
+	그 <<person>>【이가】 당신의 얼굴을 <<his>> <<print $NPCList[($n - 1)].penisdesc>>에 밀어붙이자 당신의 입술이 벌어진다. 마지막으로 거칠게 떠밀어 <<he>>【이가】 그것을 당신의 입안으로 밀어 넣는다.
 	<<if $player.virginity.oral is true>>
 		<<takeVirginity $NPCList[($n - 1)].fullDescription "oral">>
 		<span class="red">이상한 맛이 난다.</span>
@@ -1509,17 +1509,17 @@
 	<br><br>
 	<<oralejacstat>><<bodyliquid "face" "semen">>
 
-	<<link [[Next|Pub Dice Minigame Oral 2]]>><</link>>
+	<<link [[다음|Pub Dice Minigame Oral 2]]>><</link>>
 	<br>
 
 
 :: Pub Dice Minigame Oral Vagina 2
 	<<effects>><<set $outside to 0>>
 
-	You lick and suck the <<persons>> pussy clit vigourously, ocassionally fucking <<him>> with your tongue, until you feel <<his>> pussy twitch and shudder in orgasm. Once the spasms subside, <<he>> finally releases your hair.
+	당신은 그 <<persons>> 음부와 클리토리스를 힘차게 핥고 빨며, 이따금 혀로 <<him>>【을를】 쑤셔 주다가 <<his>> 음부가 오르가슴에 씰룩이며 떨리는 것을 느낀다. 경련이 가라앉자 <<he>>【은는】 마침내 당신의 머리카락을 놓아준다.
 	<br><br>
 
-	<<link [[Next|Pub Dice Minigame Oral 2]]>><</link>>
+	<<link [[다음|Pub Dice Minigame Oral 2]]>><</link>>
 	<br>
 
 
@@ -1536,7 +1536,7 @@
 
 		<<set $enemyanger += 100>>
 
-		The <<group>> surge forward, raising from their seats. Determined to enforce your pledge on you, and perhaps something more as well. "You think you can get away just like that?" the <<person1>><<person>> says in outrage. <<His>> hands reaching for you. "Guess we'll have to teach you how to honour your word, by force."
+		<<group>>【이가】 자리에서 일어나며 앞으로 몰려든다. 당신의 맹세를 강제로라도 지키게 하고, 어쩌면 그 이상도 하겠다는 기세다. "그렇게 그냥 빠져나갈 수 있을 줄 알았어?" <<person1>><<person>>【이가】 분노하며 말한다. <<His>> 손이 당신을 향해 뻗어 온다. "약속을 지키는 법을 힘으로 가르쳐 줘야겠네."
 		<br><br>
 
 	<<elseif $sexstart is 1>>
@@ -1554,7 +1554,7 @@
 			<</if>>
 		<</for>>
 
-		The <<person1>><<person>> smiles, coming closer. "Don't you worry," <<he>> says, with <<his>> hands reaching for you. "I promise I'll make you feel real good."
+		<<person1>><<person>>【이가】 웃으며 다가온다. "걱정 마." <<he>>【이가】 말하며 <<his>> 손을 당신에게 뻗는다. "아주 좋게 해 줄 테니까."
 		<br><br>
 	<</if>>
 
@@ -1567,39 +1567,39 @@
 	<<actionsman>>
 
 	<<if _combatend>>
-		<span id="next"><<link [[Next|Pub Dice Minigame Sex Finish]]>><</link>></span><<nexttext>>
+		<span id="next"><<link [[다음|Pub Dice Minigame Sex Finish]]>><</link>></span><<nexttext>>
 	<<else>>
-		<span id="next"><<link [[Next|Pub Dice Minigame Sex]]>><</link>></span><<nexttext>>
+		<span id="next"><<link [[다음|Pub Dice Minigame Sex]]>><</link>></span><<nexttext>>
 	<</if>>
 
 :: Pub Dice Minigame Sex Finish 
 	<<set $outside to 0>><<effects>>
 
 	<<if $enemyhealth lte 0>>
-		<<He>> staggers back. <<tearful>> you flee to safety, forsaking all of your cash at play.
+		<<He>>【은는】 비틀거리며 물러난다. <<tearful>> 당신은 판에 건 돈을 전부 포기한 채 안전한 곳으로 달아난다.
 		<br><br>
 
 		<<clotheson>>
 		<<endcombat>>
 
-		<<link [[Next|Pub]]>><<unset $dice>><<endevent>><</link>>
+		<<link [[다음|Pub]]>><<unset $dice>><<endevent>><</link>>
 		<br>
 
 	<<elseif $enemypleasure gte $enemypleasuremax>>
 		<<ejaculation>>
 		<<if $dicerape>>
-			"I hope you've learned your lesson," <<he>> remarks. "Go. Your cash was forfeit the moment reneged on your word." <<tearful>> you dress yourself back up before picking up your things and leaving.
+			"교훈을 얻었길 바라." <<he>>【이가】 말한다. "가. 네가 약속을 어긴 순간 네 돈은 몰수된 거야." <<tearful>> 당신은 옷을 다시 입고 짐을 챙겨 자리를 뜬다.
 			<br><br>
 		
-			<<link [[Next|Pub]]>>
+			<<link [[다음|Pub]]>>
 				<<unset $dice>><<endevent>><<unset $dicerape>>
 			<</link>>
 			<br>
 		<<else>>
-			"That was great," <<he>> comments. "Let's play another round so I can have you again." <<tearful>> you redress yourself back up before finally joining back on the table.
+			"좋았어." <<he>>【이가】 말한다. "한 판 더 하자. 또 널 가질 수 있게." <<tearful>> 당신은 옷을 다시 입고 마침내 테이블로 돌아간다.
 			<br><br>
 		
-			<<link [[Next|Pub Dice Minigame]]>>
+			<<link [[다음|Pub Dice Minigame]]>>
 				<<set $phase to 1>>
 				<<loadNPC 0 "dice_npc_1">>
 				<<loadNPC 1 "dice_npc_2">>
@@ -1616,16 +1616,16 @@
 
 	<<else>>
 		<<if $finish is 1>><<encounterEndViolence>><</if>>
-		You can't take it anymore.
+		더는 견딜 수 없다.
 		<br><br>
-		"Okay, okay... Fine," the <<person>> says. "I know. You never said anything about sex. That's fine."
-		<<tearful>> you redress yourself back up before finally joining back on the table.
+		"알았어, 알았다고... 좋아." 그 <<person>>【이가】 말한다. "알아. 섹스 얘기는 한 적 없었지. 괜찮아."
+		<<tearful>> 당신은 옷을 다시 입고 마침내 테이블로 돌아간다.
 		<br><br>
 
 		<<clotheson>>
 		<<endcombat>>
 
-		<<link [[Next|Pub Dice Minigame]]>>
+		<<link [[다음|Pub Dice Minigame]]>>
 			<<set $phase to 1>>
 			<<loadNPC 0 "dice_npc_1">>
 			<<loadNPC 1 "dice_npc_2">>

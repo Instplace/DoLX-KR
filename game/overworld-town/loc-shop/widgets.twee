@@ -101,7 +101,7 @@
 	<<set _payExtraBase to Math.ceil(_payBase * 1.25)>>
 	<<set _payExtraCost to (setup.inflation ? setup.inflation.price(_payExtraBase) : _payExtraBase)>>
 	<<if $money gte _payCost>>
-		<<getouticon>><<link [[Leave exact change|Shop Trespass Payment Result]]>>
+		<<getouticon>><<link [[정확한 금액을 두고 간다|Shop Trespass Payment Result]]>>
 			<<shopClothingFilterReset>>
 			<<ShowUnderEquip "normal">>
 			<<ShowUnderEquip "over">>
@@ -113,7 +113,7 @@
 		<br>
 	<</if>>
 	<<if $money gte _payExtraCost>>
-		<<getouticon>><<link [[Leave extra (<<printprice _payExtraBase>>)|Shop Trespass Payment Result]]>>
+		<<getouticon>><<link [[웃돈을 얹어 두고 간다 (<<printprice _payExtraBase>>)|Shop Trespass Payment Result]]>>
 			<<shopClothingFilterReset>>
 			<<ShowUnderEquip "normal">>
 			<<ShowUnderEquip "over">>
@@ -138,7 +138,7 @@
 		<<set _damagedCount to 0>>
 		<<set _space to _returnWardrobe.space>>
 		<<set _spaceLeft to Math.max(0, Math.min(_space, Math.floor((3000 - getWardrobeItemCount(_returnWardrobe, true)) / _args[0].length)))>>
-		Wardrobe total: <<= getWardrobeItemCount(_returnWardrobe, true)>> / 3,000 items.
+		옷장 총 보관량: <<= getWardrobeItemCount(_returnWardrobe, true)>> / 3,000개.
 		<br>
 		<<for _i to 0; _i lt _args[0].length; _i++>>
 			<<if _i is 0>>
@@ -272,11 +272,11 @@
 <<widget "earSlimeShoppingExhibitionism">>
 	<<set $shoppingCentreExit to $passage>>
 	<<set $weekly.earSlimeShoppingCentre to 1>>
-	<span class="lewd">You feel the <<slimeWord>> in your head command you to expose yourself to the whole mall.</span> It doesn't promise anything now. It imposes its will, and expects you to obey.
+	<span class="lewd">머릿속의 <<slimeWord>>【이가】 당신에게 쇼핑몰 전체에 스스로를 노출하라고 명령하는 것이 느껴진다.</span> 그것은 지금 아무것도 약속하지 않는다. 그저 제 의지를 강요하며, 당신이 복종하기만을 기대한다.
 	<br><br>
 
 	<<if hasSexStat("exhibitionism", 5)>>
-		<<link [[Submit willingly|Shopping Centre Slime Exhibitionism Obey]]>><<corruption 5>><<pain -8>><<stress -12>><<trauma -24>><<sub 2>><<set $phase to 1>><</link>><<promiscuous5>><<ggcorruption>><<llpain>><<llltrauma>><<llstress>><<submissivetext>>
+		<<link [[기꺼이 복종한다|Shopping Centre Slime Exhibitionism Obey]]>><<corruption 5>><<pain -8>><<stress -12>><<trauma -24>><<sub 2>><<set $phase to 1>><</link>><<promiscuous5>><<ggcorruption>><<llpain>><<llltrauma>><<llstress>><<submissivetext>>
 		<br>
 	<</if>>
 	<<link [[복종한다|Shopping Centre Slime Exhibitionism Obey]]>><<corruption 1>><<pain -4>><<stress -6>><<trauma -12>><<sub 1>><</link>><<gcorruption>><<lpain>><<lltrauma>><<lstress>>
@@ -400,7 +400,7 @@
 			<<if Time.dayState is "night">>
 				가치: <span class="gold"> £<<print ($_setupItem.shop.sell_price * ($_setupItem.shop.bought_in_bulk or 1) * 2 / 100).toFixed(2)>></span>
 			<<else>>
-				Price: <span class="gold"> £<<print ((setup.inflation ? setup.inflation.price($_setupItem.shop.sell_price * ($_setupItem.shop.bought_in_bulk or 1) * 2) : $_setupItem.shop.sell_price * ($_setupItem.shop.bought_in_bulk or 1) * 2) / 100).toFixed(2)>></span>
+				가격: <span class="gold"> £<<print ((setup.inflation ? setup.inflation.price($_setupItem.shop.sell_price * ($_setupItem.shop.bought_in_bulk or 1) * 2) : $_setupItem.shop.sell_price * ($_setupItem.shop.bought_in_bulk or 1) * 2) / 100).toFixed(2)>></span>
 			<</if>>
 			<<if $_setupItem.shop.bought_in_bulk>>
 				<<print $_setupItem.shop.bought_in_bulk>>개당
@@ -506,7 +506,7 @@
 			<</link>>
 			<br>
 			<<if $money gte _totalCostShown>>
-				<<link [[Leave exact change|Shop Trespass Payment Result]]>>
+				<<link [[정확한 금액을 두고 간다|Shop Trespass Payment Result]]>>
 					<<supermarketTakeBasket>>
 					<<shopTrespassPayment _totalCost "supermarket" false $passage "the groceries">>
 				<</link>><<crime "trespassing">>
@@ -514,14 +514,14 @@
 			<</if>>
 			<<set _totalCostExtraShown to (setup.inflation ? setup.inflation.price(Math.ceil(_totalCost * 1.25)) : Math.ceil(_totalCost * 1.25))>>
 			<<if $money gte _totalCostExtraShown>>
-				<<link [[Leave extra (<<printprice `Math.ceil(_totalCost * 1.25)`>>)|Shop Trespass Payment Result]]>>
+				<<link [[웃돈을 얹어 두고 간다 (<<printprice `Math.ceil(_totalCost * 1.25)`>>)|Shop Trespass Payment Result]]>>
 					<<supermarketTakeBasket>>
 					<<shopTrespassPayment _totalCost "supermarket" true $passage "the groceries">>
 				<</link>><<crime "trespassing">>
 				<br>
 			<</if>>
 		<<else>>
-			Total: <span class="gold"> £<<print (_totalCostShown / 100).toFixed(2)>></span>
+			총액: <span class="gold"> £<<print (_totalCostShown / 100).toFixed(2)>></span>
 			<br>
 			<<if setup.hbsc.paymentBalance("supermarket") gte _totalCostShown>>
 				<<link [["구매한다"|$passage]]>>

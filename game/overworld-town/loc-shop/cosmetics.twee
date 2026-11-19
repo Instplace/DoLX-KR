@@ -11,7 +11,7 @@
 		<span class="green">자물쇠는 쉽게 딸 수 있을 것 같다.</span>
 		<br><br>
 
-		<<lockicon "pick">><<link [[Pick it (0:10)|Cosmetics Store]]>><<pass 10>><<crimeUp 10 "trespassing">><</link>><<crime "trespassing">>
+		<<lockicon "pick">><<link [[자물쇠를 딴다 (0:10)|Cosmetics Store]]>><<pass 10>><<crimeUp 10 "trespassing">><</link>><<crime "trespassing">>
 		<br>
 	<</if>>
 <<else>>
@@ -69,20 +69,20 @@
 		<<cosmeticsicon "sunscreen">><<link [[자외선 차단제를 본다|Cosmetics Sunscreen]]>><</link>>
 		<br>
 		<<if $settings.pubicHairEnabled>>
-			<<cosmeticsicon "wax">><<link [[Look at waxing kits|Cosmetics Waxing]]>><</link>>
+			<<cosmeticsicon "wax">><<link [[왁싱 키트를 본다|Cosmetics Waxing]]>><</link>>
 			<br>
 		<</if>>
 		<<if setup.perfumery.enabled() and ($perfumery?.learned or !modLISelected("Poppy"))>>
-			<<perfumeryicon>><<link [[Perfumery|Perfumery Supplies]]>><</link>>
+			<<perfumeryicon>><<link [[향수 코너|Perfumery Supplies]]>><</link>>
 			<br>
 		<</if>>
 		<<run pocketEnsure()>>
 		<<if $pocket.mirror>>
 			/* Empty because already being bought */
 		<<elseif $money gte (setup.inflation ? setup.inflation.spendPrice(1500, "cosmetics") : 1500)>>
-			<<mirroricon>><<link [[Buy a hand mirror (<<printprice 1500>>)|Cosmetics Hand Mirror]]>><<money -1500 "cosmetics">><<set $pocket.mirror to true>><</link>><br>
+			<<mirroricon>><<link [[손거울을 산다 (<<printprice 1500>>)|Cosmetics Hand Mirror]]>><<money -1500 "cosmetics">><<set $pocket.mirror to true>><</link>><br>
 		<<else>>
-			<<mirroricon>><span class="grey">A rack of hand mirrors. You can't afford one.</span><br>
+			<<mirroricon>><span class="grey">손거울이 놓인 진열대. 하나 살 돈이 없다.</span><br>
 		<</if>>
 		<br>
 	<</if>>
@@ -91,19 +91,19 @@
 
 :: Cosmetics Waxing
 <<set $outside to 0>><<set $location to "shopping_centre">><<effects>>
-A shelf is stocked with home waxing kits. Each kit contains wax for one pubic hair removal session, together with strips, a spatula, and instructions. The packaging says the hair can take several weeks to grow back after treatment.
+선반에 가정용 왁싱 키트가 진열되어 있다. 키트 하나에는 음모 제모 한 번 분량의 왁스와 띠, 주걱, 설명서가 들어 있다. 포장에는 시술 후 털이 다시 자라는 데 몇 주가 걸릴 수 있다고 적혀 있다.
 <br><br>
-<span class="gold">You own <<print $waxKits ?? 0>> kit<<print ($waxKits ?? 0) is 1 ? "" : "s">>.</span> You can use a kit in any bathroom once your pubic hair has grown out. If the hair is still very short, the wax cannot stick to it properly.
+<span class="gold">당신은 키트를 <<print $waxKits ?? 0>>개 가지고 있다.</span> 음모가 자라나면 어느 화장실에서든 키트를 쓸 수 있다. 털이 아직 아주 짧으면 왁스가 제대로 붙지 않는다.
 <br><br>
 <<set _waxPrice to 1500>>
 <<if Time.dayState is "night">>
-	<<cosmeticsicon "wax">><<link [[Take a pot of hot wax|Cosmetics Waxing]]>><<set $waxKits to ($waxKits ?? 0) + 1>><<crimeUp `_waxPrice / 100` "petty">><</link>><<crime "petty">>
+	<<cosmeticsicon "wax">><<link [[뜨거운 왁스 한 통을 가져간다|Cosmetics Waxing]]>><<set $waxKits to ($waxKits ?? 0) + 1>><<crimeUp `_waxPrice / 100` "petty">><</link>><<crime "petty">>
 	<br>
 <<elseif $money gte (setup.inflation ? setup.inflation.spendPrice(_waxPrice, "cosmetics") : _waxPrice)>>
-	<<cosmeticsicon "wax">><<link [[Buy a waxing kit (<<printprice _waxPrice>>)|Cosmetics Waxing]]>><<money `-_waxPrice` "cosmetics">><<set $waxKits to ($waxKits ?? 0) + 1>><</link>>
+	<<cosmeticsicon "wax">><<link [[왁싱 키트를 산다 (<<printprice _waxPrice>>)|Cosmetics Waxing]]>><<money `-_waxPrice` "cosmetics">><<set $waxKits to ($waxKits ?? 0) + 1>><</link>>
 	<br>
 <<else>>
-	<span class="blue">You can't afford a kit. <<printprice _waxPrice>> each.</span>
+	<span class="blue">키트를 살 돈이 없다. 하나에 <<printprice _waxPrice>>【이】다.</span>
 	<br>
 <</if>>
 <br>
@@ -111,11 +111,11 @@ A shelf is stocked with home waxing kits. Each kit contains wax for one pubic ha
 
 :: Cosmetics Hand Mirror
 <<set $outside to 0>><<set $location to "shopping_centre">><<effects>>
-You pick out a small hand mirror and pay for it. It slips easily into a pocket.
+당신은 작은 손거울을 골라 값을 치른다. 주머니에 쏙 들어간다.
 <br><br>
-<span class="green">You can use it from the POCKET menu almost anywhere.</span>
+<span class="green">주머니 메뉴에서 거의 어디서든 사용할 수 있다.</span>
 <br><br>
-<<link [[Back|Cosmetics Store]]>><</link>>
+<<link [[뒤로|Cosmetics Store]]>><</link>>
 
 :: Cosmetics Lipstick
 <<CosmeticsGenericDepartment "lipstick" "립스틱" "립스틱" "lipstick" "" "#FF0000" 1000 "Cosmetics Lipstick" "형형색색의 립스틱들이 선반에 진열되어 있다." true true 20 `setup.colours.lipstick.map(c=>c.variable)`>>
@@ -145,7 +145,7 @@ You pick out a small hand mirror and pay for it. It slips easily into a pocket.
 <</if>>
 
 <br><br>
-Each bottle costs <<printprice _sunscreen.price>> and has <<print _sunscreen.uses>> uses. Each use lasts around <<print _sunscreen.durationHours>> <<pluralise _sunscreen.durationHours "hour">>.
+각 병의 가격은 <<printprice _sunscreen.price>>【이】며 <<print _sunscreen.uses>>회 사용할 수 있다. 1회 사용 시 약 <<print _sunscreen.durationHours>>시간 동안 지속된다.
 <br>
 <<if Time.dayState is "night">>
 	<<link [[한 병 훔친다|Cosmetics Sunscreen]]>>
@@ -163,25 +163,25 @@ Each bottle costs <<printprice _sunscreen.price>> and has <<print _sunscreen.use
 	<<set _sunscreenPayExtraBase to Math.ceil(_sunscreen.price * 1.25)>>
 	<<set _sunscreenPayExtraCost to (setup.inflation ? setup.inflation.price(_sunscreenPayExtraBase) : _sunscreenPayExtraBase)>>
 	<<if $money gte _sunscreenPayCost>>
-		<<link [[Leave exact change for a bottle|Shop Trespass Payment Result]]>>
+		<<link [[한 병 값으로 정확한 금액을 두고 간다|Shop Trespass Payment Result]]>>
 			<<run Skin.Sunscreen.addUses(_sunscreen.uses)>>
 			<<shopTrespassPayment _sunscreen.price "cosmetics" false "Cosmetics Sunscreen" "the sunscreen">>
 		<</link>><<crime "trespassing">>
 		<br>
 	<</if>>
 	<<if $money gte _sunscreenPayExtraCost>>
-		<<link [[Leave extra for a bottle (<<printprice _sunscreenPayExtraBase>>)|Shop Trespass Payment Result]]>>
+		<<link [[한 병 값에 웃돈을 얹어 두고 간다 (<<printprice _sunscreenPayExtraBase>>)|Shop Trespass Payment Result]]>>
 			<<run Skin.Sunscreen.addUses(_sunscreen.uses)>>
 			<<shopTrespassPayment _sunscreen.price "cosmetics" true "Cosmetics Sunscreen" "the sunscreen">>
 		<</link>><<crime "trespassing">>
 	<</if>>
 <<elseif $money gte (setup.inflation ? setup.inflation.spendPrice(_sunscreen.price, "cosmetics") : _sunscreen.price)>>
-	<<link [[Buy a bottle (<<printprice _sunscreen.price>>)|Cosmetics Sunscreen]]>>
+	<<link [[한 병 산다 (<<printprice _sunscreen.price>>)|Cosmetics Sunscreen]]>>
 		<<money `-_sunscreen.price` "cosmetics">>
 		<<run Skin.Sunscreen.addUses(_sunscreen.uses)>>
 	<</link>>
 	<br>
-	<<link [[Buy a bottle and apply right now (<<printprice _sunscreen.price>>)|Cosmetics Sunscreen]]>>
+	<<link [[한 병 사고 지금 바로 바른다 (<<printprice _sunscreen.price>>)|Cosmetics Sunscreen]]>>
 		<<money `-_sunscreen.price` "cosmetics">>
 		<<run Skin.Sunscreen.addUses(_sunscreen.uses)>>
 		<<run Skin.Sunscreen.apply()>>
@@ -256,7 +256,7 @@ Each bottle costs <<printprice _sunscreen.price>> and has <<print _sunscreen.use
 		모든 색상의 _itemPlural【을를】 가지고 있다. 더 이상 살 것이 없다.
 		<br><br>
 	<<else>>
-		Each _itemSingular costs <<printprice _price>><<if _usesPerBuy > 1>> and has _usesPerBuy uses<</if>>.
+		각 _itemSingular 가격은 <<printprice _price>>【이】다<<if _usesPerBuy > 1>> (총 _usesPerBuy회 사용 가능)<</if>>.
 		<br>
 		<<if $cosmeticsChoice is undefined>>
 			<<set $cosmeticsChoice = _availableColours[0]>>
@@ -289,7 +289,7 @@ Each bottle costs <<printprice _sunscreen.price>> and has <<print _sunscreen.use
 				<<set _payExtraBase to Math.ceil(_price * 1.25)>>
 				<<set _payExtraCost to (setup.inflation ? setup.inflation.price(_payExtraBase) : _payExtraBase)>>
 				<<if $money gte _payCost>>
-					<<link [[Leave exact change|Shop Trespass Payment Result]]>>
+					<<link [[정확한 금액을 두고 간다|Shop Trespass Payment Result]]>>
 						<<if _isConsumable == true>>
 							<<addConsumableCosmetics _itemType $cosmeticsChoice _usesPerBuy>>
 						<<else>>
@@ -300,7 +300,7 @@ Each bottle costs <<printprice _sunscreen.price>> and has <<print _sunscreen.use
 					<br>
 				<</if>>
 				<<if $money gte _payExtraCost>>
-					<<link [[Leave extra (<<printprice _payExtraBase>>)|Shop Trespass Payment Result]]>>
+					<<link [[웃돈을 얹어 두고 간다 (<<printprice _payExtraBase>>)|Shop Trespass Payment Result]]>>
 						<<if _isConsumable == true>>
 							<<addConsumableCosmetics _itemType $cosmeticsChoice _usesPerBuy>>
 						<<else>>
@@ -317,7 +317,7 @@ Each bottle costs <<printprice _sunscreen.price>> and has <<print _sunscreen.use
 		<</if>>
 	<</if>>
 	<<if setup.ccmod.categories.includes(T.itemType)>>
-		<<link [[Buy Custom|Custom Makeup Store]]>>
+		<<link [[맞춤 제품을 산다|Custom Makeup Store]]>>
 			<<run ccmShop.newSession(T.itemType)>>
 		<</link>>
 		<br>

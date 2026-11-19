@@ -54,11 +54,11 @@
 	<<else>>
 		<<if Time.dayState is "night" and Time.hour isnot $closinghour>>
 			<<if !$weekly.theft.hairDressersGel>>
-				<<hairdressericon "gel">><<link [[Steal a bottle of hair gel|$passage]]>><<crimeUp 8 "petty">><<set $hairgelBottles += 1>><<set $weekly.theft.hairDressersGel to true>><</link>><<crime "petty">> | Owned: <span class="gold"><<= $hairgelBottles || 0>></span>
+				<<hairdressericon "gel">><<link [[헤어 젤 한 병을 훔친다|$passage]]>><<crimeUp 8 "petty">><<set $hairgelBottles += 1>><<set $weekly.theft.hairDressersGel to true>><</link>><<crime "petty">> | 보유 중: <span class="gold"><<= $hairgelBottles || 0>></span>
 				<br>
 			<</if>>
 			<<if !$weekly.theft.hairDressersFormula>>
-				<<hairdressericon "hairspray">><<link [[Steal a bottle of hair growth formula|$passage]]>><<crimeUp 50 "petty">><<set $sexStats.pills.pills["Hair Growth Formula"].owned++>><<set $sexStats.pills.boughtOnce to true>><<set $weekly.theft.hairDressersFormula to true>><</link>><<crime "petty">> | Owned: <span class="gold"><<= $sexStats.pills.pills["Hair Growth Formula"].owned>></span>
+				<<hairdressericon "hairspray">><<link [[모발 성장제 한 병을 훔친다|$passage]]>><<crimeUp 50 "petty">><<set $sexStats.pills.pills["Hair Growth Formula"].owned++>><<set $sexStats.pills.boughtOnce to true>><<set $weekly.theft.hairDressersFormula to true>><</link>><<crime "petty">> | 보유: <span class="gold"><<= $sexStats.pills.pills["Hair Growth Formula"].owned>></span>
 				<br>
 			<</if>>
 			<<if !$weekly.theft.hairDressers>>
@@ -70,13 +70,13 @@
 			<<hairdressericon "chair">><<link [[자리에 앉는다|Hairdressers Seat]]>><</link>>
 			<br>
 			<<if setup.hbsc.paymentBalance("hairdressers") gte (setup.inflation ? setup.inflation.price(800) : 800)>>
-				<<hairdressericon "gel">> <<link [[Buy hair gel|Hairdressers Product Quantity]]>><<set $hairdressersProduct to "gel">><</link>> | Owned: <span class="gold"><<= $hairgelBottles || 0>></span>
+				<<hairdressericon "gel">> <<link [[헤어 젤을 산다|Hairdressers Product Quantity]]>><<set $hairdressersProduct to "gel">><</link>> | 보유: <span class="gold"><<= $hairgelBottles || 0>></span>
 			<<else>>
 				<<hairdressericon "gel">> <span class="blue">헤어 젤이나 모발 성장제를 살 돈이 없다.</span>
 			<</if>>
 			<br>
 			<<if setup.hbsc.paymentBalance("hairdressers") gte (setup.inflation ? setup.inflation.price(5000) : 5000)>>
-				<<hairdressericon "hairspray">> <<link [[Buy hair growth formula|Hairdressers Product Quantity]]>><<set $hairdressersProduct to "formula">><</link>> | Owned: <span class="gold"><<= $sexStats.pills.pills["Hair Growth Formula"].owned>></span>
+				<<hairdressericon "hairspray">> <<link [[모발 성장제를 산다|Hairdressers Product Quantity]]>><<set $hairdressersProduct to "formula">><</link>> | 보유: <span class="gold"><<= $sexStats.pills.pills["Hair Growth Formula"].owned>></span>
 			<<elseif setup.hbsc.paymentBalance("hairdressers") gte (setup.inflation ? setup.inflation.price(800) : 800)>>
 				<<hairdressericon "hairspray">> <span class="blue">모발 성장제를 살 돈이 없습니다.</span>
 			<</if>>
@@ -101,9 +101,9 @@
 	<<set _productName to "hair gel">>
 	<<set _unit to "bottle">>
 <</if>>
-You ask the hairdresser about buying _productName.
+당신은 미용사에게 _productName【을를】 사는 것에 대해 묻는다.
 <br><br>
-"How many do you want to buy?" <<he>> asks.
+"몇 개 사시겠어요?" <<he>>【이가】 묻는다.
 <br><br>
 <<for _quantity range [1, 3, 5, 10]>>
 	<<set _cost to _price * _quantity>>
@@ -126,19 +126,19 @@ You ask the hairdresser about buying _productName.
 				<</if>>
 			<</link>>
 		<<else>>
-			<<hairdressericon _icon>><span class="blue">You can't afford _quantity <<print _unit>><<if _quantity isnot 1>>s<</if>>.</span>
+			<<hairdressericon _icon>><span class="blue">_quantity개를 살 돈이 없다.</span>
 		<</if>>
 		<br>
 	<</capture>>
 <</for>>
 <br>
-<<getouticon>><<link [[Back|Hairdressers]]>><<unset $hairdressersProduct>><<unset $hairdressersProductQuantity>><</link>>
+<<getouticon>><<link [[뒤로|Hairdressers]]>><<unset $hairdressersProduct>><<unset $hairdressersProductQuantity>><</link>>
 
 :: Hairdressers Gel
 
 <<set _quantity to $hairdressersProductQuantity || 1>>
 <<set _isFormula to $hairdressersProduct is "formula">>
-<<generate1>><<person1>>You browse the hair products for sale. You decide on <<if _quantity is 1>>a tiny <<else>><<print _quantity>> tiny <</if>><<if _isFormula>>canister<<else>>bottle<</if>><<if _quantity isnot 1>>s<</if>> labelled "No muss, no fuss!"
+<<generate1>><<person1>>당신은 판매 중인 헤어 제품들을 둘러본다. "번거로움 없이 깔끔하게!"라는 라벨이 붙은 작은 <<if _isFormula>>통<<else>>병<</if>><<if _quantity isnot 1>> <<print _quantity>>개<</if>>【을를】 고른다.
 <br><br>
 미용사가 물건을 계산하며 잡담을 건넨다. "그거 아주 좋아요." <<he>>【이가】 말한다.
 
@@ -146,13 +146,13 @@ You ask the hairdresser about buying _productName.
 	<<if _quantity is 1>>
 		"통이 작아서 <span class="teal">몇 번 못 쓰겠지만</span>, 매일 뿌려야 하는 건 아닐 거야. 머리가 짧게 유지될지 걱정할 필요 없어. 적어도 다른 스타일로 바꾸기로 결정하기 전까진 말이야."
 	<<else>>
-		"The canisters are small, so you'll only get <span class="teal">a small number of uses</span> out of each, but you won't need to use them every day. You won't have to worry about your hair staying short. Not until you decide to get it cut again."
+		"통이 작아서 하나당 <span class="teal">몇 번밖에</span> 못 쓰겠지만, 매일 뿌려야 하는 건 아니야. 머리가 짧게 유지될지 걱정할 필요 없어. 적어도 다시 자르기로 결정하기 전까진 말이야."
 	<</if>>
 <<else>>
 	<<if _quantity is 1>>
 		"병이 작아서 <span class="teal">한 번밖에</span> 못 쓰겠지만, 고정력은 돌처럼 단단할 거야. 머리가 헝클어질까 걱정 안 해도 될걸. 적어도 헤어스타일을 바꾸기로 결정할 때까지는."
 	<<else>>
-		"The bottles are small, so you'll only get <span class="teal">one use</span> out of each, but they've got a rock-solid hold. You won't have to worry about your hair getting mussed up. Not until you decide to change up your 'do, at least."
+		"병이 작아서 하나당 <span class="teal">한 번밖에</span> 못 쓰겠지만, 고정력은 돌처럼 단단해. 머리가 헝클어질까 걱정 안 해도 돼. 적어도 헤어스타일을 바꾸기로 결정할 때까지는."
 	<</if>>
 <</if>>
 <br><br>
@@ -165,11 +165,11 @@ You ask the hairdresser about buying _productName.
 <</if>>
 <br><br>
 
-<<link [[Next|Hairdressers]]>><<endevent>><<unset $hairdressersProduct>><<unset $hairdressersProductQuantity>><</link>>
+<<link [[다음|Hairdressers]]>><<endevent>><<unset $hairdressersProduct>><<unset $hairdressersProductQuantity>><</link>>
 
 :: Hairdressers Seat
 
-<<dhmTempInit>><<calchairlengthstage>><<generate1>><<person1>>You take a seat, and a hairdresser soon appears behind you. "What'll it be, hun?" <br>
+<<dhmTempInit>><<calchairlengthstage>><<generate1>><<person1>>자리에 앉자, 곧 미용사가 당신 뒤에 나타난다. "어떻게 해줄까, 자기?" <br>
 <<if dhmod.cfg.prices>><<dhmPricesReplace>><<else>><<hairdressersPricelist>><</if>>
 <<set $hairOption to $hairlength>>
 <<set $fringeOption to $fringelength>>
@@ -212,19 +212,19 @@ You ask the hairdresser about buying _productName.
 <<widget "hairdressersPricelist">>
 	거울 옆의 팻말에 적혀 있다.
 	<br>
-	Haircut: <<printprice 3000>>
+	커트: <<printprice 3000>>
 	<br>
-	Fringe trim: <<printprice 3000>>
+	앞머리 다듬기: <<printprice 3000>>
 	<br>
-	Extensions, hair or fringe: <<printprice 3000>>
+	붙임머리(머리 또는 앞머리): <<printprice 3000>>
 	<br>
-	Full head colouring: <<printprice 6000>>
+	전체 염색: <<printprice 6000>>
 	<br>
-	Fringe or sides colouring: <<printprice 5000>>
+	앞머리 또는 옆머리 염색: <<printprice 5000>>
 	<br>
-	Two-tone hair colouring: <<printprice 25000>>
+	투톤 염색: <<printprice 25000>>
 	<br>
-	Eyebrows colouring: <<printprice 2000>>
+	눈썹 염색: <<printprice 2000>>
 	<br><br>
 <</widget>>
 
@@ -267,7 +267,7 @@ You ask the hairdresser about buying _productName.
 				<<if $hairOption isnot $hairlength and not dhmod.cfg.prices>>
 					<<set _currentCost += 3000>>
 				<</if>>
-				Have your sides cut or extended to your:
+				옆머리 길이 (자르거나 늘림):
 				<br>
 				<<set _hairNames to ["귀", "턱", "어깨", "윗가슴", "가슴 중앙", "윗배", "배꼽", "허벅지", "무릎", "발목"]>>
 				<<set _hairOptions to {"Leave as is":$hairlength}>>
@@ -284,7 +284,7 @@ You ask the hairdresser about buying _productName.
 				<</listbox>>
 				<br><br>
 			<<else>>
-				You don't have enough money to change the length of your hair.
+				머리 길이를 바꿀 돈이 부족하다.
 				<br><br>
 			<</if>>
 
@@ -292,7 +292,7 @@ You ask the hairdresser about buying _productName.
 				<<if $fringeOption isnot $fringelength and not dhmod.cfg.prices>>
 					<<set _currentCost += 3000>>
 				<</if>>
-				Have your fringe cut or extended until it's:
+				앞머리 길이 (자르거나 늘림):
 				<br>
 				<<set _fringeNames to ["Very short", "Short", "Standard", "Long", "Very long"]>>
 				<<set _fringeOptions to {"Leave as is":$fringelength}>>
@@ -309,7 +309,7 @@ You ask the hairdresser about buying _productName.
 				<</listbox>>
 				<br><br>
 			<<else>>
-				You don't have enough money to change the length of your fringe.
+				앞머리 길이를 바꿀 돈이 부족하다.
 				<br><br>
 			<</if>>
 
@@ -338,10 +338,10 @@ You ask the hairdresser about buying _productName.
 				<label><<checkbox "$twoToneHairDye" false true autocheck>> 투톤 염색 요청</label>
 				<<if dhmShop.highlightsAvailable($dyedHairPart, $hairtype, $fringetype, $hairlengthstage, $fringelengthstage)>>
 					<br>
-					<label><<checkbox "$specialTwoToneHairDye" false true autocheck>> Request a special vanilla only two-tone colouring</label>
+					<label><<checkbox "$specialTwoToneHairDye" false true autocheck>> 기본 게임 전용 특수 투톤 염색 요청</label>
 				<</if>>
 				<br>
-				<label><<checkbox "$moddedTwoToneHairDye" false true autocheck>> Request a special modded only two-tone colouring</label>
+				<label><<checkbox "$moddedTwoToneHairDye" false true autocheck>> 모드 전용 특수 투톤 염색 요청</label>
 				<br>
 
 				<<set _dyeOptions to {"염색하지 않음":"noChange"}>>
@@ -384,9 +384,9 @@ You ask the hairdresser about buying _productName.
 					<</if>>
 				<<else>>
 					<<if $moddedTwoToneHairDye>>
-						<span id="modded-pattern-options">Style: <<listbox "$moddedTwoToneStyle" autoselect>><<optionsfrom setup.dhmod.moddedGradients>><</listbox>></span>
+						<span id="modded-pattern-options">스타일: <<listbox "$moddedTwoToneStyle" autoselect>><<optionsfrom setup.dhmod.moddedGradients>><</listbox>></span>
 					<<else>>
-						Style: <<listbox "$twoToneStyle" autoselect>><<optionsfrom setup.dhmod.gradients>><</listbox>>
+						스타일: <<listbox "$twoToneStyle" autoselect>><<optionsfrom setup.dhmod.gradients>><</listbox>>
 					<</if>>
 					<br>
 					첫 번째 색상: <<listbox "$twoToneDyeOption1" autoselect>>
@@ -444,7 +444,7 @@ You ask the hairdresser about buying _productName.
 		</div>
 	</div>
 
-	<div id="currentCost" class="gold">To pay: <<printprice _currentCost>></div>
+	<div id="currentCost" class="gold">결제 금액: <<printprice _currentCost>></div>
 
 	<<set _pass to 0>>
 	<<set _pass += $hairOption isnot $hairlength ? 15 : 0>>
@@ -475,13 +475,13 @@ You ask the hairdresser about buying _productName.
 			<<hairdressericon "chair">><span class="blue">투톤 염색을 하려면 서로 다른 두 가지 색상을 선택해야 한다.</span>
 			<br>
 		<<elseif _currentCost gt 0>>
-			<<hairdressericon "chair">><<link [[Pay hairdresser (<<printprice _currentCost>> <<= getTimeString(_pass)>>)|Hairdressers Session]]>>
+			<<hairdressericon "chair">><<link [[미용사에게 지불한다 (<<printprice _currentCost>> <<= getTimeString(_pass)>>)|Hairdressers Session]]>>
 				<<money `-_currentCost` "hairdressers">>
 			<</link>>
 			<br>
 		<</if>>
 		<br>
-		<<cosmeticsicon "dyes">><<link [[Inquire about exotic dyes| Dye Harder Seat ]]>><</link>>
+		<<cosmeticsicon "dyes">><<link [[특이한 염색약에 대해 묻는다| Dye Harder Seat ]]>><</link>>
 		<br><br>
 		<<getouticon>><<link [[떠난다|Hairdressers]]>><<endevent>><</link>>
 	<</if>>
@@ -493,13 +493,13 @@ You ask the hairdresser about buying _productName.
 	<<set _pass to 0>>
 	<<if $hairOption isnot $hairlength>>
 		<<if $hairOption gt $hairlength>>
-			The hairdresser opens a drawer of hair extensions and compares several of them with your <<haircolourtext>> hair until <<he>> finds a close match. <<He>> attaches the extensions to your hair one section at a time, gradually making it longer.
+			미용사가 붙임머리 서랍을 열어 여러 개를 당신의 <<haircolourtext>> 머리와 견주어 보다가, 가장 비슷한 것을 찾아낸다. <<He>>【은는】 붙임머리를 한 가닥씩 당신의 머리에 붙여 나가며 머리를 서서히 길게 만든다.
 			<br><br>
-			When <<he>> finishes, <<he>> steps back and holds up a mirror so you can see the result.
+			<<he>>【은는】 작업을 마치자 뒤로 물러서서 당신이 결과를 볼 수 있도록 거울을 들어 올린다.
 		<<else>>
-			The hairdresser begins cutting your hair. Small pieces fall onto the floor as <<he>> works around your head, shortening each section to the length you chose.
+			미용사가 머리를 자르기 시작한다. <<he>>【이가】 당신의 머리 주위를 돌며 각 부분을 당신이 고른 길이로 짧게 다듬자 작은 머리카락 조각들이 바닥에 떨어진다.
 			<br><br>
-			When <<he>> finishes, <<he>> steps back and holds up a mirror so you can see the result.
+			<<he>>【은는】 작업을 마치자 뒤로 물러서서 당신이 결과를 볼 수 있도록 거울을 들어 올린다.
 		<</if>>
 		<br><br>
 		<<set $hairlength to clone($hairOption)>>
@@ -509,11 +509,11 @@ You ask the hairdresser about buying _productName.
 
 	<<if $fringeOption isnot $fringelength>>
 		<<if $fringeOption gt $fringelength>>
-			<<He>> attaches extensions to your fringe, then adjusts the new hair so it matches the rest. When <<hes>> finished, <<he>> holds up a mirror for you to see the result.
+			<<He>>【은는】 당신의 앞머리에 붙임머리를 붙인 다음, 새 머리카락이 나머지와 어울리도록 매만진다. <<Hes>> 작업을 마치면 거울을 들어 올려 당신에게 결과를 보여 준다.
 		<<elseif _pass gt 0>>
-			<<He>> continues cutting your fringe, with more pieces of hair falling to the floor. After a short while, <<he>> steps back and holds up the mirror again so you can check the result.
+			<<He>>【은는】 계속해서 앞머리를 자르고, 더 많은 머리카락 조각들이 바닥에 떨어진다. 잠시 뒤 <<he>>【은는】 뒤로 물러서서 당신이 결과를 확인할 수 있도록 다시 거울을 든다.
 		<<else>>
-			The hairdresser starts cutting your fringe, with pieces of hair falling to the floor. After a short while, <<he>> steps back and holds up a mirror so you can check the result.
+			미용사가 앞머리를 자르기 시작하고, 머리카락 조각들이 바닥에 떨어진다. 잠시 뒤 <<he>>【은는】 뒤로 물러서서 당신이 결과를 확인할 수 있도록 거울을 든다.
 		<</if>>
 		<br><br>
 		<<set $fringelength to clone($fringeOption)>>
@@ -550,10 +550,10 @@ You ask the hairdresser about buying _productName.
 	<<if $dyeOption is "removeDye">>
 		<<if _pass gt 0>>
 			<<He>>【은는】 당신에게 고개를 뒤로 젖히라고 한 뒤 요청을 마무리한다. <<He>>【은는】 당신의 <<hairPartKr>> 부분에 인공적인 화학 약품 냄새가 나는 액체를 바른 다음, 작은 대야에서 헹궈내기 시작한다.
-			<<Hes>> soon blowing you dry and brandishing a mirror for you to see your <<print $dyedHairPart>> back in its natural $naturalhaircolour colour.
+			<<Hes>> 이내 드라이기로 머리를 말려 주고, 당신이 본래의 $naturalhaircolour 색으로 돌아온 <<hairPartKr>> 부분을 볼 수 있도록 거울을 내민다.
 		<<else>>
 			미용사가 당신에게 고개를 뒤로 젖히라고 한다. <<He>>【은는】 당신의 <<hairPartKr>> 부분에 인공적인 화학 약품 냄새가 나는 액체를 바른 다음, 작은 대야에서 헹궈내기 시작한다.
-			<<Hes>> soon blowing you dry and brandishing a mirror for you to see your <<print $dyedHairPart>> back in its natural $naturalhaircolour colour.
+			<<Hes>> 이내 드라이기로 머리를 말려 주고, 당신이 본래의 $naturalhaircolour 색으로 돌아온 <<hairPartKr>> 부분을 볼 수 있도록 거울을 내민다.
 		<</if>>
 		<br><br>
 
@@ -608,9 +608,9 @@ You ask the hairdresser about buying _productName.
 			<<set $hairFringeColourGradient to clone(_gradient)>>
 		<</if>>
 
-		<<if _pass gt 0>>Finally, the<<else>>The<</if>> hairdresser mixes the dyes in two separate bowls, then uses a special mask to apply the colours in a precise pattern.
+		<<if _pass gt 0>>마지막으로 미용사가<<else>>미용사가<</if>> 두 개의 그릇에 염색약을 따로 섞은 뒤, 특수 마스크를 사용해 정교한 무늬로 색을 입힌다.
 		<br><br>
-		You wait for the dyes to set before <<he>> rinses your hair and shows you the finished two-tone pattern in the mirror.
+		염색약이 스며들기를 기다리면, <<he>>【이가】 머리를 헹구고 거울로 완성된 투톤 무늬를 보여 준다.
 		<br><br>
 		<<set _pass += 30>>
 		<<unset $dyeOption>>
@@ -639,7 +639,7 @@ You ask the hairdresser about buying _productName.
 			그
 		<</if>>
 		미용사는 거품이 일 때까지 두 개의 그릇에 각각 염색약을 섞는다. <<Hes>> 끈적끈적해 보이는 액체가 담긴 그릇들을 남긴다.
-		<<He>> carefully paints streaks of the lighter colour through sections of your hair, leaving the rest untouched to keep your natural base tone.
+		<<He>>【은는】 당신의 머리 군데군데에 더 밝은 색의 가닥을 조심스럽게 칠하고, 나머지는 본래의 기본 색조가 유지되도록 그대로 둔다.
 		<br><br>
 		염색약이 스며들기를 기다리는 동안 당신은 잡담을 나눈다. 얼마 지나지 않아 미용사가 거울을 내밀고, 당신은 사방에서 새롭게 <<haircolourtext>> 색이 된 <<hairPartKr>> 부분을 확인한다.
 		<br><br>

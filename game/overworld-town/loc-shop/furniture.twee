@@ -186,7 +186,7 @@
 			당신은 책상들을 둘러본다. 몇 개는 낡은 책상을 대체할 만큼 작아 보인다.
 			<br>
 		<<case "electronic">>
-			You browse the electronics. The shelves are full of useful gadgets and appliances.
+			전자제품을 둘러본다. 선반마다 쓸 만한 기기와 가전이 가득하다.
 			<br>
 		<<default>>
 			/* Do nothing */
@@ -246,7 +246,7 @@
 <</widget>>
 
 <<widget "furnitureList">>
-	Currently installed <<if $furnitureShopTarget is "bedroom">>at the orphanage<<else>>at the farm cottage<</if>>:<br>
+	현재 <<if $furnitureShopTarget is "bedroom">>고아원에<<else>>농장 오두막에<</if>> 설치된 가구:<br>
 	<<set _tabCategories to Furniture.tabCategories($chosenFurnitureCategory)>>
 	<<set _anyInstalled to false>>
 	<<for _ci range _tabCategories>>
@@ -268,7 +268,7 @@
 					<<if _current.type.includes('comfy')>>
 						<<= _ci is 'bed' ? "Improves sleep quality." : "Makes working on projects at your desk more effective.">>
 					<</if>>
-					<<if _current.type.includes('double')>>Has enough space for a proper sleepover.<</if>>
+					<<if _current.type.includes('double')>>외박 온 손님이 편하게 잘 수 있는 충분한 공간이 있습니다.<</if>>
 				<</if>>
 			</span>
 			<br>
@@ -291,7 +291,7 @@
 
 <<widget "paperList">>
 	<<set $currentFurnishing to Furniture.get($chosenFurnitureCategory, $furnitureShopTarget)>>
-	Currently installed in your bedroom:<br>
+	현재 침실에 설치된 가구:<br>
 	<<if $currentFurnishing>>
 		<<set _premade to $chosenFurnitureCategory is "wallpaper" ? ["vines", "tentacles", "plain-white", "wavy-white", "cowgirls", "cow-girls", "hearts", "trees", "crosses", "starry", "deep sea", "beach", "crabs", "flames", "stained glass", "audience", "bears"].includes($currentFurnishing.name) : ["cowgirl", "cow-girl", "cat", "puppy"].includes($currentFurnishing.name)>>
 		<<set _icon to _premade ? $currentFurnishing.id + "-" + $currentFurnishing.name.replace(/ /g, '-') : ['dol', 'degrees of lewdity'].some(e => $currentFurnishing.name.toLowerCase().includes(e)) ? $chosenFurnitureCategory + "-dol" : $chosenFurnitureCategory is "poster" ? "poster" : "wallpaper-custom">>
@@ -351,7 +351,7 @@
 					<<case "puppy">>
 						강아지 포스터가 벽에 걸려 있다.
 					<<case "blank poster">>
-						A blank poster hangs on the wall.
+						빈 포스터가 벽에 걸려 있다.
 					<<default>> /* Custom */
 						$currentFurnishing.name의 포스터가 벽에 걸려 있다.
 						<<if _icon.includes("dol")>>
@@ -439,7 +439,7 @@
 						<</link>>
 						<br>
 					<<else>>
-						Custom | <span class="red"><<print formatMoney(setup.inflation.spendPrice($_customCost, "furniture"))>></span>
+						맞춤 | <span class="red"><<print formatMoney(setup.inflation.spendPrice($_customCost, "furniture"))>></span>
 					<</if>>
 				</div>
 			<</capture>>
@@ -524,7 +524,7 @@
 		<<set _headphonesColour to _headphonesColour || _headphones.colour>>
 		<<set _headphonesCost to Furniture.setPrice(_headphones.cost / 100)>>
 		<div class="shopBlock no-numberify">
-			<<icon "clothes/headphones.png">> Headphones |
+			<<icon "clothes/headphones.png">> 헤드폰 |
 			<mouse class="tooltip linkBlue">(?)<span><<= _headphones.description>></span></mouse> |
 			<<listbox "_headphonesColour" autoselect>><<optionsfrom _headphones.colour_options>><</listbox>> |
 			<<if setup.inflation.canAfford(_headphonesCost, "furniture")>>
