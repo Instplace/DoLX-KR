@@ -5,27 +5,27 @@
 	<<set _broker to _args[0]>>
 	<<if _broker is "Bailey">>
 		<<npc Bailey>><<person1>>
-		Bailey rests <<his>> elbows on the desk. "You wanted money. I know somewhere that'll pay well for a guaranteed worker."
+		베일리가 <<his>> 팔꿈치를 책상에 올린다. "돈이 필요하다고 했지. 확실한 일꾼이라면 돈을 잘 쳐주는 곳을 알아."
 		<br><br>
-		"Same underground brothel you crawled out of," <<he>> says. "This time there'd be a date on the deal. They keep you until then, and you get paid when they let you go. Walk out early and you get nothing."
+		"네가 기어 나온 그 지하 창관이야." <<he>>【이가】 말한다. "이번엔 거래에 날짜가 붙어. 그때까지 널 붙잡아 두고, 놓아줄 때 돈을 줘. 중간에 나가면 한 푼도 없어."
 	<<else>>
 		<<npc Briar>><<person1>>
-		Briar taps a pen against <<his>> desk. "There's a place below town that pays for longer bookings. Not a show. They'd own your time until the contract ends."
+		브라이어가 펜으로 <<his>> 책상을 톡톡 두드린다. "시내 아래에 더 긴 예약에 돈을 쳐주는 곳이 있어. 쇼가 아니야. 계약이 끝날 때까지 네 시간을 통째로 가져가지."
 		<br><br>
-		"You already know what they're like," <<he>> says. "They won't become gentle because you volunteered. Stay until the agreed date and they'll pay you. Escape early and the agreement is void."
+		"어떤 곳인지는 이미 알잖아." <<he>>【이가】 말한다. "네가 자원했다고 해서 순해지진 않아. 약속한 날짜까지 버티면 돈을 줄 거고, 일찍 탈출하면 합의는 무효야."
 	<</if>>
 	<br><br>
 	/* Fee quoted at current prices then fixed, so a long booking keeps the value it had when signed. */
-	<<brothelicon>><<link [[Discuss one week|Underground Brothel Contract Terms]]>><<set $undergroundbrothelcontract to {broker: _broker, end: Time.days + 7, pay: setup.inflation.price(250000), penalty: 0, obedience: 0}>><</link>> | <span class="green">+<<printprice 250000>></span>
+	<<brothelicon>><<link [[일주일을 논의한다|Underground Brothel Contract Terms]]>><<set $undergroundbrothelcontract to {broker: _broker, end: Time.days + 7, pay: setup.inflation.price(250000), penalty: 0, obedience: 0}>><</link>> | <span class="green">+<<printprice 250000>></span>
 	<br>
-	<<brothelicon>><<link [[Discuss two weeks|Underground Brothel Contract Terms]]>><<set $undergroundbrothelcontract to {broker: _broker, end: Time.days + 14, pay: setup.inflation.price(600000), penalty: 0, obedience: 0}>><</link>> | <span class="green">+<<printprice 600000>></span>
+	<<brothelicon>><<link [[두 주를 논의한다|Underground Brothel Contract Terms]]>><<set $undergroundbrothelcontract to {broker: _broker, end: Time.days + 14, pay: setup.inflation.price(600000), penalty: 0, obedience: 0}>><</link>> | <span class="green">+<<printprice 600000>></span>
 	<br>
-	<<brothelicon>><<link [[Discuss one month|Underground Brothel Contract Terms]]>><<set $undergroundbrothelcontract to {broker: _broker, end: Time.days + 30, pay: setup.inflation.price(1500000), penalty: 0, obedience: 0}>><</link>> | <span class="green">+<<printprice 1500000>></span>
+	<<brothelicon>><<link [[한 달을 논의한다|Underground Brothel Contract Terms]]>><<set $undergroundbrothelcontract to {broker: _broker, end: Time.days + 30, pay: setup.inflation.price(1500000), penalty: 0, obedience: 0}>><</link>> | <span class="green">+<<printprice 1500000>></span>
 	<br><br>
 	<<if _broker is "Bailey">>
-		<<link [[Refuse|Bailey's Office]]>><<endevent>><</link>>
+		<<link [[거부한다|Bailey's Office]]>><<endevent>><</link>>
 	<<else>>
-		<<link [[Refuse|Briar's Office]]>><<endevent>><</link>>
+		<<link [[거부한다|Briar's Office]]>><<endevent>><</link>>
 	<</if>>
 	<br>
 <</widget>>
@@ -98,12 +98,12 @@
 
 <<widget "undergroundBrothelContractStatus">>
 	<<set _contractDaysLeft to Math.max(0, $undergroundbrothelcontract.end - Time.days)>>
-	<span class="gold">Your contract has <<= _contractDaysLeft>> <<= _contractDaysLeft is 1 ? "day" : "days">> remaining.</span>
+	<span class="gold">계약 기간이 <<= _contractDaysLeft is 1 ? "하루" : _contractDaysLeft + "일">> 남았다.</span>
 	<<if $undergroundbrothelcontract.penalty gte 1>>
-		<span class="red"> <<= $undergroundbrothelcontract.penalty>> unpaid <<= $undergroundbrothelcontract.penalty is 1 ? "day has" : "days have">> been added.</span>
+		<span class="red"> 무급 <<= $undergroundbrothelcontract.penalty>>일이 추가되었다.</span>
 	<</if>>
 	<<if ["favour", "hunt"].includes($undergroundbrothelcontract.broker)>>
-		<span class="red"> None of it is paid.</span>
+		<span class="red"> 어느 것도 보수가 없다.</span>
 	<</if>>
 <</widget>>
 
@@ -134,14 +134,14 @@
 
 <<widget "undergroundBrothelContractMasterOpinion">>
 	<<if $undergroundbrothelcontract.obedience gte 4>>
-		<span class="teal">Your <<= _contractMasterTitle>> considers you a reliable worker.</span>
+		<span class="teal">당신의 <<= _contractMasterTitle>>【은는】 당신을 믿을 만한 노동자로 여긴다.</span>
 	<<elseif $undergroundbrothelcontract.obedience gte 2>>
-		<span class="lblue">Your <<= _contractMasterTitle>> is satisfied with your behaviour.</span>
+		<span class="lblue">당신의 <<= _contractMasterTitle>>【은는】 당신의 행실에 만족한다.</span>
 	<<elseif $undergroundbrothelcontract.obedience gte 0>>
-		<span class="blue">Your <<= _contractMasterTitle>> is still judging how manageable you are.</span>
+		<span class="blue">당신의 <<= _contractMasterTitle>>【은는】 당신이 얼마나 다루기 쉬운지 아직 가늠하는 중이다.</span>
 	<<elseif $undergroundbrothelcontract.obedience gte -2>>
-		<span class="purple">Your <<= _contractMasterTitle>> considers you troublesome.</span>
+		<span class="purple">당신의 <<= _contractMasterTitle>>【은는】 당신을 골칫거리로 여긴다.</span>
 	<<else>>
-		<span class="red">Your <<= _contractMasterTitle>> expects you to cause trouble.</span>
+		<span class="red">당신의 <<= _contractMasterTitle>>【은는】 당신이 말썽을 일으키리라 예상한다.</span>
 	<</if>>
 <</widget>>

@@ -5,13 +5,13 @@
 <<if $danceStudio.training.injury isnot "none" and $danceStudio.training.injuryUntil lte $timeStamp>>
 	<<set $danceStudio.training.injury to "none">><<set $danceStudio.training.injuryUntil to 0>>
 <</if>>
-You are in the dance studio. Here you can pay for lessons to improve your dancing skill. They also offer lessons on how to walk in high heels, as well as yoga lessons. The instructor is said to be well-connected in the professional scene. Dance and heel lessons cost <<printprice 1200>>. Yoga lessons cost <<printprice 2200>>. Dance practice runs from <<ampm 15 00>> to <<ampm 18 00>>, Monday through Saturday.
+당신은 댄스 스튜디오에 있다. 여기서 돈을 내고 춤 실력을 향상시키는 레슨을 받을 수 있다. 하이힐을 신고 걷는 법과 요가 레슨도 제공한다. 강사는 프로 세계에서 인맥이 넓다고 한다. 춤과 하이힐 레슨 비용은 <<printprice 1200>>다. 요가 레슨 비용은 <<printprice 2200>>다. 춤 연습은 월요일부터 토요일까지 <<ampm 15 00>>부터 <<ampm 18 00>>까지 진행된다.
 <<if $danceStudio.training.lastDecay gt 0>>
-	<span class="red">Without enough practice last week, your dancing skill fell by <<print $danceStudio.training.lastDecay>> points.</span>
+	<span class="red">지난주 연습이 부족해서 춤 스킬이 <<print $danceStudio.training.lastDecay>>포인트 떨어졌습니다.</span>
 	<<set $danceStudio.training.lastDecay to 0>>
 <</if>>
 <<if $danceStudio.training.injuryUntil gt $timeStamp>>
-	<span class="blue">Your <<print $danceStudio.training.injury is "hard" ? "dance injury" : "sore feet">> will take about <<print Math.ceil(($danceStudio.training.injuryUntil - $timeStamp) / (24 * 60 * 60))>> more day(s) to heal.</span>
+	<span class="blue">당신의 <<print $danceStudio.training.injury is "hard" ? "춤 부상" : "발 통증">>이 낫는 데는 약 <<print Math.ceil(($danceStudio.training.injuryUntil - $timeStamp) / (24 * 60 * 60))>>일이 더 걸립니다.</span>
 <</if>>
 <br><br>
 <<set _store_location to "dance_studio">>
@@ -56,42 +56,42 @@ You are in the dance studio. Here you can pay for lessons to improve your dancin
 		<</if>>
 		<<if $exposed lt 1>>
 			<<if $danceStudio.training.subscriptionUntil gt $timeStamp>>
-				<span class="green">Your dance subscription is active.</span>
+				<span class="green">댄스 구독이 활성화되어 있습니다.</span>
 				<br>
 			<<elseif setup.inflation.canAfford(12000, "danceStudioSubscription")>>
-				<<dancestudioicon>><<link "Buy a 30-day dance subscription (<<printprice 12000>>)">><<money -12000 "danceStudioLessons">><<set $danceStudio.training.subscriptionUntil to $timeStamp + (30 * 24 * 60 * 60)>><<replace "#dance-subscription-status">><span class="green">Your subscription is active for 30 days.</span><</replace>><</link>>
+				<<dancestudioicon>><<link "30일 댄스 구독권을 구매한다 (<<printprice 12000>>)">><<money -12000 "danceStudioLessons">><<set $danceStudio.training.subscriptionUntil to $timeStamp + (30 * 24 * 60 * 60)>><<replace "#dance-subscription-status">><span class="green">구독이 30일 동안 활성화됩니다.</span><</replace>><</link>>
 				<span id="dance-subscription-status"></span>
 				<br>
 			<</if>>
 			<<if $danceskill gte 800 and $danceStudio.intro and !$danceStudio.jobOffered>>
-				<<dancestudioicon>><<link [[Speak with Charlie|Dancing Lesson Job Intro]]>><</link>>
+				<<dancestudioicon>><<link [[찰리와 이야기한다|Dancing Lesson Job Intro]]>><</link>>
 				<br>
 			<<elseif Time.weekDay is 1>>
-				<span class="blue">Dance classes are closed on Sundays.</span>
+				<span class="blue">댄스 수업은 일요일에 쉽니다.</span>
 				<br>
 			<<elseif !Time.betweenHours(15, 17)>>
-				<span class="blue">The next dance practice is held between <<ampm 15 00>> and <<ampm 18 00>>.</span>
+				<span class="blue">다음 춤 연습은 <<ampm 15 00>>부터 <<ampm 18 00>> 사이에 열립니다.</span>
 				<br>
 			<<elseif $danceStudio.training.injury is "hard">>
-				<span class="red">Your injury needs to heal before you can dance again.</span>
+				<span class="red">다시 춤추려면 부상이 나아야 합니다.</span>
 				<br>
 			<<elseif ($daily.dancePractices or 0) gte 3>>
-				<span class="blue">You have already attended three practices today.</span>
+				<span class="blue">오늘은 이미 연습에 세 번 참석했습니다.</span>
 				<br>
 			<<elseif ($weekly.dancePracticeLoad or 0) gte 12>>
-				<span class="blue">Charlie insists that you rest for the remainder of the week.</span>
+				<span class="blue">찰리가 이번 주 남은 기간에는 쉬라고 고집합니다.</span>
 				<br>
 			<<elseif $danceStudio.training.subscriptionUntil gt $timeStamp or setup.inflation.canAfford(1200, "danceStudioLessons")>>
-				<<dancestudioicon>><<link [[Choose a dance practice (<<if $danceStudio.training.subscriptionUntil gt $timeStamp>>subscription<<else>><<printprice 1200>><</if>>)|Dance Practice Selection]]>><</link>><<gtiredness>><<note "Dancing Skill" "green">>
+				<<dancestudioicon>><<link [[춤 연습을 고른다 (<<if $danceStudio.training.subscriptionUntil gt $timeStamp>>구독<<else>><<printprice 1200>><</if>>)|Dance Practice Selection]]>><</link>><<gtiredness>><<note "춤 스킬" "green">>
 				<br>
 			<<else>>
-				<span class="blue">You can't afford a dance practice.</span>
+				<span class="blue">춤 연습을 받을 돈이 부족합니다.</span>
 				<br>
 			<</if>>
 		<</if>>
 		<<if (Time.weekDay is 3 or Time.weekDay is 5) and $worn.feet.type.includes("heels")>>
 			<<if setup.inflation.canAfford(1200, "danceStudioLessons") and $exposed lt 1>>
-				<<heelsicon>><<link [[Take high heel lesson (<<printprice 1200>> 0:30)|Heel Lesson]]>><<set $phase to 0>><<money -1200 "danceStudioLessons">><<pass 30>><</link>><<ggtiredness>><<gfeetskill>>
+				<<heelsicon>><<link [[하이힐 레슨을 받는다 (<<printprice 1200>> 0:30)|Heel Lesson]]>><<set $phase to 0>><<money -1200 "danceStudioLessons">><<pass 30>><</link>><<ggtiredness>><<gfeetskill>>
 				<br>
 			<</if>>
 		<<else>>
@@ -100,7 +100,7 @@ You are in the dance studio. Here you can pay for lessons to improve your dancin
 		<</if>>
 		<<if (Time.weekDay is 2 or Time.weekDay is 4 or Time.weekDay is 6)>>
 			<<if setup.inflation.canAfford(2200, "danceStudioLessons")>>
-				<<icon "yoga.png">><<link [[Take a yoga lesson (<<printprice 2200>> 1:00)|Yoga Classes Change Room]]>><</link>><<gtiredness>><<if !$daily.yogaWillpower>><<gwillpower>><</if>><<llstress>>
+				<<icon "yoga.png">><<link [[요가 레슨을 받는다 (<<printprice 2200>> 1:00)|Yoga Classes Change Room]]>><</link>><<gtiredness>><<if !$daily.yogaWillpower>><<gwillpower>><</if>><<llstress>>
 			<</if>>
 			<br>
 		<<else>>
@@ -135,10 +135,10 @@ You are in the dance studio. Here you can pay for lessons to improve your dancin
 :: Dance Studio Changing Room
 <<set $outside to 0>><<set $location to "dance_studio">><<effects>>
 <<run ensureDanceStudioWardrobe()>>
-You are in the dance studio's changing room. Benches line the walls, with hooks for clothing hanging above. A row of lockers stands at the end of the benches, one of them yours to use.
+당신은 댄스 스튜디오의 탈의실에 있다. 벽을 따라 벤치가 놓여 있고, 그 위에는 옷을 걸 수 있는 고리가 있다. 벤치 끝에는 사물함이 한 줄로 서 있고, 그중 하나는 당신이 쓸 수 있다.
 <br><br>
 <<dancingclothes>>
-<<lockericon>><<link [[Locker|Dance Studio Locker]]>><</link>>
+<<lockericon>><<link [[사물함|Dance Studio Locker]]>><</link>>
 <br>
 <<getouticon>><<link [[떠난다|Dance Studio]]>><</link>>
 
@@ -216,37 +216,37 @@ You are in the dance studio's changing room. Benches line the walls, with hooks 
 <</if>>
 <<set _practiceAccess to Time.weekDay isnot 1 and Time.betweenHours(15, 17) and $danceStudio.training.injury isnot "hard" and ($daily.dancePractices or 0) lt 3 and ($weekly.dancePracticeLoad or 0) lt 12 and ($danceStudio.training.subscriptionUntil gt $timeStamp or setup.inflation.canAfford(1200, "danceStudioLessons"))>>
 <<if !_practiceAccess>>
-	<span class="blue">This dance practice is no longer available.</span>
+	<span class="blue">이 춤 연습은 더 이상 이용할 수 없습니다.</span>
 	<br><br>
 <<else>>
-	Charlie asks how hard you want to practise. This week's training load is <<print $weekly.dancePracticeLoad or 0>> out of 12, and you have attended <<print $daily.dancePractices or 0>> out of 3 possible practices today.
+	찰리가 얼마나 강하게 연습하고 싶은지 묻는다. 이번 주 연습 부하는 12 중 <<print $weekly.dancePracticeLoad or 0>>이고, 오늘 가능한 연습 3번 중 <<print $daily.dancePractices or 0>>번에 참석했다.
 	<br><br>
 	<<set _painResistance to $danceStudio.training.masteryUntil gt $timeStamp ? 0.75 : 1>>
 	<<if ($weekly.dancePracticeLoad or 0) lte 10>>
-		<<link [[Light practice (1:00)|Dance Practice Start]]>><<set $danceStudio.practiceChoice to "light">><</link>><<gtiredness>><<note `"+1 Dancing Skill; " + (1 * _painResistance) + "% soreness risk"` "green">>
+		<<link [[가벼운 연습 (1:00)|Dance Practice Start]]>><<set $danceStudio.practiceChoice to "light">><</link>><<gtiredness>><<note `"춤 스킬 +1; 통증 위험 " + (1 * _painResistance) + "%"` "green">>
 		<br>
 	<</if>>
 	<<if $danceStudio.training.injury isnot "light" and ($weekly.dancePracticeLoad or 0) lte 9>>
-		<<link [[Medium practice (1:00)|Dance Practice Start]]>><<set $danceStudio.practiceChoice to "medium">><</link>><<ggtiredness>><<note `"+5 Dancing Skill; " + (5 * _painResistance) + "% soreness and " + (1 * _painResistance) + "% injury risk"` "green">>
+		<<link [[보통 연습 (1:00)|Dance Practice Start]]>><<set $danceStudio.practiceChoice to "medium">><</link>><<ggtiredness>><<note `"춤 스킬 +5; 통증 위험 " + (5 * _painResistance) + "%, 부상 위험 " + (1 * _painResistance) + "%"` "green">>
 		<br>
 	<<elseif $danceStudio.training.injury is "light">>
-		<span class="blue">Your sore feet prevent medium practice.</span>
+		<span class="blue">발이 아파서 보통 연습은 할 수 없습니다.</span>
 		<br>
 	<</if>>
 	<<if $danceStudio.training.injury isnot "light" and ($weekly.dancePracticeLoad or 0) lte 6>>
 		<<if $worn.feet.type.includes("heels")>>
-			<span class="blue">Charlie will not let you attempt hard practice in heels. You could change your shoes in the changing room.</span>
+			<span class="blue">찰리는 하이힐을 신은 채로 고강도 연습을 하게 두지 않습니다. 탈의실에서 신발을 갈아 신을 수 있습니다.</span>
 			<br>
 		<<elseif $worn.feet.type.includes("naked")>>
-			<span class="blue">Charlie requires supportive footwear for hard practice. You could change your shoes in the changing room.</span>
+			<span class="blue">찰리는 고강도 연습에는 발을 받쳐 주는 신발을 요구합니다. 탈의실에서 신발을 갈아 신을 수 있습니다.</span>
 			<br>
 		<<else>>
-			<<link [[Hard practice (1:00)|Dance Practice Start]]>><<set $danceStudio.practiceChoice to "hard">><</link>><<gggtiredness>><<note `"+15 Dancing Skill; " + (9 * _painResistance) + "% soreness and " + (9 * _painResistance) + "% injury risk"` "green">>
+			<<link [[고강도 연습 (1:00)|Dance Practice Start]]>><<set $danceStudio.practiceChoice to "hard">><</link>><<gggtiredness>><<note `"춤 스킬 +15; 통증 위험 " + (9 * _painResistance) + "%, 부상 위험 " + (9 * _painResistance) + "%"` "green">>
 			<br>
 		<</if>>
 	<</if>>
 <</if>>
-<<getouticon>><<link [[Back|Dance Studio]]>><</link>>
+<<getouticon>><<link [[뒤로|Dance Studio]]>><</link>>
 
 :: Dance Practice Start
 <<set $outside to 0>><<set $location to "dance_studio">><<effects>>
@@ -267,9 +267,9 @@ You are in the dance studio's changing room. Benches line the walls, with hooks 
 <<if $danceStudio.practiceChoice is "hard" and $worn.feet.type.includesAny("heels", "naked")>><<set _practiceValid to false>><</if>>
 <<if !_practiceValid>>
 	<<unset $danceStudio.practiceChoice>>
-	<span class="blue">This dance practice is no longer available.</span>
+	<span class="blue">이 춤 연습은 더 이상 이용할 수 없습니다.</span>
 	<br><br>
-	<<getouticon>><<link [[Back|Dance Studio]]>><</link>>
+	<<getouticon>><<link [[뒤로|Dance Studio]]>><</link>>
 <<else>>
 	<<set _oldDanceLevels to ($danceskill gte 2000 ? 9 : $danceskill gte 1750 ? 8 : $danceskill gte 1500 ? 7 : $danceskill gte 1250 ? 6 : $danceskill gte 1000 ? 5 : $danceskill gte 800 ? 4 : $danceskill gte 600 ? 3 : $danceskill gte 400 ? 2 : $danceskill gte 200 ? 1 : 0)>>
 	<<set _painResistance to $danceStudio.training.masteryUntil gt $timeStamp ? 0.75 : 1>>
@@ -284,9 +284,9 @@ You are in the dance studio's changing room. Benches line the walls, with hooks 
 	<<if _newDanceLevels gt _oldDanceLevels or ($danceStudio.practiceChoice is "hard" and $danceskill gte 1000 * $AMCTraits.dancing)>>
 		<<set $danceStudio.training.masteryUntil to $timeStamp + (7 * 24 * 60 * 60)>>
 		<<if _newDanceLevels gt _oldDanceLevels>>
-			<span class="gold">Reaching a new dancing grade fills you with confidence. For one week, your effective dancing skill is 10% higher and dance injuries are less likely.</span>
+			<span class="gold">새로운 춤 등급에 도달해 자신감이 차오른다. 일주일 동안 실질 춤 스킬이 10% 높아지고 춤 부상 확률이 낮아진다.</span>
 		<<else>>
-			<span class="gold">Demanding practice keeps your mastered technique sharp. For one week, your effective dancing skill is 10% higher and dance injuries are less likely.</span>
+			<span class="gold">고된 연습이 숙달된 기술을 날카롭게 유지해 준다. 일주일 동안 실질 춤 스킬이 10% 높아지고 춤 부상 확률이 낮아진다.</span>
 		<</if>>
 		<br><br>
 	<</if>>
@@ -294,14 +294,14 @@ You are in the dance studio's changing room. Benches line the walls, with hooks 
 	<<if _injuryRoll lte _hardChance * _painResistance>>
 		<<set _recoveryDays to Math.max(7 - Math.floor(currentSkillValue("physique", 0, 1) / 3000), 3)>>
 		<<set $danceStudio.training.injury to "hard">><<set $danceStudio.training.injuryUntil to $timeStamp + (_recoveryDays * 24 * 60 * 60)>>
-		<span class="red">A wrong landing sends pain through your leg. Your dancing skill is reduced by 15%, and you cannot practise until the injury heals in <<print _recoveryDays>> days.</span>
+		<span class="red">잘못 착지해 다리에 통증이 퍼진다. 춤 스킬이 15% 감소하며, 부상이 낫는 <<print _recoveryDays>>일 동안 연습할 수 없다.</span>
 		<br><br>
 	<<elseif _injuryRoll lte (_hardChance + _lightChance) * _painResistance>>
 		<<set $danceStudio.training.injury to "light">><<set $danceStudio.training.injuryUntil to $timeStamp + (3 * 24 * 60 * 60)>>
-		<span class="blue">Your feet are sore after a wrong move. Your dancing skill is reduced by 1% for three days, and only light practice is safe.</span>
+		<span class="blue">잘못된 동작 탓에 발이 아프다. 3일 동안 춤 스킬이 1% 감소하며, 가벼운 연습만 안전하다.</span>
 		<br><br>
 	<</if>>
-	You join the class and begin your <<print $danceStudio.practiceChoice>> practice.
+	당신은 수업에 합류해 <<print ({light: "가벼운", medium: "보통", hard: "고강도"}[$danceStudio.practiceChoice] || $danceStudio.practiceChoice)>> 연습을 시작한다.
 	<<unset $danceStudio.practiceChoice>>
 	<br><br>
 	<<link [[다음|Dancing Lesson]]>><</link>>
@@ -482,7 +482,7 @@ You are in the dance studio's changing room. Benches line the walls, with hooks 
 			<</if>>
 		<</if>>
 	<<else>> /* noinstructor */
-		The receptionist peeks <<worldFemale 'her' 'his'>> head through the door and looks at Charlie, who seems to understand <<worldFemale 'her' 'his'>> meaning. "I need to take five," <<he>> announces. "Keep practising, I won't be long."
+		접수원이 문틈으로 고개를 내밀어 찰리를 바라본다. 찰리는 그 뜻을 알아챈 듯하다. "난 좀 쉬다 올게." <<he>>【이가】 말한다. "계속 연습해, 금방 돌아올 거니까."
 		<br><br>
 		<<endevent>>
 		<<if $danceStudio.anger gte 10>>
@@ -674,7 +674,7 @@ You are in the dance studio's changing room. Benches line the walls, with hooks 
 <<elseif $phase is 1>>
 	<<endevent>>
 	<<npc Charlie>><<person1>>
-	A <<generate2>><<person2>><<person>> near you loses <<his>> balance and would have fallen to the floor had you not intervened. You spend some time teaching <<him>> how to remain composed. You don't learn much yourself, but <<hes>> clearly grateful, <span class="green">and the class seems pleased with your generosity.</span> Charlie soon returns.
+	근처에 있던 <<generate2>><<person2>><<person>>【이가】 균형을 잃고 바닥에 넘어질 뻔하지만, 당신이 막아 준다. 당신은 <<him>>에게 평정을 유지하는 법을 가르쳐 주느라 시간을 보낸다. 당신 자신은 많이 배우지 못했지만, <<hes>> 분명히 고마워하고, <span class="green">반 학생들도 당신의 관대함에 기뻐하는 것 같다.</span> 곧 찰리가 돌아온다.
 	<<set $danceStudio.anger -= 1>>
 <<elseif $phase is 2>>
 	<<endevent>>
@@ -721,13 +721,13 @@ You are in the dance studio's changing room. Benches line the walls, with hooks 
 					<<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
 						"잘 버티고 있어요." 당신은 소심하게 작은 미소를 지으며 말한다. "최근엔 약간 현기증이 나서요. 오늘 아침엔 쓰러질까 봐 걱정했어요."
 					<<elseif _speechAttitudeResolved is "polite">>
-						"I'm managing," you say softly. "I've been a little light-headed today, but I should be alright."
+						"버티고 있어요." 당신이 조용히 말한다. "오늘은 약간 어지럽지만, 괜찮을 거예요."
 					<<elseif _speechAttitudeResolved is "flamboyant">>
-						"I'm still standing, somehow," you say with a delicate flourish of one hand. "Though I have been terribly dizzy today."
+						"어떻게든 서 있긴 해요." 당신은 한 손을 우아하게 휘두르며 말한다. "오늘은 끔찍하게 어지럽긴 했지만요."
 					<<elseif _speechAttitudeResolved is "docile">>
-						"A little dizzy," you admit, settling yourself before you sway again. "But I'm listening. I'll be careful."
+						"조금 어지러워요." 당신은 다시 휘청거리기 전에 자세를 가다듬으며 인정한다. "하지만 듣고 있어요. 조심할게요."
 					<<elseif _speechAttitudeResolved is "confident">>
-						"A bit dizzy," you admit, straightening your posture. "Nothing I can't manage."
+						"조금 어지러워요." 당신은 자세를 곧게 펴며 인정한다. "감당 못 할 정도는 아니에요."
 					<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
 						"뭐, 그냥 그래요." 당신은 어깨를 으쓱하며 말한다. "오늘은 어지럼증 때문에 죽을 맛이네요."
 					<<else>>
@@ -850,24 +850,24 @@ You are in the dance studio's changing room. Benches line the walls, with hooks 
 	<<link [[다음|Yoga Classes Start 2]]>><</link>>
 <<else>>
 	<<speechresolve>>
-	You take off all your clothes. Feeling exposed, you take a deep breath before leaving the changing room and going to the class. Once you enter, you notice several mats scattered around the floor, many of them already taken by the other students. At first no one notices you, but as you walk around more and more heads turn into your direction. Some are clearly too embarrassed to keep looking, while others let their discontent show on their faces. 
+	옷을 모두 벗는다. 노출된 느낌에 심호흡을 한 후 탈의실을 나와 교실로 간다. 안으로 들어서자 바닥에 여러 개의 매트가 흩어져 있고, 대부분은 이미 다른 학생들이 차지하고 있는 것이 보인다. 처음에는 아무도 당신을 눈치채지 못하지만, 당신이 걸어 다닐수록 점점 더 많은 고개가 당신 쪽으로 향한다. 몇몇은 너무 당황해서 계속 쳐다보지 못하고, 다른 이들은 얼굴에 불만을 드러낸다.
 	<br><br>
-	Most, however, look at you with clear lust in their eyes.
+	하지만 대부분은 눈에 뚜렷한 욕정을 담고 당신을 쳐다본다.
 	<br><br>
 	<<if (_speechAttitudeResolved is "meek" or _speechAttitudeResolved is "shy")>>
-		You keep your gaze lowered and your movements small, trying not to draw any more attention than you already have.
+		당신은 시선을 낮추고 움직임을 작게 하며, 이미 끌어모은 관심을 더는 끌지 않으려 애쓴다.
 	<<elseif _speechAttitudeResolved is "polite">>
-		You compose yourself as best you can, offering the room a restrained, almost apologetic calm despite your nakedness.
+		당신은 최대한 마음을 가다듬고, 알몸인데도 절제된, 거의 미안해하는 듯한 평온함을 방 안에 내보인다.
 	<<elseif _speechAttitudeResolved is "flamboyant">>
-		You carry yourself with a touch of theatrical poise, as though grace alone might keep the room from swallowing you whole.
+		우아함만으로 방이 당신을 집어삼키지 못하게 막을 수 있다는 듯, 당신은 연극적인 기품을 조금 섞어 몸가짐을 유지한다.
 	<<elseif _speechAttitudeResolved is "docile">>
-		You force yourself to settle into the moment instead of shrinking from it, accepting the attention with quiet, careful obedience.
+		당신은 움츠러드는 대신 그 순간 속으로 자신을 가라앉히며, 조용하고 조심스러운 순종으로 관심을 받아들인다.
 	<<elseif _speechAttitudeResolved is "confident">>
-		You lift your chin and keep walking, refusing to let the stares dictate your pace.
+		당신은 턱을 들고 계속 걷는다. 시선에 걸음의 속도를 맡기지 않는다.
 	<<elseif (_speechAttitudeResolved is "bratty" or _speechAttitudeResolved is "cruel")>>
-		You let them stare. If they're going to make a spectacle of you, they can choke on the sight.
+		당신은 그들이 쳐다보게 둔다. 당신을 구경거리로 삼겠다면, 그 광경에 목이나 막히라지.
 	<<else>>
-		You steady your breathing and press on, neither inviting the attention nor retreating from it.
+		당신은 숨을 고르고 계속 나아간다. 관심을 청하지도, 그로부터 물러서지도 않는다.
 	<</if>>
 	<br><br>
 	찰리가 곧 방으로 들어온다. 하지만 당신을 보고는, <<nnpc_he "Charlie">>【은는】 당신의 알몸에 놀라 잠시 멈칫한다. 그럼에도 <<nnpc_he "Charlie">>【은는】 아무 말도 하지 않는다. <<nnpc_his "Charlie">> 시선을 피하고, <<nnpc_his "Charlie">> 얼굴에 살짝 홍조를 띤 채, <<nnpc_he "Charlie">>【은는】 교실 앞으로 가서 학생들을 마주 보고 매트에 앉는다. 당신도 앞쪽에 가까운 매트를 골라 앉는다.
@@ -899,7 +899,7 @@ You are in the dance studio's changing room. Benches line the walls, with hooks 
 		<<link [[다음|Dance Studio Changing Room]]>><<money -2200 "danceStudioLessons">><<if $exposed gte 2>><<clotheson>><</if>><<endevent>><</link>>
 	<<else>>
 		<<if setup.inflation.canAfford(2200, "danceStudioLessons")>>
-			<<ind>><<link [[Take another yoga lesson (<<printprice 2200>> 1:00)|Yoga Classes Enter]]>><</link>><<gtiredness>><<gwillpower>><<llstress>><br>
+			<<ind>><<link [[요가 레슨을 한 번 더 받는다 (<<printprice 2200>> 1:00)|Yoga Classes Enter]]>><</link>><<gtiredness>><<gwillpower>><<llstress>><br>
 		<</if>>
 		<<link [[다음|Dance Studio Changing Room]]>><<money -2200 "danceStudioLessons">><<if $exposed gte 2>><<clotheson>><</if>><<endevent>><</link>>
 	<</if>>
@@ -1122,7 +1122,7 @@ You are in the dance studio's changing room. Benches line the walls, with hooks 
 		<<garousal>><<arousal 100>>
 	<</if>>
 <<elseif $rng is 4>>
-	A <<worldFemale 'woman' 'man'>> in a leotard appears on screen. You watch <<worldFemale 'her' 'him'>> perform a dance routine, paying attention to how <<worldFemale 'she' 'he'>> manages such grace in <<worldFemale 'her' 'his'>> heels.
+	레오타드를 입은 <<worldFemale '여자' '남자'>>【이가】 화면에 나타난다. 당신은 <<worldFemale '그녀' '그'>>【이가】 하이힐을 신고 어떻게 그토록 우아하게 움직이는지 눈여겨보며 댄스 루틴을 지켜본다.
 	<<garousal>><<arousal 300>>
 <<else>>
 	비디오는 하이힐을 신고 걷는 방법에 대한 가이드이다. 서는 법, 앉는 법, 우아하게 걷는 법을 보여준다.
