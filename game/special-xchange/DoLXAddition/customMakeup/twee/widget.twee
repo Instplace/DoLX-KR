@@ -10,7 +10,7 @@
 				<div class="movedoll">
 					<<button "<">><<set $ccmod.movedoll -=5>><</button>>
 				</div>
-				<div>move</div>
+				<div>이동</div>
 				<div class="movedoll">
 					<<button ">">><<set $ccmod.movedoll +=5>><</button>>
 				</div>
@@ -67,7 +67,7 @@
 	<<if $money gte (setup.inflation ? setup.inflation.price(_price) : _price) or Time.dayState is "night">>
 		<<set _buy = Time.dayState == "night" ? "Steal" : "Buy">>
 
-		<<link [[ _buy | $passage ]]>>
+		<<link [[ (_buy === "Steal" ? "훔친다" : "구매한다") | $passage ]]>>
 			<<run ccmShop.buy($ccmod.tmp, _buyAmount)>>
 			<<if Time.dayState is "night">>
 				<<crimeUp `_price / 100` "petty">>
@@ -78,7 +78,7 @@
 		<<if Time.dayState is "night">><<crime "petty">><</if>>
 		<br>
 	
-		<<link [[_buy+" and apply"|$passage]]>>
+		<<link [[(_buy === "Steal" ? "훔치고" : "구매하고") + " 바로 착용한다"|$passage]]>>
 			<<run ccmShop.buy($ccmod.tmp, _buyAmount - 1, true)>>
 	
 			<<if Time.dayState is "night">>
@@ -100,7 +100,7 @@
 					<<optionsfrom ['', ...Object.keys($ccmod.userPresets)] >>
 				<</listbox>>
 				<span id="delete">
-					<<button "Del">>
+					<<button "삭제">>
 						<<if confirm('Delete preset "' + _presetSelected + '"?')>>
 							<<run ccmShop.presetBtnDelete(_presetSelected)>>
 						<</if>>
@@ -108,11 +108,11 @@
 				</span>
 			</div>
 		<<else>>
-			No saved presets
+			저장된 프리셋 없음
 		<</if>>
 
 		<div id="save">
-			<<button "Save">>
+			<<button "저장">>
 				<<run ccmShop.presetBtnSave()>>
 			<</button>>
 		</div>
@@ -200,15 +200,15 @@
 	<<set _items = $ccmod.owned[_category].filter(x => x.count > 0)>>
 
 	<<if $ccmod.owned[_category].length == 0>>
-		<<cosmeticsicon _category>> You don't own any custom _category.
+		<<cosmeticsicon _category>> 가지고 있는 맞춤 <<print [_category].map(c => ({lipstick: "립스틱", blusher: "블러셔", eyeshadow: "아이섀도", mascara: "마스카라"}[c] || c))[0]>>【이가】 하나도 없다.
 	<<elseif _items.length == 0>>
-		You ran out of custom _category.
+		맞춤 <<print [_category].map(c => ({lipstick: "립스틱", blusher: "블러셔", eyeshadow: "아이섀도", mascara: "마스카라"}[c] || c))[0]>>【을를】 다 써 버렸다.
 		<br>
 	<</if>>
 
 	<<if _items.length != 0>>
 		<<cosmeticsicon _category>>
-		<span class="gold bold">Custom _category:</span>
+		<span class="gold bold">맞춤 <<print [_category].map(c => ({lipstick: "립스틱", blusher: "블러셔", eyeshadow: "아이섀도", mascara: "마스카라"}[c] || c))[0]>>:</span>
 		<<if ccmUtils.itemIsValid(ccmod.equipped[_category])>>
 			<<capture _category>>
 				<span class="no-numberify">
@@ -229,7 +229,7 @@
 				<<capture _item, _category>>
 					<span @class="ccmUtils.itemIsEquipped(_category, _item) ? 'makeupWorn' : 'makeupItem'">
 						<<set _name to ccmUtils.colorNameFromPreset(_item.filterString) + `
-							<<if _item.waterproof>> (waterproof)<</if>>
+							<<if _item.waterproof>> (방수)<</if>>
 							<span @class="_itemType + '-custom'">
 								<span class="colour-sample" @style="ccmUtils.string2Css(_item.filterString)"></span>
 							</span>
@@ -279,7 +279,7 @@
 	<<set _found to 0>>
 	<<for $_i to 0; $_i lt ccmod.owned[_itemType].length; $_i++>>
 		<<if ccmUtils.itemCompare(ccmod.owned[_itemType][$_i], _item) and $ccmod.owned[_itemType][$_i].count gt 0>>
-			<span class="green">_itemName <<if _item.waterproof>>(Waterproof)<</if>> (<<print "×" + $ccmod.owned[_itemType][$_i].count>>) </span>
+			<span class="green">_itemName <<if _item.waterproof>>(방수)<</if>> (<<print "×" + $ccmod.owned[_itemType][$_i].count>>) </span>
 			<<set _found to 1>>
 			<<break>>
 		<</if>>
@@ -345,5 +345,5 @@
 <</widget>>
 
 <<widget "ccmodFooter">>
-	<div class="footer"><small>custom makeup mod v<<print $ccmod.version>></small></div>
+	<div class="footer"><small>맞춤 메이크업 모드 v<<print $ccmod.version>></small></div>
 <</widget>>

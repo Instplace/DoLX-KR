@@ -3,194 +3,194 @@
 <<if $location isnot "home" and $location isnot "alex_cottage" and $location isnot "arcology_launch">><<set $location to "home">><</if>>
 <<effects>>
 <<set _ret to ($location is "arcology_launch" ? "Arcology Voyage Console End" : $location is "alex_cottage" ? "Farm Bedroom" : "Bedroom")>>
-<<furnitureicon "controller">>You open the virtual pet game.
+<<furnitureicon "controller">>당신은 가상 펫 게임을 연다.
 <br><br>
 <<run Tamagotchi.sync()>>
 <<if not Tamagotchi.exists()>>
-	A small egg covered in coloured spots appears on the screen. It shakes, cracks open, and reveals the list of pets you can start with.
+	알록달록한 점무늬가 있는 작은 알이 화면에 나타난다. 알이 흔들리다가 갈라지며, 처음 시작할 수 있는 펫의 목록이 드러난다.
 	<br><br>
-	What will you name it?
+	이름을 무엇으로 지어 줄까?
 	<br>
 	<<textbox "_petname" "Pixel">>
 	<br><br>
-	<div class="pa-picks"><<for _sp range Tamagotchi.listSpecies()>><<capture _sp>><div class="pa-pick"><<= PetArt.pick(_sp.id)>><div class="pa-pick-text"><span class="pa-pick-head"><span class="pa-pick-name"><<print _sp.name>></span> <span class="pa-pick-type teal"><<print _sp.typeLabel>> type</span></span><span class="pa-pick-blurb"><<print _sp.blurb>></span><span class="pa-pick-choose"><<link [["Choose " + _sp.name|Home Console Pet]]>><<run setup.consoleSfx.play("pet-select")>><<run Tamagotchi.hatch(_petname, _sp.id)>><</link>></span></div></div><</capture>><</for>></div>
-	<<getouticon>><<link [[Back to the console|Home Console]]>><</link>>
+	<div class="pa-picks"><<for _sp range Tamagotchi.listSpecies()>><<capture _sp>><div class="pa-pick"><<= PetArt.pick(_sp.id)>><div class="pa-pick-text"><span class="pa-pick-head"><span class="pa-pick-name"><<print _sp.name>></span> <span class="pa-pick-type teal"><<print _sp.typeLabel>> 타입</span></span><span class="pa-pick-blurb"><<print _sp.blurb>></span><span class="pa-pick-choose"><<link [[_sp.name + " 선택"|Home Console Pet]]>><<run setup.consoleSfx.play("pet-select")>><<run Tamagotchi.hatch(_petname, _sp.id)>><</link>></span></div></div><</capture>><</for>></div>
+	<<getouticon>><<link [[콘솔로 돌아간다|Home Console]]>><</link>>
 	<br>
 
 <<elseif not Tamagotchi.isAlive()>>
 	<<set _t to Tamagotchi.status()>>
-	The screen shows a small headstone with <span class="blue">_t.name</span>'s name on it.
+	화면에 <span class="blue">_t.name</span>의 이름이 새겨진 작은 묘비가 떠 있다.
 	<<if _t.deathCause is "battle">>
-		Your pet was defeated in battle and did not survive.
+		당신의 펫은 전투에서 패배해 살아남지 못했다.
 	<<elseif _t.deathCause is "boss">>
-		The blood-moon boss attacked while you were away. You never returned to fight it before it reached _t.name.
+		당신이 자리를 비운 사이 블러드문 보스가 공격해 왔다. 보스가 _t.name에게 닿기 전에 당신은 끝내 돌아와 싸우지 못했다.
 	<<elseif _t.deathCause is "abandoned">>
-		An enemy attacked while you were away, and you did not return in time to defend _t.name.
+		당신이 자리를 비운 사이 적이 공격해 왔고, 당신은 제때 돌아와 _t.name【을를】 지키지 못했다.
 	<<elseif _t.deathCause is "illness">>
-		_t.name became sick and died before receiving medicine.
+		_t.name【은는】 병에 걸려 약을 받지 못한 채 죽었다.
 	<<else>>
-		_t.name went without food and care for too long.
+		_t.name【은는】 너무 오래 먹이와 보살핌 없이 지냈다.
 	<</if>>
 	<br><br>
-	Your hand stays still on the console while you read the cause of death again, remembering the time you spent feeding, playing with, and training _t.name. You look back at its name on the headstone and wish you could go back and keep it alive.<<stress 9>><<ggstress>>
+	당신은 콘솔 위에 손을 올린 채 사망 원인을 다시 읽으며, _t.name【을를】 먹이고, 같이 놀고, 훈련시키며 보낸 시간을 떠올린다. 묘비에 새겨진 이름을 다시 바라보며, 시간을 되돌려 살려 낼 수 있기를 바란다.<<stress 9>><<ggstress>>
 	<br><br>
 	<<if _t.elixirs gt 0>>
-		<span class="green">You have _t.elixirs <<= _t.elixirs is 1 ? "Elixir" : "Elixirs">> from Robin. You could use one to bring <span class="blue">_t.name</span> back.</span>
+		<span class="green">로빈에게서 받은 엘릭서가 _t.elixirs<<= _t.elixirs is 1 ? "개" : "개">> 있다. 하나를 쓰면 <span class="blue">_t.name</span>【을를】 되살릴 수 있다.</span>
 		<br>
-		<<link [[Use an Elixir to revive it|Home Console Pet]]>><<run Tamagotchi.reviveWithElixir()>><<run setup.consoleSfx.play("pet-cure")>><</link>>
+		<<link [[엘릭서를 써서 되살린다|Home Console Pet]]>><<run Tamagotchi.reviveWithElixir()>><<run setup.consoleSfx.play("pet-cure")>><</link>>
 		<br><br>
 	<</if>>
 	<<if _t.backupAlive>>
-		<span class="green">One of your other pets is still with you.</span>
+		<span class="green">다른 펫 중 하나가 아직 당신 곁에 있다.</span>
 		<br>
 		<<for _p range _t.backups>>
 			<<if _p.alive>>
 				<<capture _p>>
-					<<link [["Continue with " + _p.name|Home Console Pet]]>><<run Tamagotchi.promoteBackup(_p.index)>><</link>>
+					<<link [[_p.name + "【와과】 계속한다"|Home Console Pet]]>><<run Tamagotchi.promoteBackup(_p.index)>><</link>>
 				<</capture>>
 				<br>
 			<</if>>
 		<</for>>
 		<br>
 	<</if>>
-	<<link [[Lay them to rest and start over|Home Console Pet]]>><<run Tamagotchi.bury()>><</link>><<if _t.backupAlive>> <span class="red">(this buries your living pets too!)</span><</if>>
+	<<link [[묻어 주고 처음부터 다시 시작한다|Home Console Pet]]>><<run Tamagotchi.bury()>><</link>><<if _t.backupAlive>> <span class="red">(살아 있는 펫들도 함께 묻힌다!)</span><</if>>
 	<br>
-	<<getouticon>><<link [[Back to the console|Home Console]]>><</link>>
+	<<getouticon>><<link [[콘솔로 돌아간다|Home Console]]>><</link>>
 
 <<else>>
 	<<set _t to Tamagotchi.status()>>
 	<<if Tamagotchi.ackWoke()>>
-		<<= _t.name>> has woken from its nap. Its energy is restored, but <span class="green">it is very hungry, and it has left a mess</span> for you to clean.
+		<<= _t.name>>【이가】 낮잠에서 깼다. 기력은 회복됐지만 <span class="green">몹시 배고파하고, 치워야 할 배설물도 남겼다</span>.
 		<br>
 	<</if>>
-	You check in on <span class="blue">_t.name</span>.
-	<<if _t.sleeping>> <span class="teal">It's fast asleep.</span><</if>>
-	<<if _t.sick>> <span class="red">It looks ill.</span><</if>>
-	<<if _t.poops gt 0>> There <<= _t.poops is 1 ? "is a mess" : "are messes">> on the screen that <<= _t.poops is 1 ? "needs" : "need">> cleaning.<</if>>
+	당신은 <span class="blue">_t.name</span>의 상태를 살핀다.
+	<<if _t.sleeping>> <span class="teal">곤히 잠들어 있다.</span><</if>>
+	<<if _t.sick>> <span class="red">아파 보인다.</span><</if>>
+	<<if _t.poops gt 0>> 화면에 <<= _t.poops is 1 ? "배설물이 있어" : "배설물이 여러 개 있어">> <<= _t.poops is 1 ? "치워야 한다" : "치워야 한다">>.<</if>>
 	<br>
 
 	<<= Tamagotchi.statusHtml()>>
 
 	<<if _t.bossDue>>
-		A monstrous boss has appeared under the blood moon and is coming after <<= _t.name>>!
-		You have _t.bossDaysLeft <<= _t.bossDaysLeft is 1 ? "day" : "days">> to defeat it. If you leave it alone after that, <span class="red">the boss will kill your pet</span>.
+		블러드문 아래 괴물 같은 보스가 나타나 <<= _t.name>>【을를】 노리고 다가온다!
+		보스를 물리칠 시간은 _t.bossDaysLeft<<= _t.bossDaysLeft is 1 ? "일" : "일">> 남았다. 그 뒤에도 내버려 두면 <span class="red">보스가 당신의 펫을 죽인다</span>.
 		<<if _t.backupAlive>>
-			<br>One of your other living pets is ready to help. If <<= _t.name>> is defeated, <span class="green">that pet will take its place in the battle</span>.
+			<br>살아 있는 다른 펫 하나가 도울 준비를 하고 있다. <<= _t.name>>【이가】 쓰러지면 <span class="green">그 펫이 대신 전투에 나선다</span>.
 		<</if>>
 		<br>
-		<<link [[Face the boss!|Home Console Pet Battle]]>><<run Tamagotchi.startWeeklyBattle()>><<pass 5>><</link>>
+		<<link [[보스와 맞선다!|Home Console Pet Battle]]>><<run Tamagotchi.startWeeklyBattle()>><<pass 5>><</link>>
 		<br><br>
 	<</if>>
 	<<if _t.pendingAttack and not _t.bossDue>>
-		An enemy is attacking <<= _t.name>> right now! <span class="red">You have to defend it</span>!
+		적이 지금 <<= _t.name>>【을를】 공격하고 있다! <span class="red">지켜 줘야 한다</span>!
 		<<if _t.backupAlive>>
-			<br>One of your other living pets is ready to help. If <<= _t.name>> is defeated, <span class="green">that pet will take its place in the battle</span>.
+			<br>살아 있는 다른 펫 하나가 도울 준비를 하고 있다. <<= _t.name>>【이가】 쓰러지면 <span class="green">그 펫이 대신 전투에 나선다</span>.
 		<</if>>
 		<br>
-		<<link [[Defend your pet!|Home Console Pet Battle]]>><<run Tamagotchi.startWeeklyBattle()>><<pass 5>><</link>>
+		<<link [[펫을 지킨다!|Home Console Pet Battle]]>><<run Tamagotchi.startWeeklyBattle()>><<pass 5>><</link>>
 		<br><br>
-		<<link "Step away (risky)" _ret>><<unset $consoleAction, $trainType>><</link>>
+		<<link "자리를 비운다 (위험)" _ret>><<unset $consoleAction, $trainType>><</link>>
 	<<elseif _t.sleeping>>
-		<<= _t.name>> is curled up asleep and <span class="teal">can't be disturbed</span> for about _t.sleepHoursLeft
-		<<= _t.sleepHoursLeft is 1 ? "hour" : "hours">>. Come back once it's rested.
+		<<= _t.name>>【은는】 몸을 말고 잠들어 있어 <span class="teal">방해할 수 없다</span>. 약 _t.sleepHoursLeft
+		<<= _t.sleepHoursLeft is 1 ? "시간" : "시간">> 동안 푹 자게 두고, 다 쉬고 나면 다시 오자.
 		<br><br>
-		<<getouticon>><<link [[Back to the console|Home Console]]>><<unset $consoleAction, $trainType>><</link>>
+		<<getouticon>><<link [[콘솔로 돌아간다|Home Console]]>><<unset $consoleAction, $trainType>><</link>>
 	<<else>>
 		<<if _t.pendingSkillChoice>>
-			<<= _t.name>> has completed the training needed to <span class="gold">learn a new skill</span>!
+			<<= _t.name>>【이가】 <span class="gold">새 기술을 익히는</span> 데 필요한 훈련을 마쳤다!
 			<br>
-			<<link [[Choose a new skill|Home Console Pet Skill Pick]]>><</link>>
+			<<link [[새 기술을 고른다|Home Console Pet Skill Pick]]>><</link>>
 			<br><br>
 		<<else>>
-			<span class="small-description"><i>The next challenger will arrive in about _t.nextAttackDays
+			<span class="small-description"><i>다음 도전자는 약 _t.nextAttackDays
 			<<= _t.nextAttackDays is 1 ? "day" : "days">>.</i></span>
 			<br><br>
 		<</if>>
 
 		<<if _t.canEvolve>>
-			<<= _t.name>> is ready to evolve.
-			Evolving will make it much stronger, but <span class="gold">_t.evolveCost of its learned skills will be permanently removed</span>.
+			<<= _t.name>>【은는】 진화할 준비가 됐다.
+			진화하면 훨씬 강해지지만, <span class="gold">익힌 기술 _t.evolveCost개가 영구히 사라진다</span>.
 			<br>
-			<<link [[Evolve your pet|Home Console Pet Evolve]]>><</link>>
+			<<link [[펫을 진화시킨다|Home Console Pet Evolve]]>><</link>>
 			<br><br>
 		<</if>>
 		/* Care and activities as tiles. A tile the pet needs right now gets a gold edge and says why in words. */
-		<h3 class="pet-menu-head">Care</h3>
+		<h3 class="pet-menu-head">돌보기</h3>
 		<div class="pet-tiles">
-			<div @class="'pet-tile' + (_t.hunger gte 50 ? ' pet-tile--need' : '')"><<icon "food/eat.png" "nowhitespace">><span class="pet-tile-text"><<link [[Feed it|Home Console Do]]>><<set $consoleAction to "feed">><<pass 5>><</link>><span class="pet-tile-meta">0:05<<if _t.hunger gte 50>> · <span class="gold">_t.hungerWord</span><</if>></span></span></div>
-			<div @class="'pet-tile' + (_t.happiness lte 50 ? ' pet-tile--need' : '')"><<icon "balloons.png" "nowhitespace">><span class="pet-tile-text"><<link [[Play with it|Home Console Do]]>><<set $consoleAction to "play">><<pass 15>><</link>><span class="pet-tile-meta">0:15<<if _t.happiness lte 50>> · <span class="gold">_t.happinessWord</span><</if>></span></span></div>
+			<div @class="'pet-tile' + (_t.hunger gte 50 ? ' pet-tile--need' : '')"><<icon "food/eat.png" "nowhitespace">><span class="pet-tile-text"><<link [[먹이를 준다|Home Console Do]]>><<set $consoleAction to "feed">><<pass 5>><</link>><span class="pet-tile-meta">0:05<<if _t.hunger gte 50>> · <span class="gold">_t.hungerWord</span><</if>></span></span></div>
+			<div @class="'pet-tile' + (_t.happiness lte 50 ? ' pet-tile--need' : '')"><<icon "balloons.png" "nowhitespace">><span class="pet-tile-text"><<link [[같이 논다|Home Console Do]]>><<set $consoleAction to "play">><<pass 15>><</link>><span class="pet-tile-meta">0:15<<if _t.happiness lte 50>> · <span class="gold">_t.happinessWord</span><</if>></span></span></div>
 			<<if _t.poops gt 0>>
-				<div class="pet-tile pet-tile--need"><<icon "broom-dustpan.png" "nowhitespace">><span class="pet-tile-text"><<link [[Clean up the mess|Home Console Do]]>><<set $consoleAction to "clean">><<pass 5>><</link>><span class="pet-tile-meta">0:05 · <span class="gold"><<= _t.poops is 1 ? "1 mess" : _t.poops + " messes">></span></span></span></div>
+				<div class="pet-tile pet-tile--need"><<icon "broom-dustpan.png" "nowhitespace">><span class="pet-tile-text"><<link [[배설물을 치운다|Home Console Do]]>><<set $consoleAction to "clean">><<pass 5>><</link>><span class="pet-tile-meta">0:05 · <span class="gold"><<= _t.poops is 1 ? "배설물 1개" : "배설물 " + _t.poops + "개">></span></span></span></div>
 			<</if>>
 			<<if _t.sick>>
-				<div class="pet-tile pet-tile--need"><<icon "pill.png" "nowhitespace">><span class="pet-tile-text"><<link [[Give it medicine|Home Console Do]]>><<set $consoleAction to "cure">><<pass 5>><</link>><span class="pet-tile-meta">0:05 · <span class="gold">Ill</span></span></span></div>
+				<div class="pet-tile pet-tile--need"><<icon "pill.png" "nowhitespace">><span class="pet-tile-text"><<link [[약을 먹인다|Home Console Do]]>><<set $consoleAction to "cure">><<pass 5>><</link>><span class="pet-tile-meta">0:05 · <span class="gold">아픔</span></span></span></div>
 			<</if>>
-			<div @class="'pet-tile' + (_t.energy lte 40 ? ' pet-tile--need' : '')"><<icon "zzz.png" "nowhitespace">><span class="pet-tile-text"><<link [[Let it sleep|Home Console Do]]>><<set $consoleAction to "rest">><</link>><span class="pet-tile-meta">Sleeps 6 hours<<if _t.energy lte 40>> · <span class="gold">_t.energyWord</span><</if>></span></span></div>
+			<div @class="'pet-tile' + (_t.energy lte 40 ? ' pet-tile--need' : '')"><<icon "zzz.png" "nowhitespace">><span class="pet-tile-text"><<link [[재운다|Home Console Do]]>><<set $consoleAction to "rest">><</link>><span class="pet-tile-meta">6시간 잠<<if _t.energy lte 40>> · <span class="gold">_t.energyWord</span><</if>></span></span></div>
 		</div>
-		<h3 class="pet-menu-head">Activities</h3>
+		<h3 class="pet-menu-head">활동</h3>
 		<div class="pet-tiles">
 			/* Training shows only when the pet can train; otherwise the option is simply not offered today. */
 			<<set _ct to Tamagotchi.canTrain()>>
 			<<if _ct.ok>>
-				<div class="pet-tile"><<icon "physique.png" "nowhitespace">><span class="pet-tile-text"><<link [[Train your pet|Home Console Pet Train]]>><</link>><span class="pet-tile-meta">Once a day</span></span></div>
+				<div class="pet-tile"><<icon "physique.png" "nowhitespace">><span class="pet-tile-text"><<link [[펫을 훈련시킨다|Home Console Pet Train]]>><</link>><span class="pet-tile-meta">하루 한 번</span></span></div>
 			<</if>>
 			<<set _petBattleNow to Tamagotchi.battleState()>>
 			<<if _petBattleNow and _petBattleNow.kind is "challenge">>
-				<div class="pet-tile pet-tile--need"><<icon "target.png" "nowhitespace">><span class="pet-tile-text"><<link [[Return to your challenge battle|Home Console Pet Battle]]>><</link>><span class="pet-tile-meta gold">In progress</span></span></div>
+				<div class="pet-tile pet-tile--need"><<icon "target.png" "nowhitespace">><span class="pet-tile-text"><<link [[도전 전투로 돌아간다|Home Console Pet Battle]]>><</link>><span class="pet-tile-meta gold">진행 중</span></span></div>
 			<<else>>
 				<<set _pcProg to setup.petChallenges.progress()>>
 				<<set _pcDaily to setup.petChallenges.dailyView()>>
-				<div class="pet-tile"><<icon "target.png" "nowhitespace">><span class="pet-tile-text"><<link [[Challenges and daily battle|Home Console Pet Challenges]]>><</link>><span class="pet-tile-meta"><<print _pcProg.count>> of <<print _pcProg.total>> done · <<if _pcDaily.rec and _pcDaily.rec.done>>today's battle won<<elseif _pcDaily.c.reward>>today's battle pays <<print formatMoney(_pcDaily.c.reward)>><<else>>today's battle open<</if>></span></span></div>
+				<div class="pet-tile"><<icon "target.png" "nowhitespace">><span class="pet-tile-text"><<link [[도전 과제와 오늘의 전투|Home Console Pet Challenges]]>><</link>><span class="pet-tile-meta"><<print _pcProg.count>> / <<print _pcProg.total>> 완료 · <<if _pcDaily.rec and _pcDaily.rec.done>>오늘의 전투 승리<<elseif _pcDaily.c.reward>>오늘의 전투 보상 <<print formatMoney(_pcDaily.c.reward)>><<else>>오늘의 전투 도전 가능<</if>></span></span></div>
 			<</if>>
 			<<if _t.inDungeon>>
-				<div class="pet-tile pet-tile--need"><<icon "key-iron.png" "nowhitespace">><span class="pet-tile-text"><<link [[Resume your dungeon run|Home Console Dungeon Walk]]>><</link>><span class="pet-tile-meta gold">In progress</span></span></div>
+				<div class="pet-tile pet-tile--need"><<icon "key-iron.png" "nowhitespace">><span class="pet-tile-text"><<link [[던전 탐험을 이어 간다|Home Console Dungeon Walk]]>><</link>><span class="pet-tile-meta gold">진행 중</span></span></div>
 			<<elseif _t.keys gt 0>>
-				<div class="pet-tile"><<icon "key-iron.png" "nowhitespace">><span class="pet-tile-text"><<link [[Enter the dungeon|Home Console Dungeon Enter]]>><</link>><span class="pet-tile-meta">_t.keys <<= _t.keys is 1 ? "key" : "keys">></span></span></div>
+				<div class="pet-tile"><<icon "key-iron.png" "nowhitespace">><span class="pet-tile-text"><<link [[던전에 들어간다|Home Console Dungeon Enter]]>><</link>><span class="pet-tile-meta">_t.keys <<= _t.keys is 1 ? "열쇠" : "열쇠">></span></span></div>
 			<</if>>
 		</div>
 		<<if _t.hasBackup>>
-			<span class="small-description"><i>Your other pets:</i></span>
+			<span class="small-description"><i>다른 펫들:</i></span>
 			<br>
 			<<for _p range _t.backups>>
 				<<capture _p>>
 					<<if _p.alive>>
-						<span class="tama-bench-pet"><<= PetArt.icon(_p.species)>><span class="blue">_p.name</span></span> <span class="teal">(_p.typeLabel)</span><<if _p.atCap>> <span class="gold">(maxed)</span><</if>><<if _p.needsCare>> <span class="red">(needs care)</span><</if>>
+						<span class="tama-bench-pet"><<= PetArt.icon(_p.species)>><span class="blue">_p.name</span></span> <span class="teal">(_p.typeLabel)</span><<if _p.atCap>> <span class="gold">(최대치)</span><</if>><<if _p.needsCare>> <span class="red">(돌봄 필요)</span><</if>>
 						<br>
-						<<link [["Switch to " + _p.name|Home Console Pet]]>><<run Tamagotchi.switchActive(_p.index)>><</link>>
+						<<link [[_p.name + "【으로로】 바꾼다"|Home Console Pet]]>><<run Tamagotchi.switchActive(_p.index)>><</link>>
 					<<else>>
-						<span class="red">_p.name <span class="teal">(_p.typeLabel)</span> has passed away.</span>
+						<span class="red">_p.name <span class="teal">(_p.typeLabel)</span>【은는】 세상을 떠났다.</span>
 						<<if _t.elixirs gt 0>>
 							<br>
-							<<link [["Use an Elixir to revive " + _p.name|Home Console Pet]]>><<run Tamagotchi.reviveBackupWithElixir(_p.index)>><</link>>
+							<<link [["엘릭서를 써서 " + _p.name + "【을를】 되살린다"|Home Console Pet]]>><<run Tamagotchi.reviveBackupWithElixir(_p.index)>><</link>>
 						<</if>>
 					<</if>>
 				<</capture>>
 				<br>
 			<</for>>
 			<<if _t.backupCount gt _t.backupAliveCount>>
-				<<link [[Lay dead pets to rest|Home Console Pet]]>><<run Tamagotchi.buryDeadBackups()>><</link>>
+				<<link [[죽은 펫들을 묻어 준다|Home Console Pet]]>><<run Tamagotchi.buryDeadBackups()>><</link>>
 				<br>
 			<</if>>
 			<br>
 		<</if>>
 		<<if _t.canAdopt>>
-			You can <span class="gold">add another elemental pet</span> to your collection. Every living pet you already have has reached its current maximum strength.
+			수집품에 <span class="gold">속성 펫을 하나 더 들일</span> 수 있다. 지금 가진 살아 있는 펫들은 모두 현재의 최대 강함에 이르렀다.
 			<br>
-			<<link [[Adopt another pet|Home Console Pet Adopt]]>><</link>>
+			<<link [[다른 펫을 입양한다|Home Console Pet Adopt]]>><</link>>
 			<br><br>
 		<<elseif _t.collectionComplete and _t.atCap>>
-			<<= _t.name>> <span class="gold">cannot grow any stronger</span>, and your collection already contains pets from all four elements.
+			<<= _t.name>>【은는】 <span class="gold">더 이상 강해질 수 없고</span>, 수집품에는 네 가지 속성의 펫이 모두 들어 있다.
 			<br><br>
 		<<elseif _t.atCap and _t.adoptableCount gt 0>>
-			<<= _t.name>> <span class="gold">cannot grow any stronger</span>.
-			To adopt another elemental pet, every other living pet in your collection must also reach its maximum strength.
+			<<= _t.name>>【은는】 <span class="gold">더 이상 강해질 수 없다</span>.
+			속성 펫을 하나 더 입양하려면, 수집품 속 살아 있는 다른 펫들도 모두 최대 강함에 이르러야 한다.
 			<br><br>
 		<<elseif _t.adoptableCount gt 0 and _t.capMissingText>>
-			<span class="small-description"><i>You can adopt another elemental pet after this pet reaches the maximum value for every stat. It still needs: <<= _t.capMissingText>>.</i></span>
+			<span class="small-description"><i>이 펫의 모든 능력치가 최대치에 이르면 속성 펫을 하나 더 입양할 수 있다. 아직 부족한 것: <<= _t.capMissingText>>.</i></span>
 			<br><br>
 		<</if>>
 		<<= setup.consoleSfx.controlsHtml()>>
-		<<getouticon>><<link [[Back to the console|Home Console]]>><<unset $consoleAction, $trainType>><</link>>
+		<<getouticon>><<link [[콘솔로 돌아간다|Home Console]]>><<unset $consoleAction, $trainType>><</link>>
 	<</if>>
 <</if>>
 
@@ -213,34 +213,34 @@
 
 <<switch _result>>
 	<<case "fed">>
-		You give <span class="blue">_t.name</span> some food. It walks over and eats quickly until the food is gone.
+		당신은 <span class="blue">_t.name</span>에게 먹이를 준다. 펫은 걸어와서 먹이가 다 없어질 때까지 허겁지겁 먹는다.
 	<<case "overfed">>
-		You offer <span class="blue">_t.name</span> more food, but it steps away and refuses to eat. It's already full.
+		당신이 <span class="blue">_t.name</span>에게 먹이를 더 내밀지만, 펫은 물러서며 먹기를 거부한다. 이미 배가 부르다.
 	<<case "played">>
-		You start a quick minigame with <span class="blue">_t.name</span>. It follows your commands until the game ends, then jumps up and down on the screen.<<stress -10>><<lstress>>
+		당신은 <span class="blue">_t.name</span>【와과】 짧은 미니게임을 시작한다. 펫은 게임이 끝날 때까지 당신의 명령을 따르다가, 끝나자 화면 위에서 팔짝팔짝 뛴다.<<stress -10>><<lstress>>
 	<<case "tooTired">>
-		<span class="blue">_t.name</span> is too tired to play. It needs to rest first.
+		<span class="blue">_t.name</span>【은는】 너무 지쳐서 놀 수 없다. 먼저 쉬어야 한다.
 	<<case "cleaned">>
-		You clear the mess from <span class="blue">_t.name</span>'s area. Once the floor is clean again, it walks back across the screen without avoiding the dirty spots.
+		당신은 <span class="blue">_t.name</span>의 자리에서 배설물을 치운다. 바닥이 다시 깨끗해지자, 펫은 더러운 곳을 피할 필요 없이 화면을 가로질러 돌아다닌다.
 	<<case "alreadyClean">>
-		There's nothing to clean.
+		치울 것이 없다.
 	<<case "sleeping">>
-		You tell <span class="blue">_t.name</span> to rest. It lies down, closes its eyes, and goes to sleep. It'll nap for about 6 hours and can't be disturbed until it wakes.
+		당신이 <span class="blue">_t.name</span>에게 쉬라고 한다. 펫은 몸을 누이고 눈을 감더니 잠든다. 약 6시간 동안 낮잠을 자며, 깨어날 때까지 방해할 수 없다.
 	<<case "alreadyAsleep">>
-		<span class="blue">_t.name</span> is already fast asleep.
+		<span class="blue">_t.name</span>【은는】 이미 곤히 잠들어 있다.
 	<<case "asleep">>
-		<span class="blue">_t.name</span> is asleep and can't be disturbed right now.
+		<span class="blue">_t.name</span>【은는】 잠들어 있어서 지금은 방해할 수 없다.
 	<<case "cured">>
-		You give <span class="blue">_t.name</span> some medicine. After a short pause, the sick status disappears and it starts moving normally again.
+		당신은 <span class="blue">_t.name</span>에게 약을 먹인다. 잠시 뒤 병든 상태가 사라지고, 펫은 다시 평소처럼 움직이기 시작한다.
 	<<case "notSick">>
-		<span class="blue">_t.name</span> isn't sick.
+		<span class="blue">_t.name</span>【은는】 아프지 않다.
 	<<case "dead">>
-		The game only shows your pet's death screen. None of the normal care options can help it now.
+		게임에는 당신의 펫의 사망 화면만 표시된다. 평소의 돌보기로는 이제 아무것도 도울 수 없다.
 	<<default>>
-		You press a few buttons, but nothing useful happens.
+		당신은 버튼 몇 개를 눌러 보지만 쓸 만한 일은 아무것도 일어나지 않는다.
 <</switch>>
 <br><br>
-<<link [[Back|Home Console Pet]]>><</link>>
+<<link [[뒤로|Home Console Pet]]>><</link>>
 
 
 :: Home Console Pet Train
@@ -249,11 +249,11 @@
 
 <<set _ct to Tamagotchi.canTrain()>>
 <<if not _ct.ok>>
-	You can't train right now| <i>_ct.reason</i>.
+	지금은 훈련할 수 없다: <i>_ct.reason</i>.
 	<br><br>
-	<<link [[Back|Home Console Pet]]>><</link>>
+	<<link [[뒤로|Home Console Pet]]>><</link>>
 <<else>>
-	How will you train <span class="blue">_t.name</span> today? It can train once per day.
+	오늘은 <span class="blue">_t.name</span>【을를】 어떻게 훈련시킬까? 하루에 한 번 훈련할 수 있다.
 	<br><br>
 	<<for _tr range Tamagotchi.trainingTypes()>>
 		<<capture _tr>>
@@ -271,35 +271,35 @@
 <<set _trainType to $trainType>><<unset $trainType>>
 <<set _r to Tamagotchi.train(_trainType)>>
 <<if not _r.ok>>
-	You can't train right now| <i>_r.reason</i>.
+	지금은 훈련할 수 없다: <i>_r.reason</i>.
 	<br><br>
-	<<link [[Back|Home Console Pet]]>><</link>>
+	<<link [[뒤로|Home Console Pet]]>><</link>>
 <<else>>
 	<<set _t to Tamagotchi.status()>>
 	<<run setup.consoleSfx.play(_r.unlocked ? "pet-levelup" : "pet-train")>>
 	<<switch _r.type>>
 		<<case "strength">>
-			You have <span class="blue">_t.name</span> strike a row of small training blocks. Its first hits barely move them, but it keeps trying until one breaks. By the end of the session, each hit lands harder than the first.
+			당신은 <span class="blue">_t.name</span>에게 작은 훈련용 블록 한 줄을 치게 한다. 처음에는 블록이 거의 움직이지 않지만, 하나가 부서질 때까지 계속 시도한다. 훈련이 끝날 무렵에는 매번 첫 타격보다 더 세게 들어간다.
 		<<case "endurance">>
-			You have <span class="blue">_t.name</span> run repeated laps around the training track. Its pace slows near the end, but it finishes every lap before stopping to rest.
+			당신은 <span class="blue">_t.name</span>에게 훈련 트랙을 몇 바퀴고 달리게 한다. 막바지에는 속도가 느려지지만, 쉬기 전에 모든 바퀴를 끝까지 완주한다.
 		<<case "agility">>
-			You guide <span class="blue">_t.name</span> through an obstacle course several times. It bumps into a few obstacles at first, then starts turning sooner and finishing the course faster.
+			당신은 <span class="blue">_t.name</span>【을를】 장애물 코스로 몇 번이고 이끈다. 처음에는 장애물 몇 개에 부딪히지만, 이내 더 일찍 방향을 틀고 코스를 더 빨리 마치기 시작한다.
 		<<case "defense">>
-			You have <span class="blue">_t.name</span> practise blocking repeated attacks. At first it raises its guard too late, but after several tries it starts blocking before each hit reaches it.
+			당신은 <span class="blue">_t.name</span>에게 거듭되는 공격을 막는 연습을 시킨다. 처음에는 방어 자세를 너무 늦게 취하지만, 몇 번 시도하자 공격이 닿기 전에 막아 내기 시작한다.
 		<<case "focus">>
-			You have <span class="blue">_t.name</span> sit still for a focus exercise. It keeps breaking concentration at first, but after several tries it remains still until the exercise ends.
+			당신은 <span class="blue">_t.name</span>에게 가만히 앉아 집중 훈련을 하게 한다. 처음에는 자꾸 집중이 흐트러지지만, 몇 번 시도하자 훈련이 끝날 때까지 흔들림 없이 앉아 있는다.
 		<<default>>
-			<span class="blue">_t.name</span> finishes its training session.
+			<span class="blue">_t.name</span>【은는】 훈련을 마친다.
 	<</switch>>
 	<<= " <span class='green'>(+" + _r.gain + " " + _r.stat + ")</span>">>
 	<br><br>
 	<<if _r.unlocked>>
-		<<= _t.name>> has completed the training needed to <span class="gold">learn a new skill</span>!
+		<<= _t.name>>【이가】 <span class="gold">새 기술을 익히는</span> 데 필요한 훈련을 마쳤다!
 		<br>
-		<<link [[Choose a new skill|Home Console Pet Skill Pick]]>><</link>>
+		<<link [[새 기술을 고른다|Home Console Pet Skill Pick]]>><</link>>
 		<br>
 	<</if>>
-	<<link [[Back|Home Console Pet]]>><</link>>
+	<<link [[뒤로|Home Console Pet]]>><</link>>
 <</if>>
 
 :: Home Console Pet Skill Pick
@@ -308,17 +308,17 @@
 <<set _offer to Tamagotchi.skillOfferList()>>
 
 <<if _offer.length is 0>>
-	There's no new skill to choose right now.
+	지금은 고를 수 있는 새 기술이 없다.
 	<br><br>
-	<<link [[Back|Home Console Pet]]>><</link>>
+	<<link [[뒤로|Home Console Pet]]>><</link>>
 <<else>>
-	Choose a new skill for <span class="blue">_t.name</span>. You can pick one:
+	<span class="blue">_t.name</span>에게 가르칠 새 기술을 고른다. 하나를 고를 수 있다:
 	<br><br>
 	<<for _s range _offer>>
 		<<capture _s>>
 			<<link [[_s.name|Home Console Pet]]>><<run Tamagotchi.chooseSkill(_s.id)>><<run setup.consoleSfx.play("pet-levelup")>><</link>>
 		<</capture>>
-		| <span class="teal">_s.typeLabel</span><<if _s.passive>>, passive | Revives once per battle<<elseif _s.heal>>, restores HP, _s.mp MP<<else>>, Power _s.power, _s.mp MP<</if>>
+		| <span class="teal">_s.typeLabel</span><<if _s.passive>>, 패시브 | 전투당 한 번 부활<<elseif _s.heal>>, HP 회복, _s.mp MP<<else>>, 위력 _s.power, _s.mp MP<</if>>
 		<br>
 	<</for>>
 <</if>>
@@ -329,16 +329,16 @@
 <<set _t to Tamagotchi.status()>>
 
 <<if _b is null>>
-	The battle is over.
+	전투가 끝났다.
 	<br><br>
-	<<link [[Back|Home Console Pet]]>><</link>>
+	<<link [[뒤로|Home Console Pet]]>><</link>>
 <<else>>
 	<<set _petChal to setup.petChallenges.status(_b)>>
 	<<if _petChal>>
-		<div class="con-banner pet-goal" role="status"><div class="con-daily-head"><strong><<print _petChal.c.name>></strong><<print setup.petChallenges.chip(_petChal.c.diff)>></div><<print setup.petChallenges.describe(_petChal.c)>><<if _petChal.text>><div class="tama-sub"><<print _petChal.text>></div><</if>><<if _petChal.broken>><div class="red">Challenge missed: <<print _petChal.broken>>. You can still finish the fight.</div><</if>></div>
+		<div class="con-banner pet-goal" role="status"><div class="con-daily-head"><strong><<print _petChal.c.name>></strong><<print setup.petChallenges.chip(_petChal.c.diff)>></div><<print setup.petChallenges.describe(_petChal.c)>><<if _petChal.text>><div class="tama-sub"><<print _petChal.text>></div><</if>><<if _petChal.broken>><div class="red">도전 실패: <<print _petChal.broken>>. 싸움은 끝까지 이어 갈 수 있다.</div><</if>></div>
 	<</if>>
 	<div class="pet-battle-screen">
-	<div class="pet-battle-heading"><strong>Battle</strong><span>Turn <<= _b.over ? _b.turn : _b.turn + 1>></span></div>
+	<div class="pet-battle-heading"><strong>전투</strong><span><<= _b.over ? _b.turn : _b.turn + 1>>턴</span></div>
 	<<= PetArt.battleStage()>>
 	<div class="pa-after">
 	<div class="tama-log">
@@ -349,16 +349,16 @@
 
 	<<if _b.over>>
 		<div class="pet-battle-outcome" role="status"><strong><<= _b.result is "win" ? "Victory" : "Defeat">></strong><span><<= _b.result is "win" ? "Your pet wins the battle." : "Your pet has fallen.">></span></div>
-		<span class="con-btn-link"><<link [[Next|Home Console Pet Battle Result]]>><</link>></span>
+		<span class="con-btn-link"><<link [[다음|Home Console Pet Battle Result]]>><</link>></span>
 	<<else>>
-		<h3 class="pet-move-heading">Your move</h3>
+		<h3 class="pet-move-heading">당신의 행동</h3>
 		<div class="pet-moves">
-		<div class="pet-move"><<link [[Attack|Home Console Pet Battle]]>><<run Tamagotchi.battleAttack()>><</link>><small>Basic attack · Free</small></div>
-		<div class="pet-move"><<link [[Guard|Home Console Pet Battle]]>><<run Tamagotchi.battleGuard()>><</link>><small>Halve next hit · Recover MP</small></div>
-		<div class="pet-move"><<link [[Rest|Home Console Pet Battle]]>><<run Tamagotchi.battleRest()>><</link>><small>Recover HP &amp; MP</small></div>
+		<div class="pet-move"><<link [[공격|Home Console Pet Battle]]>><<run Tamagotchi.battleAttack()>><</link>><small>기본 공격 · 무료</small></div>
+		<div class="pet-move"><<link [[방어|Home Console Pet Battle]]>><<run Tamagotchi.battleGuard()>><</link>><small>다음 피해 절반 · MP 회복</small></div>
+		<div class="pet-move"><<link [[휴식|Home Console Pet Battle]]>><<run Tamagotchi.battleRest()>><</link>><small>HP와 MP 회복</small></div>
 		</div>
 		<<if _t.autoRevive and not _b.reviveUsed>>
-			<i><span class="green">Revive is ready</span>: your pet will get back up once if it falls this battle.</i>
+			<i><span class="green">부활 준비 완료</span>: 이번 전투에서 쓰러져도 당신의 펫이 한 번은 다시 일어난다.</i>
 			<br>
 		<</if>>
 		<div class="pet-moves pet-moves--skills">
@@ -371,7 +371,7 @@
 					<span class="grey">_s.name</span>
 				<</if>>
 			<</capture>>
-			<small><span class="teal">_s.typeLabel</span><<if _s.heal>> · Heal<<else>> · Power _s.power<</if>> · _s.mp MP</small>
+			<small><span class="teal">_s.typeLabel</span><<if _s.heal>> · 회복<<else>> · 위력 _s.power<</if>> · _s.mp MP</small>
 			</div>
 		<</for>>
 		</div>
@@ -386,57 +386,57 @@
 	/* A challenge battle ends here, not through endBattle(): the pet's own data is never touched. */
 	<<set _chalEnd to setup.petChallenges.finish()>>
 	<<if _chalEnd.done>>
-		<span class="green">Challenge complete: <<print _chalEnd.name>>!</span> Your pet won in <<print _chalEnd.turns>> <<= _chalEnd.turns is 1 ? "turn" : "turns">>.<<stress -4>><<lstress>>
-		<<if _chalEnd.paid>><br><span class="gold">You earned <<print formatMoney(_chalEnd.paid)>>.</span><</if>>
-		<<if _chalEnd.feat>><br><span class="gold">Every challenge complete. Feat earned: <<print _chalEnd.feat>>.</span><</if>>
+		<span class="green">도전 완료: <<print _chalEnd.name>>!</span> 당신의 펫이 <<print _chalEnd.turns>><<= _chalEnd.turns is 1 ? "턴" : "턴">> 만에 승리했다.<<stress -4>><<lstress>>
+		<<if _chalEnd.paid>><br><span class="gold">수입: <<print formatMoney(_chalEnd.paid)>>.</span><</if>>
+		<<if _chalEnd.feat>><br><span class="gold">모든 도전을 완료했다. 업적 달성: <<print _chalEnd.feat>>.</span><</if>>
 	<<elseif _chalEnd.result is "win">>
-		Your pet won the fight, but the challenge was missed: <<print _chalEnd.why>>.
+		당신의 펫이 싸움에는 이겼지만, 도전 조건은 놓쳤다: <<print _chalEnd.why>>.
 	<<else>>
-		Your pet is knocked out of the challenge. It is only a practice bout, so it shakes itself off, unhurt.
+		당신의 펫이 도전에서 탈락했다. 연습 경기일 뿐이라 펫은 몸을 털고 일어나 멀쩡하다.
 	<</if>>
 	<br><br>
-	<<link [[Back to the challenges|Home Console Pet Challenges]]>><</link>>
+	<<link [[도전 과제로 돌아간다|Home Console Pet Challenges]]>><</link>>
 	<br>
-	<<link [[Back|Home Console Pet]]>><</link>>
+	<<link [[뒤로|Home Console Pet]]>><</link>>
 <<else>>
 <<set _sum to Tamagotchi.endBattle()>>
 
 <<if _sum.result is "win">>
 	<<if _sum.boss>>
-		Your pet lands the final hit on the <span class="green"><<= _sum.enemy>></span>, and the boss falls.<<stress -10>><<lllstress>>
-		<br>The blood-moon boss is defeated. Your pet is <span class="green">safe from it for the rest of this month</span>.
+		당신의 펫이 <span class="green"><<= _sum.enemy>></span>에게 마지막 일격을 가하자, 보스가 쓰러진다.<<stress -10>><<lllstress>>
+		<br>블러드문 보스를 물리쳤다. 이번 달 남은 기간 동안 당신의 펫은 <span class="green">보스로부터 안전하다</span>.
 	<<elseif _sum.keyGained>>
-		Your pet defeats the <span class="green"><<= _sum.enemy>></span> and remains standing after the fight.<<stress -8>><<llstress>>
-		<br>The game awards you <span class="gold">a dungeon key</span>. You now hold <<= _sum.keys>>.
+		당신의 펫이 <span class="green"><<= _sum.enemy>></span>【을를】 물리치고, 싸움이 끝난 뒤에도 두 발로 서 있다.<<stress -8>><<llstress>>
+		<br>게임이 당신에게 <span class="gold">던전 열쇠</span>를 준다. 현재 보유: <<= _sum.keys>>개.
 	<<elseif _sum.dungeon>>
-		Your pet defeats the <span class="green"><<= _sum.enemy>></span> blocking the way deeper into the dungeon.<<stress -4>><<lstress>>
+		당신의 펫이 던전 더 깊은 곳으로 가는 길을 막아선 <span class="green"><<= _sum.enemy>></span>【을를】 물리친다.<<stress -4>><<lstress>>
 	<<else>>
-		Your pet defeats the wild <span class="green"><<= _sum.enemy>></span> and survives the attack.<<stress -8>><<llstress>>
-		<br>It is safe for now. <span class="green">The next weekly challenger will be stronger</span>.
+		당신의 펫이 야생 <span class="green"><<= _sum.enemy>></span>【을를】 물리치고 공격을 이겨 낸다.<<stress -8>><<llstress>>
+		<br>당분간은 안전하다. <span class="green">다음 주의 도전자는 더 강할 것이다</span>.
 	<</if>>
 	<<if _sum.teammateRevived>>
-		<br>The teammate that was defeated during the fight gets back up afterward. It is exhausted, but <span class="green">it survived</span>.
+		<br>싸움 도중 쓰러졌던 동료가 전투가 끝난 뒤 다시 일어난다. 녹초가 됐지만 <span class="green">살아남았다</span>.
 	<</if>>
 	<<if _sum.statBoost>>
 		<br>
-		<span class="gold">Victory has made it stronger!
+		<span class="gold">승리가 펫을 더 강하게 만들었다!
 		<<= "(+" + _sum.hpBoost + " max HP, +" + _sum.statBoost + " to ATK, DEF, SPD and max MP)">></span>
 	<</if>>
 	<<if _sum.capped>>
-		<br>Its stats have reached their maximum values. <span class="gold">Further victories will not increase them</span>.
+		<br>능력치가 최대치에 이르렀다. <span class="gold">더 이겨도 능력치는 오르지 않는다</span>.
 	<</if>>
 <<elseif _sum.result is "lose">>
-	The <span class="purple"><<= _sum.enemy>></span> lands the final hit. Your pet falls, and the battle ends before it can get back up. <span class="red">It didn't survive.</span><<stress 6>><<gstress>>
+	<span class="purple"><<= _sum.enemy>></span>【이가】 마지막 일격을 가한다. 당신의 펫이 쓰러지고, 다시 일어나기 전에 전투가 끝난다. <span class="red">펫은 살아남지 못했다.</span><<stress 6>><<gstress>>
 <<else>>
-	The battle ends.
+	전투가 끝난다.
 <</if>>
 <br><br>
 <<if _sum.dungeon and _sum.result is "win">>
 	<<run Tamagotchi.dungeonMobCleared()>>
-	<<link [[Press on|Home Console Dungeon Walk]]>><</link>>
+	<<link [[계속 나아간다|Home Console Dungeon Walk]]>><</link>>
 <<else>>
 	<<if _sum.dungeon>><<run Tamagotchi.dungeonEnd()>><</if>>
-	<<link [[Back|Home Console Pet]]>><</link>>
+	<<link [[뒤로|Home Console Pet]]>><</link>>
 <</if>>
 <</if>>
 
@@ -445,36 +445,36 @@
 <<set _t to Tamagotchi.status()>>
 <<if $evoPick is undefined>><<set $evoPick to []>><</if>>
 <<if not _t.canEvolve>>
-	<<= _t.name>> can't evolve right now.
+	<<= _t.name>>【은는】 지금은 진화할 수 없다.
 	<<unset $evoPick>>
 	<br><br>
-	<<link [[Back|Home Console Pet]]>><</link>>
+	<<link [[뒤로|Home Console Pet]]>><</link>>
 <<else>>
-	<span class="blue">_t.name</span> is ready to evolve. Evolution will multiply every stat by ten, but the process permanently removes <span class="red">_t.evolveCost learned skills</span>. Choose which skills you want to lose.
+	<span class="blue">_t.name</span>【은는】 진화할 준비가 됐다. 진화하면 모든 능력치가 열 배가 되지만, 그 과정에서 <span class="red">익힌 기술 _t.evolveCost개</span>가 영구히 사라진다. 잃을 기술을 고른다.
 	<br><br>
-	<span class="gold"><<= $evoPick.length>> / _t.evolveCost selected.</span>
+	<span class="gold"><<= $evoPick.length>> / _t.evolveCost 선택됨.</span>
 	<br>
 	<<for _s range Tamagotchi.learnedSkills()>>
 		<<capture _s>>
 			<<if $evoPick.includes(_s.id)>>
-				<<link [[(x) _s.name|Home Console Pet Evolve]]>><<set $evoPick to $evoPick.filter(id => id !== _s.id)>><</link>> <span class="red">to be sacrificed</span>
+				<<link [[(x) _s.name|Home Console Pet Evolve]]>><<set $evoPick to $evoPick.filter(id => id !== _s.id)>><</link>> <span class="red">희생 예정</span>
 			<<elseif $evoPick.length lt _t.evolveCost>>
 				<<link [[( ) _s.name|Home Console Pet Evolve]]>><<run $evoPick.push(_s.id)>><</link>>
 			<<else>>
 				<span class="grey">( ) _s.name</span>
 			<</if>>
-			| <span class="teal">_s.typeLabel</span><<if _s.passive>>, passive<<elseif _s.heal>>, heal<<else>>, Pow _s.power<</if>>
+			| <span class="teal">_s.typeLabel</span><<if _s.passive>>, 패시브<<elseif _s.heal>>, 회복<<else>>, 위력 _s.power<</if>>
 		<</capture>>
 		<br>
 	<</for>>
 	<br>
 	<<if $evoPick.length is _t.evolveCost>>
-		<<link [[Evolve!|Home Console Pet Evolve Do]]>><</link>>
+		<<link [[진화시킨다!|Home Console Pet Evolve Do]]>><</link>>
 	<<else>>
-		<span class="grey">Select exactly _t.evolveCost skills to evolve.</span>
+		<span class="grey">진화하려면 기술을 정확히 _t.evolveCost개 선택해야 한다.</span>
 	<</if>>
 	<br>
-	<<link [[Cancel|Home Console Pet]]>><<unset $evoPick>><</link>>
+	<<link [[취소|Home Console Pet]]>><<unset $evoPick>><</link>>
 <</if>>
 
 :: Home Console Pet Evolve Do
@@ -484,40 +484,40 @@
 <<set _t to Tamagotchi.status()>>
 
 <<if not _evo or not _evo.ok>>
-	Nothing happens.
+	아무 일도 일어나지 않는다.
 <<else>>
 	<<= PetArt.evolution()>>
-	You sacrifice <span class="red"><<= _evo.sacrificed.join(", ")>></span>.
+	희생한 기술: <span class="red"><<= _evo.sacrificed.join(", ")>></span>.
 	<br>
 
-	The evolution animation begins. <span class="blue">_t.name</span>'s image flashes several times before changing into its new form.
-	<span class="blue">_t.name</span> has evolved from <span class="teal"><<= _evo.from>></span> into <span class="gold"><<= _evo.to>></span>!
+	진화 연출이 시작된다. <span class="blue">_t.name</span>의 모습이 여러 번 번쩍이다가 새로운 형태로 바뀐다.
+	<span class="blue">_t.name</span>【이가】 <span class="teal"><<= _evo.from>></span>에서 <span class="gold"><<= _evo.to>></span>【으로로】 진화했다!
 	<<stress -10>><<lllstress>>
 	<br><br>
 	<<= Tamagotchi.statusHtml()>>
 	<<if _evo.capped>>
-		<br><<= _t.name>> is already <span class="gold">as strong as it can ever be</span>.
+		<br><<= _t.name>>【은는】 이미 <span class="gold">더 이상 강해질 수 없을 만큼 강하다</span>.
 	<</if>>
 <</if>>
 <br><br>
-<<link [[Back|Home Console Pet]]>><</link>>
+<<link [[뒤로|Home Console Pet]]>><</link>>
 
 :: Home Console Pet Adopt
 <<set $outside to 0>><<effects>>
 <<set _t to Tamagotchi.status()>>
 <<set _adoptable to Tamagotchi.adoptableSpecies()>>
 <<if not _t.canAdopt or _adoptable.length is 0>>
-	You can't adopt another pet right now.
+	지금은 다른 펫을 입양할 수 없다.
 	<br><br>
-	<<link [[Back|Home Console Pet]]>><</link>>
+	<<link [[뒤로|Home Console Pet]]>><</link>>
 <<else>>
-	A new egg appears beside your other pets. The game only offers elements that are still missing from your collection. Choose a species, then give the new pet a name.
+	다른 펫들 곁에 새 알이 나타난다. 게임은 수집품에 아직 없는 속성만 보여 준다. 종을 고른 뒤, 새 펫에게 이름을 지어 준다.
 	<br>
 	<<textbox "_petname" "Pixel">>
 	<br><br>
-	<div class="pa-picks"><<for _sp range _adoptable>><<capture _sp>><div class="pa-pick"><<= PetArt.pick(_sp.id)>><div class="pa-pick-text"><span class="pa-pick-head"><span class="pa-pick-name"><<print _sp.name>></span> <span class="pa-pick-type teal"><<print _sp.typeLabel>> type</span></span><span class="pa-pick-blurb"><<print _sp.blurb>></span><span class="pa-pick-choose"><<link [["Choose " + _sp.name|Home Console Pet]]>><<run setup.consoleSfx.play("pet-select")>><<run Tamagotchi.adopt(_petname, _sp.id)>><</link>></span></div></div><</capture>><</for>></div>
+	<div class="pa-picks"><<for _sp range _adoptable>><<capture _sp>><div class="pa-pick"><<= PetArt.pick(_sp.id)>><div class="pa-pick-text"><span class="pa-pick-head"><span class="pa-pick-name"><<print _sp.name>></span> <span class="pa-pick-type teal"><<print _sp.typeLabel>> 타입</span></span><span class="pa-pick-blurb"><<print _sp.blurb>></span><span class="pa-pick-choose"><<link [[_sp.name + " 선택"|Home Console Pet]]>><<run setup.consoleSfx.play("pet-select")>><<run Tamagotchi.adopt(_petname, _sp.id)>><</link>></span></div></div><</capture>><</for>></div>
 	<br>
-	<<link [[Back|Home Console Pet]]>><</link>>
+	<<link [[뒤로|Home Console Pet]]>><</link>>
 <</if>>
 
 :: Home Console Pet Challenges
@@ -525,14 +525,14 @@
 <<if $location isnot "home" and $location isnot "alex_cottage" and $location isnot "arcology_launch">><<set $location to "home">><</if>>
 <<effects>>
 <<run Tamagotchi.sync()>>
-<<furnitureicon "controller">>Practice bouts for your pet. Each opponent is matched to your pet's current strength, and a lost bout costs nothing: your pet can't be hurt, and it gains no stats from winning.
+<<furnitureicon "controller">>당신의 펫을 위한 연습 경기다. 상대는 펫의 현재 강함에 맞춰 정해지며, 져도 잃는 것은 없다. 펫은 다치지 않고, 이겨도 능력치는 오르지 않는다.
 <br><br>
 <<set _pcBlock to setup.petChallenges.blocked()>>
 <<set _pcBattle to Tamagotchi.battleState()>>
 <<if _pcBattle and _pcBattle.kind is "challenge">>
-	<span class="gold">A challenge battle is still under way.</span>
+	<span class="gold">도전 전투가 아직 진행 중이다.</span>
 	<br>
-	<<link [[Return to it|Home Console Pet Battle]]>><</link>>
+	<<link [[돌아간다|Home Console Pet Battle]]>><</link>>
 	<br><br>
 <<elseif _pcBlock>>
 	<span class="red"><<print _pcBlock>></span>
@@ -540,17 +540,17 @@
 <</if>>
 <<set _pcDaily to setup.petChallenges.dailyView()>>
 <div class="con-list">
-<section @class="'con-daily' + (_pcDaily.rec and _pcDaily.rec.done ? ' con-daily--done' : '')" aria-label="Today's battle"><div class="con-daily-head"><span class="con-daily-date">Today's battle, <<print _pcDaily.c.date>> (UTC)</span><<print _pcDaily.chip>></div><<if _pcDaily.art>><div class="con-vs"><span class="con-vs-side"><<print _pcDaily.petArt>><span class="con-vs-name"><<print $tamagotchi.name>></span></span><span class="con-vs-word">vs</span><span class="con-vs-side"><<print _pcDaily.art>><span class="con-vs-name"><<print _pcDaily.foeName>></span></span></div><</if>><p class="con-daily-goal"><<print _pcDaily.describe>></p><dl class="con-facts"><dt>Opponent</dt><dd><<print _pcDaily.foe>></dd><dt>Reward</dt><dd><<print _pcDaily.reward>></dd><dt>Status</dt><dd><<if _pcDaily.rec and _pcDaily.rec.done>><span class="green">Completed</span><<elseif _pcDaily.rec and _pcDaily.rec.tries>>Not completed yet<<else>>Not tried yet<</if>></dd><dt>Best</dt><dd><<if _pcDaily.rec and _pcDaily.rec.best isnot null and _pcDaily.rec.best isnot undefined>>Won in <<print _pcDaily.rec.best>> turns<<else>>None yet<</if>><<if _pcDaily.rec and _pcDaily.rec.tries>>, <<print _pcDaily.rec.tries>> <<= _pcDaily.rec.tries is 1 ? "try" : "tries">><</if>></dd><dt>Next battle</dt><dd>in <<print _pcDaily.reset>> (midnight UTC)</dd></dl><<if !_pcBlock and !_pcBattle>><span class="pet-chal-start con-btn-link"><<link `_pcDaily.rec and _pcDaily.rec.tries ? "Retry today's battle (0:05)" : "Fight today's battle (0:05)"` "Home Console Pet Battle">><<run setup.petChallenges.start("daily")>><<pass 5>><</link>></span><</if>></section>
+<section @class="'con-daily' + (_pcDaily.rec and _pcDaily.rec.done ? ' con-daily--done' : '')" aria-label="오늘의 전투"><div class="con-daily-head"><span class="con-daily-date">오늘의 전투, <<print _pcDaily.c.date>> (UTC)</span><<print _pcDaily.chip>></div><<if _pcDaily.art>><div class="con-vs"><span class="con-vs-side"><<print _pcDaily.petArt>><span class="con-vs-name"><<print $tamagotchi.name>></span></span><span class="con-vs-word">대</span><span class="con-vs-side"><<print _pcDaily.art>><span class="con-vs-name"><<print _pcDaily.foeName>></span></span></div><</if>><p class="con-daily-goal"><<print _pcDaily.describe>></p><dl class="con-facts"><dt>상대</dt><dd><<print _pcDaily.foe>></dd><dt>보상</dt><dd><<print _pcDaily.reward>></dd><dt>상태</dt><dd><<if _pcDaily.rec and _pcDaily.rec.done>><span class="green">완료</span><<elseif _pcDaily.rec and _pcDaily.rec.tries>>아직 완료하지 못함<<else>>아직 시도하지 않음<</if>></dd><dt>최고 기록</dt><dd><<if _pcDaily.rec and _pcDaily.rec.best isnot null and _pcDaily.rec.best isnot undefined>><<print _pcDaily.rec.best>>턴 만에 승리<<else>>아직 없음<</if>><<if _pcDaily.rec and _pcDaily.rec.tries>>, <<print _pcDaily.rec.tries>><<= _pcDaily.rec.tries is 1 ? "회" : "회">> 시도<</if>></dd><dt>다음 전투</dt><dd><<print _pcDaily.reset>> 후 (UTC 자정)</dd></dl><<if !_pcBlock and !_pcBattle>><span class="pet-chal-start con-btn-link"><<link `_pcDaily.rec and _pcDaily.rec.tries ? "오늘의 전투에 다시 도전한다 (0:05)" : "오늘의 전투에 도전한다 (0:05)"` "Home Console Pet Battle">><<run setup.petChallenges.start("daily")>><<pass 5>><</link>></span><</if>></section>
 <<print _pcDaily.history>>
 <<set _pcProg to setup.petChallenges.progress()>>
-<h3 class="con-page-head">Challenges</h3>
-<div class="con-progress"><div class="con-progress-head"><span>Completed</span><span class="con-progress-count"><<print _pcProg.count>> of <<print _pcProg.total>></span></div><div class="con-bar" role="progressbar" aria-label="Challenges completed" aria-valuemin="0" @aria-valuemax="_pcProg.total" @aria-valuenow="_pcProg.count"><span class="con-bar-fill" @style="'width:' + Math.round(_pcProg.count / _pcProg.total * 100) + '%'"></span></div></div>
+<h3 class="con-page-head">도전 과제</h3>
+<div class="con-progress"><div class="con-progress-head"><span>완료</span><span class="con-progress-count"><<print _pcProg.count>> / <<print _pcProg.total>></span></div><div class="con-bar" role="progressbar" aria-label="완료한 도전 과제" aria-valuemin="0" @aria-valuemax="_pcProg.total" @aria-valuenow="_pcProg.count"><span class="con-bar-fill" @style="'width:' + Math.round(_pcProg.count / _pcProg.total * 100) + '%'"></span></div></div>
 <<= setup.petChallenges.featCard()>>
 <<set _pcRows to setup.petChallenges.rows()>>
-<<for _pcLevel range ["easy", "medium", "hard"]>><<set _pcGroup to _pcRows.filter(r => r.diff is _pcLevel)>><h4 class="con-group-head"><span><<print setup.consoleDaily.levelName(_pcLevel)>></span><span class="con-progress-count"><<print _pcGroup.filter(r => r.done).length>> of <<print _pcGroup.length>></span></h4><<for _pcRow range _pcGroup>><<capture _pcRow>><div @class="'con-row' + (_pcRow.done ? ' con-row--done' : '')"><span class="con-row-icon con-row-icon--pet" aria-hidden="true"><<print _pcRow.art>></span><div class="con-row-main"><span class="con-row-title"><<print _pcRow.name>></span><span class="con-row-desc"><<print _pcRow.describe>></span><span class="con-row-meta">Against <<print _pcRow.foe>>.</span><span class="con-row-status"><<if _pcRow.done>>Completed <<print _pcRow.done>><<elseif _pcRow.needs>><<print _pcRow.needs>><<else>>Not completed<</if>></span></div><div class="con-row-action con-btn-link"><<if !_pcBlock and !_pcBattle and !_pcRow.needs>><<link `_pcRow.done ? "Again" : "Fight"` "Home Console Pet Battle">><<run setup.petChallenges.start(_pcRow.id)>><<pass 5>><</link>><</if>></div></div><</capture>><</for>><</for>>
+<<for _pcLevel range ["easy", "medium", "hard"]>><<set _pcGroup to _pcRows.filter(r => r.diff is _pcLevel)>><h4 class="con-group-head"><span><<print setup.consoleDaily.levelName(_pcLevel)>></span><span class="con-progress-count"><<print _pcGroup.filter(r => r.done).length>> / <<print _pcGroup.length>></span></h4><<for _pcRow range _pcGroup>><<capture _pcRow>><div @class="'con-row' + (_pcRow.done ? ' con-row--done' : '')"><span class="con-row-icon con-row-icon--pet" aria-hidden="true"><<print _pcRow.art>></span><div class="con-row-main"><span class="con-row-title"><<print _pcRow.name>></span><span class="con-row-desc"><<print _pcRow.describe>></span><span class="con-row-meta">상대: <<print _pcRow.foe>>.</span><span class="con-row-status"><<if _pcRow.done>>완료 <<print _pcRow.done>><<elseif _pcRow.needs>><<print _pcRow.needs>><<else>>미완료<</if>></span></div><div class="con-row-action con-btn-link"><<if !_pcBlock and !_pcBattle and !_pcRow.needs>><<link `_pcRow.done ? "다시 도전" : "도전"` "Home Console Pet Battle">><<run setup.petChallenges.start(_pcRow.id)>><<pass 5>><</link>><</if>></div></div><</capture>><</for>><</for>>
 </div>
 <br>
-<<getouticon>><<link [[Back to your pet|Home Console Pet]]>><</link>>
+<<getouticon>><<link [[펫에게 돌아간다|Home Console Pet]]>><</link>>
 <br>
 
 :: Home Console Dungeon Enter
@@ -558,19 +558,19 @@
 <<set _t to Tamagotchi.status()>>
 
 <<if not Tamagotchi.isAlive() or _t.keys lte 0>>
-	You have no keys to open the dungeon.
+	던전을 열 열쇠가 없다.
 	<br><br>
-	<<link [[Back|Home Console Pet]]>><</link>>
+	<<link [[뒤로|Home Console Pet]]>><</link>>
 <<else>>
-	A barred gate flickers onto the screen. One of your dungeon keys fits the lock.
-	Beyond it lies a crawl of monsters, treasure, and worse.
+	빗장 걸린 문이 화면에 깜빡이며 나타난다. 당신의 던전 열쇠 중 하나가 자물쇠에 맞는다.
+	문 너머에는 몬스터와 보물, 그리고 그보다 나쁜 것들이 우글거린다.
 	<br><br>
-	<span class="small-description"><i>A run is 15 tiles deep. You'll find money, items, and mobs to grind for stats.
-	Falling here is fatal.</i></span>
+	<span class="small-description"><i>한 번의 탐험은 15칸 깊이다. 돈과 아이템, 그리고 능력치를 올리기 위해 잡아야 할 몹을 만나게 된다.
+	여기서 쓰러지면 치명적이다.</i></span>
 	<br>
-	<<link [[Unlock the gate and descend|Home Console Dungeon Walk]]>><<pass 1>><<run Tamagotchi.dungeonStart()>><</link>> <i>(1 key)</i>
+	<<link [[문을 열고 내려간다|Home Console Dungeon Walk]]>><<pass 1>><<run Tamagotchi.dungeonStart()>><</link>> <i>(열쇠 1개)</i>
 	<br>
-	<<link [[Back|Home Console Pet]]>><</link>>
+	<<link [[뒤로|Home Console Pet]]>><</link>>
 <</if>>
 
 :: Home Console Dungeon Walk
@@ -578,27 +578,27 @@
 <<set _d to Tamagotchi.dungeonState()>>
 
 <<if _d is null>>
-	You're not inside the dungeon.
+	당신은 던전 안에 있지 않다.
 	<br><br>
-	<<link [[Back|Home Console Pet]]>><</link>>
+	<<link [[뒤로|Home Console Pet]]>><</link>>
 <<elseif not Tamagotchi.isAlive()>>
 	<<run Tamagotchi.dungeonEnd()>>
-	The dungeon falls silent.
+	던전이 조용해진다.
 	<br><br>
-	<<link [[Back|Home Console Pet]]>><</link>>
+	<<link [[뒤로|Home Console Pet]]>><</link>>
 <<elseif _d.tile gte _d.tiles>>
-	You reach the end of this stretch of the dungeon.
+	던전의 이 구간 끝에 이른다.
 	<br><br>
-	<<link [[Climb back out|Home Console Dungeon Exit]]>><<pass 1>><</link>>
+	<<link [[다시 밖으로 올라간다|Home Console Dungeon Exit]]>><<pass 1>><</link>>
 <<else>>
-	You press deeper into the dungeon. <span class="teal">Tile <<= _d.tile + 1>> of _d.tiles.</span>
+	당신은 던전 더 깊숙이 들어간다. <span class="teal"><<= _d.tile + 1>>번째 칸, 총 _d.tiles칸.</span>
 	<br>
-	<span class="small-description"><i>Found so far: £<<= Math.floor(_d.money / 100)>>,
+	<span class="small-description"><i>지금까지 얻은 것: £<<= Math.floor(_d.money / 100)>>,
 	_d.items <<= _d.items is 1 ? "item" : "items">>, _d.kills <<= _d.kills is 1 ? "kill" : "kills">>.</i></span>
 	<br>
-	<<link [[Step deeper|Home Console Dungeon Step]]>><<set $dungeonStep to Tamagotchi.dungeonStep()>><<pass 5>><</link>>
+	<<link [[더 깊이 들어간다|Home Console Dungeon Step]]>><<set $dungeonStep to Tamagotchi.dungeonStep()>><<pass 5>><</link>>
 	<br>
-	<<link [[Climb back out|Home Console Dungeon Exit]]>><<pass 1>><</link>>
+	<<link [[다시 밖으로 올라간다|Home Console Dungeon Exit]]>><<pass 1>><</link>>
 <</if>>
 
 :: Home Console Dungeon Step
@@ -611,21 +611,21 @@
 
 <<switch _step.type>>
 	<<case "money">>
-		You prise open a mouldering chest and scoop out the coins inside. <<income _step.amount "dungeon">>!
+		당신은 곰팡이 핀 상자를 비집어 열고 안에 든 동전을 쓸어 담는다. <<income _step.amount "dungeon">>!
 		<br><br>
-		<<link [[Continue|Home Console Dungeon Walk]]>><</link>>
+		<<link [[계속한다|Home Console Dungeon Walk]]>><</link>>
 	<<case "item">>
-		Tucked in an alcove you find a <span class="green"><<= _step.name>></span>.
+		벽감 속에 놓인 <span class="green"><<= _step.name>></span>【을를】 발견한다.
 		<<if $foodstuff[_step.key] is undefined>><<set $foodstuff[_step.key] to {amount: 0}>><</if>>
 		<<set $foodstuff[_step.key].amount += 1>>
 		<br><br>
-		<<link [[Continue|Home Console Dungeon Walk]]>><</link>>
+		<<link [[계속한다|Home Console Dungeon Walk]]>><</link>>
 	<<case "mob">>
-		A dungeon mob lunges from the shadows!
+		던전의 몹 하나가 어둠 속에서 덮쳐 온다!
 		<br><br>
-		<<link [[Fight!|Home Console Pet Battle]]>><<run Tamagotchi.startDungeonBattle()>><</link>>
+		<<link [[싸운다!|Home Console Pet Battle]]>><<run Tamagotchi.startDungeonBattle()>><</link>>
 	<<case "antipill">>
-		Half-buried in the rubble is a single, oddly coloured pill case.
+		잔해 속에 반쯤 묻힌, 기묘한 색의 알약 케이스 하나가 놓여 있다.
 		<br>
 		/* Anti-pill / Choice Reversal gift, mirroring Whitney Orphanage Special Event Repeat Finish5. */
 		<<set _roll to random(1, 100)>>
@@ -647,28 +647,28 @@
 			<<set _giftKey to _choiceKey>>
 		<</if>>
 		<<if _giftKey is "" or $sexStats is undefined or $sexStats.pills is undefined>>
-			It crumbles to useless dust in your fingers.
+			손가락 사이에서 쓸모없는 먼지로 부스러진다.
 		<<else>>
 			<<run if (V.sexStats.pills.pills[_giftKey] === undefined) V.sexStats.pills.pills[_giftKey] = { autoTake: false, doseTaken: 0, owned: 0, overdose: 0 };>>
 			<<if $sexStats.pills.pills[_giftKey].owned is undefined>><<set $sexStats.pills.pills[_giftKey].owned to 0>><</if>>
 			<<set $sexStats.pills.pills[_giftKey].owned to $sexStats.pills.pills[_giftKey].owned + 1>>
 			<<set $sexStats.pills.boughtOnce to true>>
-			<span class="green">It's the <<= _giftKey>>!</span>
+			<span class="green">들어 있던 것: <<= _giftKey>>!</span>
 		<</if>>
 		<br><br>
-		<<link [[Continue|Home Console Dungeon Walk]]>><</link>>
+		<<link [[계속한다|Home Console Dungeon Walk]]>><</link>>
 	<<default>>
-		You search around but find nothing...
+		주변을 뒤져 보지만 아무것도 찾지 못한다...
 		<br><br>
-		<<link [[Continue|Home Console Dungeon Walk]]>><</link>>
+		<<link [[계속한다|Home Console Dungeon Walk]]>><</link>>
 <</switch>>
 
 :: Home Console Dungeon Exit
 <<effects>><<set $outside to 0>><<set _d to Tamagotchi.dungeonEnd()>>
-You climb back out of the dungeon and switch the game off for now.
+당신은 던전에서 올라와 일단 게임을 끈다.
 <br><br>
-<span class="teal">This run you gathered <span class="gold">£<<= Math.floor(_d.money / 100)>></span>,
-_d.items <<= _d.items is 1 ? "item" : "items">> and cleared _d.kills <<= _d.kills is 1 ? "mob" : "mobs">>.</span>
+<span class="teal">이번 탐험에서 모은 것: <span class="gold">£<<= Math.floor(_d.money / 100)>></span>,
+아이템 _d.items<<= _d.items is 1 ? "개" : "개">>, 처치한 몹 _d.kills<<= _d.kills is 1 ? "마리" : "마리">>.</span>
 <br><br>
-<<link [[Back|Home Console Pet]]>><</link>>
+<<link [[뒤로|Home Console Pet]]>><</link>>
 <br>

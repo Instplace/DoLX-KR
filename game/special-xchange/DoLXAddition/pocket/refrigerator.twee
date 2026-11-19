@@ -4,28 +4,28 @@
 <<set _note to _fridge?.notes?.[0]>>
 <<if _note and setup.foodstuff[_note.key]>>
 	<<wearProp "paper sheet">>
-	As you open the refrigerator, a folded piece of paper comes loose from beneath the magnet and starts to fall.
-	You reach down and grab it before it reaches the floor, then unfold it in your hands.
+	냉장고를 열자 자석 아래에서 접힌 종이 한 장이 떨어져 나오며 떨어지기 시작한다.
+	당신은 바닥에 닿기 전에 손을 뻗어 잡고 손안에서 펼친다.
 	<br><br>
-	The handwriting is small, with some words written closer together than others. You move nearer to the light and read the note.
+	글씨는 작고, 어떤 단어들은 다른 단어보다 더 바짝 붙어 있다. 당신은 불빛 쪽으로 다가가 쪽지를 읽는다.
 	<br><br>
 	<<if _note.type is "taken">>
-		<i>"I took a serving of <<= setup.foodstuff[_note.key].name>>. Sorry, I was hungry. Thank you. I only took one."</i><<ghope>><<hope 1>>
+		<i>"<<= setup.foodstuff[_note.key].name>> 한 인분을 먹었어요. 배가 고파서 미안해요. 고마워요. 딱 한 인분만 먹었어요."</i><<ghope>><<hope 1>>
 		<br><br>
-		The words <i>"I only took one"</i> have been added beneath the rest of the message in smaller writing, pressed into the little space left at the bottom of the paper.
-		You look towards the sink and notice a clean plate standing beside it to dry. Whoever took the food ate one serving, washed the plate afterwards, then left the note where you would see it.
+		종이 맨 아래 남은 작은 공간에 <i>"딱 한 인분만 먹었어요"</i>라는 글이 나머지 글 아래에 더 작은 글씨로 눌러 쓰여 있다.
+		당신은 싱크대 쪽을 보고 옆에서 마르고 있는 깨끗한 접시를 발견한다. 음식을 가져간 사람은 한 인분을 먹고 나서 접시를 씻은 뒤, 당신이 볼 수 있는 곳에 쪽지를 남겨 두었다.
 	<<else>>
-		<i>"There was some <<= setup.foodstuff[_note.key].name>> left over, so I put it in here for you. Please eat it before someone else does."</i><<greb>><<reb 1>>
+		<i>"<<= setup.foodstuff[_note.key].name>>【이가】 남아서 여기 넣어 뒀어요. 다른 사람이 먹기 전에 드세요."</i><<greb>><<reb 1>>
 		<br><br>
-		There is a small, uneven smile drawn beneath the message. You open the refrigerator farther and find the food inside, put away where it will stay fresh.
-		Whoever wrote the note could have eaten the rest or left it where it was, but instead they saved a serving for you and made sure you knew where to find it.
+		메시지 아래에는 작고 삐뚤빼뚤한 웃는 얼굴이 그려져 있다. 당신이 냉장고를 더 열자 안에 음식이 신선하게 유지되도록 넣어 둔 채 놓여 있다.
+		쪽지를 쓴 사람은 나머지를 먹어 치우거나 그대로 둘 수도 있었지만, 대신 한 인분을 당신을 위해 남기고 어디에서 찾을 수 있는지도 알려 주었다.
 	<</if>><<ltrauma>><<trauma -3>>
 	<br><br>
-	<<link [[Next|Loft Refrigerator Interior]]>><<run $furniture.bedroom.refrigerator.notes.shift()>><<endevent>><</link>>
+	<<link [[다음|Loft Refrigerator Interior]]>><<run $furniture.bedroom.refrigerator.notes.shift()>><<endevent>><</link>>
 <<else>>
 	<<refrigerator "bedroom">>
 	<br>
-	<<link [[Close the door|Orphanage Loft]]>><</link>>
+	<<link [[문을 닫는다|Orphanage Loft]]>><</link>>
 <</if>>
 <br>
 
@@ -33,14 +33,14 @@
 <<set $location to "home">><<set $outside to 0>><<effects>>
 <<refrigerator "bedroom">>
 <br>
-<<link [[Close the door|Orphanage Loft]]>><</link>>
+<<link [[문을 닫는다|Orphanage Loft]]>><</link>>
 <br>
 
 :: Cottage Refrigerator
 <<set $location to "alex_cottage">><<set $outside to 0>><<effects>>
 <<refrigerator "cottage">>
 <br>
-<<link [[Close the door|Farm Cottage]]>><</link>>
+<<link [[문을 닫는다|Farm Cottage]]>><</link>>
 <br>
 
 :: Mansion Refrigerator
@@ -49,7 +49,7 @@
 <<if !$furniture.avery_mansion.refrigerator>><<set $furniture.avery_mansion.refrigerator to { id: "refrigerator" }>><</if>>
 <<refrigerator "avery_mansion">>
 <br>
-<<link [[Close the door|Mansion Kitchen]]>><</link>>
+<<link [[문을 닫는다|Mansion Kitchen]]>><</link>>
 <br>
 
 :: Refrigerator Widgets [widget]
@@ -64,18 +64,18 @@
 		<div class="fridge-panel">
 		<div class="fridge-bulk-actions">
 			<<capture _fridgeLocation>>
-				<<if _available.length>><<link "Store all food" _fridgePassage>><<run refrigeratorTransferAll(_fridgeLocation, false)>><</link>><<else>><span class="grey">Store all food</span><</if>>
+				<<if _available.length>><<link "음식 전부 보관한다" _fridgePassage>><<run refrigeratorTransferAll(_fridgeLocation, false)>><</link>><<else>><span class="grey">음식 전부 보관한다</span><</if>>
 				<span class="grey"> | </span>
-				<<if _storedKeys.length>><<link "Take all food" _fridgePassage>><<run refrigeratorTransferAll(_fridgeLocation, true)>><</link>><<else>><span class="grey">Take all food</span><</if>>
+				<<if _storedKeys.length>><<link "음식 전부 꺼낸다" _fridgePassage>><<run refrigeratorTransferAll(_fridgeLocation, true)>><</link>><<else>><span class="grey">음식 전부 꺼낸다</span><</if>>
 			<</capture>>
 		</div>
 		<section class="pocket-section">
 			<header class="pocket-section-header">
-				<span>Stored food</span>
-				<span class="grey">Preserved</span>
+				<span>보관 중인 음식</span>
+				<span class="grey">보존됨</span>
 			</header>
 			<<if !_storedKeys.length>>
-				<div class="pocket-empty">The shelves are empty.</div>
+				<div class="pocket-empty">선반이 비어 있다.</div>
 			<<else>>
 				<div class="fridge-list">
 					<<for _key range _storedKeys>>
@@ -87,18 +87,18 @@
 							<<if $options.images is 1>><span class="pocket-item-icon"><<foodstufficon _key>></span><</if>>
 							<div class="fridge-food-info">
 								<div class="fridge-food-name"><span class="teal"><<= setup.foodstuff[_key].name.toLocaleUpperFirst()>></span> <span class="gold">×<<= _count>></span></div>
-								<<if !isFinite(_daysLeft)>><span class="grey">Does not spoil</span>
-								<<elseif _daysLeft lte 0>><span class="grey">Past its date · no effects</span>
-								<<elseif !$foodSpoilage>><span class="green">Effects for <<= Math.floor(_daysLeft)>> <<pluralise Math.floor(_daysLeft) "day">> after removal</span>
-								<<elseif _daysLeft lte 1>><span class="red">Goes off overnight after removal</span>
-								<<elseif _daysLeft lte 3>><span class="red"><<= Math.floor(_daysLeft)>> days after removal</span>
-								<<elseif _daysLeft lte 7>><span class="gold"><<= Math.floor(_daysLeft)>> days after removal</span>
-								<<else>><span class="green"><<= Math.floor(_daysLeft)>> days after removal</span><</if>>
+								<<if !isFinite(_daysLeft)>><span class="grey">상하지 않음</span>
+								<<elseif _daysLeft lte 0>><span class="grey">기한 지남 · 효과 없음</span>
+								<<elseif !$foodSpoilage>><span class="green">꺼낸 뒤 <<= Math.floor(_daysLeft)>>일 동안 효과 지속</span>
+								<<elseif _daysLeft lte 1>><span class="red">꺼낸 뒤 밤사이 상함</span>
+								<<elseif _daysLeft lte 3>><span class="red">꺼낸 뒤 <<= Math.floor(_daysLeft)>>일</span>
+								<<elseif _daysLeft lte 7>><span class="gold">꺼낸 뒤 <<= Math.floor(_daysLeft)>>일</span>
+								<<else>><span class="green">꺼낸 뒤 <<= Math.floor(_daysLeft)>>일</span><</if>>
 							</div>
 							<div class="fridge-actions">
 								<<capture _key _fridgeLocation>>
-									<span class="fridge-action"><<link "Take one" _fridgePassage>><<run refrigeratorTransfer(_fridgeLocation, _key, true)>><</link>></span>
-									<span class="fridge-action"><<link "Take all" _fridgePassage>><<run refrigeratorTransfer(_fridgeLocation, _key, true, true)>><</link>></span>
+									<span class="fridge-action"><<link "하나 꺼낸다" _fridgePassage>><<run refrigeratorTransfer(_fridgeLocation, _key, true)>><</link>></span>
+									<span class="fridge-action"><<link "전부 꺼낸다" _fridgePassage>><<run refrigeratorTransfer(_fridgeLocation, _key, true, true)>><</link>></span>
 								<</capture>>
 							</div>
 						</div>
@@ -108,11 +108,11 @@
 		</section>
 		<section class="pocket-section">
 			<header class="pocket-section-header">
-				<span>Food you can store</span>
-				<span class="grey">Cooked food</span>
+				<span>보관할 수 있는 음식</span>
+				<span class="grey">조리된 음식</span>
 			</header>
 			<<if !_available.length>>
-				<div class="pocket-empty">You have no food to put away.</div>
+				<div class="pocket-empty">넣어 둘 음식이 없다.</div>
 			<<else>>
 				<div class="fridge-list">
 					<<for _key range _available>>
@@ -121,19 +121,19 @@
 							<<if $options.images is 1>><span class="pocket-item-icon"><<foodstufficon _key>></span><</if>>
 							<div class="fridge-food-info">
 								<div class="fridge-food-name"><span class="teal"><<= setup.foodstuff[_key].name.toLocaleUpperFirst()>></span> <span class="gold">×<<= foodBatchCount(_key)>></span></div>
-								<<if !isFinite(_daysLeft)>><span class="grey">Does not spoil</span>
-								<<elseif !$foodSpoilage and _daysLeft lte 0>><span class="grey">Past its date · no effects</span>
-								<<elseif !$foodSpoilage and _daysLeft lte 1>><span class="gold">Effects end overnight</span>
-								<<elseif !$foodSpoilage>><span class="green">Effects for <<= Math.floor(_daysLeft)>> more days</span>
-								<<elseif _daysLeft lte 1>><span class="red">Goes off overnight</span>
-								<<elseif _daysLeft lte 3>><span class="red"><<= Math.floor(_daysLeft)>> days left</span>
-								<<elseif _daysLeft lte 7>><span class="gold"><<= Math.floor(_daysLeft)>> days left</span>
-								<<else>><span class="green"><<= Math.floor(_daysLeft)>> days left</span><</if>>
+								<<if !isFinite(_daysLeft)>><span class="grey">상하지 않음</span>
+								<<elseif !$foodSpoilage and _daysLeft lte 0>><span class="grey">기한 지남 · 효과 없음</span>
+								<<elseif !$foodSpoilage and _daysLeft lte 1>><span class="gold">효과가 밤사이 끝남</span>
+								<<elseif !$foodSpoilage>><span class="green">효과 <<= Math.floor(_daysLeft)>>일 더 지속</span>
+								<<elseif _daysLeft lte 1>><span class="red">밤사이 상함</span>
+								<<elseif _daysLeft lte 3>><span class="red"><<= Math.floor(_daysLeft)>>일 남음</span>
+								<<elseif _daysLeft lte 7>><span class="gold"><<= Math.floor(_daysLeft)>>일 남음</span>
+								<<else>><span class="green"><<= Math.floor(_daysLeft)>>일 남음</span><</if>>
 							</div>
 							<div class="fridge-actions">
 								<<capture _key _fridgeLocation>>
-									<span class="fridge-action"><<link "Store one" _fridgePassage>><<run refrigeratorTransfer(_fridgeLocation, _key, false)>><</link>></span>
-									<span class="fridge-action"><<link "Store all" _fridgePassage>><<run refrigeratorTransfer(_fridgeLocation, _key, false, true)>><</link>></span>
+									<span class="fridge-action"><<link "하나 보관한다" _fridgePassage>><<run refrigeratorTransfer(_fridgeLocation, _key, false)>><</link>></span>
+									<span class="fridge-action"><<link "전부 보관한다" _fridgePassage>><<run refrigeratorTransfer(_fridgeLocation, _key, false, true)>><</link>></span>
 								<</capture>>
 							</div>
 						</div>
@@ -143,6 +143,6 @@
 		</section>
 		</div>
 	<<else>>
-		There is no refrigerator here.
+		냉장고가 없다.
 	<</if>>
 <</widget>>

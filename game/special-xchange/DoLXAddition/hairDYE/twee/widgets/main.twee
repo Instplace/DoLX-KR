@@ -91,7 +91,7 @@
 <<widget "dhmMannequinControls">>
 	<div id="mannequin-controls">
 		<div class="movedoll"><<button '<'>><<set $dhmod.movedoll -= 5>><</button>></div>
-		<div> Adjust position </div>
+		<div> 위치 조정 </div>
 		<div class="movedoll"><<button '>'>><<set $dhmod.movedoll += 5>><</button>></div>
 	</div>
 	<<run $(() => { $(".movedoll").click(function(){ $(".mannequin-inner").css("transform", `translateX(${V.dhmod.movedoll}px)`) }); });>>
@@ -114,24 +114,24 @@
 <</widget>>
 
 <<widget "dhmPrices">>
-	A new sign by the mirror reads:
+	거울 옆의 새 표지판에는 이렇게 적혀 있다:
 	<table class="dhm prices">
-		<tr><td class="empty"></td><th>Plain dye</th><th>Two-tone</th></tr>
-		<tr><th>Full head</th><td><<calcWrapper 'simple-custom' 'hair'>></td><td><<calcWrapper 'gradient-custom' 'hair'>></td></tr>
-		<tr><th>Fringe only</th><td><<calcWrapper 'simple-custom' 'fringe'>></td><td><<calcWrapper 'gradient-custom' 'fringe'>></td></tr>
-		<tr><th>Sides only</th><td><<calcWrapper 'simple-custom' 'sides'>></td><td><<calcWrapper 'gradient-custom' 'sides'>></td></tr>
-		<tr><th>'Specialist' fee</th><td colspan=2>£<<print (dhmShop.displayPrice(3000)/100).toFixed(2)>></td></tr>
+		<tr><td class="empty"></td><th>단색 염색</th><th>투톤</th></tr>
+		<tr><th>전체</th><td><<calcWrapper 'simple-custom' 'hair'>></td><td><<calcWrapper 'gradient-custom' 'hair'>></td></tr>
+		<tr><th>앞머리만</th><td><<calcWrapper 'simple-custom' 'fringe'>></td><td><<calcWrapper 'gradient-custom' 'fringe'>></td></tr>
+		<tr><th>옆머리만</th><td><<calcWrapper 'simple-custom' 'sides'>></td><td><<calcWrapper 'gradient-custom' 'sides'>></td></tr>
+		<tr><th>'전문가' 수수료</th><td colspan=2>£<<print (dhmShop.displayPrice(3000)/100).toFixed(2)>></td></tr>
 	</table>
 <</widget>>
 
 <<widget "dhmPayments">>
 	<div class="gold">
-		To pay: £ <span id="currentCost"><<print (dhmShop.displayPrice(_currentCost)/100).toFixed(2)>></span>
+		지불할 금액: £ <span id="currentCost"><<print (dhmShop.displayPrice(_currentCost)/100).toFixed(2)>></span>
 		<br><br>
 	</div>
 
 	<<if setup.inflation.canAfford(_currentCost, "hairdressers")>>
-		<<link [[ ...Pay? | Dye Harder Actually Dying ]]>><<money `-_currentCost` "hairdressers">><</link>><br>
+		<<link [[ ...지불한다 | Dye Harder Actually Dying ]]>><<money `-_currentCost` "hairdressers">><</link>><br>
 	<<else>>
 		<<hairPartKr>> 부분을 염색할 돈이 부족하다.
 		<br>
@@ -144,23 +144,23 @@
 	<<set _currentCost += dhmShop.cashGrabCustom()>>
 	<<set _highlightsAvailable to dhmShop.highlightsAvailable($dyedHairPart, $hairtype, $fringetype, $hairlengthstage, $fringelengthstage)>>
 
-	<div class="bold gold">Hair Dye</div>
-	Have your hair dyed<<if $haircolour isnot $naturalhaircolour or $hairfringecolour is not $naturalhaircolour>> <span class="tentacle">HARDER</span><</if>>:
+	<div class="bold gold">염색</div>
+	머리 염색을 받는다<<if $haircolour isnot $naturalhaircolour or $hairfringecolour is not $naturalhaircolour>> <span class="tentacle">더 화끈하게</span><</if>>:
 	<div class="flexitem">
 		<div id="hairpart-toggles" class="toggles">
 			<label><<radiobutton "$dyedHairPart" "hair" autocheck>> 전체</label> |
 			<label><<radiobutton "$dyedHairPart" "fringe" autocheck>> 앞머리</label> |
-			<label><<radiobutton "$dyedHairPart" "sides" autocheck>> Sides</label>
+			<label><<radiobutton "$dyedHairPart" "sides" autocheck>> 옆머리</label>
 		</div>
 
 		<div id="twotone-toggles" class="toggles">
 			<label><<checkbox "$twoToneHairDye" false true autocheck>> 투톤 염색 요청</label>
 			<<if _highlightsAvailable>>
 				<br>
-				<label><<checkbox "$specialTwoToneHairDye" false true autocheck>> Request a special vanilla only two-tone colouring</label>
+				<label><<checkbox "$specialTwoToneHairDye" false true autocheck>> 바닐라 전용 특수 투톤 염색 요청</label>
 			<</if>>
 			<br>
-			<label><<checkbox "$moddedTwoToneHairDye" false true autocheck>> Request a special modded only two-tone colouring</label>
+			<label><<checkbox "$moddedTwoToneHairDye" false true autocheck>> 모드 전용 특수 투톤 염색 요청</label>
 		</div>
 		<<if $twoToneHairDye>>
 			<div>
@@ -170,7 +170,7 @@
 			</div>
 		<<elseif $moddedTwoToneHairDye>>
 			<div id="modded-pattern-options">
-				Style: <<listbox "$moddedTwoToneStyle" autoselect>>
+				스타일: <<listbox "$moddedTwoToneStyle" autoselect>>
 						<<optionsfrom setup.dhmod.moddedGradients>>
 				<</listbox>>
 			</div>
@@ -222,19 +222,19 @@
 		<div @id="'color-controls' + _index" @class="'dhm ' + _class">
 			<div class="controls color">
 				<div class="row">
-					Colour #<<print _index + 1>>
+					색상 #<<print _index + 1>>
 				</div>
 
 				<div class="row picker">
 					<div @id="'picker' + _index" class="dhm picker"></div>
 					<div>
-					Hex: <span @id="'hex' + _index"></span> | <<link "Manual input">><<run dhmShop.setColorHex(_index)>><</link>>
+					16진수 코드: <span @id="'hex' + _index"></span> | <<link "직접 입력">><<run dhmShop.setColorHex(_index)>><</link>>
 					</div>
 				</div>
 
 				<div class="row centered numberslider-inline">
 					<label>
-						Brightness:<br>
+						밝기:<br>
 						<span @id="'brightness' + _index">
 						<<numberslider `'_dhBrightness' + _index` $dhmod.tmp.brightnessStart[_index] -1 1 0.1>>
 						</span>
@@ -268,7 +268,7 @@
 					<</listbox>>
 				</div>
 				<div @id="'delete' + _index" class="btn-delete">
-					<<button "Del">>
+					<<button "삭제">>
 						<<if confirm('Delete preset "' + T[`presetSelected${T.index}`] + '"?')>>
 							<<run dhmShop.presetBtnDelete(T[`presetSelected${T.index}`])>>
 						<</if>>
@@ -276,11 +276,11 @@
 				</div>
 			</div>
 		<<else>>
-			No saved presets
+			저장된 프리셋 없음
 		<</if>>
 
 		<div @id="'save' + _index" class="btn-save row">
-			<<button "Save">>
+			<<button "저장">>
 				<<run dhmShop.presetBtnSave(setup.colours.hair_map[`tmp${T.index}`].canvasfilter)>>
 			<</button>>
 		</div>

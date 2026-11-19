@@ -40,7 +40,7 @@
 
 /* One panel for both cosmetic mods' options and preset managers, opened from the mirror's makeup menu. */
 <<widget "cosmeticOptionsButton">>
-	<<furnitureicon "candyPillow">><<link "Makeup and hair dye options">>
+	<<furnitureicon "candyPillow">><<link "메이크업과 염색 옵션">>
 		<<replace '#cosmetic-options'>>
 			<div class="options-div" onclick="event.stopPropagation()">
 				<div class="options-buttons-div">
@@ -85,7 +85,7 @@
 				<div class="row">
 					<div class="listbox">
 						<label>
-							Selected preset:
+							선택한 프리셋:
 							<<listbox `'_ccmPresetSelected' + _presetType` autoselect>>
 								<<optionsfrom Object.keys(_presetList) >>
 							<</listbox>>
@@ -94,12 +94,12 @@
 				</div>
 				<div class="buttons row">
 					<div @id="'ccm-rename' + _presetType" class="btn-rename">
-						<<button "Rename">>
+						<<button "이름 변경">>
 							<<run ccmShop.pmanBtnRename(T[`ccmPresetSelected${T.presetType}`], T.presetType)>>
 						<</button>>
 					</div>
 					<div @id="'ccm-delete' + _presetType" class="btn-delete">
-						<<button "Delete">>
+						<<button "삭제">>
 							<<if confirm('Delete preset "' + T[`ccmPresetSelected${T.presetType}`] + '"?')>>
 								<<run ccmShop.pmanBtnDelete(T[`ccmPresetSelected${T.presetType}`], T.presetType)>>
 							<</if>>
@@ -107,7 +107,7 @@
 					</div>
 				</div>
 			<<else>>
-				No presets
+				프리셋 없음
 			<</if>>
 		<</capture>>
 	</div>
@@ -127,8 +127,8 @@
 				<div class="row">
 					<table>
 						<!-- these lines will be replaced once a preset is loaded -->
-						<tr><th>HEX</th><td><span @id="'ccm-presetman-hex' + _presetType">--</span></td></tr>
-						<tr><th>Brightness</th><td><span @id="'ccm-presetman-brightness' + _presetType">--</span></td></tr>
+						<tr><th>16진수</th><td><span @id="'ccm-presetman-hex' + _presetType">--</span></td></tr>
+						<tr><th>밝기</th><td><span @id="'ccm-presetman-brightness' + _presetType">--</span></td></tr>
 					</table>
 				</div>
 
@@ -145,7 +145,7 @@
 				</div>
 				<div class="row" @id="">
 					<label>
-					View as:
+					보기 방식:
 					<<listbox `'_presetMode' + _presetType` autoselect>>
 						<<optionsfrom setup.ccmod.categories>>
 					<</listbox>>
@@ -159,7 +159,7 @@
 <<widget "ccmodPresetLoader">>
 	<<unset _ccmLoaded>>
 	<label>
-		Import presets file
+		프리셋 파일 가져오기
 		<br>
 		<input type="file" id="ccm-preset-loader" accept=".txt,.json" onchange="ccmShop.presetImport(this.files)" />
 	</label>
@@ -173,14 +173,14 @@
 			<div id="dupe-report"><!-- placeholder --></div>
 			<label id="on-duplicate">
 				<<checkbox "$ccmod.cfg.overwrite" false true autocheck>>
-				Overwrite conflicting names (skip if unchecked)
+				이름이 겹치면 덮어쓰기 (체크하지 않으면 건너뜀)
 			</label>
 		</div>
 		<div class="row buttons">
-			<<button "Confirm Import">>
+			<<button "가져오기 확인">>
 				<<run ccmShop.onImportConfirm()>>
 			<</button>>
-			<<button "Cancel Import">>
+			<<button "가져오기 취소">>
 				<<replace "#ccm-presetman-loader">><<ccmodPresetLoader>><</replace>>
 			<</button>>
 		</div>
@@ -193,11 +193,11 @@
 		<hr>
 		<div class="flexitem">
 			<div class="row buttons">
-				<<button "Export saved presets">>
+				<<button "저장된 프리셋 내보내기">>
 					<<run ccmShop.presetExport()>>
 				<</button>>
 				<div class="background-red">
-					<<button "Delete ALL saved presets">>
+					<<button "저장된 프리셋 모두 삭제">>
 						<<run ccmShop.pmanBtnPurge()>>
 					<</button>>
 				</div>
@@ -209,7 +209,7 @@
 			ccmShop.pmanOnChange(T.ccmPresetSelectedsaved, "saved");
 		});>>	
 	<<else>>
-		You have no presets to manage.
+		관리할 프리셋이 없다.
 	<</if>>
 <</widget>>
 <!-- }}} -->
@@ -226,17 +226,17 @@
 	<div class="ccmod">
 		<div>
 			<div id="ccm-preset-manager" class="settingsGrid">
-				<div class="settingsHeader">Custom makeup presets</div>
+				<div class="settingsHeader">맞춤 메이크업 프리셋</div>
 
 				<div class="settingsToggleItem">
-					<span class="gold bold">Saved presets</span><br>
+					<span class="gold bold">저장된 프리셋</span><br>
 					<div id="ccm-presetman-saved">
 						<<ccmodPresetManager>>
 					</div>
 				</div>
 
 				<div class="settingsToggleItem">
-					<span class="gold bold">Preset importer</span>
+					<span class="gold bold">프리셋 가져오기</span>
 					<div id="ccm-presetman-loader">
 						<<ccmodPresetLoader>>
 					</div>

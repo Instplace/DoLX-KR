@@ -4,16 +4,16 @@
 	<<setupTabs>>
 	<div id="overlayTabs" class="tab">
 		<<closeButtonMobile>>
-		<<button "Bag">>
+		<<button "가방">>
 			<<toggleTab>>
 			<<replace #customOverlayContent>><<pocketBagTab>><</replace>>
 		<</button>>
-		<<button "Hand Mirror">>
+		<<button "손거울">>
 			<<toggleTab>>
 			<<replace #customOverlayContent>><<pocketMirrorTab>><</replace>>
 		<</button>>
 		<<if PocketMusic.available()>>
-			<<button "Music">>
+			<<button "음악">>
 				<<toggleTab>>
 				<<replace #customOverlayContent>><<pocketMusicControls>><</replace>>
 			<</button>>
@@ -27,7 +27,7 @@
 	<<set _pocketLock to pocketLockReason()>>
 	<<if _pocketLock isnot "">>
 		<div class="pocket-locked">
-			<span class="gold">Pocket</span>
+			<span class="gold">주머니</span>
 			<br><br>
 			<span class="red"><<= _pocketLock>></span>
 		</div>
@@ -50,11 +50,11 @@
 		<<run pocketEnsure()>>
 		<<if !$pocket.mirror>>
 			<div class="pocket-empty">
-				You don't own a hand mirror. The cosmetics store in the shopping centre sells them.
+				당신은 손거울을 가지고 있지 않다. 쇼핑센터의 화장품 가게에서 판다.
 			</div>
 		<<elseif Weather.bloodMoon>>
 			<div class="pocket-locked">
-				You have a feeling <span class="red">something bad will happen</span> if you check the mirror now.
+				지금 거울을 들여다보면 <span class="red">나쁜 일이 생길</span> 것 같은 예감이 든다.
 				<<if !$daily.pocketMirrorBloodMoon>>
 					<<set $daily.pocketMirrorBloodMoon to true>>
 					<<awareness 5>><<ggawareness>>
@@ -88,26 +88,26 @@
 <<widget "pocketBagContents">>
 	<<set _personalSlots to $pocket.bag.slots.filter(slot => slot.location is "pocket")>>
 	<<set _bagSlots to $pocket.bag.slots.filter(slot => slot.location is "bag")>>
-	<div class="small-description">Each kind of thing takes one slot, however many of it you pack. Pack things where you keep them: the kitchen, the medicine drawer, the toy cupboard, the perfume cabinet, the bait shop.</div>
+	<div class="small-description">종류 하나당 슬롯 하나를 차지하며, 몇 개를 담든 같다. 물건은 보관하는 곳에서 담아야 한다: 부엌, 약 서랍, 장난감 찬장, 향수 진열장, 미끼 가게.</div>
 	<br>
 	<<if bloatedActive()>>
-		<div class="red">You feel bloated. Eating anything will keep you bloated for another 10 hours.</div><br>
+		<div class="red">속이 더부룩하다. 무엇이든 먹으면 10시간 더 더부룩한 상태가 이어진다.</div><br>
 	<<elseif pocketFoodFullness() gte 5>>
-		<div class="gold">You're feeling quite full.</div><br>
+		<div class="gold">배가 꽤 부르다.</div><br>
 	<</if>>
 	<div id="pocketUseReport"></div>
 
 	<section class="pocket-section">
 		<header class="pocket-section-header">
-			<span>Pocket</span>
-			<span @class="_personalSlots.length ? 'red' : 'blue'"><<= _personalSlots.length>>/1 slot</span>
+			<span>주머니</span>
+			<span @class="_personalSlots.length ? 'red' : 'blue'"><<= _personalSlots.length>>/1 슬롯</span>
 		</header>
 		<<if _personalSlots.length>>
 			<div class="pocket-slots">
 				<<for _slot range _personalSlots>><<pocketSlotRow _slot>><</for>>
 			</div>
 		<<else>>
-			<div class="pocket-empty">Your pocket is empty.</div>
+			<div class="pocket-empty">주머니가 비어 있다.</div>
 		<</if>>
 	</section>
 
@@ -115,14 +115,14 @@
 		<section class="pocket-section">
 			<header class="pocket-section-header">
 				<span><<= pocketBagName().toLocaleUpperFirst()>></span>
-				<span @class="_bagSlots.length gte pocketBagCapacity() ? 'red' : 'blue'"><<= _bagSlots.length>>/<<= pocketBagCapacity()>> slots</span>
+				<span @class="_bagSlots.length gte pocketBagCapacity() ? 'red' : 'blue'"><<= _bagSlots.length>>/<<= pocketBagCapacity()>> 슬롯</span>
 			</header>
 			<<if _bagSlots.length>>
 				<div class="pocket-slots">
 					<<for _slot range _bagSlots>><<pocketSlotRow _slot>><</for>>
 				</div>
 			<<else>>
-				<div class="pocket-empty">The bag is empty.</div>
+				<div class="pocket-empty">가방이 비어 있다.</div>
 			<</if>>
 		</section>
 	<</if>>
@@ -141,19 +141,19 @@
 					</span>
 					<span class="pocket-item-actions">
 						<<capture _rowSlot>>
-							<<if bloatedActive()>><span class="red">Keeps you bloated</span><br>
-							<<elseif foodWouldBloat(_rowSlot.key)>><span class="red">Will make you bloated</span><br><</if>>
+							<<if bloatedActive()>><span class="red">더부룩함이 계속된다</span><br>
+							<<elseif foodWouldBloat(_rowSlot.key)>><span class="red">속이 더부룩해진다</span><br><</if>>
 							<<if foodTags(_rowSlot.key).includes("drink")>>
-								<<link [[Drink|Pocket Eat Food]]>><<run pocketEatFoodFromMenu(_rowSlot.key)>><</link>>
+								<<link [[마신다|Pocket Eat Food]]>><<run pocketEatFoodFromMenu(_rowSlot.key)>><</link>>
 							<<else>>
-								<<link [[Eat|Pocket Eat Food]]>><<run pocketEatFoodFromMenu(_rowSlot.key)>><</link>>
+								<<link [[먹는다|Pocket Eat Food]]>><<run pocketEatFoodFromMenu(_rowSlot.key)>><</link>>
 							<</if>>
 							<<if typeof Menagerie isnot "undefined" and Menagerie.carried()>>
 								|
-								<<link [[Feed to pet|Pocket Feed Pet]]>><<run Menagerie.feedFromPocket(_rowSlot.key)>><</link>>
+								<<link [[반려동물에게 먹인다|Pocket Feed Pet]]>><<run Menagerie.feedFromPocket(_rowSlot.key)>><</link>>
 							<</if>>
 							|
-							<<link "Take out">>
+							<<link "꺼낸다">>
 								<<run pocketSlotToggle("food", _rowSlot.key)>>
 								<<replace #pocketPane>><<pocketBagContents>><</replace>>
 							<</link>>
@@ -183,9 +183,9 @@
 								<</link>>
 								|
 							<<else>>
-								<span class="grey" @title="pocketPillBlockedReason(_rowSlot.key)">Can't take one now</span> |
+								<span class="grey" @title="pocketPillBlockedReason(_rowSlot.key)">지금은 먹을 수 없다</span> |
 							<</if>>
-							<<link "Take out">>
+							<<link "꺼낸다">>
 								<<run pocketSlotToggle("pill", _rowSlot.key)>>
 								<<replace #pocketPane>><<pocketBagContents>><</replace>>
 							<</link>>
@@ -207,14 +207,14 @@
 						<<capture _rowSlot>>
 							<<if _rowSlot.key is "worm_can">>
 								<<if canEatWorm()>>
-									<<link [[Eat one|Pocket Eat Bait]]>><<run pocketEatBaitFromMenu("bait_worm")>><</link>><<if effectiveTransformationLevel("bird") gte 3>><<harpy>><</if>> |
+									<<link [[하나 먹는다|Pocket Eat Bait]]>><<run pocketEatBaitFromMenu("bait_worm")>><</link>><<if effectiveTransformationLevel("bird") gte 3>><<harpy>><</if>> |
 								<<else>>
-									<span class="grey">Empty</span> |
+									<span class="grey">비어 있음</span> |
 								<</if>>
 							<<elseif canEatBaitFish(_rowSlot.key)>>
-								<<link [[Eat|Pocket Eat Bait]]>><<run pocketEatBaitFromMenu(_rowSlot.key)>><</link>><<fishEatingTf>> |
+								<<link [[먹는다|Pocket Eat Bait]]>><<run pocketEatBaitFromMenu(_rowSlot.key)>><</link>><<fishEatingTf>> |
 							<</if>>
-							<<link "Take out">>
+							<<link "꺼낸다">>
 								<<run pocketSlotToggle("bait", _rowSlot.key)>>
 								<<replace #pocketPane>><<pocketBagContents>><</replace>>
 							<</link>>
@@ -230,14 +230,14 @@
 							<span class="pocket-item-name">
 								<span class="teal"><<= _toyItem.setupToy ? _toyItem.setupToy.name.toLocaleUpperFirst() : _toyItem.toy.name.toLocaleUpperFirst()>></span>
 								<<if _toyItem.count gt 1>><span class="gold">(<<= _toyItem.count>>)</span><</if>>
-								<<if _toyItem.worn>><span class="green">(worn)</span><</if>>
+								<<if _toyItem.worn>><span class="green">(착용 중)</span><</if>>
 							</span>
 							<span class="pocket-item-actions">
 								<<capture _toyItem>>
 									<<if _toyItem.stacked>>
-										<span class="grey"><<= _toyItem.uses>> use<<if _toyItem.uses isnot 1>>s<</if>></span>
+										<span class="grey"><<= _toyItem.uses>>회 사용 가능</span>
 									<<elseif !_toyItem.wearableKind>>
-										<span class="grey">In hand</span>
+										<span class="grey">손에 들고 있음</span>
 									<<elseif _toyItem.canWear>>
 										<<link _toyItem.wearLabel>>
 											<<set _toyNotice to pocketToyWear(_toyItem.category, _toyItem.index)>>
@@ -245,10 +245,10 @@
 											<<if _toyNotice>><<replace #pocketUseReport>><span class="red"><<= _toyNotice>></span><</replace>><</if>>
 										<</link>>
 									<<else>>
-										<span class="grey">Can't wear it now</span>
+										<span class="grey">지금은 착용할 수 없다</span>
 									<</if>>
 									|
-									<<link "Take out">>
+									<<link "꺼낸다">>
 										<<if _toyItem.stacked>><<run pocketSlotToggle("toy", _toyItem.category)>><<else>><<run pocketToyPack(_toyItem.category, _toyItem.index, false)>><</if>>
 										<<replace #pocketPane>><<pocketBagContents>><</replace>>
 									<</link>>
@@ -269,18 +269,18 @@
 							<span class="pocket-item-actions">
 								<<capture _perfumeBottle>>
 									<<if _perfumeBottle.uses gt 0 and setup.perfumery.ready(_perfumeBottle)>>
-										<<link "Wear">>
+										<<link "뿌린다">>
 											<<set _perfumeNotice to pocketPerfumeWear(_perfumeBottle.id)>>
 											<<replace #pocketPane>><<pocketBagContents>><</replace>>
 											<<replace #pocketUseReport>><span class="purple"><<= Util.escapeMarkup(_perfumeNotice)>></span><</replace>>
 										<</link>>
 									<<elseif _perfumeBottle.uses lte 0>>
-										<span class="grey">Empty</span>
+										<span class="grey">비어 있음</span>
 									<<else>>
-										<span class="grey">Still maturing</span>
+										<span class="grey">아직 숙성 중</span>
 									<</if>>
 									|
-									<<link "Take out">>
+									<<link "꺼낸다">>
 										<<run pocketPerfumePack(_perfumeBottle.id, false)>>
 										<<replace #pocketPane>><<pocketBagContents>><</replace>>
 									<</link>>
@@ -300,7 +300,7 @@
 									<span class="teal"><<= pocketOutfitPieceName(_outfitPiece.slot, _outfitPiece.item).toLocaleUpperFirst()>></span>
 								</span>
 								<span class="pocket-item-actions">
-									<<link "Take out">>
+									<<link "꺼낸다">>
 										<<run pocketOutfitUnpack(_outfitIndex)>>
 										<<replace #pocketPane>><<pocketBagContents>><</replace>>
 									<</link>>
@@ -315,18 +315,18 @@
 
 <<widget "pocketPackOutfitList">>
 	<div class="pocket-fold-note">
-		Folded clothes are carried to somebody who could wear them for work, like Robin at the cafe. You can't put them on from your bag, but <span class="teal">Put back</span> returns any piece to this wardrobe.
-		<div class="small-description">Maid, butler, and waiting clothes from this wardrobe only. Up to <<= setup.pocketOutfit.maxPieces>> pieces, sharing one slot.</div>
+		접어 둔 옷은 일할 때 입을 수 있는 사람, 이를테면 카페의 로빈에게 전해진다. 가방에서 바로 입을 수는 없지만, <span class="teal">되돌려 놓는다</span> 버튼으로 어느 옷이든 이 옷장으로 돌려보낼 수 있다.
+		<div class="small-description">이 옷장에 있는 메이드, 집사, 서빙 복장만 해당. 최대 <<= setup.pocketOutfit.maxPieces>>벌까지, 슬롯 하나를 함께 쓴다.</div>
 	</div>
 	<<if $pocket.outfit.pieces.length gt 0>>
-		<span class="teal">Folded up (<<= $pocket.outfit.pieces.length>> / <<= setup.pocketOutfit.maxPieces>>)</span>
+		<span class="teal">접어 둠 (<<= $pocket.outfit.pieces.length>> / <<= setup.pocketOutfit.maxPieces>>)</span>
 		<div class="pocket-arrange">
 			<<for _packedIndex to 0; _packedIndex lt $pocket.outfit.pieces.length; _packedIndex++>>
 				<<capture _packedIndex>>
 					<<set _packedPiece to $pocket.outfit.pieces[_packedIndex]>>
 					<div class="pocket-arrange-row">
 						<span class="pocket-arrange-name"><<= pocketOutfitPieceName(_packedPiece.slot, _packedPiece.item).toLocaleUpperFirst()>></span>
-						<<link [[Put back|Pocket Pack Outfit]]>><<run pocketOutfitUnpack(_packedIndex)>><</link>>
+						<<link [[되돌려 놓는다|Pocket Pack Outfit]]>><<run pocketOutfitUnpack(_packedIndex)>><</link>>
 					</div>
 				<</capture>>
 			<</for>>
@@ -336,7 +336,7 @@
 	<<set _outfitCandidates to pocketOutfitCandidates()>>
 	<<if _outfitBlocked isnot "">><div class="pocket-fold-blocked"><<= _outfitBlocked>></div><</if>>
 	<<if _outfitCandidates.length is 0>>
-		<div class="pocket-empty">There's nothing in here a maid or a butler would wear.</div>
+		<div class="pocket-empty">메이드나 집사가 입을 만한 옷이 여기에 없다.</div>
 	<<else>>
 		<div class="pocket-arrange">
 			<<for _outfitOption range _outfitCandidates>>
@@ -345,7 +345,7 @@
 						<span class="pocket-arrange-name"><<= _outfitOption.name.toLocaleUpperFirst()>></span>
 						<span class="pocket-fold-slot"><<= _outfitOption.slot>></span>
 						<<if _outfitBlocked is "">>
-							<<link [[Fold up|Pocket Pack Outfit]]>><<run pocketOutfitPack(_outfitOption.slot, _outfitOption.index)>><</link>>
+							<<link [[접는다|Pocket Pack Outfit]]>><<run pocketOutfitPack(_outfitOption.slot, _outfitOption.index)>><</link>>
 						<</if>>
 					</div>
 				<</capture>>
@@ -358,14 +358,14 @@
 	<<set _report to _args[0]>>
 	<<if _report>>
 		<<set _drink to foodTags(_report.key).includes("drink")>>
-		You <<if _drink>>drink<<else>>eat<</if>> <<= setup.foodstuff[_report.key].word or "a">> <<= setup.foodstuff[_report.key].singular>>.<<if _report.own>> <span class="teal"><<if _drink>>You made it yourself.<<else>>Your own cooking.<</if>></span><</if>>
-		<br><span><<if _report.stale>>It is past its date, so it only fills you up.<</if>><<if !_report.stale>><<= foodEffectText(_report.key)>><</if>></span>
+		당신은 <<= setup.foodstuff[_report.key].singular>>【을를】 <<if _drink>>마신다<<else>>먹는다<</if>>.<<if _report.own>> <span class="teal"><<if _drink>>직접 만든 것이다.<<else>>직접 요리한 것이다.<</if>></span><</if>>
+		<br><span><<if _report.stale>>기한이 지나서 배를 채워 주기만 한다.<</if>><<if !_report.stale>><<= foodEffectText(_report.key)>><</if>></span>
 		<<pocketStatArrows _report.effects>>
 		<<if _report.transformation>>
 			<br><span class="pink"><<= setup.foodTransformText[_report.transformation]>></span>
 		<</if>>
 		<<if _report.willpowerRested gt 0>>
-			<br><span class="green">The break steadies you.</span>
+			<br><span class="green">휴식이 마음을 안정시켜 준다.</span>
 		<</if>>
 	<</if>>
 <</widget>>
@@ -376,13 +376,13 @@
 	<<if _spoiledFood.length>>
 		<div class="pocket-spoiled">
 			<<for _gone range _spoiledFood>>
-				<<= _gone.amount>> <<= _gone.amount is 1 ? setup.foodstuff[_gone.key].singular : setup.foodstuff[_gone.key].plural>> <span class="red">went off</span> and <<if _gone.amount is 1>>was<<else>>were<</if>> thrown away today.<br>
+				<<= _gone.amount>>개의 <<= _gone.amount is 1 ? setup.foodstuff[_gone.key].singular : setup.foodstuff[_gone.key].plural>>【이가】 <span class="red">상해서</span> 오늘 버려졌다.<br>
 			<</for>>
 		</div>
 	<</if>>
 	<<set _journalFoods to [...new Set(pocketFoodList().concat(refrigeratorFoodList()))]>>
 	<<if _journalFoods.length is 0>>
-		<div class="pocket-empty">You have no cooked food stored.</div>
+		<div class="pocket-empty">보관 중인 조리된 음식이 없다.</div>
 	<<else>>
 		<div class="food-journal">
 			<<for _foodKey range _journalFoods>>
@@ -398,28 +398,28 @@
 							<<for _foodBatch range foodExpiryRows(_foodKey)>>
 								<div class="food-journal-batch">
 									<span><<= _foodBatch.amount>> <<= _foodBatch.amount is 1 ? "serving" : "servings">></span>
-									<<if !$foodSpoilage and _foodBatch.daysLeft lte 0>><span class="grey">Past its date</span>
-									<<elseif !$foodSpoilage and _foodBatch.daysLeft lte 1>><span class="gold">Effects end overnight</span>
-									<<elseif !$foodSpoilage>><span class="green">Effects for <<= Math.floor(_foodBatch.daysLeft)>> more days</span>
-									<<elseif !isFinite(_foodBatch.daysLeft)>><span class="grey">Does not spoil</span>
-									<<elseif _foodBatch.daysLeft lte 1>><span class="red">Goes off overnight</span>
-									<<elseif _foodBatch.daysLeft lte 3>><span class="red"><<= Math.floor(_foodBatch.daysLeft)>> days left</span>
-									<<elseif _foodBatch.daysLeft lte 7>><span class="gold"><<= Math.floor(_foodBatch.daysLeft)>> days left</span>
-									<<else>><span class="green"><<= Math.floor(_foodBatch.daysLeft)>> days left</span><</if>>
+									<<if !$foodSpoilage and _foodBatch.daysLeft lte 0>><span class="grey">기한 지남</span>
+									<<elseif !$foodSpoilage and _foodBatch.daysLeft lte 1>><span class="gold">효과가 밤사이 끝남</span>
+									<<elseif !$foodSpoilage>><span class="green">효과 <<= Math.floor(_foodBatch.daysLeft)>>일 더 지속</span>
+									<<elseif !isFinite(_foodBatch.daysLeft)>><span class="grey">상하지 않음</span>
+									<<elseif _foodBatch.daysLeft lte 1>><span class="red">밤사이 상함</span>
+									<<elseif _foodBatch.daysLeft lte 3>><span class="red"><<= Math.floor(_foodBatch.daysLeft)>>일 남음</span>
+									<<elseif _foodBatch.daysLeft lte 7>><span class="gold"><<= Math.floor(_foodBatch.daysLeft)>>일 남음</span>
+									<<else>><span class="green"><<= Math.floor(_foodBatch.daysLeft)>>일 남음</span><</if>>
 								</div>
 							<</for>>
 							<<for _storedBatch range _storedFoodRows>>
 								<div class="food-journal-batch food-journal-batch-stored">
 									<span><<= _storedBatch.amount>> <<= _storedBatch.amount is 1 ? "serving" : "servings">></span>
 									<span class="food-journal-stored">
-										<span class="blue">Stored · <<= _storedBatch.location>></span><br>
-										<<if !isFinite(_storedBatch.daysLeft)>><span class="grey">Does not spoil</span>
-										<<elseif _storedBatch.daysLeft lte 0>><span class="grey">Past its date · no effects</span>
-										<<elseif !$foodSpoilage>><span class="green">Effects for <<= Math.floor(_storedBatch.daysLeft)>> <<pluralise Math.floor(_storedBatch.daysLeft) "day">> after removal</span>
-										<<elseif _storedBatch.daysLeft lte 1>><span class="red">Goes off overnight after removal</span>
-										<<elseif _storedBatch.daysLeft lte 3>><span class="red"><<= Math.floor(_storedBatch.daysLeft)>> days after removal</span>
-										<<elseif _storedBatch.daysLeft lte 7>><span class="gold"><<= Math.floor(_storedBatch.daysLeft)>> days after removal</span>
-										<<else>><span class="green"><<= Math.floor(_storedBatch.daysLeft)>> days after removal</span><</if>>
+										<span class="blue">보관 중 · <<= _storedBatch.location>></span><br>
+										<<if !isFinite(_storedBatch.daysLeft)>><span class="grey">상하지 않음</span>
+										<<elseif _storedBatch.daysLeft lte 0>><span class="grey">기한 지남 · 효과 없음</span>
+										<<elseif !$foodSpoilage>><span class="green">꺼낸 뒤 <<= Math.floor(_storedBatch.daysLeft)>>일 동안 효과 지속</span>
+										<<elseif _storedBatch.daysLeft lte 1>><span class="red">꺼낸 뒤 밤사이 상함</span>
+										<<elseif _storedBatch.daysLeft lte 3>><span class="red">꺼낸 뒤 <<= Math.floor(_storedBatch.daysLeft)>>일</span>
+										<<elseif _storedBatch.daysLeft lte 7>><span class="gold">꺼낸 뒤 <<= Math.floor(_storedBatch.daysLeft)>>일</span>
+										<<else>><span class="green">꺼낸 뒤 <<= Math.floor(_storedBatch.daysLeft)>>일</span><</if>>
 									</span>
 								</div>
 							<</for>>
@@ -436,7 +436,7 @@
 <<widget "pocketPackFood">>
 	<<run pocketSyncBag()>>
 	<div id="basket">
-		<span class="gold bold">Pack food to your pocket<<if pocketBagItem()>> or <<bagname>><</if>>:</span>
+		<span class="gold bold">주머니<<if pocketBagItem()>> 또는 <<bagname>><</if>>에 음식을 담는다:</span>
 		<div class="mobileOnly">
 			<<link "닫기">>
 				<<addclass "#altSection, #mobileCloser" "mobileHidden">>
@@ -452,12 +452,12 @@
 <<widget "pocketPackFoodList">>
 	<<set _packCapacity to pocketCarryCapacity()>>
 	<<set _packUsed to $pocket.bag.slots.length>>
-	<span @class="_packUsed gte _packCapacity ? 'red' : 'blue'"><<= _packUsed>>/<<= _packCapacity>> slots used.</span>
-	<div class="small-description">Each dish takes one slot, however many servings you have of it.</div>
+	<span @class="_packUsed gte _packCapacity ? 'red' : 'blue'"><<= _packUsed>>/<<= _packCapacity>> 슬롯 사용 중.</span>
+	<div class="small-description">요리 하나당 슬롯 하나를 차지하며, 몇 인분이 있든 같다.</div>
 	<br>
 	<<set _packFoodKeys to pocketFoodList()>>
 	<<if _packFoodKeys.length is 0>>
-		<div class="pocket-empty">You've no cooked food to pack.</div>
+		<div class="pocket-empty">담을 조리된 음식이 없다.</div>
 	<<else>>
 		<div class="pocket-arrange">
 			<<for _packKey range _packFoodKeys>>
@@ -469,14 +469,14 @@
 					</span>
 					<<capture _packKey>>
 						<<if pocketCarrying("food", _packKey)>>
-							<<link "Take out">>
+							<<link "꺼낸다">>
 								<<run pocketSlotToggle("food", _packKey)>>
 								<<replace #basketItems>><<pocketPackFoodList>><</replace>>
 							<</link>>
 						<<elseif _packUsed gte _packCapacity>>
-							<span class="grey"><<= pocketBagName().toLocaleUpperFirst()>> full</span>
+							<span class="grey"><<= pocketBagName().toLocaleUpperFirst()>> 가득 참</span>
 						<<else>>
-							<<link "Pack">>
+							<<link "담는다">>
 								<<run pocketSlotToggle("food", _packKey)>>
 								<<replace #basketItems>><<pocketPackFoodList>><</replace>>
 							<</link>>
@@ -494,13 +494,13 @@
 <<if $pocketFoodResult>>
 	<<pocketEatReport $pocketFoodResult>>
 	<br><br>
-	<<link [[Next|_pocketFoodDestination]]>>
+	<<link [[다음|_pocketFoodDestination]]>>
 		<<unset $pocketFoodResult $pocketFoodReturn>>
 	<</link>>
 <<else>>
-	You have nothing to eat.
+	먹을 것이 없다.
 	<br><br>
-	<<link [[Next|_pocketFoodDestination]]>><<unset $pocketFoodReturn>><</link>>
+	<<link [[다음|_pocketFoodDestination]]>><<unset $pocketFoodReturn>><</link>>
 <</if>>
 
 :: Pocket Pack Outfit [exitCheckBypass]
@@ -508,9 +508,9 @@
 <<run pocketOutfitEnsure()>>
 <<run pocketSyncBag()>>
 <<set _outfitReturn to $pocketOutfitReturn or "Wardrobe">>
-<span class="gold bold">Fold a serving outfit into your <<if pocketBagItem()>><<bagname>><<else>>pocket<</if>>.</span>
+<span class="gold bold">서빙 복장 한 벌을 <<if pocketBagItem()>><<bagname>><<else>>주머니<</if>>에 접어 넣는다.</span>
 <br><br>
 <<pocketPackOutfitList>>
 <br>
-<<link "Done" _outfitReturn>><<unset $pocketOutfitReturn>><</link>>
+<<link "완료" _outfitReturn>><<unset $pocketOutfitReturn>><</link>>
 <br>

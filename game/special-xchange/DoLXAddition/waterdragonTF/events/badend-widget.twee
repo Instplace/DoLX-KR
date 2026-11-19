@@ -17,9 +17,9 @@
 
 /* Rendered inline among other waking-effect one-liners, so keep it to a single line plus the link. */
 <<widget "waterDragonLabPregnancyEvent">>
-	The monitors alarm the moment the pressure begins. Harper's voice comes over the intercom. "Viable labour. <span class="red">Do not let the subject bear down here</span>. Prepare the retention bed and open the incubator bank."
+	압력이 시작되는 순간 모니터가 경보를 울린다. 인터컴에서 하퍼의 목소리가 흘러나온다. "분만 가능 상태. <span class="red">피험체가 이 자리에서 힘을 주지 못하게 해</span>. 보유 침대를 준비하고 인큐베이터 뱅크를 열어."
 	<br><br>
-	<<tficon "waterdragon">><<link [[The cell door opens|Water Dragon Lab Pregnancy Seized]]>><<pass 5>><</link>>
+	<<tficon "waterdragon">><<link [[독방 문이 열린다|Water Dragon Lab Pregnancy Seized]]>><<pass 5>><</link>>
 <</widget>>
 
 <<widget "waterDragonLabDefaults">>
@@ -101,15 +101,15 @@
 	<<waterDragonLabValeWindow>>
 	<<if _valeWindowOpen>>
 		<<if $waterDragonLab.helpUsed>>
-			Vale has <span class="green">checked the override log</span> this morning. Nobody is reading it today.
+			베일이 오늘 아침 <span class="green">우회 기록을 확인했다</span>. 오늘은 아무도 그것을 읽지 않는다.
 			<br>
 		<</if>>
 		<<set $skulduggerydifficulty to Math.max(750, 1150 + $waterDragonLab.security - ($waterDragonLab.professorTrust * 20))>>
-		<<lockicon "pick">><<link [[Enter the vent (0:20)|Water Dragon Lab Escape Check]]>><<pass 20>><</link>><<skulduggerydifficulty>>
+		<<lockicon "pick">><<link [[환기구로 들어간다 (0:20)|Water Dragon Lab Escape Check]]>><<pass 20>><</link>><<skulduggerydifficulty>>
 	<<elseif _valeReady>>
-		<<ind>><span class="purple">Vale will not touch the service controller today.</span>
+		<<ind>><span class="purple">베일은 오늘 정비 제어기를 건드리지 않을 것이다.</span>
 	<<else>>
-		<<ind>><span class="black">The vent leads to sealed shutters, and searching again won't open them.</span>
+		<<ind>><span class="black">환기구는 닫힌 셔터로 이어져 있고, 다시 뒤져도 열리지 않을 것이다.</span>
 	<</if>>
 <</widget>>
 
@@ -131,19 +131,19 @@
 /* Status lines for the lab hub, mirroring asylumstats: security = how closely you're watched, compliance = Harper's trust. */
 <<widget "waterDragonLabStats">>
 	<<if $waterDragonLab.security gte 20>>
-		<span class="red">A guard stands inside the door</span> during scheduled blocks now, and the cameras follow you around the room.
+		<span class="red">일정 시간대에는 이제 경비원 한 명이 문 안쪽에 서 있고</span>, 카메라가 방 안에서도 당신을 따라다닌다.
 	<<elseif $waterDragonLab.security gte 8>>
-		The cameras check on you a little too often. <span class="blue">Somebody has flagged your file</span>.
+		카메라가 당신을 너무 자주 살핀다. <span class="blue">누군가 당신의 파일에 표시를 해 두었다</span>.
 	<<else>>
-		The cameras follow their usual patrol. <span class="green">Nobody is paying you special attention</span>.
+		카메라는 평소의 순찰 경로를 돈다. <span class="green">아무도 당신에게 특별히 신경 쓰지 않는다</span>.
 	<</if>>
 	<br>
 	<<if $waterDragonLab.compliance gte 20>>
-		<span class="green">Harper speaks to you like a colleague now</span>, and the staff have stopped double-checking your restraint points.
+		<span class="green">하퍼는 이제 당신을 동료처럼 대하고</span>, 직원들도 당신의 구속 지점을 두 번씩 확인하지 않는다.
 	<<elseif $waterDragonLab.compliance gte 8>>
-		Harper has started noting your cooperation. <span class="blue">Small privileges have followed</span>.
+		하퍼가 당신의 협조를 기록하기 시작했다. <span class="blue">작은 특혜들이 뒤따랐다</span>.
 	<<else>>
-		Harper <span class="red">has not recorded any cooperation</span> from you yet.
+		하퍼는 아직 당신에게서 <span class="red">협조를 한 건도 기록하지 않았다</span>.
 	<</if>>
 	<br><br>
 <</widget>>
@@ -187,8 +187,8 @@
 <</widget>>
 
 <<widget "waterDragonLabSchedule">>
-	<<set _labScheduleNames to {firsttreatment:"Treatment A", secondtreatment:"Treatment B", brooding:"Brooding response", assessment:"Assessment"}>>
-	<span class="red"><b>Today's mandatory schedule</b></span><br>
+	<<set _labScheduleNames to {firsttreatment:"치료 A", secondtreatment:"치료 B", brooding:"포란 반응", assessment:"평가"}>>
+	<span class="red"><b>오늘의 의무 일정</b></span><br>
 	<<print ampm(9, 0)>>-<<print ampm(12, 0)>>: <<print _labScheduleNames[$waterDragonLab.schedule[0]]>><br>
 	<<print ampm(12, 0)>>-<<print ampm(14, 0)>>: <<print _labScheduleNames[$waterDragonLab.schedule[1]]>><br>
 	<<print ampm(14, 0)>>-<<print ampm(17, 0)>>: <<print _labScheduleNames[$waterDragonLab.schedule[2]]>><br>
@@ -197,7 +197,7 @@
 
 /* Sets the next-block temps and prints the reminder used by the cell and day room. */
 <<widget "waterDragonLabNextBlock">>
-	<<set _labScheduleNames to {firsttreatment:"Treatment A", secondtreatment:"Treatment B", brooding:"Brooding response", assessment:"Assessment"}>>
+	<<set _labScheduleNames to {firsttreatment:"치료 A", secondtreatment:"치료 B", brooding:"포란 반응", assessment:"평가"}>>
 	<<set _labNowMinutes to (Time.hour * 60) + Time.minute>>
 	<<set _labNextBlockToday to true>>
 	<<if _labNowMinutes lt 540>>
@@ -213,11 +213,11 @@
 	<</if>>
 	<<if _labNextBlockToday>><<set _labMinutesToNextBlock to _labNextBlockMinutes - _labNowMinutes>><</if>>
 	<<if _labBlockDue>>
-		<span class="red">The <<= _labScheduleNames[$waterDragonLab.state]>> block is in progress now.</span>
+		<span class="red"><<= _labScheduleNames[$waterDragonLab.state]>> 시간이 지금 진행 중이다.</span>
 	<<elseif _labNextBlockToday>>
-		The next compulsory block is <span class="blue"><<= _labScheduleNames[$waterDragonLab.schedule[_labNextBlockIndex]]>></span> at <<ampm `_labNextBlockMinutes / 60`>> (in <<print getTimeString(_labMinutesToNextBlock)>>).
+		다음 의무 시간은 <<ampm `_labNextBlockMinutes / 60`>>의 <span class="blue"><<= _labScheduleNames[$waterDragonLab.schedule[_labNextBlockIndex]]>></span>(<<print getTimeString(_labMinutesToNextBlock)>> 뒤)이다.
 	<<else>>
-		There are <span class="blue">no more compulsory research blocks today</span>. Lights-out is at <<ampm 22>>, and wake-up is at <<ampm 6>>.
+		<span class="blue">오늘 남은 의무 연구 시간은 없다</span>. 소등은 <<ampm 22>>, 기상은 <<ampm 6>>이다.
 	<</if>>
 <</widget>>
 
@@ -229,39 +229,39 @@
 	<</if>>
 	<<switch _labEventRoll>>
 		<<case 1>>
-			The intercom behind the glass is left open a moment too long. You hear Harper's half of a phone call, short and cold. "No. The subject is not part of our arrangement. Your pills are your business. This discovery is mine." A pause. "Because extinction was a records decision, not a biological one."
-			Whoever is on the other end of that call frightens Harper. The thought is not comforting. <<gstress>><<stress 6>><<gawareness>><<awareness 2>>
+			유리 뒤 인터컴이 잠시 너무 오래 켜져 있다. 하퍼가 하는 전화의 한쪽 말이 들린다. 짧고 차갑다. "아뇨. 피험체는 우리 협의에 포함되지 않습니다. 그쪽 알약은 그쪽 사정이고, 이 발견은 제 겁니다." 잠시 침묵. "멸종은 생물학적 결정이 아니라 기록상의 결정이었으니까요."
+			전화 반대편에 있는 누군가가 하퍼를 겁먹게 한다. 그 사실은 조금도 위안이 되지 않는다. <<gstress>><<stress 6>><<gawareness>><<awareness 2>>
 		<<case 2>>
 			<<endevent>>
 			<<generate1>><<person1>>
-			One of the nurses lingers after checking the nest. The <<person>> tucks an extra blanket beneath the sea grass without looking at the cameras, and leaves before you can speak.
+			간호사 한 명이 둥지를 점검한 뒤에도 머뭇거린다. <<person>>【이가】 카메라는 쳐다보지도 않고 바다풀 밑에 담요를 한 장 더 밀어 넣고는, 당신이 말을 걸기 전에 떠난다.
 			<<endevent>>
-			Even down here, people are still kind to each other sometimes. <<lstress>><<stress -4>><<set $waterDragonLab.security to Math.max(0, $waterDragonLab.security - 2)>>
+			이 아래에서도 사람들은 가끔 서로에게 친절하다. <<lstress>><<stress -4>><<set $waterDragonLab.security to Math.max(0, $waterDragonLab.security - 2)>>
 		<<case 3>>
-			A technician spends the morning up a ladder, arguing with the camera above the nest. For almost twenty minutes, its red light stays dark.
-			You memorise exactly <span class="blue">how long the blind spot lasted</span>. <<set $waterDragonLab.escape += 1>>
+			기술자가 아침 내내 사다리 위에서 둥지 위의 카메라와 씨름한다. 거의 이십 분 동안 그 붉은 불이 꺼져 있다.
+			당신은 <span class="blue">사각지대가 정확히 얼마나 지속됐는지</span> 외워 둔다. <<set $waterDragonLab.escape += 1>>
 		<<case 4>>
 			<<npc Harper>><<person1>>
 			<<if $waterDragonLab.eggsLaid gte 1>>
-				Through the glass you watch Harper take one of your eggs out of the cold cabinet and turn it under a lamp, holding it with both hands. <<He>> writes something down, then puts it back in its numbered slot and checks the number twice.
-				They are yours, and they are stock on a shelf. Both of those things are true at once. <<gtrauma>><<trauma 3>><<gstress>><<stress 4>>
+				유리 너머로 하퍼가 냉장 보관함에서 당신의 알 하나를 꺼내 램프 아래에서 두 손으로 돌려 보는 것이 보인다. <<He>>【이가】 무언가를 적은 뒤 번호가 붙은 칸에 다시 넣고, 번호를 두 번 확인한다.
+				그 알들은 당신의 것이면서 선반 위의 재고다. 두 가지가 동시에 사실이다. <<gtrauma>><<trauma 3>><<gstress>><<stress 4>>
 			<<else>>
-				Harper spends an hour at the whiteboard, redrawing the same diagram of a shell in cross-section. <<Hes>> preparing for eggs <<he>> does not have yet.
-				It would be easier to watch if <<he>> were impatient about it. <<gstress>><<stress 4>>
+				하퍼가 화이트보드 앞에서 한 시간을 보내며 알껍데기 단면도를 같은 모양으로 계속 다시 그린다. <<Hes>> 아직 손에 넣지 못한 알을 준비하고 있다.
+				<<he>>【이가】 조급해하기라도 했다면 지켜보기가 더 쉬웠을 것이다. <<gstress>><<stress 4>>
 			<</if>>
 			<<endevent>>
 		<<case 5>>
 			<<if $settings.hypnosisEnabled>>
-				A soft tone plays three times from the ceiling, spaced like a question. It isn't attached to any instruction. Harper watches your reaction and writes something down.
-				You notice afterwards that you had already turned towards the nest without deciding to. <<waterDragonLabConditioning 1>>
+				천장에서 부드러운 음이 세 번, 물음표처럼 간격을 두고 울린다. 어떤 지시에도 이어지지 않는다. 하퍼가 당신의 반응을 지켜보며 무언가를 적는다.
+				나중에야 당신은 스스로 정하지도 않았는데 이미 둥지 쪽으로 몸을 돌려 놓았다는 사실을 알아차린다. <<waterDragonLabConditioning 1>>
 			<<else>>
-				A soft tone plays three times from the ceiling. Equipment calibration, probably. You still hate how the room listens.
+				천장에서 부드러운 음이 세 번 울린다. 아마 장비 보정일 것이다. 그래도 이 방이 귀를 기울이는 느낌은 싫다.
 				<<gstress>><<stress 3>>
 			<</if>>
 		<<case 6>>
 			<<npc Harper>><<person1>>
-			The pastel egg has its own case now, kept apart from the others and packed in cushioning like something out of a museum. Harper stands in front of it for a long time with <<his>> hands behind <<his>> back.
-			"A lineage marker," <<he>> says into <<his>> recorder. "The species kept records in its own shells." <<gstress>><<stress 5>><<gawareness>><<awareness 2>>
+			파스텔색 알은 이제 다른 알들과 떨어진 자기만의 보관함에 담겨, 박물관 전시품처럼 완충재로 포장되어 있다. 하퍼가 두 손을 등 뒤로 모은 채 그 앞에 오래 서 있다.
+			"혈통 표지입니다." <<he>>【이가】 녹음기에 대고 말한다. "이 종은 자신의 껍질 안에 기록을 남겼습니다." <<gstress>><<stress 5>><<gawareness>><<awareness 2>>
 			<<endevent>>
 	<</switch>>
 	<br><br>
@@ -283,7 +283,7 @@
 			<<set $innocencestate to 1>>
 			<<set $innocencemessage to "start">>
 			<br><br>
-			Harper's conditioning folds <span class="red">a soft innocence</span> around the edges of your fear.
+			하퍼의 조건화가 당신의 공포 가장자리를 <span class="red">부드러운 순수함</span>으로 감싼다.
 		<</if>>
 	<</if>>
 <</widget>>

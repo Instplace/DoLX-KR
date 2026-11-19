@@ -4,44 +4,44 @@
 <<effects>>
 <<set _ret to ($location is "arcology_launch" ? "Arcology Voyage Console End" : $location is "alex_cottage" ? "Farm Bedroom" : "Bedroom")>>
 
-<<furnitureicon "controller">>You switch on your console. What would you like to play?
+<<furnitureicon "controller">>당신은 콘솔의 전원을 켠다. 무엇을 하고 놀까?
 <br><br>
 
-<<icon "/furniture/tfplushes.png">><<link [[Virtual pet|Home Console Pet]]>><</link>>
+<<icon "/furniture/tfplushes.png">><<link [[가상 펫을 돌본다|Home Console Pet]]>><</link>>
 <<if Tamagotchi.exists()>>
 	<<run Tamagotchi.sync()>>
 	<<if Tamagotchi.isAlive()>><<set _t to Tamagotchi.status()>>
 		<<if _t.pendingAttack>>
-			<span class="red">(!) under attack</span>
+			<span class="red">(!) 공격받는 중</span>
 		<<elseif _t.pendingSkillChoice>>
-			<span class="gold">(new skill)</span>
+			<span class="gold">(새 기술)</span>
 		<<elseif _t.sick or _t.hunger gte 80 or _t.poops gt 0>>
 			<span class="red">(!)</span>
 		<</if>>
 	<</if>>
 <</if>>
 <br>
-<<icon "antiques/antique-silver-amulet.png">><<link [[Outbreak|Home Console Plague]]>><</link>>
+<<icon "antiques/antique-silver-amulet.png">><<link [[아웃브레이크를 한다|Home Console Plague]]>><</link>>
 <br>
-<<icon "clothes/green-apple-hairpin.png">><<link [[Fruit game|Home Console Suika]]>><</link>>
-<<if $suikaData and $suikaData.run>><span class="tama-sub">(run saved)</span><</if>>
+<<icon "clothes/green-apple-hairpin.png">><<link [[과일 게임을 한다|Home Console Suika]]>><</link>>
+<<if $suikaData and $suikaData.run>><span class="tama-sub">(진행 저장됨)</span><</if>>
 <br>
-<<icon "clothes/headphones.png">><<link [[Rhythm game|Home Console Rhythm]]>><</link>>
+<<icon "clothes/headphones.png">><<link [[리듬 게임을 한다|Home Console Rhythm]]>><</link>>
 /* More games can be added here as further links. */
 <br>
 <<if $location is "arcology_launch">>
 	/* On the Arcology launch: nobody to invite. */
 <<elseif $location is "alex_cottage">>
 	<<if Tamagotchi.isAlive() and Time.dayState isnot "night" and $farm_stage gte 7 and !$weekly.alexConsole>>
-		<<robinicon "controller">><<link [[Invite Alex to play (0:05)|Alex Console Visit]]>><<set $weekly.alexConsole to true>><<pass 5>><</link>>
+		<<robinicon "controller">><<link [[알렉스를 초대해 함께 논다 (0:05)|Alex Console Visit]]>><<set $weekly.alexConsole to true>><<pass 5>><</link>>
 	<</if>>
 <<else>>
 	<<if $robinromance is 1 or $robinbreakup is 1>>
 		<<run getRobinLocation()>>
 		<<if _robin_location is "orphanage" and !$weekly.robinConsole>>
-			<<robinicon "controller">><<link [[Invite Robin to play (0:05)|Robin Console Visit]]>><<set $weekly.robinConsole to true>><<pass 5>><</link>>
+			<<robinicon "controller">><<link [[로빈을 초대해 함께 논다 (0:05)|Robin Console Visit]]>><<set $weekly.robinConsole to true>><<pass 5>><</link>>
 		<</if>>
 	<</if>>
 <</if>>
 <br>
-<<getouticon>><<link "Turn it off" _ret>><<unset $consoleAction, $trainType>><</link>>
+<<getouticon>><<link "전원을 끈다" _ret>><<unset $consoleAction, $trainType>><</link>>
