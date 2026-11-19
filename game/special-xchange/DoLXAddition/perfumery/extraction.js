@@ -412,14 +412,14 @@
 	function description(key, profile = key.startsWith("aroma~") ? setup.perfumeryExtraction.resolve(key) : null) {
 		if (profile && key.startsWith("aroma~")) {
 			const parts = profile.selected.map(part => facetWords[part]);
-			const scents = `${parts.slice(0, -1).join(", ")}${parts.length > 2 ? ", and " : " and "}${parts.at(-1)}`;
+			const scents = `${parts.slice(0, -1).join(", ")}${parts.length > 1 ? " 및 " : ""}${parts.at(-1)}`;
 			return `이 ${setup.foodstuff[profile.source]?.name || profile.source} 추출물은 ${scents}【을를】 간직한다.`;
 		}
 		return sourceDescriptions[key] || `당신은 ${setup.foodstuff[key]?.name || key}의 향을 각각의 성분으로 나눌 수 있다.`;
 	}
 	const kindWords = {
-		"자연 그대로의 향": "Natural scent",
-		"강한 향": "Strong scent",
+		"natural aromatic": "자연 그대로의 향",
+		"strong aromatic": "강한 향",
 		"reconstructed accord": "재료로 되살린 조리 음식",
 	};
 	const methodHelp = {

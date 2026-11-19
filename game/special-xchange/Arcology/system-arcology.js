@@ -1106,7 +1106,7 @@ setup.arcology = {
 		["skyline", "crown"],
 		["crown", "stillwater"],
 	],
-	tierNames: ["치안 유지", "감시 중", "분쟁 지역", "적대 지역", "무법 지대"],
+	tierNames: ["순찰 구역", "감시 구역", "분쟁 구역", "적대 구역", "무법 구역"],
 
 	neighbours(id) {
 		return this.streetLinks.filter(link => link.includes(id)).map(link => (link[0] === id ? link[1] : link[0]));

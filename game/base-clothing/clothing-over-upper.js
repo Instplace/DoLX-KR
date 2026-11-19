@@ -652,7 +652,7 @@ function initOverUpper() {
 			femininity: -100,
 			warmth: 2,
 			cost: 6500,
-			description: "배를 자랑해 보세요.",
+			description: "배를 자랑해 보십시오.",
 			shop: ["clothing", "adult"],
 			accessory: 0,
 			accessory_colour_options: [],

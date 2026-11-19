@@ -44,7 +44,7 @@ const ccmShop = {
 	presetBtnSave() {
 		const filter = clone(setup.colours[`${ccmod.tmp.category}_map`].tmp.canvasfilter);
 		const filterString = ccmUtils.filterEncode(filter);
-		const name = prompt("프리셋 이름을 입력하세요", "프리셋");
+		const name = prompt("프리셋 이름을 입력하십시오", "프리셋");
 
 		if (name) {
 			if (ccmod.userPresets[name]) {
@@ -83,7 +83,7 @@ const ccmShop = {
 
 	// color picker
 	setColorHex() {
-		const hex = prompt("새 16진수 색상 코드를 입력하세요", "#FFFFFF");
+		const hex = prompt("새 16진수 색상 코드를 입력하십시오", "#FFFFFF");
 		if (!!hex && tinycolor(hex).getFormat() === "hex") {
 			this.syncPicker(hex);
 		} else if (hex) {

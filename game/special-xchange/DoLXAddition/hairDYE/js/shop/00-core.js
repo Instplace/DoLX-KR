@@ -31,7 +31,7 @@ const dhmShop = {
 	 */
 	presetBtnSave(rawFilter) {
 		const filterString = dhmUtils.filterEncode(rawFilter);
-		const presetName = prompt("프리셋 이름을 입력하세요", "프리셋");
+		const presetName = prompt("프리셋 이름을 입력하십시오", "프리셋");
 
 		if (presetName) {
 			if (V.dhmod.userPresets[presetName]) {
@@ -173,7 +173,7 @@ const dhmShop = {
 	 * @param {number} index
 	 */
 	setColorHex(index = 0) {
-		const hex = prompt("새 16진수 색상 코드를 입력하세요", "#FFFFFF");
+		const hex = prompt("새 16진수 색상 코드를 입력하십시오", "#FFFFFF");
 		if (!!hex && tinycolor(hex).getFormat() === "hex") {
 			this.syncColorPicker(index, hex);
 		} else if (hex) {

@@ -367,7 +367,7 @@
 				hub: 0.6,
 				note: "외딴 오두막에 사는 소수의 사람들",
 			},
-			lake: { name: "Lake", icon: "lake.png", population: 2500, density: 1, healthcare: 1, climate: "wet", hub: 1, note: "물가에 모여 있는 마을들" },
+			lake: { name: "호수", icon: "lake.png", population: 2500, density: 1, healthcare: 1, climate: "wet", hub: 1, note: "물가에 모여 있는 마을들" },
 			coast: {
 				name: "Coast",
 				icon: "beach.gif",
@@ -415,7 +415,7 @@
 			highHealthcare: 1.5,
 			stages: [
 				{ name: "Unaware", threshold: 0, cure: 0 },
-				{ name: "Detected", threshold: 15, cure: 0.4, news: "의사들이 발병을 인지하고 조사에 나선다." },
+				{ name: "발견", threshold: 15, cure: 0.4, news: "의사들이 발병을 인지하고 조사에 나선다." },
 				{
 					name: "Alert",
 					threshold: 35,
