@@ -6566,7 +6566,7 @@
 		<<if $mouthaction is "ask" and $askAction is "nomask">>
 			<<set $mouthaction to 0>><<set _sound to 1>>
 			<<if $neckuse is "hand" and $oxygen lt $oxygenmax and $settings.asphyxiaLevel gte 2>>
-				<<wheeze "<<him>>에게 당신의 "+ $worn.face.name " 벗기지 말라고 말한다">>
+				<<wheeze `"<<him>>에게 당신의 " + $worn.face.name + "【을를】 벗기지 말라고 말한다"`>>
 			<<else>>
 				<<set $mouthactiondefault to "rest">>
 				<<willpowercombatcheck>>
@@ -9209,15 +9209,16 @@
 
 <<widget "wheeze">>
 	<<set _action to _args[0] or "무언가 말한다">>
+	<<set _try to (/[가-힣]다$/.test(_action) and (_action.charCodeAt(_action.length - 2) - 0xAC00) % 28 is 4) ? _action.slice(0, -2) + String.fromCharCode(_action.charCodeAt(_action.length - 2) - 4) + "려 하지만" : _action + "【을를】 하려 하지만">>
 	<<switch _args[1]>>
 		<<case 1>>
-			당신은 _action【을를】 하려 하지만, <span class="purple">이미 목을 졸리고 있어 헐떡거리는 숨소리만 나올 뿐이다.</span>
+			당신은 _try, <span class="purple">이미 목을 졸리고 있어 헐떡거리는 숨소리만 나올 뿐이다.</span>
 			<<set $speechChokedAlready to 1>>
 		<<case 2>>
-			당신은 _action【을를】 하려 하지만, <span class="lewd">목을 조르는 손 때문에 말을 할 수 없어 음란한 신음만 나올 뿐이다.</span>
+			당신은 _try, <span class="lewd">목을 조르는 손 때문에 말을 할 수 없어 음란한 신음만 나올 뿐이다.</span>
 			<<set $speechChokedMoan to 1>>
 		<<default>>
-			당신은 _action【을를】 하려 하지만, <span class="red">목을 꽉 쥔 손 때문에 막힌 숨소리만 나올 뿐이다.</span><<gwillpower>><<willpower 1>>
+			당신은 _try, <span class="red">목을 꽉 쥔 손 때문에 막힌 숨소리만 나올 뿐이다.</span><<gwillpower>><<willpower 1>>
 			<<set $speechChokedWheeze to 1>>
 	<</switch>>
 <</widget>>
