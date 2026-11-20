@@ -423,10 +423,10 @@
 	function roundSounds(round, big) {
 		const { before: B, after: A, action } = round;
 		const list = [actionSound(action)];
-		const foeLine = A.log.find(line => / uses .+ for \d+\./.test(line));
+		const foeLine = A.log.find(line => / uses .+ for \d+\.|의 .+ 공격! \d+의 피해를 입었다\./.test(line));
 		if (!(A.over && A.result === "win")) {
 			if (A.heals < B.heals) list.push("pet-heal");
-			else if (foeLine) list.push(big ? "pet-boss-attack" : "pet-hit-" + moveType((/ uses (.+?) for \d+\./.exec(foeLine) || [])[1]));
+			else if (foeLine) list.push(big ? "pet-boss-attack" : "pet-hit-" + moveType((/ uses (.+?) for \d+\.|의 (.+?) 공격! \d+의 피해를 입었다\./.exec(foeLine) || []).slice(1).find(Boolean)));
 		}
 		if (A.over) list.push(A.result === "win" ? "pet-victory" : "pet-defeat");
 		return list;
@@ -464,13 +464,13 @@
 		const swapped = A.backup && !B.backup;
 		const revived = A.revived && !B.revived && !swapped;
 		const foeRevived = A.eRevived && !B.eRevived;
-		const foeLine = A.log.find(line => / uses .+ for \d+\./.test(line)) || "";
-		const foeHealLine = A.log.find(line => / mirrors .+ restoring \d+ HP/.test(line)) || "";
+		const foeLine = A.log.find(line => / uses .+ for \d+\.|의 .+ 공격! \d+의 피해를 입었다\./.test(line)) || "";
+		const foeHealLine = A.log.find(line => / mirrors .+ restoring \d+ HP| 스킬 흉내! HP를 \d+ 회복했다!/.test(line)) || "";
 		const foeHealed = A.heals < B.heals;
-		const hit = firstNumber(foeLine, / for (\d+)\./);
-		const healed = action.kind === "heal" ? firstNumber(A.log[0], /(?:recovering|restoring) (\d+) HP/) : 0;
+		const hit = firstNumber(foeLine, /(?: for |공격! )(\d+)(?:\.|의 피해)/);
+		const healed = action.kind === "heal" ? firstNumber(A.log[0], /(?:(?:recovering|restoring) |HP를 )(\d+)/) : 0;
 		const petMid = Math.min(B.maxHp, B.hp + healed);
-		const foeMid = foeRevived ? 0 : foeHealed ? A.ehp - firstNumber(foeHealLine, /restoring (\d+) HP/) : A.ehp;
+		const foeMid = foeRevived ? 0 : foeHealed ? A.ehp - firstNumber(foeHealLine, /(?:restoring |HP를 )(\d+)/) : A.ehp;
 		/* The ending sound plays even when the round is skipped before reaching it. */
 		let ended = false;
 		const ending = () => {
@@ -573,7 +573,7 @@
 				]);
 				t += 480;
 			}
-			const type = moveType((/ uses (.+?) for \d+\./.exec(foeLine) || [])[1]);
+			const type = moveType((/ uses (.+?) for \d+\.|의 (.+?) 공격! \d+의 피해를 입었다\./.exec(foeLine) || []).slice(1).find(Boolean));
 			const left = swapped || revived || A.result === "lose" ? 0 : Math.max(0, petMid - hit);
 			steps.push([t, () => state(foeEl, "attack", 460)]);
 			steps.push([

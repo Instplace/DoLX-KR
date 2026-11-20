@@ -1,7 +1,7 @@
 /* globals pcIsBlinded, sizeSidebarDollCanvases, canBeMPregnant, playerClutchReadyToLay */
 function effectsWater(waterType = "liquid") {
 	const fragment = document.createDocumentFragment();
-
+	const waterTypeText = { water: "물", snow: "눈", slush: "진눈깨비", cum: "정액", liquid: "액체", "warm water": "따뜻한 물" }[waterType] || waterType;
 	const sWikifier = text => {
 		fragment.append(Wikifier.wikifyEval(text + " "));
 	};
@@ -62,30 +62,30 @@ function effectsWater(waterType = "liquid") {
 			V.overupperwetstage = 3;
 			wetIntro = 2;
 			sWikifier(
-				`<span class="lewd">${waterType.toUpperFirst()} soaks through your ${V.worn.over_upper.name}, exposing your ${
+				`<span class="lewd">${waterTypeText}【이가】 ${V.worn.over_upper.name}【을를】 흠뻑 적셔 ${
 					V.worn.upper.type.includes("naked") ? "<<undertop>>" : V.worn.upper.name
-				}.</span>`
+				}【이가】 드러난다.</span>`
 			);
 		} else if (V.overupperwet < 90 && V.overupperwetstage >= 3) {
 			V.overupperwetstage = 2;
 			sWikifier(
-				`<span class="green">Your ${V.worn.over_upper.name} <<overupperhas>> dried, concealing your ${
+				`<span class="green">${V.worn.over_upper.name}【이가】 말라 ${
 					V.worn.upper.type.includes("naked") ? "<<undertop>>" : V.worn.upper.name
-				}. </span>`
+				}【을를】 다시 가린다.</span>`
 			);
 		} else if (V.overupperwet >= 80 && V.overupperwetstage < 2 && wetStageReveals("over_upper", 30)) {
 			V.overupperwetstage = 2;
 			wetIntro = 1;
-			sWikifier(`<span class="purple">Your ${V.worn.over_upper.name} <<overupperplural>> wet.</span>`);
+			sWikifier(`<span class="purple">${V.worn.over_upper.name}【이가】 젖었다.</span>`);
 		} else if (V.overupperwet < 70 && V.overupperwetstage >= 2) {
 			V.overupperwetstage = 1;
-			sWikifier(`<span class="green">Your ${V.worn.over_upper.name} <<overupperplural>> drying out.</span>`);
+			sWikifier(`<span class="green">${V.worn.over_upper.name}【이가】 마르고 있다.</span>`);
 		} else if (V.overupperwet >= 50 && V.overupperwetstage < 1) {
 			V.overupperwetstage = 1;
-			sWikifier(`<span class="blue">Your ${V.worn.over_upper.name} <<overupperplural>> damp.</span>`);
+			sWikifier(`<span class="blue">${V.worn.over_upper.name}【이가】 축축해졌다.</span>`);
 		} else if (V.overupperwet < 40 && V.overupperwetstage >= 1) {
 			V.overupperwetstage = 0;
-			sWikifier(`<span class="green">Your ${V.worn.over_upper.name} <<overupperplural>> dry.</span>`);
+			sWikifier(`<span class="green">${V.worn.over_upper.name}【이가】 말랐다.</span>`);
 		}
 	}
 
@@ -120,30 +120,30 @@ function effectsWater(waterType = "liquid") {
 			V.overlowerwetstage = 3;
 			wetIntro = 2;
 			sWikifier(
-				`<span class="lewd">${waterType.toUpperFirst()} soaks through your ${V.worn.over_lower.name}, exposing your ${
+				`<span class="lewd">${waterTypeText}【이가】 ${V.worn.over_lower.name}【을를】 흠뻑 적셔 ${
 					V.worn.lower.type.includes("naked") ? "<<undies>>" : V.worn.lower.name
-				}.</span>`
+				}【이가】 드러난다.</span>`
 			);
 		} else if (V.overlowerwet < 90 && V.overlowerwetstage >= 3) {
 			V.overlowerwetstage = 2;
 			sWikifier(
-				`<span class="green">Your ${V.worn.over_lower.name} <<overlowerhas>> dried, concealing your ${
+				`<span class="green">${V.worn.over_lower.name}【이가】 말라 ${
 					V.worn.lower.type.includes("naked") ? "<<undies>>" : V.worn.lower.name
-				}. </span>`
+				}【을를】 다시 가린다.</span>`
 			);
 		} else if (V.overlowerwet >= 80 && V.overlowerwetstage < 2 && wetStageReveals("over_lower", 30)) {
 			V.overlowerwetstage = 2;
 			wetIntro = 1;
-			sWikifier(`<span class="purple">Your ${V.worn.over_lower.name} <<overlowerplural>> wet.</span>`);
+			sWikifier(`<span class="purple">${V.worn.over_lower.name}【이가】 젖었다.</span>`);
 		} else if (V.overlowerwet < 70 && V.overlowerwetstage >= 2) {
 			V.overlowerwetstage = 1;
-			sWikifier(`<span class="green">Your ${V.worn.over_lower.name} <<overlowerplural>> drying out.</span>`);
+			sWikifier(`<span class="green">${V.worn.over_lower.name}【이가】 마르고 있다.</span>`);
 		} else if (V.overlowerwet >= 50 && V.overlowerwetstage < 1) {
 			V.overlowerwetstage = 1;
-			sWikifier(`<span class="blue">Your ${V.worn.over_lower.name} <<overlowerplural>> damp.</span>`);
+			sWikifier(`<span class="blue">${V.worn.over_lower.name}【이가】 축축해졌다.</span>`);
 		} else if (V.overlowerwet < 40 && V.overlowerwetstage >= 1) {
 			V.overlowerwetstage = 0;
-			sWikifier(`<span class="green">Your ${V.worn.over_lower.name} <<overlowerplural>> dry.</span>`);
+			sWikifier(`<span class="green">${V.worn.over_lower.name}【이가】 말랐다.</span>`);
 		}
 	}
 
@@ -579,7 +579,7 @@ function effects() {
 		sWikifier("<<waterDragonNestDefaults>>");
 		V.waterDragonNest.discovered = true;
 		sWikifier(
-			'<span class="navy">A strong pull draws your attention towards the sea. You can picture a hidden opening in the coastal cliffs, beyond the white roses. You know how to reach the hidden beach from the coastal path.</span>'
+			'<span class="navy">바다 쪽으로 강한 이끌림이 마음을 사로잡는다. 하얀 장미 너머, 해안 절벽에 숨겨진 틈이 눈앞에 그려진다. 해안 산책로에서 숨겨진 해변으로 가는 길을 알고 있다.</span>'
 		);
 		br();
 	}
@@ -738,9 +738,9 @@ function effects() {
 					case "intrusive_planted":
 						sWikifier(
 							numberOfEarSlime() >= 2
-								? '<span class="lewd">A second voice settles in beside the first. The two of them murmur back and forth about what you should do.</span>'
-								: `<span class="lewd">Something from the trance stays with you: a quiet voice at the back of your mind, suggesting lewd things. It doesn't feel like your own, and it doesn't go away.</span>` +
-										(V.earSlime.corruption ? "" : "<br><i>A corruption bar has appeared in the Characteristics tab.</i>")
+								? '<span class="lewd">첫 번째 목소리 곁에 두 번째 목소리가 자리 잡는다. 둘은 당신이 어떻게 해야 할지를 두고 서로 속삭인다.</span>'
+								: `<span class="lewd">최면의 여운이 가시지 않는다. 머릿속 깊은 곳에서 음란한 일을 권하는 조용한 목소리가 들린다. 그 목소리는 당신의 것 같지 않고, 사라지지도 않는다.</span>` +
+										(V.earSlime.corruption ? "" : "<br><i>특성 탭에 타락 바가 나타났습니다.</i>")
 						);
 						break;
 					case "peace":
@@ -910,11 +910,11 @@ function effects() {
 		if (V.orgasmCrampMessage) {
 			// Numeric messages may still be pending in saves from before skill scaling.
 			if (V.orgasmCrampMessage.severe || V.orgasmCrampMessage >= 20) {
-				sWikifier(`<span class="red">You climaxed far too many times yesterday. Your groin cramps and aches with every step.</span>`);
+				sWikifier(`<span class="red">어제 너무 많이 절정에 올랐다. 걸음을 뗄 때마다 사타구니가 쥐어짜듯 쑤시고 아프다.</span>`);
 				statChange.pain(10);
 				statChange.tiredness(20);
 			} else {
-				sWikifier(`<span class="red">You climaxed too many times yesterday. Your groin feels sore and crampy.</span>`);
+				sWikifier(`<span class="red">어제 너무 자주 절정에 올랐다. 사타구니가 얼얼하고 땅긴다.</span>`);
 				statChange.pain(5);
 				statChange.tiredness(10);
 			}
@@ -1273,20 +1273,20 @@ function effects() {
 		if (V.insanityTraitMessage) {
 			if (V.insanityTraitMessage === "gain") {
 				element("span", "지금껏 견뎌온 모든 것의 무게가 마침내 마음속 무언가를 갈라놓는다. 현실을 붙드는 힘이 느슨해진다. 당신은 ", "red");
-				element("span", '"Insanity"', "red");
-				element("span", "trait.", "red");
+				element("span", '"광기"', "red");
+				element("span", " 특성을 얻었다.", "red");
 			} else if (V.insanityTraitMessage === "gainPermanent") {
 				element(
 					"span",
 					"지금껏 견뎌온 모든 것의 무게가 마침내 마음속 무언가를 산산이 부수고, 이제 마음은 스스로 아물지 못한다. 균열이 남아 있는 동안에는 그윌란의 손길만이 그것을 가라앉힐 수 있다. 당신은 ",
 					"red"
 				);
-				element("span", '"Insanity"', "red");
+				element("span", '"광기"', "red");
 				element("span", " 특성을 영구적으로 얻었다.", "red");
 			} else if (V.insanityTraitMessage === "loss") {
 				element("span", "트라우마의 가장 심한 부분이 가라앉으면서, 마음이 서서히 스스로 다시 이어붙는다. 당신은 ", "lblue");
-				element("span", '"Insanity"', "red");
-				element("span", "trait.", "lblue");
+				element("span", '"광기"', "red");
+				element("span", " 특성을 잃었다.", "lblue");
 			}
 			br();
 			delete V.insanityTraitMessage;
@@ -1608,7 +1608,7 @@ function effects() {
 					case "anus2":
 					case "vagina2":
 						sWikifier(
-							`Your ${event === "anus2" ? "stomach" : "uterus"} rumbles a little. You hope the noise hasn't attracted any attention. <<garousal>>${
+							`${event === "anus2" ? "배가 조금 꾸르륵거린다" : "자궁이 조금 꿈틀거린다"}. 누구에게도 들키지 않았기를 바란다. <<garousal>>${
 								stressMulti ? "<<gstress>>" : ""
 							}`
 						);
@@ -2429,9 +2429,9 @@ function effects() {
 			V.refractoryPeriod = V.player.penisExist ? 5 : 0;
 		}
 
-		sWikifier(`<span class="light-pink">Your body continues to convulse as it releases the tension from your orgasm.</span> <<llarousal>>`);
+		sWikifier(`<span class="light-pink">절정의 긴장이 풀리는 동안에도 몸이 계속 경련한다.</span> <<llarousal>>`);
 		br();
-		sWikifier(`<span class="pink">Your body is extra sensitive due to the current orgasm.</span>`);
+		sWikifier(`<span class="pink">방금 절정에 올라 몸이 유난히 예민하다.</span>`);
 	}
 
 	V.orgasmdown -= 1;
@@ -2456,7 +2456,7 @@ function effects() {
 
 	/* Worth flagging in combat, where not being able to see costs you performance (blindSexMultiplier). */
 	if (V.combat && pcIsBlinded()) {
-		sWikifier(`<span class="purple">You can't see through your ${V.worn.face.name}.</span>`);
+		sWikifier(`<span class="purple">${V.worn.face.name} 때문에 앞이 보이지 않는다.</span>`);
 		br();
 	}
 

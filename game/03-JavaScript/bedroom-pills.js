@@ -526,7 +526,7 @@ setup.pills = [
 			return V.sexStats.pills.pills[this.name].owned;
 		},
 		hpi_doseTaken() {
-			return `${this.doseTaken()}\u00A0taken`;
+			return `${this.doseTaken()}회 복용`;
 		},
 		type: "calmoryl",
 		subtype: "trauma suppressant",
@@ -549,7 +549,7 @@ setup.pills = [
 		get onTakeMessage() {
 			return sleepAidOtcStrongEnough()
 				? "수면제를 삼킨다. 잠시 후 졸음이 오기 시작한다."
-				: "You swallow a sleeping pill. You start to feel tired, but you still cannot relax. <span class='red'>The pill is not strong enough to help you sleep tonight.</span>";
+				: "수면제를 삼킨다. 졸음이 오기 시작하지만 여전히 긴장이 풀리지 않는다. <span class='red'>이 알약으로는 오늘 밤 잠들기에 힘이 부족하다.</span>";
 		},
 		warning_label: "경고: 자기 전에 한 알을 복용하십시오. 두 번째 알은 복용하지 마십시오. 잠에서 깨기 어려워질 수 있습니다.",
 		indicators: ["<span class='hpi_indic_green'>- 불면</span>", "<span class='hpi_indic_blue'>+ 과수면</span>"],
@@ -563,7 +563,7 @@ setup.pills = [
 			return V.sexStats.pills.pills[this.name].owned;
 		},
 		hpi_doseTaken() {
-			return sleepAidPending()?.strength === "otc" ? "Active" : `${this.doseTaken()}\u00A0taken`;
+			return sleepAidPending()?.strength === "otc" ? "효과 지속 중" : `${this.doseTaken()}회 복용`;
 		},
 		type: "sleep",
 		subtype: "otc",
@@ -601,7 +601,7 @@ setup.pills = [
 			return V.sexStats.pills.pills[this.name].owned;
 		},
 		hpi_doseTaken() {
-			return sleepAidPending()?.strength === "prescription" ? "Active" : `${this.doseTaken()}\u00A0taken`;
+			return sleepAidPending()?.strength === "prescription" ? "효과 지속 중" : `${this.doseTaken()}회 복용`;
 		},
 		type: "sleep",
 		subtype: "prescription",

@@ -100,31 +100,31 @@
 		/* A pathogen is playable only when meta.unlocked lists it and `ready` is true. `effects` is applied to the whole run. */
 		pathogens: {
 			bacteria: {
-				name: "Bacteria",
+				name: "세균",
 				line: "균형이 잡혀 있어 두드러진 강점도 약점도 없습니다.",
 				desc: "처음 하기에 권장하는 균주입니다. 표준 규칙대로 진행됩니다.",
 				ready: true,
 				effects: {},
 			},
 			virus: {
-				name: "Virus",
+				name: "바이러스",
 				line: "불안정하며 돌연변이에 특화되어 있습니다.",
 				desc: "퍼지면서 계속 변하는 균주입니다. 세계의 10%, 40%, 75%에 도달하면 스스로 진화해, 선택하지 않은 진화를 공짜로 얻습니다.",
 				ready: true,
 				effects: {},
 				/* Shown on the World screen next to the name. */
-				tag: "Unstable",
+				tag: "불안정",
 				/* Virus: each threshold (share of the world infected or dead) grants one random free evolution among those
 				 * canMutate() allows, weighted by tier. */
 				mutation: { thresholds: [0.1, 0.4, 0.75], tierWeights: { 1: 4, 2: 2, 3: 1 } },
 			},
 			fungus: {
-				name: "Fungus",
+				name: "진균",
 				line: "자연 이동은 약하지만 고유 능력이 있습니다.",
 				desc: "스스로는 지역 사이를 잘 이동하지 못해 경로를 타고 번지는 일이 훨씬 드문 균주입니다. 지역 안에서는 평소대로 자랍니다. 포자 폭발로 아직 닿지 않은 지역에서 감염을 시작할 수 있으며, 한 판에 최대 세 번입니다.",
 				ready: true,
 				effects: { travel: 0.6 },
-				tag: "Sporebound",
+				tag: "포자 결속",
 				/* An active ability (game.ability). `charges` per run; `seed` infected added to the chosen unreached region. */
 				ability: {
 					id: "sporeBurst",
@@ -136,16 +136,16 @@
 				},
 			},
 			parasite: {
-				name: "Parasite",
+				name: "기생충",
 				line: "은밀하며 고유 능력이 있습니다.",
 				desc: "속도를 내주고 은폐를 얻은 균주입니다. 조금 더디게 퍼지는 대신 대응을 덜 끌어내며, 억제 능력으로 그 대응을 일주일간 막을 수 있습니다. 한 판에 두 번입니다.",
 				ready: true,
 				effects: { pressure: 0.9, spread: 0.95 },
-				tag: "Subtle",
+				tag: "은밀",
 				/* `effect` names a timed effect in abilityEffects, started on the run itself. */
 				ability: {
 					id: "suppress",
-					name: "Suppress",
+					name: "억제",
 					usedLabel: "억제 사용 횟수",
 					desc: "발병을 일시적으로 가리고 대응 격상을 늦춥니다.",
 					charges: 2,
@@ -153,12 +153,12 @@
 				},
 			},
 			prion: {
-				name: "Prion",
+				name: "프리온",
 				line: "느리지만 뿌리 깊어 후반에 강합니다.",
 				desc: "처음에는 사람을 더 느리게 감염시키는 균주입니다. 발병이 오래 살아남을수록 없애기 어려워집니다. 고착이 20일, 40일, 60일에 진행되며, 단계마다 치료제 연구가 10%씩 더 느려집니다.",
 				ready: true,
 				effects: { spread: 0.9 },
-				tag: "Entrenched",
+				tag: "고착",
 				/* Prion: level = how many of `days` the current day has reached; each level multiplies cure research by `cure`. */
 				entrenchment: { days: [20, 40, 60], cure: 0.9, names: ["I", "II", "III"] },
 			},
@@ -167,7 +167,7 @@
 		/* Difficulty is an effect object read by modifiers(). Normal is `{}` and must stay neutral. */
 		difficulties: {
 			casual: {
-				name: "Casual",
+				name: "쉬움",
 				line: "게임을 익히거나 느긋하게 즐기기에 알맞습니다.",
 				notes: ["치료제 연구가 느려집니다", "당국의 대응이 늦어집니다"],
 				ready: true,
@@ -176,7 +176,7 @@
 			normal: { name: "보통", line: "표준 게임입니다.", notes: ["치료제와 대응이 온전한 강도로 작동합니다"], ready: true, effects: {} },
 			/* TEMPORARY provisional numbers: Brutal has not been balanced yet. Do not treat them as final. */
 			brutal: {
-				name: "Brutal",
+				name: "가혹",
 				line: "더 가혹한 세계입니다.",
 				notes: ["치료제 연구가 빨라집니다", "당국의 대응이 빨라집니다"],
 				ready: true,
@@ -187,11 +187,11 @@
 		/* One equipped trait per category at most. `effects` may use any generic key plus startingDna and startingInfected,
 		 * which only create() reads. */
 		traitCategories: {
-			spread: { name: "Spread" },
-			concealment: { name: "Concealment" },
-			adaptation: { name: "Adaptation" },
-			resistance: { name: "Resistance" },
-			tempo: { name: "Tempo" },
+			spread: { name: "확산" },
+			concealment: { name: "은폐" },
+			adaptation: { name: "적응" },
+			resistance: { name: "내성" },
+			tempo: { name: "출발" },
 		},
 		traits: {
 			vigorous: { name: "왕성함", category: "spread", starter: true, desc: "모든 지역에서 조금 더 빨리 퍼집니다.", effects: { spread: 1.06 } },
@@ -218,7 +218,7 @@
 				effects: { climates: { cold: 1.15 } },
 			},
 			weatherproof: {
-				name: "Weatherproof",
+				name: "기후 불문",
 				category: "adaptation",
 				starter: true,
 				desc: "습한 지역과 건조한 지역이 덜 장애가 됩니다.",
@@ -232,7 +232,7 @@
 				effects: { resistance: 0.05 },
 			},
 			overburden: {
-				name: "Overburden",
+				name: "의료 과부하",
 				category: "resistance",
 				starter: true,
 				desc: "감염자가 의료 서비스에 도움이 덜 됩니다.",
@@ -338,7 +338,7 @@
 			/* density: local spread multiplier. healthcare: weight in world medical capacity. hub: multiplier on infection leaving
 			 * this region. */
 			town: {
-				name: "Town",
+				name: "마을",
 				icon: "town.png",
 				population: 12000,
 				density: 1.3,
@@ -348,7 +348,7 @@
 				note: "붐비는 거리와 공동 건물",
 			},
 			farmland: {
-				name: "Farmland",
+				name: "농지",
 				icon: "farmlands.png",
 				population: 4000,
 				density: 0.9,
@@ -358,7 +358,7 @@
 				note: "멀리 떨어져 흩어진 농장들",
 			},
 			forest: {
-				name: "Forest",
+				name: "숲",
 				icon: "forest.png",
 				population: 1500,
 				density: 0.5,
@@ -369,7 +369,7 @@
 			},
 			lake: { name: "호수", icon: "lake.png", population: 2500, density: 1, healthcare: 1, climate: "wet", hub: 1, note: "물가에 모여 있는 마을들" },
 			coast: {
-				name: "Coast",
+				name: "해안",
 				icon: "beach.gif",
 				population: 5000,
 				density: 1,
@@ -379,7 +379,7 @@
 				note: "선원들이 꾸준히 드나드는 항구 도시",
 			},
 			north: {
-				name: "North",
+				name: "북부",
 				icon: "moor.png",
 				population: 2000,
 				density: 0.8,
@@ -392,10 +392,10 @@
 
 		/* `density` (optional) multiplies local spread in every region of that climate. */
 		climates: {
-			temperate: { name: "Temperate" },
-			wet: { name: "Wet" },
-			dry: { name: "Dry" },
-			cold: { name: "Cold", density: 0.65 },
+			temperate: { name: "온화한" },
+			wet: { name: "습한" },
+			dry: { name: "건조한" },
+			cold: { name: "추운", density: 0.65 },
 		},
 
 		/* World response. The stage is saved and never falls; pressure is recalculated each day (responsePressure). Stage fields:
@@ -414,10 +414,10 @@
 			timeCap: 40,
 			highHealthcare: 1.5,
 			stages: [
-				{ name: "Unaware", threshold: 0, cure: 0 },
+				{ name: "미인지", threshold: 0, cure: 0 },
 				{ name: "발견", threshold: 15, cure: 0.4, news: "의사들이 발병을 인지하고 조사에 나선다." },
 				{
-					name: "Alert",
+					name: "경계",
 					threshold: 35,
 					cure: 1,
 					localSpread: 0.95,
@@ -426,7 +426,7 @@
 					news: "당국이 발병에 대한 대응을 조직한다.",
 				},
 				{
-					name: "Emergency",
+					name: "비상",
 					threshold: 60,
 					cure: 1.6,
 					localSpread: 0.85,
@@ -437,7 +437,7 @@
 					news: "비상 조치가 발표된다.",
 				},
 				{
-					name: "Lockdown",
+					name: "봉쇄",
 					threshold: 85,
 					cure: 2,
 					localSpread: 0.7,
@@ -452,7 +452,7 @@
 		/* Timed effects created by the response. {region} in start/end is the target's name. */
 		responseEffects: {
 			isolation: {
-				name: "Isolation",
+				name: "격리",
 				duration: 5,
 				effects: { isolate: true },
 				desc: "누구도 드나들 수 없습니다.",
@@ -464,7 +464,7 @@
 		/* Timed effects started by a pathogen ability. Added between days, they first apply on the next day and last `duration` days. */
 		abilityEffects: {
 			suppress: {
-				name: "Suppress",
+				name: "억제",
 				duration: 7,
 				effects: { pressure: 0.6 },
 				desc: "대응 압박이 줄어듭니다.",
@@ -474,8 +474,8 @@
 		},
 
 		routeTypes: {
-			road: { name: "road" },
-			river: { name: "river" },
+			road: { name: "도로" },
+			river: { name: "강" },
 			sea: { name: "해상 항로" },
 			trail: { name: "숲길" },
 		},
@@ -495,34 +495,34 @@
 		/* requires: every id must be owned. requiresAny: at least one must be owned. Order here is display order. */
 		/* Evolve screen sections, in display order. Each upgrade names one in `category`. */
 		upgradeCategories: {
-			transmission: { name: "Transmission" },
-			symptoms: { name: "Symptoms" },
-			resistance: { name: "Resistance" },
+			transmission: { name: "전파" },
+			symptoms: { name: "증상" },
+			resistance: { name: "내성" },
 		},
 
 		/* Branches inside each family, in display order. Each upgrade names one in `branch`; `tier` is its depth (1 first). */
 		upgradeBranches: {
-			respiratory: { name: "Respiratory", category: "transmission" },
-			contact: { name: "Contact", category: "transmission" },
-			water: { name: "Water", category: "transmission" },
-			animal: { name: "Animal", category: "transmission" },
-			travel: { name: "Travel", category: "transmission" },
-			environment: { name: "Environment", category: "transmission" },
-			mild: { name: "Mild", category: "symptoms" },
-			visible: { name: "Visible", category: "symptoms" },
-			severe: { name: "Severe", category: "symptoms" },
-			lethal: { name: "Lethal", category: "symptoms" },
+			respiratory: { name: "호흡기", category: "transmission" },
+			contact: { name: "접촉", category: "transmission" },
+			water: { name: "물", category: "transmission" },
+			animal: { name: "동물", category: "transmission" },
+			travel: { name: "이동", category: "transmission" },
+			environment: { name: "환경", category: "transmission" },
+			mild: { name: "경증", category: "symptoms" },
+			visible: { name: "가시화", category: "symptoms" },
+			severe: { name: "중증", category: "symptoms" },
+			lethal: { name: "치명", category: "symptoms" },
 			cure: { name: "치료 내성", category: "resistance" },
-			concealment: { name: "Concealment", category: "resistance" },
-			adaptation: { name: "Adaptation", category: "resistance" },
-			stability: { name: "Stability", category: "resistance" },
+			concealment: { name: "은폐", category: "resistance" },
+			adaptation: { name: "적응", category: "resistance" },
+			stability: { name: "안정", category: "resistance" },
 		},
 
 		/* `tag` is the short label printed on the evolution tree node; it has no effect on play. */
 		upgrades: {
 			cough: {
-				name: "Coughing",
-				tag: "Air",
+				name: "기침",
+				tag: "공기",
 				category: "transmission",
 				branch: "respiratory",
 				tier: 1,
@@ -531,8 +531,8 @@
 				effects: { infectivity: 1 },
 			},
 			sneeze: {
-				name: "Sneezing",
-				tag: "Air",
+				name: "재채기",
+				tag: "공기",
 				category: "transmission",
 				branch: "respiratory",
 				tier: 2,
@@ -543,7 +543,7 @@
 			},
 			sweat: {
 				name: "열에 젖은 땀",
-				tag: "Crowds",
+				tag: "군중",
 				category: "transmission",
 				branch: "contact",
 				tier: 1,
@@ -553,8 +553,8 @@
 				effects: { infectivity: 1, regions: { town: 1.2 } },
 			},
 			water1: {
-				name: "Waterborne",
-				tag: "Water",
+				name: "수인성",
+				tag: "물",
 				category: "transmission",
 				branch: "water",
 				tier: 1,
@@ -564,7 +564,7 @@
 			},
 			livestock: {
 				name: "가축 매개체",
-				tag: "Farms",
+				tag: "농장",
 				category: "transmission",
 				branch: "animal",
 				tier: 1,
@@ -573,8 +573,8 @@
 				effects: { routes: { road: 1.3 }, regions: { farmland: 1.3 } },
 			},
 			travel: {
-				name: "Hitchhiker",
-				tag: "Travel",
+				name: "무임 편승",
+				tag: "이동",
 				category: "transmission",
 				branch: "travel",
 				tier: 1,
@@ -584,8 +584,8 @@
 				effects: { travel: 1.5 },
 			},
 			nausea: {
-				name: "Nausea",
-				tag: "Mild",
+				name: "메스꺼움",
+				tag: "경증",
 				category: "symptoms",
 				branch: "mild",
 				tier: 1,
@@ -594,8 +594,8 @@
 				effects: { severity: 1 },
 			},
 			delirium: {
-				name: "Delirium",
-				tag: "Mingling",
+				name: "섬망",
+				tag: "어울림",
 				category: "symptoms",
 				branch: "severe",
 				tier: 1,
@@ -606,7 +606,7 @@
 			},
 			organ: {
 				name: "장기 부전",
-				tag: "Deadly",
+				tag: "치명",
 				category: "symptoms",
 				branch: "lethal",
 				tier: 1,
@@ -616,8 +616,8 @@
 				effects: { lethality: 2, severity: 1 },
 			},
 			haemorrhage: {
-				name: "Haemorrhage",
-				tag: "Deadly",
+				name: "출혈",
+				tag: "치명",
 				category: "symptoms",
 				branch: "lethal",
 				tier: 2,
@@ -628,7 +628,7 @@
 			},
 			resist1: {
 				name: "약물 내성",
-				tag: "Cure",
+				tag: "치료",
 				category: "resistance",
 				branch: "cure",
 				tier: 1,
@@ -638,7 +638,7 @@
 			},
 			resist2: {
 				name: "유전자 뒤섞기",
-				tag: "Cure",
+				tag: "치료",
 				category: "resistance",
 				branch: "cure",
 				tier: 2,
@@ -649,7 +649,7 @@
 			},
 			airborne: {
 				name: "공기 전파",
-				tag: "Loud",
+				tag: "요란",
 				category: "transmission",
 				branch: "respiratory",
 				tier: 3,
@@ -661,7 +661,7 @@
 			},
 			silent: {
 				name: "무증상 보균",
-				tag: "Quiet",
+				tag: "조용",
 				category: "transmission",
 				branch: "respiratory",
 				tier: 3,
@@ -673,7 +673,7 @@
 			},
 			crowd: {
 				name: "군중 매개",
-				tag: "Crowds",
+				tag: "군중",
 				category: "transmission",
 				branch: "contact",
 				tier: 2,
@@ -683,8 +683,8 @@
 				effects: { infectivity: 1, regions: { town: 1.6 }, visibility: 5 },
 			},
 			flood: {
-				name: "Floodborne",
-				tag: "Wet",
+				name: "홍수 매개",
+				tag: "습함",
 				category: "transmission",
 				branch: "water",
 				tier: 2,
@@ -695,7 +695,7 @@
 			},
 			bird: {
 				name: "조류 매개",
-				tag: "Remote",
+				tag: "외진 곳",
 				category: "transmission",
 				branch: "animal",
 				tier: 2,
@@ -706,7 +706,7 @@
 			},
 			harbour: {
 				name: "항구 건너뛰기",
-				tag: "Borders",
+				tag: "국경",
 				category: "transmission",
 				branch: "travel",
 				tier: 2,
@@ -717,7 +717,7 @@
 			},
 			coldHardy: {
 				name: "내한성",
-				tag: "Cold",
+				tag: "추위",
 				category: "transmission",
 				branch: "environment",
 				tier: 1,
@@ -727,7 +727,7 @@
 			},
 			droughtHardy: {
 				name: "내건성",
-				tag: "Dry",
+				tag: "건조",
 				category: "transmission",
 				branch: "environment",
 				tier: 1,
@@ -736,8 +736,8 @@
 				effects: { climates: { dry: 1.5, wet: 0.9 } },
 			},
 			paranoia: {
-				name: "Paranoia",
-				tag: "Quiet",
+				name: "편집증",
+				tag: "조용",
 				category: "symptoms",
 				branch: "mild",
 				tier: 2,
@@ -748,7 +748,7 @@
 			},
 			fever: {
 				name: "급성 고열",
-				tag: "Loud",
+				tag: "요란",
 				category: "symptoms",
 				branch: "visible",
 				tier: 1,
@@ -757,8 +757,8 @@
 				effects: { infectivity: 1, severity: 1, visibility: 5 },
 			},
 			frenzy: {
-				name: "Frenzy",
-				tag: "Loud",
+				name: "광란",
+				tag: "요란",
 				category: "symptoms",
 				branch: "severe",
 				tier: 2,
@@ -769,8 +769,8 @@
 				effects: { infectivity: 2, severity: 2, visibility: 10 },
 			},
 			lethargy: {
-				name: "Lethargy",
-				tag: "Quiet",
+				name: "무기력",
+				tag: "조용",
 				category: "symptoms",
 				branch: "severe",
 				tier: 2,
@@ -782,7 +782,7 @@
 			},
 			collapse: {
 				name: "완전 붕괴",
-				tag: "Deadly",
+				tag: "치명",
 				category: "symptoms",
 				branch: "lethal",
 				tier: 3,
@@ -804,7 +804,7 @@
 			},
 			lowSignal: {
 				name: "저신호",
-				tag: "Quiet",
+				tag: "조용",
 				category: "resistance",
 				branch: "concealment",
 				tier: 1,
@@ -813,8 +813,8 @@
 				effects: { visibility: -8, spread: 0.95 },
 			},
 			mimicry: {
-				name: "Mimicry",
-				tag: "Quiet",
+				name: "의태",
+				tag: "조용",
 				category: "resistance",
 				branch: "concealment",
 				tier: 2,
@@ -825,7 +825,7 @@
 			},
 			stable: {
 				name: "안정 유전체",
-				tag: "Cure",
+				tag: "치료",
 				category: "resistance",
 				branch: "stability",
 				tier: 1,

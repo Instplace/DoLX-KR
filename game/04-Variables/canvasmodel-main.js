@@ -1014,7 +1014,7 @@ Renderer.CanvasModels.main = {
 			options.worn.over_head.setup.mask_img === 1
 			&& !(options.hood_down && options.worn.over_head.setup.hood && options.worn.over_head.setup.outfitSecondary !== undefined) && V.tfearshatposition == "under"
 		) {
-			options.headMask.push(`img/clothes/over_head/${options.worn.over_head.setup.variable}/mask.png`);
+			options.headMask.push(`img/clothes/over-head/${options.worn.over_head.setup.variable}/mask.png`);
 		}
 		if (
 			options.worn.head.setup.mask_img === 1

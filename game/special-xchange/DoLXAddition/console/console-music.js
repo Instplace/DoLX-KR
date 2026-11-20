@@ -245,9 +245,9 @@
 			`<div class="console-sfx"><label class="console-sfx-row">효과음 ` +
 			`<input type="range" min="0" max="100" step="5" value="${Math.round(
 				s.volume * 100
-			)}" data-console-sfx="volume" aria-label="Sound effects volume"></label>` +
-			`<label class="console-sfx-row"><input type="checkbox" data-console-sfx="mute"${s.mute ? " checked" : ""}> Mute effects</label>` +
-			(off ? `<span class="console-sfx-note">DoL's audio is switched off in Options, so nothing plays.</span>` : "") +
+			)}" data-console-sfx="volume" aria-label="효과음 음량"></label>` +
+			`<label class="console-sfx-row"><input type="checkbox" data-console-sfx="mute"${s.mute ? " checked" : ""}> 효과음 음소거</label>` +
+			(off ? `<span class="console-sfx-note">옵션에서 DoL 오디오가 꺼져 있어 소리가 나지 않습니다.</span>` : "") +
 			`</div>`
 		);
 	}

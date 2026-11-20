@@ -970,10 +970,10 @@ DefineMacro("pocketStatArrows", function () {
 	const effects = this.args[0];
 	if (!effects || typeof statDisplay !== "object") return;
 	const rows = [
-		["stress", "Stress"],
-		["trauma", "Trauma"],
-		["pain", "Pain"],
-		["tiredness", "Fatigue"],
+		["stress", "스트레스"],
+		["trauma", "트라우마"],
+		["pain", "고통"],
+		["tiredness", "피로도"],
 	];
 	rows.forEach(([key, label]) => {
 		const amount = Number(effects[key]) || 0;

@@ -52,12 +52,12 @@
 	/* label; arcade: Arcade rules (null: taken from the challenge); best: story variable holding the mode's best score;
 	 * zen: the jar never ends the run, fruit over the line are picked off instead. */
 	const modes = Object.freeze({
-		classic: Object.freeze({ label: "Classic", arcade: false, best: "suikaBest" }),
-		arcade: Object.freeze({ label: "Arcade", arcade: true, best: "suikaBestArcade" }),
-		zen: Object.freeze({ label: "Zen", arcade: false, best: null, zen: true }),
-		challenge: Object.freeze({ label: "Challenge", arcade: null, best: null }),
-		daily: Object.freeze({ label: "Daily", arcade: null, best: null }),
-		tutorial: Object.freeze({ label: "Tutorial", arcade: false, best: null }),
+		classic: Object.freeze({ label: "클래식", arcade: false, best: "suikaBest" }),
+		arcade: Object.freeze({ label: "아케이드", arcade: true, best: "suikaBestArcade" }),
+		zen: Object.freeze({ label: "젠", arcade: false, best: null, zen: true }),
+		challenge: Object.freeze({ label: "도전 과제", arcade: null, best: null }),
+		daily: Object.freeze({ label: "일일", arcade: null, best: null }),
+		tutorial: Object.freeze({ label: "튜토리얼", arcade: false, best: null }),
 	});
 	const freeModes = Object.freeze(["classic", "arcade", "zen"]);
 
@@ -81,17 +81,17 @@
 	 * HUD swatch), `light`/`shade` the two ends of its shading, `rim` its outline. */
 	const fruits = Object.freeze(
 		[
-			{ name: "Cherry", radius: 11, points: 0, color: "#e3263f", light: "#ff8a8f", shade: "#a8102a", rim: "#6e0a1a" },
-			{ name: "Strawberry", radius: 15, points: 1, color: "#f0404c", light: "#ff9a96", shade: "#c21d2e", rim: "#7e1420" },
-			{ name: "Grape", radius: 20, points: 3, color: "#8e4fd0", light: "#c79bf2", shade: "#5f2c9c", rim: "#3d1a66" },
-			{ name: "Dekopon", radius: 24, points: 6, color: "#f9a825", light: "#ffd77a", shade: "#e07e0c", rim: "#8a4f06" },
-			{ name: "Persimmon", radius: 30, points: 10, color: "#f2711c", light: "#ffb36b", shade: "#cf4f0c", rim: "#7f2f05" },
-			{ name: "Apple", radius: 36, points: 15, color: "#e3302c", light: "#ff8c7a", shade: "#b5161a", rim: "#6f0c0e" },
-			{ name: "Pear", radius: 42, points: 21, color: "#e3e35a", light: "#fbfba8", shade: "#b9c23a", rim: "#6f7418" },
-			{ name: "Peach", radius: 49, points: 28, color: "#fba9a2", light: "#ffe3c9", shade: "#ee7f8a", rim: "#b04e5c" },
-			{ name: "Pineapple", radius: 56, points: 36, color: "#f6d23c", light: "#fff09a", shade: "#e0a81c", rim: "#8a6408" },
-			{ name: "Melon", radius: 65, points: 45, color: "#a6db6a", light: "#e2f7b8", shade: "#6fb23e", rim: "#3f7420" },
-			{ name: "Watermelon", radius: 76, points: 55, color: "#3fa046", light: "#86d17c", shade: "#257a2f", rim: "#124a1a" },
+			{ name: "체리", radius: 11, points: 0, color: "#e3263f", light: "#ff8a8f", shade: "#a8102a", rim: "#6e0a1a" },
+			{ name: "딸기", radius: 15, points: 1, color: "#f0404c", light: "#ff9a96", shade: "#c21d2e", rim: "#7e1420" },
+			{ name: "포도", radius: 20, points: 3, color: "#8e4fd0", light: "#c79bf2", shade: "#5f2c9c", rim: "#3d1a66" },
+			{ name: "데코폰", radius: 24, points: 6, color: "#f9a825", light: "#ffd77a", shade: "#e07e0c", rim: "#8a4f06" },
+			{ name: "감", radius: 30, points: 10, color: "#f2711c", light: "#ffb36b", shade: "#cf4f0c", rim: "#7f2f05" },
+			{ name: "사과", radius: 36, points: 15, color: "#e3302c", light: "#ff8c7a", shade: "#b5161a", rim: "#6f0c0e" },
+			{ name: "배", radius: 42, points: 21, color: "#e3e35a", light: "#fbfba8", shade: "#b9c23a", rim: "#6f7418" },
+			{ name: "복숭아", radius: 49, points: 28, color: "#fba9a2", light: "#ffe3c9", shade: "#ee7f8a", rim: "#b04e5c" },
+			{ name: "파인애플", radius: 56, points: 36, color: "#f6d23c", light: "#fff09a", shade: "#e0a81c", rim: "#8a6408" },
+			{ name: "멜론", radius: 65, points: 45, color: "#a6db6a", light: "#e2f7b8", shade: "#6fb23e", rim: "#3f7420" },
+			{ name: "수박", radius: 76, points: 55, color: "#3fa046", light: "#86d17c", shade: "#257a2f", rim: "#124a1a" },
 		].map(f => Object.freeze(f))
 	);
 	const lastTier = fruits.length - 1;
@@ -585,7 +585,7 @@
 	 * a charge is spent. The shared checks (rules, pause, game over, charges, another ability busy) live in canUse(). */
 	const abilities = Object.freeze({
 		shake: Object.freeze({
-			label: "Shake",
+			label: "흔들기",
 			desc: "병 흔들기",
 			help: "흔들기: 과일끼리 부딪히도록 병을 흔듭니다. 위험합니다. 과일이 선 위로 튀어 오를 수 있습니다.",
 			icon: '<path d="M9 3h6M10 3v3L7 10v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-9l-3-4V3"/><path d="M3 9v6M21 9v6"/>',
@@ -601,7 +601,7 @@
 			},
 		}),
 		shuffle: Object.freeze({
-			label: "Shuffle",
+			label: "섞기",
 			desc: "이 과일 다시 뽑기",
 			help: "셔플: 들고 있는 과일을 다른 작은 과일로 바꿉니다.",
 			icon: '<rect x="4" y="4" width="16" height="16" rx="3"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/><circle cx="15" cy="9" r="1.2" fill="currentColor"/><circle cx="9" cy="15" r="1.2" fill="currentColor"/><circle cx="15" cy="15" r="1.2" fill="currentColor"/>',
@@ -612,7 +612,7 @@
 			},
 		}),
 		wand: Object.freeze({
-			label: "Wand",
+			label: "마법 지팡이",
 			desc: "과일 제거",
 			help: "마법 지팡이: 병 안의 가장 작은 과일 다섯 개 중 하나를 골라 없앱니다. 점수는 없습니다.",
 			icon: '<path d="M4 20L14 10"/><path d="M17 3l1 2.3 2.4.4-1.8 1.6.5 2.4L17 8.5l-2.1 1.2.5-2.4-1.8-1.6 2.4-.4z"/>',
@@ -625,7 +625,7 @@
 			},
 		}),
 		swap: Object.freeze({
-			label: "Swap",
+			label: "교체",
 			desc: "다음 과일과 교환",
 			help: "교환: 들고 있는 과일과 다음 과일을 바꿉니다.",
 			icon: '<path d="M4 8h15l-4-4"/><path d="M20 16H5l4 4"/>',
@@ -642,7 +642,7 @@
 	const tutorialSteps = Object.freeze([
 		{ title: "조준과 떨어뜨리기", text: "위쪽을 따라 움직여 조준한 뒤, 탭하거나 클릭하거나 스페이스 키를 눌러 떨어뜨리십시오.", drops: [[400, 0, 90]] },
 		{
-			title: "Merge",
+			title: "합치기",
 			text: "같은 과일 두 개가 합쳐져 한 단계 위의 과일이 됩니다. 큰 과일일수록 점수가 높습니다.",
 			drops: [
 				[300, 0, 92],
@@ -651,7 +651,7 @@
 		},
 		{ title: "빨간 선", text: "과일 더미가 2.5초 동안 빨간 선 위에 있으면 플레이가 끝납니다. 더미가 선에 가까워지면 주황색으로 변합니다.", drops: [] },
 		{
-			title: "Modes",
+			title: "모드",
 			text: "클래식은 기본 게임입니다. 아케이드는 파워업과 콤보 점수가 더해지고, 젠은 끝나지 않습니다. 도전 과제, 기록, 설정은 메뉴에 있습니다.",
 			drops: [],
 		},
@@ -1146,7 +1146,7 @@
 			this.removals.push(body);
 			this.wand = null;
 			this.spawnSparkle(body.position.x, body.position.y, body.plugin.suika.tier);
-			this.announce(`Removed a ${fruits[body.plugin.suika.tier].name}.`);
+			this.announce(`제거한 과일: ${fruits[body.plugin.suika.tier].name}.`);
 			this.spend("wand");
 			this.startChain("wand");
 			this.updateHud();
@@ -1232,7 +1232,7 @@
 				text = r.text;
 				fraction = r.fraction;
 			} else {
-				name = "Zen";
+				name = "젠";
 				text = "게임 오버 없음. 선 위에 남은 과일은 골라냅니다.";
 			}
 			const sig = name + text + Math.round(fraction * 100);
@@ -1256,9 +1256,9 @@
 				this.keys.left = this.keys.right = false;
 				this.aiming = false;
 				this.showOverlay(
-					"Paused",
+					"일시정지",
 					"과일은 돌아올 때까지 그 자리에 있습니다.",
-					{ label: "Resume", run: () => this.setPaused(false) },
+					{ label: "이어하기", run: () => this.setPaused(false) },
 					this.menuAction()
 				);
 			} else {
@@ -1266,14 +1266,14 @@
 				this.startLoop();
 			}
 			sound().setPaused(paused);
-			this.el.pauseBtn.textContent = paused ? "Resume" : "Pause";
+			this.el.pauseBtn.textContent = paused ? "이어하기" : "일시정지";
 			/* The loop that normally refreshes the toolbar is stopped while paused. */
 			this.syncAbilities(true);
 			this.render();
 		}
 
 		menuAction() {
-			return { label: "Menu", run: () => setup.suikaUI.open(this, "menu") };
+			return { label: "메뉴", run: () => setup.suikaUI.open(this, "menu") };
 		}
 
 		bestKey() {
@@ -1318,7 +1318,7 @@
 			else if (reason === "full") title = "병이 가득 찼습니다";
 			const why = reason === "full" ? "병이 담을 수 있는 만큼 과일이 찼습니다." : reason === "overflow" ? "과일 더미가 선 위에 머물렀습니다." : "";
 			if (c) {
-				text = `${why ? why + " " : ""}${content().describe(c)} Score ${this.score}.`;
+				text = `${why ? why + " " : ""}${content().describe(c)} 점수 ${this.score}.`;
 				if (this.mode === "daily") {
 					text += ` 오늘의 최고 ${progress().dailyDay(c.date)?.best || this.score}점.`;
 					if (result.paid) text += ` 받은 보상: ${formatMoney(result.paid)}.`;
@@ -1329,11 +1329,11 @@
 			}
 			const extra = [
 				`가장 큰 과일: ${this.runInfo.largest >= 0 ? fruits[this.runInfo.largest].name : "없음"}`,
-				`Drops: ${this.drops}`,
+				`낙하: ${this.drops}`,
 				`최고 연쇄: ${this.runInfo.maxChain}`,
 			];
 			if (this.rulesArcade) extra.push(`콤보 점수: ${this.comboBonus}`);
-			if (this.newAchievements.length) extra.push(`Achievements: ${this.newAchievements.map(a => a.name).join(", ")}`);
+			if (this.newAchievements.length) extra.push(`업적: ${this.newAchievements.map(a => a.name).join(", ")}`);
 			const again = c ? (this.mode === "daily" ? "다시 도전" : "재도전") : "다시 플레이";
 			this.showOverlay(title, text, { label: again, run: () => this.restartSame() }, this.menuAction(), extra);
 			this.announce(`${title}. ${text}`, true);
@@ -1465,15 +1465,15 @@
 			const mode = modes[run.mode];
 			const what =
 				run.mode === "challenge"
-					? content().challenges.find(c => c.id === run.challenge)?.name || "Challenge"
+					? content().challenges.find(c => c.id === run.challenge)?.name || "도전 과제"
 					: run.mode === "daily"
 					? `일일 도전 과제 ${run.daily}`
 					: mode
 					? mode.label
-					: "Unknown";
-			const text = `${what} run, score ${Number(run.score) || 0}, ${Number(run.drops) || 0} ${
-				Number(run.drops) === 1 ? "drop" : "drops"
-			}. Resume it, or discard it to start fresh.`;
+					: "알 수 없음";
+			const text = `${what} 플레이, 점수 ${Number(run.score) || 0}, 낙하 ${Number(run.drops) || 0}${
+				Number(run.drops) === 1 ? "" : ""
+			}번. 이어서 하거나, 삭제하고 새로 시작하십시오.`;
 			this.showOverlay(
 				"저장된 플레이",
 				text,
@@ -1554,14 +1554,14 @@
 
 		onAchievement(a) {
 			this.newAchievements.push(a);
-			this.toast(`Achievement: ${a.name}`);
+			this.toast(`업적 달성: ${a.name}`);
 			sound().play("achievement");
 		}
 
 		/* DoL shows its own feat banner; the toast says why it appeared. */
 		onFeat(name) {
-			this.toast(`모든 성과를 해금했습니다. 업적 획득: ${name}`);
-			this.announce(`업적 획득: ${name}`, true);
+			this.toast(`모든 업적을 해금했습니다. 업적 획득: ${setup.feats?.[name]?.title || name}`);
+			this.announce(`업적 획득: ${setup.feats?.[name]?.title || name}`, true);
 		}
 
 		pushFx(fx) {
@@ -1680,20 +1680,20 @@
 			this.el.score.textContent = String(this.score);
 			const key = this.bestKey();
 			if (key) {
-				this.el.bestLabel.textContent = "Best";
+				this.el.bestLabel.textContent = "최고";
 				this.el.best.textContent = String(Math.max(V[key] || 0, this.score));
 			} else if (this.challenge) {
 				const limit = this.dropLimit();
-				this.el.bestLabel.textContent = "Drops";
+				this.el.bestLabel.textContent = "낙하";
 				this.el.best.textContent = limit ? `${this.drops}/${limit}` : String(this.drops);
 			} else {
-				this.el.bestLabel.textContent = "Merges";
+				this.el.bestLabel.textContent = "합치기";
 				this.el.best.textContent = String(this.mergeCount);
 			}
 			this.el.nextName.textContent = fruits[this.nextTier].name;
 			this.drawNext();
 			this.el.pauseBtn.disabled = this.over || this.idle;
-			this.el.pauseBtn.textContent = this.paused && !this.idle ? "Resume" : "Pause";
+			this.el.pauseBtn.textContent = this.paused && !this.idle ? "이어하기" : "일시정지";
 			const free = freeModes.includes(this.mode);
 			for (const btn of this.el.modes.querySelectorAll(".suika-mode")) {
 				btn.setAttribute("aria-pressed", String(free && btn.dataset.mode === this.mode));
@@ -1711,7 +1711,7 @@
 				btn.type = "button";
 				btn.className = "suika-ability";
 				btn.dataset.ability = id;
-				btn.title = `${a.help} Key: ${abilityIds.indexOf(id) + 1}.`;
+				btn.title = `${a.help} 단축키: ${abilityIds.indexOf(id) + 1}.`;
 				btn.innerHTML =
 					`<svg class="suika-ability-icon" viewBox="0 0 24 24" aria-hidden="true">${a.icon}</svg>` +
 					'<span class="suika-ability-text"><span><span class="suika-ability-name"></span> <span class="suika-ability-count"></span></span>' +
@@ -1742,9 +1742,9 @@
 				const b = this.abilityBtns[id];
 				const picking = id === "wand" && !!this.wand;
 				b.btn.disabled = !(picking || this.canUse(id));
-				b.name.textContent = picking ? "Cancel" : abilities[id].label;
+				b.name.textContent = picking ? "취소" : abilities[id].label;
 				b.count.textContent = `(${this.uses[id]})`;
-				b.btn.setAttribute("aria-label", `${picking ? "Cancel Magic Wand" : abilities[id].label}, ${this.uses[id]} left. ${abilities[id].help}`);
+				b.btn.setAttribute("aria-label", `${picking ? "마법 지팡이 취소" : abilities[id].label}, ${this.uses[id]}회 남음. ${abilities[id].help}`);
 				if (id === "wand") b.btn.setAttribute("aria-pressed", String(picking));
 			}
 		}
@@ -1878,8 +1878,8 @@
 				const x = Math.max(60, Math.min(w - 60, combo.x));
 				const y = Math.max(dangerY + 22, combo.y - 34);
 				const size = Math.min(24, 14 + 2 * combo.n);
-				this.label(ctx, combo.bonus ? `Combo x${combo.n}!` : `Chain x${combo.n}`, x, y, size, th.accent, alpha);
-				if (combo.bonus) this.label(ctx, `+${combo.bonus} bonus`, x, y + size * 0.9, 12, th.ink, alpha);
+				this.label(ctx, combo.bonus ? `콤보 x${combo.n}!` : `연쇄 x${combo.n}`, x, y, size, th.accent, alpha);
+				if (combo.bonus) this.label(ctx, `보너스 +${combo.bonus}`, x, y + size * 0.9, 12, th.ink, alpha);
 			}
 			if (this.note && this.time - this.note.at < 1500) this.label(ctx, this.note.text, w / 2, config.dropY + 26, 13, th.ink, 1);
 			if (wobble) ctx.setTransform(s, 0, 0, s, 0, 0);

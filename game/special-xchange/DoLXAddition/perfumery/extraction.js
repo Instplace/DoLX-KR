@@ -433,7 +433,7 @@
 		["yield", "아로마 더 모으기", "계량을 두 개 더 모으지만, 각 계량의 향은 더 부드러워집니다."],
 	];
 	const word = (n, steps) => steps.find(([limit]) => n < limit)?.[1] ?? steps[steps.length - 1][1];
-	const cap = s => s[0].toUpperCase() + s.slice(1);
+	const cap = s => s[0].toUpperCase() + s.slice(1); const facetKr = { petal: "꽃잎", leaf: "푸른 잎", pollen: "꽃가루", peel: "껍질", juice: "과즙", jam: "잼", butter: "버터", crumb: "부스러기", caramel: "캐러멜", cocoa: "코코아", spice: "향신료", root: "뿌리", umami: "감칠맛", sharp: "날카로움", ferment: "발효", toast: "토스트" }; const famKr = new Proxy({}, { get: (_, k) => setup.perfumeryIdentity?.famKr?.[k] }); const facetName = n => facetKr[n] || cap(n);
 	function mount(parent, signal, changed, options = {}) {
 		const api = setup.perfumery;
 		const engine = setup.perfumeryExtraction;
@@ -512,9 +512,9 @@
 			}
 			if (pages > 1) {
 				const nav = el("div", undefined, pick, "perf-pager");
-				button("Previous", "page", nav, "-1").disabled = page === 0;
-				el("span", `${page + 1} of ${pages}`, nav);
-				button("Next", "page", nav, "1").disabled = page >= pages - 1;
+				button("이전", "page", nav, "-1").disabled = page === 0;
+				el("span", `${page + 1} / ${pages}`, nav);
+				button("다음", "page", nav, "1").disabled = page >= pages - 1;
 			}
 		}
 
@@ -525,12 +525,12 @@
 				const n = Math.round((now[f] || 0) * 100);
 				const was = Math.round((before[f] || 0) * 100);
 				const li = el("li", undefined, rows);
-				el("span", cap(f), li);
+				el("span", famKr[f] || cap(f), li);
 				const bar = el("span", undefined, li, "perf-bar");
 				bar.setAttribute("aria-hidden", "true");
 				el("i", undefined, bar).style.width = `${n}%`;
 				el("b", undefined, bar).style.left = `${was}%`;
-				el("small", n === was ? `${n}%` : `${n}% (was ${was}%)`, li);
+				el("small", n === was ? `${n}%` : `${n}% (이전 ${was}%)`, li);
 			}
 		}
 
@@ -552,10 +552,10 @@
 				const b = button("", "fragment", grid, String(i), "perf-facet");
 				b.setAttribute("aria-pressed", String(kept));
 				b.disabled = !!result;
-				el("strong", cap(f.name), b);
-				el("span", facetWords[f.name] || f.family, b);
-				el("b", kept ? "Keeping" : "Removed", b, "perf-facet-state");
-				el("small", `${f.unpleasant ? "거침 · " : ""}이웃: ${f.neighbours.map(j => parts[j].name).join(", ")}`, b);
+				el("strong", facetName(f.name), b);
+				el("span", facetWords[f.name] || famKr[f.family] || f.family, b);
+				el("b", kept ? "남김" : "제외", b, "perf-facet-state");
+				el("small", `${f.unpleasant ? "거침 · " : ""}이웃: ${f.neighbours.map(j => facetName(parts[j].name)).join(", ")}`, b);
 			});
 			const live = el("p", feedback, facets, "perf-facet-detail");
 			live.setAttribute("aria-live", "polite");
@@ -618,7 +618,7 @@
 			);
 			fact("가장 어울리는 노트", `이 아로마는 ${({ top: "오프닝", heart: "하트", base: "베이스" })[p.affinity] || p.affinity} 노트에 가장 어울리지만, 어느 노트에든 넣을 수 있습니다.`);
 			fact(
-				"Clarity",
+				"선명도",
 				word(p.purity, [
 					[0.55, "흐릿함: 성분을 구별하기 어렵습니다."],
 					[0.75, "꽤 선명함: 주된 성분을 가려낼 수 있습니다."],
@@ -626,7 +626,7 @@
 				])
 			);
 			fact(
-				"Stability",
+				"안정성",
 				word(p.stability, [
 					[0.5, "오래 숙성하면 이 아로마에서 불쾌한 냄새가 날 가능성이 높습니다."],
 					[0.7, "향수가 숙성되는 동안 이 아로마는 보통 정도로 변합니다."],
@@ -640,18 +640,18 @@
 			adv.open = options.advanced || method !== "balanced" || finish !== "stability";
 			el("summary", "방식과 마감 (선택)", adv);
 			const fs1 = el("fieldset", undefined, adv, "perf-options");
-			el("legend", "Method", fs1);
+			el("legend", "방식", fs1);
 			for (const id of catalogue[source].methods) {
 				const lab = el("label", undefined, fs1, "perf-option");
 				const r = el("input", undefined, lab);
 				Object.assign(r, { type: "radio", name: "perf-ex-method", value: id, checked: method === id });
 				r.dataset.exField = "method";
 				const body = el("span", undefined, lab);
-				el("strong", `${engine.methods[id].name} (${engine.methods[id].minutes} min)`, body);
+				el("strong", `${engine.methods[id].name} (${engine.methods[id].minutes}분)`, body);
 				el("small", methodHelp[id], body);
 			}
 			const fs2 = el("fieldset", undefined, adv, "perf-options");
-			el("legend", "Finish", fs2);
+			el("legend", "마감", fs2);
 			for (const [id, label, help] of finishHelp) {
 				const lab = el("label", undefined, fs2, "perf-option");
 				const r = el("input", undefined, lab);
@@ -668,20 +668,20 @@
 		function renderBook() {
 			entries.replaceChildren();
 			if (!book.open) return;
-			el("p", `Practice ${e.practice}/100. Make a saved recipe twice to unlock Quick extraction.`, entries);
+			el("p", `추출 연습 ${e.practice}/100. 저장한 레시피를 두 번 만들면 빠른 추출을 쓸 수 있습니다.`, entries);
 			if (!e.profiles.length && !Object.keys(e.stock).length) el("p", "아직 저장한 것이 없습니다.", entries);
 			for (const profile of e.profiles) {
 				const p = engine.profile(profile.key);
 				const row = el("div", undefined, entries, "perf-book-row");
-				el("p", `${profile.name}: ${p.selected.join(", ")}. Made ${profile.runs} ${profile.runs === 1 ? "time" : "times"}.`, row);
+				el("p", `${profile.name}: ${p.selected.map(facetName).join(", ")}. ${profile.runs}번 만들었습니다.`, row);
 				const actions = el("div", undefined, row, "perf-steps");
 				button("다시 설정", "repeat", actions, profile.key);
 				if (profile.runs >= 2) button("빠른 추출", "quick", actions, profile.key).disabled = !!result;
-				button("Forget", "forget", actions, profile.key);
+				button("지우기", "forget", actions, profile.key);
 			}
 			for (const [key, amount] of Object.entries(e.stock)) {
 				const row = el("div", undefined, entries, "perf-book-row");
-				el("span", `${m.name(key)}: ${amount} ${amount === 1 ? "measure" : "measures"}. `, row);
+				el("span", `${m.name(key)}: ${amount}계량. `, row);
 				button("쏟아 버리기", "discard", row, key);
 			}
 		}
@@ -704,13 +704,13 @@
 			const f = parts[i];
 			const kept = !!(mask & (1 << i));
 			const near = f.neighbours.filter(j => mask & (1 << j)).map(j => parts[j]);
-			const clash = near.filter(n => m.compatibility(f.family, n.family) < 0.5).map(n => n.name);
-			const support = near.filter(n => m.compatibility(f.family, n.family) >= 0.5).map(n => n.name);
+			const clash = near.filter(n => m.compatibility(f.family, n.family) < 0.5).map(n => facetName(n.name));
+			const support = near.filter(n => m.compatibility(f.family, n.family) >= 0.5).map(n => facetName(n.name));
 			feedback = kept
-				? `남긴 성분: ${f.name}.${support.length ? ` ${support.join(" 및 ")}에 힘이 됩니다.` : ""}${
+				? `남긴 성분: ${facetName(f.name)}.${support.length ? ` ${support.join(" 및 ")}에 힘이 됩니다.` : ""}${
 						clash.length ? ` 부딪치는 성분: ${clash.join(" 및 ")}. 결과가 덜 선명해집니다.` : ""
 				  }`
-				: `뺀 성분: ${f.name}.${support.length ? ` ${cap(support.join(" 및 "))} 쪽 뒷받침이${support.length > 1 ? "" : ""} 조금 줄어듭니다.` : ""}${
+				: `뺀 성분: ${facetName(f.name)}.${support.length ? ` ${cap(support.join(" 및 "))} 쪽 뒷받침이${support.length > 1 ? "" : ""} 조금 줄어듭니다.` : ""}${
 						clash.length ? ` ${cap(clash.join(" 및 "))} 쪽과 더는 부딪치지 않아${clash.length > 1 ? "" : ""} 나머지가 더 선명해집니다.` : ""
 				  }`;
 		}

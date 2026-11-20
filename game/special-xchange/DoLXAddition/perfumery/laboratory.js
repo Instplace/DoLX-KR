@@ -736,7 +736,7 @@
 		const cost = M().validate(f);
 		const blending = Math.max(0.45, Math.min(0.95, 0.55 + Math.max(0.4, o.blend) * 0.4 - o.fixed * 0.08));
 		const b = P().bottleRecord(f, blending, s.serial + 1);
-		b.name = "Opium";
+		b.name = "아편";
 		b.opium = true;
 		if (o.ownBottle && s.containers >= 1) s.containers--;
 		else o.ownBottle = false;
@@ -758,11 +758,11 @@
 		handler() {
 			const wrap = $("<div class='perfumery perf-timing'>").appendTo(this.output);
 			const meter = $(
-				"<div class='perf-meter' aria-hidden='true'><div class='perf-zone' style='left:40%;width:20%'>STOP</div><div class='perf-needle'></div></div>"
+				"<div class='perf-meter' aria-hidden='true'><div class='perf-zone' style='left:40%;width:20%'>멈춤</div><div class='perf-needle'></div></div>"
 			).appendTo(wrap);
 			const needle = meter.find(".perf-needle");
-			const button = $("<button class='perf-button perf-primary perf-blend-go' type='button'>Start blending</button>").appendTo(wrap);
-			const feedback = $("<p class='perf-timing-feedback' role='status'>Press Start, then Stop when the light marker crosses the gold band.</p>").appendTo(
+			const button = $("<button class='perf-button perf-primary perf-blend-go' type='button'>블렌딩 시작</button>").appendTo(wrap);
+			const feedback = $("<p class='perf-timing-feedback' role='status'>블렌딩 시작을 누르고, 빛 표시가 금색 구역을 지날 때 멈춤을 누르십시오.</p>").appendTo(
 				wrap
 			);
 			let frame = 0;
@@ -780,14 +780,14 @@
 				if (!frame) {
 					start = performance.now();
 					wrap.addClass("perf-blending");
-					button.text("Stop");
+					button.text("멈춤");
 					feedback.text("표시를 지켜보십시오. 다시 지나갈 때까지 기다려도 됩니다.");
 					frame = requestAnimationFrame(step);
 					return;
 				}
 				cancelAnimationFrame(frame);
 				wrap.removeClass("perf-blending");
-				button.text("Blended").prop("disabled", true);
+				button.text("블렌딩 끝").prop("disabled", true);
 				feedback.text("블렌딩이 끝났습니다. 아래에서 계속해 향수를 병에 담으십시오.");
 				setup.perfumeryOpium.blend(1 - Math.min(1, Math.abs(pos - 50) / 50));
 				$("#poppy-opium-next").removeAttr("hidden");

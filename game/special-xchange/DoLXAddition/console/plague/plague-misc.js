@@ -10,7 +10,7 @@
 
 	const challenges = Object.freeze(
 		[
-			{ id: "foothold", name: "Foothold", diff: "easy", setup: { difficulty: "casual" }, goal: { type: "reach", n: 3, by: 30 } },
+			{ id: "foothold", name: "발판", diff: "easy", setup: { difficulty: "casual" }, goal: { type: "reach", n: 3, by: 30 } },
 			{ id: "harbour-fever", name: "항구 열병", diff: "easy", setup: { difficulty: "casual", origin: "coast" }, goal: { type: "reach", n: 4, by: 40 } },
 			{ id: "quiet-quarter", name: "조용한 구역", diff: "easy", setup: { difficulty: "casual" }, goal: { type: "share", n: 0.25, by: 66 } },
 			{ id: "cold-start", name: "한랭 출발", diff: "medium", setup: { difficulty: "normal", origin: "north" }, goal: { type: "reach", n: 6, by: 58 } },
@@ -19,13 +19,13 @@
 			{ id: "lean-genome", name: "간소한 유전체", diff: "medium", setup: { difficulty: "casual" }, goal: { type: "win" }, rules: { dnaCap: 24 } },
 			{
 				id: "lockdown",
-				name: "Lockdown",
+				name: "봉쇄",
 				diff: "hard",
 				setup: { difficulty: "normal", stage: 2, events: ["travelBan"] },
 				goal: { type: "reach", n: 6, by: 50 },
 			},
 			{ id: "race-the-cure", name: "치료제와의 경주", diff: "hard", setup: { difficulty: "normal" }, goal: { type: "win" }, rules: { cureBelow: 60 } },
-			{ id: "blitz", name: "Blitz", diff: "hard", setup: { difficulty: "normal" }, goal: { type: "win", by: 92 } },
+			{ id: "blitz", name: "속전속결", diff: "hard", setup: { difficulty: "normal" }, goal: { type: "win", by: 92 } },
 		].map(c => Object.freeze(c))
 	);
 	const byId = id => challenges.find(c => c.id === id) || null;
@@ -242,7 +242,7 @@
 						ch.feat ? `. 모든 도전 완료: 업적 획득, ${ch.feat}` : ""
 				  }</span>`
 				: ch.state === "failed"
-				? `<span class="red">Failed: ${esc(r.why || "objective missed")}</span>`
+				? `<span class="red">실패: ${esc(r.why || "목표 미달")}</span>`
 				: "진행 중";
 		return (
 			`<div class="con-banner plague-goal" role="status"><div class="con-daily-head"><strong>${esc(
@@ -291,17 +291,17 @@
 				rec && rec.done ? " con-daily--done" : ""
 			}" aria-label="오늘의 시나리오"><div class="con-daily-head"><span class="con-daily-date">오늘의 시나리오, ${c.date} (UTC)</span>${chip(c.diff)}</div>` +
 			`<p class="con-daily-goal">${goalIcon(c)}${esc(describe(c))}</p><dl class="con-facts">` +
-			`<dt>Setup</dt><dd>${esc(describeSetup(c))}</dd><dt>Opening</dt><dd>${esc(c.opening)}</dd>` +
-			`<dt>Reward</dt><dd>${esc(reward)}</dd>` +
-			`<dt>Status</dt><dd>${rec && rec.done ? '<span class="green">Completed</span>' : rec && rec.tries ? "Not completed yet" : "Not tried yet"}</dd>` +
+			`<dt>시작 설정</dt><dd>${esc(describeSetup(c))}</dd><dt>시작 조건</dt><dd>${esc(c.opening)}</dd>` +
+			`<dt>보상</dt><dd>${esc(reward)}</dd>` +
+			`<dt>상태</dt><dd>${rec && rec.done ? '<span class="green">완료</span>' : rec && rec.tries ? "아직 완료하지 못함" : "아직 시도하지 않음"}</dd>` +
 			`<dt>최고 기록</dt><dd>${rec && rec.best !== null && rec.best !== undefined ? `${rec.best}일 만에 완료` : "아직 없음"}${
-				rec && rec.tries ? `, ${rec.tries} ${rec.tries === 1 ? "try" : "tries"}` : ""
+				rec && rec.tries ? `, ${rec.tries}번 시도` : ""
 			}</dd>` +
-			`<dt>Next scenario</dt><dd>in ${daily().untilReset()} (midnight UTC)</dd></dl>` +
-			`${startButton("daily", rec && rec.tries ? "Retry today's scenario" : "Play today's scenario")}</section>`;
+			`<dt>다음 시나리오</dt><dd>${daily().untilReset().replace(/(\d+) h\b/, "$1시간").replace(/(\d+) min\b/, "$1분")} 후 (UTC 자정)</dd></dl>` +
+			`${startButton("daily", rec && rec.tries ? "오늘의 시나리오 다시 도전" : "오늘의 시나리오 시작")}</section>`;
 		h += daily().history(m.daily, c.date, r => `${r.best}일 만에 완료`);
 		const count = challenges.filter(x => done[x.id]).length;
-		h += `<h3 class="con-page-head">Challenges</h3><div class="con-progress"><div class="con-progress-head"><span>Completed</span><span class="con-progress-count">${count} of ${
+		h += `<h3 class="con-page-head">도전 과제</h3><div class="con-progress"><div class="con-progress-head"><span>완료</span><span class="con-progress-count">${count} / ${
 			challenges.length
 		}</span></div><div class="con-bar" role="progressbar" aria-label="완료한 도전" aria-valuemin="0" aria-valuemax="${
 			challenges.length
@@ -309,7 +309,7 @@
 		h += daily().featCard(daily().feats.outbreak, count, challenges.length);
 		for (const level of ["easy", "medium", "hard"]) {
 			const group = challenges.filter(x => x.diff === level);
-			h += `<h4 class="con-group-head"><span>${daily().levelName(level)}</span><span class="con-progress-count">${group.filter(x => done[x.id]).length} of ${
+			h += `<h4 class="con-group-head"><span>${daily().levelName(level)}</span><span class="con-progress-count">${group.filter(x => done[x.id]).length} / ${
 				group.length
 			}</span></h4>`;
 			for (const ch of group) {
@@ -320,11 +320,11 @@
 					`<div class="con-row-main"><span class="con-row-title">${esc(ch.name)}</span>` +
 					`<span class="con-row-desc">${esc(describe(ch))}</span><span class="con-row-meta">${esc(describeSetup(ch))}</span>` +
 					`<span class="con-row-status">${when ? `완료 ${when}` : "미완료"}</span></div>` +
-					`<div class="con-row-action">${startButton(ch.id, when ? "Play again" : "Start")}</div></div>`;
+					`<div class="con-row-action">${startButton(ch.id, when ? "다시 하기" : "시작")}</div></div>`;
 			}
 		}
 		const day = replacing();
-		if (day) h = `<p class="tama-sub">Starting a challenge replaces your day ${day} outbreak; each Start button asks twice.</p>` + h;
+		if (day) h = `<p class="tama-sub">도전을 시작하면 ${day}일째 발병이 대체됩니다. 시작 버튼은 한 번 더 눌러야 시작됩니다.</p>` + h;
 		return h;
 	}
 

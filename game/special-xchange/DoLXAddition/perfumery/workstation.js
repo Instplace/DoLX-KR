@@ -129,7 +129,7 @@
 		filters: { q: "", family: "", affinity: "", kind: "", owned: true, sort: "name" },
 		page: 0,
 	});
-	const layerName = { top: "Opening", heart: "Heart", base: "Base" };
+	const layerName = { top: "오프닝", heart: "하트", base: "베이스" };
 	const layerHint = {
 		top: "오프닝 노트는 가장 먼저 느껴지는 냄새입니다. 향수의 하트가 또렷해지면서 옅어집니다.",
 		heart: "하트 노트는 향수의 중심이 되는 성격을 정합니다. 오프닝이 사라진 뒤에 더 뚜렷해집니다.",
@@ -138,29 +138,29 @@
 	/* Nine tiles: three rows on every width, so the drawer never turns into a long scroll. */
 	const PAGE = 9;
 	const word = (n, steps) => steps.find(([limit]) => n < limit)?.[1] ?? steps[steps.length - 1][1];
-	const plural = (n, one, many = one + "s") => `${n} ${n === 1 ? one : many}`;
-	const clamp01 = n => Math.max(0, Math.min(1, n));
+	const plural = (n, one, many = one) => `${n}${n === 1 ? one : many}`;
+	const clamp01 = n => Math.max(0, Math.min(1, n)); const scent = x => setup.perfumeryIdentity?.scentKr?.[x] || x; const fam = x => setup.perfumeryIdentity?.famKr?.[x] || scent(x);
 	const projectionWord = n =>
 		word(n, [
-			[1, "Subtle"],
-			[1.8, "Noticeable"],
-			[2.4, "Strong"],
+			[1, "은은함"],
+			[1.8, "뚜렷함"],
+			[2.4, "강함"],
 			[Infinity, "매우 강함"],
 		]);
 	const concentrationWord = n =>
 		word(n, [
-			[18, "Light"],
-			[26, "Moderate"],
-			[34, "Strong"],
+			[18, "연함"],
+			[26, "보통"],
+			[34, "진함"],
 			[Infinity, "아주 진함"],
 		]);
 	const scoreWord = n =>
 		word(n, [
-			[40, "Poor"],
-			[60, "Uneven"],
-			[75, "Pleasant"],
-			[88, "Fine"],
-			[Infinity, "Exceptional"],
+			[40, "나쁨"],
+			[60, "고르지 않음"],
+			[75, "괜찮음"],
+			[88, "좋음"],
+			[Infinity, "뛰어남"],
 		]);
 	const qualityAssessment = p => {
 		const balance = word(p.quality, [
@@ -174,12 +174,12 @@
 	};
 	const meterWord = n =>
 		word(n, [
-			[0.2, "Faint"],
-			[0.45, "Some"],
-			[0.7, "Clear"],
-			[Infinity, "Strong"],
+			[0.2, "희미함"],
+			[0.45, "약간"],
+			[0.7, "또렷함"],
+			[Infinity, "강함"],
 		]);
-	const hours = minutes => (minutes < 90 ? `about ${Math.round(minutes / 10) * 10} minutes` : `about ${Math.round(minutes / 30) / 2} hours`);
+	const hours = minutes => (minutes < 90 ? `약 ${Math.round(minutes / 10) * 10}분` : `약 ${Math.round(minutes / 30) / 2}시간`);
 	/* Workflow order. "notes" is the internal id for Compose. */
 	const stages = [
 		["prepare", "준비", "재료의 냄새를 모으고 남길 부분을 고릅니다"],
@@ -190,9 +190,9 @@
 	/* Where the gold band sits on each blending pass. */
 	const zones = [52, 36, 64];
 	const passes = [
-		["Opening", "top"],
-		["Heart", "heart"],
-		["Base", "base"],
+		["오프닝", "top"],
+		["하트", "heart"],
+		["베이스", "base"],
 	];
 	function mount(root) {
 		cleanup();
@@ -252,11 +252,11 @@
 			const title = base[0].toUpperCase() + base.slice(1);
 			if (!id.startsWith("aroma~")) return { title, sub: "표준 아로마", full: title, description: setup.perfumeryExtractionUI.description(id) };
 			const p = setup.perfumeryExtraction.resolve(id);
-			const facets = p.selected.slice(0, 2).join(" and ");
+			const facets = p.selected.slice(0, 2).map(x => setup.perfumeryIdentity?.facetKr?.[x] || x).join(", ");
 			const finish = { stability: "안정화", purity: "정제", yield: "아로마 추가" }[p.finish] || p.finish;
 			return {
 				title,
-				sub: `${facets[0].toUpperCase() + facets.slice(1)} · ${finish}`,
+				sub: `${facets} · ${finish}`,
 				full: m.name(id),
 				description: setup.perfumeryExtractionUI.description(id, p),
 			};
@@ -344,15 +344,15 @@
 			const blendDone = blending !== null && blended === JSON.stringify(d.formula);
 			const lacks = [];
 			if (!n) lacks.push({ text: "향수에 아로마를 하나 이상 넣으십시오.", fix: ["구성", "notes"] });
-			if (n && !cost) lacks.push({ text: validateMessage(), fix: ["Change liquid settings", "liquid"] });
+			if (n && !cost) lacks.push({ text: validateMessage(), fix: ["병 설정 바꾸기", "liquid"] });
 			if (n && cost && !blendDone) lacks.push({ text: "향수를 블렌딩하십시오.", fix: ["블렌딩하기", "blend"] });
 			if (s.containers < 1) lacks.push({ text: "빈 병이 없습니다. 화장품 가게에서 판매합니다." });
 			if (cost && s.solvent[d.formula.solvent] < cost.solvent)
 				lacks.push({
-					text: `This needs ${cost.solvent} ${d.formula.solvent} spirit and you have ${
+					text: `${({ soft: "소프트", clear: "클리어", bright: "브라이트" })[d.formula.solvent] || d.formula.solvent} 스피릿이 ${cost.solvent}단위 필요하지만 ${
 						s.solvent[d.formula.solvent]
-					}. Choose another spirit or buy more at the cosmetics shop.`,
-					fix: ["Choose another spirit", "liquid"],
+					}단위뿐입니다. 다른 스피릿을 고르거나 화장품 가게에서 더 사십시오.`,
+					fix: ["다른 스피릿 고르기", "liquid"],
 				});
 			if (cost)
 				for (const [id, amount] of Object.entries(cost.needed)) {
@@ -360,7 +360,7 @@
 					if (available < amount)
 						lacks.push({
 							text: `${label(id).title} 아로마가 ${amount}단위 필요하지만 ${available}단위뿐입니다.`,
-							fix: ["Prepare more aroma", "prepare"],
+							fix: ["아로마 더 준비하기", "prepare"],
 						});
 				}
 			if (s.bottles.length >= 24) lacks.push({ text: "보관장이 가득 찼습니다(24병). 먼저 보관장에서 하나를 버리십시오." });
@@ -379,7 +379,7 @@
 			const left = stockLeft();
 			const state = {
 				prepare: left ? `${left}단위 준비됨` : "아직 아로마 없음",
-				notes: c.n ? `${plural(c.n, "measure")} added` : "Empty",
+				notes: c.n ? `${plural(c.n, "단위")} 추가됨` : "비어 있음",
 				blend: c.blendDone ? "블렌딩 완료" : c.n ? "블렌딩 전" : "아로마 필요",
 				bottle: result ? "병입 완료" : c.ready ? "준비됨" : "준비 안 됨",
 			};
@@ -400,7 +400,7 @@
 			if (!firstTime || result || d.tab === "blend") return;
 			const lines = poppyHere
 				? {
-						prepare: '"First, choose a flower. You can remove parts of its scent that you don\'t want before collecting the aroma."',
+						prepare: '"먼저 꽃을 하나 골라 봐. 아로마를 모으기 전에 원하지 않는 냄새는 뺄 수 있어."',
 						notes: c.n
 							? '"첫 향수에 쓸 재료는 충분히 넣었어. 이제 블렌딩으로 가 봐."'
 							: '"이제 향수의 중심이 될 냄새를 골라 봐. 하트를 선택하고, 모아 둔 아로마를 눌러서 넣으면 돼."',
@@ -415,7 +415,7 @@
 			if (!lines[d.tab]) return;
 			coach.hidden = false;
 			coach.replaceChildren();
-			el("strong", poppyHere ? "Poppy: " : "Manual: ", coach);
+			el("strong", poppyHere ? "포피: " : "안내: ", coach);
 			coach.append(lines[d.tab]);
 		}
 		function head(panel, id, need) {
@@ -486,7 +486,7 @@
 			svg("path", { d: "M46 103 Q39 131 46 248", fill: "none", stroke: "#fcffe6", "stroke-width": 8, opacity: 0.16, "stroke-linecap": "round" }, g);
 			svg("rect", { x: 60, y: 170, width: 100, height: 46, rx: 3, fill: "#f0e2c2", opacity: 0.9 }, g);
 			const name = svg("text", { x: 110, y: 198, "text-anchor": "middle", "font-size": 11, fill: "#3d493d" }, g);
-			name.textContent = (p?.name || "Untitled").slice(0, 18);
+			name.textContent = (p?.name || "제목 없음").slice(0, 18);
 			art.classList.toggle("perf-shaking", timing.running);
 			const caption = el("div", undefined, box, "perf-stage-caption");
 			el("strong", p ? p.name : c.n ? "준비 안 됨" : "빈 병", caption);
@@ -511,7 +511,7 @@
 			};
 			meter("존재감", p ? p.intensity / 2.6 : 0, p ? (p.intensity < 0.9 ? "은은함" : p.intensity < 1.8 ? "뚜렷함" : "강함") : null);
 			meter("지속 시간", p ? p.duration / 720 : 0, p ? hours(p.duration) : null);
-			meter("Sweetness", p ? p.sweet : 0, p ? (p.sweet < 0.3 ? "Low" : p.sweet < 0.65 ? "Medium" : "High") : null);
+			meter("단맛", p ? p.sweet : 0, p ? (p.sweet < 0.3 ? "낮음" : p.sweet < 0.65 ? "보통" : "높음") : null);
 			meter("동물 호감도", p ? Math.max(0, p.animal) : 0, p ? (p.animal < 0.3 ? "낮음" : p.animal < 0.65 ? "보통" : "높음") : null);
 			const help = el("details", undefined, box, "perf-property-help");
 			el("summary", "이 수치들의 의미", help);
@@ -569,10 +569,10 @@
 			head(
 				panel,
 				"notes",
-				`Choose a note, then select an aroma to add one measure. A measure is one crafting unit of prepared scent; you have ${plural(
+				`노트를 고른 뒤 아로마를 누르면 1단위가 들어갑니다. 1단위는 준비한 향의 제작 단위 하나이며, 지금 쓸 수 있는 양은 ${plural(
 					ready,
-					"measure"
-				)} available. Nothing is used until bottling.`
+					"단위"
+				)}입니다. 병입하기 전에는 아무것도 소모되지 않습니다.`
 			);
 			const bench = el("div", undefined, panel, "perf-workbench");
 			const drawer = el("section", undefined, bench, "perf-drawer");
@@ -585,7 +585,7 @@
 			const chambers = el("section", undefined, bench, "perf-chambers");
 			for (const l of m.layers) chamber(chambers, l, total);
 			const tools = el("div", undefined, panel, "perf-steps");
-			if (d.undo.length) button("Undo", "undo", tools);
+			if (d.undo.length) button("되돌리기", "undo", tools);
 			foot(panel, "prepare", total ? "blend" : null, "블렌딩으로 계속");
 		}
 		function chamber(parent, l, total) {
@@ -594,7 +594,7 @@
 			card.dataset.drop = l;
 			const pick = button("", "layer", card, l, { cls: "perf-chamber-head" });
 			pick.setAttribute("aria-pressed", String(d.layer === l));
-			el("strong", `${layerName[l]} note`, pick);
+			el("strong", `${layerName[l]} 노트`, pick);
 			el("span", d.layer === l ? "여기에 추가 중" : `${count}단위`, pick, "perf-chamber-tag");
 			el("small", layerHint[l], card);
 			const list = el("ul", undefined, card, "perf-chips");
@@ -620,7 +620,7 @@
 					o.value = note;
 				}
 				move.value = l;
-				button("✕", "remove", chip, id, { layer: l, label: `Remove ${info.full}`, cls: "perf-mini" });
+				button("✕", "remove", chip, id, { layer: l, label: `${info.full} 빼기`, cls: "perf-mini" });
 			}
 			const share = el("div", undefined, card, "perf-track");
 			share.setAttribute("aria-hidden", "true");
@@ -662,7 +662,7 @@
 								affinity: "",
 							});
 						}
-						for (const e of entries) e.search = `${e.full} ${e.sub} ${e.family}`.toLowerCase();
+						for (const e of entries) e.search = `${e.full} ${e.sub} ${e.family} ${fam(e.family)} ${scent(e.family)}`.toLowerCase();
 						return entries;
 				  })()
 				: [];
@@ -676,7 +676,7 @@
 			el("h4", `내 아로마: ${layerName[d.layer].toLowerCase()} 노트에 추가 중`, box);
 			const controls = el("div", undefined, box, "perf-filters");
 			const search = el("label", undefined, controls, "perf-search");
-			el("span", "Search", search, "perf-sr");
+			el("span", "검색", search, "perf-sr");
 			const q = el("input", undefined, search);
 			Object.assign(q, { type: "search", value: f.q, placeholder: "아로마 검색", enterKeyHint: "search", autocomplete: "off" });
 			q.setAttribute("aria-label", "내 아로마 검색");
@@ -703,16 +703,16 @@
 				sel.value = f[key];
 			};
 			const families = [...new Set(catalogue.map(e => e.family).filter(Boolean))].sort();
-			select("향 계열", "family", [["", "모든 계열"], ...families.map(x => [x, x])]);
+			select("향 계열", "family", [["", "모든 계열"], ...families.map(x => [x, fam(x)])]);
 			select("어울리는 노트", "affinity", [["", "모든 노트"], ...m.layers.map(l => [l, layerName[l]])]);
-			select("Show", "kind", [
+			select("표시", "kind", [
 				["", "준비한 아로마 전체"],
 				["extract", "맞춤 추출물"],
 				["raw", "표준 아로마"],
 				["source", "준비할 재료"],
 			]);
-			select("Sort", "sort", [
-				["name", "Name"],
+			select("정렬", "sort", [
+				["name", "이름"],
 				["left", "남은 양"],
 				["family", "향 계열"],
 				["affinity", "이 노트에 가장 알맞은 순"],
@@ -763,16 +763,16 @@
 				const src = iconOf(e.id);
 				if (src) Object.assign(el("img", undefined, tile, "icon"), { src, alt: "", draggable: false });
 				el("strong", e.title, tile);
-				el("small", source ? `재고 ${n}개` : `${n}단위 남음 · ${e.family}`, tile);
+				el("small", source ? `재고 ${n}개` : `${n}단위 남음 · ${fam(e.family)}`, tile);
 				el("small", e.description, tile, "perf-aroma-description");
 				tile.title = source ? `${e.full} 준비` : `${e.full}. ${({ top: "오프닝", heart: "하트", base: "베이스" })[e.affinity] || e.affinity} 노트에 가장 잘 어울립니다.`;
 			}
 			if (pages > 1) {
 				const nav = el("div", undefined, null, "perf-pager");
 				list.after(nav);
-				button("Previous", "page", nav, "-1").disabled = d.page === 0;
-				el("span", `${d.page + 1} of ${pages}`, nav);
-				button("Next", "page", nav, "1").disabled = d.page >= pages - 1;
+				button("이전", "page", nav, "-1").disabled = d.page === 0;
+				el("span", `${d.page + 1} / ${pages}`, nav);
+				button("다음", "page", nav, "1").disabled = d.page >= pages - 1;
 			}
 		}
 
@@ -786,7 +786,7 @@
 			el("summary", "병 설정", box);
 			el(
 				"p",
-				`스피릿: ${sv.name.replace(" perfumer's spirit", "").toLowerCase()} · 아로마 ${f.concentration}% · ${f.capacity}단위 병. ${
+				`스피릿: ${sv.name.replace("조향용 ", "").replace(" 스피릿", "")} · 아로마 ${f.concentration}% · ${f.capacity}단위 병. ${
 					f.age ? `${f.age}일 동안 숙성시킵니다.` : "숙성 시간은 필요하지 않습니다."
 				}`,
 				box
@@ -804,7 +804,7 @@
 				el("legend", legend, fs);
 				return fs;
 			};
-			const solvents = fieldset("Spirit", "perf-options");
+			const solvents = fieldset("스피릿", "perf-options");
 			for (const [id, spirit] of Object.entries(m.solvents)) {
 				const lab = el("label", undefined, solvents, "perf-option");
 				const r = el("input", undefined, lab);
@@ -823,7 +823,7 @@
 			}
 			const conc = fieldset("아로마 농도", "perf-range");
 			const rangeLabel = el("label", undefined, conc);
-			el("span", `${concentrationWord(f.concentration)} (${f.concentration}% aroma)`, rangeLabel, "perf-range-value");
+			el("span", `${concentrationWord(f.concentration)} (아로마 ${f.concentration}%)`, rangeLabel, "perf-range-value");
 			const range = el("input", undefined, rangeLabel);
 			Object.assign(range, { type: "range", min: "10", max: "40", step: "1", value: String(f.concentration) });
 			range.dataset.control = "concentration";
@@ -840,15 +840,15 @@
 				const r = el("input", undefined, lab);
 				Object.assign(r, { type: "radio", name: "perf-capacity", value: String(n), checked: f.capacity === n });
 				r.dataset.control = "capacity";
-				el("strong", `${n} measures`, el("span", undefined, lab));
+				el("strong", `${n}단위`, el("span", undefined, lab));
 			}
 			if (c.cost)
 				el(
 					"small",
-					`Your current recipe makes ${c.cost.volume.toFixed(1)} measures of finished liquid, enough for ${plural(
+					`현재 배합으로 완성된 액체는 ${c.cost.volume.toFixed(1)}단위이며, ${plural(
 						Math.max(1, Math.floor(c.cost.volume / 4)),
-						"application"
-					)}. The bottle's capacity is not the amount you have made.`,
+						"회"
+					)} 뿌릴 만큼입니다. 병 크기는 실제로 만든 양과 다릅니다.`,
 					caps,
 					"perf-hint"
 				);
@@ -860,7 +860,7 @@
 				Object.assign(r, { type: "radio", name: "perf-age", value: String(n), checked: f.age === n });
 				r.dataset.control = "age";
 				const body = el("span", undefined, lab);
-				el("strong", n ? plural(n, "day") : "None", body);
+				el("strong", n ? plural(n, "일") : "없음", body);
 				const p = base && n ? safe(() => m.calculate({ ...f, age: n }, 0.7, n)) : null;
 				if (p) {
 					const dq = p.quality - base.quality;
@@ -898,7 +898,7 @@
 			const before = safe(() => m.calculate(d.pinned));
 			if (!now || !before) return "비교하려면 현재 배합을 유효하게 만드십시오.";
 			const diff = (a, b, small, more, less, same) => (Math.abs(a - b) < small ? same : a > b ? more : less);
-			return `Compared with the remembered version: ${diff(
+			return `기억해 둔 버전과 비교: ${diff(
 				now.intensity,
 				before.intensity,
 				0.02,
@@ -909,8 +909,8 @@
 				now.quality,
 				before.quality,
 				0.2,
-				"smoother",
-				"rougher",
+				"더 부드러움",
+				"더 거침",
 				"균형 비슷함"
 			)}.${
 				knowledge >= 3 ? ` 균형 ${Math.round(before.quality)} → ${Math.round(now.quality)}, 지속 시간 ${hours(before.duration)} → ${hours(now.duration)}.` : ""
@@ -972,7 +972,7 @@
 							? "부드럽게 블렌딩됨"
 							: timing.scores[i] >= 0.5
 							? "약간 고르지 않음"
-							: "Uneven"
+							: "고르지 않음"
 						: i === pass
 						? timing.running
 							? "블렌딩 중"
@@ -987,7 +987,7 @@
 				}
 			});
 			const [passName, layer] = passes[pass];
-			el("h4", `${pass + 1} / ${passes.length} · ${passName} note`, side, "perf-pass-title");
+			el("h4", `${pass + 1} / ${passes.length} · ${passName} 노트`, side, "perf-pass-title");
 			el("p", layerHint[layer], side, "perf-note-description");
 			el("p", noteCharacter(layer), side, "perf-need");
 			el(
@@ -1000,7 +1000,7 @@
 			bar.setAttribute("aria-hidden", "true");
 			const zone = el("i", undefined, bar, "perf-zone");
 			zone.style.left = `${zones[pass] - 9}%`;
-			zone.textContent = "STOP";
+			zone.textContent = "정지";
 			const needle = el("b", undefined, bar, "perf-needle");
 			needle.style.transform = `translateX(${timing.pos}%)`;
 			const row = el("div", undefined, side, "perf-steps");
@@ -1034,10 +1034,10 @@
 			const ids = Object.keys(d.formula[l]);
 			if (!ids.length) return "이 노트에는 배정한 아로마가 없습니다. 그래도 이 블렌딩 단계는 혼합물 전체에 영향을 줍니다.";
 			if (ids.length === 1) return label(ids[0]).description;
-			return `For this note, you are working with ${ids
+			return `이 노트에 쓰는 아로마: ${ids
 				.map(id => label(id).title)
 				.join(", ")
-				.replace(/, ([^,]+)$/, ids.length > 2 ? ", and $1" : " and $1")}.`;
+				.replace(/, ([^,]+)$/, ", $1")}.`;
 		}
 		function startTiming() {
 			timing.running = true;
@@ -1067,7 +1067,7 @@
 			const score = passScore(timing.pos, pass);
 			timing.scores.push(score);
 			const early = (timing.pos - zones[pass]) * timing.direction < 0;
-			timing.last = `${passes[pass][0]} ${Object.keys(d.formula[passes[pass][1]]).length ? "note" : "step"}: ${
+			timing.last = `${passes[pass][0]} ${Object.keys(d.formula[passes[pass][1]]).length ? "노트" : "단계"}: ${
 				score >= 0.85
 					? "딱 맞는 순간에 멈춘다. 혼합물의 이 부분이 부드럽게 하나로 어우러진다."
 					: score >= 0.5
@@ -1146,16 +1146,16 @@
 				[Infinity, "아주 부드럽게 어우러진다"],
 			]);
 			const strength = word(p.intensity, [
-				[1, "faint"],
-				[1.8, "noticeable"],
-				[2.4, "strong"],
-				[Infinity, "매우 강함"],
+				[1, "희미하며,"],
+				[1.8, "뚜렷하며,"],
+				[2.4, "강하며,"],
+				[Infinity, "매우 강하며,"],
 			]);
 			el(
 				"p",
-				`You smell a mix of ${good.slice(0, 2).join(" and ") || p.family} scents that ${balance}. The fragrance is ${strength} and should last ${hours(
+				`맡아지는 향: ${good.slice(0, 2).map(scent).join(", ") || scent(p.family)}. 노트들이 ${balance}. 향은 ${strength} 한 번 뿌리면 ${hours(
 					p.duration
-				)} each time you wear it.`,
+				)} 동안 남는다.`,
 				results,
 				"perf-result-summary"
 			);
@@ -1164,10 +1164,10 @@
 			if (!api.ready(bottle))
 				el(
 					"p",
-					`You need to let the perfume rest for another ${plural(
+					`뿌리기 전에 ${plural(
 						Math.ceil((bottle.made + bottle.formula.age * 86400 - V.timeStamp) / 3600),
-						"hour"
-					)} before wearing it.`,
+						"시간"
+					)} 더 숙성시켜야 합니다.`,
 					results,
 					"perf-result-warning"
 				);
@@ -1179,7 +1179,7 @@
 			el("summary", "전체 분석", details);
 			if (!api.ready(bottle)) el("p", "이 평가는 현재의 냄새를 설명한 것이며, 병이 숙성되면서 달라질 수 있습니다.", details, "perf-hint");
 			const rename = el("label", undefined, details, "perf-rename");
-			el("span", "Rename", rename);
+			el("span", "이름 변경", rename);
 			const input = el("input", undefined, rename);
 			Object.assign(input, { value: bottle.name, maxLength: 48 });
 			input.dataset.rename = bottle.id;
@@ -1190,35 +1190,35 @@
 				el("dd", v, facts);
 			};
 			if (p.phases) {
-				fact("Opening", p.phases.opening.replace(/^[^:]+: /, ""));
-				fact("Heart", p.phases.heart.replace(/^[^:]+: /, ""));
-				fact("Base", p.phases.drydown.replace(/^[^:]+: /, ""));
+				fact("오프닝", p.phases.opening.replace(/^[^:]+: /, ""));
+				fact("하트", p.phases.heart.replace(/^[^:]+: /, ""));
+				fact("베이스", p.phases.drydown.replace(/^[^:]+: /, ""));
 			}
-			if (good.length) fact("Strengths", good.join(", "));
-			if (bad.length) fact("Flaws", bad.join(", "));
-			fact("Pleasantness", `${scoreWord(p.pleasantness)}${knowledge >= 3 ? ` (${Math.round(p.pleasantness)})` : ""}`);
+			if (good.length) fact("장점", good.map(scent).join(", "));
+			if (bad.length) fact("결점", bad.map(scent).join(", "));
+			fact("쾌적함", `${scoreWord(p.pleasantness)}${knowledge >= 3 ? ` (${Math.round(p.pleasantness)})` : ""}`);
 			if (V.perfumeryVenue === "poppy" && api.availableTeacher()) el("p", api.feedback(bottle), results, "perf-poppy");
 			if (V.perfumery.characters?.poppy?.pending?.bottleId === bottle.id) {
 				el("p", "포피가 시향지를 돌려주지 않는다. 이야기할 거리가 있는 모양이다.", results, "perf-poppy");
-				$(results).wiki("<<link [[Discuss this bottle|Poppy Perfumery Special]]>><</link>>");
+				$(results).wiki("<<link [[이 향수에 대해 이야기하기|Poppy Perfumery Special]]>><</link>>");
 			}
 			if (s.session?.stage === "review" && s.session.bottleId === bottle.id) {
 				el("p", "포피와 비교할 수 있도록 이 샘플을 간직하십시오. 포피가 바쁘면 나중에 보여 줄 수 있습니다.", results, "perf-poppy");
-				$(results).wiki("<<link [[Discuss the sample|Poppy Perfumery Debrief]]>><</link>>");
+				$(results).wiki("<<link [[샘플에 대해 이야기하기|Poppy Perfumery Debrief]]>><</link>>");
 			}
 		}
 
 		/* Cabinet and journal: their own page, reached by a link under the table. */
 		function describe(p) {
-			if (p.description) return `${p.description} ${projectionWord(p.intensity)}; wears ${hours(p.duration)}.`;
-			return `${p.family} 계열 향. ${projectionWord(p.intensity)}, 지속 ${hours(p.duration)}.`;
+			if (p.description) return `${p.description} 존재감 ${projectionWord(p.intensity)}, 지속 ${hours(p.duration)}.`;
+			return `${fam(p.family)} 계열. ${projectionWord(p.intensity)}, 지속 ${hours(p.duration)}.`;
 		}
 		function renderInventory() {
 			const teacherPresent = V.perfumeryVenue === "poppy" && api.availableTeacher();
 			const canCompose = api.access();
 			cabinet.replaceChildren();
 			journal.replaceChildren();
-			el("h3", `Bottles (${s.bottles.length}/24)`, cabinet);
+			el("h3", `향수병 (${s.bottles.length}/24)`, cabinet);
 			if (!s.bottles.length) el("p", "보관장이 비어 있습니다. 병입한 향수가 여기에 나타납니다.", cabinet);
 			for (const b of s.bottles) {
 				const row = el("details", undefined, cabinet, "perf-bottle");
@@ -1233,20 +1233,20 @@
 					if (!row.open || row.childElementCount > 1) return;
 					el("p", describe(api.properties(b)), row);
 					const rename = el("label", undefined, row, "perf-rename");
-					el("span", "Rename", rename);
+					el("span", "이름 변경", rename);
 					const name = el("input", undefined, rename);
 					Object.assign(name, { value: b.name, maxLength: 48 });
 					name.dataset.rename = b.id;
 					const actions = el("div", undefined, row, "perf-steps");
-					button("Wear", "apply", actions, b.id).disabled = !api.ready(b) || b.uses < 1 || !api.enabled();
+					button("뿌리기", "apply", actions, b.id).disabled = !api.ready(b) || b.uses < 1 || !api.enabled();
 					button("배합 저장", "save", actions, b.id);
 					if (canCompose) Wikifier.createInternalLink(actions, "Perfumery Workstation", "초안으로 복사", () => load(b.formula));
-					if (typeof pocketPerfumePack === "function") button(b.packed ? "Leave it here" : `Put in your ${pocketBagName()}`, "carry", actions, b.id);
+					if (typeof pocketPerfumePack === "function") button(b.packed ? "보관장에 두기" : `${pocketBagName()}에 넣기`, "carry", actions, b.id);
 					if (teacherPresent) button("포피에게 건네기 (5분)", "gift", actions, b.id);
-					button("Discard", "discard", actions, b.id).disabled = s.session?.stage === "review" && s.session.bottleId === b.id;
+					button("버리기", "discard", actions, b.id).disabled = s.session?.stage === "review" && s.session.bottleId === b.id;
 				};
 			}
-			el("h3", `Formulas (${s.journal.length}/32)`, journal);
+			el("h3", `저장한 배합 (${s.journal.length}/32)`, journal);
 			if (!s.journal.length) el("p", "병의 배합을 저장하면 나중에 다시 만들 수 있습니다.", journal);
 			s.journal.forEach((entry, i) => {
 				const row = el("details", undefined, journal, "perf-bottle");
@@ -1258,20 +1258,20 @@
 					el("p", api.notes(entry.formula), row);
 					el(
 						"p",
-						`${entry.formula.concentration}% aroma, ${entry.formula.solvent} spirit, ${entry.formula.capacity}-measure bottle, ${plural(
+						`아로마 ${entry.formula.concentration}%, ${({ soft: "소프트", clear: "클리어", bright: "브라이트" })[entry.formula.solvent] || entry.formula.solvent} 스피릿, ${entry.formula.capacity}단위 병, 숙성 ${plural(
 							entry.formula.age,
-							"day"
-						)} maturing. Made ${plural(entry.attempts, "time")}.`,
+							"일"
+						)}. 만든 횟수: ${plural(entry.attempts, "회")}.`,
 						row
 					);
 					const rename = el("label", undefined, row, "perf-rename");
-					el("span", "Rename", rename);
+					el("span", "이름 변경", rename);
 					const name = el("input", undefined, rename);
 					Object.assign(name, { value: entry.name, maxLength: 48 });
 					name.dataset.journalRename = i;
 					const actions = el("div", undefined, row, "perf-steps");
 					if (canCompose) Wikifier.createInternalLink(actions, "Perfumery Workstation", "초안으로 불러오기", () => load(entry.formula));
-					button("Remove", "forget", actions, i);
+					button("삭제", "forget", actions, i);
 				};
 			});
 		}
@@ -1317,9 +1317,9 @@
 		}
 		function add(id, note) {
 			if (!m.material(id) || !m.layers.includes(note)) return;
-			if (used(id) >= (s.extraction.stock[id] || 0)) throw new Error("No more of that aroma left.");
+			if (used(id) >= (s.extraction.stock[id] || 0)) throw new Error("그 아로마가 더 남지 않았습니다.");
 			if (((units(d.formula) + 1) * 100) / d.formula.concentration > d.formula.capacity)
-				throw new Error("The bottle is full at this strength. In Blend, choose a bigger bottle or a stronger mix.");
+				throw new Error("이 농도에서는 병이 가득 찼습니다. 블렌딩 단계에서 더 큰 병이나 더 진한 농도를 고르십시오.");
 			remember();
 			d.formula[note][id] = (d.formula[note][id] || 0) + 1;
 			edited();
@@ -1369,7 +1369,7 @@
 					if (action === "undo" && d.undo.length) {
 						d.formula = d.undo.pop();
 						edited();
-						notice("Undone.");
+						notice("되돌렸습니다.");
 					}
 					if (action === "page") {
 						d.page += Number(id);
@@ -1419,7 +1419,7 @@
 					if (action === "reblend") edited();
 					if (action === "craft") {
 						b.disabled = true;
-						if (blending === null || blended !== JSON.stringify(d.formula)) throw new Error("Blend the current formula before bottling.");
+						if (blending === null || blended !== JSON.stringify(d.formula)) throw new Error("병입하기 전에 현재 배합을 블렌딩하십시오.");
 						result = api.craft(d.formula, blending, serial);
 						const kept = { ...freshDraft(), filters: d.filters, layer: d.layer };
 						Object.assign(d, kept, { tab: "bottle" });
@@ -1487,7 +1487,7 @@
 					d.formula.concentration = Number(t.value);
 					edited();
 					const label = t.closest("label").querySelector(".perf-range-value");
-					label.textContent = `${concentrationWord(Number(t.value))} (${t.value}% aroma)`;
+					label.textContent = `${concentrationWord(Number(t.value))} (아로마 ${t.value}%)`;
 					t.setAttribute("aria-valuetext", `${concentrationWord(Number(t.value))}, ${t.value}%`);
 					renderProgress();
 				}

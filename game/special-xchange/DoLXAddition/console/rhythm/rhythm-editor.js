@@ -142,11 +142,11 @@
 						change(() => (n.t += 10))
 					),
 					button(
-						"Left",
+						"왼쪽",
 						change(() => (n.x -= 0.05))
 					),
 					button(
-						"Right",
+						"오른쪽",
 						change(() => (n.x += 0.05))
 					)
 				),
@@ -267,7 +267,7 @@
 			clock = new (R().Clock)(audio);
 			previewing = { until: onlyPage ? pageStart() + pageInfo().length : Infinity, fromHere };
 			lastPreview = pageStart();
-			playBtn.textContent = pageBtn.textContent = "Stop";
+			playBtn.textContent = pageBtn.textContent = "정지";
 			try {
 				await audio.play();
 				if (!previewing || !canvas.isConnected) return;
@@ -337,7 +337,7 @@
 				snapGroup,
 				h("span", { class: "rh-song-sub" }, "맞춤 단위:"),
 				[
-					[1, "Beats"],
+					[1, "1박자"],
 					[2, "반 박자"],
 					[4, "1/4 박자"],
 				].map(([div, label]) =>
@@ -428,7 +428,7 @@
 					target = {
 						...song,
 						id: L().newId("s"),
-						title: `${song.title} (edited)`.slice(0, 120),
+						title: `${song.title} (편집본)`.slice(0, 120),
 						source: "builtin",
 						builtin: id,
 						charts: {},
@@ -437,7 +437,7 @@
 					for (const l of levels) if (l !== level) target.charts[l] = { notes: L().chartFor(song, l).notes, edited: false };
 				} else {
 					target = await L().getSong(song.id);
-					if (!target) throw new Error("That song is no longer in the library.");
+					if (!target) throw new Error("그 곡은 더 이상 라이브러리에 없습니다.");
 					if (target.bpm !== song.bpm || target.offset !== song.offset || target.pageBeats !== song.pageBeats) delete target.best;
 					target.bpm = song.bpm;
 					target.offset = song.offset;
@@ -462,8 +462,8 @@
 		const confirmLeave = h("div", { class: "rh-row", hidden: true });
 		confirmLeave.append(
 			h("span", null, "변경 사항을 저장하지 않고 나가시겠습니까?"),
-			button("Leave", () => ui.menu("library")),
-			button("Stay", () => (confirmLeave.hidden = true))
+			button("나가기", () => ui.menu("library")),
+			button("계속 편집", () => (confirmLeave.hidden = true))
 		);
 
 		const levelGroup = h(
@@ -558,7 +558,7 @@
 				h(
 					"div",
 					{ class: "rh-row" },
-					button("Save", () => save()),
+					button("저장", () => save()),
 					button("저장본으로 되돌리기", () => {
 						cleanup.destroy();
 						open(ui, id, level);

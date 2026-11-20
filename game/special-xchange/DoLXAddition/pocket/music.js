@@ -274,12 +274,12 @@ window.PocketMusic = (() => {
 		};
 		icon(
 			button(controls, "", () => stop(), !active),
-			"Stop",
+			"정지",
 			'<rect x="6" y="6" width="12" height="12" rx="1"/>'
 		);
 		icon(
 			button(controls, "", () => next(-1)),
-			"Previous",
+			"이전",
 			'<rect x="5" y="5" width="2.5" height="14" rx="1"/><path d="M19 5v14L8.5 12z"/>'
 		);
 		const toggle = icon(
@@ -296,13 +296,13 @@ window.PocketMusic = (() => {
 					refresh();
 				}
 			}),
-			active && !paused ? "Pause" : "Play",
+			active && !paused ? "일시정지" : "재생",
 			active && !paused ? '<rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/>' : '<path d="M8 5v14l11-7z"/>'
 		);
 		toggle.classList.add("pocket-music-main");
 		icon(
 			button(controls, "", () => next()),
-			"Next",
+			"다음",
 			'<rect x="16.5" y="5" width="2.5" height="14" rx="1"/><path d="M5 5v14l10.5-7z"/>'
 		);
 		const repeatButton = icon(
@@ -317,14 +317,14 @@ window.PocketMusic = (() => {
 		const modes = text(player, "div", "");
 		modes.className = "pocket-music-modes";
 		modes.setAttribute("role", "group");
-		modes.setAttribute("aria-label", "Playback");
+		modes.setAttribute("aria-label", "재생 방식");
 
 		/* Force Play: above the buttons */
 		modes.style.display = "flex";
 		modes.style.flexDirection = "column";
 		modes.style.alignItems = "flex-start";
 
-		text(modes, "div", "Play:");
+		text(modes, "div", "재생 대상:");
 
 		const modeButtons = text(modes, "div", "");
 		modeButtons.style.display = "flex";
@@ -332,8 +332,8 @@ window.PocketMusic = (() => {
 
 		for (const [value, title] of [
 			["all", "모든 곡"],
-			["favourites", "Favourites"],
-			["uploaded", "Uploaded"],
+			["favourites", "즐겨찾기"],
+			["uploaded", "올린 곡"],
 		]) {
 			button(modeButtons, title, () => {
 				mode = value;
@@ -378,9 +378,9 @@ window.PocketMusic = (() => {
 		);
 		const libraryHeader = text(pane, "div", "");
 		libraryHeader.className = "pocket-section-header pocket-music-library-header";
-		text(libraryHeader, "span", "Library");
+		text(libraryHeader, "span", "라이브러리");
 		text(libraryHeader, "span", `${library().length}곡 · 즐겨찾기 ${favourites.size}곡`).className = "pocket-music-count";
-		const searchLabel = text(pane, "label", "Search");
+		const searchLabel = text(pane, "label", "검색");
 		searchLabel.className = "pocket-music-field";
 		const searchInput = document.createElement("input");
 		searchInput.type = "search";
@@ -401,14 +401,14 @@ window.PocketMusic = (() => {
 			if (missing) text(title, "span", " (파일을 다시 선택하십시오)").className = "pocket-music-hint";
 			const actions = text(row, "div", "");
 			actions.className = "pocket-music-controls";
-			button(actions, active && current === song.id ? "Playing" : "Play", () => play(song.id), missing);
+			button(actions, active && current === song.id ? "재생 중" : "재생", () => play(song.id), missing);
 			const favourite = button(actions, favourites.has(song.id) ? "★" : "☆", () => {
 				if (favourites.has(song.id)) favourites.delete(song.id);
 				else favourites.add(song.id);
 				refresh();
 			});
 			favourite.className = "pocket-music-fav";
-			favourite.setAttribute("aria-label", `Favourite ${song.title}`);
+			favourite.setAttribute("aria-label", `${song.title} 즐겨찾기`);
 			favourite.setAttribute("aria-pressed", String(favourites.has(song.id)));
 			button(
 				actions,
@@ -421,7 +421,7 @@ window.PocketMusic = (() => {
 				songs.indexOf(song) === 0
 			).setAttribute("aria-label", `${song.title} 위로 옮기기`);
 			if (!song.path)
-				button(actions, "Remove", () => {
+				button(actions, "삭제", () => {
 					if (current === song.id && active) stop();
 					files.delete(song.id);
 					favourites.delete(song.id);

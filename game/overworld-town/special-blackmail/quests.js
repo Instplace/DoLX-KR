@@ -25,7 +25,7 @@ const blackmailQuests = {
 			reward() {
 				return blackmailReward();
 			},
-			instructions: [". Complete this task before midnight."],
+			instructions: [". 자정 전에 이 과제를 완수하십시오."],
 			clearCondition() {
 				return true;
 			},
@@ -79,7 +79,7 @@ blackmailQuests.low.push(
 			"오늘 하루 속옷을 입지 마십시오.",
 			"윗속옷과 아랫속옷 모두 입을 수 없습니다.",
 			"이 과제에서는 수영복과 레오타드도 속옷으로 칩니다.",
-			`<span class="red">Wearing any piece at any point of the day before midnight will result in failure.</span>`,
+			`<span class="red">자정 전 하루 중 어느 때든 속옷을 한 점이라도 입으면 실패로 처리됩니다.</span>`,
 		],
 		clearCondition() {
 			return true;
@@ -244,7 +244,7 @@ blackmailQuests.high.push(
 		},
 		instructions: [
 			"빈 교실에서 알몸으로 절정에 이를 때까지 자위하십시오.",
-			`<span class="red">If you stop or are interrupted before you orgasm, you must start over.</span>`,
+			`<span class="red">절정에 이르기 전에 멈추거나 방해를 받으면 처음부터 다시 시작해야 합니다.</span>`,
 			"자정 전에 이 과제를 완수하십시오.",
 		],
 		clearCondition() {
@@ -428,7 +428,7 @@ blackmailQuests.low.push(
 			"저희가 준비한 치마를 입으셔도 되고, 가지고 계신 다른 치마를 입으셔도 됩니다.",
 			"치마 외의 다른 하의는 인정되지 않습니다.",
 			"하의를 아예 입지 않으셔도 됩니다(즉, 수영장에서 수영복을 입는 것은 괜찮습니다)",
-			`<span class="red">Wearing any piece of lowerwear other than a skirt at any point of the day before midnight will result in failure.</span>`,
+			`<span class="red">자정 전 하루 중 어느 때든 치마가 아닌 하의를 입으면 실패로 처리됩니다.</span>`,
 		],
 		clearCondition() {
 			return this.tookPill;
@@ -493,7 +493,7 @@ blackmailQuests.low.push(
 			"청소하는 동안 메이드복이나 집사복을 입으십시오.",
 			"편의를 위해 이 봉투에 옷 한 벌을 동봉했습니다.",
 			"제복을 입는 동안에는 속옷이 허용되지 않습니다.",
-			`<span class="red">If you wear underwear with your uniform you will fail automatically.</span>`,
+			`<span class="red">제복 안에 속옷을 입으면 자동으로 실패합니다.</span>`,
 			"제복은 샬레를 청소하는 동안에만 입으면 됩니다.",
 			"제복을 입지 않고 청소한 샬레는 인정되지 않습니다.",
 			"자정 전에 이 과제를 완수하십시오.",
@@ -601,7 +601,7 @@ blackmailQuests.low.push(
 			"오늘은 셔츠도, 상체를 가리는 다른 어떤 옷도 입으실 수 없습니다.",
 			"학교 부지 안(수영장은 제외)에서만 상체를 가리셔도 됩니다.",
 			"앞서 말한 예외는 등교일에만 적용됩니다.",
-			`<span class="red">Wearing any torso-covering piece outside of school at any point of the day before midnight will result in failure.</span>`,
+			`<span class="red">자정 전 하루 중 어느 때든 학교 밖에서 상체를 가리는 옷을 입으면 실패로 처리됩니다.</span>`,
 		],
 		clearCondition() {
 			return true;
@@ -708,9 +708,9 @@ blackmailQuests.low.push(
 		},
 		instructions: [
 			"저희가 준비한 알약을 삼키고, 팔 꽃 200송이를 가져가십시오.",
-			"Go sell flowers on Connudatus Street. <span class='green'>We've already settled today's stall rent for you.</span>",
+			"콘누다투스 가에서 꽃을 파십시오. <span class='green'>오늘 노점 임대료는 저희가 이미 처리해 두었습니다.</span>",
 			"수익이 <<printmoney 25000>> 이상이면 기본 보수에 더해 당신의 사업 명성도 올려 드리겠습니다.",
-			`<span class="red">You're not allowed to test the effects of the pill</span>`,
+			`<span class="red">알약의 효과를 시험해 보는 것은 허용되지 않습니다.</span>`,
 			"하의(속옷은 허용)를 입은 채 이루어진 판매는 목표에 포함되지 않습니다.",
 			"자정 전에 이 과제를 완수하십시오.",
 		],
@@ -772,9 +772,9 @@ blackmailQuests.mid.push(
 		},
 		instructions: [
 			"꽃 노점에서 꽃을 파는 동안 최소 한 번 자위하십시오(그리고 절정에 이르십시오).",
-			"Swallow the pill we've provided, and take these 200 flowers to sell. <span class='green'>We've already settled today's stall rent for you.</span>",
+			"저희가 준비한 알약을 삼키고, 이 꽃 200송이를 가져가 파십시오. <span class='green'>오늘 노점 임대료는 저희가 이미 처리해 두었습니다.</span>",
 			"수익이 <<printmoney 25000>> 이상이면 기본 보수에 더해 당신의 사업 명성도 올려 드리겠습니다.",
-			`<span class="red">You're not allowed to test the effects of the pill</span>`,
+			`<span class="red">알약의 효과를 시험해 보는 것은 허용되지 않습니다.</span>`,
 			"하의(속옷은 허용)를 입은 채 이루어진 판매는 목표에 포함되지 않습니다.",
 			"자정 전에 이 과제를 완수하십시오.",
 		],
@@ -880,7 +880,7 @@ blackmailQuests.high.push(
 			"오락실에 가서 에어하키를 치십시오.",
 			"다른 플레이어와 스트립 게임을 하여, 둘 중 한 사람이 완전히 알몸이 될 때까지 계속하십시오.",
 			"이 과제를 위해 선택 사항인 알약을 무료로 제공합니다.",
-			`<span class="red">If you take the pill, you're not allowed to test it.</span>`,
+			`<span class="red">알약을 먹는다면 효과를 시험해 보는 것은 허용되지 않습니다.</span>`,
 			"자정 전에 이 과제를 완수하십시오.",
 		],
 		clearCondition() {

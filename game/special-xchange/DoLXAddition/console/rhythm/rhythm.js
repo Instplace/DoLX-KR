@@ -679,7 +679,7 @@
 					c.stroke();
 				}
 				c.fillStyle = colour;
-				const label = f.result === "perfect" ? "Perfect" : f.result === "good" ? "Good" : "Miss";
+				const label = f.result === "perfect" ? "퍼펙트" : f.result === "good" ? "굿" : "미스";
 				/* Above the note, or below it when the note is at the top edge, so the word is never cut off. */
 				const rise = this.r * (1.4 + (this.reduced ? 0 : k * 0.5));
 				const ty = f.y - rise < this.r * 0.5 ? f.y + rise : f.y - rise;

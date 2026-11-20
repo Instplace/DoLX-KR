@@ -417,7 +417,7 @@ window.arcologyRenderMap = function (host, focus) {
 	const readout = document.getElementById("acmReadout");
 	if (readout) {
 		const cell = (k, v, cls = "") => `<div class="acm-read ${cls}"><span>${k}</span><b>${esc(v)}</b></div>`;
-		const stops = path.length > 1 ? `${path.length - 1} STREET${path.length > 2 ? "S" : ""}` : target && target === here ? "ARRIVED" : "—";
+		const stops = path.length > 1 ? `${path.length - 1}개 구간` : target && target === here ? "도착" : "—";
 		readout.innerHTML =
 			cell("현재 위치", here ? a.districts[here].name.toUpperCase() : "알 수 없음") +
 			cell("목적지", target ? a.districts[target].name.toUpperCase() : "미설정", target ? "set" : "") +

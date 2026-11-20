@@ -2,7 +2,7 @@
 (() => {
 	let dispose = () => {};
 	const quest = () => V.seaRemembers;
-	const symbols = ["Shell", "Wave", "Star"];
+	const symbols = ["조개껍데기", "파도", "별"];
 	const shapes = [
 		'<path d="M12 40Q0 8 30 6Q60 8 48 40L36 53H24Z M30 10V49 M17 15L26 48 M43 15L34 48"/>',
 		'<path d="M4 42Q17 12 36 18Q54 22 40 34Q36 23 29 30Q22 40 52 43Q25 59 4 42Z"/>',
@@ -102,8 +102,8 @@
 			next.className = "sr-outcome";
 			$(next).wiki(
 				success
-					? "<<link [[Next|Island Trial Result]]>><</link>>"
-					: `<<link [[Retry|Island ${game === "current" ? "Current" : game === "stone" ? "Stone" : "Echo"}]]>><<island_pass 30>><</link>>`
+					? "<<link [[다음|Island Trial Result]]>><</link>>"
+					: `<<link [[다시 하기|Island ${game === "current" ? "Current" : game === "stone" ? "Stone" : "Echo"}]]>><<island_pass 30>><</link>>`
 			);
 			next.querySelector("a").focus();
 		};
@@ -130,7 +130,7 @@
 		};
 		if (game === "current") {
 			status.textContent = "유적 사이를 헤엄쳐 지나가십시오. 바위를 피하고 해류를 버티십시오.";
-			el("p", "Drag within the water, or hold arrow keys / WASD. Reach the glowing ring in each passage.", root, "sr-intro");
+			el("p", "물속에서 끌거나 방향키 또는 WASD를 누른 채 헤엄치십시오. 각 통로마다 빛나는 고리에 닿으십시오.", root, "sr-intro");
 			const ns = "http://www.w3.org/2000/svg";
 			const svg = document.createElementNS(ns, "svg");
 			svg.setAttribute("viewBox", "0 0 480 360");
@@ -240,7 +240,7 @@
 			const paint = () => {
 				player.setAttribute("transform", `translate(${p.x} ${p.y})`);
 				meter.value = Math.max(0, stamina);
-				meter.setAttribute("aria-valuetext", stamina < 25 ? "Exhausted" : stamina < 55 ? "Tiring" : "Steady");
+				meter.setAttribute("aria-valuetext", stamina < 25 ? "탈진" : stamina < 55 ? "지쳐 감" : "안정");
 			};
 			const section = () => {
 				index = quest().current < 2 ? 0 : quest().current < 4 ? 1 : 2;
@@ -447,7 +447,7 @@
 				document.removeEventListener("visibilitychange", visibility);
 			};
 			section();
-			button("Begin", () => {
+			button("시작", () => {
 				begin();
 				running = true;
 				last = 0;
@@ -658,7 +658,7 @@
 				status.textContent = braces ? "급류에 맞서 방벽을 받친다." : "받침이 잠긴다. 계속 균열을 메워야 한다.";
 			});
 			brace.className = "sr-stone-brace";
-			const start = button("Begin", () => {
+			const start = button("시작", () => {
 				begin();
 				running = true;
 				round();
@@ -811,7 +811,7 @@
 					schedule(() => present(false), 1200);
 				}
 			};
-			const start = button("Begin", () => {
+			const start = button("시작", () => {
 				begin();
 				running = true;
 				present(true);

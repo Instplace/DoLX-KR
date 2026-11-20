@@ -8,11 +8,11 @@ setup.plagueSetup = (() => {
 	const sim = () => setup.plagueSimulation;
 
 	const steps = [
-		{ id: "pathogen", name: "Pathogen" },
-		{ id: "difficulty", name: "Difficulty" },
-		{ id: "details", name: "Details" },
-		{ id: "traits", name: "Traits" },
-		{ id: "review", name: "Review" },
+		{ id: "pathogen", name: "병원체" },
+		{ id: "difficulty", name: "난이도" },
+		{ id: "details", name: "세부 사항" },
+		{ id: "traits", name: "특성" },
+		{ id: "review", name: "확인" },
 	];
 	const stepIndex = id => steps.findIndex(s => s.id === id);
 
@@ -246,7 +246,7 @@ setup.plagueSetup = (() => {
 				playable,
 				hint: playable || metaView(meta).unlocked.pathogens.includes(id) ? "" : unlockHint("pathogens", id),
 				selected: playable && state.pathogen === id,
-				status: !playable ? "Locked" : state.pathogen === id ? "Selected" : "Available",
+				status: !playable ? "잠김" : state.pathogen === id ? "선택됨" : "선택 가능",
 			};
 		});
 	}
@@ -262,7 +262,7 @@ setup.plagueSetup = (() => {
 				playable,
 				hint: playable || metaView(meta).unlocked.difficulties.includes(id) ? "" : unlockHint("difficulties", id),
 				selected: playable && state.difficulty === id,
-				status: !playable ? "Locked" : state.difficulty === id ? "Selected" : "Available",
+				status: !playable ? "잠김" : state.difficulty === id ? "선택됨" : "선택 가능",
 			};
 		});
 	}
@@ -295,9 +295,9 @@ setup.plagueSetup = (() => {
 						const words = {
 							equipped: `${slot + 1}번 슬롯에 장착됨`,
 							elsewhere: `${st.slot + 1}번 슬롯에 있음`,
-							covered: `${c.name} covered`,
-							locked: "Locked",
-							available: "Available",
+							covered: `${c.name} 계열 채워짐`,
+							locked: "잠김",
+							available: "선택 가능",
 						};
 						return { id, name: t.name, desc: t.desc, effectLines: effectLines(t.effects), state: st.state, status: words[st.state], picked: state.pick === id };
 					}),
@@ -415,7 +415,7 @@ setup.plagueUi = (() => {
 	};
 
 	/* "Full" means nobody healthy is left, so a region whose living are all infected reads as full even after deaths. */
-	const tierNames = ["none", "trace", "low", "medium", "severe", "full"];
+	const tierNames = ["none", "trace", "low", "medium", "severe", "full"]; const tierLabels = ["없음", "미량", "낮음", "보통", "심각", "전체"];
 
 	function tierOf(r) {
 		if (r.infected === 0) return 0;
@@ -444,8 +444,8 @@ setup.plagueUi = (() => {
 		const r = sim.regionView(game, id);
 		const tier = tierOf(r);
 		const days = r.isolated ? isolationDays(game, id) : 0;
-		const parts = [`${pct(r.infectedPct)} infected`, tierNames[tier]];
-		if (r.dead > 0) parts.push(`${pct(r.deadPct)} dead`);
+		const parts = [`감염 ${pct(r.infectedPct)}`, tierLabels[tier]];
+		if (r.dead > 0) parts.push(`사망 ${pct(r.deadPct)}`);
 		if (r.isolated) parts.push(`격리${days ? `, ${days}${days === 1 ? "일" : "일"} 남음` : ""}`);
 		return {
 			id,
@@ -453,7 +453,7 @@ setup.plagueUi = (() => {
 			x: layout[id].x,
 			y: layout[id].y,
 			tier,
-			tierName: tierNames[tier],
+			tierName: tierNames[tier], tierLabel: tierLabels[tier],
 			infectedText: pct(r.infectedPct),
 			deadText: pct(r.deadPct),
 			/* The dead band starts at 1% so a handful of deaths does not draw a sliver. */
@@ -663,7 +663,7 @@ setup.plagueUi = (() => {
 					const away = ids => ids.filter(p => byId[p] && laneOf[p] !== lane).map(nameOf);
 					const all = away(u.requires);
 					const any = away(u.requiresAny);
-					u.afterText = [...all, ...(any.length ? [any.join(" or ")] : [])].join(" and ");
+					u.afterText = [...all, ...(any.length ? [any.join(" 또는 ")] : [])].join(" 및 ");
 					u.parentNames = { all: u.requires.map(nameOf), any: u.requiresAny.map(nameOf) };
 					u.rivalNames = u.rivals.map(nameOf);
 					u.excludedByName = u.excludedBy ? nameOf(u.excludedBy) : "";

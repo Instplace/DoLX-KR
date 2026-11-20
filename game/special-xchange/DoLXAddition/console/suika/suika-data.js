@@ -15,7 +15,7 @@
 			{ id: "bare-hands", name: "맨손", diff: "medium", rules: "arcade", noAbilities: true, drops: 70, goal: { type: "score", n: 550 } },
 			{ id: "pineapple-express", name: "파인애플 특급", diff: "hard", rules: "arcade", drops: 100, goal: { type: "tier", n: 8 } },
 			{ id: "score-rush", name: "점수 러시", diff: "hard", rules: "arcade", drops: 100, goal: { type: "score", n: 950 } },
-			{ id: "cascade", name: "Cascade", diff: "hard", rules: "arcade", goal: { type: "chain", n: 5 } },
+			{ id: "cascade", name: "폭포 효과", diff: "hard", rules: "arcade", goal: { type: "chain", n: 5 } },
 			{ id: "the-big-one", name: "대물", diff: "hard", rules: "classic", goal: { type: "tier", n: 10 } },
 		].map(c => Object.freeze(c))
 	);
@@ -27,7 +27,7 @@
 		const g = c.goal;
 		let goal;
 		if (g.type === "score") goal = `${g.n}점 얻기`;
-		else if (g.type === "tier") goal = `Make a${/^[AEIOU]/.test(fruitName(g.n)) ? "n" : ""} ${fruitName(g.n)}`;
+		else if (g.type === "tier") goal = `${/^[AEIOU]/.test(fruitName(g.n)) ? "" : ""}${fruitName(g.n)} 만들기`;
 		else if (g.type === "merges") goal = `${g.n}번 합치기`;
 		else if (g.type === "chain") goal = `한 번 떨어뜨려 ${g.n}번 연쇄 합치기`;
 		else goal = `더미가 넘쳐 끝나지 않고 과일 ${g.n}개 떨어뜨리기`;
@@ -59,9 +59,9 @@
 		const failed = !done && (settled || (run.over && run.endReason !== "won"));
 		let text;
 		if (g.type === "tier") text = value >= 0 ? `가장 큰 과일: ${fruitName(value)}` : "가장 큰 과일: 아직 없음";
-		else if (g.type === "survive") text = `Dropped ${Math.min(value, g.n)} / ${g.n}`;
-		else text = `${g.type === "score" ? "Score" : g.type === "merges" ? "Merges" : "Best chain"} ${Math.min(value, g.n)} / ${g.n}`;
-		if (c.drops && g.type !== "survive") text += ` · Drops ${run.drops} / ${c.drops}`;
+		else if (g.type === "survive") text = `떨어뜨린 과일 ${Math.min(value, g.n)} / ${g.n}`;
+		else text = `${g.type === "score" ? "점수" : g.type === "merges" ? "합치기" : "최고 연쇄"} ${Math.min(value, g.n)} / ${g.n}`;
+		if (c.drops && g.type !== "survive") text += ` · 낙하 ${run.drops} / ${c.drops}`;
 		const fraction = g.type === "tier" ? Math.max(0, value + 1) / (g.n + 1) : Math.min(1, value / g.n);
 		return { done, failed, text, fraction: Math.min(1, fraction) };
 	}
@@ -141,11 +141,11 @@
 	});
 	/* Achievement groups, in the order the Achievements page shows them. */
 	const achievementGroups = Object.freeze([
-		["fruit", "Fruit"],
-		["score", "Scores"],
+		["fruit", "과일"],
+		["score", "점수"],
 		["chain", "연쇄와 콤보"],
-		["power", "Power-ups"],
-		["challenge", "Challenges"],
+		["power", "파워업"],
+		["challenge", "도전"],
 	]);
 
 	const competitive = game => game.mode !== "tutorial";
@@ -254,7 +254,7 @@
 			},
 			{
 				id: "wand-1",
-				name: "Abracadabra",
+				name: "아브라카다브라",
 				desc: "마법 지팡이로 과일 하나 제거하기.",
 				icon: { glyph: "wand" },
 				check: x => x.type === "ability" && x.data.id === "wand",
@@ -302,7 +302,7 @@
 			ring: "#444",
 		},
 		light: {
-			name: "Light",
+			name: "라이트",
 			bg: "#e7e2d9",
 			inner: "#f5f1ea",
 			line: "#c0392b",
@@ -314,7 +314,7 @@
 			ring: "#b8b0a2",
 		},
 		pastel: {
-			name: "Pastel",
+			name: "파스텔",
 			bg: "#f2dcef",
 			inner: "#fbeefa",
 			line: "#c2366e",
@@ -327,7 +327,7 @@
 			reward: "apple",
 		},
 		wood: {
-			name: "Wooden",
+			name: "원목",
 			bg: "#5b3a21",
 			inner: "#76502f",
 			line: "#ffb199",
@@ -370,14 +370,14 @@
 	/* ---- How to Play ---- */
 	const help = Object.freeze([
 		[
-			"Dropping",
+			"떨어뜨리기",
 			[
 				"병 위쪽을 따라 움직여 조준하십시오. 과일이 떨어질 위치가 선으로 표시됩니다.",
 				"탭하거나 클릭하거나 스페이스를 눌러 떨어뜨리십시오. 다음 낙하까지 잠깐 기다려야 하며, 그때까지는 들고 있는 과일이 흐리게 표시됩니다.",
 			],
 		],
 		[
-			"Merging",
+			"합치기",
 			[
 				"같은 과일 두 개가 닿으면 합쳐져 한 단계 큰 과일이 됩니다.",
 				"순서는 체리에서 수박까지이며, 병 아래의 띠에 표시됩니다. 수박 두 개가 만나면 보너스와 함께 사라집니다.",
@@ -392,7 +392,7 @@
 			],
 		],
 		[
-			"Modes",
+			"모드",
 			[
 				"클래식: 기본 규칙의 게임입니다.",
 				"아케이드: 파워업 네 가지를 각각 몇 번씩 쓸 수 있고, 연쇄에 보너스 점수가 붙습니다.",
@@ -418,7 +418,7 @@
 			],
 		],
 		[
-			"Challenges",
+			"도전",
 			[
 				"도전마다 목표가 하나씩 있습니다. 일부는 낙하 횟수를 제한하며, 마지막 낙하 뒤에는 병에서 합치기가 끝날 때까지 3초가 주어집니다.",
 				"완료한 도전은 계속 체크된 상태로 남습니다. 오늘의 도전은 UTC 자정에 바뀌며, 그날의 최고 점수를 기록합니다.",
@@ -432,7 +432,7 @@
 			],
 		],
 		[
-			"Controls",
+			"조작",
 			[
 				"마우스: 움직여 조준하고 클릭해 떨어뜨립니다.",
 				"터치: 드래그해 조준하고 손가락을 떼면 떨어뜨립니다.",

@@ -38,7 +38,7 @@
 			endAt: 8 * beat,
 		},
 		{
-			title: "Tap",
+			title: "탭",
 			text: (mode, keys) =>
 				"각 노트로 고리가 좁혀 들어옵니다. 고리가 노트에 닿으면 선이 그 노트 위에 있다는 뜻입니다. " +
 				(mode === "keys"
@@ -67,7 +67,7 @@
 			need: 3,
 		},
 		{
-			title: "Hold",
+			title: "홀드",
 			text: mode =>
 				"막대가 달린 네모 노트는 홀드입니다. " +
 				(mode === "keys"
@@ -83,7 +83,7 @@
 			need: 1,
 		},
 		{
-			title: "Drag",
+			title: "드래그",
 			text: (mode, keys) =>
 				"점으로 이어진 마름모는 드래그이며, 탭할 필요가 없습니다. " +
 				(mode === "keys"
@@ -95,7 +95,7 @@
 			need: 7,
 		},
 		{
-			title: "Together",
+			title: "쌍 노트",
 			text: (mode, keys) =>
 				"같은 박자에 놓인 노트 두 개는 한 쌍입니다. " +
 				(mode === "keys"
@@ -133,7 +133,7 @@
 
 	/* The controls this device most likely uses, as the tutorial's first suggestion. */
 	const guessMode = () => (window.matchMedia && window.matchMedia("(pointer: coarse)").matches ? "touch" : "keys");
-	const modeName = { touch: "Touch", mouse: "Mouse", keys: "Keyboard" };
+	const modeName = { touch: "터치", mouse: "마우스", keys: "키보드" };
 
 	/* A mono 16-bit WAV of the practice beat: a click on every beat, a lower one at each turn of the line. */
 	function practiceBeat() {
@@ -203,7 +203,7 @@
 		function chooseMode() {
 			stop();
 			phase = "ready";
-			stepLabel.textContent = "Tutorial";
+			stepLabel.textContent = "튜토리얼";
 			modeLabel.replaceChildren();
 			title.textContent = "어떻게 플레이하시겠습니까?";
 			text.textContent = "조작 방식을 고르면 튜토리얼이 그 방식을 알려 줍니다. 어느 단계에서든 바꿀 수 있으며, 실제 곡에서는 모든 조작 방식을 쓸 수 있습니다.";
@@ -237,7 +237,7 @@
 			phase = "ready";
 			stepLabel.textContent = `튜토리얼, ${steps.length}단계 중 ${i + 1}단계`;
 			modeLabel.replaceChildren(
-				`Controls: ${modeName[mode]} `,
+				`조작 방식: ${modeName[mode]} `,
 				button("변경", () => chooseMode(), { class: "rh-btn rh-btn--small" })
 			);
 			title.textContent = step.title;
@@ -257,9 +257,9 @@
 				onHud: (st, result) => {
 					combo.textContent = String(st.combo);
 					const hits = play ? play.stats.perfect + play.stats.good : 0;
-					tally.textContent = step.notes.length ? `${hits} of ${step.notes.length}` : " ";
+					tally.textContent = step.notes.length ? `${step.notes.length}개 중 ${hits}개` : " ";
 					if (result) {
-						judge.textContent = { perfect: "Perfect", good: "Good", miss: "Miss", hold: "Holding" }[result];
+						judge.textContent = { perfect: "퍼펙트", good: "굿", miss: "미스", hold: "홀드 중" }[result];
 						judge.className = `tama-v rh-judge rh-judge--${result}`;
 					}
 				},

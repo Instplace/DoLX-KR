@@ -249,7 +249,7 @@
 		let lists = [];
 		if (kind === "playlist") {
 			const list = (await listPlaylists()).find(p => p.id === playlistId);
-			if (!list) throw new Error("That playlist no longer exists.");
+			if (!list) throw new Error("그 재생 목록은 더 이상 존재하지 않습니다.");
 			lists = [{ id: list.id, name: list.name, songs: [...list.songs] }];
 			ids = list.songs;
 		} else if (kind === "library") {
@@ -280,7 +280,7 @@
 					.trim()
 					.slice(0, max)
 			: "";
-	const num = (v, min, max, what) => (typeof v === "number" && Number.isFinite(v) && v >= min && v <= max ? v : fail(`${what} is out of range.`));
+	const num = (v, min, max, what) => (typeof v === "number" && Number.isFinite(v) && v >= min && v <= max ? v : fail(`${what} 값이 허용 범위를 벗어났습니다.`));
 	const idOk = v => typeof v === "string" && /^[A-Za-z0-9:_-]{1,64}$/.test(v);
 
 	function cleanNotes(notes, durationMs, where) {
@@ -302,24 +302,24 @@
 	}
 
 	function cleanSong(s, i) {
-		const where = `Song ${i + 1}`;
+		const where = `곡 ${i + 1}`;
 		if (!isPlain(s)) fail(`${where}: 곡이 아닙니다.`);
 		const song = {
 			id: idOk(s.id) ? s.id : newId("s"),
-			title: text(s.title) || "Untitled",
+			title: text(s.title) || "제목 없음",
 			artist: text(s.artist),
 			source: "file",
 			bpm: num(s.bpm, 40, 300, `${where}: BPM`),
 			offset: Math.round(num(s.offset, -10000, 60000, `${where}: 첫 박자 위치`)),
 			pageBeats: [2, 4, 8].includes(s.pageBeats) ? s.pageBeats : fail(`${where}: 페이지 길이는 2, 4, 8박자 중 하나여야 합니다.`),
-			duration: num(s.duration, 1, limits.audioSeconds, `${where}: duration`),
+			duration: num(s.duration, 1, limits.audioSeconds, `${where}: 길이`),
 			trim: s.trim === undefined ? 0 : Math.round(num(s.trim, -500, 500, `${where}: 타이밍 오프셋`)),
 			audio: null,
 			analysis: null,
 			charts: {},
 		};
 		if (s.builtin !== undefined) {
-			if (typeof s.builtin !== "string" || !builtin(s.builtin)) fail(`${where} is linked to a built-in song this game does not have.`);
+			if (typeof s.builtin !== "string" || !builtin(s.builtin)) fail(`${where}: 이 게임에 없는 기본 곡과 연결되어 있습니다.`);
 			song.builtin = s.builtin;
 			song.source = "builtin";
 		}
@@ -336,10 +336,10 @@
 		if (s.analysis !== null && s.analysis !== undefined) {
 			if (!isPlain(s.analysis)) fail(`${where}: 분석 정보가 올바르지 않습니다.`);
 			const a = s.analysis;
-			if (typeof a.slots !== "string" || !/^[0-9]{0,40000}$/.test(a.slots)) fail(`${where}: analysis beats are malformed.`);
-			if (typeof a.energy !== "string" || !/^[0-9]{0,5000}$/.test(a.energy)) fail(`${where}: analysis loudness is malformed.`);
+			if (typeof a.slots !== "string" || !/^[0-9]{0,40000}$/.test(a.slots)) fail(`${where}: 분석한 박자 정보가 올바르지 않습니다.`);
+			if (typeof a.energy !== "string" || !/^[0-9]{0,5000}$/.test(a.energy)) fail(`${where}: 분석한 음량 정보가 올바르지 않습니다.`);
 			song.analysis = {
-				bpm: num(a.bpm, 40, 300, `${where}: analysis BPM`),
+				bpm: num(a.bpm, 40, 300, `${where}: 분석 BPM`),
 				offset: Math.round(num(a.offset, -10000, 60000, `${where}: 분석 첫 박자 위치`)),
 				slots: a.slots,
 				energy: a.energy,
@@ -361,7 +361,7 @@
 
 	/* Parses and validates a shared file. Returns { kind, songs, playlists } or throws an ImportError with a reason. */
 	function parse(raw) {
-		if (typeof raw !== "string") fail("That file could not be read as text.");
+		if (typeof raw !== "string") fail("그 파일을 텍스트로 읽을 수 없습니다.");
 		if (raw.length > limits.importBytes) fail("이 파일은 리듬 채보로 쓰기에는 너무 큽니다(8 MB 초과).");
 		let data;
 		try {
@@ -427,7 +427,7 @@
 			let name = p.name;
 			let copy = 1;
 			while (names.has(name)) {
-				const suffix = ` (imported ${copy++})`;
+				const suffix = ` (가져옴 ${copy++})`;
 				name = p.name.slice(0, 80 - suffix.length) + suffix;
 			}
 			const list = { id: ids.has(p.id) ? newId("p") : p.id, name, songs, order: lists.length + report.playlists.length };

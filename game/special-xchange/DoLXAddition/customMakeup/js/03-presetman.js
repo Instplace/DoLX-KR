@@ -131,10 +131,10 @@ ccmShop.pmanRefresh = function (id) {
  */
 ccmShop.pmanCheckDupes = function () {
 	if (ccmUtils.presetDupeHunt()) {
-		$(`#dupe-report`).html("<span class='red'>Name conflicts with saved presets found</span>");
+		$(`#dupe-report`).html("<span class='red'>저장된 프리셋과 이름이 겹치는 항목이 있습니다</span>");
 		$(`#on-duplicate`).show();
 	} else {
-		$(`#dupe-report`).html("<span class='green'>No name conflicts found</span>");
+		$(`#dupe-report`).html("<span class='green'>이름이 겹치는 항목이 없습니다</span>");
 		$(`#on-duplicate`).hide();
 	}
 };

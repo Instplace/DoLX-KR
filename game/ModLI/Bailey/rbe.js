@@ -86,7 +86,7 @@ window.baileyCollarRegistry = [
 	{ key: "mj_au_fem", pack: "AU", label: "AU 여성형 (MJ 제작)" },
 	{ key: "mj_au_andro", pack: "AU", label: "AU 중성형 (MJ 제작)" },
 	{ key: "reiyu_dmmm", pack: "DMMM", label: "DMMM (Reiyu 제작)" },
-	{ key: "mj_dmmm", pack: "DMMM", label: "DMMM by MJ" },
+	{ key: "mj_dmmm", pack: "DMMM", label: "DMMM (MJ 제작)" },
 	{ key: "mj_hikari", pack: "Hikari", label: "Hikari (MJ 제작)" },
 	{ key: "mj_rayne", pack: "Rayne", label: "Rayne (MJ 제작)" },
 	{ key: "dove_rayne", pack: "Rayne", label: "Rayne (Dove 제작)" },
@@ -477,7 +477,7 @@ $(document).one(":storyready", function () {
 	/* text.js loads after this file, so these can't be registered at script load. */
 	statDisplay.create("gbaileystock", () => statDisplay.statChange(baileyRevealed() ? "스톡홀름 증후군" : "???", 1, "bailey-stockholm"));
 	statDisplay.create("gbrattax", pennies => (pennies > 0 ? statDisplay.statChange(window.formatMoney(pennies) + " 말썽 세금", 1, "pink") : ""));
-	statDisplay.create("gbaileyMood", amount => statDisplay.statChange("Mood", amount, amount > 0 ? "green" : "red"));
+	statDisplay.create("gbaileyMood", amount => statDisplay.statChange("기분", amount, amount > 0 ? "green" : "red"));
 
 	/* Start screen stamp. Start has already rendered by the time this runs. */
 	const passage = document.querySelector(".passage");

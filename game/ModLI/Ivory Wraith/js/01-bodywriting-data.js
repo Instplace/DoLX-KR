@@ -1,7 +1,7 @@
 setup.bodywritingwli = {
 	reflection: {
 		index: 1,
-		writing: '<span class="wraith">Reflection</span>',
+		writing: '<span class="wraith">Reflection</span>', writingKr: '<span class="wraith">투영</span>',
 		writ_cn: '<span class="wraith">倒影</span>',
 		type: "text",
 		arrow: 0,
@@ -12,7 +12,7 @@ setup.bodywritingwli = {
 	},
 	manifestation: {
 		index: 2,
-		writing: '<span class="wraith">Manifestation</span>',
+		writing: '<span class="wraith">Manifestation</span>', writingKr: '<span class="wraith">현현</span>',
 		writ_cn: '<span class="wraith">化身</span>',
 		type: "text",
 		arrow: 0,
@@ -23,7 +23,7 @@ setup.bodywritingwli = {
 	},
 	pearl: {
 		index: 3,
-		writing: '<span class="wraith">Pearl</span>',
+		writing: '<span class="wraith">Pearl</span>', writingKr: '<span class="wraith">진주</span>',
 		writ_cn: '<span class="wraith">珍珠</span>',
 		type: "text",
 		arrow: 0,
@@ -34,7 +34,7 @@ setup.bodywritingwli = {
 	},
 	promise: {
 		index: 4,
-		writing: '<span class="wraith">Promise</span>',
+		writing: '<span class="wraith">Promise</span>', writingKr: '<span class="wraith">약속</span>',
 		writ_cn: '<span class="wraith">承诺</span>',
 		type: "text",
 		arrow: 0,
@@ -45,7 +45,7 @@ setup.bodywritingwli = {
 	},
 	memory: {
 		index: 5,
-		writing: '<span class="wraith">Memory</span>',
+		writing: '<span class="wraith">Memory</span>', writingKr: '<span class="wraith">기억</span>',
 		writ_cn: '<span class="wraith">故人</span>',
 		type: "text",
 		arrow: 0,
@@ -56,7 +56,7 @@ setup.bodywritingwli = {
 	},
 	droplet: {
 		index: 6,
-		writing: '<span class="wraith">Droplet</span>',
+		writing: '<span class="wraith">Droplet</span>', writingKr: '<span class="wraith">물방울</span>',
 		writ_cn: '<span class="wraith">液滴</span>',
 		type: "text",
 		arrow: 0,
@@ -67,7 +67,7 @@ setup.bodywritingwli = {
 	},
 	graverobber: {
 		index: 7,
-		writing: '<span class="wraith">Graverobber</span>',
+		writing: '<span class="wraith">Graverobber</span>', writingKr: '<span class="wraith">도굴꾼</span>',
 		writ_cn: '<span class="wraith">盗墓贼</span>',
 		type: "text",
 		arrow: 0,
@@ -78,7 +78,7 @@ setup.bodywritingwli = {
 	},
 	vulture: {
 		index: 8,
-		writing: '<span class="wraith">Vulture</span>',
+		writing: '<span class="wraith">Vulture</span>', writingKr: '<span class="wraith">독수리</span>',
 		writ_cn: '<span class="wraith">秃鹫</span>',
 		type: "text",
 		arrow: 0,
@@ -89,7 +89,7 @@ setup.bodywritingwli = {
 	},
 	forsaker: {
 		index: 9,
-		writing: '<span class="wraith">Forsaker</span>',
+		writing: '<span class="wraith">Forsaker</span>', writingKr: '<span class="wraith">버림받은 자</span>',
 		writ_cn: '<span class="wraith">背弃者</span>',
 		type: "text",
 		arrow: 0,
@@ -100,7 +100,7 @@ setup.bodywritingwli = {
 	},
 	accomplice: {
 		index: 10,
-		writing: '<span class="wraith">Accomplice</span>',
+		writing: '<span class="wraith">Accomplice</span>', writingKr: '<span class="wraith">공범</span>',
 		writ_cn: '<span class="wraith">同谋</span>',
 		type: "text",
 		arrow: 0,
@@ -111,7 +111,7 @@ setup.bodywritingwli = {
 	},
 	asone: {
 		index: 11,
-		writing: '<span class="wraith">As two,</span> <span class="tentacle">As One.</span>',
+		writing: '<span class="wraith">As two,</span> <span class="tentacle">As One.</span>', writingKr: '<span class="wraith">둘이면서,</span> <span class="tentacle">하나.</span>',
 		writ_cn: '<span class="wraith">我们两个人，</span> <span class="tentacle">合二为一</span>',
 		type: "text",
 		arrow: 0,
@@ -122,7 +122,7 @@ setup.bodywritingwli = {
 	},
 	oathbreaker: {
 		index: 12,
-		writing: '<span class="wraith">Oathbreaker</span>',
+		writing: '<span class="wraith">Oathbreaker</span>', writingKr: '<span class="wraith">맹세를 어긴 자</span>',
 		writ_cn: '<span class="wraith">背誓者</span>',
 		type: "text",
 		arrow: 0,

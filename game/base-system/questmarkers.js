@@ -92,7 +92,7 @@ const events = [
 		starthour: 0,
 		endhour: 23,
 		priority: 6,
-		text: "The Gentleman's Club left a letter <span class='purple'>in your bedroom</span>. You should read it.",
+		text: "신사 클럽이 <span class='purple'>침실에</span> 편지를 남겼습니다. 읽어 보는 편이 좋습니다.",
 	},
 	{
 		name: "poppy valentines date",

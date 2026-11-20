@@ -53,7 +53,7 @@
 		const base = setup.foodstuff[source(id)]?.name || source(id);
 		if (!id.startsWith("aroma~")) return base;
 		const p = setup.perfumeryExtraction.resolve(id);
-		return `${base}: ${p.selected.slice(0, 2).join(" / ")} (${p.finish})`;
+		return `${base}: ${p.selected.slice(0, 2).map(x => setup.perfumeryIdentity?.facetKr?.[x] || x).join(" / ")} (${setup.perfumeryIdentity?.finishKr?.[p.finish] || p.finish})`;
 	}
 	function validate(f) {
 		if (
@@ -66,20 +66,20 @@
 			f.concentration > 40 ||
 			![0, 1, 3, 7, 14].includes(f.age)
 		)
-			throw new Error("Invalid liquid formulation.");
+			throw new Error("액체 설정이 올바르지 않습니다.");
 		const needed = {};
 		for (const layer of layers) {
-			if (!f[layer] || typeof f[layer] !== "object" || Array.isArray(f[layer])) throw new Error("Missing note layer.");
+			if (!f[layer] || typeof f[layer] !== "object" || Array.isArray(f[layer])) throw new Error("노트 구성이 빠져 있습니다.");
 			for (const [id, n] of Object.entries(f[layer])) {
-				if (!material(id) || !Number.isInteger(n) || n < 1 || n > 24) throw new Error("Invalid fragrance material quantity.");
+				if (!material(id) || !Number.isInteger(n) || n < 1 || n > 24) throw new Error("아로마 양이 올바르지 않습니다.");
 				needed[id] = (needed[id] || 0) + n;
 			}
 		}
 		const units = Object.values(needed).reduce((a, b) => a + b, 0);
 		/* Empty notes are allowed: the imbalance term in calculate() already makes one- or two-note perfumes less balanced. */
-		if (!units) throw new Error("Add at least one material.");
+		if (!units) throw new Error("아로마를 하나 이상 넣으십시오.");
 		const volume = (units * 100) / f.concentration;
-		if (volume > f.capacity + 0.00001) throw new Error("This formula exceeds the bottle capacity. Remove material or raise concentration.");
+		if (volume > f.capacity + 0.00001) throw new Error("이 배합은 병 크기를 넘습니다. 아로마를 빼거나 농도를 높이십시오.");
 		return { needed, units, volume, solvent: Math.ceil(volume - units) };
 	}
 	function compatibility(a, b) {
@@ -265,67 +265,67 @@
 		pungent: 0.6,
 	};
 	const nouns = {
-		floral: ["Blossom", "Petals", "Bouquet", "Bloom"],
-		fruity: ["Orchard", "Harvest", "Nectar"],
-		citrus: ["Grove", "Zest", "Sunrise"],
-		green: ["Garden", "Meadow", "Fern"],
-		herbal: ["Herbarium", "Leaves", "Thicket"],
-		aquatic: ["Lagoon", "Rain", "Tide"],
-		woody: ["Woods", "Bark", "Timber"],
-		earthy: ["Cellar", "Loam", "Forest"],
-		resinous: ["Resin", "Incense", "Balsam"],
-		spicy: ["Spice", "Ember", "Pepper"],
-		powdery: ["Veil", "Silk", "Dust"],
-		musky: ["Musk", "Velvet", "Skin"],
-		amber: ["Amber", "Lantern", "Dusk"],
-		sweet: ["Sugar", "Honey", "Confection"],
-		creamy: ["Cream", "Ivory", "Butter"],
-		gourmand: ["Pantry", "Pastry", "Hearth"],
-		roasted: ["Toast", "Cocoa", "Grain"],
-		smoky: ["Smoke", "Ash", "Cinder"],
-		savoury: ["Supper", "Broth", "Harvest"],
+		floral: ["꽃망울", "꽃잎", "꽃다발", "만개"],
+		fruity: ["과수원", "수확", "넥타"],
+		citrus: ["감귤 숲", "제스트", "해돋이"],
+		green: ["정원", "초원", "고사리"],
+		herbal: ["약초원", "잎새", "덤불"],
+		aquatic: ["석호", "빗줄기", "조수"],
+		woody: ["숲", "나무껍질", "목재"],
+		earthy: ["저장고", "옥토", "삼림"],
+		resinous: ["송진", "향", "발삼"],
+		spicy: ["향신료", "불씨", "후추"],
+		powdery: ["베일", "비단", "가루"],
+		musky: ["머스크", "벨벳", "살결"],
+		amber: ["호박", "등불", "해 질 녘"],
+		sweet: ["설탕", "꿀", "사탕과자"],
+		creamy: ["크림", "상아", "버터"],
+		gourmand: ["식료품실", "페이스트리", "난롯가"],
+		roasted: ["토스트", "코코아", "곡물"],
+		smoky: ["연기", "재", "잿불"],
+		savoury: ["저녁 식사", "국물", "수확"],
 	};
 	const adjectives = {
-		sour: "Sour",
-		bitter: "Bitter",
-		fermented: "Fermented",
-		musty: "Damp",
-		moldy: "Mouldering",
-		rancid: "Rancid",
-		greasy: "Oily",
-		burnt: "Scorched",
-		acrid: "Acrid",
-		medicinal: "Medicinal",
-		metallic: "Iron",
-		sulfurous: "Sulfurous",
-		sweaty: "Salted",
-		stale: "Forgotten",
-		overpowering: "Unbridled",
-		muddy: "Clouded",
-		decaying: "Decaying",
-		pungent: "Sharp",
-		floral: "Velvet",
-		fruity: "Orchard",
-		citrus: "Sunlit",
-		green: "Rainwashed",
-		herbal: "Wild",
-		aquatic: "Tidal",
-		woody: "Evening",
-		earthy: "Woodland",
-		resinous: "Midnight",
-		spicy: "Warm",
-		powdery: "Silken",
-		musky: "Intimate",
-		amber: "Golden",
-		sweet: "Honeyed",
-		creamy: "Soft",
-		gourmand: "Buttered",
-		roasted: "Toasted",
-		smoky: "Ashen",
-		savoury: "Strange",
+		sour: "신",
+		bitter: "쓴",
+		fermented: "발효된",
+		musty: "눅눅한",
+		moldy: "곰팡이 슨",
+		rancid: "산패한",
+		greasy: "기름진",
+		burnt: "그을린",
+		acrid: "매캐한",
+		medicinal: "약 냄새 나는",
+		metallic: "쇠 같은",
+		sulfurous: "유황 냄새 나는",
+		sweaty: "짭짤한",
+		stale: "잊힌",
+		overpowering: "고삐 풀린",
+		muddy: "흐릿한",
+		decaying: "썩어 가는",
+		pungent: "날카로운",
+		floral: "벨벳 같은",
+		fruity: "과수원의",
+		citrus: "햇살 가득한",
+		green: "비에 씻긴",
+		herbal: "야생의",
+		aquatic: "물결치는",
+		woody: "저녁의",
+		earthy: "숲속의",
+		resinous: "한밤의",
+		spicy: "따뜻한",
+		powdery: "비단결 같은",
+		musky: "은밀한",
+		amber: "황금빛",
+		sweet: "꿀 같은",
+		creamy: "부드러운",
+		gourmand: "버터 바른",
+		roasted: "구운",
+		smoky: "재빛",
+		savoury: "낯선",
 		"fresh floral": "이슬 머금은",
 	};
-	const descriptors = [...Object.keys(nouns), ...Object.keys(negative), "fresh floral"];
+	const descriptors = [...Object.keys(nouns), ...Object.keys(negative), "fresh floral"]; const famKr = { floral: "플로럴", "fresh floral": "프레시 플로럴", powdery: "파우더리", fruity: "프루티", citrus: "시트러스", green: "그린", herbal: "허브", aquatic: "아쿠아틱", woody: "우디", earthy: "어시", resinous: "레지너스", spicy: "스파이시", musky: "머스크", amber: "앰버", sweet: "달콤한", creamy: "크리미", gourmand: "구르망", roasted: "로스티드", smoky: "스모키", savoury: "감칠맛 나는", sour: "시큼한", bitter: "쌉싸름한", fermented: "발효된", musty: "퀴퀴한", moldy: "곰팡내 나는", rancid: "산패한", greasy: "기름진", burnt: "그을린", acrid: "매캐한", medicinal: "약 냄새 나는", metallic: "금속 같은", sulfurous: "유황 같은", sweaty: "땀내 나는", stale: "묵은", overpowering: "압도적인", muddy: "탁한", decaying: "썩어 가는", pungent: "코를 찌르는", fruit: "프루티", bakery: "베이커리", sulphurous: "유황 같은" }; const scentKr = { floral: "꽃향", "fresh floral": "이슬 머금은 꽃향", fruity: "과일향", fruit: "과일향", citrus: "감귤향", green: "풀향", herbal: "허브향", aquatic: "물내음", woody: "나무향", earthy: "흙내", resinous: "수지향", spicy: "향신료향", powdery: "가루향", musky: "머스크향", amber: "앰버향", sweet: "단내", creamy: "크림향", gourmand: "음식향", roasted: "구운내", smoky: "연기향", savoury: "감칠맛 향", bakery: "빵향", sulphurous: "황 냄새", sour: "신맛", bitter: "쓴맛", fermented: "발효취", musty: "곰팡내", moldy: "곰팡이 냄새", rancid: "산패취", greasy: "기름기", burnt: "탄내", acrid: "매캐함", medicinal: "약 냄새", metallic: "금속내", sulfurous: "황 냄새", sweaty: "땀내", stale: "묵은내", overpowering: "압도적인 향", muddy: "탁함", decaying: "부패취", pungent: "쏘는 냄새" }; const facetKr = { petal: "꽃잎", leaf: "푸른 잎", pollen: "꽃가루", peel: "껍질", juice: "과즙", jam: "잼", butter: "버터", crumb: "부스러기", caramel: "캐러멜", cocoa: "코코아", spice: "향신료", root: "뿌리", umami: "감칠맛", sharp: "톡 쏘는 향", ferment: "발효", toast: "구운 곡물" }; const finishKr = { stability: "안정화", purity: "정제", yield: "아로마 추가" };
 	function canonical(f) {
 		return JSON.stringify([
 			f.version,
@@ -493,16 +493,16 @@
 			fingerprint(f, blending) +
 			(simulationOnly ? `-simulation-${hash(JSON.stringify(Object.entries(overrides).sort(([a], [b]) => a.localeCompare(b))))}` : "");
 		const h = hash(fp);
-		const noun = nouns[dominant] || ["Accord", "Trail", "Study"];
-		const generatedName = `${adjectives[mainDefect || secondary] || "Strange"} ${noun[h % noun.length]}`;
+		const noun = nouns[dominant] || ["어코드", "자취", "습작"];
+		const generatedName = `${adjectives[mainDefect || secondary] || "낯선"} ${noun[h % noun.length]}`;
 		const phaseText = (layer, label) => {
 			const keys = Object.keys(phase[layer])
 				.filter(k => phase[layer][k] > 0.16)
 				.sort((a, b) => phase[layer][b] - phase[layer][a])
 				.slice(0, 3);
-			return `${label}: ${keys.join(", ") || dominant}`;
+			return `${label}: ${keys.map(k => scentKr[k] || k).join(", ") || scentKr[dominant] || dominant}`;
 		};
-		const phases = { opening: phaseText("top", "Opening"), heart: phaseText("heart", "Heart"), drydown: phaseText("base", "Base") };
+		const phases = { opening: phaseText("top", "오프닝"), heart: phaseText("heart", "하트"), drydown: phaseText("base", "베이스") };
 		const phasePleasantness = Object.fromEntries(
 			Object.entries(phase).map(([layer, vector]) => [
 				layer,
@@ -543,11 +543,11 @@
 		};
 		const join = text => {
 			const parts = text.slice(text.indexOf(":") + 2).split(", ");
-			return parts.length > 2 ? `${parts.slice(0, -1).join(", ")}, and ${parts[parts.length - 1]}` : parts.join(" and ");
+			return parts.length > 2 ? `${parts.slice(0, -1).join(", ")}, ${parts[parts.length - 1]}` : parts.join(", ");
 		};
-		const description = `You first smell ${join(phases.opening)} scents before ${join(
+		const description = `처음에 맡히는 향은 ${join(phases.opening)}. 이어서 더 뚜렷해지는 향은 ${join(
 			phases.heart
-		)} scents become more noticeable. As the lighter scents fade, you can still smell ${join(phases.drydown)} scents on your skin. ${
+		)}. 가벼운 향이 날아가고 나면 살갗에 남는 향은 ${join(phases.drydown)}. ${
 			p.intensity > 2.3 ? "향수 냄새가 매우 강하다." : p.intensity < 1 ? "향수 냄새가 희미하다." : "향수 냄새가 눈에 띈다."
 		} ${
 			defects.length
@@ -579,5 +579,5 @@
 			contributions,
 		};
 	}
-	setup.perfumeryIdentity = { analyze, canonical, fingerprint, hash, materialVector, descriptors, negative };
+	setup.perfumeryIdentity = { analyze, canonical, fingerprint, hash, materialVector, descriptors, negative, scentKr, famKr, facetKr, finishKr };
 })();

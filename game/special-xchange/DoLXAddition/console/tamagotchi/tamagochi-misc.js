@@ -9,16 +9,16 @@
 
 	const challenges = Object.freeze(
 		[
-			{ id: "warm-up", name: "Warm-Up", diff: "easy", foe: { strength: 0.7 }, rules: {} },
+			{ id: "warm-up", name: "워밍업", diff: "easy", foe: { strength: 0.7 }, rules: {} },
 			{ id: "clean-sweep", name: "깔끔한 완승", diff: "easy", foe: { strength: 0.75 }, rules: { noHeal: true } },
 			{ id: "back-to-basics", name: "기본으로", diff: "easy", foe: { strength: 0.75 }, rules: { basics: true } },
 			{ id: "quick-work", name: "속전속결", diff: "medium", foe: { strength: 0.8 }, rules: { maxTurns: 14 } },
-			{ id: "untouchable", name: "Untouchable", diff: "medium", foe: { strength: 0.6 }, rules: { minHp: 0.4 } },
+			{ id: "untouchable", name: "상처 하나 없이", diff: "medium", foe: { strength: 0.6 }, rules: { minHp: 0.4 } },
 			{ id: "toe-to-toe", name: "정면 승부", diff: "medium", foe: { strength: 0.9 }, rules: {} },
 			{ id: "signature-move", name: "필살기", diff: "medium", foe: { strength: 0.9 }, rules: { finisher: "element" } },
 			{ id: "iron-will", name: "강철 의지", diff: "hard", foe: { strength: 0.95 }, rules: { noHeal: true, maxTurns: 20 } },
 			{ id: "glass-cannon", name: "유리 대포", diff: "hard", foe: { strength: 0.7 }, rules: { minHp: 0.5 } },
-			{ id: "heavyweight", name: "Heavyweight", diff: "hard", foe: { strength: 1.05 }, rules: {} },
+			{ id: "heavyweight", name: "헤비급", diff: "hard", foe: { strength: 1.05 }, rules: {} },
 			{ id: "mirror-match", name: "거울 대결", diff: "hard", foe: { strength: 0.9, mirror: true }, rules: {} },
 		].map(c => Object.freeze(c))
 	);
@@ -172,7 +172,7 @@
 			guarding: false,
 			reviveUsed: false,
 			usedBackup: true,
-			log: [`Challenge: ${c.name}. ${enemy.kind === "boss" ? "A mirror of " + pet.name : "A " + enemy.name} steps up to face ${pet.name}.`],
+			log: [`도전: ${c.name}. ${enemy.kind === "boss" ? pet.name + "의 거울상" : enemy.name} 등장! ${pet.name}에게 맞서 나선다.`],
 			over: false,
 			result: null,
 			turn: 0,
@@ -204,7 +204,7 @@
 		if (!c) return;
 		ch.used[action.kind] = (ch.used[action.kind] || 0) + 1;
 		ch.lastMove = action;
-		const knocked = b.log.some(line => / is struck down, but its Revive/.test(line));
+		const knocked = b.log.some(line => / is struck down, but its Revive|스킬이 HP \d+ 상태로 되살렸다/.test(line));
 		ch.minHp = Math.min(ch.minHp, knocked ? 0 : b.hp / Math.max(1, b.maxHp));
 		const r = c.rules;
 		if (ch.broken) return;
