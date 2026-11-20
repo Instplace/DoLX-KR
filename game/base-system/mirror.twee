@@ -451,7 +451,7 @@
 
 		<<if $worn.upper.reveal + $worn.lower.reveal gte 50>>
 			<<set $_outfit to "의상">>
-			<<run _increaseAllure.push(`선정적인 ${$_outfit} ${"+".repeat(Math.floor(($worn.upper.reveal + $worn.lower.reveal) / 400))}`)>>
+			<<run _increaseAllure.push(`선정적인 ${$_outfit} ${"+".repeat(Math.floor((($worn.lower.type.includes("overalls") ? $worn.upper.reveal / 2 : $worn.upper.reveal) + $worn.lower.reveal) / 400))}`)>>
 			<<run _increaseAttractive.push(`매력적인 ${$_outfit} ${"+".repeat(Math.floor(($worn.upper.reveal + $worn.lower.reveal) / 400))}`)>>
 		<</if>>
 		<<if $worn.head.reveal gte 50>>
@@ -2266,7 +2266,7 @@
 			<<updatesidebarimg>>
 		<</button>>
 		<<button '<span class="fa-icon fa-delete"></span> 삭제'>>
-			<<if _selectedSavedHairStyle isnot "Default">>
+			<<if _selectedSavedHairStyle isnot "기본값" and _selectedSavedHairStyle isnot "Default">>
 				<<run $outfit.forEach((o) => {
 					if(o.hairStyle === T.selectedSavedHairStyle){
 						o.hairStyle = undefined;
@@ -2613,7 +2613,7 @@
 							<span @class="$makeup.eyelenses.left == _colour || $makeup.eyelenses.right == _colour ? 'makeupWorn' : 'makeupItem'">
 								<<capture _colour>>
 									<<set _colourName to setup.colours.eyes_map[_colour]?.name || setup.colourName(_colour)>>
-									<<set _cssColour to setup.colours.eyes_map[_colour]?.csstext || _colour.replace(/ /g, '-')>>
+									<<set _cssColour to _colour.replace(/ /g, '-')>>
 									<<set _contactName to _colourName + ` <span @class="'eye-'+_cssColour"><span class="colour-sample bgcolour-eyes left-"></span></span>`>>
 
 									<<button _contactName>>

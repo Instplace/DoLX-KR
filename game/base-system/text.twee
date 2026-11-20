@@ -1886,7 +1886,7 @@
 	<<else>>
 		<<set _text_output to "">>
 	<</if>>
-	<<if $role and $role isnot "normal" and _args[0] isnot "normal">>
+	<<if $role and $role isnot "normal">>
 		<<set _text_output += window.KR.getNpcRoleKr($role)>>
 	<<elseif $pronoun is "m">>
 		<<set _text_output += ($npcadult is 1 ? "남자" : "소년")>>
@@ -3240,7 +3240,7 @@
 		<<elseif !$worn.under_upper.type.includes("naked")>>
 			<<undertop>>
 			<<set _undertop to _text_output>>
-			<<set _text_output to `<span class=\"lewd\">노출된 ${_genitals}${!$worn.under_upper.type.includes("lower_covering") ? "【와과】 " + _undertop : ""}</span>`>>
+			<<set _text_output to `<span class=\"lewd\">노출된 ${_genitals}${!$worn.under_upper.type.includes("torso_covering") ? "【와과】 " + _undertop : ""}</span>`>>
 			<<set _nudityExtra to " 가슴이 어느 정도 가려져 있어 벗겨진 하반신이 더욱 도드라지게 느껴진다.">>
 		<<else>>
 			<<set _text_output to "<span class=\"lewd\">노출된</span> ">>
@@ -5097,7 +5097,6 @@
 						온몸이 쑤신 채,
 					<</if>>
 				<<elseif $pain gte 40>>
-					<<elseif $pain gte 40>>
 					<<if $leftarm is "bound" and $rightarm is "bound">>
 						<<if _speechAttitudeResolved is "cruel">>
 							분노에 찬 눈물을 깜빡이며 참아내고,
@@ -7181,22 +7180,23 @@ Argument 2, where appropriate, determines whether it's the player undressing the
 		<<else>>
 			<<set $_npcPenetratorDesc to $_npc.penisdesc>>
 		<</if>>
+		<<set _lower_part to "">>
+		<<set $_penetratorKr to ($_npcHasStrapon ? $_npcPenetratorDesc : window.KR.getPenisDescKr($_npc.penisdesc))>>
 		<<if $_npc.penis isnot "none" and $_npc.vagina isnot "none">>
-			<<set _text_output += "$_npcPenetratorDesc and <<his>> ">>
-			<<set _text_output += $enemyarousal gte 40 ? "moistened pussy" : "pussy">>
 			<<if !$_npcHasStrapon and $_npc.chastity.penis.includes("chastity")>>
-				<<set _lower_part += "$_npc.chastity.penis 안에 있는 " + window.KR.getPenisDescKr($_npc.penisdesc) + " 그리고 <<his>> ">>
+				<<set _lower_part += "$_npc.chastity.penis 안에 있는 " + $_penetratorKr + " 그리고 <<his>> ">>
+			<<else>>
+				<<set _lower_part += $_penetratorKr + " 그리고 <<his>> ">>
 			<</if>>
 			<<set _lower_part += ($enemyarousal gte 40 ? "젖은 보지" : "보지")>>
 		<<elseif $_npc.penis isnot "none">>
-			<<set _text_output += $_npcPenetratorDesc>>
 			<<if $_npcHasStrapon>>
-				<!-- Strap-ons do not get erection or chastity cage text. -->
+				<<set _lower_part += $_penetratorKr>>
 			<<else>>
 				<<if $_npc.chastity.penis.includes("chastity")>>
-					<<set _lower_part += "$_npc.chastity.penis 안에 있는 " + window.KR.getPenisDescKr($_npc.penisdesc)>>
+					<<set _lower_part += "$_npc.chastity.penis 안에 있는 " + $_penetratorKr>>
 				<<else>>
-					<<set _lower_part += "완전히 발기한 " + window.KR.getPenisDescKr($_npc.penisdesc)>>
+					<<set _lower_part += "완전히 발기한 " + $_penetratorKr>>
 				<</if>>
 			<</if>>
 		<<elseif $_npc.vagina isnot "none">>
