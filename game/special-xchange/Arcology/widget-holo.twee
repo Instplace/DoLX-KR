@@ -51,7 +51,7 @@
 			<div class="holo-boot-bar"><span></span></div>
 			<div class="holo-boot-sub">인증 중: <<print (_ha.handle or "게스트").toUpperCase()>></div>
 		</div>
-		<section class="holo holo-id" aria-label="Digital identity" @data-state="_haTone is 'denied' ? 'denied' : 'ok'">
+		<section class="holo holo-id" aria-label="디지털 신분증" @data-state="_haTone is 'denied' ? 'denied' : 'ok'">
 			<div class="holo-id-head">
 				<svg class="holo-id-emblem" viewBox="0 0 24 24" aria-hidden="true"><path d="M2 21a10 10 0 0 1 20 0"/><path d="M7 21v-7m5 7V9m5 12v-6"/><path d="M1 21h22"/></svg>
 				<span class="holo-id-issuer">시민 등록소</span>
@@ -77,7 +77,7 @@
 			</div>
 			<div class="holo-id-mrz" aria-hidden="true" @data-mrz="setup.arcology.mrz(_ha.handle, _haId)"></div>
 		</section>
-		<section class="holo holo-net" aria-label="Network" @data-state="_online ? 'ok' : 'pending'">
+		<section class="holo holo-net" aria-label="네트워크" @data-state="_online ? 'ok' : 'pending'">
 			<div class="holo-head">네트워크</div>
 			<div class="holo-status" @data-tone="_online ? 'ok' : 'warn'"><span class="holo-dot" aria-hidden="true"></span><<print _online ? "도시 네트워크 연결됨" : "범위 밖">></div>
 			<<if _online>>
@@ -92,14 +92,14 @@
 				<span class="holo-badge" @data-tone="_haTone">_haClearance 접근</span>
 			</div>
 		</section>
-		<section class="holo holo-objectives" aria-label="Objectives">
+		<section class="holo holo-objectives" aria-label="목표">
 			<div class="holo-head">목표<<print _cached>></div>
 			<<set _objectives to 0>>
 			<<if _ha.voyage and _ha.voyage.arriveAt>>
 				<<set _objectives++>><<set _hvs to setup.arcology.voyageStatus()>>
 				<div class="holo-obj">
 					<div class="holo-obj-title"><<print _ha.voyage.to is "arcology" ? "아콜로지로 이동 중" : "본토로 이동 중">></div>
-					<div class="transit-bar" role="progressbar" aria-label="Journey progress" aria-valuemin="0" aria-valuemax="100" @aria-valuenow="_hvs.pct"><span class="transit-fill" @style="'width: ' + _hvs.pct + '%'"></span></div>
+					<div class="transit-bar" role="progressbar" aria-label="항해 진행" aria-valuemin="0" aria-valuemax="100" @aria-valuenow="_hvs.pct"><span class="transit-fill" @style="'width: ' + _hvs.pct + '%'"></span></div>
 					<<holoRow "남은 시간" `setup.arcology.duration(_hvs.remaining)`>>
 				</div>
 			<</if>>
@@ -153,7 +153,7 @@
 				<div class="holo-empty">진행 중인 목표 없음</div>
 			<</if>>
 		</section>
-		<section class="holo holo-room" aria-label="Accommodation" @data-state="_haRoom ? 'ok' : 'denied'">
+		<section class="holo holo-room" aria-label="숙소" @data-state="_haRoom ? 'ok' : 'denied'">
 			<div class="holo-head">숙소<<print _cached>></div>
 			<<if _haRoom>>
 				<div class="holo-big">호텔 메리디안 · <<print setup.arcology.roomNumber()>></div>
@@ -166,12 +166,12 @@
 				<<holoRow "1박 요금" `setup.arcology.cxU(setup.arcologyPrice.peek("night").q)`>>
 			<</if>>
 		</section>
-		<section class="holo holo-wallet" aria-label="Wallet">
+		<section class="holo holo-wallet" aria-label="지갑">
 			<div class="holo-head">지갑<<print _cached>></div>
 			<div class="holo-amount"><<print setup.arcology.cxN(_ha.cipher or 0)>> <span>사이퍼</span></div>
 			<<if _ha.vault>><<holoRow "금고" `setup.arcology.cxU(_ha.vault)`>><</if>>
 		</section>
-		<section class="holo holo-services" aria-label="Network services" @data-state="_online ? 'ok' : 'denied'">
+		<section class="holo holo-services" aria-label="네트워크 서비스" @data-state="_online ? 'ok' : 'denied'">
 			<div class="holo-head">서비스</div>
 			<div class="holo-tiles">
 				<div id="holoMapTile" class="holo-svc">
@@ -233,7 +233,7 @@
 	<<if $xchange.arcology and $xchange.arcology.arrived>>
 		<<set _arcologyRevoked to $xchange.arcology.guest and $xchange.arcology.guest.status is "revoked">>
 		<div class="arcology-orb-zone">
-			<button type="button" class="arcology-orb" aria-label="Island city map" aria-haspopup="dialog" aria-controls="arcologyHolo"><svg class="arcology-orb-mark" viewBox="0 0 40 32" aria-hidden="true" focusable="false"><g class="ao-ring-back" transform="rotate(-14 20 16)"><path d="M2 16 A18 5 0 0 1 38 16"/></g><path class="ao-dome" d="M9 19 A11 11 0 0 1 31 19 Z"/><g class="ao-city"><rect x="13" y="14" width="2" height="5"/><rect x="16" y="11" width="2" height="8"/><rect x="19" y="9" width="2" height="10"/><rect x="19.6" y="6" width="0.8" height="3"/><rect x="22" y="12" width="2" height="7"/><rect x="25" y="15" width="2" height="4"/></g><path class="ao-platform" d="M7 19 H33 L30 22.5 H10 Z"/><path class="ao-edge" d="M6 23 H34"/><path class="ao-wake" d="M4 26 H11 M29 26 H37 M8 28.5 H13 M27 28.5 H32"/><g class="ao-ring-front" transform="rotate(-14 20 16)"><path d="M38 16 A18 5 0 0 1 2 16"/></g></svg></button>
+			<button type="button" class="arcology-orb" aria-label="섬 도시 지도" aria-haspopup="dialog" aria-controls="arcologyHolo"><svg class="arcology-orb-mark" viewBox="0 0 40 32" aria-hidden="true" focusable="false"><g class="ao-ring-back" transform="rotate(-14 20 16)"><path d="M2 16 A18 5 0 0 1 38 16"/></g><path class="ao-dome" d="M9 19 A11 11 0 0 1 31 19 Z"/><g class="ao-city"><rect x="13" y="14" width="2" height="5"/><rect x="16" y="11" width="2" height="8"/><rect x="19" y="9" width="2" height="10"/><rect x="19.6" y="6" width="0.8" height="3"/><rect x="22" y="12" width="2" height="7"/><rect x="25" y="15" width="2" height="4"/></g><path class="ao-platform" d="M7 19 H33 L30 22.5 H10 Z"/><path class="ao-edge" d="M6 23 H34"/><path class="ao-wake" d="M4 26 H11 M29 26 H37 M8 28.5 H13 M27 28.5 H32"/><g class="ao-ring-front" transform="rotate(-14 20 16)"><path d="M38 16 A18 5 0 0 1 2 16"/></g></svg></button>
 		</div>
 		<div class="arcology-holo" id="arcologyHolo" role="dialog" aria-labelledby="arcologyHoloTitle" hidden>
 			<svg class="arcology-holo-shape" viewBox="0 0 200 120" aria-hidden="true" focusable="false"><path d="M30 70 Q40 30 80 34 Q110 12 140 30 Q178 36 170 66 Q182 96 140 98 Q112 112 82 100 Q40 104 30 70 Z"/></svg>
@@ -270,13 +270,13 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 /* How dangerous the island thinks the player is. Score and level come from setup.arcology.threatScore(); nothing is worked out here. */
 <<widget "arcologyThreatMeter">>
 	<<set _atScore to setup.arcology.threatScore()>><<set _atBand to setup.arcology.threatBand()>><<set _atBandInfo to setup.arcology.threatBands[_atBand]>>
-	<section class="holo arcology-threat" aria-label="Island threat assessment" @data-band="_atBand">
+	<section class="holo arcology-threat" aria-label="섬 위협 평가" @data-band="_atBand">
 		<div class="holo-head">섬 위협 평가</div>
 		<div class="arcology-threat-readout">
 			<span class="holo-big arcology-threat-label">_atBandInfo.label</span>
 			<span class="holo-value">점수 <<print _atScore>> / 100</span>
 		</div>
-		<div class="arcology-threat-bar" role="meter" aria-valuemin="0" aria-valuemax="100" @aria-valuenow="_atScore" @aria-valuetext="_atBandInfo.label + ', score ' + _atScore" aria-label="Island threat assessment">
+		<div class="arcology-threat-bar" role="meter" aria-valuemin="0" aria-valuemax="100" @aria-valuenow="_atScore" @aria-valuetext="_atBandInfo.label + ', 점수 ' + _atScore" aria-label="섬 위협 평가">
 			<span class="arcology-threat-marker" @style="'left: ' + _atScore + '%'"></span>
 		</div>
 		<div class="arcology-threat-ends"><span class="holo-label">눈에 띄지 않음</span><span class="holo-label">쫓기는 중</span></div>
@@ -347,7 +347,7 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 <<widget "arcologyNewsList">>
 	<<set _nlAll to setup.arcologyNews.feed()>>
 	<<set _nlSec to setup.arcologyNews.section>>
-	<nav class="dbn-nav" aria-label="News sections">
+	<nav class="dbn-nav" aria-label="뉴스 분류">
 		<<for _nlS range setup.arcologyNews.sections>>
 			<<if _nlS[0] isnot "latest" and !_nlAll.some(x => setup.arcologyNews.inSection(x, _nlS[0]))>><<continue>><</if>>
 			<<capture _nlS>><span @class="'dbn-tab' + (_nlSec is _nlS[0] ? ' on' : '')"><<link _nlS[1]>><<run setup.arcologyNews.section = _nlS[0]>><<replace "#holoNewsBody">><<arcologyNewsList>><</replace>><<run setup.arcologyNewsArt.later()>><</link>></span><</capture>>
@@ -427,7 +427,7 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 			<div class="dbn-art dbn-art-main" @data-news-art="_na.id" data-live aria-hidden="true"></div>
 			<<if ["MARKETS", "BUSINESS"].includes(_na.cat)>>
 				<<set _naFx to setup.arcologyFx.state()>>
-				<div class="dbn-market" aria-label="Market now">
+				<div class="dbn-market" aria-label="현재 시세">
 					<span class="dbn-market-label">현재 시세</span>
 					<span class="dbn-chip">£ / 사이퍼 <<print setup.arcologyFx.gbp(setup.arcologyFx.mid(_naFx))>></span>
 					<<for _naCh range [["1H", 3600], ["24H", 86400]]>>
@@ -473,7 +473,7 @@ Each topic is its own <section class="holo"> in the grid, so later panels (facti
 				</ul>
 			<</if>>
 			<<if _na.k isnot "weekly" or _na.options.length>>
-				<div class="dbn-reactions" role="group" aria-label="Reactions">
+				<div class="dbn-reactions" role="group" aria-label="반응">
 					<<for _naR range setup.arcologyNews.reactionKinds>>
 						<<capture _naR>>
 							<<set _naCount to setup.arcologyNews.reactionCount(_na, _naR[0])>>

@@ -2055,7 +2055,7 @@ window.KR.getPenisDescKr = function(desc) {
         "white": "흰색",
         "yellow": "노란색",
         "tan": "황갈색",
-        "brown": "갈색"
+        "brown": "갈색", "dark": "짙은", "light": "연한", "pale": "창백한", "bright": "선명한", "deep": "진한", "neon": "형광", "teal": "청록색", "lime-green": "연두색", "light-pink": "연분홍색", "grey": "회색", "gray": "회색"
     };
 
     if (dict[desc]) return dict[desc];

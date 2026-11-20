@@ -1237,7 +1237,7 @@ function settingsObjects(type) {
 					},
 					bodyshape: {
 						strings: ["classic", "slender", "andro", "curvy", "soft"],
-						textMap: { classic: "클래식", slender: "호리호리", andro: "중성적", curvy: "굴곡진", soft: "부드러운" },
+						textMap: { classic: "평범한", slender: "슬림한", andro: "중성적", curvy: "잘록한", soft: "푹신한" },
 						displayName: "체형:",
 						randomize: "characterAppearance",
 					},

@@ -727,7 +727,7 @@ const Tamagotchi = (() => {
 		t.spd *= Tuning.evolveStatMult;
 		clampStats(t);
 		t.happiness = clamp(t.happiness + 20);
-		return { ok: true, from: fromName, to: evo.name, capped: atCap(t), sacrificed: sacrificedNames };
+		return { ok: true, from: setup.tamaName(fromName), to: setup.tamaName(evo.name), capped: atCap(t), sacrificed: sacrificedNames.map(setup.tamaName) };
 	}
 
 	/* --- Battle --- */
@@ -850,11 +850,11 @@ const Tamagotchi = (() => {
 		} else if (pet.evolved && Math.random() < Tuning.minibossChance) {
 			e = makeMiniboss(pet);
 			kind = "miniboss";
-			intro = "A hulking " + e.name + " blocks " + pet.name + "'s path!";
+			intro = "거대한 " + e.name + "【이가】 " + pet.name + "의 앞길을 막아선다!";
 		} else {
 			e = makeEnemy(pet.wave, pet);
 			kind = "wild";
-			intro = "A wild " + e.name + " attacks " + pet.name + "!";
+			intro = "야생 " + e.name + "【이가】 " + pet.name + "【을를】 습격한다!";
 		}
 		V.petBattle = newBattleState(kind, e, pet, intro);
 		return V.petBattle;
@@ -1065,7 +1065,7 @@ const Tamagotchi = (() => {
 		if (!b || !b.over || !exists()) return { result: "none" };
 		const pet = V.tamagotchi;
 		const kind = b.kind || "wild";
-		const summary = { result: b.result, kind, enemy: b.enemy.name };
+		const summary = { result: b.result, kind, enemy: setup.tamaName(b.enemy.name) };
 		if (b.result === "win") {
 			pet.happiness = clamp(pet.happiness + 15);
 			/* The team pulled through: a teammate that fainted mid-battle survives, just exhausted. */
@@ -1195,7 +1195,7 @@ const Tamagotchi = (() => {
 			const id = choices[rand(choices.length)];
 			if (!Array.isArray(t.skills)) t.skills = [];
 			t.skills.push(id);
-			return { type, label: "스킬 디스크", detail: "(펫이 " + SKILLS[id].name + " 스킬을 익힌다)", skill: SKILLS[id].name };
+			return { type, label: "스킬 디스크", detail: "(펫이 " + setup.tamaName(SKILLS[id].name) + " 스킬을 익힌다)", skill: setup.tamaName(SKILLS[id].name) };
 		}
 		addElixir(1);
 		return { type: "elixir", label: "엘릭서", detail: "(죽었을 때 펫을 한 번 되살린다)" };
@@ -1283,7 +1283,7 @@ const Tamagotchi = (() => {
 		return scale > 70 ? "활기참" : scale > 40 ? "보통" : scale > 15 ? "피곤함" : "녹초";
 	}
 	function listSpecies() {
-		return Object.keys(SPECIES).map(id => ({ id, name: SPECIES[id].name, type: SPECIES[id].type, typeLabel: typeName(SPECIES[id].type), blurb: SPECIES[id].blurb }));
+		return Object.keys(SPECIES).map(id => ({ id, name: setup.tamaName(SPECIES[id].name), type: SPECIES[id].type, typeLabel: typeName(SPECIES[id].type), blurb: SPECIES[id].blurb }));
 	}
 	/* Species offered for adoption: every elemental line not already in the collection. */
 	function adoptableSpecies() {
@@ -1293,7 +1293,7 @@ const Tamagotchi = (() => {
 	function skillInfo(id) {
 		const s = SKILLS[id];
 		if (!s) return null;
-		return { id, name: s.name, type: s.type, typeLabel: typeName(s.type), power: s.power, mp: s.mp, heal: s.effect === "heal", passive: s.passive === true };
+		return { id, name: setup.tamaName(s.name), type: s.type, typeLabel: typeName(s.type), power: s.power, mp: s.mp, heal: s.effect === "heal", passive: s.passive === true };
 	}
 	function learnedSkills() {
 		if (!exists()) return [];
@@ -1309,10 +1309,10 @@ const Tamagotchi = (() => {
 		if (!t) return null;
 		const s = speciesDef(t.species);
 		return {
-			name: t.name || (s ? s.name : "펫"),
+			name: setup.tamaName(t.name || (s ? s.name : "펫")),
 			species: t.species,
 			alive: t.alive === true,
-			speciesLabel: s ? s.name : "",
+			speciesLabel: setup.tamaName(s ? s.name : ""),
 			type: t.type || (s ? s.type : ""),
 			typeLabel: typeName(t.type || (s ? s.type : "")),
 			hunger: t.hunger,
@@ -1367,7 +1367,7 @@ const Tamagotchi = (() => {
 		return {
 			exists: true,
 			alive: t.alive,
-			name: t.name || (s ? s.name : "펫"),
+			name: setup.tamaName(t.name || (s ? s.name : "펫")),
 			stage: stage(),
 			stageLabel: stageLabel[stage()] || "",
 			ageDays: Math.floor(ageDays()),
@@ -1381,7 +1381,7 @@ const Tamagotchi = (() => {
 			happinessWord: word(t.happiness, "happiness"),
 			energyWord: word(t.energy, "energy"),
 			species: t.species,
-			speciesLabel: s ? s.name : "",
+			speciesLabel: setup.tamaName(s ? s.name : ""),
 			type: t.type,
 			typeLabel: typeName(t.type),
 			evolved: !!t.evolved,
@@ -1397,7 +1397,7 @@ const Tamagotchi = (() => {
 			trainCount: t.trainCount,
 			wave: t.wave,
 			wins: t.wins || 0,
-			skills: skills.map(id => SKILLS[id].name),
+			skills: skills.map(id => setup.tamaName(SKILLS[id].name)),
 			skillCount: skills.length,
 			pendingSkillChoice: t.pendingSkillChoice,
 			pendingAttack: attackDue() || boss,
@@ -1494,12 +1494,12 @@ const Tamagotchi = (() => {
 		const eLabel =
 			b.kind === "boss" ? "보스 " : b.kind === "miniboss" ? "중간 보스 " : b.kind === "dungeon" ? "던전 " : b.kind === "challenge" ? "도전: " : "야생 ";
 		let h = `<div class="tama-battle">`;
-		h += `<div class="tama-fighter"><div class="tama-fname">${esc(pet.name)}</div><div class="tama-barline"><span class="tama-blabel">HP</span>${bar(
+		h += `<div class="tama-fighter"><div class="tama-fname">${esc(setup.tamaName(pet.name))}</div><div class="tama-barline"><span class="tama-blabel">HP</span>${bar(
 			b.hp,
 			b.maxHp,
 			b.hp <= b.maxHp / 4 ? "hp-low" : "hp"
 		)}</div><div class="tama-barline"><span class="tama-blabel">MP</span>${bar(b.mp, b.maxMp, "mp")}</div></div>`;
-		h += `<div class="tama-fighter"><div class="tama-fname">${eLabel}${esc(b.enemy.name)} <span class="tama-sub">(${esc(
+		h += `<div class="tama-fighter"><div class="tama-fname">${eLabel}${esc(setup.tamaName(b.enemy.name))} <span class="tama-sub">(${esc(
 			typeName(b.enemy.type)
 		)})</span></div><div class="tama-barline"><span class="tama-blabel">HP</span>${bar(
 			b.enemy.hp,

@@ -5,7 +5,7 @@
  * Rules: noHeal, basics (Attack and Guard only), maxTurns, minHp (a Revive save counts as falling), finisher "element". */
 (() => {
 	const daily = () => setup.consoleDaily;
-	const schema = 1;
+	const schema = 1; setup.tamaNameKr = Object.freeze({ Embit: "엠빗", Blazilisk: "블레이질리스크", Pudduck: "푸덕", Pondswan: "폰드스완", Sprout: "스프라우트", Oakguard: "오크가드", Voltpup: "볼트펍", Thundrover: "선더로버", Cinderbeast: "신더비스트", Magmite: "마그마이트", Ashfang: "애시팽", Drizzlefin: "드리즐핀", Tidemaw: "타이드마우", Brinejaw: "브라인조", Thornbeast: "쏜비스트", Bramblil: "브램블릴", Mosshorn: "모스혼", Boltfang: "볼트팽", Sparkmaw: "스파크마우", Voltbeast: "볼트비스트", Ember: "불씨", "Flame Burst": "화염 폭발", Inferno: "업화", Bubble: "거품", "Aqua Pulse": "물결 파동", Tsunami: "해일", "Vine Whip": "덩굴 채찍", "Leaf Storm": "나뭇잎 폭풍", "Solar Beam": "태양 광선", Spark: "스파크", Thunderbolt: "번개", "Volt Crash": "볼트 크래시", "Power Strike": "강타", Slam: "후려치기", Rampage: "난동", "Meteor Strike": "유성 강타", Recover: "회복", Rejuvenate: "재생", Revive: "부활", Strike: "타격", "Fire Blast": "불꽃 블래스트", "Water Blast": "물 블래스트", "Grass Blast": "풀 블래스트", "Electric Blast": "전기 블래스트", Beast: "짐승" }); setup.tamaName = n => (typeof n !== "string" ? n : Object.hasOwn(setup.tamaNameKr, n) ? setup.tamaNameKr[n] : /^Mirror /.test(n) ? "거울 " + setup.tamaName(n.slice(7)) : n); const tamaRe = new RegExp("(?<![A-Za-z])(Mirror )?(" + Object.keys(setup.tamaNameKr).sort((a, b) => b.length - a.length).join("|") + ")(?![A-Za-z])", "g"); setup.tamaText = s => (typeof s !== "string" ? s : s.replace(tamaRe, (m, mir, n) => (mir ? "거울 " : "") + setup.tamaNameKr[n]));
 
 	const challenges = Object.freeze(
 		[
@@ -333,7 +333,7 @@
 				: "오늘은 없음",
 			reset: daily().untilReset(),
 			art: foeArt(c),
-			foeName: Tamagotchi.isAlive() ? makeFoe(c, V.tamagotchi).name : "",
+			foeName: Tamagotchi.isAlive() ? setup.tamaName(makeFoe(c, V.tamagotchi).name) : "",
 			petArt: Tamagotchi.isAlive() && typeof PetArt !== "undefined" ? PetArt.icon(V.tamagotchi.species) : "",
 			history: daily().history(peek().daily, c.date, r => `${r.best}턴 만에 승리`),
 		};

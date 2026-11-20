@@ -70,7 +70,7 @@ DefineMacroS("namedNpcEjaculation", namedNpcEjaculation);
 function swarmWord(count) {
 	if (!V.swarm) return "";
 	const n = count === undefined ? V.swarm.amount?.active?.[0] : count;
-	return n === 1 ? V.swarm.name : V.swarm.type;
+	return n === 1 ? V.swarm.name : (V.swarm.name || V.swarm.type);
 }
 
 window.swarmWord = swarmWord;

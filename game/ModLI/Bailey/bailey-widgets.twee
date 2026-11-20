@@ -17,7 +17,7 @@ To add a new collar, just add it to that registry in rbe.js.
 		var groups = [];
 		var seen = {};
 		reg.forEach(function (e) {
-			var p = e.pack || "Other";
+			var p = e.pack || "기타";
 			if (!seen[p]) { seen[p] = []; groups.push([p, seen[p]]); }
 			seen[p].push(e);
 		});
@@ -32,7 +32,7 @@ To add a new collar, just add it to that registry in rbe.js.
 			html += '</optgroup>';
 		});
 		if (hasCustom) {
-			html += '<optgroup label="Your Upload">';
+			html += '<optgroup label="직접 올린 이미지">';
 			var sel = (current === "custom") ? ' selected' : '';
 			html += '<option value="custom"' + sel + '>직접 올린 이미지</option>';
 			html += '</optgroup>';
@@ -53,7 +53,7 @@ To add a new collar, just add it to that registry in rbe.js.
 :: Bailey Title Widget [widget]
 <<widget "baileyTitle">><<silently>>
 		<<if $baileyTitle and $baileyTitle isnot "Bailey">>
-			<<set _btOut to $baileyTitle>>
+			<<set _btOut to ({"daddy":"아빠","mommy":"엄마","sir":"선생님","ma'am":"사모님","master":"주인님","mistress":"여주인님","boss":"보스"})[String($baileyTitle).toLowerCase()] || $baileyTitle>>
 		<<else>>
 			<<set _btOut to "Bailey">>
 		<</if>>
@@ -62,7 +62,7 @@ To add a new collar, just add it to that registry in rbe.js.
 /* Same as baileyTitle but capitalised, for the start of a sentence. */
 <<widget "BaileyTitle">><<silently>>
 		<<if $baileyTitle and $baileyTitle isnot "Bailey">>
-			<<set _btOut to $baileyTitle.charAt(0).toUpperCase() + $baileyTitle.slice(1)>>
+			<<set _btOut to ({"daddy":"아빠","mommy":"엄마","sir":"선생님","ma'am":"사모님","master":"주인님","mistress":"여주인님","boss":"보스"})[String($baileyTitle).toLowerCase()] || ($baileyTitle.charAt(0).toUpperCase() + $baileyTitle.slice(1))>>
 		<<else>>
 			<<set _btOut to "Bailey">>
 		<</if>>
@@ -81,7 +81,7 @@ To add a new collar, just add it to that registry in rbe.js.
 /* Narration version: only prints the title once one other than "Bailey" is chosen. */
 <<widget "baileyTitleNarration">><<silently>>
 		<<if $syndromeBailey and $baileyTitle isnot "Bailey">>
-			<<set _btOut to $baileyTitle>>
+			<<set _btOut to ({"daddy":"아빠","mommy":"엄마","sir":"선생님","ma'am":"사모님","master":"주인님","mistress":"여주인님","boss":"보스"})[String($baileyTitle).toLowerCase()] || $baileyTitle>>
 		<<else>>
 			<<set _btOut to "Bailey">>
 		<</if>>
@@ -95,7 +95,7 @@ To add a new collar, just add it to that registry in rbe.js.
 <br><br>
 
 <<if $baileyTitle and $baileyTitle isnot "Bailey">>
-	현재 당신이 <<him>>【을를】 부르는 호칭: <span class="lewd"><<print $baileyTitle>></span>
+	현재 당신이 <<him>>【을를】 부르는 호칭: <span class="lewd"><<baileyTitle>></span>
 	<br><br>
 <</if>>
 
@@ -154,7 +154,7 @@ To add a new collar, just add it to that registry in rbe.js.
 <<if $baileyTitle is "Bailey">>
 	당신은 <<him>>【을를】 그냥 베일리라고 부른다. 그저 베일리. 그 이상은 없다.
 <<else>>
-	이제 당신은 <<him>>【을를】 이렇게 부른다: <span class="lewd"><<print $baileyTitle>></span>. 그 말은 마치 원래 거기 있어야 했던 것처럼 입안에 자리 잡는다.
+	이제 당신은 <<him>>【을를】 이렇게 부른다: <span class="lewd"><<baileyTitle>></span>. 그 말은 마치 원래 거기 있어야 했던 것처럼 입안에 자리 잡는다.
 	<<if $syndromeBailey>>
 		<<Him>>. 당신의 것. <<BaileyTitle>>.
 	<</if>>
@@ -569,7 +569,7 @@ Call sites own their own spacing. */
 			default:        return r;
 		}
 	})>>
-	<<print formatList(_phrases, "and")>>
+	<<print formatList(_phrases, "【와과】")>>
 <</widget>>
 
 :: Bailey Combat Widgets [widget]

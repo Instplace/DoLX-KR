@@ -343,7 +343,7 @@
 	<div class="pa-after">
 	<div class="tama-log">
 	<<for _line range _b.log>>
-		_line<br>
+		<<= setup.tamaText(_line)>><br>
 	<</for>>
 	</div>
 
@@ -540,7 +540,7 @@
 <</if>>
 <<set _pcDaily to setup.petChallenges.dailyView()>>
 <div class="con-list">
-<section @class="'con-daily' + (_pcDaily.rec and _pcDaily.rec.done ? ' con-daily--done' : '')" aria-label="오늘의 전투"><div class="con-daily-head"><span class="con-daily-date">오늘의 전투, <<print _pcDaily.c.date>> (UTC)</span><<print _pcDaily.chip>></div><<if _pcDaily.art>><div class="con-vs"><span class="con-vs-side"><<print _pcDaily.petArt>><span class="con-vs-name"><<print $tamagotchi.name>></span></span><span class="con-vs-word">대</span><span class="con-vs-side"><<print _pcDaily.art>><span class="con-vs-name"><<print _pcDaily.foeName>></span></span></div><</if>><p class="con-daily-goal"><<print _pcDaily.describe>></p><dl class="con-facts"><dt>상대</dt><dd><<print _pcDaily.foe>></dd><dt>보상</dt><dd><<print _pcDaily.reward>></dd><dt>상태</dt><dd><<if _pcDaily.rec and _pcDaily.rec.done>><span class="green">완료</span><<elseif _pcDaily.rec and _pcDaily.rec.tries>>아직 완료하지 못함<<else>>아직 시도하지 않음<</if>></dd><dt>최고 기록</dt><dd><<if _pcDaily.rec and _pcDaily.rec.best isnot null and _pcDaily.rec.best isnot undefined>><<print _pcDaily.rec.best>>턴 만에 승리<<else>>아직 없음<</if>><<if _pcDaily.rec and _pcDaily.rec.tries>>, <<print _pcDaily.rec.tries>><<= _pcDaily.rec.tries is 1 ? "회" : "회">> 시도<</if>></dd><dt>다음 전투</dt><dd><<print _pcDaily.reset>> 후 (UTC 자정)</dd></dl><<if !_pcBlock and !_pcBattle>><span class="pet-chal-start con-btn-link"><<link `_pcDaily.rec and _pcDaily.rec.tries ? "오늘의 전투에 다시 도전한다 (0:05)" : "오늘의 전투에 도전한다 (0:05)"` "Home Console Pet Battle">><<run setup.petChallenges.start("daily")>><<pass 5>><</link>></span><</if>></section>
+<section @class="'con-daily' + (_pcDaily.rec and _pcDaily.rec.done ? ' con-daily--done' : '')" aria-label="오늘의 전투"><div class="con-daily-head"><span class="con-daily-date">오늘의 전투, <<print _pcDaily.c.date>> (UTC)</span><<print _pcDaily.chip>></div><<if _pcDaily.art>><div class="con-vs"><span class="con-vs-side"><<print _pcDaily.petArt>><span class="con-vs-name"><<print setup.tamaName($tamagotchi.name)>></span></span><span class="con-vs-word">대</span><span class="con-vs-side"><<print _pcDaily.art>><span class="con-vs-name"><<print _pcDaily.foeName>></span></span></div><</if>><p class="con-daily-goal"><<print _pcDaily.describe>></p><dl class="con-facts"><dt>상대</dt><dd><<print _pcDaily.foe>></dd><dt>보상</dt><dd><<print _pcDaily.reward>></dd><dt>상태</dt><dd><<if _pcDaily.rec and _pcDaily.rec.done>><span class="green">완료</span><<elseif _pcDaily.rec and _pcDaily.rec.tries>>아직 완료하지 못함<<else>>아직 시도하지 않음<</if>></dd><dt>최고 기록</dt><dd><<if _pcDaily.rec and _pcDaily.rec.best isnot null and _pcDaily.rec.best isnot undefined>><<print _pcDaily.rec.best>>턴 만에 승리<<else>>아직 없음<</if>><<if _pcDaily.rec and _pcDaily.rec.tries>>, <<print _pcDaily.rec.tries>><<= _pcDaily.rec.tries is 1 ? "회" : "회">> 시도<</if>></dd><dt>다음 전투</dt><dd><<print _pcDaily.reset>> 후 (UTC 자정)</dd></dl><<if !_pcBlock and !_pcBattle>><span class="pet-chal-start con-btn-link"><<link `_pcDaily.rec and _pcDaily.rec.tries ? "오늘의 전투에 다시 도전한다 (0:05)" : "오늘의 전투에 도전한다 (0:05)"` "Home Console Pet Battle">><<run setup.petChallenges.start("daily")>><<pass 5>><</link>></span><</if>></section>
 <<print _pcDaily.history>>
 <<set _pcProg to setup.petChallenges.progress()>>
 <h3 class="con-page-head">도전 과제</h3>

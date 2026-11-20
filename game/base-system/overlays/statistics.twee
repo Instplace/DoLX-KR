@@ -1625,7 +1625,7 @@
 	<<set _orifice to _args[0]>>
 	<<set _menstruation to $sexStats.vagina.menstruation>>
 	<<if _args[1]>>
-		<span class="teal"><<= _orifice is "anus" ? "Rear" : "Womb">>:</span>
+		<span class="teal"><<= _orifice is "anus" ? "항문" : "자궁">>:</span>
 		<br>
 	<</if>>
 	/* Beta gives two vaginal wombs, each carrying and delivering on its own schedule. */
@@ -1941,8 +1941,8 @@
 		<<for $_key range $_moneyKeys>>
 			<<if $_moneyStats[$_key].earned or $_moneyStats[$_key].spent>>
 				<tbody class="stat">
-					<td data-label="Source"><<moneyStatsNamesKr $_key>></td>
-					<td data-label="Spent" @class="$_moneyStats[$_key].spent ? '' : 'mobileHidden'">
+					<td data-label="출처"><<moneyStatsNamesKr $_key>></td>
+					<td data-label="총 지출" @class="$_moneyStats[$_key].spent ? '' : 'mobileHidden'">
 						<<if $_moneyStats[$_key].spent>>
 							<<printmoney `$_moneyStats[$_key].spent or 0` "red">>
 							<<moneyStatsCompare $_key "spent">>
@@ -1951,7 +1951,7 @@
 						<</if>>
 					</td>
 					<<if _moneyStatsAverages>>
-						<td data-label="Spent Average" @class="$_moneyStats[$_key].spent ? '' : 'mobileHidden'">
+						<td data-label="평균 지출" @class="$_moneyStats[$_key].spent ? '' : 'mobileHidden'">
 							<<if $_moneyStats[$_key].spent>>
 								<<printmoney `$_moneyStats[$_key].spent / $_moneyStats[$_key].spentCount or 0` "red">>
 							<<else>>
@@ -1960,7 +1960,7 @@
 						</td>
 					<</if>>
 					<<if _moneyStatsCount>>
-						<td data-label="Spent Count" @class="$_moneyStats[$_key].spent ? '' : 'mobileHidden'">
+						<td data-label="지출 횟수" @class="$_moneyStats[$_key].spent ? '' : 'mobileHidden'">
 							<<if $_moneyStats[$_key].spentCount>>
 								<<print $_moneyStats[$_key].spentCount>>
 							<<else>>
@@ -1968,7 +1968,7 @@
 							<</if>>
 						</td>
 					<</if>>
-					<td data-label="Earned" @class="$_moneyStats[$_key].earned ? '' : 'mobileHidden'">
+					<td data-label="총 수입" @class="$_moneyStats[$_key].earned ? '' : 'mobileHidden'">
 						<<if $_moneyStats[$_key].earned>>
 							<<printmoney `$_moneyStats[$_key].earned or 0`>>
 							<<moneyStatsCompare $_key "earned">>
@@ -1977,7 +1977,7 @@
 						<</if>>
 					</td>
 					<<if _moneyStatsAverages>>
-						<td data-label="Earned Average" @class="$_moneyStats[$_key].earned ? '' : 'mobileHidden'">
+						<td data-label="평균 수입" @class="$_moneyStats[$_key].earned ? '' : 'mobileHidden'">
 							<<if $_moneyStats[$_key].earned>>
 								<<printmoney `$_moneyStats[$_key].earned / $_moneyStats[$_key].earnedCount or 0`>>
 							<<else>>
@@ -1986,7 +1986,7 @@
 						</td>
 					<</if>>
 					<<if _moneyStatsCount>>
-						<td data-label="Earned Count" @class="$_moneyStats[$_key].earned ? '' : 'mobileHidden'">
+						<td data-label="수입 횟수" @class="$_moneyStats[$_key].earned ? '' : 'mobileHidden'">
 							<<if $_moneyStats[$_key].earnedCount>>
 								<<print $_moneyStats[$_key].earnedCount>>
 							<<else>>
@@ -1995,7 +1995,7 @@
 						</td>
 					<</if>>
 					<<if _moneyStatsHourRates>>
-						<td data-label="Hour Rates">
+						<td data-label="시급">
 							<<if statChange.timeTrackingTotal($_key)>>
 								<<printmoney `$_moneyStats[$_key].earned / statChange.timeTrackingTotal($_key)`>>
 								<<moneyStatsCompareHourly $_key>>
@@ -2005,15 +2005,15 @@
 						</td>
 					<</if>>
 					<<if _moneyStatsDate>>
-						<td data-label="Date"><<moneyStatsDate $_moneyStats[$_key].spentTimeStamp $_moneyStats[$_key].earnedTimeStamp>></td>
+						<td data-label="날짜"><<moneyStatsDate $_moneyStats[$_key].spentTimeStamp $_moneyStats[$_key].earnedTimeStamp>></td>
 					<</if>>
 				</tbody>
 			<</if>>
 		<</for>>
 		<<unset _timeTrackingSnapshotOveride>>
 		<tbody class="total">
-			<td data-label="Source">총계</td>
-			<td data-label="Spent">
+			<td data-label="출처">총계</td>
+			<td data-label="총 지출">
 				<<printmoney $_moneyTotal.spent "red">>
 				<<if _showSnapshot is "compare">>
 					<<print "+<<printmoney `(_moneyStatsTotal.spent or 0) - (_moneyStatsSnapshotTotal.spent or 0)` 'white'>>">>
@@ -2022,12 +2022,12 @@
 				<</if>>
 			</td>
 			<<if _moneyStatsAverages>>
-				<td data-label="Spent Average"><<printmoney `$_moneyTotal.spent / $_moneyTotal.spentCount or 0` "red">></td>
+				<td data-label="평균 지출"><<printmoney `$_moneyTotal.spent / $_moneyTotal.spentCount or 0` "red">></td>
 			<</if>>
 			<<if _moneyStatsCount>>
-				<td data-label="Spent Count"><<print $_moneyTotal.spentCount>></td>
+				<td data-label="지출 횟수"><<print $_moneyTotal.spentCount>></td>
 			<</if>>
-			<td data-label="Earned">
+			<td data-label="총 수입">
 				<<printmoney $_moneyTotal.earned>>
 				<<if _showSnapshot is "compare">>
 					<<print "+<<printmoney `(_moneyStatsTotal.earned or 0) - (_moneyStatsSnapshotTotal.earned or 0)` 'white'>>">>
@@ -2036,16 +2036,16 @@
 				<</if>>
 			</td>
 			<<if _moneyStatsAverages>>
-				<td data-label="Earned Average"><<printmoney `$_moneyTotal.earned / $_moneyTotal.earnedCount or 0`>></td>
+				<td data-label="평균 수입"><<printmoney `$_moneyTotal.earned / $_moneyTotal.earnedCount or 0`>></td>
 			<</if>>
 			<<if _moneyStatsCount>>
-				<td data-label="Earned Count"><<print $_moneyTotal.earnedCount>></td>
+				<td data-label="수입 횟수"><<print $_moneyTotal.earnedCount>></td>
 			<</if>>
 			<<if _moneyStatsHourRates>>
-				<td data-label="Hour Rates">-</td>
+				<td data-label="시급">-</td>
 			<</if>>
 			<<if _moneyStatsDate>>
-				<td data-label="Date"><<moneyStatsDate $_moneyTotal.spentTimeStamp $_moneyTotal.earnedTimeStamp>></td>
+				<td data-label="날짜"><<moneyStatsDate $_moneyTotal.spentTimeStamp $_moneyTotal.earnedTimeStamp>></td>
 			<</if>>
 		</tbody>
 		<<if _showSnapshot>>
@@ -2328,7 +2328,7 @@
 		</thead>
 		<<for $_badEnd range $_badEndStats>>
 			<tbody class="stat">
-				<td data-label="Bad End">
+				<td data-label="배드 엔딩">
 					<<badEndProse $_badEnd.source>>
 					<<if $_badEnd.notesStart or $_badEnd.notesEnd>>
 						<<set $_includesError to $_badEnd?.notesStart?.includes("Not correctly tracked") or $_badEnd?.notesEnd?.includes("Not correctly tracked")>>
@@ -2341,7 +2341,7 @@
 						</span></mouse>
 					<</if>>
 				</td>
-				<td data-label="Started">
+				<td data-label="시작">
 					<<set $_time to new DateTime($_badEnd.trackedStart)>>
 					<<switch $options.dateFormat>>
 						<<case "en-US">>
@@ -2352,7 +2352,7 @@
 							시작됨: $_time.day일 $_time.month월 $_time.year년
 					<</switch>>
 				</td>
-				<td data-label="Ended">
+				<td data-label="종료">
 					<<if $_badEnd.trackedEnd>>
 						<<set $_time2 to new DateTime($_badEnd.trackedEnd)>>
 						<<switch $options.dateFormat>>
@@ -2367,7 +2367,7 @@
 						<span class="dash"></span>
 					<</if>>
 				</td>
-				<td data-label="Duration">
+				<td data-label="지속 시간">
 					<<if $_badEnd.trackedEnd>>
 						<<statisticsTimeCompare $_time $_time2>>
 					<<else>>
@@ -2375,7 +2375,7 @@
 					<</if>>
 				</td>
 				<<if _badEndStatsHowLongAgo>>
-					<td data-label="How Long Ago">
+					<td data-label="지난 시간">
 						<<if $_badEnd.trackedEnd>>
 							<<statisticsTimeCompare $_time2>>
 						<<else>>
@@ -2384,7 +2384,7 @@
 					</td>
 				<</if>>
 				<<if _badEndStatsReasonStart>>
-					<td data-label="Start Reason">
+					<td data-label="시작 이유">
 						<<if setup.badEndReasonText[$_badEnd.reasonStart] isnot undefined>>
 							<<print setup.badEndReasonText[$_badEnd.reasonStart] or '<span class="dash">-</span>'>>
 						<<elseif $_badEnd.reasonStart>>
@@ -2395,7 +2395,7 @@
 					</td>
 				<</if>>
 				<<if _badEndStatsReasonEnd>>
-					<td data-label="End Reason">
+					<td data-label="종료 이유">
 						<<if setup.badEndReasonText[$_badEnd.reasonEnd] isnot undefined>>
 							<<print setup.badEndReasonText[$_badEnd.reasonEnd] or '<span class="dash">-</span>'>>
 						<<elseif $_badEnd.reasonEnd>>
@@ -2537,21 +2537,21 @@
 				<<continue>>
 			<</if>>
 			<tbody class="stat">
-				<td data-label="Produce">
+				<td data-label="농작물">
 					<<recipe_name $_key>>
 				</td>
-				<td data-label="Value">
+				<td data-label="가치">
 					<<printmoney `$_produce?.shop?.sell_price ?? 0`>>
 				</td>
 				<<if !_produceStatsCurrent>>
-					<td data-label="Amount">
+					<td data-label="수량">
 						<<if $_playerProduce.amount gt 0>>
 							<<print $_playerProduce.amount>>
 						<<else>>
 							<span class="dash">-</span>
 						<</if>>
 					</td>
-					<td data-label="Total">
+					<td data-label="판매 합계">
 						<<if $_playerProduce.amount gt 0>>
 							<<printmoney `($_produce?.shop?.sell_price ?? 0) * $_playerProduce.amount`>>
 						<<else>>
@@ -2560,7 +2560,7 @@
 					</td>
 				<</if>>
 				<<if _produceStatsMarket or _produceStatsMarketOverall>>
-					<td data-label="Market: Allowed to be sold">
+					<td data-label="시장: 판매 허용">
 						<<if $foodstuff[$_key]?.marketStall isnot undefined>>
 							<<print $foodstuff[$_key].marketStall>>
 						<<else>>
@@ -2569,21 +2569,21 @@
 					</td>
 				<</if>>
 				<<if _produceStatsMarket>>
-					<td data-label="Market: Sold Today">
+					<td data-label="시장: 오늘 판매량">
 						<<if $stall_stats[$_key]?.sold.amount gt 0>>
 							<<print $stall_stats[$_key].sold.amount>>
 						<<else>>
 							<span class="dash">-</span>
 						<</if>>
 					</td>
-					<td data-label="Market: Average Today">
+					<td data-label="시장: 오늘 평균">
 						<<if $stall_stats[$_key]?.sold.amount gt 0>>
 							<<printmoney `$stall_stats[$_key].sold.total / $stall_stats[$_key].sold.amount`>>
 						<<else>>
 							<span class="dash">-</span>
 						<</if>>
 					</td>
-					<td data-label="Market: Todays Total">
+					<td data-label="시장: 오늘 매출">
 						<<if $stall_stats[$_key]?.sold.total gt 0>>
 							<<printmoney $stall_stats[$_key].sold.total>>
 						<<else>>
@@ -2592,21 +2592,21 @@
 					</td>
 				<</if>>
 				<<if _produceStatsMarketOverall>>
-					<td data-label="Market: Sold">
+					<td data-label="시장: 판매량">
 						<<if $stall_stats[$_key]?.sold.amountHistory gt 0>>
 							<<print $stall_stats[$_key].sold.amountHistory>>
 						<<else>>
 							<span class="dash">-</span>
 						<</if>>
 					</td>
-					<td data-label="Market: Average">
+					<td data-label="시장: 평균">
 						<<if $stall_stats[$_key]?.sold.amountHistory gt 0>>
 							<<printmoney `$stall_stats[$_key].sold.totalHistory / $stall_stats[$_key].sold.amountHistory`>>
 						<<else>>
 							<span class="dash">-</span>
 						<</if>>
 					</td>
-					<td data-label="Market: Total">
+					<td data-label="시장: 매출">
 						<<if $stall_stats[$_key]?.sold.totalHistory gt 0>>
 							<<printmoney $stall_stats[$_key].sold.totalHistory>>
 						<<else>>
@@ -2615,21 +2615,21 @@
 					</td>
 				<</if>>
 				<<if _produceStatsFactory>>
-					<td data-label="Factory: Sold">
+					<td data-label="공장: 판매량">
 						<<if $farmersProduce.soldData[$_key]?.amount gt 0>>
 							<<print $farmersProduce.soldData[$_key].amount>>
 						<<else>>
 							<span class="dash">-</span>
 						<</if>>
 					</td>
-					<td data-label="Factory: Average">
+					<td data-label="공장: 평균">
 						<<if $farmersProduce.soldData[$_key]?.amount gt 0>>
 							<<printmoney `$farmersProduce.soldData[$_key].total / $farmersProduce.soldData[$_key].amount`>>
 						<<else>>
 							<span class="dash">-</span>
 						<</if>>
 					</td>
-					<td data-label="Factory: Total">
+					<td data-label="공장: 매출">
 						<<if $farmersProduce.soldData[$_key]?.total gt 0>>
 							<<printmoney $farmersProduce.soldData[$_key].total>>
 						<<else>>

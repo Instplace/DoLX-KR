@@ -12,19 +12,19 @@ setup.arcologyNewsText = {
 		return setup.arcology.districts[id]?.name ?? "섬";
 	},
 
-	reporters: ["Ines Corva", "Tomas Reyl", "Hana Moreau", "Dex Okafor", "Lio Brandt", "Mara Kade", "Sun-Yi Park", "Ade Varga"],
+	reporters: ["Ines Corva", "Tomas Reyl", "Hana Moreau", "Dex Okafor", "Lio Brandt", "Mara Kade", "Sun-Yi Park", "Ade Varga"], reporterKr: { "Ines Corva": "이네스 코르바", "Tomas Reyl": "토마스 레일", "Hana Moreau": "하나 모로", "Dex Okafor": "덱스 오카포르", "Lio Brandt": "리오 브란트", "Mara Kade": "마라 케이드", "Sun-Yi Park": "선이 박", "Ade Varga": "아데 바르가" },
 	/* The reporter's note under each article, written in their own voice. */
 	reporterBios: {
-		"Ines Corva": "저는 유닛 환전소에서 사이퍼 시세를 지켜보고 마켓 가에서 거래인들을 만납니다. 시세가 바뀌면 무엇 때문인지 알고 싶습니다.",
-		"Tomas Reyl":
+		"이네스 코르바": "저는 유닛 환전소에서 사이퍼 시세를 지켜보고 마켓 가에서 거래인들을 만납니다. 시세가 바뀌면 무엇 때문인지 알고 싶습니다.",
+		"토마스 레일":
 			"저는 집행국, 법원, 등록소를 취재합니다. 매일 아침 체포와 고소 보고서를 읽는데, 권한 있는 누구도 설명하려 들지 않는 사건도 빠뜨리지 않습니다.",
-		"Hana Moreau":
+		"하나 모로":
 			"저는 대부분의 시간을 이 섬 주민 다수가 사는 아파트 단지와 스택에서 보냅니다. 이곳 사람들은 당국이 발표하기 전에 무슨 일이 있었는지 먼저 알려 주곤 합니다.",
-		"Dex Okafor": "저는 기자가 되기 전 6년 동안 아이언웍스에서 일했습니다. 지금도 공장을 직접 찾아가고 근무 일정표를 직접 읽습니다.",
-		"Lio Brandt": "셔틀 정류장이 폐쇄되면 가장 가까운 운행 정류장까지 직접 걸어갑니다. 독자에게는 이동에 시간이 얼마나 더 걸리는지 알 권리가 있습니다.",
-		"Mara Kade": "저는 클리닉을 찾아다니고 임플란트를 만드는 사람들과 이야기합니다. 광고가 빼놓은 위험, 비용, 제한 사항을 묻습니다.",
-		"Sun-Yi Park": "저는 저녁 시간을 술집과 클럽 취재로 보냅니다. 어떤 곳은 등록소가 목록을 갱신하기도 전에 문을 열고 닫습니다.",
-		"Ade Varga":
+		"덱스 오카포르": "저는 기자가 되기 전 6년 동안 아이언웍스에서 일했습니다. 지금도 공장을 직접 찾아가고 근무 일정표를 직접 읽습니다.",
+		"리오 브란트": "셔틀 정류장이 폐쇄되면 가장 가까운 운행 정류장까지 직접 걸어갑니다. 독자에게는 이동에 시간이 얼마나 더 걸리는지 알 권리가 있습니다.",
+		"마라 케이드": "저는 클리닉을 찾아다니고 임플란트를 만드는 사람들과 이야기합니다. 광고가 빼놓은 위험, 비용, 제한 사항을 묻습니다.",
+		"선이 박": "저는 저녁 시간을 술집과 클럽 취재로 보냅니다. 어떤 곳은 등록소가 목록을 갱신하기도 전에 문을 열고 닫습니다.",
+		"아데 바르가":
 			"저는 유출된 문서와 회사 장부, 특히 누군가 숨기려 한 것들을 조사합니다. 제보는 돔 방송국 데스크로 보내 주십시오.",
 	},
 
@@ -85,7 +85,7 @@ setup.arcologyNewsText = {
 						TRANSIT: "Lio Brandt",
 						CYBERNETICS: "Mara Kade",
 				  }[out.cat] ?? this.pick(rec, "by", this.reporters);
-		const publicDistrict = setup.arcologyNews.publicSubject(rec).d;
+		out.byline = this.reporterKr[out.byline] ?? out.byline; const publicDistrict = setup.arcologyNews.publicSubject(rec).d;
 		out.place ??= publicDistrict ? this.district(publicDistrict) : "";
 		out.heat ??= 0.4 + 0.2 * (rec.sev ?? 1);
 		if (discussion) out.residents = rec.rc ?? out.residents ?? this.residents(rec, out);
@@ -3939,7 +3939,7 @@ setup.arcologyNewsText = {
 		);
 		const vals = {
 			D: this.district(publicSubject.d),
-			O: N.orgName(publicSubject.o) || "they",
+			O: N.orgName(publicSubject.o) || "그쪽",
 			N: stops.length ? this.district(pick("stop", stops)) : "릴레이 가",
 		};
 		const fill = s => s.replace(/\{(\w)\}/g, (m, k) => vals[k] ?? m);

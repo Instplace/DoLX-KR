@@ -86,7 +86,7 @@
 
 <<widget "plagueSetupBody">>
 	<<set _plagueFit to setup.plagueSetup.fitLastSetup($plagueMeta)>>
-	<section class="plague-setup no-numberify" aria-label="New outbreak setup">
+	<section class="plague-setup no-numberify" aria-label="새 아웃브레이크 설정">
 		<div class="plague-setup-top">
 			<span class="plague-title plague-setup-title" tabindex="-1">새 전염병</span>
 			<<if _plagueFit and _plagueSetup.step is "pathogen">>
@@ -97,7 +97,7 @@
 				<</link>></span>
 			<</if>>
 		</div>
-		<nav class="plague-steps" aria-label="Setup steps"><ol>
+		<nav class="plague-steps" aria-label="설정 단계"><ol>
 			<<for _plagueS range setup.plagueSetup.stepBar(_plagueSetup)>>
 				<<if _plagueS.current>>
 					<li class="plague-step plague-step-current" aria-current="step"><span class="plague-step-num"><<print _plagueS.number>></span> <span class="plague-step-name"><<print _plagueS.name>></span></li>
@@ -160,7 +160,7 @@
 
 <<widget "plagueSetupPathogen">>
 	<div class="plague-setup-h">병원체 선택</div>
-	<div class="plague-cards" role="group" aria-label="Pathogen">
+	<div class="plague-cards" role="group" aria-label="병원체">
 		<<for _plagueC range setup.plagueSetup.pathogenCards(_plagueSetup, $plagueMeta)>>
 			<div @class="'plague-card plague-pcard plague-card-' + (_plagueC.selected ? 'selected' : _plagueC.playable ? 'available' : 'locked')" @data-plague-choice="_plagueC.id" @data-plague-focus="_plagueC.id">
 				<span @class="'plague-motif plague-motif-' + _plagueC.id" aria-hidden="true"></span>
@@ -184,7 +184,7 @@
 
 <<widget "plagueSetupDifficulty">>
 	<div class="plague-setup-h">난이도 선택</div>
-	<div class="plague-cards plague-cards-3" role="group" aria-label="Difficulty">
+	<div class="plague-cards plague-cards-3" role="group" aria-label="난이도">
 		<<for _plagueC range setup.plagueSetup.difficultyCards(_plagueSetup, $plagueMeta)>>
 			<div @class="'plague-card plague-dcard plague-card-' + (_plagueC.selected ? 'selected' : _plagueC.playable ? 'available' : 'locked')" @data-plague-choice="_plagueC.id" @data-plague-focus="_plagueC.id">
 				<span class="plague-dicon"><<print setup.plagueUi.symbol(_plagueC.id)>></span>
@@ -212,7 +212,7 @@
 		<span class="plague-button plague-suggest"><<link "이름 추천">><<run setup.plagueSetup.suggestName(_plagueSetup)>><<set _plagueSetupMsg to "">><<plagueSetupRedraw "#plague-name">><</link>></span>
 	</div>
 	<div class="plague-setup-h">시작 지역</div>
-	<div class="plague-cards plague-origins" role="group" aria-label="Starting region">
+	<div class="plague-cards plague-origins" role="group" aria-label="시작 지역">
 		<<for _plagueC range setup.plagueSetup.originCards(_plagueSetup)>>
 			<div @class="'plague-card plague-ocard plague-card-' + (_plagueC.selected ? 'selected' : 'available')" @data-plague-choice="_plagueC.id" @data-plague-focus="_plagueC.id">
 				<span class="plague-oicon"><<print setup.plagueUi.regionIcon(_plagueC.id)>></span>
@@ -233,7 +233,7 @@
 	<<set _plagueTb to setup.plagueSetup.traitBrowser(_plagueSetup, $plagueMeta)>>
 	<div class="plague-setup-h">시작 특성</div>
 	<div class="tama-meta">각 슬롯에는 특성을 하나만 넣을 수 있고, 같은 분류의 특성은 하나뿐이다. 어떤 분류를 채울지 고른다.</div>
-	<div class="plague-slots" role="group" aria-label="Trait slots">
+	<div class="plague-slots" role="group" aria-label="시작 특성 슬롯">
 		<<for _plagueSl range _plagueTb.slots>>
 			<div @class="'plague-slot' + (_plagueSl.open ? ' plague-slot-open' : '') + (_plagueSl.id ? ' plague-slot-full' : '')" @data-plague-focus="'slot' + _plagueSl.index">
 				<<capture _plagueSl>><<link `'<span class="plague-slot-num" aria-hidden="true">' + (_plagueSl.open ? '&rsaquo; ' : '') + '슬롯 ' + _plagueSl.number + '</span><span class="plague-slot-name" aria-hidden="true">' + (_plagueSl.id ? '&check; ' + _plagueSl.name : '비어 있음') + '</span><span class="plague-sr">Slot ' + _plagueSl.number + ', ' + (_plagueSl.id ? _plagueSl.name + ', ' + _plagueSl.category : '비어 있음') + (_plagueSl.open ? ', 열림' : '') + '</span>'`>>
@@ -245,7 +245,7 @@
 			</div>
 		<</for>>
 	</div>
-	<div class="plague-cats" role="group" aria-label="Traits">
+	<div class="plague-cats" role="group" aria-label="특성">
 		<<for _plagueCat range _plagueTb.categories>>
 			<div class="plague-cat" @data-plague-category="_plagueCat.id">
 				<div class="plague-cat-name"><span class="plague-cat-icon"><<print setup.plagueUi.symbol(_plagueCat.id)>></span><<print _plagueCat.name>><<if _plagueCat.covered>> <span class="tama-sub">(이미 채움: <<print _plagueCat.covered.name>>, 슬롯 <<print _plagueCat.covered.slot>>)</span><</if>></div>
@@ -332,7 +332,7 @@
 			<span class="plague-dna"><<plagueDnaLabel>> <span class="plague-dna-v plague-cost"><<print $plagueGame.dna>></span><span class="plague-dna-gain"><<if _plagueDnaGain>>+<<print _plagueDnaGain>><</if>></span></span>
 		</div>
 		<div class="plague-nav-row">
-			<nav class="plague-nav" aria-label="Outbreak screens">
+			<nav class="plague-nav" aria-label="아웃브레이크 화면">
 				<<if _args[0] is "world">>
 					<span class="plague-tab plague-tab-current" aria-current="page">세계</span>
 					<span class="plague-tab plague-evolve-open"><<link "진화">><<run setup.plagueSfx.play("outbreak-tab")>><<set _plagueEvolveMsg to "">><<plagueReplace "#plague-game">><<plagueEvolveBody>><</plagueReplace>><<run $("#plague-game .plague-world-open a").first().trigger("focus")>><</link>></span>
@@ -620,7 +620,7 @@
 	<<set _plagueGroups to setup.plagueSimulation.upgradeViews($plagueGame)>>
 	<<if !_plagueGroups.some(g => g.id is _plagueEvoTab)>><<set _plagueEvoTab to _plagueGroups[0].id>><</if>>
 	<<if typeof _plagueEvoPick isnot "object">><<set _plagueEvoPick to {}>><</if>>
-	<nav class="plague-families" aria-label="Evolution families">
+	<nav class="plague-families" aria-label="진화 분류">
 		<<for _plagueGroup range _plagueGroups>>
 			<<if _plagueGroup.id is _plagueEvoTab>>
 				<span class="plague-family plague-family-current" aria-current="true" tabindex="-1" @data-plague-category="_plagueGroup.id"><<print _plagueGroup.name>> <span class="plague-family-count"><<print _plagueGroup.ownedCount>></span></span>
@@ -638,7 +638,7 @@
 	<<set _plagueTree to setup.plagueUi.evolveLayout($plagueGame, _plagueEvoTab)>>
 	<<set _plagueSel to _plagueTree.nodes.find(u => u.id is _plagueEvoPick[_plagueEvoTab]) || (!_plagueEnded and _plagueTree.nodes.find(u => u.state is "available")) || _plagueTree.nodes[0]>>
 	<<set _plagueSelLane to _plagueTree.lanes.findIndex(l => l.id is _plagueSel.lane)>>
-	<section @class="'plague-tree no-numberify' + (_plagueEnded ? ' plague-tree-ended' : '')" @data-plague-category="_plagueTree.id" @aria-label="_plagueTree.name + ' evolutions'" @style="'--cols:' + _plagueTree.cols + ';--rows:' + _plagueTree.rows + ';--gap-h:' + _plagueTree.tree.gap + 'em;--node-h:' + _plagueTree.tree.node + 'em;--edge-rows:' + (2 * _plagueTree.rows) + ';--end:' + (2 + 2 * _plagueTree.rows) + ';--detail:' + (3 + 2 * _plagueTree.rows)">
+	<section @class="'plague-tree no-numberify' + (_plagueEnded ? ' plague-tree-ended' : '')" @data-plague-category="_plagueTree.id" @aria-label="_plagueTree.name + ' 진화'" @style="'--cols:' + _plagueTree.cols + ';--rows:' + _plagueTree.rows + ';--gap-h:' + _plagueTree.tree.gap + 'em;--node-h:' + _plagueTree.tree.node + 'em;--edge-rows:' + (2 * _plagueTree.rows) + ';--end:' + (2 + 2 * _plagueTree.rows) + ';--detail:' + (3 + 2 * _plagueTree.rows)">
 		<<print setup.plagueUi.evolveSvg(_plagueTree)>>
 		<<for _plagueI, _plagueLane range _plagueTree.lanes>>
 			<div class="plague-lane" @data-plague-branch="_plagueLane.id" @style="'--lc:' + (_plagueLane.col + 1) + ';--lw:' + _plagueLane.width + ';--order:' + (2 * _plagueI)">
