@@ -50,9 +50,9 @@ setup.shopDetails = {
 		details: "해당 특성이 있는 아이템을 착용하면 팁으로 얻는 금액이 25% 증가합니다. 추가로 착용하는 아이템마다 효과가 33%씩 감소합니다.",
 	},
 	prey: {
-		name: "Prey",
-		desc: "Makes you look like something worth hunting.",
-		details: "Makes wild beasts in the forest and the hawk over the moor more likely to find you. Each additional item adds to the effect.",
+		name: "먹잇감",
+		desc: "사냥할 만한 먹잇감처럼 보이게 합니다.",
+		details: "숲의 야생 짐승과 황야 위의 매가 당신을 더 쉽게 찾아냅니다. 아이템을 추가할 때마다 효과가 커집니다.",
 	},
 	fetish: {
 		name: "페티시",
@@ -94,7 +94,7 @@ setup.shopDetails = {
 	sticky_fingers: {
 		name: "손버릇",
 		desc: "남의 물건을 내 것으로 만들 때 아주 유용합니다.",
-		details: "속임수를 더 쉽게 성공 할 수 있습니다.",
+		details: "속임수를 더 쉽게 성공할 수 있습니다.",
 	},
 	rainproof: {
 		name: "방수",
@@ -122,9 +122,9 @@ setup.shopDetails = {
 		details: "농장, 황야, 숲에서 운동 스킬 체크를 더 쉽게 통과하게 해 줍니다.",
 	},
 	silky: {
-		name: "Silky",
-		desc: "Smooth against the skin.",
-		details: "Won't rub against sensitive nipples or genitals.",
+		name: "매끄러움",
+		desc: "살갗에 닿는 감촉이 매끄럽습니다.",
+		details: "민감한 젖꼭지나 성기에 쓸리지 않습니다.",
 	},
 	chest_bind: {
 		name: "압박붕대",
@@ -145,9 +145,9 @@ setup.shopDetails = {
 		},
 	},
 	nectarbound: {
-		name: "Nectar-bound",
-		desc: "Living plant matter.",
-		details: "Prevents Dendrophile and Nectar Addict from fading while worn.",
+		name: "넥타르 결속",
+		desc: "살아 있는 식물로 만들어졌습니다.",
+		details: "착용하는 동안 식물 애호가와 넥타르 중독이 사라지지 않게 막아 줍니다.",
 	},
 	shade: {
 		name: "그늘",
@@ -161,7 +161,7 @@ setup.shopDetails = {
 	},
 	prison: {
 		name: "죄수복",
-		desc: "교도소에서 입던 옷입니다.",
+		desc: "감옥에서 입던 옷입니다.",
 		details: "없음",
 	},
 	sticky: {
@@ -230,14 +230,14 @@ setup.shopDetails = {
 		details: "남들이 당신의 성기가 어떻게 생겼는지 알 수 없습니다.",
 	},
 	internal: {
-		name: "Internal",
-		desc: "There's more to it than meets the eye.",
-		details: "Provides constant internal stimulation while worn.",
+		name: "내부",
+		desc: "겉보기보다 속사정이 있습니다.",
+		details: "착용하는 동안 끊임없이 내부를 자극합니다.",
 	},
 	shrinking: {
-		name: "Shrinking",
-		desc: "Not built to accommodate growth.",
-		details: "Gradually shrinks your penis while worn, and raises your minimum arousal.",
+		name: "수축",
+		desc: "자라나는 것을 받아 주도록 만들어지지 않았습니다.",
+		details: "착용하는 동안 자지가 서서히 줄어들고 최소 흥분 수치가 올라갑니다.",
 	},
 	gag: {
 		name: "재갈",
@@ -245,14 +245,14 @@ setup.shopDetails = {
 		details: "키스, 삽입, 기타 입 활동을 막습니다. 말을 할 수 없게 됩니다.",
 	},
 	blindfold: {
-		name: "Blindfold",
-		desc: "Covers your eyes.",
-		details: "Prevents you from seeing while worn.",
+		name: "눈가리개",
+		desc: "눈을 가립니다.",
+		details: "착용하는 동안 앞을 볼 수 없습니다.",
 	},
 	shackle: {
-		name: "Shackles",
-		desc: "Restricts your legs.",
-		details: "Makes running, swimming, and dancing more difficult.",
+		name: "족쇄",
+		desc: "다리를 구속합니다.",
+		details: "달리기, 수영, 춤이 더 어려워집니다.",
 	},
 	leash: {
 		name: "목줄",
@@ -280,9 +280,9 @@ setup.shopDetails = {
 		details: "없음",
 	},
 	foraging: {
-		name: "Foraging basket",
-		desc: "Sized and lined for one kind of forest crop.",
-		details: "Makes the forest offer gathering more often, and skews it towards the basket's crop.",
+		name: "채집 바구니",
+		desc: "숲에서 나는 작물 한 종류에 맞춰 크기를 잡고 안감을 덧댔습니다.",
+		details: "숲에서 채집할 기회가 더 자주 생기고, 바구니의 작물 쪽으로 쏠립니다.",
 	},
 	bookbag: {
 		name: "책가방",
@@ -305,9 +305,9 @@ setup.shopDetails = {
 		details: "도둑질할 때 쌓이는 범죄 수치를 높입니다.",
 	},
 	portal: {
-		name: "Mysterious",
-		desc: "Feels oddly breezy to wear.",
-		details: "Allows random strangers to use your genitalia remotely.",
+		name: "신비로움",
+		desc: "입으면 이상하게 바람이 통하는 느낌이 듭니다.",
+		details: "모르는 사람들이 멀리서 당신의 성기를 쓸 수 있게 됩니다.",
 	},
 	antitransparent: {
 		name: "비침 방지",
@@ -368,9 +368,9 @@ setup.shopDetails = {
 		details: "없음",
 	},
 	fishing_rod: {
-		name: "Fishing Rod",
-		desc: "Needed to go fishing.",
-		details: "none",
+		name: "낚싯대",
+		desc: "낚시를 하려면 필요합니다.",
+		details: "없음",
 	},
 };
 

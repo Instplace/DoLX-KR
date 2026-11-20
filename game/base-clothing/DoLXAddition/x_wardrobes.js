@@ -84,7 +84,7 @@ window.ensureLakeStashWardrobe = ensureLakeStashWardrobe;
 
 /* Wardrobes accessible remotely. Requires both shopSend and transfer. Excludes locked wardrobes and isolated-orphanage duplicates. */
 function remoteWardrobeOptions() {
-	const options = [{ key: "wardrobe", name: V.wardrobes?.wardrobe?.name || "Orphanage" }];
+	const options = [{ key: "wardrobe", name: window.KR.getWardrobeNameKr(V.wardrobes?.wardrobe?.name || "Orphanage") }];
 	if (!remoteWardrobeAccessAllowed() || !V.wardrobes) return options;
 	for (const key of Object.keys(V.wardrobes)) {
 		if (key === "wardrobe" || key === "shopReturn" || key === "inventory") continue;
@@ -95,7 +95,7 @@ function remoteWardrobeOptions() {
 			continue;
 		}
 		if (resolveWardrobeLocation(key) !== key) continue;
-		options.push({ key, name: wardrobe.name || key });
+		options.push({ key, name: window.KR.getWardrobeNameKr(wardrobe.name || key) });
 	}
 	return options;
 }
@@ -109,7 +109,7 @@ function accessibleWardrobeOptions(current) {
 		remoteWardrobeAccessAllowed() && localWardrobe?.transfer !== false && !["prison", "asylum", "tower"].includes(V.location) ? remoteWardrobeOptions() : [];
 	if (local && local !== "shopReturn" && local !== "inventory" && !options.some(option => option.key === local)) {
 		const wardrobe = local === "wardrobe" ? V.wardrobes?.wardrobe : V.wardrobes?.[local];
-		if (wardrobe && wardrobe.unlocked) options.unshift({ key: local, name: wardrobe.name || local });
+		if (wardrobe && wardrobe.unlocked) options.unshift({ key: local, name: window.KR.getWardrobeNameKr(wardrobe.name || local) });
 	}
 	return options;
 }
@@ -314,7 +314,7 @@ function wardrobeFavoriteItems(wardrobe, includeInventory = false) {
 window.wardrobeFavoriteItems = wardrobeFavoriteItems;
 
 function wardrobeSlotName(slot) {
-	return String(slot)
+	return ({ scarf: "스카프", bag: "가방", earrings: "귀걸이", rings: "반지" })[String(slot)] || window.KR.getClothingSlotKr(String(slot))
 		.split("_")
 		.map(word => word.slice(0, 1).toUpperCase() + word.slice(1))
 		.join(" ");
@@ -369,7 +369,7 @@ window.wardrobeItemMatches = wardrobeItemMatches;
 /* Redraws the open list from its first page. The search box sits outside #wardrobeList so it keeps focus while typing. */
 function wardrobeFilterRefresh() {
 	T.wardrobePages = {};
-	$("#wardrobe-filter-state").text(T.wardrobeFilter?.active ? " (on)" : "");
+	$("#wardrobe-filter-state").text(T.wardrobeFilter?.active ? " (적용 중)" : "");
 	wardrobeRerenderList();
 }
 window.wardrobeFilterRefresh = wardrobeFilterRefresh;
@@ -382,12 +382,12 @@ window.wardrobeRerenderList = wardrobeRerenderList;
 
 /* One row of sort links per slot. The first click on a key uses the normal order, a second click on the same key reverses it. */
 const wardrobeSortKeys = [
-	["name", "Name"],
-	["color", "Colour"],
-	["lewd", "Lewd"],
-	["integrity", "Integrity"],
-	["warmth", "Warmth"],
-	["outfit", "Outfit Status"],
+	["name", "이름"],
+	["color", "색상"],
+	["lewd", "노출도"],
+	["integrity", "내구도"],
+	["warmth", "보온성"],
+	["outfit", "세트 상태"],
 ];
 
 function wardrobeSortBy(slot, key) {
@@ -405,7 +405,7 @@ function wardrobeSortLinks(slot, withOutfit) {
 		.filter(([key]) => key !== "outfit" || withOutfit)
 		.map(([key, label]) => {
 			const mark = last?.key === key ? (last.descending ? " &#9660;" : " &#9650;") : "";
-			return `<div class="wardrobe-action"><a title="Click again to reverse the order" onclick="wardrobeSortBy('${slot}', '${key}')">${label}${mark}</a></div>`;
+			return `<div class="wardrobe-action"><a title="다시 누르면 순서가 뒤집힙니다" onclick="wardrobeSortBy('${slot}', '${key}')">${label}${mark}</a></div>`;
 		})
 		.join("");
 }

@@ -79,19 +79,19 @@ setup.seaRemembers = {
 	},
 	objective() {
 		const q = V.seaRemembers;
-		if (!q || !q.chapter) return "Explore the island's beach and forest.";
+		if (!q || !q.chapter) return "섬의 해변과 숲을 탐험하십시오.";
 		if (q.complete || q.reward)
 			return q.reward
-				? `You restored the sea passage and earned Tempered ${q.reward[0].toUpperCase() + q.reward.slice(1)}.`
-				: "You restored the sea passage. Speak to the Elder or the old islander, or return to the final chamber to attempt a Tempered breakthrough.";
-		if (this.isRestored()) return "Return to the surface and check whether the dangerous water current in the bay has stopped.";
-		if (q.echo === 3) return "Return to the damaged underwater gate. Use what you learned in the memory chamber to repair it.";
-		if (q.stone === 3) return "Enter the memory chamber and complete the Trial of the Echo.";
-		if (q.current === 5) return "Complete the Trial of the Stone by strengthening the damaged barrier.";
-		if (q.route) return "Follow the underwater route you discovered and complete the Trial of the Current.";
+				? `바다의 통로를 되살렸습니다. 얻은 보상: 단련된 ${({ physique: "체격", athletics: "체육", willpower: "의지력" })[q.reward] || q.reward}.`
+				: "바다의 통로를 되살렸습니다. 장로나 늙은 섬 주민에게 말을 걸거나, 마지막 방으로 돌아가 단련의 돌파를 시도하십시오.";
+		if (this.isRestored()) return "수면으로 돌아가 만의 위험한 물살이 멎었는지 확인하십시오.";
+		if (q.echo === 3) return "부서진 수중 문으로 돌아가십시오. 기억의 방에서 배운 것을 써서 문을 고치십시오.";
+		if (q.stone === 3) return "기억의 방에 들어가 메아리의 시련을 완료하십시오.";
+		if (q.current === 5) return "손상된 방벽을 보강해 돌의 시련을 완료하십시오.";
+		if (q.route) return "발견한 수중 경로를 따라가 해류의 시련을 완료하십시오.";
 		if (q.chapter >= 3)
-			return "Use the old islander's map to find the bay. Examine the damaged underwater gate and investigate the dangerous water current before diving.";
-		if (q.chapter >= 2) return "Find the old islander beneath the castle and ask about the warriors who lived here.";
-		return "Tell the Elder about the damage and markings you discovered.";
+			return "늙은 섬 주민의 지도를 보고 만을 찾으십시오. 잠수하기 전에 부서진 수중 문을 살펴보고 위험한 물살을 조사하십시오.";
+		if (q.chapter >= 2) return "성 아래에 있는 늙은 섬 주민을 찾아 이곳에 살았던 전사들에 대해 물어보십시오.";
+		return "장로에게 발견한 손상과 표식에 대해 알리십시오.";
 	},
 };

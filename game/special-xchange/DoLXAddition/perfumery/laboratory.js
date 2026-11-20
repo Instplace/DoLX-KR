@@ -221,17 +221,17 @@
 			}
 			return n;
 		};
-		el("h3", "Perfumery laboratory");
-		el("p", "Preview tools do not change your save. Buttons labelled Apply to save are deliberate mutations. Simulated candidates live only in this panel.");
+		el("h3", "향수 연구실");
+		el("p", "미리보기 도구는 저장 데이터를 바꾸지 않습니다. 「저장에 적용」이라고 적힌 버튼은 의도적으로 데이터를 바꿉니다. 시뮬레이션한 후보는 이 패널 안에만 있습니다.");
 		const status = el("p", "Ready.");
 		status.setAttribute("role", "status");
-		const overview = section("Overview (read only)");
+		const overview = section("개요 (읽기 전용)");
 		const s = V.perfumery;
 		el(
 			"pre",
 			JSON.stringify(
 				{
-					schema: s?.version ?? "not initialized",
+					schema: s?.version ?? "초기화되지 않음",
 					identityModel: 2,
 					skill: s?.skill ?? 0,
 					lesson: s?.lesson ?? 0,
@@ -252,7 +252,7 @@
 			),
 			overview
 		);
-		const extraction = section("Ingredients and extraction");
+		const extraction = section("재료와 추출");
 		const source = select(
 			"Source",
 			Object.entries(setup.foodstuff).map(([id, item]) => [id, item.name]),
@@ -263,29 +263,29 @@
 			Object.entries(e().methods).map(([id, p]) => [id, p.name]),
 			extraction
 		);
-		const mask = input("Fragment mask (1–63; retain two or more)", 63, "number", extraction, 1, 63);
+		const mask = input("성분 마스크 (1–63, 두 개 이상 유지)", 63, "number", extraction, 1, 63);
 		const finish = select(
 			"Finish",
 			["purity", "yield", "stability"].map(k => [k, k]),
 			extraction
 		);
-		const measures = input("Stock measures (0–240)", 12, "number", extraction, 0, 240);
-		const purity = input("Isolated purity preview (0–1)", 0.8, "number", extraction, 0, 1);
-		const stability = input("Isolated stability preview (0–1)", 0.8, "number", extraction, 0, 1);
-		const yieldPreview = input("Isolated yield preview", 4, "number", extraction, 1, 6);
-		button("Simulate extraction", "extractPreview", extraction);
-		button("Apply to save: set extract stock", "stock", extraction);
-		button("Apply to save: unlock Quick Extraction", "studies", extraction);
-		button("Apply to save: reset this study", "resetStudy", extraction);
+		const measures = input("재고 계량 (0–240)", 12, "number", extraction, 0, 240);
+		const purity = input("독립 순도 미리보기 (0–1)", 0.8, "number", extraction, 0, 1);
+		const stability = input("독립 안정성 미리보기 (0–1)", 0.8, "number", extraction, 0, 1);
+		const yieldPreview = input("독립 수확량 미리보기", 4, "number", extraction, 1, 6);
+		button("추출 시뮬레이션", "extractPreview", extraction);
+		button("저장에 적용: 추출물 재고 설정", "stock", extraction);
+		button("저장에 적용: 빠른 추출 해금", "studies", extraction);
+		button("저장에 적용: 이 연구 초기화", "resetStudy", extraction);
 		const extractOutput = el("pre", "", extraction);
-		const form = section("Formula generator and inspection");
+		const form = section("배합 생성기와 검사");
 		form.open = true;
 		const presets = select(
 			"Preset",
 			Object.keys(presetSources).map(k => [k, k]),
 			form
 		);
-		button("Load preset", "preset", form);
+		button("프리셋 불러오기", "preset", form);
 		const material = select(
 			"Material",
 			Object.keys(e().registry()).map(id => [id, setup.foodstuff[id].name]),
@@ -297,11 +297,11 @@
 			form
 		);
 		const quantity = input("Quantity", 1, "number", form, 1, 24);
-		button("Add chosen extract to layer", "add", form);
-		button("Add simulated extraction to selected note", "addExtract", form);
-		button("Add isolated tuned extract to preview", "tunedExtract", form);
-		button("Discard isolated tuning", "clearTuning", form);
-		button("Clear layers", "clear", form);
+		button("선택한 추출물을 층에 추가", "add", form);
+		button("시뮬레이션한 추출물을 선택한 노트에 추가", "addExtract", form);
+		button("독립 조정 추출물을 미리보기에 추가", "tunedExtract", form);
+		button("독립 조정 취소", "clearTuning", form);
+		button("층 비우기", "clear", form);
 		const solvent = select(
 			"Solvent",
 			Object.entries(m().solvents).map(([k, v]) => [k, v.name]),
@@ -314,52 +314,52 @@
 			form
 		);
 		const age = select(
-			"Maturation days",
+			"숙성 일수",
 			[0, 1, 3, 7, 14].map(n => [String(n), String(n)]),
 			form
 		);
 		const blending = input("Craftsmanship (0–1)", 0.7, "number", form, 0, 1);
 		const raw = el("textarea", "", form);
-		raw.setAttribute("aria-label", "Full editable formula JSON");
+		raw.setAttribute("aria-label", "편집 가능한 전체 배합 JSON");
 		raw.rows = 8;
-		button("Read formula JSON", "parse", form);
-		button("Preview formula", "preview", form);
-		button("Increase a proportion", "variation", form);
-		button("Pin comparison A", "pin", form);
-		button("Compare A with current B", "compare", form);
-		const owned = select("Owned perfume", [["", "Choose an owned bottle"], ...(s?.bottles || []).map(b => [String(b.id), b.name])], form);
-		button("Inspect owned perfume", "owned", form);
-		button("Apply to save: store matured preview bottle", "store", form);
-		button("Apply to save: wear selected owned bottle", "wear", form);
+		button("배합 JSON 읽기", "parse", form);
+		button("배합 미리보기", "preview", form);
+		button("비율 늘리기", "variation", form);
+		button("비교 A 고정", "pin", form);
+		button("A와 현재 B 비교", "compare", form);
+		const owned = select("보유 향수", [["", "보유한 병을 고르십시오"], ...(s?.bottles || []).map(b => [String(b.id), b.name])], form);
+		button("보유 향수 검사", "owned", form);
+		button("저장에 적용: 숙성한 미리보기 병 보관", "store", form);
+		button("저장에 적용: 선택한 보유 병 뿌리기", "wear", form);
 		const visual = el("div", "", form);
 		const inspection = el("pre", "", form);
-		const effects = section("Gameplay effects (isolated preview or explicit action)");
+		const effects = section("게임플레이 효과 (독립 미리보기 또는 명시적 실행)");
 		const elapsed = input("Simulated elapsed minutes / remaining duration", 30, "number", effects, 0, 720);
-		button("Preview normal fading", "fade", effects);
-		button("Preview rain fading", "rain", effects);
-		button("Preview bathing removal", "bathPreview", effects);
-		button("Apply to save: set remaining duration", "duration", effects);
+		button("정상 소멸 미리보기", "fade", effects);
+		button("비 소멸 미리보기", "rain", effects);
+		button("목욕 제거 미리보기", "bathPreview", effects);
+		button("저장에 적용: 남은 지속 시간 설정", "duration", effects);
 		button("Apply to save: remove fragrance / wash", "wash", effects);
-		button("Apply to save: advance scent only", "tick", effects);
+		button("저장에 적용: 향만 진행", "tick", effects);
 		const effectOutput = el("pre", "", effects);
-		const progression = section("Poppy progression (isolated test context)");
-		const skill = input("Perfumery skill (0–100)", s?.skill || 0, "number", progression, 0, 100);
-		button("Apply to save: set Perfumery skill", "skill", progression);
-		button("Apply to save: unlock independent workstation", "workstation", progression);
+		const progression = section("포피 진행도 (독립 테스트 환경)");
+		const skill = input("조향 숙련도 (0–100)", s?.skill || 0, "number", progression, 0, 100);
+		button("저장에 적용: 조향 숙련도 설정", "skill", progression);
+		button("저장에 적용: 독립 작업대 해금", "workstation", progression);
 		const lesson = select(
-			"Completed lesson count",
+			"마친 수업 수",
 			[0, 1, 2, 3, 4].map(n => [String(n), String(n)]),
 			progression
 		);
-		button("Preview unlocks and Poppy reaction", "reaction", progression);
-		button("Apply to save: set perfumery lessons", "lessons", progression);
-		button("Reset isolated progression sandbox", "sandbox", progression);
-		button("Apply to save: reset perfumery lessons only", "resetLessons", progression);
+		button("해금과 포피 반응 미리보기", "reaction", progression);
+		button("저장에 적용: 조향 수업 설정", "lessons", progression);
+		button("독립 진행 샌드박스 초기화", "sandbox", progression);
+		button("저장에 적용: 조향 수업만 초기화", "resetLessons", progression);
 		const progressOutput = el("pre", "", progression);
-		const stress = section("Seeded diagnostics and icon gallery");
+		const stress = section("시드 고정 진단과 아이콘 갤러리");
 		button("Generate 100 candidates / 50-icon gallery", "stress100", stress);
-		button("Analyze 1,000 candidates (seed 20261022)", "stress1000", stress);
-		button("Export diagnostic JSON", "export", stress);
+		button("후보 1,000개 분석 (시드 20261022)", "stress1000", stress);
+		button("진단 JSON 내보내기", "export", stress);
 		const reportOutput = el("pre", "", stress);
 		const gallery = el("div", "", stress);
 		gallery.className = "perf-gallery";
@@ -419,8 +419,8 @@
 									source: source.value,
 									supported: false,
 									reason: e().excluded.has(source.value)
-										? "Explicit scentless, weak, toxic, bodily or story-sensitive exclusion."
-										: "No aromatic category, override or supported recipe source.",
+										? "명시적 제외: 향이 없거나 약하거나 독성이 있거나 신체 관련이거나 이야기상 민감한 재료입니다."
+										: "향 분류, 재정의, 지원되는 레시피 출처가 없습니다.",
 								},
 								null,
 								2
@@ -450,7 +450,7 @@
 													const r = e().calculate(source.value, k, Number(mask.value), finish);
 													return { finish, purity: r.purity, yield: r.yield, stability: r.stability, strength: r.strength };
 											  })
-											: "Not suitable: cooked food can only be captured or rebuilt.",
+											: "적합하지 않음: 조리한 음식은 포집하거나 재구성하는 것만 가능합니다.",
 									])
 								),
 								facets: e().puzzle(source.value),
@@ -459,7 +459,7 @@
 									...tuning,
 									strength: (p.strength * (0.7 + tuning.purity * 0.3)) / (0.7 + p.purity * 0.3),
 									persistence: (p.properties.persistence * (0.7 + tuning.stability * 0.3)) / (0.7 + p.stability * 0.3),
-									note: "Isolated numerical sensitivity preview. Stock actions use the reproducible actual profile above.",
+									note: "독립 수치 민감도 미리보기입니다. 재고 작업은 위의 재현 가능한 실제 프로필을 사용합니다.",
 								},
 							},
 							null,
@@ -496,7 +496,7 @@
 						overrides = {};
 						formula = m().empty();
 						sync();
-						inspection.textContent = "Layers cleared. Add material to all three.";
+						inspection.textContent = "층을 비웠습니다. 세 층 모두에 재료를 추가하십시오.";
 					}
 					if (action === "tunedExtract") {
 						const p = extracted();
@@ -515,7 +515,7 @@
 						formula[layer.value][p.key] = Number(quantity.value);
 						sync();
 						preview();
-						status.textContent = `Isolated tuning active (${yieldUnits} hypothetical measures). It changes the real calculation but cannot be stored as a reproducible bottle.`;
+						status.textContent = `독립 조정이 적용 중입니다(가상의 ${yieldUnits}계량). 실제 계산에는 영향을 주지만 재현 가능한 병으로는 저장할 수 없습니다.`;
 					}
 					if (action === "clearTuning") {
 						overrides = {};
@@ -532,7 +532,7 @@
 					}
 					if (action === "pin") {
 						pinned = { formula: m().copy(formula), properties: current() };
-						status.textContent = "Comparison A pinned in temporary memory.";
+						status.textContent = "비교 A를 임시 메모리에 고정했습니다.";
 					}
 					if (action === "compare") {
 						if (!pinned) throw new Error("Pin comparison A first.");
@@ -580,7 +580,7 @@
 						o.value = String(b.id);
 						owned.value = String(b.id);
 						selectedBottle = b;
-						status.textContent = "Preview bottle explicitly added to your save, matured for inspection.";
+						status.textContent = "미리보기 병을 저장 데이터에 명시적으로 추가했으며, 검사를 위해 숙성했습니다.";
 					}
 					if (action === "wear") {
 						if (!selectedBottle) throw new Error("Inspect an owned bottle first.");
@@ -653,7 +653,7 @@
 							el("figcaption", `${p.name}: ${p.nuances.slice(0, 3).join(", ")}`, card);
 						}
 						busy = false;
-						status.textContent = "Diagnostics complete. No inventory or NPC state changed.";
+						status.textContent = "진단이 끝났습니다. 인벤토리와 NPC 상태는 바뀌지 않았습니다.";
 					}
 					if (action === "export") {
 						if (!report) throw new Error("Run diagnostics first.");
@@ -736,7 +736,7 @@
 		const cost = M().validate(f);
 		const blending = Math.max(0.45, Math.min(0.95, 0.55 + Math.max(0.4, o.blend) * 0.4 - o.fixed * 0.08));
 		const b = P().bottleRecord(f, blending, s.serial + 1);
-		b.name = "Opium";
+		b.name = "아편";
 		b.opium = true;
 		if (o.ownBottle && s.containers >= 1) s.containers--;
 		else o.ownBottle = false;
@@ -758,11 +758,11 @@
 		handler() {
 			const wrap = $("<div class='perfumery perf-timing'>").appendTo(this.output);
 			const meter = $(
-				"<div class='perf-meter' aria-hidden='true'><div class='perf-zone' style='left:40%;width:20%'>STOP</div><div class='perf-needle'></div></div>"
+				"<div class='perf-meter' aria-hidden='true'><div class='perf-zone' style='left:40%;width:20%'>멈춤</div><div class='perf-needle'></div></div>"
 			).appendTo(wrap);
 			const needle = meter.find(".perf-needle");
-			const button = $("<button class='perf-button perf-primary perf-blend-go' type='button'>Start blending</button>").appendTo(wrap);
-			const feedback = $("<p class='perf-timing-feedback' role='status'>Press Start, then Stop when the light marker crosses the gold band.</p>").appendTo(
+			const button = $("<button class='perf-button perf-primary perf-blend-go' type='button'>블렌딩 시작</button>").appendTo(wrap);
+			const feedback = $("<p class='perf-timing-feedback' role='status'>블렌딩 시작을 누르고, 빛 표시가 금색 구역을 지날 때 멈춤을 누르십시오.</p>").appendTo(
 				wrap
 			);
 			let frame = 0;
@@ -780,15 +780,15 @@
 				if (!frame) {
 					start = performance.now();
 					wrap.addClass("perf-blending");
-					button.text("Stop");
-					feedback.text("Watch the marker. You can wait for another crossing.");
+					button.text("멈춤");
+					feedback.text("표시를 지켜보십시오. 다시 지나갈 때까지 기다려도 됩니다.");
 					frame = requestAnimationFrame(step);
 					return;
 				}
 				cancelAnimationFrame(frame);
 				wrap.removeClass("perf-blending");
-				button.text("Blended").prop("disabled", true);
-				feedback.text("Blending finished. Continue below to bottle the perfume.");
+				button.text("블렌딩 끝").prop("disabled", true);
+				feedback.text("블렌딩이 끝났습니다. 아래에서 계속해 향수를 병에 담으십시오.");
 				setup.perfumeryOpium.blend(1 - Math.min(1, Math.abs(pos - 50) / 50));
 				$("#poppy-opium-next").removeAttr("hidden");
 			});

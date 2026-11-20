@@ -4,15 +4,15 @@
 setup.pcStall = {
 	upgrades: [
 		/* Pushing stock and overpricing cost 20 trust each, so +15 starting trust never covers two of them. */
-		{ id: "tablecloth", track: "impression", tier: 1, cost: 15000, name: "tablecloth and price cards", note: "Customers start a little friendlier" },
-		{ id: "sign", track: "impression", tier: 2, cost: 50000, name: "painted sign and awning", note: "Customers start friendlier" },
-		{ id: "lights", track: "impression", tier: 3, cost: 120000, name: "string lights and wicker baskets", note: "Customers start much friendlier" },
-		{ id: "lavender", track: "safety", tier: 1, cost: 30000, name: "potted lavender", note: "Customers get aroused more slowly" },
-		{ id: "cameras", track: "safety", tier: 2, cost: 100000, name: "security camera for the market", note: "Fewer lewd incidents, slower arousal" },
-		{ id: "fridge", track: "profit", tier: 1, cost: 40000, name: "mini fridge", note: "+10% on fruit, seafood, meat and produce" },
-		{ id: "microwave", track: "profit", tier: 1, cost: 30000, name: "microwave", note: "+10% on cooked dishes" },
-		{ id: "showcase", track: "profit", tier: 2, cost: 80000, name: "glass showcase", note: "+5% on everything" },
-		{ id: "toteRack", track: "quantity", tier: 1, cost: 20000, name: "tote bag rack", note: "Lets you stock reusable bags" },
+		{ id: "tablecloth", track: "impression", tier: 1, cost: 15000, name: "식탁보와 가격표", note: "손님이 조금 더 호의적으로 시작합니다" },
+		{ id: "sign", track: "impression", tier: 2, cost: 50000, name: "페인트칠한 간판과 차양", note: "손님이 더 호의적으로 시작합니다" },
+		{ id: "lights", track: "impression", tier: 3, cost: 120000, name: "전구 장식과 고리버들 바구니", note: "손님이 훨씬 더 호의적으로 시작합니다" },
+		{ id: "lavender", track: "safety", tier: 1, cost: 30000, name: "화분에 심은 라벤더", note: "손님이 더 천천히 흥분합니다" },
+		{ id: "cameras", track: "safety", tier: 2, cost: 100000, name: "시장 보안 카메라", note: "음란한 사건이 줄고 흥분이 더 느려집니다" },
+		{ id: "fridge", track: "profit", tier: 1, cost: 40000, name: "미니 냉장고", note: "과일, 해산물, 고기, 채소류 +10%" },
+		{ id: "microwave", track: "profit", tier: 1, cost: 30000, name: "전자레인지", note: "조리된 요리 +10%" },
+		{ id: "showcase", track: "profit", tier: 2, cost: 80000, name: "유리 진열장", note: "모든 품목 +5%" },
+		{ id: "toteRack", track: "quantity", tier: 1, cost: 20000, name: "토트백 진열대", note: "재사용 가방을 비치할 수 있습니다" },
 	],
 	disposablePack: { amount: 50, cost: 500 },
 	/* Customers pay a tote back at cost, so totes only cost you while they sit unsold. */

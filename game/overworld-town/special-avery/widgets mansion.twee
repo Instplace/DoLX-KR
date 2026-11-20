@@ -20,8 +20,8 @@
 	<<else>>
 		없음<br>
 	<</if>>
-	Guest: <<= $avery_mansion.guest>><br>
-	HBSC gala pending: <<= !!$avery_mansion.hbsc_gala_pending>><br>
+	손님: <<= $avery_mansion.guest>><br>
+	HBSC 갈라 대기 중: <<= !!$avery_mansion.hbsc_gala_pending>><br>
 	/*Date: <<print $averydate>><br>*/
 	에이버리 통로: $avery_passage<br>
 	에이버리 저택 수영장: <<print $avery_mansion.pool>><br>
@@ -81,7 +81,7 @@
 		에이버리 추격 에이버리_버스_이전: <<print $avery_mansion.chase.avery_bus_prev>><br>
 		에이버리 추격 소리: <<print $avery_mansion.chase.sound>><br>
 		에이버리 추격 플레이어_소리: <<print $avery_mansion.chase.player_sound>><br>
-		Avery chase stunned: <<print $avery_mansion.chase.stunned>><br>
+		에이버리 추격 기절: <<print $avery_mansion.chase.stunned>><br>
 		에이버리 추격 열쇠: <<print $avery_mansion.chase.key>><br>
 		/*
 		Avery chase key_checked: <<print $avery_mansion.key_checked>>
@@ -631,8 +631,8 @@
 		<<else>>
 			<span class="green">식물들이 아주 단정하고 깔끔하다.</span>
 			<<if $avery_fate is "saved" and _args[0] is "garden">>
-				<span class="gold">Fresh snips in the topiary and a set of kneeling-prints in the soil give it away,
-				Avery has been out here tending the garden again, and seems to genuinely enjoy the work.</span>
+				<span class="gold">갓 다듬은 토피어리와 흙에 남은 무릎 자국이 그 사실을 알려 준다.
+				에이버리가 또 이곳에서 정원을 가꾸고 있었고, 그 일을 진심으로 즐기는 듯하다.</span>
 			<</if>>
 			<<if !_avery_housework_count and $avery_mansion.bedroom is 0>>
 				<<if $avery_mansion.pool gte 1>>
@@ -945,11 +945,11 @@
 	<<set _rageGain to $avery_fate is "saved" ? Math.ceil($avery_mansion.rage.assess / 2) : $avery_mansion.rage.assess>>
 	<<if !$avery_mansion.rage.apologetic>>
 		<<if $avery_mansion.rage.assess gte 18>>
-			<span class="red">There's malice in <<his>> eyes.</span><<gggarage>><<npcincr Avery rage _rageGain>>
+			<span class="red"><<his>> 눈에는 악의가 서려 있다.</span><<gggarage>><<npcincr Avery rage _rageGain>>
 		<<elseif $avery_mansion.rage.assess gte 9>>
-			<span class="pink">There's anger in <<his>> eyes.</span><<ggarage>><<npcincr Avery rage _rageGain>>
+			<span class="pink"><<his>> 눈에는 분노가 서려 있다.</span><<ggarage>><<npcincr Avery rage _rageGain>>
 		<<elseif $avery_mansion.rage.assess gte 1>>
-			<span class="purple"><<He>> looks frustrated.</span><<garage>><<npcincr Avery rage _rageGain>>
+			<span class="purple"><<He>>【이가】 짜증이 난 듯하다.</span><<garage>><<npcincr Avery rage _rageGain>>
 		<<else>>
 			<<He>>【이가】 지쳐 보이지만, <span class="green">차분하다.</span><<larage>><<npcincr Avery rage -1>>
 		<</if>>
@@ -957,33 +957,33 @@
 	<br><br>
 
 	<<if _avery_saved_dinner_forgiven>>
-		<<He>> glances toward the kitchen, notices there's nothing waiting for <<him>>, and only shrugs.
-		"Don't fret over the food. I can always pick something up in town." Then <<his>> eyes drift over the rooms, and <<his>> tone firms.
-		"The house, though, I'd rather that stayed in order. I quite enjoy keeping things just so. <span class="gold">You should see me tend the garden.</span>"
+		<<He>>【은는】 부엌 쪽을 힐끗 보고, <<him>>【을를】 기다리는 것이 아무것도 없다는 걸 알아챈 뒤 어깨만 으쓱한다.
+		"음식은 신경 쓰지 마. 시내에서 아무거나 사 오면 되니까." 그러고는 <<his>> 시선이 방들을 훑더니, <<his>> 어조가 단단해진다.
+		"하지만 집은 정돈되어 있는 편이 좋겠어. 모든 게 딱 맞게 놓여 있는 걸 꽤 좋아하거든. <span class="gold">내가 정원 가꾸는 모습을 한번 봐야 하는데.</span>"
 		<br><br>
 	<</if>>
 
 	/* Saved route: Avery no longer forces a chase over an unpilled body. Rage takes over from here. */
 	<<if $avery_fate is "saved" and $averytimespilled gte 1 and !playerIsXChanged() and $player.sex is C.npc.Avery.pronoun and perceivedGenderBinary() is C.npc.Avery.pronoun and !$averySeen?.includes("saved_unpilled_accepted")>>
 		<<set $averySeen.pushUnique("saved_unpilled_accepted")>>
-		<<He>> looks at you carefully, then relaxes a little.
-		"You're not pilled," <<he>> says. "I used to care about that. I don't anymore. Choose whatever body you want."
+		<<He>>【은는】 당신을 유심히 살피다가, 조금 긴장을 푼다.
+		"넌 알약을 먹지 않았군." <<he>>【이가】 말한다. "예전엔 그게 신경 쓰였지. 이젠 아니야. 원하는 몸으로 지내."
 		<br><br>
 	<</if>>
 
 	<<set _averyUnpilled to $avery_fate isnot "saved" and $averytimespilled gte 1 and !playerIsXChanged() and $player.sex is C.npc.Avery.pronoun and perceivedGenderBinary() is C.npc.Avery.pronoun>>
 	<<set _averyUnpilledRage to _averyUnpilled and $averyragerevealed gte 1 and C.npc.Avery.rage gte 20 and $avery_mansion.rage.timer lte 0>>
 	<<if _averyUnpilled and !_averyUnpilledRage>>
-		<<He>> notices you're no longer pilled. <<His>> eyes linger on you a moment too long. "You let it wear off," <<he>> says, level. "I expect you pilled while you're under my roof. Don't make me say it twice."<<garage>><<npcincr Avery rage 1>>
+		<<He>>【은는】 당신이 더는 알약을 먹은 상태가 아님을 알아챈다. <<His>> 시선이 당신에게 잠시 너무 오래 머문다. "효과가 풀리게 놔뒀군." <<he>>【이가】 담담하게 말한다. "내 지붕 아래 있는 동안에는 알약을 먹고 있길 바라. 두 번 말하게 하지 마."<<garage>><<npcincr Avery rage 1>>
 		<br><br>
 	<</if>>
 	<<if _averyUnpilledRage>>
 		<<if $avery_party?.hbsc?.pillShown>>
-			<<He>> notices you're no longer pilled, and <<he>> snaps. "That pill from the gala." <<His>> voice rises. "I said you could <i>keep</i> it. I didn't say you could take it. Do you think I let you walk out of that bank with it so you could undo yourself with it the moment my back was turned?"
+			<<He>>【은는】 당신이 더는 알약을 먹은 상태가 아님을 알아채고는 격분한다. "갈라에서 준 그 알약." <<His>> 목소리가 높아진다. "그걸 <i>간직</i>해도 된다고 했지, 먹어도 된다고 한 적은 없어. 내가 그걸 들려서 은행 밖으로 내보낸 게, 내가 등을 돌리자마자 그걸로 스스로를 되돌리라는 뜻인 줄 알았어?"
 			<br><br>
-			"You knew what I expected. You're mine, and you will stay the way I want you to be!" <span class="red"><<He>> grasps your arm.</span> <<npcincr Avery rage 10>>
+			"내가 뭘 기대하는지 알고 있었잖아. 넌 내 거고, 내가 원하는 모습 그대로 있어야 해!" <span class="red"><<He>>【이가】 당신의 팔을 움켜쥔다.</span> <<npcincr Avery rage 10>>
 		<<else>>
-			<<He>> notices you're no longer pilled, and <<he>> snaps. "You let it wear off?" <<He>> demands, <<his>> voice rising. "You knew what I expected. You're mine, and you will stay the way I want you to be!" <span class="red"><<He>> grasps your arm.</span> <<npcincr Avery rage 10>>
+			<<He>>【은는】 당신이 더는 알약을 먹은 상태가 아님을 알아채고는 격분한다. "효과가 풀리게 놔뒀다고?" <<He>>【이가】 <<his>> 목소리를 높이며 따진다. "내가 뭘 기대하는지 알고 있었잖아. 넌 내 거고, 내가 원하는 모습 그대로 있어야 해!" <span class="red"><<He>>【이가】 당신의 팔을 움켜쥔다.</span> <<npcincr Avery rage 10>>
 		<</if>>
 		<<gggarage>>
 		<br><br>		
@@ -1233,24 +1233,24 @@
 	<<elseif !$daily.averyBathFirst and (Time.hour gte 20 or Time.hour lt 5) and $goooutsidecount + $semenoutsidecount gte 5>>
 		<<set $daily.averyBathFirst to true>>
 		<<if C.npc.Avery.dom gte 40>>
-			Avery stops when <<he>> sees you, then wrinkles <<his>> nose and takes a small step away from you.
-			"Look at the state of you. You come home this late, covered in all that, and expect to walk around my house?"
+			에이버리는 당신을 보자 걸음을 멈추더니 <<his>> 코를 찡그리고는 당신에게서 한 걸음 슬쩍 물러선다.
+			"그 꼴 좀 봐. 이렇게 늦게 그런 걸 뒤집어쓰고 들어와서 내 집을 돌아다닐 생각이야?"
 			<br><br>
-			<<He>> points towards the stairs, making it clear that <<he>> expects you to move. "Bathroom. Now. You're not touching anything in this house until you've washed yourself properly."
+			<<He>>【은는】 계단 쪽을 가리키며, 당신이 움직이길 기대한다는 걸 분명히 한다. "욕실. 지금 당장. 제대로 씻기 전에는 이 집에서 아무것도 만지지 마."
 			<br><br>
-			<<link [[Obey (0:20)|Mansion Return Bath First]]>><<npcincr Avery dom 1>><</link>><<gdom>>
+			<<link [[복종한다 (0:20)|Mansion Return Bath First]]>><<npcincr Avery dom 1>><</link>><<gdom>>
 			<br>
-			<<link [[Refuse|Mansion Return Bath First Refuse]]>><<npcincr Avery rage 2>><</link>><<ggarage>>
+			<<link [[거절한다|Mansion Return Bath First Refuse]]>><<npcincr Avery rage 2>><</link>><<ggarage>>
 			<br>
 		<<else>>
-			Avery notices the mess covering you as soon as you come closer, then lets out a quiet sigh before looking back at your face.
-			"Rough night? You look like you've been dragged through half the town."
+			에이버리는 당신이 가까이 다가오자마자 온몸을 뒤덮은 엉망인 꼴을 알아채고, 조용히 한숨을 쉰 뒤 다시 당신의 얼굴을 바라본다.
+			"힘든 밤이었어요? 마을 절반을 끌려다닌 사람 같아요."
 			<br><br>
-			<<He>> gestures towards the stairs. "Go and have a bath first. Take your time and get yourself clean. Whatever I had planned for tonight can wait until you're finished."
+			<<He>>【은는】 계단 쪽으로 손짓한다. "먼저 가서 목욕해요. 천천히, 깨끗하게 씻어요. 오늘 밤 내가 계획했던 건 당신이 끝날 때까지 기다려도 되니까."
 			<br><br>
-			<<link [[Take a bath (0:20)|Mansion Return Bath First]]>><<npcincr Avery love 1>><</link>><<glove>>
+			<<link [[목욕한다 (0:20)|Mansion Return Bath First]]>><<npcincr Avery love 1>><</link>><<glove>>
 			<br>
-			<<link [[Decline|Mansion Return Bath First Refuse]]>><<npcincr Avery rage 1>><</link>><<garage>>
+			<<link [[거절한다|Mansion Return Bath First Refuse]]>><<npcincr Avery rage 1>><</link>><<garage>>
 			<br>
 		<</if>>
 	<<elseif $avery_tower.progress gte 25 and $avery_tower.stage is 0>>
@@ -1412,7 +1412,7 @@
 
 	<<elseif C.npc.Avery.dom gte 25 and !$avery_mansion.jobs.includes("dining")>>
 		<<set $avery_mansion.jobs.push("dining")>>
-		"The dining room gets so cluttered. Especially after guests. Be a <<goodgirl>> and make sure it's clean for me."
+		"다이닝 룸이 너무 어지러워져. 특히 손님들이 다녀가고 나면 말이지. <<goodgirl>>답게 나를 위해 꼭 청소해 줘."
 		<br><br>
 
 		<span class="gold">에이버리는 앞으로 당신이 식당을 깨끗하게 유지해주길 바랍니다.</span>
@@ -1477,7 +1477,7 @@
 		<<endevent>>
 		<<avery_mansion_end_links>>
 	<<elseif C.npc.Avery.love gte 80 and C.npc.Avery.dom gte 20 and C.npc.Avery.rage lte 5 and (!$boutiqueintro or random(1, 20) is 20) and Time.hour lt 22>>
-		"You've been such a <<goodgirl>> lately," <<he>> says with a smile. "A little shopping trip would be a good reward, don't you think?"
+		"요즘 정말 <<goodgirl>>였어." <<he>>【이가】 미소 지으며 말한다. "작은 쇼핑 나들이 정도면 좋은 보상이 되겠지, 안 그래?"
 		<br><br>
 
 		<<if $exposed lte 0>>
@@ -1920,7 +1920,7 @@
 
 	<<set $_averysound to "">>
 	<<if $avery_mansion.chase.stunned gte 1>>
-		Avery is still recovering. You have a chance to get away.
+		에이버리는 아직 회복 중이다. 당신에게는 달아날 기회가 있다.
 		<br><br>
 	<<else>>
 		<<switch $avery_mansion.chase.bus>>
@@ -2577,7 +2577,7 @@
 		<<case 6>>
 			"베일리의 쓰레기들과 함께 진흙탕에 버려줬으면 해?" <<he>>【이가】 묻는다. "그게 네가 바라는 거야?"
 		<<case 5>>
-			"You think you're special?" <<he>> says. "I've chewed up and spat out better <<girls>> than you."
+			"네가 뭐 특별한 줄 알아?" <<he>>【이가】 말한다. "너보다 더 괜찮은 <<girls>>도 수도 없이 씹어 먹고 뱉었어."
 		<<case 4>>
 			"어쩌면 널 팔아버릴지도 모르지." <<he>>【이가】 말한다. "너 같은 닳고 닳은 장난감을 사갈 사람이 있다면 말이야."
 		<<case 3>>
@@ -2784,16 +2784,16 @@
 <<widget "avery_mansion_party_start_links">>
 	<<avery_mansion_party_init>>
 	<<if $avery_mansion.hbsc_gala_pending>>
-		Avery keeps walking past the atrium and out through the front doors. A polished black car waits at the bottom of the steps, its driver already holding the rear door open.
+		에이버리는 아트리움을 지나 정문으로 걸어 나간다. 광택 나는 검은 차가 계단 아래에 서 있고, 운전기사는 벌써 뒷문을 열고 있다.
 		<br><br>
-		"The mansion can survive one evening without a receiving line," Avery says, settling into the back seat as you follow.
-		<<if $averyragerevealed gte 1>> "Try not to disgrace me in front of people who understand ledgers better than breeding stock."<<else>> "Best behaviour."<</if>>
+		"저택은 환영 인사 행렬 없이도 하룻밤쯤은 버틸 수 있어." 당신이 뒤따라 타는 사이, 에이버리가 뒷좌석에 자리 잡으며 말한다.
+		<<if $averyragerevealed gte 1>> "번식용 가축보다 장부를 더 잘 아는 사람들 앞에서 내 얼굴에 먹칠하지 마."<<else>> "얌전히 굴어."<</if>>
 		<br><br>
-		The car pulls away. City lights slide over the glass.
+		차가 출발한다. 도시의 불빛이 유리 위로 미끄러진다.
 		<br><br>
-		"The gala is held in a private salon above the branch," <<he>> says, adjusting <<his>> cuff without looking at you. "Smile when required. Speak when useful. And when you're uncertain, let me be the one who looks expensive."
+		"갈라는 지점 위층의 비공개 살롱에서 열려." <<he>>【이가】 당신을 쳐다보지도 않고 소맷부리를 매만지며 말한다. "필요할 땐 웃고, 쓸모 있을 땐 말해. 그리고 확신이 서지 않을 땐, 비싸 보이는 쪽은 내가 맡을게."
 		<br><br>
-		<<link [[Next|Mansion Party HBSC Gala Arrival]]>><</link>>
+		<<link [[다음|Mansion Party HBSC Gala Arrival]]>><</link>>
 		<br>
 	<<elseif $avery_mansion.guest is "Bailey">>
 		<<npc "Bailey" 2>><<generate3>><<generate4>><<generate5>><<summon_brown_fox 6>>
@@ -3212,14 +3212,14 @@
 		<</if>>
 		<<if $avery_mansion.schedule isnot "return" and !_avery_interrupt>>
 			<<if $xchange.blackmail.conclusionPending>>
-				<span class="gold"><b>NEW!</b></span> <span class="purple">There's an envelope on the floor by the door.</span> It looks like it was slid in from outside.
+				<span class="gold"><b>NEW!</b></span> <span class="purple">문 옆 바닥에 봉투가 놓여 있다.</span> 밖에서 밀어 넣은 것 같다.
 				<br>
-				<<icon "ask.png">><<link [[Read it|Blackmail Conclusion Letter]]>><</link>>
+				<<icon "ask.png">><<link [[읽는다|Blackmail Conclusion Letter]]>><</link>>
 				<br><br>
 			<<elseif $xchange.blackmail.activeQuest and $xchange.blackmail.hasReadLetter>>
-				There's an envelope on your nightstand. You've already seen its contents.
+				침대 옆 탁자 위에 봉투가 있다. 이미 내용을 확인한 봉투다.
 				<br>
-				<<icon "ask.png">><<link [[Read it again|Blackmail Reread Letter]]>><</link>>
+				<<icon "ask.png">><<link [[다시 읽는다|Blackmail Reread Letter]]>><</link>>
 				<br><br>
 			<<elseif $xchange.blackmail.courier is "home" and $xchange.blackmail.hasMaterial and $xchange.blackmail.cooldown lte 0 and !$xchange.blackmail.activeQuest and !$possessed>>
 				<<set _averyHome to !["away","work","date","return"].includes($avery_mansion.schedule || "away")>>
@@ -3233,13 +3233,13 @@
 					<</if>>
 					<span class="gold"><b>NEW!</b></span>
 					<<if $xchange.blackmail.intro is 0>>
-						There's an envelope on the floor by the door.
+						문 옆 바닥에 봉투가 놓여 있다.
 					<<else>>
-						<span class="purple">There's an envelope on the floor by the door.</span>
+						<span class="purple">문 옆 바닥에 봉투가 놓여 있다.</span>
 					<</if>>
-					It looks like it was slid in from outside.
+					밖에서 밀어 넣은 것 같다.
 					<br>
-					<<icon "ask.gif">><<link [[Read it|Blackmail Letter]]>><<set $phase to 5>><</link>>
+					<<icon "ask.gif">><<link [[읽는다|Blackmail Letter]]>><<set $phase to 5>><</link>>
 					<br><br>
 				<</if>>
 			<</if>>
@@ -3272,11 +3272,11 @@
 		<<if !_avery_interrupt and $avery_mansion.schedule isnot "garden" and (!$daily.avery.oranges or !$daily.avery.plums)>>
 			<<set $skulduggerydifficulty to 500>>
 			<<if !$daily.avery.oranges>>
-				<<foodstufficon "orange">> <<link [[Steal oranges (0:20)|Avery Garden Steal]]>><<set $phase to "orange">><<pass 20>><</link>><<tendingdifficulty 1 300>><<skulduggerydifficulty>>
+				<<foodstufficon "orange">> <<link [[오렌지를 훔친다 (0:20)|Avery Garden Steal]]>><<set $phase to "orange">><<pass 20>><</link>><<tendingdifficulty 1 300>><<skulduggerydifficulty>>
 				<br>
 			<</if>>
 			<<if !$daily.avery.plums>>
-				<<foodstufficon "plum">> <<link [[Steal plums (0:20)|Avery Garden Steal]]>><<set $phase to "plum">><<pass 20>><</link>><<tendingdifficulty 1 300>><<skulduggerydifficulty>>
+				<<foodstufficon "plum">> <<link [[자두를 훔친다 (0:20)|Avery Garden Steal]]>><<set $phase to "plum">><<pass 20>><</link>><<tendingdifficulty 1 300>><<skulduggerydifficulty>>
 				<br>
 			<</if>>
 			<br>
@@ -3284,18 +3284,18 @@
 
 		<<if $avery_fate is "saved">>
 			<<if !$avery_mansion.crops and !_avery_interrupt and !["away", "work", "sleep", "bath", "study"].includes($avery_mansion.schedule)>>
-				<span class="gold">Avery is out here too, lingering among the flowerbeds.</span>
+				<span class="gold">에이버리도 이곳에 나와 화단 사이를 서성이고 있다.</span>
 				<br>
-				<<link [[Speak with Avery about the garden|Mansion Garden Crops Intro]]>><</link>>
+				<<link [[에이버리에게 정원에 대해 이야기한다|Mansion Garden Crops Intro]]>><</link>>
 				<br><br>
 			<<elseif $avery_mansion.crops and !_avery_interrupt>>
-				<<gardenicon>><<link [[Tend your patch (0:01)|Mansion Garden Plots]]>><<pass 1>><</link>>
+				<<gardenicon>><<link [[텃밭을 가꾼다 (0:01)|Mansion Garden Plots]]>><<pass 1>><</link>>
 				<br><br>
 				<<if $avery_mansion.crops_upgrade is 1>>
-					<span class="gold">Avery said <<nnpc_he "Avery">>'d have the garden sorted out within the week.</span>
+					<span class="gold">에이버리는 <<nnpc_he "Avery">>【이가】 일주일 안에 정원을 정리해 두겠다고 말했다.</span>
 					<br><br>
 				<<elseif !$avery_mansion.crops_upgrade and !$monthly.averyGardenPlot and !["away", "work", "sleep", "bath", "study"].includes($avery_mansion.schedule)>>
-					<<link [[Complain to Avery about the garden|Mansion Garden Whine]]>><</link>>
+					<<link [[에이버리에게 정원에 대해 불평한다|Mansion Garden Whine]]>><</link>>
 					<br><br>
 				<</if>>
 			<</if>>
@@ -3580,7 +3580,7 @@
 			<</if>>
 
 			<<if $bus is "avery_kitchen">>
-				<<furnitureicon "refrigerator">><<link [[Open the refrigerator|Mansion Refrigerator]]>><</link>>
+				<<furnitureicon "refrigerator">><<link [[냉장고를 연다|Mansion Refrigerator]]>><</link>>
 				<br>
 				<<if !$daily.avery.bananas>>
 					과일 바구니에 바나나가 보인다.
@@ -3602,7 +3602,7 @@
 						<<housekeeping_exam_select>>
 						<<if $chosen_recipe isnot "none">>
 							<span class="gold">여기서 요리책에 실린 레시피를 하나 독학할 수 있다.</span> 당신이 책을 펼치자 <<recipe_name $chosen_recipe>> 레시피가 나온다.<br><br>
-							<<skinicon "chef">><<link [["Learn something new (" + _timeString + ")"|Kitchen Self Teach]]>><<pass _baseTime>><<housekeeping 1 1000>><</link>><<ghousekeeping 1000>>
+							<<skinicon "chef">><<link [["새로운 것을 배운다 (" + _timeString + ")"|Kitchen Self Teach]]>><<pass _baseTime>><<housekeeping 1 1000>><</link>><<ghousekeeping 1000>>
 						<<else>>
 							더 이상 배울 수 있는 레시피가 없다.
 						<</if>>
@@ -3632,7 +3632,7 @@
 					<<socialiseicon>><<link [[에이버리와 이야기한다|Mansion Talk]]>><</link>>
 					<br>
 					<<if effectiveTransformationLevel("cat") gte 6 and !$daily.averySofaCat>>
-						<<socialiseicon>><<link [[Join Avery on the sofa (0:15)|Mansion Lounge Cat]]>><<pass 15>><<set $daily.averySofaCat to 1>><</link>>
+						<<socialiseicon>><<link [[에이버리와 함께 소파에 앉는다 (0:15)|Mansion Lounge Cat]]>><<pass 15>><<set $daily.averySofaCat to 1>><</link>>
 						<br>
 					<</if>>
 					<br>
@@ -3669,7 +3669,7 @@
 					<</if>>
 				<</if>>
 				<<if $avery_mansion.gym_bar_intro and ["away", "work"].includes($avery_mansion.schedule)>>
-					<<icon "physique.png">><<link [[Go to the home gym|Mansion Gym]]>><</link>>
+					<<icon "physique.png">><<link [[집 안 체육관으로 간다|Mansion Gym]]>><</link>>
 					<br>
 				<</if>>
 				<<if $_pianobr>>
@@ -3692,7 +3692,7 @@
 						<</if>>
 					<<elseif $avery_antiques.exposed.length gte 1 or $avery_antiques.bolts gte 1>>
 						<<set _extralinebreak to true>>
-						<span class="blue">You can't fiddle with Avery's displays while <<nnpc_hes Avery>> around.</span>
+						<span class="blue"><<nnpc_hes Avery>> 근처에 있는 동안에는 에이버리의 전시품을 만지작거릴 수 없다.</span>
 						<br>
 					<</if>>
 				<</if>>
@@ -3854,7 +3854,7 @@
 						<br>
 						<<bathroomicon "bath">><<link [[목욕한다 (0:20)|Mansion Bathe]]>><<pass 20>><</link>>
 						<br>
-						<<bathroomicon "bath">><<link [[Have a bath in cold water (0:35)|Mansion Bathe]]>><<set $phase to "cold">><<pass 35>><<run Weather.BodyTemperature.update(10,30)>><<stress 75>><<arousal -5000>><</link>><<lllarousal>><<ggstress>>
+						<<bathroomicon "bath">><<link [[찬물로 목욕한다 (0:35)|Mansion Bathe]]>><<set $phase to "cold">><<pass 35>><<run Weather.BodyTemperature.update(10,30)>><<stress 75>><<arousal -5000>><</link>><<lllarousal>><<ggstress>>
 						<br>
 						<<personalUpkeep>>
 						<br>
@@ -3864,7 +3864,7 @@
 				<<else>>
 					<<bathroomicon "bath">><<link [[목욕한다 (0:20)|Mansion Bathe]]>><<pass 20>><</link>>
 					<br>
-					<<bathroomicon "bath">><<link [[Have a bath in cold water (0:35)|Mansion Bathe]]>><<set $phase to "cold">><<pass 35>><<run Weather.BodyTemperature.update(10,30)>><<stress 75>><<arousal -5000>><</link>><<lllarousal>><<ggstress>>
+					<<bathroomicon "bath">><<link [[찬물로 목욕한다 (0:35)|Mansion Bathe]]>><<set $phase to "cold">><<pass 35>><<run Weather.BodyTemperature.update(10,30)>><<stress 75>><<arousal -5000>><</link>><<lllarousal>><<ggstress>>
 					<br>
 					<<personalUpkeep>>
 					<br>
@@ -3988,7 +3988,7 @@
 				<</if>>
 
 				<<if $avery_mansion.gym_bar_intro and ["away", "work"].includes($avery_mansion.schedule)>>
-					<<foodicon "whisky">><<link [[Go to the private bar|Mansion Bar]]>><</link>>
+					<<foodicon "whisky">><<link [[전용 바로 간다|Mansion Bar]]>><</link>>
 					<br><br>
 				<</if>>
 			<</if>>
@@ -4222,14 +4222,14 @@
 
 	<<if $avery_mansion.hbsc_gala_pending>>
 		<<if $worn.upper.type.includes("formal") and $worn.lower.type.includes("formal")>>
-			"Change of plans. An invitation arrived. The sort one doesn't refuse."
-			Avery pulls a card from <<his>> breast pocket and holds it for you to read the gold lettering: <span class="gold">HBSC Charity Gala.</span> "We mustn't keep them waiting."
+			"계획이 바뀌었어. 초대장이 왔거든. 거절할 수 없는 종류의 초대장이야."
+			에이버리가 <<his>> 가슴 주머니에서 카드를 꺼내 금빛 글씨를 읽을 수 있게 들어 보인다. <span class="gold">HBSC 자선 갈라.</span> "그들을 기다리게 해선 안 되지."
 			<br><br>
 			<<avery_mansion_party_start_links>>
 		<<else>>
-			Avery examines your outfit, impatience flickering across <<his>> face. "No. This won't do. I'll dress you myself."
+			에이버리가 당신의 옷차림을 살펴보며, 조바심이 <<his>> 얼굴에 스친다. "아니. 이건 안 되겠어. 내가 직접 입혀 주지."
 			<br><br>
-			<<link [[Next|Mansion Party Dress]]>><</link>>
+			<<link [[다음|Mansion Party Dress]]>><</link>>
 		<</if>>
 	<<elseif $worn.upper.type.includes("formal") and $worn.lower.type.includes("formal")>>
 		에이버리가 당신의 옷차림을 살펴보고, 미소를 짓는다. "좋아." <<he>>【이가】 당신과 팔짱을 끼며 말한다. "이리 와. 맞이해야 할 손님들이 있다고."
@@ -4257,7 +4257,7 @@
 
 	"거기 있었군." 에이버리가 말한다. "손님들이 곧 도착할 거야." <<He>>【은는】 당신의 옷차림을 살펴본다.
 	<<if $worn.upper.type.includes("formal") and $worn.lower.type.includes("formal")>>
-		"Very good." <<He>> nods in approval. "Make sure you're ready when the guests arrive."
+		"아주 좋아." <<He>>【은는】 만족스럽게 고개를 끄덕인다. "손님들이 도착할 때 준비를 마쳐 두도록 해."
 		<br><br>
 
 		<<endevent>>
@@ -4826,13 +4826,13 @@
 				<<set $avery_mansion.hbsc_gala_seen to true>>
 				<<switch $_dialog_type>>
 					<<case "normal">>
-						There was a gala at the bank. A sudden invitation. I went without you, and spent the evening explaining your absence to people who notice empty seats.
+						은행에서 갈라가 있었어. 갑작스러운 초대였지. 난 너 없이 갔고, 빈자리를 눈여겨보는 사람들에게 네가 없는 이유를 설명하느라 저녁을 다 보냈어.
 					<<case "chase">>
-						The bank held a gala. A sudden invitation I couldn't refuse. I had to attend alone, like some discarded bachelor. Do not make me do that again.
+						은행에서 갈라가 열렸다. 거절할 수 없는 갑작스러운 초대였지. 나는 버려진 독신자처럼 혼자 참석해야 했어. 다시는 그러게 만들지 마라.
 					<<case "revealed">>
-						"There was a charity gala at the HBSC branch. I had to go alone, and cover for the empty chair beside me. People noticed.
+						"HBSC 지점에서 자선 갈라가 열렸어. 나 혼자 가야 했고, 내 옆의 빈자리를 둘러대야 했지. 사람들이 눈치챘어.
 					<<case "revealed chase">>
-						The bank gala came and went without you. I covered for your absence in front of donors and trustees. Be grateful I'm generous with excuses.
+						은행 갈라는 네가 없는 채로 끝났다. 기부자들과 이사들 앞에서 네 부재를 내가 둘러댔지. 내가 변명에 후하다는 걸 고맙게 여겨라.
 				<</switch>>
 		<</switch>>
 		/* Announcing next guest (if not bailey) */

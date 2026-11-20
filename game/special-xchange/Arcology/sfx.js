@@ -474,13 +474,13 @@ window.ArcologySfx = (() => {
 	/* The settings test: plays one preview through the real path and says which step stopped it. */
 	async function test(name = "authentication") {
 		const o = V.options ?? {};
-		if (o.audio !== 1) return "Audio is turned off. Enable it above, then test again.";
-		if (SimpleAudio.mute()) return "The game's audio is muted.";
-		if (!(o.mastervolume > 0) || !(o.ambience_volume > 0)) return "Master or Ambience is at 0%. These sounds follow both sliders.";
+		if (o.audio !== 1) return "오디오가 꺼져 있습니다. 위에서 켠 뒤 다시 시험하십시오.";
+		if (SimpleAudio.mute()) return "게임의 오디오가 음소거 상태입니다.";
+		if (!(o.mastervolume > 0) || !(o.ambience_volume > 0)) return "전체 음량 또는 환경음이 0%입니다. 이 소리는 두 슬라이더를 모두 따릅니다.";
 		const ctx = context();
-		if (!ctx) return "This browser has no Web Audio support.";
+		if (!ctx) return "이 브라우저는 Web Audio를 지원하지 않습니다.";
 		if (ctx.state === "suspended") await ctx.resume().catch(() => {});
-		if (ctx.state !== "running") return `The browser blocked playback (audio is ${ctx.state}). Click anywhere on the page and test again.`;
+		if (ctx.state !== "running") return `브라우저가 재생을 차단했습니다(오디오 상태: ${ctx.state}). 페이지의 아무 곳이나 클릭한 뒤 다시 시험하십시오.`;
 		/* Listen after the compressor (it adds make-up gain) and on the sequence itself (access denied skips the compressor); report the louder. */
 		const taps = [ctx.createAnalyser(), ctx.createAnalyser()];
 		destination(ctx).connect(taps[0]);
@@ -497,8 +497,8 @@ window.ArcologySfx = (() => {
 		destination(ctx).disconnect(taps[0]);
 		taps[1].disconnect();
 		console.debug("Arcology sound test", { state: ctx.state, sampleRate: ctx.sampleRate, level: level(), peak });
-		if (peak < 0.001) return "The chime was sent but no signal reached the output. Please report this.";
-		return `Played at ${Math.round(peak * 100)}% of full scale. If you heard nothing, check your system or browser tab volume.`;
+		if (peak < 0.001) return "신호음을 보냈지만 출력에 신호가 도달하지 않았습니다. 이 문제를 제보해 주십시오.";
+		return `최대 음량의 ${Math.round(peak * 100)}%로 재생되었습니다. 아무 소리도 들리지 않았다면 시스템 또는 브라우저 탭의 음량을 확인하십시오.`;
 	}
 
 	$(document).on(":passagestart.arcologySfx", () => (cues = []));

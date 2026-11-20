@@ -18,7 +18,7 @@
 		model()
 			.layers.map(
 				l =>
-					`${l === "heart" ? "Heart" : l[0].toUpperCase() + l.slice(1)}: ${Object.entries(f[l])
+					`${({ top: "오프닝", heart: "하트", base: "베이스" })[l] || l}: ${Object.entries(f[l])
 						.map(([id, n]) => `${model().name(id)} × ${n}`)
 						.join(", ")}`
 			)
@@ -54,15 +54,15 @@
 		const s = state();
 		const e = s.extraction;
 		if (V.perfumeryVenue === "poppy" && teacher()) poppySchedule();
-		if (!access() || V.passage !== "Perfumery Workstation") throw new Error("Use an accessible perfumery workstation.");
-		if (serial !== e.serial) throw new Error("This extraction has already been collected. Set out another sample.");
+		if (!access() || V.passage !== "Perfumery Workstation") throw new Error("사용할 수 있는 조향 탁자를 이용하십시오.");
+		if (serial !== e.serial) throw new Error("이 추출은 이미 끝났습니다. 다른 샘플을 꺼내 놓으십시오.");
 		const result = setup.perfumeryExtraction.calculate(source, method, mask, finish);
 		const known = e.profiles.find(p => p.key === result.key);
-		if (quick && (!known || known.runs < 2)) throw new Error("Study this exact profile twice before using Quick Extraction.");
-		if ((V.foodstuff[source]?.amount || 0) < 1) throw new Error("You need one whole source item.");
+		if (quick && (!known || known.runs < 2)) throw new Error("빠른 추출을 쓰려면 같은 설정으로 먼저 두 번 추출해 보십시오.");
+		if ((V.foodstuff[source]?.amount || 0) < 1) throw new Error("재료가 통째로 하나 필요합니다.");
 		if (!Object.hasOwn(e.stock, result.key) && Object.keys(e.stock).length >= 80)
-			throw new Error("Your extract case holds 80 profiles. Use or discard one first.");
-		if ((e.stock[result.key] || 0) + result.yield > 240) throw new Error("This profile's vial is full (240 measures).");
+			throw new Error("아로마 케이스에는 80종까지만 담을 수 있습니다. 먼저 하나를 쓰거나 버리십시오.");
+		if ((e.stock[result.key] || 0) + result.yield > 240) throw new Error("이 아로마 병은 가득 찼습니다(240계량).");
 		// This synchronous transaction is the only raw-material debit in perfumery.
 		V.foodstuff[source].amount--;
 		e.stock[result.key] = (e.stock[result.key] || 0) + result.yield;
@@ -79,20 +79,20 @@
 	}
 	function saveExtraction(key) {
 		const e = state().extraction;
-		if (!e.stock[key]) throw new Error("Collect the extract before recording its profile.");
+		if (!e.stock[key]) throw new Error("레시피를 저장하기 전에 먼저 아로마를 모으십시오.");
 		if (e.profiles.some(p => p.key === key)) return;
-		if (e.profiles.length >= 48) throw new Error("Your extraction notebook holds 48 profiles.");
+		if (e.profiles.length >= 48) throw new Error("저장할 수 있는 레시피는 48개까지입니다.");
 		const p = setup.perfumeryExtraction.profile(key);
-		if (!p) throw new Error("Unknown extraction profile.");
+		if (!p) throw new Error("알 수 없는 추출 레시피입니다.");
 		e.profiles.push({ key, name: model().name(key).slice(0, 80), runs: 1 });
 	}
 	function extractionLesson(action) {
 		const s = state();
 		if (teacher()) poppySchedule();
 		if (!canTeach() || s.lesson < 4 || (s.session && s.session.stage !== "concluded"))
-			throw new Error("Finish the apprenticeship experiment and meet Poppy when free.");
+			throw new Error("수업 실험을 마친 뒤, 포피가 한가할 때 찾아오십시오.");
 		if (action === "begin") {
-			if (s.extraction.lesson) throw new Error("This comparison has already been started.");
+			if (s.extraction.lesson) throw new Error("이 비교는 이미 시작했습니다.");
 			// Teaching samples are awarded once; they still require normal extraction.
 			s.extraction.lesson = { flower: null, food: null, complete: false };
 			for (const id of ["red_rose", "choc_chip_cookie"]) {
@@ -101,13 +101,13 @@
 			}
 		} else if (action === "review") {
 			const l = s.extraction.lesson;
-			if (!l || l.complete || !l.flower || !l.food) throw new Error("Capture both comparison samples first.");
+			if (!l || l.complete || !l.flower || !l.food) throw new Error("비교용 샘플 두 가지를 먼저 모으십시오.");
 			l.complete = true;
 			if (s.social.Poppy !== Time.days) {
 				s.social.Poppy = Time.days;
 				Wikifier.wikifyEval("<<npcincr Poppy love 1>>");
 			}
-		} else throw new Error("Choose a comparison action.");
+		} else throw new Error("비교 동작을 고르십시오.");
 		markPoppyInteraction();
 		Time.pass(5 * 60);
 	}
@@ -156,13 +156,13 @@
 	function buy(kind, type = "clear") {
 		const s = state();
 		if (!enabled() || V.passage !== "Perfumery Supplies" || V.location !== "shopping_centre")
-			throw new Error("Buy equipment and supplies at the cosmetics shop.");
+			throw new Error("장비와 재료는 화장품 가게에서 사십시오.");
 		const base = kind === "equipment" ? 15000 : kind === "manual" ? 5000 : kind === "container" ? 150 : model().solvents[type]?.cost * 20;
 		const price = setup.inflation ? setup.inflation.price(base) : base;
-		if (!Number.isFinite(price) || V.money < price) throw new Error("You cannot afford that purchase.");
-		if (kind === "equipment" && (s.equipment || !s.learned)) throw new Error("Learn the basics before buying equipment.");
-		if (kind === "manual" && (s.learned || modLISelected("Poppy"))) throw new Error("Poppy can teach you the basics.");
-		if (!["equipment", "manual", "container", "solvent"].includes(kind)) throw new Error("Unknown supply.");
+		if (!Number.isFinite(price) || V.money < price) throw new Error("돈이 모자라 살 수 없습니다.");
+		if (kind === "equipment" && (s.equipment || !s.learned)) throw new Error("장비를 사기 전에 기본부터 배우십시오.");
+		if (kind === "manual" && (s.learned || modLISelected("Poppy"))) throw new Error("기본은 포피가 가르쳐 줄 수 있습니다.");
+		if (!["equipment", "manual", "container", "solvent"].includes(kind)) throw new Error("알 수 없는 물품입니다.");
 		statChange.money(-base, "cosmetics");
 		if (kind === "equipment") s.equipment = true;
 		else if (kind === "manual") {
@@ -173,7 +173,7 @@
 	}
 	function invite() {
 		if (teacher()) poppySchedule();
-		if (!canInvite()) throw new Error("Ask Poppy when there is time to talk.");
+		if (!canInvite()) throw new Error("포피와 이야기할 틈이 있을 때 물어보십시오.");
 		state().invited = true;
 		markPoppyInteraction();
 		Time.pass(5 * 60);
@@ -181,10 +181,10 @@
 	function beginLesson(approach = "observe") {
 		const s = state();
 		if (teacher()) poppySchedule();
-		if (!canTeach() || s.lesson >= 4) throw new Error("Poppy cannot teach the next lesson right now.");
-		if (!s.invited) throw new Error("Ask Poppy about learning first.");
-		if (s.session && s.session.stage !== "concluded") throw new Error("Finish or put aside your current experiment first.");
-		if (!["observe", "familiar", "contrast", "quiet", "bold", "respect", "question"].includes(approach)) throw new Error("Choose a lesson approach.");
+		if (!canTeach() || s.lesson >= 4) throw new Error("포피가 지금은 다음 수업을 해 줄 수 없습니다.");
+		if (!s.invited) throw new Error("먼저 포피에게 배우고 싶다고 말하십시오.");
+		if (s.session && s.session.stage !== "concluded") throw new Error("진행 중인 실험을 먼저 끝내거나 치워 두십시오.");
+		if (!["observe", "familiar", "contrast", "quiet", "bold", "respect", "question"].includes(approach)) throw new Error("수업 방식을 고르십시오.");
 		s.session = { kind: "lesson", lesson: s.lesson, stage: "compose", approach, bottleId: null };
 		s.invited = true;
 		s.learned = true;
@@ -227,14 +227,14 @@
 		const s = state();
 		if (teacher()) poppySchedule();
 		if (!canTeach() || s.lesson < 4 || !["opening", "challenge", "gift", "demonstration", "rivalry", "rescue"].includes(topic))
-			throw new Error("Poppy isn't available for that collaboration.");
-		if (s.session && s.session.stage !== "concluded") throw new Error("Finish your current experiment first.");
-		if ((topic === "demonstration" || topic === "rescue") && !demonstrated) throw new Error("Poppy needs a formula to follow.");
-		if (topic === "rivalry" && !s.characters?.poppy?.rivalry) throw new Error("Poppy hasn't challenged you yet.");
+			throw new Error("포피가 그 공동 작업에는 응해 줄 수 없습니다.");
+		if (s.session && s.session.stage !== "concluded") throw new Error("진행 중인 실험을 먼저 끝내십시오.");
+		if ((topic === "demonstration" || topic === "rescue") && !demonstrated) throw new Error("포피가 따라 할 배합이 필요합니다.");
+		if (topic === "rivalry" && !s.characters?.poppy?.rivalry) throw new Error("포피가 아직 도전해 오지 않았습니다.");
 		const previous = s.bottles[s.bottles.length - 1];
 		let reference = demonstrated || (topic === "rivalry" ? rivalFormula : previous?.formula || s.lessonSample);
 		if (topic === "gift") {
-			if (!s.gifts.length) throw new Error("Poppy has not received a perfume to compare yet.");
+			if (!s.gifts.length) throw new Error("포피가 비교해 볼 향수를 아직 받지 못했습니다.");
 			const gift = JSON.parse(s.gifts[s.gifts.length - 1]);
 			reference = {
 				version: gift.version,
@@ -256,7 +256,7 @@
 		if (teacher()) poppySchedule();
 		const session = V.perfumery?.session;
 		if (!canTeach() || session?.kind !== "lesson" || session.lesson !== 3 || session.stage !== "compose" || V.poppySeen.includes("perfumery_signature_strip"))
-			throw new Error("Poppy isn't offering another signature strip.");
+			throw new Error("포피가 시그니처 시향지를 더는 내주지 않습니다.");
 		V.poppySeen.push("perfumery_signature_strip");
 		// This is Poppy's own story-specific fragrance, never a player's manufactured perfume.
 		Wikifier.wikifyEval("<<poppyOpiumPulse>>");
@@ -268,9 +268,9 @@
 		const session = s.session;
 		const b = sessionBottle();
 		if (teacher()) poppySchedule();
-		if (!canTeach() || session?.stage !== "review" || !b) throw new Error("Bring a completed sample to Poppy when there is time to talk.");
-		if (session.kind === "lesson" && session.lesson === 2 && !ready(b)) throw new Error("Let the comparison bottle mature before evaluating it.");
-		if (!["explain", "revise", "respect", "question"].includes(response)) throw new Error("Choose how to discuss your sample.");
+		if (!canTeach() || session?.stage !== "review" || !b) throw new Error("포피와 이야기할 틈이 있을 때 완성한 샘플을 가져오십시오.");
+		if (session.kind === "lesson" && session.lesson === 2 && !ready(b)) throw new Error("비교용 병이 숙성될 때까지 기다린 뒤 평가하십시오.");
+		if (!["explain", "revise", "respect", "question"].includes(response)) throw new Error("샘플을 어떻게 이야기할지 고르십시오.");
 		session.response = response;
 		session.success = session.kind === "lesson" ? lessonMatches(b) : true;
 		session.stage = "concluded";
@@ -295,14 +295,14 @@
 	function craft(formula, blending, expectedSerial) {
 		const s = state();
 		if (V.perfumeryVenue === "poppy" && teacher()) poppySchedule();
-		if (!access() || V.passage !== "Perfumery Workstation") throw new Error("You need access to a perfumery workstation.");
-		if (expectedSerial !== s.serial) throw new Error("This batch has already been bottled. Start a fresh draft.");
-		if (!Number.isFinite(blending) || blending < 0 || blending > 1) throw new Error("Finish blending first.");
+		if (!access() || V.passage !== "Perfumery Workstation") throw new Error("조향 탁자를 이용할 수 없습니다.");
+		if (expectedSerial !== s.serial) throw new Error("이번 배치는 이미 병에 담았습니다. 새 초안을 시작하십시오.");
+		if (!Number.isFinite(blending) || blending < 0 || blending > 1) throw new Error("먼저 블렌딩을 끝내십시오.");
 		const f = model().copy(formula);
 		const cost = model().validate(f);
-		if (s.bottles.length >= 24) throw new Error("Your cabinet holds 24 bottles. Use, gift, or discard one first.");
-		if (s.containers < 1 || s.solvent[f.solvent] < cost.solvent) throw new Error("You need an empty bottle and enough of the selected spirit.");
-		for (const [id, n] of Object.entries(cost.needed)) if ((s.extraction.stock[id] || 0) < n) throw new Error(`Extract more ${model().name(id)} first.`);
+		if (s.bottles.length >= 24) throw new Error("보관장에는 병을 24개까지 둘 수 있습니다. 먼저 하나를 쓰거나, 선물하거나, 버리십시오.");
+		if (s.containers < 1 || s.solvent[f.solvent] < cost.solvent) throw new Error("빈 병과 선택한 스피릿이 충분히 필요합니다.");
+		for (const [id, n] of Object.entries(cost.needed)) if ((s.extraction.stock[id] || 0) < n) throw new Error(`먼저 ${model().name(id)} 추출을 더 하십시오.`);
 		const bottle = bottleRecord(f, Math.min(1, blending * 0.9 + s.skill / 1000), s.serial + 1);
 		// All checks precede this synchronous commit. No passage navigation or await between debit and credit.
 		for (const [id, n] of Object.entries(cost.needed)) {
@@ -402,10 +402,10 @@
 		return now() >= bottle.made + bottle.formula.age * 86400;
 	}
 	function apply(id) {
-		if (!enabled()) throw new Error("Perfumery is unavailable right now.");
+		if (!enabled()) throw new Error("향수 기능을 지금은 쓸 수 없습니다.");
 		const s = state();
 		const b = s.bottles.find(b => b.id === id);
-		if (!b || b.uses < 1 || !ready(b)) throw new Error("That bottle is empty or still maturing.");
+		if (!b || b.uses < 1 || !ready(b)) throw new Error("그 병은 비었거나 아직 숙성 중입니다.");
 		b.uses--;
 		const age = Math.min(b.formula.age, Math.max(0, (now() - b.made) / 86400));
 		/* The worn scent keeps its recipe, not a copy of the calculation; activeProperties() rebuilds and caches it. */
@@ -489,15 +489,15 @@
 	function effects() {
 		const p = scent();
 		if (!p) return [];
-		const lines = [`Fades in ${Math.ceil(p.remaining)} min, faster in rain.`];
-		if (p.attention * p.strength * 0.2 >= 0.05) lines.push("People in town notice you more.");
+		const lines = [`${Math.ceil(p.remaining)}분 뒤에 사라집니다. 비가 오면 더 빨리 사라집니다.`];
+		if (p.attention * p.strength * 0.2 >= 0.05) lines.push("마을 사람들이 당신을 더 쉽게 알아챕니다.");
 		if (isBestialityOnForAnyCreature() || V.monster === 1) {
 			const pull = ["wolf", "boar", "bear"].map(animal => wildlifePreview(animal, p, true));
-			if (pull.some(m => m >= 1.05)) lines.push("Forest animals find you more easily.");
-			else if (pull.every(m => m <= 0.95)) lines.push("Forest animals find you less easily.");
+			if (pull.some(m => m >= 1.05)) lines.push("숲속 동물이 당신을 더 쉽게 찾아냅니다.");
+			else if (pull.every(m => m <= 0.95)) lines.push("숲속 동물이 당신을 더 어렵게 찾아냅니다.");
 		}
-		if (["Poppy", "Robin"].some(npc => socialPreview(npc, p).score >= 0.2)) lines.push("Some people find it pleasant.");
-		if (p.intensity * p.strength > 2.5) lines.push("Some people find it too strong.");
+		if (["Poppy", "Robin"].some(npc => socialPreview(npc, p).score >= 0.2)) lines.push("일부 사람은 이 향을 좋아합니다.");
+		if (p.intensity * p.strength > 2.5) lines.push("일부 사람은 향이 너무 강하다고 느낍니다.");
 		return lines;
 	}
 	function wildlife(category) {
@@ -537,7 +537,7 @@
 	function saveFormula(id, name) {
 		const s = state();
 		const b = s.bottles.find(b => b.id === id);
-		if (!b) throw new Error("Bottle missing.");
+		if (!b) throw new Error("병을 찾을 수 없습니다.");
 		const key = formulaKey(b.formula);
 		const previous = s.journal.find(e => formulaKey(e.formula) === key);
 		const quality = model().calculate(b.formula, b.blending).quality;
@@ -548,7 +548,7 @@
 			previous.name = entry.name;
 			previous.best = Math.max(previous.best, entry.best);
 		} else {
-			if (s.journal.length >= 32) throw new Error("Your journal holds 32 formulas. Remove one first.");
+			if (s.journal.length >= 32) throw new Error("배합 목록에는 배합을 32개까지 담을 수 있습니다. 먼저 하나를 지우십시오.");
 			s.journal.push(entry);
 		}
 	}
@@ -566,38 +566,38 @@
 	function feedback(b) {
 		const p = properties(b);
 		if (p.pleasantness < 30 && p.quality > 72)
-			return 'Poppy smells the paper again, then looks at your notes. "You made this well, but it smells awful. Was that what you wanted?"';
+			return '포피가 시향지 냄새를 다시 맡고는 당신의 노트를 본다. "잘 만들긴 했는데 냄새가 끔찍해. 이게 네가 원한 거야?"';
 		if (p.pleasantness < 25)
-			return 'Poppy coughs and moves the paper away. "That smells terrible! Put the cap back on the bottle before the whole room smells like it."';
+			return '포피가 기침하며 시향지를 멀리 치운다. "냄새가 지독해! 방 전체에 퍼지기 전에 병 뚜껑부터 닫아."';
 		if (p.extractionPurity < 0.55)
-			return 'Poppy checks your notes about the ingredients. "I think the problem started when you extracted this one. Try making the extract again before changing how much you use."';
+			return '포피가 재료에 관한 당신의 노트를 훑어본다. "문제는 이 재료를 추출할 때 시작된 것 같아. 쓰는 양을 바꾸기 전에 추출부터 다시 해 봐."';
 		if (p.distinctiveness > 60 && p.quality > 65)
-			return 'Poppy smells the paper again. "I wouldn\'t wear this myself, but you made something interesting. How did you come up with it?"';
+			return '포피가 시향지 냄새를 다시 맡는다. "내가 쓸 향은 아니지만, 흥미로운 걸 만들었네. 어떻게 떠올렸어?"';
 		if (p.nuances.includes("gourmand") && p.pleasantness > 65)
-			return 'Poppy checks the page where you compared the perfume to cookies. "You were right about the sweet smell. I thought it would cover up the flowers, but I can still smell them."';
+			return '포피가 향수를 쿠키에 견준 페이지를 확인한다. "단 냄새 얘기는 네 말이 맞았어. 꽃향기를 덮을 줄 알았는데, 아직 다 맡히네."';
 		return {
-			intense: 'Poppy moves the paper away from the nose. "That\'s strong! I can smell it without bringing it close. Did you want it that strong?"',
+			intense: '포피가 시향지를 코에서 멀리 치운다. "세다! 가까이 대지 않아도 냄새가 나. 이렇게까지 강하게 하고 싶었던 거야?"',
 			discordant:
-				'Poppy smells the paper again and checks your ingredients. "One of these smells is covering up the others. Let\'s check how much of each ingredient you used."',
+				'포피가 시향지 냄새를 다시 맡고는 재료를 확인한다. "이 냄새 중 하나가 나머지를 덮고 있어. 재료를 각각 얼마나 썼는지 확인해 보자."',
 			original:
-				'Poppy reads your ingredient list, then smells the paper again. "I didn\'t expect these ingredients to smell like that together. What did you change?"',
+				'포피가 당신의 재료 목록을 읽고는 시향지 냄새를 다시 맡는다. "이 재료들이 함께 이런 냄새를 낼 줄은 몰랐어. 뭘 바꿨어?"',
 			familiar:
-				'Poppy places your sample beside the original perfume bottle. "It reminds me of this one, but yours smells different enough. You should keep your version."',
-			preferred: 'Poppy smells the paper again and smiles. "I like this one. The sweet smell comes first, but I can still smell the flowers afterwards."',
-			elegant: 'Poppy waits a moment before smelling the paper again. "It still smells good. I don\'t think you need to add anything else yet."',
+				'포피가 당신의 샘플을 원래 향수병 옆에 놓는다. "이거랑 닮았는데, 네 건 충분히 달라. 네 버전을 계속 쓰는 게 좋겠어."',
+			preferred: '포피가 시향지 냄새를 다시 맡고 미소 짓는다. "이거 마음에 들어. 단 냄새가 먼저 오는데, 그 뒤에도 꽃향기가 맡혀."',
+			elegant: '포피가 잠시 기다렸다가 시향지 냄새를 다시 맡는다. "여전히 좋은 냄새야. 아직은 더할 게 없을 것 같아."',
 			beginner:
-				'Poppy moves the scented paper away from the open bottles before smelling it again. "That\'s better. The other perfumes were making it difficult to smell yours properly."',
+				'포피가 향이 밴 시향지를 열려 있는 병들에서 멀리 치우고는 다시 냄새를 맡는다. "아까보다 낫네. 다른 향수들 때문에 네 향을 제대로 맡기가 어려웠거든."',
 		}[outcome(b)];
 	}
 	function gift(id) {
 		const s = state();
 		if (teacher()) poppySchedule();
 		const b = s.bottles.find(b => b.id === id);
-		if (s.session?.stage === "review" && s.session.bottleId === id) throw new Error("Discuss this experiment before giving away the bottle.");
+		if (s.session?.stage === "review" && s.session.bottleId === id) throw new Error("병을 선물하기 전에 이 실험 이야기를 먼저 하십시오.");
 		if (V.perfumeryVenue !== "poppy" || V.location !== "flats" || !availableTeacher() || !b || !ready(b) || b.uses < 1)
-			throw new Error("Offer a usable, matured bottle when Poppy is in the living room.");
+			throw new Error("포피가 거실에 있을 때 쓸 수 있는 숙성된 병을 건네십시오.");
 		const key = formulaKey(b.formula);
-		if (s.giftDay === Time.days || s.gifts.includes(key)) throw new Error("Poppy has already discussed this formula, or received a perfume today.");
+		if (s.giftDay === Time.days || s.gifts.includes(key)) throw new Error("포피가 이미 이 배합을 살펴봤거나 오늘 향수를 받았습니다.");
 		const response = feedback(b);
 		const p = properties(b);
 		s.giftDay = Time.days;
@@ -609,10 +609,10 @@
 		s.bottles.splice(s.bottles.indexOf(b), 1);
 		markPoppyInteraction();
 		Time.pass(5 * 60);
-		return `Poppy turns your handwritten label towards the light before accepting the bottle. ${
+		return `포피가 병을 받기 전에 손으로 쓴 라벨을 빛 쪽으로 돌려 본다. ${
 			p.sweet > 0.4 && p.persistence > 0.5
-				? '"You made this for me? Keep a copy of those notes. I may want another when this runs out."'
-				: "\"For me? I wouldn't have chosen this myself. That isn't a reason to put it away.\""
+				? '"나한테 주려고 만든 거야? 이 노트는 사본을 남겨 둬. 이게 떨어지면 하나 더 부탁할지도 몰라."'
+				: "\"나한테? 내가 직접 고르진 않았을 향이야. 그렇다고 치워 둘 이유는 아니지.\""
 		} ${response}`;
 	}
 	setup.perfumery = {

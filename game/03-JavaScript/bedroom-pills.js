@@ -476,10 +476,10 @@ setup.pills = [
 	},
 	{
 		name: "painkillers",
-		description: "A bottle of strong painkillers. They relieve serious aches quickly, but cause considerable drowsiness.",
-		onTakeMessage: "You swallow a painkiller. Before long, the pain eases, though your eyelids feel heavier.",
-		warning_label: "Warning: May cause considerable drowsiness. Taking more than three doses in one day causes increasingly dangerous side effects.",
-		indicators: ["<span class='hpi_indic_green'>-- Pain</span>", "<span class='hpi_indic_blue'>+++ Tiredness</span>"],
+		description: "강력한 진통제 한 병이다. 심한 통증을 빠르게 가라앉히지만 상당한 졸음을 일으킨다.",
+		onTakeMessage: "진통제를 삼킨다. 오래지 않아 통증이 가라앉지만 눈꺼풀이 무거워진다.",
+		warning_label: "경고: 심한 졸음을 일으킬 수 있습니다. 하루에 세 번을 넘게 복용하면 점점 위험한 부작용이 나타납니다.",
+		indicators: ["<span class='hpi_indic_green'>-- 통증</span>", "<span class='hpi_indic_blue'>+++ 피로</span>"],
 		autoTake() {
 			return false;
 		},
@@ -505,17 +505,17 @@ setup.pills = [
 	},
 	{
 		name: "anti-anxiety tablets",
-		description: "Fast-acting medicine that reduces trauma and stress. Taking more than one tablet in a day can cause serious side effects.",
+		description: "트라우마와 스트레스를 줄여 주는 속효성 약이다. 하루에 한 알을 넘게 먹으면 심각한 부작용이 생길 수 있다.",
 		onTakeMessage() {
 			const doses = Number(T.calmorylDose) || this.doseTaken();
-			if (doses === 1) return "You swallow an anti-anxiety tablet. Your stress begins to ease.";
-			if (doses === 2) return "You take a second tablet. Your stomach feels sick and you have trouble thinking clearly.";
-			if (doses === 3) return "You take a third tablet. You feel detached from your surroundings and struggle to focus on what is happening around you.";
-			return "You swallow another tablet. You become even less aware of what is happening around you.";
+			if (doses === 1) return "항불안제를 삼킨다. 스트레스가 누그러지기 시작한다.";
+			if (doses === 2) return "두 번째 알을 먹는다. 속이 메스껍고 생각을 또렷하게 하기 어렵다.";
+			if (doses === 3) return "세 번째 알을 먹는다. 주변에서 동떨어진 느낌이 들고, 눈앞에서 벌어지는 일에 집중하기가 힘들다.";
+			return "또 한 알을 삼킨다. 주위에서 벌어지는 일을 더욱 알아차리지 못하게 된다.";
 		},
 		warning_label:
-			"Warning: Take no more than one tablet per day. A second tablet causes side effects. Three or more tablets cause temporary dissociation and make it difficult to understand your surroundings. Each additional tablet makes the effect last longer.",
-		indicators: ["<span class='hpi_indic_green'>--- Trauma</span>", "<span class='hpi_indic_green'>- Stress</span>"],
+			"경고: 하루에 한 알을 넘게 복용하지 마십시오. 두 번째 알은 부작용을 일으킵니다. 세 알 이상 복용하면 일시적인 해리 상태가 되어 주변 상황을 이해하기 어려워집니다. 알을 추가할 때마다 효과가 더 오래 지속됩니다.",
+		indicators: ["<span class='hpi_indic_green'>--- 트라우마</span>", "<span class='hpi_indic_green'>- 스트레스</span>"],
 		autoTake() {
 			return false;
 		},
@@ -526,7 +526,7 @@ setup.pills = [
 			return V.sexStats.pills.pills[this.name].owned;
 		},
 		hpi_doseTaken() {
-			return `${this.doseTaken()}\u00A0taken`;
+			return `${this.doseTaken()}회 복용`;
 		},
 		type: "calmoryl",
 		subtype: "trauma suppressant",
@@ -545,14 +545,14 @@ setup.pills = [
 	},
 	{
 		name: "sleeping pills",
-		description: "A mild over-the-counter sleep aid. Take one before bed to help you fall asleep. It may not work if your trauma is severe.",
+		description: "처방전 없이 살 수 있는 순한 수면 보조제다. 자기 전에 한 알 먹으면 잠드는 데 도움이 된다. 트라우마가 심하면 듣지 않을 수 있다.",
 		get onTakeMessage() {
 			return sleepAidOtcStrongEnough()
-				? "You swallow a sleeping pill. After a while, you begin to feel sleepy."
-				: "You swallow a sleeping pill. You start to feel tired, but you still cannot relax. <span class='red'>The pill is not strong enough to help you sleep tonight.</span>";
+				? "수면제를 삼킨다. 잠시 후 졸음이 오기 시작한다."
+				: "수면제를 삼킨다. 졸음이 오기 시작하지만 여전히 긴장이 풀리지 않는다. <span class='red'>이 알약으로는 오늘 밤 잠들기에 힘이 부족하다.</span>";
 		},
-		warning_label: "Warning: Take one tablet before bed. Do not take a second dose. May make it harder to wake up.",
-		indicators: ["<span class='hpi_indic_green'>- Insomnia</span>", "<span class='hpi_indic_blue'>+ Oversleeping</span>"],
+		warning_label: "경고: 자기 전에 한 알을 복용하십시오. 두 번째 알은 복용하지 마십시오. 잠에서 깨기 어려워질 수 있습니다.",
+		indicators: ["<span class='hpi_indic_green'>- 불면</span>", "<span class='hpi_indic_blue'>+ 과수면</span>"],
 		autoTake() {
 			return false;
 		},
@@ -563,7 +563,7 @@ setup.pills = [
 			return V.sexStats.pills.pills[this.name].owned;
 		},
 		hpi_doseTaken() {
-			return sleepAidPending()?.strength === "otc" ? "Active" : `${this.doseTaken()}\u00A0taken`;
+			return sleepAidPending()?.strength === "otc" ? "효과 지속 중" : `${this.doseTaken()}회 복용`;
 		},
 		type: "sleep",
 		subtype: "otc",
@@ -582,14 +582,14 @@ setup.pills = [
 	},
 	{
 		name: "prescription sleeping pills",
-		description: "A strong sleeping pill. It helps you sleep even when stressed, but using it too often can make you dependent on it.",
-		onTakeMessage: "You take a sleeping pill. You quickly begin to feel drowsy.",
+		description: "강력한 수면제다. 스트레스를 받은 상태에서도 잠들 수 있게 해 주지만, 너무 자주 쓰면 의존하게 될 수 있다.",
+		onTakeMessage: "수면제를 먹는다. 금세 졸음이 밀려온다.",
 		warning_label:
-			"Warning: Take one tablet before bed. Taking a second dose will make you pass out. Frequent use can cause dependence and make it harder to sleep without the pills.",
+			"경고: 자기 전에 한 알을 복용하십시오. 두 번째 알을 복용하면 정신을 잃습니다. 자주 복용하면 의존성이 생겨 알약 없이는 잠들기 더 어려워질 수 있습니다.",
 		indicators: [
-			"<span class='hpi_indic_green'>-- Insomnia</span>",
-			"<span class='hpi_indic_blue'>++ Oversleeping</span>",
-			"<span class='hpi_indic_red'>Dependence</span>",
+			"<span class='hpi_indic_green'>-- 불면</span>",
+			"<span class='hpi_indic_blue'>++ 과수면</span>",
+			"<span class='hpi_indic_red'>의존</span>",
 		],
 		autoTake() {
 			return false;
@@ -601,7 +601,7 @@ setup.pills = [
 			return V.sexStats.pills.pills[this.name].owned;
 		},
 		hpi_doseTaken() {
-			return sleepAidPending()?.strength === "prescription" ? "Active" : `${this.doseTaken()}\u00A0taken`;
+			return sleepAidPending()?.strength === "prescription" ? "효과 지속 중" : `${this.doseTaken()}회 복용`;
 		},
 		type: "sleep",
 		subtype: "prescription",
@@ -620,10 +620,10 @@ setup.pills = [
 	},
 	{
 		name: "prescription painkillers",
-		description: "Strong prescription painkillers. One dose greatly reduces pain, but makes you very tired.",
-		onTakeMessage: "You swallow a prescription painkiller. Your pain quickly fades, but you begin to feel very sleepy.",
-		warning_label: "Warning: Causes severe drowsiness. Taking more than two doses in one day can cause dangerous side effects.",
-		indicators: ["<span class='hpi_indic_green'>--- Pain</span>", "<span class='hpi_indic_blue'>+++ Tiredness</span>"],
+		description: "강력한 처방 진통제다. 한 알이면 통증이 크게 줄지만 몹시 피곤해진다.",
+		onTakeMessage: "처방 진통제를 삼킨다. 통증이 금세 사라지지만 몹시 졸려지기 시작한다.",
+		warning_label: "경고: 심한 졸음을 일으킵니다. 하루에 두 번을 넘게 복용하면 위험한 부작용이 나타날 수 있습니다.",
+		indicators: ["<span class='hpi_indic_green'>--- 통증</span>", "<span class='hpi_indic_blue'>+++ 피로</span>"],
 		autoTake() {
 			return false;
 		},
@@ -725,10 +725,10 @@ setup.pills = [
 	{
 		name: "sensitivity-decreasing cream",
 		description:
-			"A fast-acting topical neural dampener that temporarily reduces tactile sensation throughout the body. One application remains effective for 16 hours.",
-		onTakeMessage: "You rub the sensitivity-decreasing cream into your skin. The constant press of your clothes soon fades into the background.",
-		warning_label: "Warning: Do not apply more than once per day. This cream replaces the effect of any active sensitivity-increasing cream.",
-		indicators: ["<span class='hpi_indic_blue'>--- Sensitivity</span>"],
+			"감각을 일시적으로 둔하게 만드는 속효성 외용 신경 억제제다. 한 번 바르면 16시간 동안 효과가 이어진다.",
+		onTakeMessage: "감도 저하 크림을 피부에 문지른다. 옷이 계속 닿는 감촉이 어느새 배경으로 멀어진다.",
+		warning_label: "경고: 하루에 한 번을 넘게 바르지 마십시오. 이 크림은 사용 중인 감도 증가 크림의 효과를 대체합니다.",
+		indicators: ["<span class='hpi_indic_blue'>--- 감도</span>"],
 		autoTake() {
 			return false;
 		},
@@ -741,7 +741,7 @@ setup.pills = [
 		hpi_doseTaken() {
 			const medication = getSensitivityMedication();
 			const hours = sensitivityMedicationRemainingHours();
-			return medication?.type === this.subtype ? `Effective for ${hours} hour${hours === 1 ? "" : "s"}` : "Not active";
+			return medication?.type === this.subtype ? `효과 지속: ${hours}시간${hours === 1 ? "" : ""}` : "사용하지 않음";
 		},
 		type: "sensitivity",
 		subtype: "suppressant",
@@ -751,7 +751,7 @@ setup.pills = [
 		},
 		icon: "img/misc/icon/cream.png",
 		hpi_take_pills() {
-			return "Apply cream";
+			return "크림 바르기";
 		},
 		display_condition() {
 			return this.owned() > 0 ? 1 : 0;
@@ -760,16 +760,16 @@ setup.pills = [
 			return this.doseTaken() === 0 && getSensitivityMedication()?.type !== this.subtype ? 1 : 0;
 		},
 		take_blocked_reason() {
-			return this.doseTaken() > 0 ? "The label permits only one application per day." : "This cream is already active.";
+			return this.doseTaken() > 0 ? "라벨에는 하루에 한 번만 바르도록 되어 있습니다." : "이 크림은 이미 효과가 이어지는 중입니다.";
 		},
 		effects: [`<<run applySensitivityCream("suppressant")>>`],
 	},
 	{
 		name: "sensitivity-increasing cream",
-		description: "A fast-acting topical neural stimulant that heightens tactile sensation throughout the body. One application remains effective for 16 hours.",
-		onTakeMessage: "You rub the sensitivity-increasing cream into your skin. Before long, every brush against it feels vivid and distracting.",
-		warning_label: "Warning: Do not apply more than once per day. This cream replaces the effect of any active sensitivity-decreasing cream.",
-		indicators: ["<span class='hpi_indic_green'>+++ Sensitivity</span>"],
+		description: "온몸의 감각을 일시적으로 예민하게 만드는 속효성 외용 신경 자극제다. 한 번 바르면 16시간 동안 효과가 이어진다.",
+		onTakeMessage: "감도 증가 크림을 피부에 문지른다. 오래지 않아 살갗에 스치는 모든 것이 생생하고 산만하게 느껴진다.",
+		warning_label: "경고: 하루에 한 번을 넘게 바르지 마십시오. 이 크림은 사용 중인 감도 저하 크림의 효과를 대체합니다.",
+		indicators: ["<span class='hpi_indic_green'>+++ 감도</span>"],
 		autoTake() {
 			return false;
 		},
@@ -782,7 +782,7 @@ setup.pills = [
 		hpi_doseTaken() {
 			const medication = getSensitivityMedication();
 			const hours = sensitivityMedicationRemainingHours();
-			return medication?.type === this.subtype ? `Effective for ${hours} hour${hours === 1 ? "" : "s"}` : "Not active";
+			return medication?.type === this.subtype ? `효과 지속: ${hours}시간${hours === 1 ? "" : ""}` : "사용하지 않음";
 		},
 		type: "sensitivity",
 		subtype: "stimulant",
@@ -792,7 +792,7 @@ setup.pills = [
 		},
 		icon: "img/misc/icon/cream.png",
 		hpi_take_pills() {
-			return "Apply cream";
+			return "크림 바르기";
 		},
 		display_condition() {
 			return this.owned() > 0 ? 1 : 0;
@@ -801,7 +801,7 @@ setup.pills = [
 			return this.doseTaken() === 0 && getSensitivityMedication()?.type !== this.subtype ? 1 : 0;
 		},
 		take_blocked_reason() {
-			return this.doseTaken() > 0 ? "The label permits only one application per day." : "This cream is already active.";
+			return this.doseTaken() > 0 ? "라벨에는 하루에 한 번만 바르도록 되어 있습니다." : "이 크림은 이미 효과가 이어지는 중입니다.";
 		},
 		effects: [`<<run applySensitivityCream("stimulant")>>`],
 	},
@@ -867,6 +867,13 @@ const homePillDisplayNames = {
 	"asylum's prescription": "정신병원 처방약",
 	"Dr Harper's prescription": "하퍼 의사의 처방약",
 	"Hair Growth Formula": "모발 성장제",
+	"painkillers": "진통제",
+	"anti-anxiety tablets": "항불안제",
+	"sleeping pills": "수면제",
+	"prescription sleeping pills": "처방 수면제",
+	"prescription painkillers": "처방 진통제",
+	"sensitivity-decreasing cream": "감도 저하 크림",
+	"sensitivity-increasing cream": "감도 증가 크림",
 };
 
 function homePillDisplayName(name) {
@@ -898,7 +905,7 @@ function addElementToGrid(item) {
 			<div class="hpi_item">
 				<div class="hpi_icon">${item.frontIcon ? `<img class="icon infront" src="${item.frontIcon}"/>` : ""}<img class="icon" src="${item.icon}"/></div>
 				<div class="hpi_name" id="hpi_name_${itemName}">
-					${itemDisplayName}
+					${homePillDisplayName(item.name)}
 					${item.autoTake() === true ? `<span class="hpi_auto_label"> [자동]</span>` : ""}
 				</div>
 				<div class="hpi_count" onmouseenter="T.disableGridClick = true" onmouseleave="T.disableGridClick = false">${item.owned()}</div>
@@ -920,8 +927,8 @@ function pillBagActionCell(item) {
 window.pillBagActionCell = pillBagActionCell;
 
 function pillBagActionLabel(item) {
-	if (pocketCarrying("pill", item.name)) return "Remove from bag";
-	return "Put in bag";
+	if (pocketCarrying("pill", item.name)) return "가방에서 꺼내기";
+	return "가방에 넣기";
 }
 window.pillBagActionLabel = pillBagActionLabel;
 
@@ -931,7 +938,7 @@ function onPillBagClick(itemName) {
 	if (!pocketSlotToggle("pill", itemName)) {
 		/* The only normal failure is a full carried container; say so instead of doing nothing. */
 		const button = document.getElementById("hpi_pocket_bag");
-		if (button) button.textContent = `Your ${pocketBagName()} is full`;
+		if (button) button.textContent = `${pocketBagName() === "pocket" ? "주머니" : pocketBagName()}: 가득 참`;
 		return;
 	}
 	const button = document.getElementById("hpi_pocket_bag");
@@ -1026,7 +1033,7 @@ function initPillContextButtons(item) {
 		/* Pills can self-report why they're blocked (e.g. X-Change body mismatch) so the grey button isn't unexplained. */
 		let blockedReason = typeof item.take_blocked_reason === "function" ? item.take_blocked_reason() : "";
 		/* X-Change pills have enough gates that a silent grey button reads as a bug; always say something. */
-		if (!blockedReason && item.type === "xchange") blockedReason = "You can't take this pill in your current state.";
+		if (!blockedReason && item.type === "xchange") blockedReason = "지금 상태에서는 이 알약을 먹을 수 없습니다.";
 		if (blockedReason && document.getElementById("hpi_blocked_reason") == null) {
 			document
 				.getElementById("hpi_desc_action")
@@ -1156,7 +1163,7 @@ function onTakeClick(itemName) {
 			}
 			/* Temporary therapy and permanent X-Change purity neutralise the pill while still recording its consumption. */
 			V.lastPillTakenDescription = xchangePillNeutralised(item)
-				? "You swallow the pill, but it dissolves to nothing. Your resistance neutralises it before it can take hold, and your body stays exactly as it is."
+				? "알약을 삼키지만, 아무것도 남기지 않고 녹아 사라진다. 당신의 저항력이 효과가 자리 잡기도 전에 무력화해 버려, 몸은 조금도 변하지 않는다."
 				: typeof item.onTakeMessage === "function"
 				? item.onTakeMessage()
 				: item.onTakeMessage;
@@ -1206,7 +1213,7 @@ function onTakeClickSilent(itemName) {
 			V.sexStats.pills.mostTaken[item.type] = window.redetermineMostTaken(item.type, item.subtype);
 			/* Temporary therapy and permanent X-Change purity neutralise the pill while still recording its consumption. */
 			V.lastPillTakenDescription = xchangePillNeutralised(item)
-				? "You swallow the pill, but it dissolves to nothing. Your resistance neutralises it before it can take hold, and your body stays exactly as it is."
+				? "알약을 삼키지만, 아무것도 남기지 않고 녹아 사라진다. 당신의 저항력이 효과가 자리 잡기도 전에 무력화해 버려, 몸은 조금도 변하지 않는다."
 				: typeof item.onTakeMessage === "function"
 				? item.onTakeMessage()
 				: item.onTakeMessage;

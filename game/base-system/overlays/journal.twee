@@ -248,9 +248,9 @@
 
 			<<if $avery_valentines?.invite and !$avery_valentines?.done and !$avery_valentines?.missed_approach and !$avery_valentines_missed>>
 				<<if $avery_mansion>>
-					<li>에이버리가 당신을 <span class="pink">발렌타인 데이(<<= getFormattedDate(new DateTime(Time.year, 2, 14))>>)에 데이트에 초대했습니다.</span> <<nnpc_He "Avery">>【은는】 <span class="gold"><<ampm 21 00>></span>부터 저택 차고에서 당신을 기다릴 것입니다.</li>
+					<li>에이버리가 당신을 <span class="pink">발렌타인데이(<<= getFormattedDate(new DateTime(Time.year, 2, 14))>>)에 데이트에 초대했습니다.</span> <<nnpc_He "Avery">>【은는】 <span class="gold"><<ampm 21 00>></span>부터 저택 차고에서 당신을 기다릴 것입니다.</li>
 				<<else>>
-					<li>에이버리가 당신을 <span class="pink">발렌타인 데이(<<= getFormattedDate(new DateTime(Time.year, 2, 14))>>)에 데이트에 초대했습니다.</span> <<nnpc_He "Avery">>【은는】 <span class="gold"><<ampm 20 00>></span>부터 도무스 가에서 당신을 기다릴 것입니다.</li>
+					<li>에이버리가 당신을 <span class="pink">발렌타인데이(<<= getFormattedDate(new DateTime(Time.year, 2, 14))>>)에 데이트에 초대했습니다.</span> <<nnpc_He "Avery">>【은는】 <span class="gold"><<ampm 20 00>></span>부터 도무스 가에서 당신을 기다릴 것입니다.</li>
 				<</if>>
 			<</if>>
 			<<if modLISelected("Poppy") and C.npc.Poppy and C.npc.Poppy.init is 1 and $valentines_poppy_flat_accept is 1>>
@@ -432,7 +432,7 @@
 					<<case "alex_farm">>
 						<<set _bikeString to "농지">>
 					<<default>>
-						<<set _bikeString to "where you left it">>
+						<<set _bikeString to "놓아둔 곳">>
 				<</switch>>
 				<li><<if $bicycle.persistentLocation is true>>자전거 위치: _bikeString. <</if>>자전거의 남은 사용 시간은 $bicycle.durability.current분입니다.</li>
 				<<if $bicycle.durability.repair isnot undefined>>
@@ -629,10 +629,10 @@
 						<li><<icon "/furniture/tfplushes.png">> _petStatus.name【이가】 당신의 콘솔에서 충분히 훈련해 새 기술을 배울 수 있게 되었습니다.</li>
 					<<else>>
 						<<set _petNeeds to []>>
-						<<if _petStatus.sick>><<run _petNeeds.push("it's ill")>><</if>>
-						<<if _petStatus.hunger gte 80>><<run _petNeeds.push("it's hungry")>><</if>>
-						<<if _petStatus.poops gt 0>><<run _petNeeds.push("it's made a mess")>><</if>>
-						<<if _petStatus.energy lte 15>><<run _petNeeds.push("it's exhausted")>><</if>>
+						<<if _petStatus.sick>><<run _petNeeds.push("아픔")>><</if>>
+						<<if _petStatus.hunger gte 80>><<run _petNeeds.push("배고픔")>><</if>>
+						<<if _petStatus.poops gt 0>><<run _petNeeds.push("어질러 놓음")>><</if>>
+						<<if _petStatus.energy lte 15>><<run _petNeeds.push("지침")>><</if>>
 						<<if _petNeeds.length gt 0>>
 							<li><<icon "/furniture/tfplushes.png">> _petStatus.name【은는】 당신의 콘솔에서 보살핌이 필요합니다 (<<= _petNeeds.join(", ")>>).</li>
 						<<else>>
@@ -687,7 +687,7 @@
 				<<elseif $exhibitionismrun is "starfish">>
 					<li><<starfishicon>>수수께끼의 쪽지가 스타피쉬 가의 차량들을 향해 15분 동안 엉덩이를 드러내면 <<printmoney 50000>>【을를】 주겠다고 제안합니다.</li>
 				<<elseif $exhibitionismrun is "cliff">>
-					<li><<clifficon>>수수께끼의 쪽지가 알몸으로 클리프 가에서 하이가까지 왕복으로 달리면 <<printmoney 100000>>【을를】 주겠다고 제안합니다.</li>
+					<li><<clifficon>>수수께끼의 쪽지가 알몸으로 클리프 가에서 하이 가까지 왕복으로 달리면 <<printmoney 100000>>【을를】 주겠다고 제안합니다.</li>
 				<</if>>
 			<</if>>
 
@@ -1118,7 +1118,7 @@
 				<</if>>
 			<</if>>
 			<<if autismHasDocumentation()>>
-				<<set _autismTold to autismDisclosureList().map(who => who is "nurse" ? "the school nurse" : who)>>
+				<<set _autismTold to autismDisclosureList().map(who => ({"nurse": "학교 간호사", "Leighton": "레이튼", "River": "리버", "Sirris": "시리스", "Doren": "도렌", "Winter": "윈터", "Bailey": "베일리", "Kylar": "카일라", "Jordan": "조던"})[who] || who)>>
 				<li><<assignmenticon>> 진단 보고서와 권고된 조정 사항을 가지고 있습니다. 다른 사람에게 보여 줘도 소모되지 않습니다.</li>
 				<<if _autismTold.length>>
 					<li><<ind>><span class="green"><<= formatList(_autismTold)>></span>에게 보여 주었습니다.</li>
@@ -1153,11 +1153,11 @@
 	<</if>>
 	<<if $valentines is 1>>
 		<ul class="journal">
-			<li>발렌타인 데이가 <<if Time.monthDay is 14>><span class="gold">오늘</span><<else>><<= getFormattedDate(new DateTime(Time.year, 2, 14))>>에<</if>> 열립니다. 특별한 누군가와 시간을 보내면 무척 보람을 느낄 것 같습니다.</li>
+			<li>발렌타인데이가 <<if Time.monthDay is 14>><span class="gold">오늘</span><<else>><<= getFormattedDate(new DateTime(Time.year, 2, 14))>>에<</if>> 열립니다. 특별한 누군가와 시간을 보내면 무척 보람을 느낄 것 같습니다.</li>
 			<<if $valentines_eden is 1 and !$valentines_eden_bought>>
 				<li>에덴을 축하하기 위해 선물을 살 수 있습니다.</li>
 			<<elseif $valentines_eden_bought is 1>>
-				<li>발렌타인 데이 <<ampm 17 00>>에 에덴을 위한 목욕을 준비할 수 있습니다.</li>
+				<li>발렌타인데이 <<ampm 17 00>>에 에덴을 위한 목욕을 준비할 수 있습니다.</li>
 			<</if>>
 		</ul>
 	<</if>>
@@ -1227,7 +1227,7 @@
 			<<if $syndromeeden gte 1>>
 				<<if Time.monthDay is 25>>
 					<<if Time.hour lte 20>>
-						<li> <span class="pink">오늘</span> 에덴과 함께크리스마스를 기념할 수 있습니다.</li>
+						<li> <span class="pink">오늘</span> 에덴과 함께 크리스마스를 기념할 수 있습니다.</li>
 					<</if>>
 				<<else>>
 					<li>크리스마스가 다가옵니다. 에덴과 함께 기념할 수 있습니다.</li>
@@ -1330,7 +1330,7 @@
 						<<else>>
 							<span class='fa-icon fa-unselected'></span>
 						<</if>>
-						<<sneakicon>><<= $player.gender_appearance is "f" ? "메이드처럼 인사 하여" : "집사처럼 인사 하여">> 맞이합니다.
+						<<sneakicon>><<= $player.gender_appearance is "f" ? "메이드처럼 인사하여" : "집사처럼 인사하여">> 맞이합니다.
 					<</if>>
 					<<if $avery_mansion.jobs.includes("meek")>>
 						<br>
@@ -1511,7 +1511,7 @@
 			<</if>>
 			<<if $sciencelichentemple is 1>>
 				<<if $sciencelichentempleready is 1>>
-					<span class='fa-icon fa-selected'></span> 신전에 있는 이끼를 이끼를 프로젝트에 추가했습니다.
+					<span class='fa-icon fa-selected'></span> 신전에 있는 이끼를 프로젝트에 추가했습니다.
 					<br>
 				<<else>>
 					<span class='fa-icon fa-unselected'></span> 신전에 있는 이끼를 조사했습니다. 집이나 도서관에서 프로젝트에 추가해야 합니다.
@@ -1523,7 +1523,7 @@
 			<</if>>
 			<<if $sciencelichendrain is 1>>
 				<<if $sciencelichendrainready is 1>>
-					<span class='fa-icon fa-selected'></span> 배수구에 있는 이끼를 이끼를 프로젝트에 추가했습니다.
+					<span class='fa-icon fa-selected'></span> 배수구에 있는 이끼를 프로젝트에 추가했습니다.
 					<br>
 				<<else>>
 					<span class='fa-icon fa-unselected'></span> 배수구에 사는 이끼를 조사했습니다. 집이나 도서관에서 프로젝트에 추가해야 합니다.

@@ -209,11 +209,11 @@
 		const hint = root.querySelector(".loftBurnHint");
 		if (hint) {
 			if (pos >= zoneStart && pos <= zoneEnd) {
-				hint.textContent = "Plate it now.";
+				hint.textContent = "지금 접시에 담아야 한다.";
 			} else if (pos > zoneEnd) {
-				hint.textContent = "It's starting to catch.";
+				hint.textContent = "눌어붙기 시작한다.";
 			} else {
-				hint.textContent = "The orphans crowd close, waiting for your nod.";
+				hint.textContent = "고아원 아이들이 바싹 모여 당신의 끄덕임을 기다린다.";
 			}
 		}
 
@@ -240,7 +240,7 @@
 		root.setAttribute("data-pos", "0");
 		prepareRoot(root);
 		setFill(root, 0);
-		if (button) button.textContent = "Plate it!";
+		if (button) button.textContent = "접시에 담는다!";
 		cancelMeter(root);
 		activeMeters[getId(root)] = raf(function () {
 			tick(root);

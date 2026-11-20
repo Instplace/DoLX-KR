@@ -5,39 +5,39 @@
 <</widget>>
 <<widget "perfumeryJournalContent">>
 	<ul class="journal">
-		<li><<perfumeryicon>> Perfumery skill <span class="green"><<print $perfumery.skill>></span>/100. Lessons completed: <span class="green"><<print $perfumery.lesson>></span>/4.</li>
-		<li><<perfumeryicon "bottle">> <span class="green"><<print $perfumery.containers>></span> empty <<pluralise $perfumery.containers "bottle">>. Liquids for mixing perfume: soft <span class="green"><<print $perfumery.solvent.soft>></span>, clear <span class="green"><<print $perfumery.solvent.clear>></span>, bright <span class="green"><<print $perfumery.solvent.bright>></span>.</li>
-		<<if $perfumery.session and $perfumery.session.stage isnot "concluded">><li><<icon "tending/white-rose.png">> You still need to talk to Poppy about your perfume experiment.</li><</if>>
-		<<if !$perfumery.bottles.length and !$perfumery.journal.length>><li><<perfumeryicon "manual">> You haven't written any perfume formulas in your notebook yet.</li><</if>>
+		<li><<perfumeryicon>> 조향 숙련도 <span class="green"><<print $perfumery.skill>></span>/100. 마친 수업: <span class="green"><<print $perfumery.lesson>></span>/4.</li>
+		<li><<perfumeryicon "bottle">> 빈 병 <span class="green"><<print $perfumery.containers>></span>개. 향수를 섞는 데 쓰는 액체: 부드러운 것 <span class="green"><<print $perfumery.solvent.soft>></span>, 맑은 것 <span class="green"><<print $perfumery.solvent.clear>></span>, 밝은 것 <span class="green"><<print $perfumery.solvent.bright>></span>.</li>
+		<<if $perfumery.session and $perfumery.session.stage isnot "concluded">><li><<icon "tending/white-rose.png">> 향수 실험에 대해 아직 포피와 이야기해야 합니다.</li><</if>>
+		<<if !$perfumery.bottles.length and !$perfumery.journal.length>><li><<perfumeryicon "manual">> 아직 노트에 향수 배합을 하나도 적지 않았습니다.</li><</if>>
 	</ul>
 	<<if $perfumery.bottles.length>>
-		<details class="journal"><summary class="journal">Bottles</summary>
+		<details class="journal"><summary class="journal">병</summary>
 			<ul class="journal">
 			<<for _b range $perfumery.bottles>>
-				<li><<perfumeryIcon _b>><<print Util.escapeMarkup(_b.name)>> (<<print _b.uses>> applications). <<print Util.escape(setup.perfumery.notes(_b.formula))>>
+				<li><<perfumeryIcon _b>><<print Util.escapeMarkup(_b.name)>> (<<print _b.uses>>회분). <<print Util.escape(setup.perfumery.notes(_b.formula))>>
 				<<if setup.perfumery.ready(_b)>>
-					Ready to wear.
+					뿌릴 준비가 되었습니다.
 					<<if _b.uses gt 0 and setup.perfumery.enabled()>>
-						<<capture _b>><<link "Wear">><<run setup.perfumery.apply(_b.id)>><<replace "#perfumeryJournalContent">><<perfumeryJournalContent>><</replace>><</link>><</capture>>
+						<<capture _b>><<link "뿌린다">><<run setup.perfumery.apply(_b.id)>><<replace "#perfumeryJournalContent">><<perfumeryJournalContent>><</replace>><</link>><</capture>>
 					<</if>>
-				<<else>>Maturing for <<print Math.ceil((_b.made + _b.formula.age * 86400 - $timeStamp) / 3600)>> more hours.<</if>>
+				<<else>>앞으로 <<print Math.ceil((_b.made + _b.formula.age * 86400 - $timeStamp) / 3600)>>시간 더 숙성됩니다.<</if>>
 				</li>
 			<</for>>
 			</ul>
 		</details>
 	<</if>>
 	<<if $perfumery.journal.length>>
-		<details class="journal"><summary class="journal">Formulas</summary>
+		<details class="journal"><summary class="journal">배합</summary>
 			<ul class="journal">
 			<<for _entry range $perfumery.journal>>
 				<li><<perfumeryIcon _entry>><<print Util.escapeMarkup(_entry.name)>>. <<print Util.escape(setup.perfumery.notes(_entry.formula))>>
-				<<print _entry.formula.concentration>>% concentrate, <<print _entry.formula.solvent>> spirit, <<print _entry.formula.age>> days maturing. Previous results: <<print _entry.results.join(", ")>>.</li>
+				<<print _entry.formula.concentration>>% 농도, <<print ({ soft: "부드러운", clear: "맑은", bright: "밝은" })[_entry.formula.solvent] || _entry.formula.solvent>> 알코올, 숙성 <<print _entry.formula.age>>일. 이전 결과: <<print _entry.results.join(", ")>>.</li>
 			<</for>>
 			</ul>
 		</details>
 	<</if>>
 	<<if $perfumery.characters?.memories.length>>
-		<details class="journal"><summary class="journal">Fragrance memories</summary>
+		<details class="journal"><summary class="journal">향기 기억</summary>
 			<ul class="journal">
 			<<for _who range Object.keys($perfumery.characters.known)>>
 				<<set _whoText to setup.perfumeryCharacters.knownText(_who)>>
@@ -50,15 +50,15 @@
 		</details>
 	<</if>>
 	<<if $perfumery.extraction and ($perfumery.extraction.profiles.length or Object.keys($perfumery.extraction.stock).length)>>
-		<details class="journal"><summary class="journal">Extracts</summary>
+		<details class="journal"><summary class="journal">추출물</summary>
 			<ul class="journal">
-			<li>Extraction practice: <span class="green"><<print $perfumery.extraction.practice>></span>/100.</li>
+			<li>추출 연습: <span class="green"><<print $perfumery.extraction.practice>></span>/100.</li>
 			<<for _key, _amount range $perfumery.extraction.stock>>
-				<li><<print Util.escape(setup.perfumeryModel.name(_key))>>: <span class="green"><<print _amount>></span> measures.</li>
+				<li><<print Util.escape(setup.perfumeryModel.name(_key))>>: <span class="green"><<print _amount>></span>단위.</li>
 			<</for>>
 			<<for _profile range $perfumery.extraction.profiles>>
 				<<set _aroma to setup.perfumeryExtraction.profile(_profile.key)>>
-				<li><<print Util.escapeMarkup(_profile.name)>>: tested <<print _profile.runs>> times<<if _profile.runs gte 2>>. You can now collect this scent more quickly<</if>>. <<print Util.escape(_aroma.selected.join(", "))>>.</li>
+				<li><<print Util.escapeMarkup(_profile.name)>>: <<print _profile.runs>>회 시험했습니다<<if _profile.runs gte 2>>. 이제 이 향을 더 빨리 모을 수 있습니다<</if>>. <<print Util.escape(_aroma.selected.join(", "))>>.</li>
 			<</for>>
 			</ul>
 		</details>
@@ -75,13 +75,13 @@
 	<<if $money gte _price>>
 		<<capture _args>><<link `_args[1] + " (" + formatMoney(_price) + ")"` $passage>><<run setup.perfumery.buy(_args[0], _args[3])>><</link>><</capture>>
 	<<else>>
-		<span class="grey"><<print _args[1]>> (<<printprice _args[2]>>). You can't afford it.</span>
+		<span class="grey"><<print _args[1]>> (<<printprice _args[2]>>). 돈이 부족하다.</span>
 	<</if>>
 	<br>
 <</widget>>
 <<widget "perfumeryInvitation">>
 	<<if setup.perfumery.canInvite() and !$perfumery?.invited>>
-		<<capture _args>><<socialiseicon "ask">><<link [[Ask about Poppy's fragrance|Poppy Perfumery Invitation]]>><<set $perfumeryVenue to _args[0]>><</link>><br><</capture>>
+		<<capture _args>><<socialiseicon "ask">><<link [[포피의 향기에 대해 묻는다|Poppy Perfumery Invitation]]>><<set $perfumeryVenue to _args[0]>><</link>><br><</capture>>
 	<</if>>
 <</widget>>
 
@@ -102,14 +102,14 @@
 	<<set _avLater to setup.perfumeryCharacters.averyLater(_args[0])>>
 	<<if _avLater>>
 		<<if _args[1]>><br><br><</if>>
-		<<set _avNow to _args[0] is "hotel" ? "As you take your seat at the balcony table" : "When the food arrives">>
-		<<set _avThen to _args[0] is "hotel" ? "when I came in" : "when we sat down">>
+		<<set _avNow to _args[0] is "hotel" ? "발코니 테이블에 앉자" : "음식이 나오자">>
+		<<set _avThen to _args[0] is "hotel" ? "내가 들어왔을 때" : "우리가 앉았을 때">>
 		<<if _avLater.worse>>
-			<<print _avNow>>, Avery looks at your wrist for a moment before <<nnpc_he "Avery">> speaks. "That perfume smelled better <<print _avThen>>. I expected it to last longer."
+			<<print _avNow>> 에이버리가 말을 꺼내기 전에 잠시 당신의 손목을 바라본다. "그 향수, <<print _avThen>> 더 좋은 냄새가 났어. 더 오래갈 줄 알았는데."
 		<<elseif _avLater.better>>
-			<<print _avNow>>, Avery leans closer to you. "Your perfume smells much better now," <<nnpc_he "Avery">> says with a small smile. "I wasn't impressed <<print _avThen>>."
+			<<print _avNow>> 에이버리가 당신 쪽으로 몸을 기울인다. "네 향수, 지금이 훨씬 좋은 냄새가 나." <<nnpc_he "Avery">>【이가】 작게 미소 지으며 말한다. "<<print _avThen>>는 별로 감흥이 없었는데."
 		<<else>>
-			<<print _avNow>>, you notice that your perfume smells different from before. Avery glances at your wrist, but <<nnpc_he "Avery">> says nothing about it.
+			<<print _avNow>> 당신은 향수 냄새가 전과 달라졌다는 걸 알아챈다. 에이버리는 당신의 손목을 흘끗 보지만 <<nnpc_he "Avery">>【은는】 아무 말도 하지 않는다.
 		<</if>>
 		<br><br>
 	<</if>>

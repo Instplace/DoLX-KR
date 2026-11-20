@@ -10,62 +10,62 @@
 
 	<<set _huntReason to (setup.inflation ? setup.inflation.baileyAggressionReason() : "")>>
 
-	Bailey is already there, flanked by a <<person2>><<person>> and a <<person3>><<person>>, the three of them spreading across the pavement to cut off the street.
-	The goons close in, herding you back until your shoulders meet a wall.
-	Before you can bolt, the <<person2>><<person>> seizes one of your wrists and the <<person3>><<person>> the other, pinning your hands against the brick.
+	베일리는 이미 그곳에 있다. 양옆에 <<person2>><<person>>【와과】 <<person3>><<person>>【을를】 세운 채, 셋이 보도에 퍼져 서서 길을 막고 있다.
+	깡패들이 바짝 다가와 당신의 어깨가 벽에 닿을 때까지 몰아붙인다.
+	당신이 달아나기도 전에 <<person2>><<person>>【이가】 당신의 한쪽 손목을, <<person3>><<person>>【이가】 다른 쪽 손목을 붙잡아 손을 벽돌 벽에 눌러 붙인다.
 	<br><br>
-	<<person1>>"You can't run from me," Bailey says.
+	<<person1>>"넌 나한테서 도망 못 쳐." 베일리가 말한다.
 	<<switch _huntReason>>
 	<<case "loan">>
-		"The bank's been bending my ear about what you owe them. They've made collecting it my problem, and I always solve my problems."
+		"은행이 네가 진 빚 얘기로 내 귀를 들들 볶더군. 그걸 받아내는 게 내 문제가 됐지. 그리고 난 내 문제는 항상 해결해."
 	<<case "inflation">>
-		"I've heard all about that little fortune you've been hoarding. Did you really think keeping off the doorstep would make the rent disappear?"
+		"네가 그동안 모아둔 그 쏠쏠한 돈 얘기는 다 들었다. 집 앞에 안 나타나면 월세가 사라질 줄 알았나?"
 	<<case "both">>
-		"A fat purse you won't spend, and a bank screaming in my ear about your debt. You've turned yourself into my full-time job."
+		"쓰지도 않는 두둑한 지갑에, 네 빚 때문에 내 귀에 대고 소리치는 은행까지. 넌 날 전업으로 일하게 만들었어."
 	<<default>>
-		"You've kept me waiting long enough."
+		"충분히 기다리게 했다."
 	<</switch>>
 	<br><br>
 	<<baileyRentFlavour>>
-	"<span class="red">Pay up.</span>"
+	"<span class="red">내놔.</span>"
 	<<babyRent>>
 	<<set _loanSurcharge to (setup.hbsc and setup.hbsc.loanRentSurcharge ? setup.hbsc.loanRentSurcharge() : 0)>>
 	<<bratTaxCalc>>
 	<<set _rentTotal to ($rentMoney + ($babyRent or 0) + $baileyBratTax + _loanSurcharge)>>
 	<<loanRentNotice>>
 	<<if ((setup.inflation ? setup.inflation.rentPayable() : $money) + ($baileyDeposit or 0)) gte _rentTotal>>
-		<<He>> holds out an open palm. "You owe me <<printmoney _rentTotal "red">>."
+		<<He>>【은는】 손바닥을 펼친다. "넌 내게 <<printmoney _rentTotal "red">> 빚졌어."
 		<br><br>
-		<<link [[Pay up|Street Bailey Hunt Pay]]>><</link>>
+		<<link [[갚는다|Street Bailey Hunt Pay]]>><</link>>
 		<br>
 	<<else>>
-		<<He>> nods. The goons turn out your pockets<<if $money gt 0>>, taking the <<printmoney $money "gold">> you're carrying<</if>>.
+		<<He>>【은는】 고개를 끄덕인다. 깡패들이 당신의 주머니를 뒤집어 턴다<<if $money gt 0>>. 가지고 있던 <<printmoney $money "gold">>어치는 몽땅 가져간다<</if>>.
 		<<if $hbsc and $hbsc.account and Number.isFinite($hbsc.account.deposit) and $hbsc.account.deposit gt 0>>
 			<<baileyBankDraw `$hbsc.account.deposit`>>
 		<</if>>
-		It still isn't enough. <<His>> smile fades.<<gggtrauma>><<gstress>>
+		그래도 모자란다. <<His>> 미소가 사라진다.<<gggtrauma>><<gstress>>
 		<<if $money gt 0>><<money `-$money` "baileyRent">><</if>>
 		<<set _huntBundle to ($rentTime lte -14 and not $bailey_confiscation and ($rentMoney or 0) gt 0) ? baileyConfiscationBundle(_rentTotal) : { items: [], total: 0 }>>
 		<<if _huntBundle.items.length gt 0>>
 			<<run baileyConfiscationApply(_huntBundle)>>
 			<br><br>
-			<<He>> takes out <<his>> phone and makes a short call without looking away from you. "The brat's room. Clear it out."
+			<<He>>【은는】 휴대폰을 꺼내 당신에게서 눈을 떼지 않은 채 짧게 통화한다. "꼬맹이 방이야. 싹 치워."
 			<br><br>
-			"My people are at the orphanage already," <<he>> says. "Your <<baileyConfiscationList>> will be out of that room before you get back.
-			You have one week to pay up properly in my office before I pawn your junk off."
-			<span class="red">They're taking your belongings!</span>
+			"내 사람들은 이미 고아원에 가 있다." <<he>>【이가】 말한다. "네 <<baileyConfiscationList>>【은는】 네가 돌아가기 전에 그 방에서 사라질 거다.
+			내 사무실에서 제대로 갚을 시간은 일주일이다. 그 뒤엔 네 잡동사니를 전당포에 넘긴다."
+			<span class="red">당신의 소지품을 가져가고 있다!</span>
 			<<set $rentTime to 7>>
 		<</if>>
 		<br><br>
-		"Consider that a down payment. I'll find you again. I always do."
-		<<His>> goons give your arms a final wrench before letting go.<<gpain>>
+		"선금이라고 생각해. 다시 찾아가마. 난 언제나 그래."
+		<<His>> 깡패들이 마지막으로 당신의 팔을 비틀고 나서야 놓아준다.<<gpain>>
 		/* Couldn't pay: give a day's reprieve so the hunt can't trap the player mid-street. */
 		<<set $daily.baileyHuntBroke to true>>
 		<<set $baileyRefusedToPay += 1>>
 		<<thuganger 1>><<if $rentThug>><<gthuganger>><</if>>
 		<<trauma 12>><<stress 5>><<pain 15>>
 		<br><br>
-		<<link [[Next|$baileyHuntReturn]]>><<endevent>><<unset $baileyHuntReturn>><</link>>
+		<<link [[다음|$baileyHuntReturn]]>><<endevent>><<unset $baileyHuntReturn>><</link>>
 		<br>
 	<</if>>
 <</widget>>
@@ -73,8 +73,8 @@
 :: Street Bailey Hunt Pay
 <<effects>><<if not $baileyHuntReturn>><<set $baileyHuntReturn to "High Street">><</if>>
 <<rentpay>><<thuganger -5>><<if $rentThug>><<lllthuganger>><</if>>
-The goons release your wrists at a flick of Bailey's hand. The three of them fold back into the crowd as if they'd never been there.
+베일리가 손짓 한 번 하자 깡패들이 당신의 손목을 놓는다. 셋은 마치 처음부터 없었던 것처럼 인파 속으로 스며든다.
 <br><br>
 <<set $rentTime to 7>>
-<<link [[Next|$baileyHuntReturn]]>><<endevent>><<unset $baileyHuntReturn>><</link>>
+<<link [[다음|$baileyHuntReturn]]>><<endevent>><<unset $baileyHuntReturn>><</link>>
 <br>

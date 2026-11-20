@@ -72,8 +72,8 @@ function sexToyWornCategory(toy, setupToy) {
 }
 
 function sexToyWearButtonText(toy, setupToy) {
-	if (sexToyUsesVaginalWornSlot(toy, setupToy)) return toy.worn ? "Remove it" : "Insert it";
-	return toy.worn ? "Take off" : "Wear it";
+	if (sexToyUsesVaginalWornSlot(toy, setupToy)) return toy.worn ? "빼기" : "넣기";
+	return toy.worn ? "벗기" : "착용하기";
 }
 
 function sexToysInventoryOnItemClick(index, category) {
@@ -181,7 +181,7 @@ function refreshOwnedTags() {
 			return;
 		}
 
-		element.textContent = item.worn ? "worn" : item.packed ? "in bag" : item.carried ? "carried" : "";
+		element.textContent = item.worn ? "착용 중" : item.packed ? "가방 안" : item.carried ? "소지 중" : "";
 	});
 }
 window.refreshOwnedTags = refreshOwnedTags;
@@ -193,7 +193,7 @@ window.toyBagAvailable = toyBagAvailable;
 
 function toyBagButtonText(index, category) {
 	if (!toyBagAvailable()) return "";
-	return pocketToyPacked(category, index) ? "Take out of bag" : "Put in bag";
+	return pocketToyPacked(category, index) ? "가방에서 꺼내기" : "가방에 넣기";
 }
 window.toyBagButtonText = toyBagButtonText;
 
@@ -209,7 +209,7 @@ function sexToysInventoryOnBagClick(index, category) {
 	const wantPacked = !pocketToyPacked(category, index);
 	if (!pocketToyPack(category, index, wantPacked)) {
 		/* The only normal failure is a full carried container; say so instead of doing nothing. */
-		if (button) button.textContent = `Your ${pocketBagName()} is full`;
+		if (button) button.textContent = `${pocketBagName() === "pocket" ? "주머니" : pocketBagName()}: 가득 참`;
 		return;
 	}
 	if (button) button.textContent = toyBagButtonText(index, category);
@@ -308,12 +308,12 @@ function sexToysInventoryOnWearClick(index, category) {
 	}
 
 	if (sexToyUsesVaginalWornSlot(toy, setupToy) && !V.player.vaginaExist && !toy.worn) {
-		sexToyNotice(`You can't insert the ${toy.name} without a vagina.`);
+		sexToyNotice(`질이 없으면 ${toy.name}【을를】 넣을 수 없다.`);
 		return;
 	}
 
 	if (sexToyUsesVaginalWornSlot(toy, setupToy) && !toy.worn && playerChastity("vagina")) {
-		sexToyNotice(`You can't push the ${toy.name} past the ${V.worn.genitals.name}.`);
+		sexToyNotice(`${toy.name}【을를】 ${V.worn.genitals.name} 너머로 밀어 넣을 수 없다.`);
 		return;
 	}
 
@@ -557,11 +557,11 @@ function updateToyButtons(toy, setupToy, index, category) {
 	const wearButton = document.getElementById("stiWearButton");
 	if (wearButton) wearButton.textContent = sexToyWearButtonText(toy, setupToy);
 	const carryButton = document.getElementById("stiCarryButton");
-	if (carryButton) carryButton.textContent = toy.carried ? "Put back in the cupboard" : "Carry it";
+	if (carryButton) carryButton.textContent = toy.carried ? "수납장에 다시 넣기" : "소지하기";
 	const bagButton = document.getElementById("stiBagButton");
 	if (bagButton) bagButton.textContent = toyBagButtonText(index, category);
 	const tag = document.getElementById("sti_already_owned_" + category.replace(/\s/g, "_") + "_" + index);
-	if (tag) tag.textContent = toy.worn ? "worn" : toy.packed ? "in bag" : toy.carried ? "carried" : "";
+	if (tag) tag.textContent = toy.worn ? "착용 중" : toy.packed ? "가방 안" : toy.carried ? "소지 중" : "";
 }
 window.updateToyButtons = updateToyButtons;
 

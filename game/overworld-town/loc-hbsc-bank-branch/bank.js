@@ -672,11 +672,11 @@ setup.hbsc.receiveExternalDeposit = function (amount) {
 `id` is the key each bill's event code passes to canAutoPay()/tryAutoPay(). 
 Array order = the order they appear on the management screen. */
 setup.hbsc.AUTOPAY_BILLS = [
-	{ id: "bailey", label: "Orphanage rent", blurb: "Bailey's weekly demand, including any childcare surcharge." },
-	{ id: "farmGuard", label: "Farm tower guard wages", blurb: "The watchtower guard's outstanding wages." },
-	{ id: "wrenSabotage", label: "Remy sabotage retainer", blurb: "Wren's fee to cripple Remy's next raid on the farm, settled after each attack." },
-	{ id: "gamblingRing", label: "Gambling-ring upkeep", blurb: "Landry's weekly upkeep that keeps the cops away from the ring." },
-	{ id: "hotelRent", label: "Seaspray Hotel room rent", blurb: "The front desk's weekly charge for room 112, including any arrears." },
+	{ id: "bailey", label: "고아원 집세", blurb: "베일리가 매주 요구하는 금액입니다. 육아 추가 요금이 있으면 포함됩니다." },
+	{ id: "farmGuard", label: "농장 감시탑 경비 급여", blurb: "감시탑 경비에게 밀린 급여입니다." },
+	{ id: "wrenSabotage", label: "레미 습격 방해 의뢰비", blurb: "레미의 다음 농장 습격을 무력화해 주는 대가로 렌이 받는 수수료이며, 습격이 끝날 때마다 정산됩니다." },
+	{ id: "gamblingRing", label: "도박판 관리비", blurb: "경찰이 도박판에 접근하지 못하게 막아 주는 대가로 랜드리가 매주 받는 관리비입니다." },
+	{ id: "hotelRent", label: "시스프레이 호텔 객실 요금", blurb: "프런트가 매주 112호에 청구하는 요금입니다. 연체분이 있으면 포함됩니다." },
 ];
 
 setup.hbsc.getAutoPayBill = function (id) {

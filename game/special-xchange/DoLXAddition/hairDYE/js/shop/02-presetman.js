@@ -136,10 +136,10 @@ dhmShop.pmanRefresh = pmanRefresh;
  */
 function pmanCheckDupes() {
 	if (dhmUtils.presetDupeHunt()) {
-		$(`#dupe-report`).html("<span class='red'>Name conflicts with saved presets found</span>");
+		$(`#dupe-report`).html("<span class='red'>저장된 프리셋과 이름이 겹치는 항목이 있습니다</span>");
 		$(`#on-duplicate`).show();
 	} else {
-		$(`#dupe-report`).html("<span class='green'>No name conflicts found</span>");
+		$(`#dupe-report`).html("<span class='green'>이름이 겹치는 항목이 없습니다</span>");
 		$(`#on-duplicate`).hide();
 	}
 }
@@ -159,11 +159,11 @@ dhmShop.pmanTmpAutoload = pmanTmpAutoload;
  */
 function pmanTmpRename(presetName) {
 	const presetValue = T.dhmLoaded.passed[presetName];
-	const newName = prompt("Rename preset", presetName);
+	const newName = prompt("프리셋 이름 바꾸기", presetName);
 
 	if (newName) {
 		if (T.dhmLoaded.passed[newName]) {
-			alert(`'${newName}' was not saved because another preset with the same name already exists.`);
+			alert(`같은 이름의 프리셋이 이미 있어 '${newName}' 이름으로 저장하지 못했습니다.`);
 			return true;
 		}
 
@@ -189,9 +189,9 @@ dhmShop.pmanTmpDelete = pmanTmpDelete;
  *{{{
  */
 function pmanBtnPurge() {
-	const firstWarning = confirm("Are you sure you want to delete all presets? This is not reversible.");
+	const firstWarning = confirm("모든 프리셋을 삭제하시겠습니까? 되돌릴 수 없습니다.");
 	if (firstWarning) {
-		const secondWarning = confirm("Are you REALLY, REALLY SURE you want to delete ALL presets?");
+		const secondWarning = confirm("정말, 정말로 모든 프리셋을 삭제하시겠습니까?");
 
 		if (secondWarning) {
 			dhmUtils.presetPurge();
@@ -215,11 +215,11 @@ dhmShop.pmanDelete = pmanDelete;
  */
 function pmanRename(preset) {
 	const presetValue = dhmod.userPresets[preset];
-	const presetName = prompt("Rename preset", preset);
+	const presetName = prompt("프리셋 이름 바꾸기", preset);
 
 	if (presetName) {
 		if (V.dhmod.userPresets[presetName]) {
-			alert(`'${presetName}' was not saved because another preset with the same name already exists.`);
+			alert(`같은 이름의 프리셋이 이미 있어 '${presetName}' 이름으로 저장하지 못했습니다.`);
 			return true;
 		}
 
@@ -253,7 +253,7 @@ function presetExport() {
 		});
 		saveAs(blob, "hairPresets.txt");
 	} else {
-		alert("Nothing to export T_T");
+		alert("내보낼 것이 없습니다 T_T");
 	}
 }
 dhmShop.presetExport = presetExport;
@@ -263,7 +263,7 @@ dhmShop.presetExport = presetExport;
  */
 function presetImport(presetsFile) {
 	if (!window.FileReader) {
-		alert("Browser not compatible with FileReader T_T");
+		alert("이 브라우저는 FileReader를 지원하지 않습니다 T_T");
 		return; // Browser is not compatible
 	}
 
@@ -289,7 +289,7 @@ function presetImport(presetsFile) {
 			}
 			dhmShop.onFileLoaded();
 		} else {
-			alert(`Nothing to import! (${Object.keys(T.dhmLoaded.skip).length} skipped, ${T.dhmLoaded.errors} errors)`);
+			alert(`가져올 것이 없습니다! (건너뜀 ${Object.keys(T.dhmLoaded.skip).length}개, 오류 ${T.dhmLoaded.errors}개)`);
 		}
 	};
 

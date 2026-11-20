@@ -17,43 +17,43 @@
 	const levelsList = Object.freeze(["easy", "normal", "hard"]);
 
 	const achievements = Object.freeze([
-		{ id: "first-clear", name: "Opening number", desc: "Clear any built-in song." },
-		{ id: "normal-clear", name: "Keeping time", desc: "Clear a built-in song on Normal." },
-		{ id: "hard-clear", name: "Hard hitter", desc: "Clear a built-in song on Hard." },
-		{ id: "full-combo", name: "Unbroken", desc: "Finish a built-in song without a single miss." },
-		{ id: "all-perfect", name: "Spotless", desc: "Hit every note of a built-in song Perfect." },
-		{ id: "s-rank", name: "Top marks", desc: "Get an S on any built-in song." },
-		{ id: "set-list", name: "Full set list", desc: "Clear every built-in song, on any difficulty." },
-		{ id: "own-song", name: "Mixtape", desc: "Play a song from your own Rhythm Library." },
-		{ id: "graduate", name: "Practice makes perfect", desc: "Finish the tutorial." },
-		{ id: "daily-1", name: "Daily habit", desc: "Complete a daily challenge." },
-		{ id: "challenges-5", name: "Challenger", desc: "Complete 5 challenges." },
+		{ id: "first-clear", name: "오프닝 곡", desc: "기본 곡 아무거나 클리어하기." },
+		{ id: "normal-clear", name: "박자 지키기", desc: "보통 난이도로 기본 곡 클리어하기." },
+		{ id: "hard-clear", name: "강타자", desc: "어려움 난이도로 기본 곡 클리어하기." },
+		{ id: "full-combo", name: "끊김 없이", desc: "기본 곡을 단 한 번도 놓치지 않고 끝내기." },
+		{ id: "all-perfect", name: "흠 없음", desc: "기본 곡의 모든 노트를 퍼펙트로 치기." },
+		{ id: "s-rank", name: "최고 점수", desc: "아무 기본 곡에서 S 등급 받기." },
+		{ id: "set-list", name: "전곡 세트", desc: "모든 기본 곡을 아무 난이도로든 클리어하기." },
+		{ id: "own-song", name: "믹스테이프", desc: "내 리듬 라이브러리의 곡 플레이하기." },
+		{ id: "graduate", name: "연습이 완벽을 만든다", desc: "튜토리얼 마치기." },
+		{ id: "daily-1", name: "매일의 습관", desc: "오늘의 도전 완료하기." },
+		{ id: "challenges-5", name: "도전자", desc: "도전 5개 완료하기." },
 	]);
 
 	/* Regular challenges: met once, ticked for good, no money (the daily challenge pays). Thresholds sit inside what the
 	 * built-in charts allow: the shortest Normal chart has about 100 notes, the longest Hard chart over 400. */
 	const challenges = Object.freeze(
 		[
-			{ id: "warm-up", name: "Warm-up", diff: "easy", desc: "Clear any built-in song.", target: 1, value: s => Math.max(s.clears, s.songs) },
-			{ id: "three-songs", name: "Shuffle", diff: "easy", desc: "Clear 3 different built-in songs.", target: 3, value: s => s.songs },
-			{ id: "combo-50", name: "In the groove", diff: "easy", desc: "Reach a 50 combo.", target: 50, value: s => s.bestCombo },
-			{ id: "perfect-500", name: "Sharp ears", diff: "easy", desc: "Hit 500 Perfects in total.", target: 500, value: s => s.perfects },
+			{ id: "warm-up", name: "워밍업", diff: "easy", desc: "기본 곡 아무거나 클리어하기.", target: 1, value: s => Math.max(s.clears, s.songs) },
+			{ id: "three-songs", name: "셔플", diff: "easy", desc: "서로 다른 기본 곡 3곡 클리어하기.", target: 3, value: s => s.songs },
+			{ id: "combo-50", name: "리듬에 몸을 맡겨", diff: "easy", desc: "50콤보 달성하기.", target: 50, value: s => s.bestCombo },
+			{ id: "perfect-500", name: "예리한 귀", diff: "easy", desc: "퍼펙트 총 500개 치기.", target: 500, value: s => s.perfects },
 			{
 				id: "normal-90",
-				name: "Turning it up",
+				name: "볼륨을 높여",
 				diff: "medium",
-				desc: "Clear a song on Normal with 90% accuracy or more.",
+				desc: "보통 난이도에서 정확도 90% 이상으로 곡 클리어하기.",
 				target: 90,
 				value: s => s.bestAcc.normal,
 			},
-			{ id: "normal-fc", name: "Clean run", diff: "medium", desc: "Finish a song on Normal without a miss.", target: 1, value: s => s.fc.normal },
-			{ id: "five-songs", name: "Half the set", diff: "medium", desc: "Clear 5 different built-in songs.", target: 5, value: s => s.songs },
-			{ id: "combo-150", name: "Long haul", diff: "medium", desc: "Reach a 150 combo.", target: 150, value: s => s.bestCombo },
-			{ id: "hard-clear", name: "No easy way", diff: "hard", desc: "Clear a song on Hard.", target: 1, value: s => s.clearsByLevel.hard },
-			{ id: "hard-s", name: "Hard and sharp", diff: "hard", desc: "Get an S on Hard.", target: 1, value: s => s.sByLevel.hard },
-			{ id: "hard-fc", name: "Untouchable", diff: "hard", desc: "Finish a song on Hard without a miss.", target: 1, value: s => s.fc.hard },
-			{ id: "all-songs", name: "Encore", diff: "hard", desc: "Clear every built-in song.", target: () => setup.rhythmBuiltins.length, value: s => s.songs },
-			{ id: "perfect-3000", name: "Perfectionist", diff: "hard", desc: "Hit 3,000 Perfects in total.", target: 3000, value: s => s.perfects },
+			{ id: "normal-fc", name: "깔끔한 연주", diff: "medium", desc: "보통 난이도에서 한 번도 놓치지 않고 곡 끝내기.", target: 1, value: s => s.fc.normal },
+			{ id: "five-songs", name: "절반 완주", diff: "medium", desc: "서로 다른 기본 곡 5곡 클리어하기.", target: 5, value: s => s.songs },
+			{ id: "combo-150", name: "장거리", diff: "medium", desc: "150콤보 달성하기.", target: 150, value: s => s.bestCombo },
+			{ id: "hard-clear", name: "쉬운 길은 없다", diff: "hard", desc: "어려움 난이도로 곡 클리어하기.", target: 1, value: s => s.clearsByLevel.hard },
+			{ id: "hard-s", name: "어렵고 날카롭게", diff: "hard", desc: "어려움 난이도에서 S 등급 받기.", target: 1, value: s => s.sByLevel.hard },
+			{ id: "hard-fc", name: "범접 불가", diff: "hard", desc: "어려움 난이도에서 한 번도 놓치지 않고 곡 끝내기.", target: 1, value: s => s.fc.hard },
+			{ id: "all-songs", name: "앙코르", diff: "hard", desc: "모든 기본 곡 클리어하기.", target: () => setup.rhythmBuiltins.length, value: s => s.songs },
+			{ id: "perfect-3000", name: "완벽주의자", diff: "hard", desc: "퍼펙트 총 3,000개 치기.", target: 3000, value: s => s.perfects },
 		].map(c => Object.freeze(c))
 	);
 	const masterFeat = "Rhythm Master";
@@ -109,12 +109,12 @@
 	 * The UTC date picks a built-in song, a difficulty and a goal; its level sets the money (the console's £200 / £350 /
 	 * £500). Only that song on that difficulty counts, and it pays once per day however often it is played. */
 	const dailyTemplates = Object.freeze([
-		{ type: "acc", level: "easy", n: 85, text: "with at least 85% accuracy" },
-		{ type: "fc", level: "easy", text: "without a single miss" },
-		{ type: "combo", level: "normal", share: 0.4, text: "with a combo of at least {n}" },
-		{ type: "acc", level: "normal", n: 90, text: "with at least 90% accuracy" },
-		{ type: "acc", level: "hard", n: 80, text: "with at least 80% accuracy" },
-		{ type: "combo", level: "hard", share: 0.3, text: "with a combo of at least {n}" },
+		{ type: "acc", level: "easy", n: 85, text: "정확도 85% 이상으로" },
+		{ type: "fc", level: "easy", text: "단 한 번도 놓치지 않고" },
+		{ type: "combo", level: "normal", share: 0.4, text: "콤보 {n} 이상으로" },
+		{ type: "acc", level: "normal", n: 90, text: "정확도 90% 이상으로" },
+		{ type: "acc", level: "hard", n: 80, text: "정확도 80% 이상으로" },
+		{ type: "combo", level: "hard", share: 0.3, text: "콤보 {n} 이상으로" },
 	]);
 
 	function hash(text) {
@@ -139,7 +139,7 @@
 			level: t.level,
 			type: t.type,
 			n,
-			goal: `Play ${b.title} on ${t.level[0].toUpperCase() + t.level.slice(1)} ${t.text.replace("{n}", n)}.`,
+			goal: `${b.title} 곡을 ${({ easy: "쉬움", normal: "보통", hard: "어려움" })[t.level] || t.level} 난이도에서 ${t.text.replace("{n}", n)} 플레이하기.`,
 			reward: setup.consoleDaily.dailyMoney.rhythm[t.level],
 		});
 	}
@@ -679,7 +679,7 @@
 					c.stroke();
 				}
 				c.fillStyle = colour;
-				const label = f.result === "perfect" ? "Perfect" : f.result === "good" ? "Good" : "Miss";
+				const label = f.result === "perfect" ? "퍼펙트" : f.result === "good" ? "굿" : "미스";
 				/* Above the note, or below it when the note is at the top edge, so the word is never cut off. */
 				const rise = this.r * (1.4 + (this.reduced ? 0 : k * 0.5));
 				const ty = f.y - rise < this.r * 0.5 ? f.y + rise : f.y - rise;

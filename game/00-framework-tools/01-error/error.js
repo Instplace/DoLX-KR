@@ -25,7 +25,7 @@ Errors.report = (message, copyData, noClone) => {
 		error = Errors.registerMessage(message, copyData, noClone);
 	} catch (e) {
 		console.error(`오류 로그를 추가하지 못했습니다. 심각한 문제가 발생했습니다: `, message, copyData, e);
-		alert(`치명적인 오류가 발생했습니다. 이 문제를 개발진에게 제보해 주세요. [Errors.report/registerMessage]`);
+		alert(`치명적인 오류가 발생했습니다. 이 문제를 개발진에게 제보해 주십시오. [Errors.report/registerMessage]`);
 		return;
 	}
 	try {
@@ -40,7 +40,7 @@ Errors.report = (message, copyData, noClone) => {
 		}
 	} catch (e) {
 		console.error(`오류 콘솔을 렌더링하고 여는 데 실패했습니다. \n렌더링 오류: `, e, `\n\n오류 로그: `, Errors.log);
-		alert(`치명적인 오류가 발생했습니다. 이 문제를 개발진에게 제보해 주세요. [Errors.report/displayMessage]`);
+		alert(`치명적인 오류가 발생했습니다. 이 문제를 개발진에게 제보해 주십시오. [Errors.report/displayMessage]`);
 	}
 };
 
@@ -151,7 +151,7 @@ Errors.report = (message, copyData, noClone) => {
 		} catch (e) {
 			copyButton.textContent = "복사 실패";
 			alert(
-				`클립보드에 복사하지 못했습니다. 텍스트 영역에서 직접 복사해 보세요. 아무것도 나타나지 않았다면 개발자 콘솔의 Errors.log에서 직접 복사해 주세요.`
+				`클립보드에 복사하지 못했습니다. 텍스트 영역에서 직접 복사해 보십시오. 아무것도 나타나지 않았다면 개발자 콘솔의 Errors.log에서 직접 복사해 주십시오.`
 			);
 		}
 		setTimeout(() => {

@@ -8,21 +8,21 @@
 	<div class="fishing-kit">
 		<div class="fishing-kit-row">
 			<<if $options.images is 1>><<icon _kitRod.icon>><</if>>
-			<span class="fishing-kit-label">Rod:</span> <span class="teal"><<= _kitRod.displayName>></span>
+			<span class="fishing-kit-label">낚싯대:</span> <span class="teal"><<= _kitRod.displayName>></span>
 		</div>
 		<div class="fishing-kit-row">
 			<<if $options.images is 1>><<icon _kitReel.icon>><</if>>
-			<span class="fishing-kit-label">Reel:</span> <span class="teal"><<= _kitReel.displayName>></span>
+			<span class="fishing-kit-label">릴:</span> <span class="teal"><<= _kitReel.displayName>></span>
 		</div>
 		<div class="fishing-kit-row">
 			<<if $options.images is 1>>
 				<<if $fishing.currentBait and setup.foodstuff[$fishing.currentBait]>><<baiticon $fishing.currentBait>><<else>><<icon `"fish/hook.png"`>><</if>>
 			<</if>>
-			<span class="fishing-kit-label">Bait:</span>
+			<span class="fishing-kit-label">미끼:</span>
 			<<if $fishing.currentBait and setup.foodstuff[$fishing.currentBait]>>
 				<span class="teal"><<= baitLabel($fishing.currentBait)>></span>
 			<<else>>
-				<span class="grey">Bare hook</span>
+				<span class="grey">빈 낚싯바늘</span>
 			<</if>>
 		</div>
 	</div>
@@ -35,7 +35,7 @@
 <</widget>>
 
 <<widget "fishingTackleContents">>
-	<div class="small-description">A rod holds the tension of the fight. A reel decides how much of the water you take back. They are separate pieces, so mix them however suits the fish.</div>
+	<div class="small-description">낚싯대는 싸움의 팽팽함을 버텨 주고, 릴은 물에서 줄을 얼마나 되감을지를 정한다. 둘은 따로 쓰는 장비이니 물고기에 맞게 마음대로 조합해도 된다.</div>
 	<br>
 	<<fishingTackleList "rod">>
 	<<fishingTackleList "reel">>
@@ -61,21 +61,21 @@
 						<span class="pocket-item-actions">
 							<<if !fishingGearOwned(_gearKind, _gearEntry.key)>>
 								<<if fishingGearUnlocked(_gearEntry.config)>>
-									<span class="grey">Buy at the bait shop</span>
+									<span class="grey">미끼 상점에서 구매한다</span>
 								<<else>>
-									<span class="grey">Locked:</span>
+									<span class="grey">잠김:</span>
 									<<if _gearEntry.config.unlock.fishCaught>>
-										<span class="grey">catch <<= Math.min(numberOfFishCaught(), _gearEntry.config.unlock.fishCaught)>>/<<= _gearEntry.config.unlock.fishCaught>> fish</span>
+										<span class="grey">물고기 <<= Math.min(numberOfFishCaught(), _gearEntry.config.unlock.fishCaught)>>/<<= _gearEntry.config.unlock.fishCaught>>마리 잡기</span>
 									<</if>>
 									<<if _gearEntry.config.unlock.requestsCompleted>>
-										<span class="grey">; finish <<= Math.min(Number($fishing.baitShopRequestsCompleted) || 0, _gearEntry.config.unlock.requestsCompleted)>>/<<= _gearEntry.config.unlock.requestsCompleted>> bait shop requests</span>
+										<span class="grey">; 미끼 상점 의뢰 <<= Math.min(Number($fishing.baitShopRequestsCompleted) || 0, _gearEntry.config.unlock.requestsCompleted)>>/<<= _gearEntry.config.unlock.requestsCompleted>>건 완료</span>
 									<</if>>
 								<</if>>
 							<<elseif _gearEntry.key is _gearEquipped>>
-								<span class="green">Equipped</span>
+								<span class="green">장착 중</span>
 							<<else>>
 								<<capture _gearKind _gearEntry>>
-									<<link "Equip">>
+									<<link "장착">>
 										<<run fishingGearEquip(_gearKind, _gearEntry.key)>>
 										<<run pocketCommit()>>
 										<<replace #tacklePane>><<fishingTackleContents>><</replace>>
@@ -112,12 +112,12 @@
 	<<set _baitPackKeys to pocketBaitList()>>
 	<section class="pocket-section">
 		<header class="pocket-section-header">
-			<span>Bait you're carrying</span>
-			<span @class="_baitPackUsed gte _baitPackCapacity ? 'red' : 'blue'"><<= _baitPackUsed>>/<<= _baitPackCapacity>> slots used</span>
+			<span>가지고 다니는 미끼</span>
+			<span @class="_baitPackUsed gte _baitPackCapacity ? 'red' : 'blue'"><<= _baitPackUsed>>/<<= _baitPackCapacity>> 칸 사용 중</span>
 		</header>
-		<div class="small-description">One slot per kind, however many you have. The can takes one slot whether it's full or empty.</div>
+		<div class="small-description">종류당 한 칸이며, 몇 개를 가졌든 마찬가지다. 통은 가득 찼든 비었든 한 칸을 차지한다.</div>
 		<<if _baitPackKeys.length is 0>>
-			<div class="pocket-empty">You have no bait to pack.</div>
+			<div class="pocket-empty">챙길 미끼가 없다.</div>
 		<<else>>
 			<div class="pocket-arrange">
 				<<for _baitPackKey range _baitPackKeys>>
@@ -129,14 +129,14 @@
 						</span>
 						<<capture _baitPackKey>>
 							<<if pocketCarrying("bait", _baitPackKey)>>
-								<<link "Take out">>
+								<<link "꺼낸다">>
 									<<run pocketBaitToggle(_baitPackKey)>>
 									<<refreshBaitPack>>
 								<</link>>
 							<<elseif _baitPackUsed gte _baitPackCapacity>>
-								<span class="grey"><<= pocketBagName().toLocaleUpperFirst()>> full</span>
+								<span class="grey"><<= pocketBagName().toLocaleUpperFirst()>>: 가득 참</span>
 							<<else>>
-								<<link "Pack">>
+								<<link "챙긴다">>
 									<<run pocketBaitToggle(_baitPackKey)>>
 									<<refreshBaitPack>>
 								<</link>>
@@ -154,13 +154,13 @@
 <<widget "smallCatchNotice">>
 	<<if fishCatchCount(_args[0]) gt 1>>
 		<br>
-		<span class="green"><<= fishCatchCount(_args[0])>> of them</span> came up on the same hook.
+		<span class="green"><<= fishCatchCount(_args[0])>> 마리</span>가 같은 낚싯바늘에 걸려 올라왔다.
 	<</if>>
 	<<set _baitHint to fishBaitHint(_args[0])>>
 	/* The catch text already names an undersized fish as its small variant */
 	<<if _baitHint>>
 		<br>
-		<span class="green"><<= _baitHint.toUpperFirst()>> make good live bait for something bigger.</span>
+		<span class="green">더 큰 놈을 노릴 산 미끼로 좋은 것: <<= _baitHint.toUpperFirst()>>.</span>
 	<</if>>
 <</widget>>
 
@@ -173,32 +173,32 @@
 		<<set _canPrice to wormCanBuyPrice()>>
 		<<icon `"fish/mod/wormcan.png"`>>
 		<<if fishingAfford(_canPrice)>>
-			<<link [["A can of worms, filled (" + formatMoney(fishingPrice(_canPrice)) + ")"|Bait Shop]]>>
+			<<link [["지렁이 통, 가득 채움 (" + formatMoney(fishingPrice(_canPrice)) + ")"|Bait Shop]]>>
 				<<money `-_canPrice` "fishing">>
 				<<run wormCanBuy()>>
 				<<set $fishing.baitShopAmbient to "boughtWormCan">>
 				<<endevent>>
 			<</link>>
 		<<else>>
-			A can of worms, filled (<<printprice _canPrice>>). <span class="blue">You can't afford it.</span>
+			지렁이 통, 가득 채움 (<<printprice _canPrice>>). <span class="blue">돈이 부족하다.</span>
 		<</if>>
 		<br>
 	<<elseif wormCanCount() lt wormCanSize()>>
 		<<set _refillPrice to wormCanRefillPrice()>>
 		<<icon `"fish/mod/wormcan.png"`>>
 		<<if fishingAfford(_refillPrice)>>
-			<<link [["Refill your can of worms, " + wormCanCount() + "/" + wormCanSize() + " (" + formatMoney(fishingPrice(_refillPrice)) + ")"|Bait Shop]]>>
+			<<link [["지렁이 통을 다시 채운다, " + wormCanCount() + "/" + wormCanSize() + " (" + formatMoney(fishingPrice(_refillPrice)) + ")"|Bait Shop]]>>
 				<<money `-_refillPrice` "fishing">>
 				<<run wormCanRefill()>>
 				<<set $fishing.baitShopAmbient to "refilledWormCan">>
 				<<endevent>>
 			<</link>>
 		<<else>>
-			Refill your can of worms, <<= wormCanCount()>>/<<= wormCanSize()>> (<<printprice _refillPrice>>). <span class="blue">You can't afford it.</span>
+			지렁이 통을 다시 채운다, <<= wormCanCount()>>/<<= wormCanSize()>> (<<printprice _refillPrice>>). <span class="blue">돈이 부족하다.</span>
 		<</if>>
 		<br>
 	<<else>>
-		<<icon `"fish/mod/wormcan.png"`>><span class="grey">Your can of worms is full, <<= wormCanCount()>>/<<= wormCanSize()>>.</span>
+		<<icon `"fish/mod/wormcan.png"`>><span class="grey">당신의 지렁이 통은 가득 차 있다, <<= wormCanCount()>>/<<= wormCanSize()>>.</span>
 		<br>
 	<</if>>
 
@@ -214,7 +214,7 @@
 			<<if _shopGear.config.source is "shop" and !fishingGearOwned(_shopGearKind, _shopGear.key)>>
 				<<if $options.images is 1>><<icon _shopGear.config.icon>><</if>>
 			<<if !fishingGearUnlocked(_shopGear.config)>>
-				<span class="grey"><<= _shopGear.config.displayName>> | Locked: catch <<= Math.min(numberOfFishCaught(), _shopGear.config.unlock.fishCaught)>>/<<= _shopGear.config.unlock.fishCaught>> fish<<if _shopGear.config.unlock.requestsCompleted>>; finish <<= Math.min(Number($fishing.baitShopRequestsCompleted) || 0, _shopGear.config.unlock.requestsCompleted)>>/<<= _shopGear.config.unlock.requestsCompleted>> bait shop requests<</if>>.</span>
+				<span class="grey"><<= _shopGear.config.displayName>> | 잠김: 물고기 <<= Math.min(numberOfFishCaught(), _shopGear.config.unlock.fishCaught)>>/<<= _shopGear.config.unlock.fishCaught>>마리 잡기<<if _shopGear.config.unlock.requestsCompleted>>; 미끼 상점 의뢰 <<= Math.min(Number($fishing.baitShopRequestsCompleted) || 0, _shopGear.config.unlock.requestsCompleted)>>/<<= _shopGear.config.unlock.requestsCompleted>>건 완료<</if>>.</span>
 			<<elseif fishingAfford(_shopGear.config.price)>>
 				<<link [[_shopGear.config.displayName + " (" + formatMoney(fishingPrice(_shopGear.config.price)) + ")"|Bait Shop]]>>
 					<<money `-_shopGear.config.price` "fishing">>
@@ -225,7 +225,7 @@
 					<<endevent>>
 				<</link>>
 			<<else>>
-				<<= _shopGear.config.displayName>> (<<printprice _shopGear.config.price>>). <span class="blue">You can't afford it.</span>
+				<<= _shopGear.config.displayName>> (<<printprice _shopGear.config.price>>). <span class="blue">돈이 부족하다.</span>
 			<</if>>
 			<br>
 			<</if>>
@@ -290,47 +290,47 @@
 <<set _boneReturn to fishingWaitPassage($bus)>>
 <<set _bonePiece to boneFindTake()>>
 <<if !_bonePiece>>
-	You reel your line back in, but there is nothing caught on the hook.
+	당신은 낚싯줄을 다시 감아 올리지만, 낚싯바늘에는 아무것도 걸려 있지 않다.
 	<br><br>
-	<<link [[Next|_boneReturn]]>><</link>>
+	<<link [[다음|_boneReturn]]>><</link>>
 <<else>>
 	<<if _bonePiece is "rod">>
-		As you start reeling in, something heavy drags beneath the water. It does not pull away or fight against you,
-		so you slowly bring it towards the surface.
+		줄을 감기 시작하자 물속에서 무언가 묵직한 것이 끌려온다. 그것은 달아나지도, 맞서 싸우지도 않아서,
+		당신은 그것을 천천히 수면 쪽으로 끌어올린다.
 		<br><br>
-		A long, pale object rises from the water. You pull it close enough to grab, then lift it out.
+		길고 창백한 물체가 물 위로 떠오른다. 손이 닿을 만큼 끌어당겨 붙잡고는 물 밖으로 들어 올린다.
 		<br><br>
-		It looks like an old fishing rod, split into several sections. Each section is connected by a hard joint rather
-		than the metal fittings you would expect on a normal rod. Grey fishing line is still wrapped around part of it.
+		여러 토막으로 나뉜 낡은 낚싯대처럼 보인다. 마디마다 일반 낚싯대에서 흔히 보는 금속 부품이 아니라 딱딱한 이음매로
+		이어져 있다. 회색 낚싯줄이 아직 일부에 감겨 있다.
 		<br><br>
-		You turn the rod over in your hands. It is surprisingly light, but it barely bends when you press against it.
-		Looking closer at the pale surface, you realise there is no wood underneath.
+		당신은 낚싯대를 손 안에서 뒤집어 본다. 놀랄 만큼 가볍지만, 눌러 봐도 거의 휘지 않는다.
+		창백한 표면을 더 가까이 들여다보다가, 그 밑에 나무가 없다는 것을 깨닫는다.
 		<br><br>
-		The rod has been made from bone.<<awareness 2>><<gawareness>>
+		이 낚싯대는 뼈로 만들어져 있다.<<awareness 2>><<gawareness>>
 		<br><br>
-		<span class="purple">You have found the Bone Rod.</span> The rod barely bends under pressure,
-		making it harder for a hooked fish to pull the line around. This also tires the fish more quickly.
+		<span class="purple">뼈 낚싯대를 발견했다.</span> 이 낚싯대는 힘을 줘도 거의 휘지 않아서,
+		낚싯바늘에 걸린 물고기가 줄을 이리저리 끌고 가기가 더 어렵다. 그만큼 물고기도 더 빨리 지친다.
 	<<else>>
-		You feel something strike the line while you reel it in. A moment later,
-		the hook catches on something beneath the water.
+		줄을 감는 동안 무언가가 줄을 치는 느낌이 든다. 잠시 뒤,
+		낚싯바늘이 물속의 무언가에 걸린다.
 		<br><br>
-		Whatever you caught does not struggle. You keep reeling until a small pale object reaches the surface,
-		then pull it out of the water.
+		걸린 것은 발버둥 치지 않는다. 당신이 계속 감자 작고 창백한 물체가 수면에 닿고,
+		당신은 그것을 물 밖으로 끌어낸다.
 		<br><br>
-		It is an old fishing reel. The spool and most of the body are made from smooth, pale material,
-		while the handle is unusually small in your hand.
+		낡은 낚시 릴이다. 스풀과 몸체 대부분은 매끄럽고 창백한 재질로 만들어져 있고,
+		손잡이는 손에 쥐기에 유난히 작다.
 		<br><br>
-		You turn the handle to test it. The reel moves easily despite its age, pulling the line in much faster than you expected.
+		손잡이를 돌려 시험해 본다. 릴은 낡았는데도 부드럽게 돌아가며, 예상보다 훨씬 빠르게 줄을 감아들인다.
 		<br><br>
-		When you look at the pale material more closely, you realise what it is.
+		창백한 재질을 더 가까이 들여다보자, 그것이 무엇인지 깨닫는다.
 		<br><br>
-		The reel has been made from bone.<<awareness 2>><<gawareness>>
+		이 릴은 뼈로 만들어져 있다.<<awareness 2>><<gawareness>>
 		<br><br>
-		<span class="purple">You have found the Bone Reel.</span> It reels line in very quickly,
-		but pulling at the wrong time makes it easier to lose control of a hooked fish.
+		<span class="purple">뼈 릴을 발견했다.</span> 줄을 아주 빠르게 감지만,
+		엉뚱한 때에 당기면 걸린 물고기를 놓치기 쉽다.
 	<</if>>
 	<br><br>
-	<<link [[Put it in your tackle and cast back out|_boneReturn]]>><</link>>
+	<<link [[채비에 넣고 다시 던진다|_boneReturn]]>><</link>>
 <</if>>
 
 :: Pocket Eat Bait
@@ -339,32 +339,32 @@
 /* eatBait records which supply the worm came out of, the can or a loose pack. */
 <<set _wormFromCan to $dolxBaitEatenFromCan is true>>
 <<if $dolxBaitEaten is "bait_worm" and effectiveTransformationLevel("bird") gte 3>>
-	You open <<if _wormFromCan>>the tin<<else>>your little can of bait worms<</if>> and pick out one of the worms. It wriggles between your fingers.
+	당신은 <<if _wormFromCan>>깡통<<else>>작은 미끼 지렁이 통<</if>>을 열어 지렁이 한 마리를 집어 든다. 지렁이가 손가락 사이에서 꿈틀댄다.
 	<br><br>
-	You tip your head back and drop it in. It goes down without nicely, and the wriggling stops
-	almost at once. Without thinking, you reach for another worm. Your fingers are nearly around it before you realise what you're doing and stop yourself.
+	당신은 고개를 젖히고 그것을 입에 떨어뜨린다. 거부감 없이 넘어가고, 꿈틀거림이
+	거의 곧바로 멎는다. 생각할 틈도 없이 또 한 마리를 집으려 손을 뻗는다. 손가락이 거의 지렁이를 감쌀 즈음에야 자신이 무슨 짓을 하는지 깨닫고 스스로를 멈춘다.
 	<br><br>
-	<span class="gold">It tasted good.</span><<lstress>><<stress -6>>
+	<span class="gold">맛있었다.</span><<lstress>><<stress -6>>
 	<<set $daily.fishing to $daily.fishing ?? {}>>
 	<<if not $daily.fishing.eatenWormTf>>
 		<<transform bird 1>>
 		<<set $daily.fishing.eatenWormTf to true>>
 	<</if>>
 <<elseif $dolxBaitEaten is "bait_worm">>
-	You open <<if _wormFromCan>>the tin<<else>>your little can of bait worms<</if>> and pick out one of the worms. It wriggles between your fingers, making you stop before bringing it closer to your mouth.
+	당신은 <<if _wormFromCan>>깡통<<else>>작은 미끼 지렁이 통<</if>>을 열어 지렁이 한 마리를 집어 든다. 손가락 사이에서 꿈틀대는 바람에, 입가로 가져가기 전에 멈칫한다.
 	<br><br>
-	You place it on your tongue. The worm moves against the inside of your mouth, and you nearly spit it out. Instead, you close your mouth and swallow before you can change your mind.
+	그것을 혀 위에 올린다. 지렁이가 입안에서 꿈틀거려 하마터면 뱉을 뻔하지만, 대신 입을 다물고 마음이 바뀌기 전에 삼켜 버린다.
 	<br><br>
-	You feel it wriggling in your throat as you swallow. The feeling makes you want to gag, but you force it down.
-	Afterwards, you still with one hand over your stomach. You know the worm has already gone down, but you can still feel the same wriggling sensation inside you.
+	삼키는 동안 목구멍에서 그것이 꿈틀대는 것이 느껴진다. 구역질이 치밀지만 억지로 넘긴다.
+	그 뒤로도 한 손으로 배를 감싼 채 가만히 서 있다. 지렁이가 이미 내려갔다는 것을 알지만, 뱃속에서 같은 꿈틀거림이 여전히 느껴진다.
 	<br><br>
-	You cannot tell if <span class="red">the worm is still moving</span> or if the feeling is only lingering after you swallowed it. <<trauma 18>><<gggtrauma>>
+	지렁이가 <span class="red">아직 움직이고 있는 것인지</span>, 삼킨 뒤의 감각이 남아 있을 뿐인지 알 수 없다. <<trauma 18>><<gggtrauma>>
 <<elseif $dolxBaitEaten>>
-	You take the <<= fishDisplayName($dolxBaitEaten)>> from your bait supply and hold it in front of your mouth.
+	당신은 미끼 보급품에서 <<= fishDisplayName($dolxBaitEaten)>>【을를】 꺼내 입 앞에 들어 올린다.
 	<br><br>
-	After looking at it for a few seconds, you open wide and put the whole fish into your mouth. You struggle to swallow it, but eventually force it down. <<fishingEatFishTfProgress>><<lstress>><<stress -6>>
+	몇 초 동안 그것을 바라보다가, 입을 크게 벌리고 물고기를 통째로 입에 넣는다. 삼키느라 애를 먹지만 결국 억지로 넘긴다. <<fishingEatFishTfProgress>><<lstress>><<stress -6>>
 <<else>>
-	You have nothing to eat.
+	먹을 것이 없다.
 <</if>>
 <br><br>
-<<link [[Next|_baitEatDestination]]>><<unset $dolxBaitEaten $dolxBaitEatReturn $dolxBaitEatenFromCan>><</link>>
+<<link [[다음|_baitEatDestination]]>><<unset $dolxBaitEaten $dolxBaitEatReturn $dolxBaitEatenFromCan>><</link>>

@@ -147,7 +147,7 @@ const dhmUtils = {
 				};
 			} else {
 				setup.colours.hair_map[entries[i][0]] = {
-					name: "color picker slot",
+					name: "색상 선택 슬롯",
 					canvasfilter: this.filterGen(),
 				};
 			}

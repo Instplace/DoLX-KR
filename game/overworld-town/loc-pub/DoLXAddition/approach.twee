@@ -2,28 +2,28 @@
 <<effects>>
 
 <<if $weekly.landryReversalTimer and $landryReversalJob>>
-	"I'm on it," <<he>> says. "Patience."
+	"처리 중이야." <<he>>【이가】 말한다. "참을성을 가져."
 <<elseif $landryReversalJob>>
 	<<set _variant to (($xchange.pill.originalBody?.sex || $player.sex) is "m") ? "(F)" : "(M)">>
-	"Here you go," <<he>> hands you a <<= _variant is "(F)" ? "blue" : "pink">> pill.
-	| <span class="blue">+1 Choice Reversal pill</span>
+	"자, 여기." <<he>>【이가】 당신에게 <<= _variant is "(F)" ? "파란" : "분홍">> 알약을 건넨다.
+	| <span class="blue">+1 초이스 리버설 알약</span>
 	<<set $sexStats.pills["pills"]["X-Change Choice Reversal "+_variant].owned++>>
 	<<set $sexStats.pills.boughtOnce to true>>
 	<<unset $xchange.remyChoicePill>>
 	<<unset $landryReversalJob>>
 	<<unset $wrenStealReversal>>
 <<else>>
-	"That'll cost you <span class="pink"><<printprice 200000>>,</span>" <<he>> says. "It'll take a week, give or take."
+	"비용은 <span class="pink"><<printprice 200000>>.</span>" <<he>>【이가】 말한다. "일주일쯤 걸려."
 	<br><br> 
 	<<if setup.inflation.canAfford(200000, "pub")>>
-		<<highicon>><<link [[Pay (<<printprice 200000>>)|Pub Landry]]>><<endevent>><<money -200000 "pub">><<set $weekly.landryReversalTimer to 1>><<set $landryReversalJob to true>><<unset $xchange.remyChoicePill>><</link>>
+		<<highicon>><<link [[지불한다 (<<printprice 200000>>)|Pub Landry]]>><<endevent>><<money -200000 "pub">><<set $weekly.landryReversalTimer to 1>><<set $landryReversalJob to true>><<unset $xchange.remyChoicePill>><</link>>
 	<<else>>
 		비용을 감당할 수 없다.
 	<</if>>	
 <</if>>
 <br><br>
 
-<<link [[Back|Pub Landry]]>><<endevent>><</link>>
+<<link [[뒤로|Pub Landry]]>><<endevent>><</link>>
 
 :: Pub Approach Widgets [widget]
 
@@ -31,7 +31,7 @@
 	<<set $xchange.pubtimer to random(10,30)>><<set $pubdrink to 0>><<set $pubresist to 1>>
 	<<generate1>><<person1>><<set $NPCList[0].skills.security += (1000 - $submissive) / 4>>
 
-	<span class="purple"><<= $pub_tf? "Having witnessed your transformation just now, a": "A">> <<person>> approaches you.</span><br>
+	<span class="purple"><<= $pub_tf? "방금 당신이 변하는 모습을 목격한 ": "">><<person>>【이가】 당신에게 다가온다.</span><br>
 	<<cheesy-pickup-line>>
 
 	<<unset $pub_tf>>
@@ -40,18 +40,18 @@
 	<<willpowerdifficulty 1 1000 "silent">><<set _hasPromiscuity to 0>>
 	<<if hasSexStat("promiscuity", 2)>>
 		<<set _hasPromiscuity to 1>>
-		<<link [[Smile (0:10)|Pub Approach Flirt]]>><<pass 10>><<handheldon>><</link>><<promiscuous2>>
+		<<link [[미소 짓는다 (0:10)|Pub Approach Flirt]]>><<pass 10>><<handheldon>><</link>><<promiscuous2>>
 	<<else>>
-		<span class="blue">You're not promiscuous enough to reciprocate.</span>
+		<span class="blue">화답할 만큼 난잡하지는 않다.</span>
 	<</if>>
 	<br>
 	<<if (($arousal lt $arousalmax * 3/5 or (!$statFreeze and !$hc and $arousalDesensitizedTrait is 1) or (typeof activeInsanityTrait === "function" and activeInsanityTrait())) and effectiveDrunk() lt 240) or !_hasPromiscuity>>
-		<<link [[Reject (0:01)|Pub Approach Reject]]>><<set $phase to 1>><<pass 1>><</link>>
+		<<link [[거절한다 (0:01)|Pub Approach Reject]]>><<set $phase to 1>><<pass 1>><</link>>
 	<<elseif $willpowerSuccess>>
-		<<link [[Reject (0:01)|Pub Approach Reject]]>><<set $phase to 1>><<pass 1>><<willpowersuccess>><</link>>
+		<<link [[거절한다 (0:01)|Pub Approach Reject]]>><<set $phase to 1>><<pass 1>><<willpowersuccess>><</link>>
 	<<else>>
 		<<set $pubresist to 0>>
-		<span class="lewd">You're too <<= (!((!$statFreeze and !$hc and $arousalDesensitizedTrait is 1)) and !(typeof activeInsanityTrait === "function" and activeInsanityTrait()) and $arousal gte $arousalmax * 3/5)? "horny" : "drunk">> to resist <<his>> advances.</span>
+		<span class="lewd">너무 <<= (!((!$statFreeze and !$hc and $arousalDesensitizedTrait is 1)) and !(typeof activeInsanityTrait === "function" and activeInsanityTrait()) and $arousal gte $arousalmax * 3/5)? "달아올라서" : "취해서">> <<his>> 유혹을 뿌리칠 수 없다.</span>
 	<</if>>
 	<br>
 <</widget>>
@@ -59,60 +59,60 @@
 :: Pub Approach Flirt
 <<set $outside to 0>><<set $location to "pub">><<effects>><<set $bus to "harvest">>
 <<promiscuity2>>
-You smile as <<he>> approaches, encouraging <<him>> to continue.
+<<he>>【이가】 다가오자 당신은 미소 지으며 <<him>>【이가】 계속하도록 북돋운다.
 <br><br>
 
-<<chitchat>> Time goes by swiftly as you both chat.
+<<chitchat>> 둘이 이야기를 나누는 동안 시간이 빠르게 흐른다.
 <br><br>
 
-"You know, you really are quite a <<= $player.gender_appearance is "f" ? ["sexy chick", "hot girl", "hot babe", "sex bomb", "sweet piece of tail"].random() : ["handsome guy", "sexy hunk of ass", "hot stud", "stallion"].random()>>. <<= $NPCList[0].skills.security gte 500? "" : "H-">>How about going somewhere more... private?" <<he>> shoots <<his>> lusty proposal. "<<= $NPCList[0].skills.security gte 500? "" : "I-">>If you'll allow it."  
+"있잖아, 넌 정말 꽤 <<= $player.gender_appearance is "f" ? ["섹시한 아가씨", "핫한 여자", "끝내주는 미녀", "섹시 폭탄", "달콤하게 생긴 여자"].random() : ["잘생긴 남자", "엉덩이가 끝내주는 남자", "멋진 수컷", "종마"].random()>>【이】야. <<= $NPCList[0].skills.security gte 500? "" : "더-">>더 은밀한 곳으로 가는 건 어때?" <<he>>【이가】 노골적인 제안을 던진다. "<<= $NPCList[0].skills.security gte 500? "" : "허-">>허락해 준다면 말이야."
 <br><br>
 
 <<speechresolve>>
 <<switch _speechAttitudeResolved>>
 <<case "meek">>
-	"I-I wouldn't mind..." you answer in a small voice, already picturing everything <<he>> could do to you in there. The thought makes you nervous, or perhaps it is exactly why you are nervous, but you follow <<him>> deeper into the restrooms anyway.
+	"저, 저는 괜찮아요..." 당신은 작은 목소리로 대답하며, 그 안에서 <<he>>【이가】 당신에게 할 수 있는 모든 일을 벌써 상상한다. 그 생각에 긴장되고, 어쩌면 바로 그 때문에 긴장하는 것인지도 모르지만, 그래도 당신은 <<him>>【을를】 따라 화장실 안쪽으로 더 들어간다.
 <<case "shy">>
-	"I-I wouldn't mind..." you answer, glancing away. You picture everything <<he>> could do to you in there, and the thought makes you flustered, but you follow <<him>> deeper into the restrooms anyway.
+	"저, 저는 괜찮아요..." 당신은 시선을 피하며 대답한다. 그 안에서 <<he>>【이가】 당신에게 할 수 있는 모든 일을 떠올리자 얼굴이 달아오르지만, 그래도 당신은 <<him>>【을를】 따라 화장실 안쪽으로 더 들어간다.
 <<case "polite">>
-	"I'd like that, thank you," you say with a small smile. You are already thinking about what might happen in there, and you follow <<him>> deeper into the restrooms.
+	"좋아요, 고마워요." 당신은 작게 미소 지으며 말한다. 이미 그 안에서 일어날 일을 생각하고 있고, 당신은 <<him>>【을를】 따라 화장실 안쪽으로 더 들어간다.
 <<case "confident">>
-	"Then let's go," you say, and take <<his>> hand. "I know what I want." The <<person>> hesitates for a moment, then follows you into the restrooms.
+	"그럼 가자." 당신은 말하며 <<his>> 손을 잡는다. "난 내가 뭘 원하는지 알아." <<person>>【은는】 잠시 머뭇거리다가 당신을 따라 화장실로 들어간다.
 <<case "bratty">>
-	"We better get going, then," you say with a cheeky smile. "This <<= $player.gender_appearance is "f" ? "girl" : ($player.gender_appearance is "m" ? "boy" : "person") >> isn't gonna service <<pherself>>." The <<persons>> stunned by your boldness for a few moments. After shaking off <<his>> shock, <<he>> follows you into the restrooms, against <<his>> better judgement.
+	"그럼 어서 가는 게 좋겠네." 당신은 뻔뻔하게 웃으며 말한다. "이 <<= $player.gender_appearance is "f" ? "소녀" : ($player.gender_appearance is "m" ? "소년" : "사람") >>【이가】 <<pherself>>【을를】 알아서 챙겨 주진 않으니까." <<person>>【은는】 당신의 대담함에 잠시 멍해진다. 충격에서 벗어나자, <<he>>【은는】 <<his>> 이성적인 판단을 거스르며 당신을 따라 화장실로 들어간다.
 <<case "docile">>
-	"Yes... I'll go wherever you want," you say, lowering your eyes. You follow <<him>> deeper into the restrooms and wait for <<him>> to tell you what to do.
+	"네... 원하시는 곳이면 어디든 갈게요." 당신은 눈을 내리깔고 말한다. 당신은 <<him>>【을를】 따라 화장실 안쪽으로 더 들어가, <<he>>【이가】 시키기를 기다린다.
 <<case "flamboyant">>
-	"I'd like that, thank you," you say with a small smile. You are already thinking about what might happen in there, and you follow <<him>> deeper into the restrooms.
+	"좋아요, 고마워요." 당신은 작게 미소 지으며 말한다. 이미 그 안에서 일어날 일을 생각하고 있고, 당신은 <<him>>【을를】 따라 화장실 안쪽으로 더 들어간다.
 <<case "cruel">>
-	"Then stop talking and move," you say, looking <<him>> up and down. "I don't like waiting." The <<person>> looks unsure, but follows you into the restrooms anyway.
+	"그럼 말은 그만하고 움직여." 당신은 <<him>>【을를】 아래위로 훑어보며 말한다. "기다리는 건 싫어." <<person>>【은는】 확신이 없어 보이지만 그래도 당신을 따라 화장실로 들어간다.
 <<default>>
-	"I thought you'd never ask," you say, pretending to be surprised. "Come on, let's go." You don't need long to decide, so you follow <<him>> deeper into the restrooms.
+	"언제 말해 주나 했어요." 당신은 놀란 척하며 말한다. "가요, 어서요." 오래 고민할 필요도 없어서, 당신은 <<him>>【을를】 따라 화장실 안쪽으로 더 들어간다.
 <</switch>>
 <br><br>
 
-<<link [[Next|Pub Approach Flirt 2]]>><</link>>
+<<link [[다음|Pub Approach Flirt 2]]>><</link>>
 
 :: Pub Approach Flirt 2
 
-Perhaps it's <<his>> <<= $NPCList[0].skills.security gte 500? "charisma" : "cute awkwardness">>, or perhaps you're just horny. But either way, <<hes>> managed to get through your defences and convince you to get frisky with <<him>>.
+어쩌면 <<his>> <<= $NPCList[0].skills.security gte 500? "카리스마" : "귀여운 서투름">>【이】거나, 어쩌면 그저 당신이 달아올랐기 때문일 것이다. 어느 쪽이든 <<hes>> 당신의 방어를 뚫고 <<him>>【와과】 은밀한 짓을 벌이도록 당신을 설득해 냈다.
 <br><br>
 
-As you get past the door, you're both met with the sounds of several couples having sloppy sex. Each pair is hidden only by the walls of their stall, which do little to muffle the moans and the slick, wet pounding that echo across the room. The noise tells anyone coming in that this room is not for relieving oneself, at least not primarily. <<arousal 50>><<garousal>>
+문을 지나자, 여러 쌍이 질척하게 섹스하는 소리가 두 사람을 맞이한다. 각 쌍은 칸막이 벽 하나로만 가려져 있을 뿐이라, 방 안에 울려 퍼지는 신음과 끈적하고 축축한 살 부딪히는 소리를 거의 막아 주지 못한다. 그 소음은 들어오는 누구에게나 이곳이 볼일을 보는 곳이 아니라는 것을, 적어도 그게 주된 용도는 아니라는 것을 알려 준다. <<arousal 50>><<garousal>>
 <br><br>
 
 <<if $NPCList[0].skills.security gte 500>>
-	With implicit confidence, <<he>> guides you to an empty stall as if <<he>> had reserved it beforehand. The stall is unnaturally clean, in a way that barely makes any sense for a public restroom. Or at least, in terms of the usual filth you'd expect in a toilet. It doesn't stink of pee, but of sex. 
+	은근한 자신감으로, <<he>>【은는】 미리 예약해 둔 것처럼 당신을 빈 칸으로 이끈다. 그 칸은 공중화장실치고는 말이 안 될 만큼 부자연스럽게 깨끗하다. 적어도 변기에서 흔히 기대하는 오물의 수준에서는 그렇다. 지린내가 아니라 섹스 냄새가 난다.
 	<br><br>
-	No longer able to restrain <<himself>>, the <<person>> lunges into you as <<he>> deftly locks the door behind <<him>>, and begins to grope you all over.
+	더는 자제하지 못하고, <<person>>【이가】 능숙하게 뒤로 문을 잠그며 당신에게 달려들어 온몸을 더듬기 시작한다.
 	<br><br>
-	<<link [[Next (0:10)|Pub Approach Sex]]>><<set $phase to 1>><<set $sexstart to 1>><</link>>
+	<<link [[다음 (0:10)|Pub Approach Sex]]>><<set $phase to 1>><<set $sexstart to 1>><</link>>
 <<else>>
-	With clear awkwardness, <<he>> discreetly checks each stall looking for an empty one. And <<he>> lights up once <<he>> manages to find one. With a signal beckons you over, and you go in. The stall is unnaturally clean, in a way that barely makes any sense for a public restroom. Or at least, in terms of the usual filth you'd expect in a toilet. It doesn't stink of pee, but of sex. 
+	눈에 띄게 어색해하며, <<he>>【은는】 빈 칸이 있는지 조심스레 칸마다 확인한다. 그러다 하나를 찾아내자 <<he>>【은는】 얼굴이 환해진다. 손짓으로 당신을 부르고, 당신은 안으로 들어간다. 그 칸은 공중화장실치고는 말이 안 될 만큼 부자연스럽게 깨끗하다. 적어도 변기에서 흔히 기대하는 오물의 수준에서는 그렇다. 지린내가 아니라 섹스 냄새가 난다.
 	<br><br>
-	No longer able to control <<himself>>, the <<person>> lunges into you, having locked the door beforehand, and begins to grope you all over with panting lust.
+	더는 자신을 통제하지 못하고, 미리 문을 잠가 둔 <<person>>【이가】 당신에게 달려들어 헐떡이는 욕정으로 온몸을 더듬기 시작한다.
 	<br><br>
-	<<link [[Next (0:10)|Pub Approach Sex]]>><<set $phase to 2>><<set $sexstart to 1>><</link>>
+	<<link [[다음 (0:10)|Pub Approach Sex]]>><<set $phase to 2>><<set $sexstart to 1>><</link>>
 <</if>>
 
 :: Pub Approach Sex
@@ -141,9 +141,9 @@ As you get past the door, you're both met with the sounds of several couples hav
 <<actionsman>>
 
 <<if _combatend>>
-	<span id="next"><<link [[Next|Pub Approach Sex Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Pub Approach Sex Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Pub Approach Sex]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Pub Approach Sex]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Pub Approach Sex Finish
@@ -152,20 +152,20 @@ As you get past the door, you're both met with the sounds of several couples hav
 <<if $phase is 1>>
 	<<if $enemyhealth lte 0>>
 
-		<<tearful>> you knock <<him>> into the door, which gives way under <<his>> weight. And dash out the room, and back into the main hall, paying no mind to anything you might have left behind.
+		<<tearful>> 당신은 <<him>>【을를】 문으로 밀쳐 쓰러뜨리고, 문은 <<his>> 무게에 못 이겨 열린다. 그리고 방을 뛰쳐나와 홀로 돌아가며, 두고 온 것이 있을지도 모른다는 생각은 하지 않는다.
 		<<clotheson>>
 	<<elseif $enemypleasure gte $enemypleasuremax>>
 
 		<<ejaculation>>
 		<<clotheson>>
 
-		<<He>> collapses over you. "I really, really needed that," <<he>> says, stroking your hair. "Let's keep this between just the two of us, though." <<He>> glances at <<his>> watch. "My spouse should be returning home any time soon. So I better hurry home and scrub your scent off myself." <<He>> hastily dresses back up before rushing out. "Really sorry about leaving like this. I promise I won't forget you." <<tearful>> you dress back up before heading out yourself.
+		<<He>>【은는】 당신 위로 쓰러진다. "정말, 정말 이게 필요했어." <<he>>【이가】 당신의 머리를 쓰다듬으며 말한다. "하지만 이건 우리 둘만의 비밀로 하자." <<He>>【은는】 <<his>> 시계를 힐끗 본다. "내 배우자가 곧 집에 돌아올 거야. 그러니 서둘러 가서 몸에서 네 냄새를 씻어 내야겠어." <<He>>【은는】 서둘러 옷을 입고 뛰쳐나간다. "이렇게 가서 정말 미안해. 널 잊지 않을게, 약속해." <<tearful>> 당신도 옷을 다시 입고 나선다.
 
 	<<else>>
 		<<if $finish is 1>><<encounterEndViolence>><</if>>
-		"Alright. I knew I was out of practice. Just go so I can wash up before heading back home to my spouse." <<He>> opens the door for you to leave.
+		"알았어. 내가 서툴렀다는 거 알아. 그냥 가 줘, 씻고 배우자한테 돌아가야 하니까." <<He>>【이가】 당신이 나갈 수 있도록 문을 열어준다.
 		<br><br>
-		<<tearful>> you gather your clothes in haste and dress back up before heading out.
+		<<tearful>> 당신은 서둘러 옷을 챙겨 다시 입고 나선다.
 		<<clotheson>>
 	<</if>>
 	<br><br>
@@ -176,23 +176,23 @@ As you get past the door, you're both met with the sounds of several couples hav
 <<else>>
 	<<if $enemyhealth lte 0>>
 
-		<<tearful>> you knock <<him>> back against the doors. It gives way and <<he>> tumbles out, letting you escape before <<he>> can get back up. As you reach the main hall, you pay no mind to anything you might have left behind.
+		<<tearful>> 당신은 <<him>>【을를】 문에 밀쳐 부딪히게 한다. 문이 열리고 <<he>>【이가】 굴러 나가, <<he>>【이가】 다시 일어나기 전에 당신은 도망친다. 홀에 이르러서는, 두고 온 것이 있을지 모른다는 생각은 하지 않는다.
 		<<clotheson>>
 	<<elseif $enemypleasure gte $enemypleasuremax>>
 
 		<<ejaculation>>
 		<<clotheson>>
 
-		<<He>> collapses over you. "That was amazing," <<he>> pants. "You really are an incredible <<= $player.gender_appearance is "f" ? "girl" : ($player.gender_appearance is "m" ? "guy" : "person") >>." <<He>> lifts <<himself>> up, trying to get a good look at you even in this tight space. "Honestly, I'd really love for you to come home with me. Can I perhaps tempt you with some coffee? Perhaps tea?" You tell <<him>> there's no need for it and that you really should be going.
+		<<He>>【은는】 당신 위로 쓰러진다. "대단했어." <<he>>【이가】 헐떡이며 말한다. "넌 정말 굉장한 <<= $player.gender_appearance is "f" ? "여자" : ($player.gender_appearance is "m" ? "남자" : "사람") >>【이】야." <<He>>【은는】 몸을 일으켜, 이 좁은 공간에서도 당신을 제대로 보려 한다. "솔직히 너랑 같이 우리 집에 갔으면 정말 좋겠어. 커피라도 한잔 어때? 아니면 차?" 당신은 <<him>>에게 그럴 필요 없다고, 정말 가 봐야 한다고 말한다.
 		<br><br>
 
-		"Name's <<personname>>," <<he>> suddenly introduces <<himself>> out of the blue as if hoping this was more than some fling. "I really hope we'll see each other again." Not sparing another word, you quickly dress back up, and apologise for not being able to indulge. <<tearful>> you leave the room. Yet <<he>> still stares after you in longing all the way until you're fully gone.
+		"내 이름은 <<personname>>【이】라고 해." <<he>>【이가】 갑자기 불쑥 자기소개를 한다. 이게 하룻밤 불장난 이상이길 바라는 듯하다. "우리 다시 만났으면 좋겠어." 더 말을 보태지 않고, 당신은 서둘러 옷을 입고 어울려 주지 못해 미안하다고 사과한다. <<tearful>> 당신은 방을 나선다. 그래도 <<he>>【은는】 당신이 완전히 사라질 때까지 그리운 눈으로 계속 뒤쫓아 본다.
 		
 	<<else>>
 		<<if $finish is 1>><<encounterEndViolence>><</if>>
-		"Huh? What's wrong?" <<he>> asks. "Ugh, nevermind. This was a mistake. Please leave."
+		"응? 뭐가 문제야?" <<he>>【이가】 묻는다. "아, 됐어. 이건 실수였어. 제발 가 줘."
 		<br><br>
-		<<tearful>> you leave <<him>> in peace.
+		<<tearful>> 당신은 <<him>>【을를】 내버려 두고 떠난다.
 		<<clotheson>>
 	<</if>>
 	<br><br>
@@ -206,41 +206,41 @@ As you get past the door, you're both met with the sounds of several couples hav
 
 :: Pub Approach Reject
 <<if $phase is 1>>
-	Unimpressed, you shoot down every one of <<his>> poor attempts at a pick-up line. You are almost embarrassed that <<he>> thought such cheesy lines would work on you. And somehow, <<he>> still looks shocked that <<his>> clever one-liners missed their mark.
+	감흥 없이, 당신은 <<his>> 서투른 작업 멘트를 하나하나 쳐 낸다. <<he>>【이가】 그런 낯간지러운 멘트가 당신에게 통할 거라 생각했다는 게 민망할 지경이다. 그런데도 <<he>>【은는】 어쩐 일인지 <<his>> 기발하다는 한마디들이 빗나갔다는 사실에 충격받은 표정이다.
 	<br><br>
 
 	<<if $NPCList[0].skills.security gte 500>>
-		"Come on! Don't be like that!" <<he>> protests. "At least let me buy you a drink."
+		"에이! 그러지 마!" <<he>>【이가】 항의한다. "술이라도 한잔 사게 해 줘."
 		<br><br>
 		<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
 			<span class="blue">아이를 배고 있다는 걸 아는 상태로는 차마 마실 수 없다.</span>
 			<br>
-			<<link [[Refuse|Pub Approach Reject]]>><<set $phase++>><</link>>
+			<<link [[거절한다|Pub Approach Reject]]>><<set $phase++>><</link>>
 		<<else>>
-			<<link [[Accept (0:20)|Pub Approach Drink]]>><<drunk 200>><<pass 20>><<set $pubdrink += 2000>><</link>><<ggdrunk>>
+			<<link [[받아들인다 (0:20)|Pub Approach Drink]]>><<drunk 200>><<pass 20>><<set $pubdrink += 2000>><</link>><<ggdrunk>>
 			<br>
 			<<willpowerdifficulty 1 1000 "silent">>
 			<<if ($arousal lt $arousalmax * 3/5 or (!$statFreeze and !$hc and $arousalDesensitizedTrait is 1) or (typeof activeInsanityTrait === "function" and activeInsanityTrait())) and effectiveDrunk() lt 240>>
-				<<link [[Refuse|Pub Approach Reject]]>><<set $phase++>><</link>>
+				<<link [[거절한다|Pub Approach Reject]]>><<set $phase++>><</link>>
 			<<elseif $willpowerSuccess and $pubresist>>
-				<<link [[Refuse|Pub Approach Reject]]>><<willpowersuccess>><<set $phase++>><</link>>
+				<<link [[거절한다|Pub Approach Reject]]>><<willpowersuccess>><<set $phase++>><</link>>
 			<<else>>
 				<<set $pubresist to 0>>
-				<<He>> has worn you down. <span class="lewd">You're now going along with <<his>> advances</span>.
+				<<He>>【이가】 당신을 지치게 만들었다. <span class="lewd">이제 당신은 <<his>> 접근을 받아들이고 있다</span>.
 			<</if>>
 		<</if>>
 		<br>
 	<<else>>
-		Having run out of ammunition, the <<person>> takes <<his>> leave feeling defeated.
+		쓸 수 있는 수가 다 떨어지자, <<person>>【은는】 패배감을 안고 자리를 뜬다.
 		<br><br>
 		<<link [[다음|Pub]]>><<endevent>><</link>>
 	<</if>>
 <<else>>
-	Despite <<his>> pushiness, you still refuse every attempt <<he>> makes to get you to cave. 
+	<<his>> 끈질김에도 불구하고, 당신은 넘어오게 하려는 <<his>> 모든 시도를 여전히 거절한다.
 	<<if $NPCList[0].skills.security gte 750>>
-		For a moment it seems the <<persons>> about to lose <<his>> temper, but a stern reminder from Landry across the hall appears to scare the <<person>> off. With a scornful expression, <<he>> clicks <<his>> tongue one last time before going off.
+		잠시 <<person>>【이가】 화를 낼 것처럼 보이지만, 홀 건너편에서 랜드리가 엄하게 주의를 주자 <<person>>【이가】 겁먹고 물러나는 듯하다. 비웃는 표정으로 <<he>>【은는】 마지막으로 한 번 혀를 차고는 자리를 뜬다.
 	<<else>>
-		With the wind knocked out of <<his>> sails, <<he>> makes one last scornful remark before going off.
+		기세가 꺾인 <<he>>【은는】 마지막으로 비웃는 한마디를 남기고 자리를 뜬다.
 	<</if>>
 	<br><br>
 
@@ -250,78 +250,78 @@ As you get past the door, you're both met with the sounds of several couples hav
 :: Pub Approach Drink
 <<wearProp "beer mug">>
 <<if $pubdrink gte 8000>>
-	You nod and <<he>> stands to get another. By the time <<he>> returns, you're slumped over the table, with everything spinning around you.
+	당신이 고개를 끄덕이자 <<he>>【은는】 일어나 한 잔 더 가지러 간다. <<he>>【이가】 돌아올 때쯤, 당신은 테이블에 엎어져 있고 모든 것이 빙빙 돈다.
 	<br><br>
 	"사실." <<he>>【이가】 말한다. "넌 충분히 마신 것 같아. 집에 데려다줄게."
 	<br><br>
-	<<link [[Next (0:10)|Pub Journey]]>><<handheldon>><<pass 10>><</link>>
+	<<link [[다음 (0:10)|Pub Journey]]>><<handheldon>><<pass 10>><</link>>
 	<br>
 <<elseif $pubdrink gte 6000>>
-	<<He>> buys you yet another glass of liquor and sets it down in front of you before you have even finished the last one.
+	<<He>>【은는】 지난 잔을 채 비우기도 전에 또 한 잔의 독한 술을 사서 당신 앞에 내려놓는다.
 	<br><br>
 
-	<<chitchat>> You nod along hazily, slurring your responses and losing track of what <<hes>> saying. Yet <<he>> still offers you another drink.
+	<<chitchat>> 당신은 몽롱하게 고개를 끄덕이며 말이 꼬이고, <<he>>【이가】 하는 말을 놓친다. 그런데도 <<he>>【은는】 또 한 잔을 권한다.
 	<br><br>
 
-	<<link [[Flirt (0:10)|Pub Approach Flirt]]>><<handheldon>><<pass 10>><</link>><<promiscuous1>>
+	<<link [[추파를 던진다 (0:10)|Pub Approach Flirt]]>><<handheldon>><<pass 10>><</link>><<promiscuous1>>
 	<br>
 	<<willpowerdifficulty 1 1000 "silent">>
 	<<if ($arousal lt $arousalmax * 3/5 or (!$statFreeze and !$hc and $arousalDesensitizedTrait is 1) or (typeof activeInsanityTrait === "function" and activeInsanityTrait())) and effectiveDrunk() lt 240>>
-		<<link [[Accept (0:20)|Pub Approach Drink]]>><<handheldon>><<drunk 200>><<pass 20>><<set $pubdrink += 2000>><</link>><<ggdrunk>>
+		<<link [[받아들인다 (0:20)|Pub Approach Drink]]>><<handheldon>><<drunk 200>><<pass 20>><<set $pubdrink += 2000>><</link>><<ggdrunk>>
 		<br>
 		<<link [[작별 인사를 한다|Pub]]>><<endevent>><</link>>
 	<<elseif $willpowerSuccess and $pubresist>>
-		<<link [[Accept (0:20)|Pub Approach Drink]]>><<handheldon>><<drunk 200>><<pass 20>><<set $pubdrink += 2000>><</link>><<ggdrunk>>
+		<<link [[받아들인다 (0:20)|Pub Approach Drink]]>><<handheldon>><<drunk 200>><<pass 20>><<set $pubdrink += 2000>><</link>><<ggdrunk>>
 		<br>
-		<<link [[Say goodbye|Pub]]>><<willpowersuccess>><<endevent>><</link>>
+		<<link [[작별 인사를 한다|Pub]]>><<willpowersuccess>><<endevent>><</link>>
 	<<else>>
 		<<set $pubresist to 0>>
-		<<He>> has worn down your resistance. <span class="lewd">You're now going along with <<his>> advances</span>.
+		<<He>>【이가】 당신의 저항을 꺾었다. <span class="lewd">이제 당신은 <<his>> 접근을 받아들이고 있다</span>.
 	<</if>>
 	<br>
 <<elseif $pubdrink gte 4000>>
 	<<He>>【은는】 당신에게 또 한 잔의 술을 사준다. 이번에는 좀 더 쉽게 넘어간다.
 	<br><br>
 
-	<<chitchat>> The alcohol is making <<him>> look more appealing. <<He>> offers you another drink.
+	<<chitchat>> 술기운 탓에 <<him>>【이가】 더 매력적으로 보인다. <<He>>【은는】 또 한 잔을 권한다.
 	<br><br>
 	
-	<<link [[Flirt (0:10)|Pub Approach Flirt]]>><<handheldon>><<pass 10>><</link>><<promiscuous1>>
+	<<link [[추파를 던진다 (0:10)|Pub Approach Flirt]]>><<handheldon>><<pass 10>><</link>><<promiscuous1>>
 	<br>
 	<<willpowerdifficulty 1 1000 "silent">>
 	<<if ($arousal lt $arousalmax * 3/5 or (!$statFreeze and !$hc and $arousalDesensitizedTrait is 1) or (typeof activeInsanityTrait === "function" and activeInsanityTrait())) and effectiveDrunk() lt 240>>
-		<<link [[Accept (0:20)|Pub Approach Drink]]>><<handheldon>><<drunk 200>><<pass 20>><<set $pubdrink += 2000>><</link>><<ggdrunk>>
+		<<link [[받아들인다 (0:20)|Pub Approach Drink]]>><<handheldon>><<drunk 200>><<pass 20>><<set $pubdrink += 2000>><</link>><<ggdrunk>>
 		<br>
 		<<link [[작별 인사를 한다|Pub]]>><<endevent>><</link>>
 	<<elseif $willpowerSuccess and $pubresist>>
-		<<link [[Accept (0:20)|Pub Approach Drink]]>><<handheldon>><<drunk 200>><<pass 20>><<set $pubdrink += 2000>><</link>><<ggdrunk>>
+		<<link [[받아들인다 (0:20)|Pub Approach Drink]]>><<handheldon>><<drunk 200>><<pass 20>><<set $pubdrink += 2000>><</link>><<ggdrunk>>
 		<br>
-		<<link [[Say goodbye|Pub]]>><<willpowersuccess>><<endevent>><</link>>
+		<<link [[작별 인사를 한다|Pub]]>><<willpowersuccess>><<endevent>><</link>>
 	<<else>>
 		<<set $pubresist to 0>>
-		<<He>> has worn down your resistance. <span class="lewd">You're now going along with <<his>> advances</span>.
+		<<He>>【이가】 당신의 저항을 꺾었다. <span class="lewd">이제 당신은 <<his>> 접근을 받아들이고 있다</span>.
 	<</if>>
 	<br>
 <<elseif $pubdrink gte 2000>>
-	<<He>> buys you a glass of liquor. The bartender doesn't ask what <<he>> wants, seeming to know already. It's strong stuff.
+	<<He>>【은는】 당신에게 독한 술을 한 잔 사 준다. 바텐더는 <<he>>【이가】 뭘 원하는지 묻지 않고, 이미 아는 듯하다. 독한 술이다.
 	<br><br>
 	<<He>>【은는】 당신이 마음속에 있는 말을 하도록 격려하고, 자신은 말을 많이 하지 않는다. 당신의 잔이 비자 <<he>>【은는】 "한 잔 더 할래?"라고 묻는다.
 	<br><br>
 	
-	<<link [[Flirt (0:10)|Pub Approach Flirt]]>><<handheldon>><<pass 10>><</link>><<promiscuous1>>
+	<<link [[추파를 던진다 (0:10)|Pub Approach Flirt]]>><<handheldon>><<pass 10>><</link>><<promiscuous1>>
 	<br>
 	<<willpowerdifficulty 1 1000 "silent">>
 	<<if ($arousal lt $arousalmax * 3/5 or (!$statFreeze and !$hc and $arousalDesensitizedTrait is 1) or (typeof activeInsanityTrait === "function" and activeInsanityTrait())) and effectiveDrunk() lt 240>>
-		<<link [[Accept (0:20)|Pub Approach Drink]]>><<handheldon>><<drunk 200>><<pass 20>><<set $pubdrink += 2000>><</link>><<ggdrunk>>
+		<<link [[받아들인다 (0:20)|Pub Approach Drink]]>><<handheldon>><<drunk 200>><<pass 20>><<set $pubdrink += 2000>><</link>><<ggdrunk>>
 		<br>
 		<<link [[작별 인사를 한다|Pub]]>><<endevent>><</link>>
 	<<elseif $willpowerSuccess and $pubresist>>
-		<<link [[Accept (0:20)|Pub Approach Drink]]>><<handheldon>><<drunk 200>><<pass 20>><<set $pubdrink += 2000>><</link>><<ggdrunk>>
+		<<link [[받아들인다 (0:20)|Pub Approach Drink]]>><<handheldon>><<drunk 200>><<pass 20>><<set $pubdrink += 2000>><</link>><<ggdrunk>>
 		<br>
-		<<link [[Say goodbye|Pub]]>><<willpowersuccess>><<endevent>><</link>>
+		<<link [[작별 인사를 한다|Pub]]>><<willpowersuccess>><<endevent>><</link>>
 	<<else>>
 		<<set $pubresist to 0>>
-		<<He>> has worn down your resistance. <span class="lewd">You're now going along with <<his>> advances</span>.
+		<<He>>【이가】 당신의 저항을 꺾었다. <span class="lewd">이제 당신은 <<his>> 접근을 받아들이고 있다</span>.
 	<</if>>
 	<br>
 <</if>>

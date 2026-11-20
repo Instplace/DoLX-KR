@@ -112,7 +112,7 @@
 			(_outfits and x.outfitPrimary isnot undefined and Object.keys(x.outfitPrimary).some(secSlot => secSlot.includes("lower")))
 			or
 			(!_outfits and (x.outfitPrimary is undefined or Object.keys(x.outfitPrimary).every(secSlot => !secSlot.includes("lower")))))
-		and (_shopNameFilter is '' or x.name.includes(_shopNameFilter.toLowerCase()) or (window.KR.lookup(x.name) || '').includes(_shopNameFilter.toLowerCase()) or (x.pattern_options and x.pattern_options.some(p => p.includes(_shopNameFilter.toLowerCase()) or (window.KR.lookup(p) || '').includes(_shopNameFilter.toLowerCase()))))
+		and (_shopNameFilter is '' or x.name.toLowerCase().includes(_shopNameFilter.toLowerCase()) or (window.KR.lookup(x.name) || '').toLowerCase().includes(_shopNameFilter.toLowerCase()) or (x.pattern_options and x.pattern_options.some(p => p.toLowerCase().includes(_shopNameFilter.toLowerCase()) or (window.KR.lookup(p) || '').toLowerCase().includes(_shopNameFilter.toLowerCase()))))
 		and !(x.slot === "genitals" and x.type.includes("cage") and x.gender === "m" and !V.player.penisExist)
 		and (!V.shopClothingFilter.availableOnly or !(
 			(setup.clothingLayer.torso.includes(V.clothingShopSlot) and x.reveal < earSlimeCorruptionClothes() and !x.type.includesAny("school", "event")) or
@@ -557,15 +557,15 @@
 		<<if _temp_choice.plural is 1>>
 			<<integrity $clothes_choice_integrity "cap">>
 		<<else>>
-			A <<integrity $clothes_choice_integrity>>
+			<<integrity $clothes_choice_integrity>>
 		<</if>>
-		and <<reveal $clothes_choice_reveal>> <<print _temp_choice.name>>.
+		그리고 <<reveal $clothes_choice_reveal>> <<print _temp_choice.name>>.
 		<<if _temp_choice.gender is "m">>
-			<span class="lblue">For boys.</span>
+			<span class="lblue">남성용.</span>
 		<<elseif _temp_choice.gender is "f">>
-			<span class="pink">For girls.</span>
+			<span class="pink">여성용.</span>
 		<</if>>
-		<<print _temp_choice.description>> Costs <<printprice `getClothingCost(_temp_choice,$clothingShopSlot)`>>.
+		<<print _temp_choice.description>> 가격은 <<printprice `getClothingCost(_temp_choice,$clothingShopSlot)`>>【이】다.
 		<<set _lines.push({text: `5행시를`, lewdness: 1})>>
 		<<set _truewarmth = getTrueWarmth(_temp_choice)>>
 		<<print setup.WeatherDescriptions.clothingWarmth(_truewarmth)>>
@@ -573,26 +573,26 @@
 		<<shoptraits>>
 		<<set _slimeSlots to setup.clothingLayer.torso>>
 		<<if $earSlime.forcedCommando and $earSlime.forcedCommando gte 0 and ($clothingShopSlot is "under_lower" or (_temp_choice.outfitPrimary and _temp_choice.outfitPrimary.under_lower)) and !_temp_choice.type.includesAny("swim", "dance", "naked") and V.hypnosis_traits?.silence isnot 1>>
-			<span class="red">The <<slimeWord>> in your ear refuses to allow you to try on or buy the _temp_choice.name as it is forcing you to go commando.</span>
+			<span class="red">귀에 있는 <<slimeWord>>【이가】 당신에게 속옷을 입지 않도록 강제하고 있기 때문에, _temp_choice.name【을를】 입어 보거나 구매하는 것을 거부합니다.</span>
 			<<set _lines.push({text: `5행시를`, lewdness: 1})>>
 		<<elseif hypnosisTrait("crossdressing") gte 2 and (($clothingShopSlot is "under_lower" or (_temp_choice.outfitPrimary and _temp_choice.outfitPrimary.under_lower)) or ($clothingShopSlot is "under_upper" or (_temp_choice.outfitPrimary and _temp_choice.outfitPrimary.under_upper))) and _temp_choice.gender is $player.gender and !_temp_choice.type.includesAny("event")>>
-			<span class="red">Your compulsion stops you from trying on or buying the _temp_choice.name as you can only bring yourself to wear more <<print $player.gender is "m" ? "feminine" : "masculine">> clothing.</span>
+			<span class="red">당신의 강박 때문에 _temp_choice.name【을를】 입어 보거나 구매할 수 없습니다. 당신은 더 <<print $player.gender is "m" ? "여성스러운" : "남성스러운">> 옷만 입을 수 있습니다.</span>
 			<<set _lines.push({text: `5행시를`, lewdness: 1})>>
 		<<elseif _slimeSlots.includes($clothingShopSlot) and _temp_choice.reveal lt earSlimeCorruptionClothes() and !_temp_choice.type.includesAny("school","event") and V.hypnosis_traits?.silence isnot 1>>
-			<span class="red">The <<slimeWord>> in your ear refuses to allow you to try on or buy the _temp_choice.name.</span>
+			<span class="red">귀에 있는 <<slimeWord>>【이가】 _temp_choice.name【을를】 입어 보거나 구매하는 것을 거부합니다.</span>
 			<<set _lines.push({text: `5행시를`, lewdness: 1})>>
 		<<elseif $earSlime.forcedDressing and $earSlime.forcedDressing.days and _item.gender isnot $earSlime.forcedDressing.type and _item.gender isnot "n" and !_item.type.includesAny("event") and V.hypnosis_traits?.silence isnot 1>>
-			<span class="red">The <<slimeWord>> in your ear refuses to allow you to try on or buy the _temp_choice.name as it is only permitting more <<print $earSlime.forcedDressing.type is "f" ? "feminine" : "masculine">> clothing.</span>
+			<span class="red">귀에 있는 <<slimeWord>>【이가】 더 <<print $earSlime.forcedDressing.type is "f" ? "여성스러운" : "남성스러운">> 옷만 허용하고 있기 때문에, _temp_choice.name【을를】 입어 보거나 구매하는 것을 거부합니다.</span>
 		<<elseif hypnosisTrait("crossdressing") gte 4 and (_temp_choice.gender is $player.gender or _temp_choice.type.includesAny("chest_bind")) and !_item.type.includesAny("event")>>
-			<span class="red">Your compulsion stops you from trying on or buying the _temp_choice.name as you can only bring yourself to wear more <<print $player.gender is "m" ? "feminine" : "masculine">> clothing.</span>
+			<span class="red">당신의 강박 때문에 _temp_choice.name【을를】 입어 보거나 구매할 수 없습니다. 당신은 더 <<print $player.gender is "m" ? "여성스러운" : "남성스러운">> 옷만 입을 수 있습니다.</span>
 			<<set _lines.push({text: `5행시를`, lewdness: 1})>>
 		<<else>>
 			<<if $earSlime.forcedCommando and $earSlime.forcedCommando gte 0 and !_temp_choice.type.includesAny("naked") and ($clothingShopSlot is "under_lower" or (_temp_choice.outfitPrimary and _temp_choice.outfitPrimary.under_lower)) and V.hypnosis_traits?.silence isnot 1>>
-				<span class="red">The <<slimeWord>> in your ear refuses to allow you to try on or wear the _temp_choice.name while not at an appropriate location.</span>
+				<span class="red">귀에 있는 <<slimeWord>>【이가】 적절한 장소가 아니면 _temp_choice.name【을를】 입어 보거나 착용하는 것을 거부합니다.</span>
 				<<set _lines.push({text: `5행시를`, lewdness: 1})>>
 				<<set _wearingBlocked to true>>
 			<<elseif _slimeSlots.includes($clothingShopSlot) and _temp_choice.reveal lt earSlimeCorruptionClothes() and (_temp_choice.type.includesAny("school") and !Time.schoolDay) and !_temp_choice.type.includesAny("event") and V.hypnosis_traits?.silence isnot 1>>
-				<span class="red">The <<slimeWord>> in your ear refuses to allow you to try on or wear the _temp_choice.name when you don't have school today.</span>
+				<span class="red">귀에 있는 <<slimeWord>>【이가】 오늘 학교에 가지 않는데 _temp_choice.name【을를】 입어 보거나 착용하는 것을 거부합니다.</span>
 				<<set _lines.push({text: `5행시를`, lewdness: 1})>>
 				<<set _wearingBlocked to true>>
 			<<else>>
@@ -729,8 +729,8 @@
 
 			<<set _handbagSlotsInUse to getWardrobeItemCount("inventory")>>
 			<<set _handbagSpaceLeft to $worn.bag.type.includes("bookbag")? $wardrobes.inventory.space - _handbagSlotsInUse : 0>>
-			<span>Handbag inventory slots used: <<= _handbagSlotsInUse>> / <<= $wardrobes.inventory.space>></span>
-			<<if _handbagSpaceLeft lt 1>>- (<span class="gold">Full!</span>)<</if>>
+			<span>핸드백 보관함 사용 칸: <<= _handbagSlotsInUse>> / <<= $wardrobes.inventory.space>></span>
+			<<if _handbagSpaceLeft lt 1>>- (<span class="gold">가득 참!</span>)<</if>>
 			<<set _lines.push({text: `5행시를`, lewdness: 1})>>
 			<<shopBuyItemStatus _wardrobeSlots>>
 			<<set _totalSpaceLeft to _spaceLeft + (typeof _handbagSpaceLeft === "number" ? _handbagSpaceLeft : 0)>>
@@ -744,7 +744,7 @@
 				<<set _paymentCost to (setup.inflation ? setup.inflation.price(_paymentBase) : _paymentBase)>>
 				<<set _paymentExtraBase to Math.ceil(_paymentBase * 1.25)>>
 				<<set _paymentExtraCost to (setup.inflation ? setup.inflation.price(_paymentExtraBase) : _paymentExtraBase)>>
-				<<set _paymentGoods to ($shopName is "jewellery" or $shopName is "luxury_jewellery") ? "the jewellery" : "the clothes">>
+				<<set _paymentGoods to ($shopName is "jewellery" or $shopName is "luxury_jewellery") ? "보석" : "옷">>
 				<<set _allowTrespassPayment to ["clothing", "jewellery", "luxury_jewellery"].includes($shopName)>>
 				<<if $clothingShop.stolenClothes lte 20>>
 					<<if $worn[_realSlot].cursed is 1>>
@@ -780,7 +780,7 @@
 						<</link>><<crime "thievery">>
 						<<set _lines.push({text: `5행시를`, lewdness: 1})>>
 						<<if _allowTrespassPayment and $money gte _paymentCost>>
-							<<link [[Leave exact change and wear|Shop Trespass Payment Result]]>>
+							<<link [[정확한 금액을 두고 가서 입는다|Shop Trespass Payment Result]]>>
 								<<clothingReset _realSlot>>
 								<<shopbuyv2 _realSlot "buy" "wear" _realIndex>>
 								<<shopTrespassPayment _paymentBase "clothes" false $passage _paymentGoods>>
@@ -788,7 +788,7 @@
 							<<set _lines.push({text: `5행시를`, lewdness: 1})>>
 						<</if>>
 						<<if _allowTrespassPayment and $money gte _paymentExtraCost>>
-							<<link [[Leave extra and wear (<<printprice _paymentExtraBase>>)|Shop Trespass Payment Result]]>>
+							<<link [[웃돈을 얹어 두고 가서 입는다 (<<printprice _paymentExtraBase>>)|Shop Trespass Payment Result]]>>
 								<<clothingReset _realSlot>>
 								<<shopbuyv2 _realSlot "buy" "wear" _realIndex>>
 								<<shopTrespassPayment _paymentBase "clothes" true $passage _paymentGoods>>
@@ -816,7 +816,7 @@
 						<</link>><<crime "thievery">>
 						<<set _lines.push({text: `5행시를`, lewdness: 1})>>
 						<<if _allowTrespassPayment and $money gte _paymentCost>>
-							<<link [[Leave exact change and take home|Shop Trespass Payment Result]]>>
+							<<link [[정확한 금액을 두고 집으로 가져간다|Shop Trespass Payment Result]]>>
 								<<clothingReset _realSlot>>
 								<<shopbuyv2 _realSlot "buy" "send" _realIndex>>
 								<<shopTrespassPayment _paymentBase "clothes" false $passage _paymentGoods>>
@@ -824,7 +824,7 @@
 							<<set _lines.push({text: `5행시를`, lewdness: 1})>>
 						<</if>>
 						<<if _allowTrespassPayment and $money gte _paymentExtraCost>>
-							<<link [[Leave extra and take home (<<printprice _paymentExtraBase>>)|Shop Trespass Payment Result]]>>
+							<<link [[웃돈을 얹어 두고 집으로 가져간다 (<<printprice _paymentExtraBase>>)|Shop Trespass Payment Result]]>>
 								<<clothingReset _realSlot>>
 								<<shopbuyv2 _realSlot "buy" "send" _realIndex>>
 								<<shopTrespassPayment _paymentBase "clothes" true $passage _paymentGoods>>
@@ -960,7 +960,7 @@
 	<<set _canAfford = (setup.hbsc.paymentBalance("clothes") >= _clothingTotal and $wardrobes.inventory.space - getWardrobeItemCount("inventory") >= $buyMultiple) ? "" : "disabled">>
 	<div id="send-to-handbag" class="buy-button">
 		<div @class="'buy-button-inner buy-multiple div-link ' + _canAfford">
-			<<link `'Buy and keep in handbag × ' + $buyMultiple`>>
+			<<link `'핸드백에 담아 둔다 × ' + $buyMultiple`>>
 				<<if setup.hbsc.paymentBalance("clothes") >= _clothingTotal and $wardrobes.inventory.space - getWardrobeItemCount("inventory") >= $buyMultiple>>
 					<<clothingReset _realSlot>>
 					<<shopbuyv2 _realSlot "buy" "handbag" _realIndex $buyMultiple>>

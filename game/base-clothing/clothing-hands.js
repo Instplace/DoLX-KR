@@ -552,7 +552,7 @@ function initHands() {
 			pattern: 0,
 			pattern_options: ["gloves", "belts"],
 			pattern_layer: "primary",
-			pattern_name: "variants",
+			pattern_name: "변형",
 			type: ["normal"],
 			gender: "m",
 			femininity: -100,

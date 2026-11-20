@@ -44,17 +44,17 @@ const ccmShop = {
 	presetBtnSave() {
 		const filter = clone(setup.colours[`${ccmod.tmp.category}_map`].tmp.canvasfilter);
 		const filterString = ccmUtils.filterEncode(filter);
-		const name = prompt("Name your preset", "Preset");
+		const name = prompt("프리셋 이름을 입력하십시오", "프리셋");
 
 		if (name) {
 			if (ccmod.userPresets[name]) {
-				alert("Name already in use.");
+				alert("이미 사용 중인 이름입니다.");
 				return;
 			}
 
 			const duplicate = ccmUtils.presetCheckDuplicate(filterString);
 			if (duplicate) {
-				alert(`Preset was already saved as '${duplicate}'.`);
+				alert(`이미 '${duplicate}' 이름으로 저장된 프리셋입니다.`);
 				return;
 			}
 
@@ -83,11 +83,11 @@ const ccmShop = {
 
 	// color picker
 	setColorHex() {
-		const hex = prompt("Enter new hex string", "#FFFFFF");
+		const hex = prompt("새 16진수 색상 코드를 입력하십시오", "#FFFFFF");
 		if (!!hex && tinycolor(hex).getFormat() === "hex") {
 			this.syncPicker(hex);
 		} else if (hex) {
-			alert("Invalid hex string :(");
+			alert("올바르지 않은 16진수 코드입니다 :(");
 		}
 	},
 

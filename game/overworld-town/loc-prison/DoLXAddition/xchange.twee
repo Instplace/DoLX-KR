@@ -1,46 +1,46 @@
 :: Prison Pill Storage
     <<effects>><<generate_anxious_guard 0>>
 
-    As <<anxious_guard 0>><<person1>> turns <<his>> attention to the monitors, you take that chance and slip into the storage room.
+    <<anxious_guard 0>><<person1>>【이가】 모니터 쪽으로 <<his>> 주의를 돌리는 사이, 당신은 그 틈을 타 창고로 슬쩍 들어간다.
     <br><br>
 
-    Inside, the cabinets present what looks like hundreds and hundreds of tiny numbered drawers, that seem to correspond to prisoner numbers. Awfully aware of the brief window afforded to you in this restricted room, you peek inside one of the drawers, to discover a tiny box containing a pill.
+    안쪽의 캐비닛에는 수백, 수백 개의 작은 번호 서랍이 늘어서 있는데, 죄수 번호와 대응하는 듯하다. 출입이 제한된 이 방에서 주어진 짧은 시간을 절실히 의식하며, 당신은 서랍 하나를 열어 본다. 그 안에는 알약이 든 작은 상자가 있다.
     <br><br>
 
-    Some quick thinking leads you to believe these might be each prisoner's Choice Reversal pill.
+    잠깐 생각해 보니, 이것들은 각 죄수의 초이스 리버설 알약일 가능성이 크다.
     <br><br>
 
     <<set $skulduggerydifficulty to 500>>
-    <<link [[Search for your pill|Prison Pill Storage Search]]>><</link>><<skulduggerydifficulty 500>>
+    <<link [[자신의 알약을 찾는다|Prison Pill Storage Search]]>><</link>><<skulduggerydifficulty 500>>
     <br>
-    <<link [[Leave|Prison Spire]]>><</link>>
+    <<link [[떠난다|Prison Spire]]>><</link>>
     <br>
 
 :: Prison Pill Storage Search
     <<effects>>
 
-    You try your best to search both quickly and stealthily while you still have some time remaining.
+    당신은 남은 시간이 있는 동안 빠르고도 은밀하게 뒤지려 최선을 다한다.
 
     <<skulduggerycheck>>
     <<if $skulduggerysuccess>>
         <<set _variant to (($xchange.pill.originalBody?.sex || $player.sex) is "m") ? "(F)" : "(M)">>
 
-        And in a daring strike of luck, you manage to find your cabinet; and with it, the box housing your pill. 
-        | <span class="blue">+1 Choice Reversal pill</span>
+        그리고 대담한 행운의 일격으로, 당신은 자신의 캐비닛을 찾아낸다. 그 안에 든 알약 상자도.
+        | <span class="blue">+1 초이스 리버설 알약</span>
         <<set $sexStats.pills["pills"]["X-Change Choice Reversal "+_variant].owned++>>
         <<set $sexStats.pills.boughtOnce to true>>
         <<set $xchange.prisonPill to 0>>
         <br><br>
 
-        You pocket the pill in one swift motion, and quickly head out before you're found out.
+        당신은 한 동작으로 알약을 주머니에 넣고, 들키기 전에 서둘러 빠져나간다.
         <br><br>
 
-        <<link [[Leave|Prison Spire]]>><</link>>
+        <<link [[떠난다|Prison Spire]]>><</link>>
     <<else>>
-        However, as you look through row after row of cabinets, seeking that which would contain your pill, <<anxious_guard 0>> comes into the room searching for you.
+        하지만 줄줄이 늘어선 캐비닛을 뒤지며 알약이 든 서랍을 찾는 사이, <<anxious_guard 0>>【이가】 당신을 찾으러 방에 들어온다.
         <br><br>
 
-        You're caught redhanded in your frantic quest. "You just couldn't keep your nose clean, huh?" <<he>> says as <<he>> grabs you forcefully. "Looks like you'll be coming with me."
+        당신은 허둥대며 뒤지다가 현행범으로 붙잡힌다. "끝까지 얌전히 못 지내겠다는 거지?" <<he>>【이가】 당신을 거칠게 붙잡으며 말한다. "나랑 같이 가야겠군."
         <br><br>
 
         <<link [[다음|Prison Punishment]]>><</link>>
@@ -61,16 +61,16 @@
         "SWP Anti-fertility Pill",
     ]>>
 
-    "Looking for anti-pills to make your stay here more comfortable?" Wren offers. "Each one will cost you <span class="gold">20</span> teeth, but the tester will only cost you <span class="gold">10</span>".
+    "더 편하게 지낼 안티 알약이라도 찾고 있어?" 렌이 권한다. "하나에 이빨 <span class="gold">20</span>개지만, 테스터는 이빨 <span class="gold">10</span>개면 돼."
     <br><br>
 
-    <span class="gold">You have <<icon "tending/sharks-teeth.png">><<number $prison.teeth>> shark's <<= $prison.teeth gt 1 ? "teeth" : "tooth">>.</span>
+    <span class="gold">당신은 상어 이빨<<icon "tending/sharks-teeth.png">><<number $prison.teeth>>개 가지고 있습니다.</span>
     <br><br>
 
     <<if $prison.teeth gte 20>>
         <<for _pill range _pills>>
             <<capture _pill>>
-                <<pillicon "pillcure">><<link [[`Buy _pill`|Prison Wren Pills]]>>
+                <<pillicon "pillcure">><<link [[`구매 _pill`|Prison Wren Pills]]>>
                     <<prison_teeth -20>>
                     <<set $sexStats.pills.pills[_pill].owned += 1>>
                     <<boughtOnce>>
@@ -78,16 +78,16 @@
             <</capture>>
             <br>
         <</for>>
-        <<pregnancytesticon>><<link [[Buy Pill Tester|Prison Wren Pills]]>>
+        <<pregnancytesticon>><<link [[알약 테스터 구매|Prison Wren Pills]]>>
             <<prison_teeth -10>>
             <<set $sexStats.pills.pills["X-Change Test"].owned += 1>>
             <<boughtOnce>>
         <</link>>
         <br>
     <<elseif $prison.teeth gte 10>>
-        <span class="blue">You need more teeth to buy anti-pills.</span>
+        <span class="blue">안티 알약을 사려면 이빨이 더 필요합니다.</span>
         <br>
-        <<pregnancytesticon>><<link [[Buy Pill Tester|Prison Wren Pills]]>>
+        <<pregnancytesticon>><<link [[알약 테스터 구매|Prison Wren Pills]]>>
             <<prison_teeth -10>>
             <<set $sexStats.pills.pills["X-Change Test"].owned += 1>>
             <<boughtOnce>>
@@ -99,5 +99,5 @@
     <</if>>
     <br>
 
-    <<getouticon>><<link [[Leave|Prison Wren]]>><<endevent>><</link>>
+    <<getouticon>><<link [[떠난다|Prison Wren]]>><<endevent>><</link>>
     <br>

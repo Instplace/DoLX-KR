@@ -85,7 +85,7 @@
 	<<elseif _hasWolf or _hasCat or _hasCow or _hasHarpy or _hasFox or _hasBunny or _hasBear or _hasWaterDragon>>
 		<<set _specialCombo to (_hasWolf and (_hasDemon or _hasFallen or _hasAngel)) or (!_hasWolf and _hasCat and (_kashaActive or _catsithActive)) or (!_hasWolf and !_hasCat and _hasBunny and (_hasDemon or _hasAngel))>>
 		<<if _specialCombo>>
-			a
+
 		<<elseif _hasAngel>>
 			천사 같은
 		<<elseif _hasFallen>>
@@ -154,7 +154,7 @@
 	<<if !$statFreeze and $xchange.pill.active>>
 		<<set _pillBits to []>>
 		<<if $xchange.pill.hermEffect>>
-			<<run _pillBits.push("transformed into a herm")>>
+			<<run _pillBits.push("헤름으로 변함")>>
 		<</if>>
 		/* Only report genderflip if sex actually changed since activation, and wasn't just the herm setup step */
 		<<if $xchange.pill.genderflipEffect and !$xchange.pill.hermEffect and $xchange.pill.baseSex isnot undefined and $xchange.pill.baseSex isnot $player.sex>>
@@ -164,31 +164,31 @@
 				<<set _bodyDirection to ($player.sex is "f" ? "feminised" : "masculinised")>>
 				<<if _identGender is $player.sex>>
 					/* The body now matches their gender; don't say "transformed into a girl/boy" because they already were one */
-					<<run _pillBits.push("whose body has been " + _bodyDirection + " to match your gender")>>
+					<<run _pillBits.push("당신의 성별에 맞게 " + (({feminised: "여성화", masculinised: "남성화"})[_bodyDirection] || _bodyDirection) + "됨")>>
 				<<elseif _identGender isnot "n">>
 					/* The body got pushed further from their gender */
-					<<run _pillBits.push("whose body has been forced further from your gender")>>
+					<<run _pillBits.push("당신의 성별에서 더 멀어지도록 강제로 바뀜")>>
 				<<else>>
 					/* Nonbinary: the body moved, but neither sex is closer to or further from their gender */
-					<<run _pillBits.push("whose body has been " + _bodyDirection)>>
+					<<run _pillBits.push((({feminised: "여성화", masculinised: "남성화"})[_bodyDirection] || _bodyDirection) + "됨")>>
 				<</if>>
 			<<else>>
-				<<run _pillBits.push("transformed into a " + ($player.sex is "m" ? "boy" : "girl"))>>
+				<<run _pillBits.push(($player.sex is "m" ? "소년으로" : "소녀로") + " 변함")>>
 			<</if>>
 		<</if>>
 		<<if $xchange.pill.genderificationEffect>>
 			<<set _gdir to xchangeGenderificationDirection()>>
 			<<if _gdir is "sissy">>
-				<<run _pillBits.push("that has been sissified")>>
+				<<run _pillBits.push("시시화됨")>>
 			<<elseif _gdir is "butch">>
-				<<run _pillBits.push("that has been butchified")>>
+				<<run _pillBits.push("부치화됨")>>
 			<<else>>
-				<<run _pillBits.push("that has been genderified")>>
+				<<run _pillBits.push("성 표현이 바뀜")>>
 			<</if>>
 		<</if>>
 	<</if>>
 
-	<<if $background.transgender>><<print playerTransLabel()>><<else>><<pcGender>><</if>><<if !$statFreeze and $xchange.pill.active and _pillBits.length > 0>><<print " " + _pillBits.join(" and ")>><</if>>.<br>
+	<<if $background.transgender>><<print playerTransLabel()>><<else>><<pcGender>><</if>><<if !$statFreeze and $xchange.pill.active and _pillBits.length > 0>><<print " " + _pillBits.join(", ")>><</if>>.<br>
 
 	<<if !$statFreeze and $xchange.pill.baseSex isnot undefined and $xchange.pill.baseSex isnot $player.sex>>
 		<span class="red">당신의 성별이 뒤바뀌었습니다.</span><br>
@@ -285,12 +285,12 @@
 			<<elseif _progress lte 0.66>>
 				<<set _trimester to "중">>
 			<<else>>
-				<<set _trimester to "third">>
+				<<set _trimester to "후">>
 			<</if>>
 			<<set _litter to getChildrenOf(_preg.pregnancyId)>>
 			/* Two wombs carrying at once need naming, or the two readouts read as one repeated twice. */
 			<<if _knownPregnancies.length gt 1>>
-				<span class="teal"><<= _preg.orifice is "anus" ? "Rear" : wombLabel(_preg)>>:</span>
+				<span class="teal"><<= _preg.orifice is "anus" ? "항문" : wombLabel(_preg)>>:</span>
 			<</if>>
 			<<set _species to childBaseSpecies(_preg.donorSpecies)>>
 			<<if playerKnowsLitterSpecies(_preg)>>
@@ -306,11 +306,11 @@
 						<<if $_number isnot "an unknown number of" and $_number isnot "more than one" and $_number gt 1>>
 							<<set _childType to "">>
 							<<if _litter[0].identical isnot null and playerKnowsLitterDetails(_preg)>>
-								<<set _childType += "identical ">>
+								<<set _childType += "일란성 ">>
 							<</if>>
-							<<set _childType += ($_number is 3 ? "triplets" : "twins")>>
+							<<set _childType += ($_number is 3 ? "세쌍둥이" : "쌍둥이")>>
 						<<else>>
-							<<set _childType to ($_number is 1 || $_number is "more than one" ? "baby" : "babies")>>
+							<<set _childType to ($_number is 1 || $_number is "more than one" ? "아기" : "아기들")>>
 						<</if>>
 					<<case "wolf">>
 						<<set _childType to ($_number is 1 || $_number is "more than one" ? "늑대 새끼" : "늑대 새끼들")>>
@@ -318,14 +318,14 @@
 						<<set _childType to ($_number is 1 || $_number is "more than one" ? "매 알" : "매 알들")>>
 				<</switch>>
 				<<if _species is "hawk">>
-					당신은 <<number $_number>>마리의 _childType【을를】 품고 있으며,
+					당신은 <<if $_number is "more than one">>둘 이상의 <<elseif $_number is "an unknown number of">>몇 개인지 알 수 없는 <<else>><<number $_number>>개의 <</if>>_childType【을를】 품고 있으며,
 					<<switch _trimester>>
-						<<case "first">><<if $_number is 1>>알을<<else>>알들을<</if>> 낳으려면 아직 멀었습니다.
-						<<case "second">>하지만 <<if $_number is 1>>알을<<else>>알들을<</if>> 낳기까지는 아직 시간이 좀 더 걸립니다.
-						<<case "third">>곧 <<if $_number is 1>>알을<<else>>알들을<</if>> 낳을 준비가 될 것입니다.
+						<<case "초">><<if $_number is 1>>알을<<else>>알들을<</if>> 낳으려면 아직 멀었습니다.
+						<<case "중">>하지만 <<if $_number is 1>>알을<<else>>알들을<</if>> 낳기까지는 아직 시간이 좀 더 걸립니다.
+						<<case "후">>곧 <<if $_number is 1>>알을<<else>>알들을<</if>> 낳을 준비가 될 것입니다.
 					<</switch>>
 				<<else>>
-					당신은 임신 <<print _trimester>>기이며, <<if !["twins", "identical twins", "triplets"].includes(_childType)>><<number $_number>>명의 <</if>>_childType【을를】 임신 중입니다.
+					당신은 임신 _trimester기이며, <<if $_number is "more than one">>둘 이상의 <<elseif $_number is "an unknown number of">>몇 명인지 알 수 없는 <<elseif !["쌍둥이", "일란성 쌍둥이", "세쌍둥이", "일란성 세쌍둥이"].includes(_childType)>>$_number명의 <</if>>_childType【을를】 임신 중입니다.
 				<</if>>
 			<<else>>
 				당신은 자신이 임신 _trimester기라는 것을 알고 있습니다.
@@ -396,7 +396,7 @@
 	<!--Semen Details-->
 	<<if $player.penisExist and $player.penissize gte 0>>
 		<<set _semenCapacityTextConfig = { currentValue : $semen_volume, preText: '당신은 ', states : [
-				{ requiredValue: 0,		color: '',			description: '',				postText: '정액을 생산하지 않는다.' },
+				{ requiredValue: 0,		color: '',			description: '',				postText: '정액을 생산하지 않습니다.' },
 				{ requiredValue: 1,		color: 'red',		description: '아주 적은',			postText: ' 양의 정액을 생산하며, ' },
 				{ requiredValue: 100,	color: 'pink',		description: '적은',			postText: ' 양의 정액을 생산하며, ' },
 				{ requiredValue: 300,	color: 'purple',	description: '적당한',		postText: ' 양의 정액을 생산하며, ' },
@@ -587,9 +587,9 @@
 						]
 					}>>
 					<<if $xchange.giAutoEnabled is true>>
-						<<set _giInfoText to "Routine events can change this, and it slowly moves each day toward the direction set by your Identity preferences. You can turn both off in the Attitudes settings.">>
+						<<set _giInfoText to "일상 이벤트로 이 값이 바뀔 수 있으며, 정체성 설정이 가리키는 방향으로 매일 조금씩 움직입니다. 태도 설정에서 둘 다 끌 수 있습니다.">>
 					<<else>>
-						<<set _giInfoText to "Routine Gender Identity changes are disabled. Specific story events can still change it. Turn on 'Update Gender Identity from your Identity system' in the Attitudes settings to allow routine changes and daily drift toward your Identity preferences.">>
+						<<set _giInfoText to "일상적인 성 정체성 변화가 꺼져 있습니다. 특정 스토리 이벤트는 여전히 값을 바꿀 수 있습니다. 일상적인 변화와 정체성 설정 방향으로의 하루 단위 이동을 허용하려면 태도 설정에서 '정체성 시스템을 바탕으로 성 정체성을 갱신합니다' 항목을 켜십시오.">>
 					<</if>>
 					<<set _genderConfig.name to '성 정체성 <mouse class="tooltip small-description">[정보]<span>' + _giInfoText + '</span></mouse>'>>
 				<</if>>
@@ -691,7 +691,7 @@
 					}>>
 				<</if>>
 				<<if $xchange.willpowerSystemEnabled is 1 and Number.isFinite($xchange.willpowerPoints) and $xchange.willpowerPoints lt Math.max(200, $willpower)>>
-					<<set _willpowerConfig.modTypes.bad.pushUnique("spent willpower")>>
+					<<set _willpowerConfig.modTypes.bad.pushUnique("소진한 의지력")>>
 				<</if>>
 				<<if numberOfEarSlime() gte 2 and $earSlime.growth gt 50>>
 					<<set _willpowerConfig.modTypes.bad.pushUnique(earSlimeThoughts() ? "원치 않는 생각" : "귀 슬라임")>>
@@ -743,7 +743,7 @@
 				<!--BEAUTY-->
 				<<set _beautyConfig = { name : "미모 [고정]", icon : "ui/sym-beauty", displayType : "level", currentValue : getEffectiveBeauty(), maxValue: Math.max($beautymax * $AMCTraits.beauty, getEffectiveBeauty()), modifier: 100, modTypes: { good: [], bad: [] },
 					states : [
-						{ requiredValue: 0, level: 0, color: 'red', description: '당신은 평범하다.'},{ requiredValue: $beautymax / 7, level: 1, color: 'pink', description: '당신은 귀엽다.'},{ requiredValue: ($beautymax / 7) * 2, level: 2, color: 'purple', description: '당신은 예쁘다.'},{ requiredValue: ($beautymax / 7) * 3, level: 3, color: 'blue', description: '당신은 매력적이다.'},{ requiredValue: ($beautymax / 7) * 4, level: 4, color: 'lblue', description: '당신은 아름답다.'},{ requiredValue: ($beautymax / 7) * 5, level: 5, color: 'teal', description: '당신은 눈부시게 매혹적이다.'},{ requiredValue: ($beautymax / 7) * 6, level: 6, color: 'green', description: '당신의 아름다움은 경이롭다.'}					]
+						{ requiredValue: 0, level: 0, color: 'red', description: '당신은 평범하다.'},
 						{ requiredValue:	$beautymax / 7,			level: 1, color: 'pink',	description: '당신은 귀엽다.'},
 						{ requiredValue:	($beautymax / 7) * 2,	level: 2, color: 'purple',	description: '당신은 예쁘다.'},
 						{ requiredValue:	($beautymax / 7) * 3,	level: 3, color: 'blue',	description: '당신은 매력적이다.'},
@@ -787,8 +787,8 @@
 						<<set _statConfig.modTypes.good.pushUnique("환각제")>>
 					<</if>>
 					<<if heatRutSexStatModifier(_statConfig.name.toLowerCase()) gte 1>>
-						<<if playerHeatMinArousal() gt 0>><<set _statConfig.modTypes.good.pushUnique("in heat")>><</if>>
-						<<if playerRutMinArousal() gt 0>><<set _statConfig.modTypes.good.pushUnique("in rut")>><</if>>
+						<<if playerHeatMinArousal() gt 0>><<set _statConfig.modTypes.good.pushUnique("발정기")>><</if>>
+						<<if playerRutMinArousal() gt 0>><<set _statConfig.modTypes.good.pushUnique("발정기(수컷)")>><</if>>
 					<</if>>
 				<</for>>
 
@@ -864,20 +864,20 @@
 				<<set _tendingConfig =		{ skill: "tending", name : "관리",		displayType : "grade",	currentValue : $tending,			modifier: 100, modTypes: { good: [], bad: [] },		states : _detailedSkillGrades}>>
 				<<set _housekeepingConfig =	{ skill: "housekeeping", name : "가사",displayType : "grade",	currentValue : $housekeeping,		modifier: 100, modTypes: { good: [], bad: [] },		states : _detailedSkillGrades}>>
 				<<if $danceStudio?.training?.masteryUntil gt $timeStamp>>
-					<<set _dancingConfig.modTypes.good.pushUnique("recent grade mastery")>>
+					<<set _dancingConfig.modTypes.good.pushUnique("최근 등급 숙달")>>
 				<</if>>
 				<<if $danceStudio?.training?.injuryUntil gt $timeStamp>>
 					<<if $danceStudio.training.injury is "hard">>
-						<<set _dancingConfig.modTypes.bad.pushUnique("dance injury")>>
+						<<set _dancingConfig.modTypes.bad.pushUnique("춤 부상")>>
 					<<elseif $danceStudio.training.injury is "light">>
-						<<set _dancingConfig.modTypes.bad.pushUnique("sore feet")>>
+						<<set _dancingConfig.modTypes.bad.pushUnique("아픈 발")>>
 					<</if>>
 				<</if>>
 				<<if $combatExtended.brawlingToggle is 1>>
 					<<set _brawlingConfig =	{ name : "Brawling",	displayType : "grade",	currentValue : $combatExtended.brawling,		modifier: 100, modTypes: { good: [], bad: [] },		states : _detailedSkillGrades}>>
 					<<if $options.statNerf lt 100>>
 						<<set _brawlingConfig.modifier to Math.round(_brawlingConfig.modifier * ($options.statNerf / 100))>>
-						<<set _brawlingConfig.modTypes.bad.pushUnique("stat nerf")>>
+						<<set _brawlingConfig.modTypes.bad.pushUnique("능력치 너프")>>
 					<</if>>
 				<</if>>
 
@@ -885,21 +885,21 @@
 					<<set _footworkConfig =	{ name : "Footwork",	displayType : "grade",	currentValue : $combatExtended.footwork,		modifier: 100, modTypes: { good: [], bad: [] },		states : _detailedSkillGrades}>>
 					<<if $options.statNerf lt 100>>
 						<<set _footworkConfig.modifier to Math.round(_footworkConfig.modifier * ($options.statNerf / 100))>>
-						<<set _footworkConfig.modTypes.bad.pushUnique("stat nerf")>>
+						<<set _footworkConfig.modTypes.bad.pushUnique("능력치 너프")>>
 					<</if>>
 				<</if>>
 				<<if $combatExtended.strikingToggle is 1>>
 					<<set _strikingConfig =	{ name : "Striking",	displayType : "grade",	currentValue : $combatExtended.striking,		modifier: 100, modTypes: { good: [], bad: [] },		states : _detailedSkillGrades}>>
 					<<if $options.statNerf lt 100>>
 						<<set _strikingConfig.modifier to Math.round(_strikingConfig.modifier * ($options.statNerf / 100))>>
-						<<set _strikingConfig.modTypes.bad.pushUnique("stat nerf")>>
+						<<set _strikingConfig.modTypes.bad.pushUnique("능력치 너프")>>
 					<</if>>
 				<</if>>
 				<<if $combatExtended.kickingToggle is 1>>
 					<<set _kickingConfig =	{ name : "Kicking",	displayType : "grade",	currentValue : $combatExtended.kicking,		modifier: 100, modTypes: { good: [], bad: [] },		states : _detailedSkillGrades}>>
 					<<if $options.statNerf lt 100>>
 						<<set _kickingConfig.modifier to Math.round(_kickingConfig.modifier * ($options.statNerf / 100))>>
-						<<set _kickingConfig.modTypes.bad.pushUnique("stat nerf")>>
+						<<set _kickingConfig.modTypes.bad.pushUnique("능력치 너프")>>
 					<</if>>
 				<</if>>
 				<<set _bellySize to playerBellySize()>>
@@ -909,10 +909,10 @@
 					<<set _athleticsConfig.modTypes.bad.pushUnique(playerAwareTheyArePregnant() ? "임신" : "큰 배")>>
 				<</if>>
 				<<if xchangeBodyAdjustmentPenalty() gt 0>>
-					<<set _skulduggeryConfig.modTypes.bad.pushUnique("unfamiliar body")>>
-					<<set _dancingConfig.modTypes.bad.pushUnique("unfamiliar body")>>
-					<<set _swimmingConfig.modTypes.bad.pushUnique("unfamiliar body")>>
-					<<set _athleticsConfig.modTypes.bad.pushUnique("unfamiliar body")>>
+					<<set _skulduggeryConfig.modTypes.bad.pushUnique("낯선 몸")>>
+					<<set _dancingConfig.modTypes.bad.pushUnique("낯선 몸")>>
+					<<set _swimmingConfig.modTypes.bad.pushUnique("낯선 몸")>>
+					<<set _athleticsConfig.modTypes.bad.pushUnique("낯선 몸")>>
 				<</if>>
 				<<if $transformationParts.traits.chase isnot "disabled">>
 					<<set _athleticsConfig.modTypes.good.pushUnique("추격의 전율")>>
@@ -954,7 +954,7 @@
 				<<elseif !$worn.feet.type.includes("naked")>>
 					<<set _footwearMod to ($worn.feet.type.includes("heels") ? 0.8 : 0.9) + currentSkillValue("feetskill", 1) / 10000>>
 					<<if _footwearMod gt 1>>
-						<<set _swimmingConfig.modTypes.good.pushUnique(($worn.feet.type.includes("heels") ? "heels" : "shoes") + " (penalty reversed by Foot skill)")>>
+						<<set _swimmingConfig.modTypes.good.pushUnique(($worn.feet.type.includes("heels") ? "하이힐" : "신발") + " (발 기술이 페널티를 상쇄)")>>
 					<<elseif _footwearMod lt 1>>
 						<<set _swimmingConfig.modTypes.bad.pushUnique($worn.feet.type.includes("heels") ? "하이힐" : "신발")>>
 					<</if>>
@@ -991,7 +991,7 @@
 					<</if>>
 				<</if>>
 				<<if $worn.feet.type.includes("rugged") and currentSkillValue("feetskill", 1) gt 0>>
-					<<set _tendingConfig.modTypes.good.pushUnique("rugged footwear")>>
+					<<set _tendingConfig.modTypes.good.pushUnique("튼튼한 신발")>>
 				<</if>>
 				<<if $backgroundTraits.includes("plantlover") and $trauma gt 0>>
 					<<if $submissive lte 850>>
@@ -1091,9 +1091,9 @@
 					<<set _housekeepingConfig.modTypes.bad.pushUnique("능력치 너프")>>
 				<</if>>
 				<<if $sciencetrait gt 0>>
-					<<set _tendingConfig.modTypes.good.pushUnique("science knowledge")>>
+					<<set _tendingConfig.modTypes.good.pushUnique("과학 지식")>>
 				<<elseif $sciencetrait lt 0>>
-					<<set _tendingConfig.modTypes.bad.pushUnique("science knowledge")>>
+					<<set _tendingConfig.modTypes.bad.pushUnique("과학 지식")>>
 				<</if>>
 				<<if fatigueSkillPenaltyFraction() gt 0>>
 					<<set _skulduggeryConfig.modTypes.bad.pushUnique("fatigued")>>
@@ -1155,7 +1155,7 @@
 			<</if>>
 			
 			<<if $drunk gt 0 and $drunk lt 480>>
-				<<set _seductionConfig.modTypes.good.pushUnique($drunk lt 240 ? "tipsy" : "drunken confidence")>>
+				<<set _seductionConfig.modTypes.good.pushUnique($drunk lt 240 ? "알딸딸함" : "술기운이 올라 생긴 자신감")>>
 			<<elseif $drunk gt 480>>
 				<<set _seductionConfig.modTypes.bad.pushUnique("drunk")>>
 			<</if>>
@@ -1182,7 +1182,7 @@
 				<</if>>
 			<</if>>
 			<<if Transformations.partActive("traits", "dragonTongue")>>
-				<<set _oralConfig.modTypes.good.pushUnique("dragon tongue")>>
+				<<set _oralConfig.modTypes.good.pushUnique("용의 혀")>>
 			<</if>>
 			<<if playerHeatMinArousal()>>
 				<<if $player.vaginaExist>>
@@ -1417,7 +1417,7 @@
 		</div>
 		<div class="characteristic-box-extras">
 			<<set _schoolPerformanceConfig = { currentValue : $school, preText: '당신의 전반적인 학교 성적은 ', modifier: 100, modTypes: { good: [], bad: [] }, states : [
-					{ requiredValue: 0, color: 'red', description: '끔찍하다.'},{ requiredValue: 1, color: 'pink', description: '매우 나쁘다.'},{ requiredValue: 400, color: 'purple', description: '나쁘다.'},{ requiredValue: 800, color: 'blue', description: '나쁘지 않다.'},{ requiredValue: 1600, color: 'lblue', description: '좋다.'},{ requiredValue: 2800, color: 'teal', description: '훌륭하다.'},{ requiredValue: 4000, color: 'green', description: '모범적이다.'}				]
+					{ requiredValue: 0, color: 'red', description: '끔찍하다.'},
 					{ requiredValue: 1,		color: 'pink',		description: '매우 나쁘다.'},
 					{ requiredValue: 400,	color: 'purple',	description: '나쁘다.'},
 					{ requiredValue: 800,	color: 'blue',		description: '나쁘지 않다.'},
@@ -1574,7 +1574,7 @@
 		<<set $_source to []>>
 		<<set $_sourceText to "무언가">>
 		<<set $_arousal to []>>
-		<<set $_arousedText to "당신을 계속 달아오르게 하고 있다">>
+		<<set $_arousedText to "당신을 계속 달아오르게 하고 있습니다">>
 
 		/* SourceText */
 		<<if effectiveTransformationLevel("wolf") gte 2 or effectiveTransformationLevel("cat") gte 2 or (effectiveTransformationLevel("cow") gte 2) or effectiveTransformationLevel("fox") gte 2 or effectiveTransformationLevel("bear") gte 2 or effectiveTransformationLevel("bunny") gte 2>>
@@ -1584,7 +1584,7 @@
 			<<run $_source.push(earSlimeThoughts() ? "원치 않는 생각" : "귀 슬라임")>>
 		<</if>>
 		<<if !$statFreeze and $xchange isnot undefined and $xchange.pill isnot undefined and $xchange.pill.active and ($xchange.pill.fertile or $xchange.pill.breederEffect or $xchange.pill.bullEffect or $xchange.pill.omegaEffect or $xchange.pill.alphaEffect)>>
-			<<run $_source.push("X-Change pill")>>
+			<<run $_source.push("X-체인지 알약")>>
 		<</if>>
 
 		/* If arousal is active but no source was found, add a neutral fallback */
@@ -1603,7 +1603,7 @@
 		<</if>>
 
 		<<if $_arousal.length>>
-			<<set $_arousedText to "당신을 " + formatList($_arousal, "그리고") + " 상태로 몰아넣고 있다">>
+			<<set $_arousedText to "당신을 " + formatList($_arousal, "그리고") + " 상태로 몰아넣고 있습니다">>
 		<</if>>
 	<</if>>
 <</silently>><<if $_sourceText>><<print $_sourceText>><<print $_source.length gte 2 ? "들이" : "【이가】">> <<print $_arousedText>>.<<if _args[0]>><br><br><</if>><</if>>

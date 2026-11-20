@@ -295,7 +295,7 @@ function initSpecialClothes() {
 		christmas: {
 			text: "크리스마스 의상",
 			requirements: () => Time.hasDatePassed(12, 18) || V.specialClothesEvents?.includes("skulduggery_gift"),
-			hint: "<<= getFormattedDate(new DateTime(Time.year, 12, 18))>>에 입고 되거나, 도움이 필요한 가족에게 후한 선물을 남기기",
+			hint: "<<= getFormattedDate(new DateTime(Time.year, 12, 18))>>에 입고되거나, 도움이 필요한 가족에게 후한 선물을 남기기",
 			shop: ["forest"],
 			feat: true,
 			featCost: 5,
@@ -398,7 +398,7 @@ function initSpecialClothes() {
 		prison: {
 			text: "죄수복",
 			requirements: () => V.prison_intro === 1,
-			hint: "교도소에 수감되기",
+			hint: "감옥에 수감되기",
 			shop: ["forest"],
 			subsetOf: ["bad_end"],
 			feat: true,
@@ -677,9 +677,9 @@ function initSpecialClothes() {
 			icon: "clothes/fox_mask.png",
 		},
 		luchifen_mask: {
-			text: "white half-mask",
+			text: "흰 반가면",
 			requirements: () => V.xchange?.arcology?.outcome === "success" || !!V.xchange?.arcology?.party?.seen?.includes("mask"),
-			hint: "attend a masquerade far from the mainland",
+			hint: "본토에서 멀리 떨어진 곳의 가면무도회에 참석하기",
 			shop: ["forest"],
 			subsetOf: ["mask"],
 			feat: true,
@@ -747,9 +747,9 @@ function initSpecialClothes() {
 		},
 
 		kaiju: {
-			text: "kaiju costume",
+			text: "괴수 의상",
 			requirements: () => V.photo?.job === "kaiju" || V.specialClothesEvents?.includes("kaiju"),
-			hint: "take up a client job handing out flyers for Niki",
+			hint: "니키의 의뢰로 전단지 나눠 주는 일 맡기",
 			shop: ["forest"],
 			feat: true,
 			featCost: 2,
@@ -760,9 +760,9 @@ function initSpecialClothes() {
 		},
 
 		whitney_collar: {
-			text: "Whitney's collar",
+			text: "휘트니의 목줄",
 			requirements: () => V.whitneycollar === 1,
-			hint: "be collared by someone at school",
+			hint: "학교에서 누군가에게 목줄 채워지기",
 			shop: ["forest"],
 			feat: true,
 			featCost: 2,
@@ -856,11 +856,11 @@ function initSpecialClothes() {
 		},
 		// Modded
 		tidebloom: {
-			text: "tidebloom ring",
+			text: "조수꽃 반지",
 			requirements: () =>
 				V.specialClothesEvents?.includes("tidebloom") ||
 				V.badEndStats?.some(stat => stat.source === "Water Dragon Lab" && ["dragonLabVent", "dragonLabDischarged"].includes(stat.reasonEnd)),
-			hint: "leave the doctor's basement, one way or the other",
+			hint: "어떤 식으로든 의사의 지하실에서 벗어나기",
 			shop: ["forest"],
 			feat: true,
 			featCost: 15,
@@ -1031,7 +1031,7 @@ function specialClothesUnlockText(toUnlock, group) {
 				return output;
 			}
 			if (group === "valentines") {
-				output += `<span class="gold">숲속 상점에 </span><span class="pink">발렌타인 데이 의상</span><span class="gold">이 해금되었습니다!</span><br>`;
+				output += `<span class="gold">숲속 상점에 </span><span class="pink">발렌타인데이 의상</span><span class="gold">이 해금되었습니다!</span><br>`;
 				return output;
 			}
 			if (toUnlock.length === 1) {
@@ -1097,14 +1097,14 @@ function specialClothesUnlockText(toUnlock, group) {
 						break;
 					default:
 						output +=
-							'<span class="gold">숲 상점에 </span><span class="teal">' +
+							'<span class="gold">숲속 상점에 </span><span class="teal">' +
 							(toUnlock.length > 1 ? toUnlock.slice(0, -1).join(", ") + "【와과】" + toUnlock.at(-1) : toUnlock[0]).toUpperFirst() +
 							'</span><span class="gold">【이가】 새로 입고되었습니다!</span><br><br>';
 						break;
 				}
 			} else {
 				output +=
-					'<span class="gold">숲 상점에 </span><span class="teal">' +
+					'<span class="gold">숲속 상점에 </span><span class="teal">' +
 					(toUnlock.length > 1 ? toUnlock.slice(0, -1).join(", ") + "【와과】" + toUnlock.at(-1) : toUnlock[0]).toUpperFirst() +
 					'</span><span class="gold">【이가】 새로 입고되었습니다!</span><br><br>';
 			}

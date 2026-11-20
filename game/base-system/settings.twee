@@ -699,7 +699,7 @@
 	<<set _settingsExitPassage to clone($settingsExitPassage)>>
 	<<unset $settingsExitPassage>>
 	<<run State.display(_settingsExitPassage)>>
-	<<set $saveName to $saveName.replace(/[^a-zA-Z\u4e00-\u9fa5 0-9]+/g,"")>>
+	<<set $saveName to $saveName.replace(/[^a-zA-Z\u4e00-\u9fa5\uac00-\ud7a3\u3131-\u318e 0-9]+/g,"")>>
 	<<unset $importString>>
 
 	/* Updates the penis max size for females so its never below Normal (4 in the 0..6 scheme, was 2 in the old -2..4 scheme) */
@@ -861,7 +861,7 @@
 				<br>
 				<<if _namedNpcPreset is undefined>><<set _namedNpcPreset to "namedNpcDefaultGender">><</if>>
 				<label>모두 남성 <<radiobutton "_namedNpcPreset" "namedNpcAllMaleGender" autocheck>></label> |
-				<label><<print $passage is "Start" ? "Random Genders" : "Current Genders">> <<radiobutton "_namedNpcPreset" "namedNpcDefaultGender" autocheck>></label> |
+				<label><<print $passage is "Start" ? "무작위 성별" : "현재 성별">> <<radiobutton "_namedNpcPreset" "namedNpcDefaultGender" autocheck>></label> |
 				<label>모두 여성 <<radiobutton "_namedNpcPreset" "namedNpcAllFemaleGender" autocheck>></label>
 			</div>
 
@@ -1055,9 +1055,9 @@
 
 <<widget "characterTabButtons">>
 	<div class="containerStart">
-		<<characterTabButton "Physical Attributes" "physical">>
-		<<characterTabButton "Mental Attributes" "mental">>
-		<<characterTabButton "Starting Conditions" "starting">>
+		<<characterTabButton "신체 특성" "physical">>
+		<<characterTabButton "정신 특성" "mental">>
+		<<characterTabButton "시작 조건" "starting">>
 	</div>
 <</widget>>
 
@@ -1141,7 +1141,7 @@
 			<span class="gold">체형:</span><br>
 			<<capture _i>>
 				<<for _i = 0; _i < setup.bodyShapes.length; _i++>>
-					<label><<= setup.bodyShapes[_i] is "andro" ? "Androgynous" : setup.bodyShapes[_i].toUpperFirst()>> <<radiobutton "$player.bodyshape" setup.bodyShapes[_i] autocheck>></label>
+					<label><<= ({classic: "평범한", slender: "슬림한", andro: "중성적", curvy: "잘록한", soft: "푹신한"})[setup.bodyShapes[_i]] || setup.bodyShapes[_i].toUpperFirst()>> <<radiobutton "$player.bodyshape" setup.bodyShapes[_i] autocheck>></label>
 					<<= _i lt setup.bodyShapes.length - 1 ? "|" : "">>
 				<</for>>
 			<</capture>>
@@ -1652,7 +1652,7 @@
 			<br>
 			<<if _namedNpcPreset is undefined>><<set _namedNpcPreset to "namedNpcDefaultGender">><</if>>
 			<label>모두 남성 <<radiobutton "_namedNpcPreset" "namedNpcAllMaleGender" autocheck>></label> |
-			<label><<print $passage is "Start" ? "Random Genders" : "Current Genders">> <<radiobutton "_namedNpcPreset" "namedNpcDefaultGender" autocheck>></label> |
+			<label><<print $passage is "Start" ? "무작위 성별" : "현재 성별">> <<radiobutton "_namedNpcPreset" "namedNpcDefaultGender" autocheck>></label> |
 			<label>모두 여성 <<radiobutton "_namedNpcPreset" "namedNpcAllFemaleGender" autocheck>></label>
 		</div>
 
@@ -1828,16 +1828,16 @@
 				<<set _visibleUpgradeIDs to []>>
 				<<for _i to 0; _i lt _upgradeNames.length; _i++>>
 					<<if _upgradeNames[_i] is "sexRapeTraits">>
-						<<set _visibleUpgradeNames.push("Sex-Rape Traits")>>
+						<<set _visibleUpgradeNames.push("섹스·강간 특성")>>
 						<<set _visibleUpgradeIDs.push(clone(_i))>>
 					<<elseif _upgradeNames[_i] is "sexSkills">>
-						<<set _visibleUpgradeNames.push("Sex Skill Grades")>>
+						<<set _visibleUpgradeNames.push("성 기술 등급")>>
 						<<set _visibleUpgradeIDs.push(clone(_i))>>
 					<<elseif _upgradeNames[_i] is "basicSkills">>
-						<<set _visibleUpgradeNames.push("Basic Skill Grades")>>
+						<<set _visibleUpgradeNames.push("기본 기술 등급")>>
 						<<set _visibleUpgradeIDs.push(clone(_i))>>
 					<<elseif _upgradeNames[_i] is "advancedTraits">>
-						<<set _visibleUpgradeNames.push("Special Advanced Traits")>>
+						<<set _visibleUpgradeNames.push("특수 고급 특성")>>
 						<<set _visibleUpgradeIDs.push(clone(_i))>>
 					<<elseif _upgradeNames[_i] is "transformations">>
 						<<set _visibleUpgradeNames.push("Transformation")>>
@@ -1846,7 +1846,7 @@
 						<<set _visibleUpgradeNames.push("Sado-Maso")>>
 						<<set _visibleUpgradeIDs.push(clone(_i))>>
 					<<elseif _upgradeNames[_i] is "coreCharacteristics">>
-						<<set _visibleUpgradeNames.push("Core Characteristic Grades")>>
+						<<set _visibleUpgradeNames.push("핵심 능력치 등급")>>
 						<<set _visibleUpgradeIDs.push(clone(_i))>>
 					<<elseif $featsBoosts.upgradeDetails[_upgradeNames[_i]].max>>
 						<<set _visibleUpgradeNames.push($featsBoosts.name[_upgradeNames[_i]])>>
@@ -2069,11 +2069,11 @@
 			<<dolpSettingsTabButton "재능과 특성" "amcTraits">>
 		</div>
 		<div id="settingsXChange">
-			<<dolpSettingsTabButton "X-Change Settings" "xchange">>
+			<<dolpSettingsTabButton "X-체인지 설정" "xchange">>
 		</div>
 		<<if $passage isnot "Start">>
 			<div id="settingsIdentity">
-				<<dolpSettingsTabButton "Identity Settings" "identity">>
+				<<dolpSettingsTabButton "정체성 설정" "identity">>
 			</div>
 		<</if>>
 	</div>
@@ -2180,7 +2180,7 @@
 			<<beastMaleChanceSplitControls>>
 		</div>
 		<span id="beastSplitByFull"><<beastSplitByFull>></span>
-		<div class="beastSettingBestiality" role="group" aria-label="Bestiality" onchange="setAllBeastsBestialityMode(V.genericBeastSettings.bestiality)">
+		<div class="beastSettingBestiality" role="group" aria-label="수간" onchange="setAllBeastsBestialityMode(V.genericBeastSettings.bestiality)">
 			<span>수간:</span>
 			<label><<radiobutton "$genericBeastSettings.bestiality" "on" autocheck>> 활성화</label> |
 			<label><<radiobutton "$genericBeastSettings.bestiality" "monsterOnly" autocheck>> 수인으로만</label> |
@@ -2364,20 +2364,20 @@
 				</label>
 			</div>
 			<<if $settings.granularBeastControl>>
-				<<beastTypeSettingRow "dog" "Dogs">>
-				<<beastTypeSettingRow "cat" "Cats">>
-				<<beastTypeSettingRow "pig" "Pigs">>
-				<<beastTypeSettingRow "boar" "Boars">>
-				<<beastTypeSettingRow "wolf" "Wolves">>
-				<<beastTypeSettingRow "bear" "Bears">>
-				<<beastTypeSettingRow "dolphin" "Dolphins">>
-				<<beastTypeSettingRow "lizard" "Lizards">>
-				<<beastTypeSettingRow "cow" "Cattle">>
-				<<beastTypeSettingRow "horse" "Horses">>
-				<<beastTypeSettingRow "fox" "Foxes">>
-				<<beastTypeSettingRow "hawk" "Hawks">>
-				<<beastTypeSettingRow "spider" "Spiders">>
-				<<beastTypeSettingRow "snake" "Snakes">>
+				<<beastTypeSettingRow "dog" "개">>
+				<<beastTypeSettingRow "cat" "고양이">>
+				<<beastTypeSettingRow "pig" "돼지">>
+				<<beastTypeSettingRow "boar" "멧돼지">>
+				<<beastTypeSettingRow "wolf" "늑대">>
+				<<beastTypeSettingRow "bear" "곰">>
+				<<beastTypeSettingRow "dolphin" "돌고래">>
+				<<beastTypeSettingRow "lizard" "도마뱀">>
+				<<beastTypeSettingRow "cow" "소">>
+				<<beastTypeSettingRow "horse" "말">>
+				<<beastTypeSettingRow "fox" "여우">>
+				<<beastTypeSettingRow "hawk" "매">>
+				<<beastTypeSettingRow "spider" "거미">>
+				<<beastTypeSettingRow "snake" "뱀">>
 			<<else>>
 				<div class="settingsToggleItem">
 					<<beastAttractionSettings>>
@@ -2597,7 +2597,7 @@
 		<div class="beastTypeSettingSplit">
 			<div class="beastSettingColumn">
 				<<beastTypeGenders _beastType>>
-				<div class="beastSettingBestiality" role="group" aria-label="Bestiality">
+				<div class="beastSettingBestiality" role="group" aria-label="수간">
 					<span>수간:</span>
 					<label><<radiobutton `"$settings.beastSettings." + _beastType + ".bestiality"` "on" autocheck>> 활성화</label> |
 					<label><<radiobutton `"$settings.beastSettings." + _beastType + ".bestiality"` "monsterOnly" autocheck>> 수인으로만</label> |
@@ -2786,7 +2786,7 @@
 
 		<div class="settingsToggleItem" role="group" aria-labelledby="settingsToysHead">
 			<span id="settingsSexToysHead">섹스 토이:</span>
-			<mouse class="tooltip linkBlue">(?)<span>"딜도"는 딜도, 애널 비즈 등 삽입형 장난감을 뜻합니다. 페니스 밴드(페니스 밴드)는 비활성화되지 않습니다.<br>"채찍"은 승마용 채찍과 일반 채찍을 포함합니다. 스팽킹 장면에서는 채찍이 제거되지 않습니다.<br>"장난감 동시 삽입"을 켜면, 성행위 중 장난감이 함께 삽입될 수 있습니다. (예: 보지에 자지와 딜도가 동시에 삽입됨)</span></mouse>
+			<mouse class="tooltip linkBlue">(?)<span>"딜도"는 딜도, 애널 비즈 등 삽입형 장난감을 뜻합니다. 페니스 밴드는 비활성화되지 않습니다.<br>"채찍"은 승마용 채찍과 일반 채찍을 포함합니다. 스팽킹 장면에서는 채찍이 제거되지 않습니다.<br>"장난감 동시 삽입"을 켜면, 성행위 중 장난감이 함께 삽입될 수 있습니다. (예: 보지에 자지와 딜도가 동시에 삽입됨)</span></mouse>
 			<br>
 			<label>
 				<<checkbox "$settings.toyDildoEnabled" false true autocheck>> 딜도
@@ -3031,7 +3031,7 @@
 		<mouse class="tooltip linkBlue">(!!!)<span>네임드 NPC가 임신 중일 때는 비활성화할 수 없습니다.</span></mouse>
 	<<else>>
 		<mouse class="tooltip linkBlue">(?)<span>
-			<div>활성화하면, 플레이어는 임신 가능한 모든 네임드 NPC를 임신시키거나 NPC에게 임신신 당할 수 있게 됩니다. 이는 임신 관련 상호작용이 없는 NNPC도 포함합니다. 비활성화하면, 콘텐츠가 미완성인 NNPC는 설정에서 임신 관련 토글이 회색으로 비활성화됩니다.</div>
+			<div>활성화하면, 플레이어는 임신 가능한 모든 네임드 NPC를 임신시키거나 NPC에게 임신당할 수 있게 됩니다. 이는 임신 관련 상호작용이 없는 NNPC도 포함합니다. 비활성화하면, 콘텐츠가 미완성인 NNPC는 설정에서 임신 관련 토글이 회색으로 비활성화됩니다.</div>
 			<div class="red">경고: 이로 인해 네임드 NPC가 플레이어의 임신이나 자신의 임신에 반응하지 않는 상황이 발생할 수 있으며, 기존 세이브 파일이 향후 업데이트될 콘텐츠를 건너뛰게 될 수 있습니다.</div>
 		</span></mouse>
 	<</if>>
@@ -3682,7 +3682,7 @@
 			<ul>
 			<li>현재 설정을 저장하려면 "설정 데이터 내보내기"를 클릭한 후, 필요한 곳에 데이터를 복사해서 붙여넣으십시오.</li>
 			<li>현재 설정을 불러오려면, 설정 데이터를 붙여넣고 "설정 데이터 불러오기"를 클릭하십시오.</li>
-			<li>안드로이드와 데이터를 주고받으려면, 이메일이나 pastebin 같은 서비스를 사용하는 것을 권장합니다. 문제가 발생하지 않도록 세이브 데이터의 시작과 끝이 정확한지 확인하세요.</li>
+			<li>안드로이드와 데이터를 주고받으려면, 이메일이나 pastebin 같은 서비스를 사용하는 것을 권장합니다. 문제가 발생하지 않도록 세이브 데이터의 시작과 끝이 정확한지 확인하십시오.</li>
 			<li>현재 내용을 복사하려면 "텍스트 영역 복사하기"를 클릭하십시오. 기기나 브라우저가 지원하지 않을 경우 버튼 이름이 "복사 오류"로 변경됩니다.</li>
 			</ul>
 			<textarea id="settingsDataInput" rows="4" cols="40" onClick="if(V.disableAutoSelect == false)this.select();" onfocus="V.tempDisable = true;" onblur="V.tempDisable = false;"></textarea>
@@ -4542,7 +4542,7 @@
 				<</link>><br>
 				<label>
 					<<checkbox "$combatExtended.passiveDodging" 0 1 autocheck>> 수동 회피 활성화
-					<mouse class="tooltip linkBlue">(?)<span>수동 회피입니다. 매트릭스가 되어 보세요.</span></mouse>
+					<mouse class="tooltip linkBlue">(?)<span>수동 회피입니다. 매트릭스가 되어 보십시오.</span></mouse>
 				</label><br>
 				<label>
 					<<checkbox "$combatExtended.activeDodging" 0 1 autocheck>> 능동 회피 활성화
@@ -5137,9 +5137,9 @@
 
 <<widget "rebalanceTabButtons">>
 	<div class="containerStart">
-		<<rebalanceTabButton "Economy Inflation" "economy">>
-		<<rebalanceTabButton "Rebalancing Settings" "rebalancing">>
-		<<rebalanceTabButton "Grind Settings" "grind">>
+		<<rebalanceTabButton "경제 인플레이션" "economy">>
+		<<rebalanceTabButton "재조정 설정" "rebalancing">>
+		<<rebalanceTabButton "반복 작업 설정" "grind">>
 	</div>
 <</widget>>
 
@@ -5169,7 +5169,7 @@
 			</div>
 
 			<div class="settingsToggleItemWide">
-				<span class="gold">경제 재조정 프리셋</span> <mouse class="tooltip linkBlue">(?)<span>경제 조정 항목 전체를 한꺼번에 적용합니다. 가벼움은 가격 인상폭이 가장 낮고, 추가 집세가 가능한 한 늦게 시작되며, 거절/추적이 패러디 단계에서 시작되게 합니다. 중간은 기본보다 부드럽습니다. 현재는 의도된 균형입니다. 어려움과 더 가혹함은 가격과 베일리의 압박이 더 일찍 시작되며, 젠틀맨 클럽 퀘스트 수입을 각각 75%와 50%로 줄입니다. 적용한 뒤에도 개별 설정은 조정할 수 있습니다.</span></mouse>
+				<span class="gold">경제 재조정 프리셋</span> <mouse class="tooltip linkBlue">(?)<span>경제 조정 항목 전체를 한꺼번에 적용합니다. 가벼움은 가격 인상폭이 가장 낮고, 추가 집세가 가능한 한 늦게 시작되며, 거절/추적이 패러디 단계에서 시작되게 합니다. 중간은 기본보다 부드럽습니다. 현재는 의도된 균형입니다. 어려움과 더 가혹함은 가격과 베일리의 압박이 더 일찍 시작되며, 신사 클럽 퀘스트 수입을 각각 75%와 50%로 줄입니다. 적용한 뒤에도 개별 설정은 조정할 수 있습니다.</span></mouse>
 				<br>
 				<<link "가벼움">><<run setup.inflation.applyPreset("light")>><<replace #subsectionDiv>><<rebalanceSettings>><</replace>><</link>> |
 				<<link "중간">><<run setup.inflation.applyPreset("mid")>><<replace #subsectionDiv>><<rebalanceSettings>><</replace>><</link>> |
@@ -5392,8 +5392,8 @@
 			</div>
 
 			<div class="settingsToggleItem">
-				<span class="gold">젠틀맨 클럽 수입</span>
-				<div class="small-description">협박 퀘스트 보상 <mouse class="tooltip linkBlue">(?)<span>완료한 협박 퀘스트에 대해 젠틀맨 클럽이 지급하는 금액을 정합니다. 보통 보상에 대한 비율입니다. 퀘스트가 아무것도 지급하지 않게 하려면 0%로 설정하십시오.</span></mouse>: <<numberslider "$settings.inflationBlackmailRewardPct" $settings.inflationBlackmailRewardPct 0 100 5 { value: v => v + "%" }>></div>
+				<span class="gold">신사 클럽 수입</span>
+				<div class="small-description">협박 퀘스트 보상 <mouse class="tooltip linkBlue">(?)<span>완료한 협박 퀘스트에 대해 신사 클럽이 지급하는 금액을 정합니다. 보통 보상에 대한 비율입니다. 퀘스트가 아무것도 지급하지 않게 하려면 0%로 설정하십시오.</span></mouse>: <<numberslider "$settings.inflationBlackmailRewardPct" $settings.inflationBlackmailRewardPct 0 100 5 { value: v => v + "%" }>></div>
 			</div>
 		</div>
 	</div>
@@ -5410,9 +5410,9 @@
 
 <<widget "npcDoLPTabButtons">>
 	<div class="containerStart">
-		<<npcDoLPTabButton "Arousal &amp; Multipliers" "behaviour">>
-		<<npcDoLPTabButton "Theft &amp; Generation" "flavour">>
-		<<npcDoLPTabButton "Wraith &amp; World Override" "world">>
+		<<npcDoLPTabButton "흥분 및 배율" "behaviour">>
+		<<npcDoLPTabButton "도난 및 생성" "flavour">>
+		<<npcDoLPTabButton "원혼 및 세계 덮어쓰기" "world">>
 	</div>
 <</widget>>
 
@@ -5703,10 +5703,10 @@
 
 <<widget "xchangeTabButtons">>
 	<div class="containerStart">
-		<<xchangeTabButton "Core Settings" "core">>
-		<<xchangeTabButton "Spiking Preferences" "spiking">>
-		<<xchangeTabButton "Sexflipped Appearance" "appearance">>
-		<<xchangeTabButton "Pill Effects" "effects">>
+		<<xchangeTabButton "핵심 설정" "core">>
+		<<xchangeTabButton "몰래 먹이기 선호" "spiking">>
+		<<xchangeTabButton "성별 반전 외모" "appearance">>
+		<<xchangeTabButton "알약 효과" "effects">>
 	</div>
 <</widget>>
 
@@ -5746,7 +5746,7 @@
 				<span class="gold bold">몰래 먹이기 규칙:</span><br>
 				<label><<checkbox "$xchange.nonconEnabled" 0 1 autocheck>> 비동의 알약 몰래 먹이기 활성화 </label> <mouse class="tooltip linkBlue">(?)<span>NPC가 명시적 동의 없이 X-체인지 알약을 몰래 먹일 수 있게 합니다. 참고: 이 설정은 네임드 NPC에게는 영향을 주지 않습니다.</span></mouse><br>
 				<label data-target='["xchange.nonconEnabled"]' data-disabledif="!V.xchange.nonconEnabled"><<checkbox "$xchange.spikeSideEffectsEnabled" 0 1 autocheck>> 수상한 알약에 부작용 있음</label> <mouse class="tooltip linkBlue">(?)<span>켜면 몰래 먹인 알약은 모두 추가 부작용도 일으킵니다. 술집, 전투 등 모든 몰래 먹이기에 적용됩니다. 끄면 몰래 먹인 알약이 보통 효과만 일으키는 예전 동작으로 돌아갑니다.</span></mouse><br>
-				<label><<checkbox "$xchange.disregardGender" 0 1 autocheck>> 성별 조건 무시 </label> <mouse class="tooltip linkBlue">(?)<span>일부 알약 장면은 보통 PC가 특정 성별이어야 합니다. 이 설정은 그 조건을 없앱니다. 장면이 PC와 NPC가 같은 성별이어야 한다면, 대신 25% 확률로 알약이 사용됩니다.<br><br>에이버리는 이 설정이 켜져 있을 때만 데이트 중에 알약을 강요합니다. 에이버리의 저택으로 이사할 때의 선택 알약은 영향을 받지 않습니다.</span></mouse><br>
+				<label><<checkbox "$xchange.disregardGender" 0 1 autocheck>> 성별 조건 무시 </label> <mouse class="tooltip linkBlue">(?)<span>일부 알약 장면은 보통 PC가 특정 성별이어야 합니다. 이 설정은 그 조건을 없앱니다. 장면이 PC와 NPC가 같은 성별이어야 한다면, 대신 25% 확률로 알약이 사용됩니다.<br><br>에이버리는 이 설정이 켜져 있을 때만 데이트 중에 알약을 강요합니다. 에이버리의 저택으로 이사할 때의 초이스 알약은 영향을 받지 않습니다.</span></mouse><br>
 			</div>
 
 			<div class="settingsToggleItem">
@@ -5945,7 +5945,7 @@
 				<<numberslider "$xchange.spikerates.continue" $xchange.spikerates.continue 1 10 1>>
 			</div>
 			<div class="settingsToggleItem">
-				<label data-target='["xchange.nonconEnabled"]' data-disabledif="!V.xchange.nonconEnabled"><<checkbox "$xchange.spikepool.passion" 0 1 autocheck>> <span>패션:</span></label> <mouse class="tooltip linkBlue">(?)<span>매시간 무작위로 최음제를 혈류에 주입합니다.</span></mouse>
+				<label data-target='["xchange.nonconEnabled"]' data-disabledif="!V.xchange.nonconEnabled"><<checkbox "$xchange.spikepool.passion" 0 1 autocheck>> <span>열정:</span></label> <mouse class="tooltip linkBlue">(?)<span>매시간 무작위로 최음제를 혈류에 주입합니다.</span></mouse>
 				<<numberslider "$xchange.spikerates.passion" $xchange.spikerates.passion 1 10 1>>
 			</div>
 			<div class="settingsToggleItem">
@@ -5957,11 +5957,11 @@
 				<<numberslider "$xchange.spikerates['dumb-bitch']" $xchange.spikerates['dumb-bitch'] 1 10 1>>
 			</div>
 			<div class="settingsToggleItem">
-				<label data-target='["xchange.nonconEnabled"]' data-disabledif="!V.xchange.nonconEnabled"><<checkbox "$xchange.spikepool.innocence" 0 1 autocheck>> <span>순수:</span></label> <mouse class="tooltip linkBlue">(?)<span>이 알약의 영향을 받는 동안 성에 대한 지식이 머릿속에서 모두 지워집니다.</span></mouse>
+				<label data-target='["xchange.nonconEnabled"]' data-disabledif="!V.xchange.nonconEnabled"><<checkbox "$xchange.spikepool.innocence" 0 1 autocheck>> <span>이노센스:</span></label> <mouse class="tooltip linkBlue">(?)<span>이 알약의 영향을 받는 동안 성에 대한 지식이 머릿속에서 모두 지워집니다.</span></mouse>
 				<<numberslider "$xchange.spikerates.innocence" $xchange.spikerates.innocence 1 10 1>>
 			</div>
 			<div class="settingsToggleItem">
-				<label data-target='["xchange.nonconEnabled"]' data-disabledif="!V.xchange.nonconEnabled"><<checkbox "$xchange.spikepool.feartoxin" 0 1 autocheck>> <span>공포 독소:</span></label> <mouse class="tooltip linkBlue">(?)<span>지속되는 동안 트라우마를 최대로, 통제력을 0으로 유지합니다. 끝나도 어느 쪽 수치도 복원되지 않으므로 오래 투여하면 정신을 잃을 수 있습니다. 순수와 함께 나오지 않습니다.</span></mouse>
+				<label data-target='["xchange.nonconEnabled"]' data-disabledif="!V.xchange.nonconEnabled"><<checkbox "$xchange.spikepool.feartoxin" 0 1 autocheck>> <span>공포 독소:</span></label> <mouse class="tooltip linkBlue">(?)<span>지속되는 동안 트라우마를 최대로, 통제력을 0으로 유지합니다. 끝나도 어느 쪽 수치도 복원되지 않으므로 오래 투여하면 정신을 잃을 수 있습니다. 이노센스와 함께 나오지 않습니다.</span></mouse>
 				<<numberslider "$xchange.spikerates.feartoxin" $xchange.spikerates.feartoxin 1 10 1>>
 			</div>
 			<div class="settingsToggleItem">

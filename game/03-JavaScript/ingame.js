@@ -3328,7 +3328,7 @@ window.earSlimeThoughts = earSlimeThoughts;
 
 /** "slime" or "voice", for ear slime text built in JS. */
 function earSlimeNoun() {
-	return earSlimeThoughts() ? "voice" : "slime";
+	return earSlimeThoughts() ? "목소리" : "슬라임";
 }
 window.earSlimeNoun = earSlimeNoun;
 

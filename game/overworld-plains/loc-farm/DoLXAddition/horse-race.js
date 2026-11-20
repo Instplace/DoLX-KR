@@ -53,7 +53,7 @@ setup.horserace = setup.horserace || {};
 	};
 
 	HR.kind = function (plural, capital) {
-		const word = (HR.centaurs() ? "centaur" : "horse") + (plural ? "s" : "");
+		const word = (HR.centaurs() ? "켄타우로스" : "말") + (plural ? "" : "");
 		return capital ? word.toUpperFirst() : word;
 	};
 
@@ -79,7 +79,7 @@ setup.horserace = setup.horserace || {};
 			id: "injure_horse",
 			tier: "high",
 			get label() {
-				return `Injure a ${HR.kind()}`;
+				return `${HR.kind()}【을를】 다치게 한다`;
 			},
 			target: "rival",
 			passage: "Racecourse Rig Injure Horse",
@@ -96,7 +96,7 @@ setup.horserace = setup.horserace || {};
 		{
 			id: "beat_rider",
 			tier: "high",
-			label: "Threaten a rider",
+			label: "기수를 위협한다",
 			target: "rival",
 			passage: "Racecourse Rig Threaten Rider",
 			difficulty: 350,
@@ -111,7 +111,7 @@ setup.horserace = setup.horserace || {};
 		{
 			id: "drug_horse",
 			tier: "medium",
-			label: "Drug the feed",
+			label: "사료에 약을 탄다",
 			target: "rival",
 			passage: "Racecourse Rig Drug Horse",
 			difficulty: 450,
@@ -127,7 +127,7 @@ setup.horserace = setup.horserace || {};
 			id: "stimulate_own",
 			tier: "medium",
 			get label() {
-				return `Dose your ${HR.kind()}`;
+				return `${HR.kind()}에게 약을 먹인다`;
 			},
 			target: "own",
 			passage: "Racecourse Rig Stimulant",
@@ -143,7 +143,7 @@ setup.horserace = setup.horserace || {};
 		{
 			id: "bribe_money",
 			tier: "medium",
-			label: "Bribe with cash",
+			label: "현금으로 매수한다",
 			target: "rival",
 			passage: "Racecourse Rig Bribe Money",
 			difficulty: 300,
@@ -158,7 +158,7 @@ setup.horserace = setup.horserace || {};
 		{
 			id: "sabotage_equipment",
 			tier: "low",
-			label: "Cut the tack",
+			label: "마구를 끊는다",
 			target: "rival",
 			passage: "Racecourse Rig Sabotage Tack",
 			difficulty: 350,
@@ -173,7 +173,7 @@ setup.horserace = setup.horserace || {};
 			id: "encourage_own",
 			tier: "low",
 			get label() {
-				return `Encourage your ${HR.kind()}`;
+				return `${HR.kind()}에게 힘을 북돋운다`;
 			},
 			target: "own",
 			passage: "Racecourse Rig Encourage Horse",
@@ -189,7 +189,7 @@ setup.horserace = setup.horserace || {};
 		{
 			id: "bribe_sex",
 			tier: "low",
-			label: "Bribe with sex",
+			label: "섹스로 매수한다",
 			target: "own",
 			passage: "Racecourse Rig Bribe Rider",
 			difficulty: 300,
@@ -246,16 +246,16 @@ setup.horserace = setup.horserace || {};
 		const turnsLeft = Math.max(0, HR.RIG_MINIGAME_TURN_CAP - g.turn);
 		return `<div class="horse-race-panel">
 			<div class="horse-race-progress">
-				<span>Progress</span>
+				<span>진행도</span>
 				<meter min="0" max="100" low="35" high="70" optimum="100" value="${progress.toFixed(0)}"></meter>
 				<span>${Math.floor(progress)}%</span>
 			</div>
 			<div class="horse-race-progress">
-				<span>Risk of being noticed</span>
+				<span>들킬 위험</span>
 				<meter min="0" max="100" low="35" high="70" optimum="0" value="${risk.toFixed(0)}"></meter>
 				<span>${Math.floor(risk)}%</span>
 			</div>
-			<p>Time before the ${HR.kind(true)} are led out: <strong>${turnsLeft}</strong></p>
+			<p>${HR.kind(true)}【이가】 끌려 나오기까지 남은 시간: <strong>${turnsLeft}</strong></p>
 		</div>`;
 	};
 
@@ -301,96 +301,96 @@ setup.horserace = setup.horserace || {};
 	HR.RIG_MINIGAME_TEXT = {
 		injure_horse: {
 			get scene() {
-				return `You crouch at the ${HR.kind()}'s front leg with a grip on the shoe. You need to work the nail loose without the handler noticing.`;
+				return `당신은 ${HR.kind()}의 앞다리 옆에 웅크리고 편자를 붙잡는다. 일꾼이 눈치채지 못하게 못을 느슨하게 빼내야 한다.`;
 			},
-			quick: "Pull hard",
-			careful: "Work it slowly",
-			watchLabel: "Check where the handler is",
-			quickSuccess: "The nail gives way fast. You have most of the shoe loose already.",
-			quickFail: "You yank too hard and the shoe clangs against the ground. You freeze, but nobody comes running yet.",
-			carefulSuccess: "You ease the nail out a little at a time. Slow, but it's working, and nobody has looked over.",
-			carefulFail: "Your fingers slip on the nail head and you lose your grip. You've barely moved it.",
-			watch: "You glance down the row. The handler is still occupied at the far end.",
+			quick: "세게 잡아당긴다",
+			careful: "천천히 빼낸다",
+			watchLabel: "일꾼이 어디 있는지 살핀다",
+			quickSuccess: "못이 순식간에 빠진다. 편자는 벌써 거의 다 헐거워졌다.",
+			quickFail: "너무 세게 잡아당기는 바람에 편자가 땅바닥에 쨍 부딪힌다. 당신은 얼어붙지만, 아직 아무도 달려오지 않는다.",
+			carefulSuccess: "못을 조금씩 빼낸다. 느리지만 효과가 있고, 아무도 이쪽을 보지 않는다.",
+			carefulFail: "손가락이 못대가리에서 미끄러져 쥐고 있던 것을 놓친다. 못은 거의 움직이지 않았다.",
+			watch: "줄지어 선 쪽을 흘끗 살핀다. 일꾼은 아직 저 끝에서 바쁘다.",
 		},
 		beat_rider: {
-			scene: "You have the rider cornered behind the stalls. You need to make the threat land before someone walks past.",
-			quick: "Push the threat hard",
-			careful: "Keep your voice low and controlled",
-			watchLabel: "Check who's nearby",
-			quickSuccess: "The threat lands. You can see it go in.",
-			quickFail: "The rider flinches back, voice rising. A groom two stalls down glances over.",
-			carefulSuccess: "You keep it quiet and specific. The rider is listening, and nobody else has noticed.",
-			carefulFail: "The rider isn't buying it, and keeps glancing past your shoulder for someone to call to.",
-			watch: "You check over your shoulder. Still just the two of you back here.",
+			scene: "당신은 마구간 뒤에서 기수를 구석에 몰아넣었다. 누가 지나가기 전에 협박이 먹히게 해야 한다.",
+			quick: "협박을 세게 밀어붙인다",
+			careful: "목소리를 낮추고 침착하게 이어 간다",
+			watchLabel: "근처에 누가 있는지 살핀다",
+			quickSuccess: "협박이 먹힌다. 그것이 파고드는 게 눈에 보인다.",
+			quickFail: "기수가 움찔 물러서며 목소리가 높아진다. 마구간 두 칸 아래에 있던 마부가 이쪽을 흘끗 쳐다본다.",
+			carefulSuccess: "조용하고 구체적으로 말한다. 기수는 귀를 기울이고 있고, 다른 누구도 눈치채지 못했다.",
+			carefulFail: "기수는 넘어가지 않고, 부를 사람을 찾으려 계속 당신의 어깨 너머를 흘끗거린다.",
+			watch: "어깨 너머로 확인한다. 이 뒤편에는 여전히 둘뿐이다.",
 		},
 		drug_horse: {
-			scene: "You have the phial open and the feed bucket in front of you. You need to mix it in evenly before the handler comes back.",
-			quick: "Tip in the whole phial",
-			careful: "Mix it in a little at a time",
-			watchLabel: "Listen for footsteps",
+			scene: "작은 병은 열려 있고 사료통이 눈앞에 있다. 일꾼이 돌아오기 전에 고르게 섞어야 한다.",
+			quick: "병째 쏟아붓는다",
+			careful: "조금씩 섞는다",
+			watchLabel: "발소리에 귀를 기울인다",
 			get quickSuccess() {
-				return `It mixes into the feed cleanly. The ${HR.kind()} won't notice a thing.`;
+				return `깔끔하게 사료에 섞인다. ${HR.kind()}【은는】 아무것도 눈치채지 못할 것이다.`;
 			},
-			quickFail: "Some of it splashes over the rim. You wipe it off the bucket with your sleeve before it stains.",
-			carefulSuccess: "You work it in slowly, stirring with two fingers until the feed looks untouched.",
-			carefulFail: "The feed clumps around the liquid instead of soaking it in. You have to keep working at it.",
-			watch: "You stop and listen. No footsteps yet.",
+			quickFail: "일부가 통 가장자리 너머로 튄다. 얼룩이 지기 전에 소매로 통을 닦아 낸다.",
+			carefulSuccess: "손가락 두 개로 저어 가며 천천히 섞어, 사료가 손대지 않은 것처럼 보일 때까지 한다.",
+			carefulFail: "사료가 액체를 흡수하지 않고 뭉쳐 버린다. 계속 손을 봐야 한다.",
+			watch: "멈추고 귀를 기울인다. 아직 발소리는 없다.",
 		},
 		stimulate_own: {
-			scene: "The water bucket is in front of you and the phial is already open. You need to get it mixed in before the handler returns.",
-			quick: "Pour it straight in",
-			careful: "Add it slowly and stir",
-			watchLabel: "Watch for the handler",
-			quickSuccess: "It disperses fast, and the water clears back up within seconds.",
-			quickFail: "The water clouds visibly. You swirl it hard with your hand to clear it before anyone sees.",
-			carefulSuccess: "You stir it in a little at a time until the water looks normal again.",
-			carefulFail: "It's taking longer than you'd like. The water is still faintly discoloured.",
-			watch: "You look up and down the row. Nobody is coming yet.",
+			scene: "물통이 눈앞에 있고 작은 병은 이미 열려 있다. 일꾼이 돌아오기 전에 섞어 놓아야 한다.",
+			quick: "그대로 붓는다",
+			careful: "천천히 넣어 저어 준다",
+			watchLabel: "일꾼이 오는지 지켜본다",
+			quickSuccess: "빠르게 풀리고, 물은 몇 초 만에 다시 맑아진다.",
+			quickFail: "물이 눈에 띄게 뿌예진다. 누가 보기 전에 손으로 세게 휘저어 맑게 만든다.",
+			carefulSuccess: "물이 다시 정상으로 보일 때까지 조금씩 저어 넣는다.",
+			carefulFail: "생각보다 오래 걸린다. 물은 아직 희미하게 색이 돌고 있다.",
+			watch: "줄지어 선 쪽을 이쪽저쪽 둘러본다. 아직 아무도 오지 않는다.",
 		},
 		bribe_money: {
-			scene: "The rider is listening, but hasn't agreed to anything yet. Close the deal before nerves get in the way or someone walks over.",
-			quick: "Push the offer harder",
-			careful: "Talk through it calmly",
-			watchLabel: "Check who's within earshot",
-			quickSuccess: "The rider stops hesitating and holds out a hand.",
-			quickFail: "The rider hesitates and looks towards the stalls, checking who's around.",
-			carefulSuccess: "You keep your voice down and lay it out plainly. The rider is coming around.",
-			carefulFail: "The rider still won't commit, and keeps looking past you.",
-			watch: "You glance around. Nobody close enough to overhear yet.",
+			scene: "기수는 듣고 있지만 아직 아무것도 동의하지 않았다. 긴장하거나 누가 다가오기 전에 거래를 매듭지어야 한다.",
+			quick: "제안을 더 세게 민다",
+			careful: "차분히 풀어 설명한다",
+			watchLabel: "귀가 닿는 거리에 누가 있는지 살핀다",
+			quickSuccess: "기수가 망설임을 멈추고 손을 내민다.",
+			quickFail: "기수가 망설이며 주변에 누가 있는지 살피느라 마구간 쪽을 본다.",
+			carefulSuccess: "목소리를 낮추고 담담하게 사정을 늘어놓는다. 기수의 마음이 기울고 있다.",
+			carefulFail: "기수는 여전히 결심하지 못하고 계속 당신 너머를 본다.",
+			watch: "주위를 둘러본다. 엿들을 만큼 가까운 사람은 아직 없다.",
 		},
 		sabotage_equipment: {
-			scene: "The girth strap is in your hands. You need to weaken the stitching without leaving it obviously torn.",
-			quick: "Pick at it hard",
-			careful: "Work the stitching loose bit by bit",
-			watchLabel: "Check for the handler",
-			quickSuccess: "A section of stitching tears free clean. It'll hold together until it's put under real weight.",
-			quickFail: "The thread snaps somewhere visible. You turn the strap so the damage faces away from view.",
-			carefulSuccess: "You work a few stitches loose at a time. It still looks intact from a glance.",
-			carefulFail: "The leather is tougher than you expected and barely gives.",
-			watch: "You look towards the water trough. The handler isn't back yet.",
+			scene: "뱃대끈이 당신 손에 있다. 대놓고 찢어진 티를 내지 않고 바느질을 약하게 만들어야 한다.",
+			quick: "세게 뜯는다",
+			careful: "바느질을 조금씩 푼다",
+			watchLabel: "일꾼이 있는지 확인한다",
+			quickSuccess: "바느질 한 군데가 깔끔하게 뜯어진다. 진짜 무게가 실리기 전까지는 버틸 것이다.",
+			quickFail: "눈에 띄는 곳에서 실이 끊어진다. 흠집이 눈에 안 보이게 끈을 돌려놓는다.",
+			carefulSuccess: "한 번에 몇 땀씩 풀어 간다. 얼핏 보면 여전히 멀쩡하다.",
+			carefulFail: "가죽이 생각보다 질겨서 거의 움직이지 않는다.",
+			watch: "물구유 쪽을 바라본다. 일꾼은 아직 돌아오지 않았다.",
 		},
 		encourage_own: {
 			get scene() {
-				return `Your hand is on the ${HR.kind()}'s flank and ${HR.it("it")} is pushing back against you. You need to work ${HR.it(
-					"itobj"
-				)} up and settle ${HR.it("itobj")} again before anyone comes down the row.`;
+				return `당신의 손이 ${HR.kind()}의 옆구리에 얹혀 있고, ${HR.kind()}【은는】 당신의 손길에 맞서 버티고 있다. 누가 줄을 따라 내려오기 전에 ${HR.kind()}【을를】 한껏 흥분시켰다가 다시 가라앉혀야 한다.` + (
+					""
+				);
 			},
-			quick: "Keep going, faster",
-			careful: "Slow, steady strokes",
-			watchLabel: "Check the next stall over",
+			quick: "계속한다, 더 빠르게",
+			careful: "느리고 꾸준한 손놀림",
+			watchLabel: "옆 칸을 살핀다",
 			get quickSuccess() {
-				return `The ${HR.kind()} settles fast, ears forward, weight steady on all four legs.`;
+				return `${HR.kind()}【은는】 금세 가라앉는다. 귀는 앞을 향하고 네 다리에 체중이 고르게 실린다.`;
 			},
 			get quickFail() {
-				return `The ${HR.kind()} jerks ${HR.it("its")} head up at the pace and stamps a hoof against the straw.`;
+				return `그 속도에 ${HR.kind()}【이가】 고개를 홱 들고 짚더미에 발굽을 구른다.`;
 			},
 			get carefulSuccess() {
-				return `The ${HR.kind()} relaxes into it, breathing slow, eyes half closed.`;
+				return `${HR.kind()}【은는】 그 손길에 몸을 맡기고, 숨을 느리게 쉬며 눈을 반쯤 감는다.`;
 			},
 			get carefulFail() {
-				return `The ${HR.kind()} is still restless, shifting ${HR.it("its")} weight and flicking ${HR.it("its")} tail.`;
+				return `${HR.kind()}【은는】 아직도 안절부절못하며 체중을 옮기고 꼬리를 홱홱 흔든다.`;
 			},
-			watch: "You listen. Nothing from the next stall yet.",
+			watch: "귀를 기울인다. 옆 칸에서는 아직 아무 소리도 없다.",
 		},
 	};
 
@@ -438,16 +438,16 @@ setup.horserace = setup.horserace || {};
 
 	HR.trackDefs = {
 		oval: {
-			name: "Outer Oval",
-			description: "A proper oval course.",
+			name: "바깥 타원 코스",
+			description: "정통 타원형 코스다.",
 			viewBox: "0 0 1000 540",
 			/* The path starts on the finish/start line, so horses do not begin somewhere else. */
 			path: "M 250 400 L 750 400 C 875 400 930 340 930 270 C 930 200 875 140 750 140 L 250 140 C 125 140 70 200 70 270 C 70 340 125 400 250 400 Z",
 			finish: { x1: 250, y1: 365, x2: 250, y2: 435 },
 		},
 		cross: {
-			name: "Infield Circuit",
-			description: "A wider oval with positioning matters more than pure speed.",
+			name: "안쪽 순환 코스",
+			description: "더 넓은 타원형 코스로, 순수한 속도보다 위치 선정이 더 중요하다.",
 			viewBox: "0 0 1000 540",
 			/* The path starts on the finish/start line, so the markers and line match. */
 			path: "M 250 420 L 780 420 C 895 420 945 360 945 285 C 945 210 895 150 780 150 L 220 150 C 105 150 55 210 55 285 C 55 360 105 420 220 420 L 250 420 Z",
@@ -459,8 +459,8 @@ setup.horserace = setup.horserace || {};
 	HR.skillPool = [
 		{
 			id: "steady_stride",
-			name: "Steady Stride",
-			description: "Keeps a clean rhythm and builds speed over time.",
+			name: "안정된 보폭",
+			description: "깔끔한 리듬을 유지하며 시간이 갈수록 속도를 붙인다.",
 			condition(horse, race) {
 				return horse.progress >= 15 && horse.progress <= 75 && horse.stamina > 35;
 			},
@@ -468,129 +468,129 @@ setup.horserace = setup.horserace || {};
 				horse.boost += 2.1;
 				horse.focus += 4;
 				horse.stamina -= 3;
-				log.push(`${horse.name} finds a steady stride and starts gaining ground.`);
+				log.push(`${horse.name}【이가】 안정된 보폭을 찾고 앞서 나가기 시작한다.`);
 			},
 		},
 		{
 			id: "steady_breath",
-			name: "Steady Breath",
-			description: "Recovers stamina while keeping pace.",
+			name: "안정된 호흡",
+			description: "속도를 유지하면서 체력을 회복한다.",
 			condition(horse) {
 				return horse.stamina < 78;
 			},
 			effect(horse, race, log) {
 				horse.stamina += 14;
 				horse.boost += 0.4;
-				log.push(`${horse.name}'s breathing steadies, saving strength for later.`);
+				log.push(`${horse.name}의 숨이 고르게 가라앉으며 나중을 위해 힘을 아낀다.`);
 			},
 		},
 		{
 			id: "inner_rail",
-			name: "Inner Rail",
-			description: "Uses the inside lane cleanly.",
+			name: "안쪽 레일",
+			description: "안쪽 레인을 깔끔하게 활용한다.",
 			condition(horse) {
 				return horse.lane <= 2;
 			},
 			effect(horse, race, log) {
 				horse.progress += 3;
 				horse.boost += 1.1;
-				log.push(`${horse.name} stays close to the inner rail and moves ahead.`);
+				log.push(`${horse.name}【이가】 안쪽 레일에 바짝 붙어 앞으로 나선다.`);
 			},
 		},
 		{
 			id: "corner_cutter",
-			name: "Corner Cutter",
-			description: "Accelerates through tight corners.",
+			name: "코너 가로지르기",
+			description: "급한 코너에서 가속한다.",
 			condition(horse, race) {
 				return race.trackId === "cross" || horse.progress % 25 > 14;
 			},
 			effect(horse, race, log) {
 				horse.progress += race.trackId === "cross" ? 4 : 2.5;
 				horse.boost += 1.2;
-				log.push(`${horse.name} turns the corner smoothly and keeps ${HR.it("its")} speed.`);
+				log.push(`${horse.name}【이가】 코너를 매끄럽게 돌며 속도를 유지한다.`);
 			},
 		},
 		{
 			id: "draft_chaser",
-			name: "Draft Chaser",
-			description: "Uses the horse ahead as a windbreak.",
+			name: "바람막이 추격",
+			description: "앞서가는 말을 바람막이로 삼는다.",
 			condition(horse, race) {
 				return HR.rankOf(race, horse.id) > 1 && HR.distanceToNextHorse(race, horse.id) <= 9;
 			},
 			effect(horse, race, log) {
 				horse.boost += 2.5;
 				horse.stamina += 5;
-				log.push(`${horse.name} follows another runner closely, then gets ready to speed up.`);
+				log.push(`${horse.name}【이가】 다른 주자를 바짝 뒤따르다가 속도를 낼 채비를 한다.`);
 			},
 		},
 		{
 			id: "pace_lock",
-			name: "Pace Lock",
-			description: "Finds a smooth rhythm.",
+			name: "페이스 고정",
+			description: "매끄러운 리듬을 찾는다.",
 			condition() {
 				return true;
 			},
 			effect(horse, race, log) {
 				horse.boost += 1.8;
 				horse.focus += 3;
-				log.push(`${horse.name} settles into a smooth pace.`);
+				log.push(`${horse.name}【이가】 매끄러운 페이스에 자리를 잡는다.`);
 			},
 		},
 		{
 			id: "mud_dancer",
-			name: "Mud Dancer",
-			description: "Performs better when the track is wet or muddy.",
+			name: "진흙 춤꾼",
+			description: "트랙이 젖었거나 질척할 때 더 잘 달린다.",
 			condition(horse, race) {
 				return race.condition === "wet" || race.condition === "muddy";
 			},
 			effect(horse, race, log) {
 				horse.progress += race.condition === "muddy" ? 5 : 3;
 				horse.boost += 1.3;
-				log.push(`${horse.name} handles the bad ground easily.`);
+				log.push(`${horse.name}【은는】 험한 땅을 어렵지 않게 달린다.`);
 			},
 		},
 		{
 			id: "sunlit_stride",
-			name: "Sunlit Stride",
-			description: "Shines on a clear track.",
+			name: "햇살 보폭",
+			description: "맑은 트랙에서 빛을 발한다.",
 			condition(horse, race) {
 				return race.condition === "clear";
 			},
 			effect(horse, race, log) {
 				horse.boost += 2.2;
 				horse.progress += 2;
-				log.push(`${horse.name} picks up speed on the clear track.`);
+				log.push(`${horse.name}【이가】 맑은 트랙 위에서 속도를 끌어올린다.`);
 			},
 		},
 		{
 			id: "fearless_chase",
-			name: "Fearless Chase",
-			description: "Closes the gap when behind.",
+			name: "겁 없는 추격",
+			description: "뒤처졌을 때 간격을 좁힌다.",
 			condition(horse, race) {
 				return HR.rankOf(race, horse.id) >= Math.ceil(race.horses.length / 2);
 			},
 			effect(horse, race, log) {
 				horse.boost += 2.8;
-				log.push(`${horse.name} refuses to be left behind and starts chasing hard.`);
+				log.push(`${horse.name}【은는】 뒤처지기를 거부하고 맹렬히 쫓기 시작한다.`);
 			},
 		},
 		{
 			id: "leader_pride",
-			name: "Leader's Pride",
-			description: "Runs harder when already in first place.",
+			name: "선두의 자존심",
+			description: "이미 1위일 때 더 힘껏 달린다.",
 			condition(horse, race) {
 				return HR.rankOf(race, horse.id) === 1;
 			},
 			effect(horse, race, log) {
 				horse.boost += 1.5;
 				horse.stamina += 6;
-				log.push(`${horse.name} feels the others closing in and pushes harder.`);
+				log.push(`${horse.name}【은는】 다른 말들이 따라붙는 것을 느끼고 더 힘껏 달린다.`);
 			},
 		},
 		{
 			id: "tempo_breaker",
-			name: "Tempo Breaker",
-			description: "Breaks another runner's rhythm.",
+			name: "템포 파괴자",
+			description: "다른 주자의 리듬을 깨뜨린다.",
 			condition(horse, race) {
 				return race.horses.length > 1 && horse.progress > 20 && horse.progress < 85;
 			},
@@ -599,89 +599,89 @@ setup.horserace = setup.horserace || {};
 				if (target) {
 					target.boost -= 1.4;
 					target.stamina -= 5;
-					log.push(`${horse.name} shifts tempo and disrupts ${target.name}'s rhythm.`);
+					log.push(`${horse.name}【이가】 템포를 바꿔 ${target.name}의 리듬을 흐트러뜨린다.`);
 				}
 			},
 		},
 		{
 			id: "track_reader",
-			name: "Track Reader",
-			description: "Chooses the best route through difficult tracks.",
+			name: "코스 판독가",
+			description: "어려운 코스에서 최적의 경로를 고른다.",
 			condition() {
 				return true;
 			},
 			effect(horse, race, log) {
 				horse.progress += race.trackId === "cross" ? 4 : 2;
 				horse.focus += 6;
-				log.push(`${horse.name} reads the track and chooses a better line.`);
+				log.push(`${horse.name}【이가】 코스를 읽고 더 나은 경로를 고른다.`);
 			},
 		},
 		{
 			id: "second_wind",
-			name: "Second Wind",
-			description: "Recovers from exhaustion.",
+			name: "새 숨",
+			description: "지친 상태에서 회복한다.",
 			condition(horse) {
 				return horse.stamina < 45 && horse.progress > 35;
 			},
 			effect(horse, race, log) {
 				horse.stamina += 24;
 				horse.boost += 1;
-				log.push(`${horse.name} finds a second wind when ${HR.it("it")} should be fading.`);
+				log.push(`${horse.name}【은는】 지쳐 갈 때쯤 새 숨을 찾아낸다.`);
 			},
 		},
 		{
 			id: "final_burst",
-			name: "Final Burst",
-			description: "Speeds up when the horse is close to the finish.",
+			name: "마지막 스퍼트",
+			description: "결승선이 가까워지면 속도를 올린다.",
 			condition(horse) {
 				return horse.progress >= 65;
 			},
 			effect(horse, race, log) {
 				horse.boost += 4.2;
-				log.push(`${horse.name} saves ${HR.it("its")} strength, then bursts forward near the finish.`);
+				log.push(`${horse.name}【은는】 힘을 아껴 뒀다가 결승선 근처에서 앞으로 폭발적으로 튀어 나간다.`);
 			},
 		},
 		{
 			id: "last_fang",
-			name: "Final Push",
-			description: "Speeds up near the end when the horse is not in first place.",
+			name: "막판 뒷심",
+			description: "1위가 아닐 때 막판에 속도를 올린다.",
 			condition(horse, race) {
 				return horse.progress >= 78 && HR.rankOf(race, horse.id) > 1;
 			},
 			effect(horse, race, log) {
 				horse.progress += 6;
 				horse.boost += 2;
-				log.push(`${horse.name} makes a final push for the finish line.`);
+				log.push(`${horse.name}【이가】 결승선을 향해 마지막 힘을 쥐어짠다.`);
 			},
 		},
 	];
 
 	HR.horseNames = [
-		"Velvet Comet",
-		"Green Bullet",
-		"Old Crown",
-		"Silver Orchard",
-		"Saltwind",
-		"Midnight Loan",
-		"Card Shark",
-		"Foxglove",
-		"Bright Rumour",
-		"Rain Partner",
-		"Lucky Riot",
-		"Amber Needle",
-		"Glass Herald",
-		"Cinder Waltz",
-		"North Chapel",
-		"Paper Moon",
-		"Blue Rascal",
-		"Hidden Parish",
-		"Cherry Debt",
-		"Quiet Siren",
-		"Red Lantern",
-		"Ashen Clover",
-		"Copper Saint",
-		"Dawn Treaty",
-		"Moss Chapel",
+		"벨벳 혜성",
+		"초록 총알",
+		"낡은 왕관",
+		"은빛 과수원",
+		"소금바람",
+		"한밤의 대출",
+		"카드 샤크",
+		"디기탈리스",
+		"환한 소문",
+		"빗속의 동반자",
+		"행운의 폭동",
+		"호박빛 바늘",
+		"유리 전령",
+		"잿불 왈츠",
+		"북쪽 예배당",
+		"종이 달",
+		"푸른 악동",
+		"숨은 교구",
+		"체리 빚",
+		"고요한 사이렌",
+		"붉은 등불",
+		"잿빛 클로버",
+		"구리 성인",
+		"새벽 조약",
+		"이끼 예배당",
 	];
 
 	HR.fallbackConditions = ["turf", "dirt", "wet", "muddy"];
@@ -757,56 +757,56 @@ setup.horserace = setup.horserace || {};
 				return {
 					weatherName,
 					condition: "clear",
-					label: "clear",
-					description: `The track is dry; the ${HR.kind(true)} can run at full speed.`,
+					label: "건조",
+					description: `트랙이 말라 있어, ${HR.kind(true)}【이가】 전속력으로 달릴 수 있다.`,
 				};
 
 			case "lightClouds":
 				return {
 					weatherName,
 					condition: "clear",
-					label: "good",
-					description: "The weather is mild, but the track is still easy to run on.",
+					label: "양호",
+					description: "날씨는 온화하고, 트랙은 여전히 달리기 좋다.",
 				};
 
 			case "heavyClouds":
 				return {
 					weatherName,
 					condition: "clear",
-					label: "cloudy",
-					description: "The sky is overcast, but the ground is still good.",
+					label: "흐림",
+					description: "하늘은 흐리지만 땅 상태는 여전히 좋다.",
 				};
 
 			case "lightPrecipitation":
 				return {
 					weatherName,
 					condition: "wet",
-					label: "wet",
-					description: "Light rain has made the track slippery.",
+					label: "젖음",
+					description: "가벼운 비로 트랙이 미끄럽다.",
 				};
 
 			case "heavyPrecipitation":
 				return {
 					weatherName,
 					condition: "wet",
-					label: "soft",
-					description: "Heavy rain has soaked the track, making it harder to run on.",
+					label: "무름",
+					description: "폭우가 트랙을 흠뻑 적셔 달리기 힘들어졌다.",
 				};
 
 			case "storm":
 				return {
 					weatherName,
 					condition: "muddy",
-					label: "muddy",
-					description: "The storm has turned parts of the track to mud.",
+					label: "진창",
+					description: "폭풍으로 트랙 곳곳이 진창이 되었다.",
 				};
 
 			case "thunderstorm":
 				return {
 					weatherName,
 					condition: "muddy",
-					label: "heavy",
-					description: "Thunder and heavy rain make the track difficult.",
+					label: "험함",
+					description: "천둥과 폭우 탓에 트랙이 험하다.",
 				};
 
 			default: {
@@ -814,7 +814,7 @@ setup.horserace = setup.horserace || {};
 				return {
 					weatherName: "",
 					condition: fallback,
-					label: fallback,
+					label: ({ turf: "잔디", dirt: "흙", wet: "젖음", muddy: "진창" })[fallback] || fallback,
 					description: "",
 				};
 			}
@@ -1164,7 +1164,7 @@ setup.horserace = setup.horserace || {};
 			race.paidOut = false;
 			race.trial = false;
 			race.autoWatch = false;
-			race.lastError = `The ${HR.kind(true)} are not in good enough shape to run today.`;
+			race.lastError = `${HR.kind(true)}【이가】 오늘 뛸 만한 상태가 아니다.`;
 			race.incidentHorseId = "";
 			race.lossStressPending = false;
 			race.lossTraumaPending = false;
@@ -1280,7 +1280,7 @@ setup.horserace = setup.horserace || {};
 		race.payout = 0;
 		race.paidOut = true;
 		race.autoWatch = false;
-		race.messages = [`Alex waits beside the rail with you while the handlers settle the ${HR.kind(true)} at the gate.`];
+		race.messages = [`알렉스가 조련사들이 출발선에서 ${HR.kind(true)}【을를】 진정시키는 동안 당신과 함께 울타리 옆에서 기다린다.`];
 		race.messageHistory = race.messages.slice();
 		return race;
 	};
@@ -1292,33 +1292,33 @@ setup.horserace = setup.horserace || {};
 		race.betInput = typeof rawAmount === "string" ? rawAmount : String(rawAmount == null ? "" : rawAmount);
 
 		if (race.phase !== "betting") {
-			race.lastError = "The bookie has already closed betting for this race.";
+			race.lastError = "마권업자가 이 경주의 베팅을 이미 마감했다.";
 			return { ok: false, reason: "closed" };
 		}
 
 		if (HR.atWeeklyWinCap()) {
-			race.lastError = "You cannot get near a bookie through this crowd.";
+			race.lastError = "이 인파를 뚫고는 마권업자에게 다가갈 수 없다.";
 			return { ok: false, reason: "crowded" };
 		}
 
 		const horse = HR.getHorse(horseId);
 		if (!horse) {
-			race.lastError = `Choose a ${HR.kind()} before placing your bet.`;
+			race.lastError = `베팅하기 전에 ${HR.kind()}【을를】 먼저 골라야 한다.`;
 			return { ok: false, reason: "noHorse" };
 		}
 
 		const amount = HR.parseMoneyInput(rawAmount);
 		if (!(amount > 0)) {
-			race.lastError = "Enter a valid bet amount.";
+			race.lastError = "올바른 베팅 금액을 입력해야 한다.";
 			return { ok: false, reason: "invalidAmount" };
 		}
 		if (!Number.isFinite(V.money) || V.money < amount) {
-			race.lastError = `You do not have ${HR.formatMoney(amount)} to bet.`;
+			race.lastError = `베팅하려는 ${HR.formatMoney(amount)}만큼의 돈이 없다.`;
 			return { ok: false, reason: "insufficientMoney" };
 		}
 		const maxStake = HR.maxStake(horse, betType);
 		if (amount > maxStake) {
-			race.lastError = `The bookie will not take more than ${HR.formatMoney(maxStake)} on that slip.`;
+			race.lastError = `마권업자는 그 마권에 ${HR.formatMoney(maxStake)} 넘게는 받지 않는다.`;
 			return { ok: false, reason: "overLimit" };
 		}
 
@@ -1335,7 +1335,7 @@ setup.horserace = setup.horserace || {};
 			race.betHorseId = "";
 			race.betAmount = 0;
 			race.betInput = "";
-			race.lastError = "The stewards pull the race after noticing irregular betting patterns.";
+			race.lastError = "심판진이 수상한 베팅 양상을 알아채고 경주를 취소한다.";
 			return { ok: false, reason: "cancelled" };
 		}
 
@@ -1349,8 +1349,8 @@ setup.horserace = setup.horserace || {};
 		race.autoWatch = false;
 		race.messages = [
 			race.betType === "place"
-				? `You back ${horse.name} to place for ${HR.formatMoney(amount)} at ${horse.placeOdds.toFixed(2)}x odds.`
-				: `You back ${horse.name} to win for ${HR.formatMoney(amount)} at ${horse.odds.toFixed(2)}x odds.`,
+				? `당신은 ${horse.name}【이가】 입상한다는 쪽에 걸었다. 건 돈은 ${HR.formatMoney(amount)}, 배당은 ${horse.placeOdds.toFixed(2)}배.`
+				: `당신은 ${horse.name}【이가】 1위를 한다는 쪽에 걸었다. 건 돈은 ${HR.formatMoney(amount)}, 배당은 ${horse.odds.toFixed(2)}배.`,
 		];
 
 		race.messageHistory = race.messages.slice();
@@ -1397,29 +1397,29 @@ setup.horserace = setup.horserace || {};
 
 	HR.INCIDENT_LOG = {
 		blocked: [
-			name => `${name} gets stuck behind a slower ${HR.kind()} and has to slow down because there is no room to pass.`,
-			name => `Another ${HR.kind()} moves in front of ${name}, forcing ${name} to slow down and wait for enough space to pass.`,
+			name => `${name}【이가】 더 느린 ${HR.kind()} 뒤에 갇혀, 앞지를 틈이 없어 속도를 늦춰야 한다.`,
+			name => `다른 ${HR.kind()}【이가】 ${name} 앞으로 끼어들어, ${name}【은는】 속도를 늦추고 앞지를 공간이 날 때까지 기다려야 한다.`,
 		],
 		wide: [
-			name => `${name} takes the turn too far from the inside of the track, making ${name} run farther than the other horses and lose some distance.`,
+			name => `${name}【이가】 코너를 트랙 안쪽에서 너무 멀리 돌아, 다른 말들보다 더 먼 거리를 달리며 거리를 잃는다.`,
 			name =>
-				`${name} moves too far towards the outside of the track while turning. By the time ${name} returns to the normal path, the other horses are farther ahead.`,
+				`${name}【이가】 코너를 돌며 트랙 바깥쪽으로 너무 크게 벗어난다. ${name}【이가】 원래 경로로 돌아왔을 때는 다른 말들이 한참 앞서 있다.`,
 		],
 		stumble: [
-			name => `${name} almost falls while turning, but manages to stay on ${HR.it("its")} feet and continues running.`,
-			name => `${name} takes a bad step and briefly loses speed before continuing the race.`,
+			name => `${name}【이가】 코너를 돌다 넘어질 뻔하지만 간신히 버티고 계속 달린다.`,
+			name => `${name}【이가】 발을 잘못 디뎌 잠시 속도를 잃었다가 경주를 이어 간다.`,
 		],
 		exhausted: [
-			name => `${name} becomes too tired to keep running. The rider slows ${HR.it("itobj")} down and takes ${HR.it("itobj")} out of the race.`,
-			name => `${name} is having trouble keeping up because of exhaustion. The rider decides to stop racing rather than force ${HR.it("itobj")} to continue.`,
+			name => `${name}【이가】 너무 지쳐 더는 달리지 못한다. 기수가 속도를 늦추고 경주에서 빼낸다.`,
+			name => `${name}【이가】 지친 탓에 따라가지 못한다. 기수는 억지로 계속 달리게 하기보다 경주를 포기하기로 한다.`,
 		],
 		injured: [
 			name =>
-				`${name} hurts one of ${HR.it(
-					"its"
-				)} legs while running and starts having trouble walking properly. The rider stops immediately, and the vets come onto the track to help.`,
+				`${name}【이가】 달리다가 다리 하나를 다쳐 제대로 걷지 못하기 시작한다. 기수는 즉시 멈춰 서고, 수의사들이 트랙으로 달려와 돕는다.` + (
+					""
+				),
 			name =>
-				`${name} falls while running on the other side of the track. The rider quickly gets back up, while the vets hurry over to check the ${HR.kind()}.`,
+				`${name}【이가】 트랙 반대편에서 달리다 넘어진다. 기수는 재빨리 일어나고, 수의사들이 ${HR.kind()}【을를】 살피러 서둘러 달려간다.`,
 		],
 	};
 
@@ -1637,7 +1637,7 @@ setup.horserace = setup.horserace || {};
 
 		if (stepMessages.length === 0) {
 			const leader = HR.finishers(race)[0];
-			if (leader) stepMessages.push(`${leader.name} keeps ahead of the others.`);
+			if (leader) stepMessages.push(`${leader.name}【이가】 다른 말들보다 앞서 간다.`);
 		}
 
 		race.messages = stepMessages;
@@ -1728,12 +1728,12 @@ setup.horserace = setup.horserace || {};
 
 		const resultAnchor = document.querySelector("#horse-race-result-link a");
 		if (race.phase === "finished") {
-			controls.innerHTML = `<span class="horse-race-finished-note">The race has ended. See the result below.</span>`;
-			if (status) status.textContent = "The race is finished.";
-			if (resultAnchor) resultAnchor.textContent = resultLabel || "See the result";
+			controls.innerHTML = `<span class="horse-race-finished-note">경주가 끝났다. 아래 결과를 확인하십시오.</span>`;
+			if (status) status.textContent = "경주가 끝났다.";
+			if (resultAnchor) resultAnchor.textContent = resultLabel || "결과를 본다";
 			return;
 		}
-		if (resultAnchor) resultAnchor.textContent = "Skip to the finish";
+		if (resultAnchor) resultAnchor.textContent = "결승선까지 건너뛴다";
 
 		const watchButton = controls.querySelector("[data-horse-watch]");
 		const pauseButton = controls.querySelector("[data-horse-pause]");
@@ -1741,10 +1741,10 @@ setup.horserace = setup.horserace || {};
 		if (pauseButton) pauseButton.disabled = !race.autoWatch;
 		if (status) {
 			status.textContent = race.autoWatch
-				? `The ${HR.kind(true, true)} are running.`
+				? `${HR.kind(true, true)}【이가】 달리고 있다.`
 				: race.round > 0
-				? "The race is paused."
-				: `The ${HR.kind(true, true)} are lined up. Start watching when you are ready.`;
+				? "경주가 일시 정지되었다."
+				: `${HR.kind(true, true)}【이가】 출발선에 나란히 서 있다. 준비가 되면 관람을 시작하십시오.`;
 		}
 	};
 
@@ -1803,23 +1803,23 @@ setup.horserace = setup.horserace || {};
 	HR.renderLiveControls = function (resultPassage, resultLabel, watchLabel, pauseLabel, delay) {
 		const race = HR.ensureState();
 		if (race.phase === "finished") {
-			return `<p id="horse-race-watch-status" class="horse-race-watch-status">The race has ended. See the result below.</p>
-			<div id="horse-race-controls" class="horse-race-controls"><span class="horse-race-finished-note">Finished.</span></div>`;
+			return `<p id="horse-race-watch-status" class="horse-race-watch-status">경주가 끝났다. 아래 결과를 확인하십시오.</p>
+			<div id="horse-race-controls" class="horse-race-controls"><span class="horse-race-finished-note">종료.</span></div>`;
 		}
 
 		const result = HR.escapeJsArg(resultPassage);
-		const label = HR.escapeJsArg(resultLabel || "See the result");
+		const label = HR.escapeJsArg(resultLabel || "결과를 본다");
 		const wait = Number.isFinite(Number(delay)) ? Number(delay) : HR.DEFAULT_WATCH_DELAY;
 		return `<p id="horse-race-watch-status" class="horse-race-watch-status">${
-			race.round > 0 ? "The race is paused." : `The ${HR.kind(true, true)} are lined up. Start watching when you are ready.`
+			race.round > 0 ? "경주가 일시 정지되었다." : `${HR.kind(true, true)}【이가】 출발선에 나란히 서 있다. 준비가 되면 관람을 시작하십시오.`
 		}</p>
 		<div id="horse-race-controls" class="horse-race-controls">
 			<button type="button" data-horse-watch onclick="return setup.horserace.startLiveWatch(${result}, ${wait}, ${label});"${
 			race.autoWatch ? " disabled" : ""
-		}>${HR.escapeHtml(watchLabel || "Start watching")}</button>
+		}>${HR.escapeHtml(watchLabel || "관람 시작")}</button>
 			<button type="button" data-horse-pause onclick="return setup.horserace.pauseLiveWatch(${result}, ${label});"${
 			race.autoWatch ? "" : " disabled"
-		}>${HR.escapeHtml(pauseLabel || "Pause watching")}</button>
+		}>${HR.escapeHtml(pauseLabel || "관람 일시 정지")}</button>
 		</div>`;
 	};
 
@@ -1864,7 +1864,7 @@ setup.horserace = setup.horserace || {};
 
 		const winner = HR.getHorse(race.winnerId);
 		if (winner) {
-			race.messages = [`${winner.name} crosses the line first.`];
+			race.messages = [`${winner.name}【이가】 가장 먼저 결승선을 통과한다.`];
 			race.messageHistory = race.messages.concat(Array.isArray(race.messageHistory) ? race.messageHistory : []).slice(0, 3);
 		}
 		return race;
@@ -1877,8 +1877,8 @@ setup.horserace = setup.horserace || {};
 				return `<tr>
 				<td>${horse.lane}</td>
 				<td><strong>${HR.escapeHtml(horse.name)}</strong></td>
-				<td>${horse.odds.toFixed(2)}x</td>
-				<td>${horse.placeOdds.toFixed(2)}x</td>
+				<td>${horse.odds.toFixed(2)}배</td>
+				<td>${horse.placeOdds.toFixed(2)}배</td>
 				<td>${horse.baseSpeed}</td>
 				<td>${horse.maxStamina}</td>
 			</tr>`;
@@ -1887,10 +1887,10 @@ setup.horserace = setup.horserace || {};
 
 		const track = HR.trackDefs[race.trackId];
 		return `<div class="horse-race-panel">
-			<p><strong>Track:</strong> ${HR.escapeHtml(track.name)}. ${HR.escapeHtml(track.description)}</p>
-			<p><strong>Going:</strong> ${HR.escapeHtml(race.goingLabel || race.condition)}. ${HR.escapeHtml(race.goingDescription || "")}</p>
+			<p><strong>코스:</strong> ${HR.escapeHtml(track.name)}. ${HR.escapeHtml(track.description)}</p>
+			<p><strong>주로 상태:</strong> ${HR.escapeHtml(race.goingLabel || race.condition)}. ${HR.escapeHtml(race.goingDescription || "")}</p>
 			<table class="horse-race-table">
-				<thead><tr><th>Lane</th><th>${HR.kind(false, true)}</th><th>Win</th><th>Place</th><th>Speed</th><th>Stamina</th></tr></thead>
+				<thead><tr><th>레인</th><th>${HR.kind(false, true)}</th><th>우승</th><th>입상</th><th>속도</th><th>체력</th></tr></thead>
 				<tbody>${rows}</tbody>
 			</table>
 		</div>`;
@@ -1936,7 +1936,7 @@ setup.horserace = setup.horserace || {};
 		const innerLines = innerPaths.map(path => `<path class="horse-race-track-inner-line" d="${HR.escapeHtml(path)}"></path>`).join("");
 
 		return `<div id="horse-race-${raceId}" class="horse-race-live" data-race-id="${raceId}">
-			<svg class="horse-race-svg" viewBox="${HR.escapeHtml(track.viewBox)}" role="img" aria-label="Horse race track">
+			<svg class="horse-race-svg" viewBox="${HR.escapeHtml(track.viewBox)}" role="img" aria-label="경마 경주로">
 				<rect class="horse-race-grass" x="0" y="0" width="1000" height="540"></rect>
 				<path class="horse-race-track-edge" d="${HR.escapeHtml(track.path)}"></path>
 				${innerEdges}
@@ -1985,13 +1985,13 @@ setup.horserace = setup.horserace || {};
 	HR.renderRaceLog = function () {
 		const race = HR.ensureState();
 		const messages = (
-			race.messageHistory.length > 0 ? race.messageHistory : race.messages.length > 0 ? race.messages : ["The crowd waits for the next move."]
+			race.messageHistory.length > 0 ? race.messageHistory : race.messages.length > 0 ? race.messages : ["관중이 다음 움직임을 기다린다."]
 		).slice(0, 3);
 		const items = messages
 			.map(function (message) {
 				if (message && typeof message === "object" && message.type === "accident") {
-					return `<li class="horse-race-accident-log"><strong><span style="color:#ff6b6b;">Injured.</span> ${HR.escapeHtml(
-						message.text || `A ${HR.kind()} is pulled up after an incident.`
+					return `<li class="horse-race-accident-log"><strong><span style="color:#ff6b6b;">부상.</span> ${HR.escapeHtml(
+						message.text || `사고가 나서 ${HR.kind()} 한 마리가 경주에서 빠진다.`
 					)}</strong></li>`;
 				}
 				if (message && typeof message === "object" && message.type === "incident") {
@@ -1999,60 +1999,60 @@ setup.horserace = setup.horserace || {};
 					return `<li class="horse-race-incident-log">${message.serious ? `<strong>${text}</strong>` : text}</li>`;
 				}
 				if (message && typeof message === "object" && message.type === "skill") {
-					const round = Number.isFinite(message.round) ? `<span class="horse-race-log-round">Moment ${message.round}</span> ` : "";
+					const round = Number.isFinite(message.round) ? `<span class="horse-race-log-round">${message.round}라운드</span> ` : "";
 					return `<li class="horse-race-skill-log">${round}<span class="horse-race-skill-badge">${HR.escapeHtml(
-						message.skillName || "Skill"
-					)}</span> <strong>${HR.escapeHtml(message.horseName || HR.kind(false, true))}</strong>: ${HR.escapeHtml(message.text || "surges forward.")}</li>`;
+						message.skillName || "기술"
+					)}</span> <strong>${HR.escapeHtml(message.horseName || HR.kind(false, true))}</strong>: ${HR.escapeHtml(message.text || "앞으로 치고 나간다.")}</li>`;
 				}
 				return `<li>${HR.escapeHtml(message)}</li>`;
 			})
 			.join("");
-		return `<div id="horse-race-log-area" class="horse-race-log"><strong>Race log</strong><ul>${items}</ul></div>`;
+		return `<div id="horse-race-log-area" class="horse-race-log"><strong>경주 기록</strong><ul>${items}</ul></div>`;
 	};
 
 	HR.ordinal = function (n) {
-		return ["first", "second", "third", "fourth", "fifth"][n - 1] || `number ${n}`;
+		return String(n);
 	};
 
 	/* What happened to the backed horse, told from what the simulation actually did to it. */
 	HR.BACKED_STORY = {
 		injured: [
 			(name, it) =>
-				`${name} fell during the race. The rider stopped ${it.itobj} from continuing, and the vets helped ${it.itobj} leave the track. ${it.It} cannot race again this week.`,
+				`${name}【이가】 경주 중에 넘어졌다. 기수가 녀석이 계속 달리지 못하게 막았고, 수의사들이 녀석을 도와 트랙에서 내보냈다. 녀석은 이번 주에 다시 경주할 수 없다.`,
 			(name, it) =>
-				`${name} started limping and could not finish the race. The vets took ${it.itobj} back to the stables to check ${it.its} injury. ${it.It} cannot race again this week.`,
+				`${name}【이가】 다리를 절기 시작해 경주를 끝내지 못했다. 수의사들이 부상을 살펴보려고 녀석을 마구간으로 데려갔다. 녀석은 이번 주에 다시 경주할 수 없다.`,
 		],
 		exhausted: [
 			(name, it) =>
-				`${name} became too tired to keep racing. The rider slowed ${it.itobj} down and stopped before the finish. ${it.It} walked back to the stables, tired but not injured.`,
+				`${name}【이가】 너무 지쳐 더는 경주를 이어 갈 수 없었다. 기수가 속도를 늦추고 결승선 전에 멈춰 섰다. 녀석은 지치긴 했지만 다치지는 않은 채 마구간으로 걸어 돌아갔다.`,
 			(name, it) =>
-				`${name} became slower as the race continued. The rider eventually stopped ${it.itobj} before the finish. A worker checked ${it.its} legs and found no injury, so the vets were not needed.`,
+				`${name}【은는】 경주가 이어질수록 느려졌다. 결국 기수가 결승선 전에 녀석을 멈춰 세웠다. 일꾼이 다리를 살펴보았지만 부상은 없어서 수의사는 필요하지 않았다.`,
 		],
 		blocked: [
 			(name, it, place) =>
-				`${name} was stuck behind another ${HR.kind()} and could not get past. When there was finally enough space to move forward, the horses in front were already too far ahead. ${
-					it.It
-				} finished ${place}.`,
+				`${name}【이가】 다른 ${HR.kind()} 뒤에 갇혀 앞지르지 못했다. 마침내 나아갈 공간이 났을 때는 앞선 ${HR.kind(true)}【이가】 이미 한참 멀어져 있었다. 녀석은 ${
+					place
+				}위로 들어왔다.`,
 			(name, it, place) =>
-				`Another ${HR.kind()} suddenly moved in front of ${name}, forcing the rider to slow down to avoid a collision. ${name} continued racing but finished ${place}.`,
+				`다른 ${HR.kind()}【이가】 갑자기 ${name} 앞으로 끼어들어, 기수는 충돌을 피하려 속도를 늦춰야 했다. ${name}【은는】 계속 달렸지만 ${({first: 1, second: 2, third: 3, fourth: 4, fifth: 5})[place] || String(place).replace("number ", "")}위로 들어왔다.`,
 		],
 		wide: [
 			(name, it, place) =>
-				`${name} moved too far towards the outside of the track while turning. The rider guided ${it.itobj} back towards the other horses, but the extra distance made ${it.itobj} fall behind. ${it.It} finished ${place}.`,
+				`${name}【이가】 코너를 돌며 트랙 바깥쪽으로 너무 크게 벗어났다. 기수가 녀석을 다른 말들 쪽으로 다시 이끌었지만, 늘어난 거리 탓에 뒤처지고 말았다. 녀석은 ${({first: 1, second: 2, third: 3, fourth: 4, fifth: 5})[place] || String(place).replace("number ", "")}위로 들어왔다.`,
 			(name, it, place) =>
-				`${name} moved away from the other horses while turning and had to travel farther around the corner. ${it.It} was not injured, but the extra distance cost ${it.itobj} time. ${it.It} finished ${place}.`,
+				`${name}【이가】 코너를 돌며 다른 말들에게서 멀어져 모퉁이를 더 멀리 돌아야 했다. 다치지는 않았지만, 늘어난 거리 때문에 시간을 잃었다. 녀석은 ${({first: 1, second: 2, third: 3, fourth: 4, fifth: 5})[place] || String(place).replace("number ", "")}위로 들어왔다.`,
 		],
 		stumble: [
 			(name, it, place) =>
-				`${name} briefly lost ${it.its} balance while running. ${it.It} managed to keep going, but several other horses passed ${it.itobj} before ${it.it} recovered. ${it.It} finished ${place}.`,
+				`${name}【이가】 달리다가 잠시 균형을 잃었다. 간신히 계속 달렸지만, 균형을 되찾기 전에 다른 말 몇 마리가 앞질렀다. 녀석은 ${({first: 1, second: 2, third: 3, fourth: 4, fifth: 5})[place] || String(place).replace("number ", "")}위로 들어왔다.`,
 			(name, it, place) =>
-				`${name} nearly fell while turning and had to slow down to regain ${it.its} balance. ${it.It} continued racing and finished ${place}, tired but not injured.`,
+				`${name}【이가】 코너를 돌다 넘어질 뻔해서 균형을 되찾으려고 속도를 늦춰야 했다. 계속 달려 ${({first: 1, second: 2, third: 3, fourth: 4, fifth: 5})[place] || String(place).replace("number ", "")}위로 들어왔고, 지치긴 했지만 다치지는 않았다.`,
 		],
 		beaten: [
-			(name, it, place) => `${name} ran as fast as ${it.it} could near the finish, but the horse in front stayed ahead. ${it.It} finished ${place}.`,
+			(name, it, place) => `${name}【은는】 결승선 근처에서 온 힘을 다해 달렸지만, 앞선 말이 끝내 앞자리를 지켰다. 녀석은 ${({first: 1, second: 2, third: 3, fourth: 4, fifth: 5})[place] || String(place).replace("number ", "")}위로 들어왔다.`,
 			(name, it, place) =>
-				`${name} stayed close to the other horses for most of the race but could not run fast enough to pass them. ${it.It} finished ${place}.`,
-			(name, it, place) => `${name} completed the race without any problems, but the other horses were faster. ${it.It} finished ${place}.`,
+				`${name}【은는】 경주 대부분 동안 다른 말들 바로 곁에 붙어 있었지만, 앞지를 만큼 빠르게 달리지는 못했다. 녀석은 ${({first: 1, second: 2, third: 3, fourth: 4, fifth: 5})[place] || String(place).replace("number ", "")}위로 들어왔다.`,
+			(name, it, place) => `${name}【은는】 아무 문제 없이 경주를 마쳤지만, 다른 말들이 더 빨랐다. 녀석은 ${({first: 1, second: 2, third: 3, fourth: 4, fifth: 5})[place] || String(place).replace("number ", "")}위로 들어왔다.`,
 		],
 	};
 
@@ -2078,8 +2078,8 @@ setup.horserace = setup.horserace || {};
 			.map(function (horse, index) {
 				const backed = horse.id === race.betHorseId ? " backed" : "";
 				let resultText = `${Math.floor(horse.progress)}%`;
-				if (horse.accident === true) resultText = `<strong><span style="color:#ff6b6b;">Injured</span></strong>`;
-				else if (horse.withdrawn === true) resultText = `<span style="color:#ffcf6b;">Withdrawn</span>`;
+				if (horse.accident === true) resultText = `<strong><span style="color:#ff6b6b;">부상</span></strong>`;
+				else if (horse.withdrawn === true) resultText = `<span style="color:#ffcf6b;">기권</span>`;
 
 				return `<tr class="${backed}">
 				<td>${HR.isOut(horse) ? "-" : index + 1}</td>
@@ -2093,36 +2093,36 @@ setup.horserace = setup.horserace || {};
 		const injured = race.horses.filter(horse => horse.accident === true && horse.id !== race.betHorseId);
 
 		let celebration = winner
-			? `<p><strong>${HR.escapeHtml(winner.name)}</strong> crosses the winning post first. The crowd cheers while the bookies start checking their slips.</p>`
-			: "<p>The result board changes, and nobody seems certain who crossed the line first.</p>";
+			? `<p><strong>${HR.escapeHtml(winner.name)}</strong>【이가】 가장 먼저 결승선을 통과한다. 관중이 환호하고, 마권업자들은 마권을 확인하기 시작한다.</p>`
+			: "<p>결과판이 바뀌지만, 누가 가장 먼저 결승선을 통과했는지 아무도 확신하지 못하는 듯하다.</p>";
 
 		for (const horse of injured) {
-			celebration += `<p>The vets are still with ${HR.escapeHtml(horse.name)} on the far side of the course.</p>`;
+			celebration += `<p>수의사들이 코스 반대편에서 아직 ${HR.escapeHtml(horse.name)}의 곁을 지키고 있다.</p>`;
 		}
 
 		if (race.betAmount > 0 && race.betHorseId !== "") {
 			const betHorse = HR.getHorse(race.betHorseId);
-			const betName = HR.escapeHtml(betHorse ? betHorse.name : `your ${HR.kind()}`);
-			const betLabel = race.betType === "place" ? "place bet" : "bet";
+			const betName = HR.escapeHtml(betHorse ? betHorse.name : `당신의 ${HR.kind()}`);
+			const betLabel = race.betType === "place" ? "입상 베팅" : "베팅";
 			if (race.won) {
 				if (betHorse && race.betType === "place" && race.winnerId !== betHorse.id) {
-					celebration += `<p>${HR.escapeHtml(betHorse.name)} finishes second, which is enough for a place.</p>`;
+					celebration += `<p>${HR.escapeHtml(betHorse.name)}【이가】 2위로 들어왔고, 입상에는 충분한 성적이다.</p>`;
 				}
-				celebration += `<p><strong><span style="color:#5fcf7b;">You won.</span></strong> Your ${HR.formatMoney(
+				celebration += `<p><strong><span style="color:#5fcf7b;">당신이 이겼다.</span></strong> ${betName}에 건 ${HR.formatMoney(
 					race.betAmount
-				)} ${betLabel} on ${betName} pays ${HR.formatMoney(race.payout)}.</p>`;
+				)} ${betLabel}의 지급액은 ${HR.formatMoney(race.payout)}이다.</p>`;
 			} else {
 				if (betHorse) celebration += `<p>${HR.backedStory(race, betHorse)}</p>`;
-				celebration += `<p><strong><span style="color:#ff6b6b;">You lost.</span></strong> Your ${HR.formatMoney(
+				celebration += `<p><strong><span style="color:#ff6b6b;">당신이 졌다.</span></strong> ${betName}에 건 ${HR.formatMoney(
 					race.betAmount
-				)} ${betLabel} does not return anything.</p>`;
+				)} ${betLabel}【은는】 한 푼도 돌아오지 않는다.</p>`;
 			}
 		}
 
 		return `<div class="horse-race-result">
 			${celebration}
 			<table class="horse-race-table">
-				<thead><tr><th>Place</th><th>${HR.kind(false, true)}</th><th>Finish</th></tr></thead>
+				<thead><tr><th>순위</th><th>${HR.kind(false, true)}</th><th>결과</th></tr></thead>
 				<tbody>${rows}</tbody>
 			</table>
 		</div>`;

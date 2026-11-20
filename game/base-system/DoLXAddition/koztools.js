@@ -18,7 +18,7 @@ function updatePronounSummary() {
 		const el = jQuery("#pronoun-current-label");
 		if (!el.length) return;
 		const updateText = () => {
-			el.text(typeof window.pronounSummaryLabel === "function" ? window.pronounSummaryLabel() : "they / them");
+			el.text(typeof window.pronounSummaryLabel === "function" ? window.pronounSummaryLabel() : "중성형(그들)");
 		};
 		updateText();
 		[
@@ -651,7 +651,7 @@ function xChangeCachedBodyUsable(slotName) {
 
 	setup.xChangeRepairNoticeOnce(
 		`xchange_invalid_cached_${prop}`,
-		`<b>X-Change cache notice</b><br>X-Change found an invalid generated body cache (<b>${slotName}</b>). It was not loaded; the body will be regenerated through the normal X-Change path.<br><br><b>Please report this with your save and steps if the new body looks wrong.</b>`
+		`<b>X-체인지 캐시 안내</b><br>X-체인지가 올바르지 않은 생성 몸 캐시(<b>${slotName}</b>)를 발견했습니다. 이를 불러오지 않았으며, 몸은 정상적인 X-체인지 경로로 다시 생성됩니다.<br><br><b>새 몸이 이상해 보이면 세이브 파일과 진행 과정을 함께 알려 주십시오.</b>`
 	);
 	try {
 		console.warn("Invalid generated body cache; regenerating", { slotName, prop, body });
@@ -1648,7 +1648,7 @@ function speechDailyCheck() {
 		const pool = ["meek", "shy", "neutral", "confident", "bratty"];
 		V.speechDailyAttitude = pool[random(0, pool.length - 1)];
 		V.speechDailyAttitudeDay = Time.days;
-		V.speechDailyMessage = `Today you feel especially ${V.speechDailyAttitude}.`;
+		V.speechDailyMessage = `오늘은 유난히 ${({ meek: "순종적인", shy: "수줍은", neutral: "중립적인", confident: "자신만만한", bratty: "반항적인" })[V.speechDailyAttitude] || V.speechDailyAttitude} 기분이 든다.`;
 		V.speechDailyMessagePending = 1;
 	} else {
 		delete V.speechDailyAttitude;
@@ -1730,25 +1730,25 @@ function repairBeautyBoostShape() {
 		V.beautyBoost.spa = {
 			amount: Number.isFinite(V.beautyBoost.spa) ? V.beautyBoost.spa : 0,
 			expires: 0,
-			treatment: "spa treatment",
+			treatment: "스파 시술",
 		};
 	}
-	if (typeof V.beautyBoost.spa !== "object") V.beautyBoost.spa = { amount: 0, expires: 0, treatment: "spa treatment" };
+	if (typeof V.beautyBoost.spa !== "object") V.beautyBoost.spa = { amount: 0, expires: 0, treatment: "스파 시술" };
 	if (!Number.isFinite(V.beautyBoost.spa.amount)) V.beautyBoost.spa.amount = 0;
 	if (!Number.isFinite(V.beautyBoost.spa.expires)) V.beautyBoost.spa.expires = 0;
-	if (typeof V.beautyBoost.spa.treatment !== "string") V.beautyBoost.spa.treatment = "spa treatment";
+	if (typeof V.beautyBoost.spa.treatment !== "string") V.beautyBoost.spa.treatment = "스파 시술";
 
 	if (V.beautyBoost.nails == null || typeof V.beautyBoost.nails === "number") {
 		V.beautyBoost.nails = {
 			amount: Number.isFinite(V.beautyBoost.nails) ? V.beautyBoost.nails : 0,
 			expires: 0,
-			treatment: "salon manicure",
+			treatment: "살롱 매니큐어",
 		};
 	}
-	if (typeof V.beautyBoost.nails !== "object") V.beautyBoost.nails = { amount: 0, expires: 0, treatment: "salon manicure" };
+	if (typeof V.beautyBoost.nails !== "object") V.beautyBoost.nails = { amount: 0, expires: 0, treatment: "살롱 매니큐어" };
 	if (!Number.isFinite(V.beautyBoost.nails.amount)) V.beautyBoost.nails.amount = 0;
 	if (!Number.isFinite(V.beautyBoost.nails.expires)) V.beautyBoost.nails.expires = 0;
-	if (typeof V.beautyBoost.nails.treatment !== "string") V.beautyBoost.nails.treatment = "salon manicure";
+	if (typeof V.beautyBoost.nails.treatment !== "string") V.beautyBoost.nails.treatment = "살롱 매니큐어";
 }
 window.repairBeautyBoostShape = repairBeautyBoostShape;
 $(document).on(":storyready :onloadsave", repairBeautyBoostShape);

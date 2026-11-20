@@ -165,13 +165,13 @@ setup.foodTransformOverride = {
 
 /* What eating one feels like. */
 setup.foodTransformText = {
-	bear: "The honey sits heavy and sweet in you.",
-	waterdragon: "You taste salt and cold water.",
-	cat: "You find yourself wanting to lick your fingers clean.",
-	wolf: "The meat is rich, and you want more of it.",
-	bird: "You pick at the last of it without thinking.",
-	fox: "The sweetness is sharp, like something taken from a hedgerow.",
-	bunny: "It leaves a green, earthy taste behind.",
+	bear: "꿀이 달고 묵직하게 몸속에 자리 잡는다.",
+	waterdragon: "짠맛과 차가운 물맛이 느껴진다.",
+	cat: "손가락을 핥아 깨끗이 하고 싶어진다.",
+	wolf: "고기가 진하고, 더 먹고 싶어진다.",
+	bird: "아무 생각 없이 마지막 남은 것을 쪼아 먹는다.",
+	fox: "단맛이 날카롭다. 산울타리에서 따 온 것 같다.",
+	bunny: "푸르고 흙내 나는 맛이 입안에 남는다.",
 };
 
 setup.foodTransformThreshold = 3;
@@ -179,12 +179,12 @@ setup.foodTransformThreshold = 3;
 setup.foodTransformPriority = ["waterdragon", "wolf", "bear", "cat", "fox", "bird", "bunny"];
 
 setup.foodFlavourText = {
-	sweet: "The sugar cheers you up, but makes you feel tired later.",
-	spicy: "The hot meal cheers you up and wakes you up, but it hurts a bit.",
-	seafood: "The meal helps you feel calmer, but leaves you a bit sore.",
-	alcohol: "The drink helps you relax, but makes you sleepy.",
-	hearty: "The filling meal helps you relax and eases your pain, but makes you sleepy.",
-	light: "The light meal helps you relax a little and wakes you up.",
+	sweet: "설탕 덕에 기운이 나지만, 나중에 피곤해진다.",
+	spicy: "매운 음식에 기운이 나고 정신이 들지만, 속이 조금 아프다.",
+	seafood: "식사 덕에 마음이 한결 차분해지지만, 몸이 조금 쑤신다.",
+	alcohol: "술 덕에 긴장이 풀리지만, 졸음이 온다.",
+	hearty: "든든한 식사 덕에 긴장이 풀리고 통증이 가라앉지만, 졸음이 온다.",
+	light: "가벼운 식사 덕에 긴장이 조금 풀리고 정신이 맑아진다.",
 };
 
 /* State */
@@ -220,18 +220,18 @@ window.pocketCommit = pocketCommit;
    Only allows access when the PC is freely standing in their own body.
    `ignoreCompany` lets you access your bag even when a shopkeeper is present. */
 function pocketLockReason(ignoreCompany) {
-	if (V.passage === "Start" || V.passage === "Start2") return "Not yet.";
-	if (V.hc) return "There's nothing on you here but rags.";
-	if (V.statFreeze || V.frozenValues || V.replayScene) return "This already happened. You can't reach for anything now.";
+	if (V.passage === "Start" || V.passage === "Start2") return "아직은 안 된다.";
+	if (V.hc) return "여기서 당신에게는 누더기뿐이다.";
+	if (V.statFreeze || V.frozenValues || V.replayScene) return "이미 일어난 일이다. 지금은 아무것도 손댈 수 없다.";
 	const badEnd = Array.isArray(V.badEndStats) ? V.badEndStats.last() : undefined;
-	if (badEnd && badEnd.trackedStart && badEnd.trackedEnd === undefined) return "Everything you were carrying was taken from you.";
-	if (V.combat) return "You can't rummage through your things mid-fight.";
-	if (V.dancing) return "Not while you're on stage.";
-	if (V.captured) return "Your belongings are out of reach.";
-	if (V.trance) return "Your hands won't answer you.";
+	if (badEnd && badEnd.trackedStart && badEnd.trackedEnd === undefined) return "지니고 있던 모든 것을 빼앗겼다.";
+	if (V.combat) return "싸우는 도중에 소지품을 뒤질 수 없다.";
+	if (V.dancing) return "무대 위에서는 안 된다.";
+	if (V.captured) return "소지품에 손이 닿지 않는다.";
+	if (V.trance) return "손이 말을 듣지 않는다.";
 	/* Valid occupied NPC slots mean the PC is in an active character scene */
 	if (!ignoreCompany && Array.isArray(V.NPCList) && V.NPCList.some(npc => npc && npc.gender && npc.description))
-		return "Not while someone is dealing with you.";
+		return "누군가가 당신을 상대하는 중에는 안 된다.";
 	return "";
 }
 window.pocketLockReason = pocketLockReason;
@@ -450,7 +450,7 @@ function pocketPerfumeWear(id) {
 		return error.message;
 	}
 	pocketCommit();
-	return `You dab on some ${bottle.name}.`;
+	return `당신은 ${bottle.name} 향수를 살짝 바른다.`;
 }
 window.pocketPerfumeWear = pocketPerfumeWear;
 
@@ -590,7 +590,7 @@ function pocketPillBlockedReason(name) {
 	if (!item) return "";
 	const reason = typeof item.take_blocked_reason === "function" ? item.take_blocked_reason() : "";
 	if (reason) return reason;
-	return item.type === "xchange" ? "You can't take this pill in your current state." : "";
+	return item.type === "xchange" ? "지금 상태에서는 이 알약을 먹을 수 없습니다." : "";
 }
 window.pocketPillBlockedReason = pocketPillBlockedReason;
 
@@ -800,16 +800,16 @@ function foodEffectText(key) {
 	const drink = foodTags(key).includes("drink");
 	let size;
 	if (drink) {
-		if (scale < 0.5) size = "It is only a little drink, so the effect is weak.";
-		else if (scale < 0.85) size = "It is a small drink, so the effect is mild.";
-		else if (scale < 1.25) size = "It is a satisfying drink, so you feel the effect properly.";
-		else if (scale < 1.75) size = "It is a generous drink, so the effect is strong.";
-		else size = "It is a very filling drink, so the effect is very strong.";
-	} else if (scale < 0.5) size = "It is only a small snack, so the effect is weak.";
-	else if (scale < 0.85) size = "It is a small meal, so the effect is mild.";
-	else if (scale < 1.25) size = "It is a regular meal, so you feel the effect properly.";
-	else if (scale < 1.75) size = "It is a big meal, so the effect is strong.";
-	else size = "It is a very big meal, so the effect is very strong.";
+		if (scale < 0.5) size = "아주 작은 음료라서 효과가 약하다.";
+		else if (scale < 0.85) size = "작은 음료라서 효과가 약한 편이다.";
+		else if (scale < 1.25) size = "만족스러운 음료라서 효과를 제대로 느낀다.";
+		else if (scale < 1.75) size = "넉넉한 음료라서 효과가 강하다.";
+		else size = "배가 든든해지는 음료라서 효과가 매우 강하다.";
+	} else if (scale < 0.5) size = "아주 작은 간식이라서 효과가 약하다.";
+	else if (scale < 0.85) size = "작은 식사라서 효과가 약한 편이다.";
+	else if (scale < 1.25) size = "보통 식사라서 효과를 제대로 느낀다.";
+	else if (scale < 1.75) size = "푸짐한 식사라서 효과가 강하다.";
+	else size = "아주 푸짐한 식사라서 효과가 매우 강하다.";
 	return `${setup.foodFlavourText[foodFlavour(key)]} ${size}`;
 }
 window.foodEffectText = foodEffectText;
@@ -970,10 +970,10 @@ DefineMacro("pocketStatArrows", function () {
 	const effects = this.args[0];
 	if (!effects || typeof statDisplay !== "object") return;
 	const rows = [
-		["stress", "Stress"],
-		["trauma", "Trauma"],
-		["pain", "Pain"],
-		["tiredness", "Fatigue"],
+		["stress", "스트레스"],
+		["trauma", "트라우마"],
+		["pain", "고통"],
+		["tiredness", "피로도"],
 	];
 	rows.forEach(([key, label]) => {
 		const amount = Number(effects[key]) || 0;

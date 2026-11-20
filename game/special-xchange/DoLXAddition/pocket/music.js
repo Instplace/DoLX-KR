@@ -73,7 +73,7 @@ window.PocketMusic = (() => {
 		paused = false;
 		audio.play().catch(() => {
 			if (generation !== attempt) return;
-			message = "This song could not play. Try another file or press Play again.";
+			message = "이 곡을 재생할 수 없습니다. 다른 파일을 시도하거나 재생을 다시 누르십시오.";
 			failed = true;
 			stop();
 		});
@@ -82,7 +82,7 @@ window.PocketMusic = (() => {
 	function play(id, automatic = false) {
 		if (!available() || (!automatic && pocketLockReason())) return;
 		if (V.options?.audio !== 1) {
-			message = "Enable audio in Settings to listen to music";
+			message = "음악을 들으려면 설정에서 오디오를 켜십시오";
 			failed = true;
 			refresh();
 			return;
@@ -90,7 +90,7 @@ window.PocketMusic = (() => {
 		const song = library().find(entry => entry.id === id);
 		if (!song) return;
 		if (!song.path && !files.has(id)) {
-			message = `Select the music file again: ${song.title}`;
+			message = `음악 파일을 다시 선택하십시오: ${song.title}`;
 			failed = true;
 			refresh();
 			return;
@@ -138,14 +138,14 @@ window.PocketMusic = (() => {
 			files.set(id, file);
 			if (!library().some(song => song.id === id)) library().push({ id, title: file.name.replace(/\.[^.]+$/, "") });
 		}
-		message = "Files added for this session.";
+		message = "이번 세션에 파일을 추가했습니다.";
 		failed = false;
 		refresh();
 	}
 
 	/* Personal files travel inside the preset as base64, so loading it restores the audio too. */
 	async function exportPreset() {
-		message = "Preparing preset...";
+		message = "프리셋을 준비하는 중...";
 		failed = false;
 		refresh();
 		const presetSongs = [];
@@ -162,7 +162,7 @@ window.PocketMusic = (() => {
 		}
 		const preset = { type: "dol-music", version: 2, mode, repeat, songs: presetSongs, favourites: [...favourites] };
 		saveAs(new Blob([JSON.stringify(preset)], { type: "application/json" }), "music-playlist.json");
-		message = files.size ? "Preset saved with your music inside." : "Preset saved.";
+		message = files.size ? "음악이 담긴 프리셋을 저장했습니다." : "프리셋을 저장했습니다.";
 		refresh();
 	}
 
@@ -209,10 +209,10 @@ window.PocketMusic = (() => {
 			repeat = data.mode === "one" || data.repeat === true;
 			failed = false;
 			message = songs.some(song => !song.path && !files.has(song.id))
-				? "Preset loaded. Some songs were saved without audio: pick those files again to play them."
-				: "Preset loaded.";
+				? "프리셋을 불러왔습니다. 일부 곡은 음원 없이 저장되어 있습니다. 재생하려면 해당 파일을 다시 선택하십시오."
+				: "프리셋을 불러왔습니다.";
 		} catch {
-			message = "This is not a valid music playlist preset.";
+			message = "올바른 음악 재생 목록 프리셋이 아닙니다.";
 			failed = true;
 		}
 		refresh();
@@ -235,15 +235,15 @@ window.PocketMusic = (() => {
 			return node;
 		};
 		if (!available() || pocketLockReason()) {
-			const locked = text(pane, "p", pocketLockReason() || "Wear headphones to listen to music.");
+			const locked = text(pane, "p", pocketLockReason() || "음악을 들으려면 헤드폰을 착용하십시오.");
 			if (pocketLockReason()) locked.className = "red";
 			return pane;
 		}
 		const player = text(pane, "section", "");
 		player.className = "pocket-music-player pocket-slot";
-		const status = text(player, "div", active ? (paused ? "Paused" : "Now playing") : "Nothing playing");
+		const status = text(player, "div", active ? (paused ? "일시정지됨" : "재생 중") : "재생 중인 곡 없음");
 		status.className = "pocket-music-status";
-		text(player, "div", active ? library().find(song => song.id === current)?.title : "Pick a song from the library below").className = "pocket-music-now";
+		text(player, "div", active ? library().find(song => song.id === current)?.title : "아래 라이브러리에서 곡을 고르십시오").className = "pocket-music-now";
 		const seek = text(player, "div", "");
 		seek.className = "pocket-music-seek";
 		const bar = document.createElement("input");
@@ -252,7 +252,7 @@ window.PocketMusic = (() => {
 		bar.min = 0;
 		bar.step = 1;
 		bar.disabled = !active;
-		bar.setAttribute("aria-label", "Song position");
+		bar.setAttribute("aria-label", "재생 위치");
 		bar.addEventListener("input", () => {
 			audio.currentTime = Number(bar.value);
 			showTime();
@@ -274,12 +274,12 @@ window.PocketMusic = (() => {
 		};
 		icon(
 			button(controls, "", () => stop(), !active),
-			"Stop",
+			"정지",
 			'<rect x="6" y="6" width="12" height="12" rx="1"/>'
 		);
 		icon(
 			button(controls, "", () => next(-1)),
-			"Previous",
+			"이전",
 			'<rect x="5" y="5" width="2.5" height="14" rx="1"/><path d="M19 5v14L8.5 12z"/>'
 		);
 		const toggle = icon(
@@ -296,13 +296,13 @@ window.PocketMusic = (() => {
 					refresh();
 				}
 			}),
-			active && !paused ? "Pause" : "Play",
+			active && !paused ? "일시정지" : "재생",
 			active && !paused ? '<rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/>' : '<path d="M8 5v14l11-7z"/>'
 		);
 		toggle.classList.add("pocket-music-main");
 		icon(
 			button(controls, "", () => next()),
-			"Next",
+			"다음",
 			'<rect x="16.5" y="5" width="2.5" height="14" rx="1"/><path d="M5 5v14l10.5-7z"/>'
 		);
 		const repeatButton = icon(
@@ -310,37 +310,37 @@ window.PocketMusic = (() => {
 				repeat = !repeat;
 				refresh();
 			}),
-			"Repeat one",
+			"한 곡 반복",
 			'<path d="M7 7h9l-2-2m2 2-2 2M17 17H8l2 2m-2-2 2-2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><text x="12" y="14.5" font-size="7" text-anchor="middle" font-weight="700">1</text>'
 		);
 		repeatButton.setAttribute("aria-pressed", String(repeat));
 		const modes = text(player, "div", "");
 		modes.className = "pocket-music-modes";
 		modes.setAttribute("role", "group");
-		modes.setAttribute("aria-label", "Playback");
+		modes.setAttribute("aria-label", "재생 방식");
 
 		/* Force Play: above the buttons */
 		modes.style.display = "flex";
 		modes.style.flexDirection = "column";
 		modes.style.alignItems = "flex-start";
 
-		text(modes, "div", "Play:");
+		text(modes, "div", "재생 대상:");
 
 		const modeButtons = text(modes, "div", "");
 		modeButtons.style.display = "flex";
 		modeButtons.style.flexWrap = "wrap";
 
 		for (const [value, title] of [
-			["all", "All songs"],
-			["favourites", "Favourites"],
-			["uploaded", "Uploaded"],
+			["all", "모든 곡"],
+			["favourites", "즐겨찾기"],
+			["uploaded", "올린 곡"],
 		]) {
 			button(modeButtons, title, () => {
 				mode = value;
 				refresh();
 			}).setAttribute("aria-pressed", String(mode === value));
 		}
-		text(player, "div", "Volume follows the BGM setting.").className = "pocket-music-hint";
+		text(player, "div", "음량은 BGM 설정을 따릅니다.").className = "pocket-music-hint";
 		if (message) {
 			const notice = text(pane, "p", message);
 			notice.setAttribute("role", "status");
@@ -348,11 +348,11 @@ window.PocketMusic = (() => {
 		}
 		const imports = text(pane, "section", "");
 		imports.className = "pocket-section pocket-music-imports";
-		text(imports, "div", "Your own music").className = "pocket-section-header";
+		text(imports, "div", "내 음악").className = "pocket-section-header";
 		text(
 			imports,
 			"p",
-			"Add audio files from your device. They stay until you close or reload the game. Save a preset to keep them: it stores your songs, order, and favourites in one file so loading it brings everything back. Presets with many songs are large files."
+			"기기에서 오디오 파일을 추가하십시오. 파일은 게임을 닫거나 새로 고칠 때까지 유지됩니다. 프리셋을 저장하면 곡, 순서, 즐겨찾기가 파일 하나에 담겨 불러올 때 모두 복원됩니다. 곡이 많은 프리셋은 파일이 큽니다."
 		).className = "pocket-music-hint";
 		const picker = (title, accept, multiple, action) => {
 			const row = text(imports, "label", title);
@@ -364,28 +364,28 @@ window.PocketMusic = (() => {
 			input.addEventListener("change", () => action(input.files));
 			row.append(input);
 		};
-		picker("Add music", "audio/*,.mp3,.ogg,.wav,.m4a,.aac,.flac,.opus", true, importFiles);
-		picker("Load preset", ".json,application/json", false, selected => importPreset(selected[0]));
+		picker("음악 추가", "audio/*,.mp3,.ogg,.wav,.m4a,.aac,.flac,.opus", true, importFiles);
+		picker("프리셋 불러오기", ".json,application/json", false, selected => importPreset(selected[0]));
 		const saveRow = text(imports, "div", "");
 		saveRow.className = "pocket-music-field";
-		text(saveRow, "span", "Save preset");
-		button(saveRow, "Download preset file", () =>
+		text(saveRow, "span", "프리셋 저장");
+		button(saveRow, "프리셋 파일 받기", () =>
 			exportPreset().catch(() => {
-				message = "The preset could not be saved. Try again with fewer songs.";
+				message = "프리셋을 저장할 수 없습니다. 곡 수를 줄여 다시 시도하십시오.";
 				failed = true;
 				refresh();
 			})
 		);
 		const libraryHeader = text(pane, "div", "");
 		libraryHeader.className = "pocket-section-header pocket-music-library-header";
-		text(libraryHeader, "span", "Library");
-		text(libraryHeader, "span", `${library().length} songs · ${favourites.size} favourites`).className = "pocket-music-count";
-		const searchLabel = text(pane, "label", "Search");
+		text(libraryHeader, "span", "라이브러리");
+		text(libraryHeader, "span", `${library().length}곡 · 즐겨찾기 ${favourites.size}곡`).className = "pocket-music-count";
+		const searchLabel = text(pane, "label", "검색");
 		searchLabel.className = "pocket-music-field";
 		const searchInput = document.createElement("input");
 		searchInput.type = "search";
 		searchInput.value = search;
-		searchInput.placeholder = "Song or artist";
+		searchInput.placeholder = "곡 또는 아티스트";
 		searchLabel.append(searchInput);
 		const list = text(pane, "ol", "");
 		list.className = "pocket-music-list";
@@ -398,17 +398,17 @@ window.PocketMusic = (() => {
 			rows.push({ row, title: song.title.toLowerCase() });
 			const title = text(row, "span", song.title);
 			title.className = "pocket-music-title";
-			if (missing) text(title, "span", " (pick the file again)").className = "pocket-music-hint";
+			if (missing) text(title, "span", " (파일을 다시 선택하십시오)").className = "pocket-music-hint";
 			const actions = text(row, "div", "");
 			actions.className = "pocket-music-controls";
-			button(actions, active && current === song.id ? "Playing" : "Play", () => play(song.id), missing);
+			button(actions, active && current === song.id ? "재생 중" : "재생", () => play(song.id), missing);
 			const favourite = button(actions, favourites.has(song.id) ? "★" : "☆", () => {
 				if (favourites.has(song.id)) favourites.delete(song.id);
 				else favourites.add(song.id);
 				refresh();
 			});
 			favourite.className = "pocket-music-fav";
-			favourite.setAttribute("aria-label", `Favourite ${song.title}`);
+			favourite.setAttribute("aria-label", `${song.title} 즐겨찾기`);
 			favourite.setAttribute("aria-pressed", String(favourites.has(song.id)));
 			button(
 				actions,
@@ -419,9 +419,9 @@ window.PocketMusic = (() => {
 					refresh();
 				},
 				songs.indexOf(song) === 0
-			).setAttribute("aria-label", `Move ${song.title} up`);
+			).setAttribute("aria-label", `${song.title} 위로 옮기기`);
 			if (!song.path)
-				button(actions, "Remove", () => {
+				button(actions, "삭제", () => {
 					if (current === song.id && active) stop();
 					files.delete(song.id);
 					favourites.delete(song.id);
@@ -433,8 +433,8 @@ window.PocketMusic = (() => {
 			pane,
 			"p",
 			mode === "uploaded" && !rows.length
-				? "No uploaded songs yet. Use Add music above to add files from your device."
-				: "No songs here. Add favourites from All songs, or try another search."
+				? "아직 올린 곡이 없습니다. 위의 음악 추가로 기기의 파일을 추가하십시오."
+				: "여기에는 곡이 없습니다. 모든 곡에서 즐겨찾기를 추가하거나 다른 검색어를 시도하십시오."
 		);
 		empty.className = "pocket-empty";
 		const filter = () => {
@@ -472,7 +472,7 @@ window.PocketMusic = (() => {
 	});
 	audio.addEventListener("error", () => {
 		if (!active || !audio.error) return;
-		message = "This song could not play. Try another file.";
+		message = "이 곡을 재생할 수 없습니다. 다른 파일을 시도하십시오.";
 		failed = true;
 		stop();
 	});

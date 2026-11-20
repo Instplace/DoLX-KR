@@ -67,7 +67,7 @@
 			outcome: null,
 			disease: d.pathogens[options.disease] ? options.disease : "bacteria",
 			difficulty: d.difficulties[options.difficulty] ? options.difficulty : "normal",
-			name: options.name || "Pathogen",
+			name: options.name || "병원체",
 			day: 1,
 			dna: d.tuning.startingDna + extraDna,
 			upgrades: [],
@@ -75,7 +75,7 @@
 			response: { stage: 0, detectedDay: null },
 			regions,
 			effects: [],
-			log: [{ day: 1, text: `${d.regions[origin].name} reports its first cases.`, tone: "" }],
+			log: [{ day: 1, text: `${d.regions[origin].name}에서 첫 감염 사례가 보고되었다.`, tone: "" }],
 			origin,
 			traits,
 			mutations: [],
@@ -100,7 +100,7 @@
 		if (game.outcome === undefined) game.outcome = null;
 		if (typeof game.disease !== "string") game.disease = "bacteria";
 		if (typeof game.difficulty !== "string") game.difficulty = "normal";
-		if (typeof game.name !== "string") game.name = "Pathogen";
+		if (typeof game.name !== "string") game.name = "병원체";
 		if (!Number.isInteger(game.day) || game.day < 1) game.day = 1;
 		if (!Number.isFinite(game.dna) || game.dna < 0) game.dna = 0;
 		if (!Array.isArray(game.upgrades)) game.upgrades = [];
@@ -220,15 +220,15 @@
 			d.difficulties[game.difficulty] ? d.difficulties[game.difficulty].name : game.difficulty
 		} / ${d.regions[game.origin].name}`;
 		if (r) {
-			r.unlocked.forEach(u => lines.push({ tone: "green", text: u.kind === "traits" ? `Trait unlocked: ${u.name}!` : `${u.name} unlocked!` }));
-			if (r.first) lines.push({ tone: "", text: `First win, ${label}: day ${game.day - 1}.` });
-			else if (r.day) lines.push({ tone: "green", text: `New best ${label}: day ${r.day.value} (was day ${r.day.previous}).` });
+			r.unlocked.forEach(u => lines.push({ tone: "green", text: u.kind === "traits" ? `특성 해금: ${u.name}!` : `${u.name} 해금!` }));
+			if (r.first) lines.push({ tone: "", text: `첫 승리, ${label}: ${game.day - 1}일째.` });
+			else if (r.day) lines.push({ tone: "green", text: `최고 기록 경신, ${label}: ${r.day.value}일째 (이전 ${r.day.previous}일째).` });
 			if (r.cure && !r.first && r.cure.previous !== null)
-				lines.push({ tone: "green", text: `Lowest cure at victory, ${label}: ${r.cure.value}% (was ${r.cure.previous}%).` });
-			if (r.highest) lines.push({ tone: "", text: `Highest difficulty cleared: ${d.difficulties[game.difficulty].name}.` });
+				lines.push({ tone: "green", text: `승리 시점 최저 치료제 진행도, ${label}: ${r.cure.value}% (이전 ${r.cure.previous}%).` });
+			if (r.highest) lines.push({ tone: "", text: `최고 클리어 난이도: ${d.difficulties[game.difficulty].name}.` });
 		}
 		const best = meta && meta.record && meta.record.best ? meta.record.best[gameKey(game)] : null;
-		if (best && game.status === "lost") lines.push({ tone: "", text: `Your best win with this setup is day ${best.day}.` });
+		if (best && game.status === "lost") lines.push({ tone: "", text: `이 설정의 최고 승리 기록은 ${best.day}일째다.` });
 		return { label, lines };
 	}
 
@@ -374,41 +374,41 @@
 		const lines = [];
 		if (id === null) {
 			for (const [stat, label] of [
-				["infectivity", "Infectivity"],
-				["severity", "Severity"],
-				["lethality", "Lethality"],
+				["infectivity", "감염력"],
+				["severity", "중증도"],
+				["lethality", "치사율"],
 			]) {
 				if (effects[stat]) lines.push(`${label} ${signed(effects[stat])}`);
 			}
-			if (effects.resistance) lines.push(`Cure resistance ${signed(Math.round(effects.resistance * 100))}%`);
-			if (effects.cure !== undefined) lines.push(`Cure research ${pctChange(effects.cure)}`);
+			if (effects.resistance) lines.push(`치료제 내성 ${signed(Math.round(effects.resistance * 100))}%`);
+			if (effects.cure !== undefined) lines.push(`치료제 연구 ${pctChange(effects.cure)}`);
 		}
-		if (effects.spread !== undefined) lines.push(`Spread in every region ${pctChange(effects.spread)}`);
+		if (effects.spread !== undefined) lines.push(`모든 지역의 확산 ${pctChange(effects.spread)}`);
 		for (const [rid, m] of Object.entries(effects.regions || {})) {
-			if (id === null) lines.push(`Spread in ${d.regions[rid].name} ${pctChange(m)}`);
-			else if (rid === id) lines.push(`Spread here ${pctChange(m)}`);
+			if (id === null) lines.push(`${d.regions[rid].name}의 확산 ${pctChange(m)}`);
+			else if (rid === id) lines.push(`이 지역의 확산 ${pctChange(m)}`);
 		}
-		if (effects.travel !== undefined) lines.push(`Travel between regions ${pctChange(effects.travel)}`);
+		if (effects.travel !== undefined) lines.push(`지역 간 이동 ${pctChange(effects.travel)}`);
 		for (const [type, m] of Object.entries(effects.routes || {})) {
-			if (id === null || routeTypes.includes(type)) lines.push(`Infection along ${d.routeTypes[type].name}s ${pctChange(m)}`);
+			if (id === null || routeTypes.includes(type)) lines.push(`${d.routeTypes[type].name} 경유 감염 ${pctChange(m)}`);
 		}
 		if (id === null) {
-			if (effects.visibility) lines.push(`Attention drawn ${signed(effects.visibility)}`);
-			if (effects.dnaReward !== undefined) lines.push(`DNA from milestones ${pctChange(effects.dnaReward)}`);
-			if (effects.pressure !== undefined) lines.push(`Response pressure ${pctChange(effects.pressure)}`);
+			if (effects.visibility) lines.push(`주목도 ${signed(effects.visibility)}`);
+			if (effects.dnaReward !== undefined) lines.push(`이정표 DNA ${pctChange(effects.dnaReward)}`);
+			if (effects.pressure !== undefined) lines.push(`대응 압력 ${pctChange(effects.pressure)}`);
 			if (effects.infectedWork)
-				lines.push(`Infected people do ${Math.round(Math.abs(effects.infectedWork) * 100)} points ${effects.infectedWork < 0 ? "less" : "more"} medical work`);
-			if (effects.startingDna) lines.push(`Starting DNA ${effects.startingDna > 0 ? "+" : ""}${effects.startingDna}`);
-			if (effects.startingInfected) lines.push(`Starting infected ${effects.startingInfected > 0 ? "+" : ""}${effects.startingInfected}`);
-			if (effects.restrictionResist) lines.push(`Ignores ${Math.round(effects.restrictionResist * 100)}% of travel restrictions`);
-			if (effects.cureHardening) lines.push("Slows cure research as it nears completion");
+				lines.push(`감염자의 의료 업무 ${Math.round(Math.abs(effects.infectedWork) * 100)}%p ${effects.infectedWork < 0 ? "감소" : "증가"}`);
+			if (effects.startingDna) lines.push(`시작 DNA ${effects.startingDna > 0 ? "+" : ""}${effects.startingDna}`);
+			if (effects.startingInfected) lines.push(`시작 감염자 ${effects.startingInfected > 0 ? "+" : ""}${effects.startingInfected}`);
+			if (effects.restrictionResist) lines.push(`이동 제한의 ${Math.round(effects.restrictionResist * 100)}%를 무시한다`);
+			if (effects.cureHardening) lines.push("완성에 가까워질수록 치료제 연구를 늦춘다");
 		}
 		for (const [cid, m] of Object.entries(effects.climates || {})) {
 			const cname = d.climates[cid] ? d.climates[cid].name.toLowerCase() : cid;
-			if (id === null) lines.push(`Spread in ${cname} regions ${pctChange(m)}`);
-			else if (regionClimate === cid) lines.push(`Spread here ${pctChange(m)}`);
+			if (id === null) lines.push(`${cname} 기후 지역의 확산 ${pctChange(m)}`);
+			else if (regionClimate === cid) lines.push(`이 지역의 확산 ${pctChange(m)}`);
 		}
-		if (effects.isolate) lines.push("No travel in or out");
+		if (effects.isolate) lines.push("드나드는 이동 없음");
 		return lines;
 	}
 
@@ -435,27 +435,27 @@
 
 	const densityWord = def =>
 		def.density >= 1.2
-			? "Very dense population"
+			? "인구 매우 밀집"
 			: def.density >= 0.95
-			? "Ordinary density"
+			? "보통 밀도"
 			: def.density >= 0.75
-			? "Spread-out population"
-			: "Sparse population";
+			? "인구 분산"
+			: "인구 희박";
 	const careWord = def =>
-		def.healthcare >= 2 ? "Major medical centre" : def.healthcare >= 1.5 ? "Good healthcare" : def.healthcare >= 1 ? "Ordinary healthcare" : "Weak healthcare";
+		def.healthcare >= 2 ? "주요 의료 중심지" : def.healthcare >= 1.5 ? "양호한 의료" : def.healthcare >= 1 ? "보통 수준의 의료" : "취약한 의료";
 
 	function regionTraitLines(def, capacityShare) {
 		const d = data();
 		const lines = [];
 		const density = densityWord(def);
-		lines.push(def.density === 1 ? `${density}.` : `${density}: local spread ${pctChange(def.density)}.`);
+		lines.push(def.density === 1 ? `${density}.` : `${density}: 지역 확산 ${pctChange(def.density)}.`);
 		const care = careWord(def);
-		lines.push(`${care}: about ${Math.round(capacityShare * 100)}% of the world's medical capacity while everyone is healthy.`);
+		lines.push(`${care}: 모두가 건강할 때 세계 의료 역량의 약 ${Math.round(capacityShare * 100)}%를 차지한다.`);
 		const climate = d.climates[def.climate];
-		if (climate) lines.push(climate.density ? `${climate.name} climate: local spread ${pctChange(climate.density)}.` : `${climate.name} climate.`);
-		if (def.hub >= 1.3) lines.push("Busy travel hub: infection leaves this region more easily.");
-		else if (def.hub <= 0.8) lines.push("Remote: infection leaves this region less easily.");
-		else lines.push("Ordinary travel links.");
+		if (climate) lines.push(climate.density ? `${climate.name} 기후: 지역 확산 ${pctChange(climate.density)}.` : `${climate.name} 기후.`);
+		if (def.hub >= 1.3) lines.push("붐비는 교통 요충지: 감염이 이 지역을 더 쉽게 빠져나간다.");
+		else if (def.hub <= 0.8) lines.push("외진 곳: 감염이 이 지역을 덜 쉽게 빠져나간다.");
+		else lines.push("보통 수준의 교통 연결.");
 		return lines;
 	}
 
@@ -466,14 +466,14 @@
 		if (!def) return null;
 		const climate = d.climates[def.climate];
 		const facts = [];
-		if (climate && climate.density && climate.density < 1) facts.push("cold");
-		if (def.density >= 1.2) facts.push("densely populated");
-		else if (def.density < 0.75) facts.push("sparsely populated");
-		if (def.hub >= 1.3) facts.push("a busy travel hub");
-		else if (def.hub <= 0.8) facts.push("remote");
-		if (def.healthcare >= 2) facts.push("home to a major medical centre");
-		else if (def.healthcare < 1) facts.push("short of medical care");
-		const list = facts.length > 1 ? `${facts.slice(0, -1).join(", ")}${facts.length > 2 ? ", and " : " and "}${facts[facts.length - 1]}` : facts[0];
+		if (climate && climate.density && climate.density < 1) facts.push("추운 기후");
+		if (def.density >= 1.2) facts.push("인구 밀집");
+		else if (def.density < 0.75) facts.push("인구 희박");
+		if (def.hub >= 1.3) facts.push("붐비는 교통 요충지");
+		else if (def.hub <= 0.8) facts.push("외진 곳");
+		if (def.healthcare >= 2) facts.push("주요 의료 중심지 보유");
+		else if (def.healthcare < 1) facts.push("의료 부족");
+		const list = facts.length > 1 ? `${facts.slice(0, -1).join(", ")}${facts.length > 2 ? ", " : ", "}${facts[facts.length - 1]}` : facts[0];
 		return {
 			id,
 			name: def.name,
@@ -484,7 +484,7 @@
 			care: careWord(def),
 			links: d.routes.filter(rt => rt.a === id || rt.b === id).length,
 			neighbours: d.routes.filter(rt => rt.a === id || rt.b === id).map(rt => d.regions[rt.a === id ? rt.b : rt.a].name),
-			summary: list ? `${def.name} is ${list}.` : "",
+			summary: list ? `${def.name}: ${list}.` : "",
 		};
 	}
 
@@ -515,7 +515,7 @@
 		});
 		const measureLines = measureLinesFor(game, id, routeTypes);
 		if (measureLines.length)
-			effects.push({ source: "response", name: `Authorities (${stageDef(game.response.stage).name})`, daysLeft: null, lines: measureLines });
+			effects.push({ source: "response", name: `당국 (${stageDef(game.response.stage).name})`, daysLeft: null, lines: measureLines });
 		const work = infectedWork(game);
 		let fullCapacity = 0;
 		let workingCapacity = 0;
@@ -596,14 +596,14 @@
 					u.requires
 						.map(nameOf)
 						.join(", ")
-						.replace(/, ([^,]+)$/, u.requires.length > 2 ? ", and $1" : " and $1")
+						.replace(/, ([^,]+)$/, " 및 $1")
 				);
 			if (u.requiresAny)
 				needs.push(
 					u.requiresAny
 						.map(nameOf)
 						.join(", ")
-						.replace(/, ([^,]+)$/, u.requiresAny.length > 2 ? ", or $1" : " or $1")
+						.replace(/, ([^,]+)$/, " 또는 $1")
 				);
 			const view = {
 				id,
@@ -617,8 +617,8 @@
 				mutatedDay: (game.mutations.find(m => m && m.upgrade === id) || {}).day || null,
 				available: check.ok,
 				state: owned ? "owned" : check.ok ? "available" : check.reason,
-				requirementText: needs.length ? `Needs ${needs.join(", and ")}` : "",
-				excludedText: plan.reason === "excluded" ? `Excluded by ${nameOf(plan.excludedBy)}` : "",
+				requirementText: needs.length ? `필요: ${needs.join("; ")}` : "",
+				excludedText: plan.reason === "excluded" ? `${nameOf(plan.excludedBy)} 때문에 제외됨` : "",
 				effectLines: effectLinesFor(u.effects, null, null),
 				tag: u.tag || "",
 				requires: u.requires ? [...u.requires] : [],
@@ -683,13 +683,13 @@
 	}
 
 	const abilityReasons = {
-		over: "The outbreak is over.",
-		none: "This strain has no ability.",
-		charges: "No charges left.",
-		active: "It is already active.",
-		target: "Choose a region to seed.",
-		reached: "That region has already been reached.",
-		isolated: "That region is isolated, so spores cannot be placed there.",
+		over: "전염병이 끝났다.",
+		none: "이 병원체에는 능력이 없다.",
+		charges: "남은 사용 횟수가 없다.",
+		active: "이미 발동 중이다.",
+		target: "포자를 심을 지역을 고른다.",
+		reached: "그 지역에는 이미 감염이 퍼졌다.",
+		isolated: "그 지역은 격리되어 있어 포자를 심을 수 없다.",
 	};
 
 	/* Milestone DNA is not touched: the next ordinary day claims what the new cases reach. A timed ability's effect first applies
@@ -712,8 +712,8 @@
 		r.healthy -= seeded;
 		r.infected += seeded;
 		game.ability.used.push(target);
-		addLog(game, `Spores established a foothold in ${d.regions[target].name}.`, "");
-		return { ok: true, reason: "", text: `${def.name} seeded ${d.regions[target].name}.` };
+		addLog(game, `${d.regions[target].name}에 포자가 자리를 잡았다.`, "");
+		return { ok: true, reason: "", text: `${def.name}: ${d.regions[target].name}에 포자를 심었다.` };
 	}
 
 	function abilityView(game) {
@@ -732,17 +732,17 @@
 		};
 		if (def.effect) {
 			const running = abilityEffect(game, def);
-			if (running) view.note = `${def.name} active \u00b7 ${running.daysLeft} ${running.daysLeft === 1 ? "day" : "days"} remaining`;
-			else if (view.charges < 1) view.note = `No ${def.name} charges left.`;
+			if (running) view.note = `${def.name} 발동 중 \u00b7 ${running.daysLeft}${running.daysLeft === 1 ? "일" : "일"} 남음`;
+			else if (view.charges < 1) view.note = `${def.name} 사용 횟수가 남지 않았다.`;
 			view.canUse = !running && view.charges > 0;
-			if (view.canUse && !isNoticed(game)) view.warn = "Authorities are not yet aware of the outbreak; Suppress has little effect right now.";
+			if (view.canUse && !isNoticed(game)) view.warn = "당국이 아직 전염병을 알아차리지 못해 지금은 억제의 효과가 거의 없다.";
 			return view;
 		}
 		view.targets = abilityTargets(game).map(id => ({ id, name: d.regions[id].name }));
 		const unreached = Object.keys(d.regions).filter(id => game.regions[id].infected + game.regions[id].dead === 0).length;
-		if (view.charges < 1) view.note = `No ${def.name}s left.`;
-		else if (!unreached) view.note = "All reachable regions have already been seeded.";
-		else if (!view.targets.length) view.note = "Every unreached region is isolated.";
+		if (view.charges < 1) view.note = `남은 ${def.name} 사용 횟수가 없다.`;
+		else if (!unreached) view.note = "닿을 수 있는 모든 지역에 이미 포자를 심었다.";
+		else if (!view.targets.length) view.note = "아직 감염이 닿지 않은 지역이 모두 격리되어 있다.";
 		view.canUse = view.charges > 0 && view.targets.length > 0;
 		return view;
 	}
@@ -755,7 +755,7 @@
 			label: def.usedLabel,
 			used: game.ability.used.length,
 			max: game.ability.maxCharges,
-			names: game.ability.used.map(u => (regions[u] ? regions[u].name : `day ${u}`)),
+			names: game.ability.used.map(u => (regions[u] ? regions[u].name : `${u}일째`)),
 		};
 	}
 
@@ -825,7 +825,7 @@
 		});
 		ctx.newRegions = ids.filter(id => !reachedBefore.includes(id) && game.regions[id].infected > 0);
 		game.day += 1;
-		ctx.newRegions.forEach(id => addLog(game, `The disease reaches ${d.regions[id].name}.`, "red"));
+		ctx.newRegions.forEach(id => addLog(game, `질병이 ${d.regions[id].name}에 퍼졌다.`, "red"));
 	}
 
 	/* The one place that decides what counts as reached. With award, DNA is paid as one total; without (a new game, a migration)
@@ -928,7 +928,7 @@
 			game.upgrades.push(pick.id);
 			game.mutations.push({ day: ctx.day, upgrade: pick.id });
 			ctx.mutations.push(pick.id);
-			addLog(game, `Mutation: ${d.upgrades[pick.id].name} evolved spontaneously.`, "purple");
+			addLog(game, `변이: ${d.upgrades[pick.id].name}, 저절로 진화했다.`, "purple");
 		});
 	}
 
@@ -944,7 +944,7 @@
 			if (game.milestones.includes(claim)) continue;
 			game.milestones.push(claim);
 			ctx.entrenchment = n;
-			addLog(game, `Entrenchment increased to ${def.names[n - 1]}.`, "");
+			addLog(game, `정착도 상승: ${def.names[n - 1]}.`, "");
 		}
 	}
 
@@ -1050,11 +1050,11 @@
 		const low = stages[stage].threshold;
 		const progress = next ? Math.max(0, Math.min(1, (p.total - low) / (next.threshold - low))) : 1;
 		const causeText = {
-			spread: () => `${Math.max(1, Math.round(p.infectedShare * 100))}% of people are infected.`,
-			visibility: () => "Severe symptoms are drawing attention.",
-			deaths: () => "Deaths are alarming authorities.",
-			reach: () => `Infection has spread to ${p.reached} regions.`,
-			time: () => `The outbreak has been known for ${p.known} ${p.known === 1 ? "day" : "days"}.`,
+			spread: () => `사람들의 ${Math.max(1, Math.round(p.infectedShare * 100))}%가 감염되었다.`,
+			visibility: () => "심한 증상이 관심을 끌고 있다.",
+			deaths: () => "사망자가 당국을 긴장시키고 있다.",
+			reach: () => `감염이 ${p.reached}개 지역으로 퍼졌다.`,
+			time: () => `전염병이 알려진 지 ${p.known}${p.known === 1 ? "일" : "일"}째다.`,
 		};
 		const causes = Object.entries(p.components)
 			.filter(([, v]) => v > 0.5)
@@ -1143,18 +1143,18 @@
 	}
 
 	const outcomeText = {
-		infected: { won: true, title: "Victory", reason: "The outbreak has consumed the entire population.", news: "Nobody healthy remains." },
+		infected: { won: true, title: "승리", reason: "전염병이 전 인구를 집어삼켰다.", news: "건강한 사람이 남아 있지 않다." },
 		extinct: {
 			won: false,
-			title: "Disease died out",
-			reason: "The disease has died out before reaching everyone.",
-			news: "The last infected host is gone. The disease has died out.",
+			title: "질병 소멸",
+			reason: "질병이 모두에게 퍼지기 전에 사라졌다.",
+			news: "마지막 감염 숙주가 사라졌다. 질병이 소멸했다.",
 		},
 		cured: {
 			won: false,
-			title: "Outbreak contained",
-			reason: "The cure is complete. The outbreak has been contained.",
-			news: "The cure is finished and being given out.",
+			title: "전염병 봉쇄",
+			reason: "치료제가 완성되었다. 전염병이 봉쇄되었다.",
+			news: "치료제가 완성되어 배포되고 있다.",
 		},
 	};
 
@@ -1216,9 +1216,9 @@
 		const def = data().pathogens[game.disease];
 		if (!def || !def.tag) return null;
 		const parts = [];
-		if (def.mutation) parts.push(`Mutations: ${game.mutations.length} / ${def.mutation.thresholds.length}`);
+		if (def.mutation) parts.push(`돌연변이: ${game.mutations.length} / ${def.mutation.thresholds.length}`);
 		const ent = entrenchmentView(game);
-		if (ent) parts.push(`Entrenchment ${ent.name} / ${ent.maxName}`);
+		if (ent) parts.push(`고착 ${ent.name} / ${ent.maxName}`);
 		return { name: def.name, tag: def.tag, parts };
 	}
 
@@ -1248,7 +1248,7 @@
 		const effectText = (e, verb) => {
 			const def = effectDef(e);
 			const name = def ? def.name : e.id;
-			return e.target ? `${name} ${verb === "began" ? "began in" : "ended in"} ${d.regions[e.target].name}.` : `${name} ${verb}.`;
+			return e.target ? `${d.regions[e.target].name}에서 ${name} ${verb === "began" ? "시작" : "종료"}.` : `${name} ${verb === "began" ? "시작" : "종료"}.`;
 		};
 		const stops = [];
 		const dnaReasons = [];
@@ -1262,10 +1262,10 @@
 			dnaGained += summary.dnaGained;
 			summary.milestones.forEach(m => dnaReasons.push(m.text));
 			const add = (reason, text) => stops.push({ day: summary.day, reason, text });
-			summary.newRegions.forEach(id => add("region", `${d.regions[id].name} reported its first cases.`));
-			if (summary.entrenchment) add("entrenchment", `Entrenchment increased to ${d.pathogens[game.disease].entrenchment.names[summary.entrenchment - 1]}.`);
-			summary.mutations.forEach(id => add("mutation", `Mutation: ${d.upgrades[id].name} evolved spontaneously.`));
-			if (summary.stageRose !== null) add("response", `The authorities raised the response to ${d.response.stages[summary.stageRose].name}.`);
+			summary.newRegions.forEach(id => add("region", `${d.regions[id].name}에서 첫 감염 사례가 보고되었다.`));
+			if (summary.entrenchment) add("entrenchment", `정착도 상승: ${d.pathogens[game.disease].entrenchment.names[summary.entrenchment - 1]}.`);
+			summary.mutations.forEach(id => add("mutation", `변이: ${d.upgrades[id].name}, 저절로 진화했다.`));
+			if (summary.stageRose !== null) add("response", `당국이 대응 수위를 높였다: ${d.response.stages[summary.stageRose].name}.`);
 			/* An effect that kept counting down is the same effect; one that is new, or whose days went up, started today. */
 			const effectsAfter = new Map(game.effects.map(e => [effectKey(e), e]));
 			game.effects.forEach(e => {
@@ -1279,14 +1279,14 @@
 				add(source === "world" ? "event" : "response", effectText({ source, id, target: target || null }, "ended"));
 			});
 			t.fastForwardCureMarks.forEach(mark => {
-				if (cureBefore < mark && game.cure >= mark) add("cure", `Cure research passed ${mark}%.`);
+				if (cureBefore < mark && game.cure >= mark) add("cure", `치료제 연구가 ${mark}%를 넘어섰다.`);
 			});
 			const note = onDay ? onDay(game) : null;
 			if (note) add("challenge", note);
-			if (game.status !== "active") add("end", "The outbreak is over.");
+			if (game.status !== "active") add("end", "전염병이 끝났다.");
 			else {
 				const newlyAffordable = Object.keys(d.upgrades).filter(id => !affordableAtStart.includes(id) && canBuy(game, id).ok);
-				if (newlyAffordable.length) add("dna", `You can now afford ${newlyAffordable.map(id => d.upgrades[id].name).join(", ")}.`);
+				if (newlyAffordable.length) add("dna", `이제 진화 비용을 댈 수 있다: ${newlyAffordable.map(id => d.upgrades[id].name).join(", ")}.`);
 			}
 		}
 		return { days, stops, dnaGained, dnaReasons };

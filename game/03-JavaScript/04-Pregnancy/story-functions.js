@@ -364,8 +364,8 @@ window.pregnancyDonorIsPerson = pregnancyDonorIsPerson;
  */
 function pregnancyDonorAttribution(source) {
 	const name = pregnancyNameCorrection(source);
-	if (!pregnancyDonorIsPerson(source)) return name + " is to blame";
-	return "the father is " + name;
+	if (!pregnancyDonorIsPerson(source)) return name + "의 탓이";
+	return "아버지는 " + name + "【이】";
 }
 window.pregnancyDonorAttribution = pregnancyDonorAttribution;
 
@@ -373,8 +373,8 @@ window.pregnancyDonorAttribution = pregnancyDonorAttribution;
    "father", so they get their own phrasing. */
 function pregnancyFatherReveal(source) {
 	const name = pregnancyNameCorrection(source);
-	if (!pregnancyDonorIsPerson(source)) return "It's clear " + name + " is to blame.";
-	return "It's clear that " + (name === "yourself" ? "you are" : name + " is") + " the father.";
+	if (!pregnancyDonorIsPerson(source)) return "분명히 " + name + "의 탓이다.";
+	return "분명히 " + (name === "yourself" ? "당신이" : name + "【이가】") + " 아버지다.";
 }
 window.pregnancyFatherReveal = pregnancyFatherReveal;
 

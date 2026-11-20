@@ -209,34 +209,34 @@
 
 	/* Generic, species-neutral filler used by rcbNormalizeBirthPrompts() when a location has no authored text at all for a given fetus type */
 	const RCB_GENERIC_STAGE = [
-		[["A contraction rolls through you. All you can do is breathe and wait it out."], ["default"]],
-		[["The contractions are getting stronger and closer together."], ["default"]],
-		[["Your body tenses hard around the pressure building inside you."], ["default"]],
-		[["The urge to push is impossible to ignore now."], ["default"]],
-		[["You push with the contraction, bracing yourself against it."], ["default"]],
-		[["You can feel it crowning. You keep pushing, shaking with the effort."], ["default"]],
-		[["The widest part is passing. You can't rush it. All you can do is push when your body tells you to."], ["default"]],
-		[["With a final push, the pressure gives way."], ["default"]],
-		[["You aren't done yet. You can feel another one on the way."], ["default"]],
-		[["You have finally finished giving birth."], ["default"]],
+		[["진통이 당신을 훑고 지나간다. 숨을 고르며 버티는 수밖에 없다."], ["default"]],
+		[["진통이 점점 세지고 간격이 짧아진다."], ["default"]],
+		[["몸 안에서 차오르는 압박에 온몸이 세게 굳는다."], ["default"]],
+		[["이제는 힘주고 싶은 충동을 무시할 수 없다."], ["default"]],
+		[["진통에 맞춰 힘을 주며 버틴다."], ["default"]],
+		[["머리가 나오려는 것이 느껴진다. 몸을 떨면서도 계속 힘을 준다."], ["default"]],
+		[["가장 넓은 부분이 지나가고 있다. 서두를 수는 없다. 몸이 시키는 때에 맞춰 힘을 주는 수밖에 없다."], ["default"]],
+		[["마지막으로 힘을 주자 압박이 풀린다."], ["default"]],
+		[["아직 끝나지 않았다. 또 하나가 내려오는 것이 느껴진다."], ["default"]],
+		[["마침내 출산을 마쳤다."], ["default"]],
 	];
 	const RCB_GENERIC_CONTRACTIONS = [
-		["You feel a cramp hit you.", "You feel mild cramps.", "Your body relaxes as the cramps relent."],
-		["You feel the contractions grip you.", "You endure a stronger contraction than usual.", "You take a small moment to catch your breath."],
-		["The contractions grip your body hard.", "The pain lessens, but there's little reprieve."],
-		["The pressure in your pelvis feels immense and unrelenting.", "The contractions lessen for a moment."],
-		["You feel like you're at your limit, but the contractions continue.", "The pain lessens momentarily."],
-		["The contractions continue despite how tiring they are.", "The contractions yield, but not entirely."],
-		["The contractions continue despite how tiring they are.", "The contractions yield, but not entirely."],
-		["The pressure is suddenly relieved."],
-		["The contractions ease for a moment while your body gathers itself."],
-		["The contractions stop."],
+		["경련이 당신을 덮친다.", "약한 경련이 느껴진다.", "경련이 잦아들자 몸이 풀린다."],
+		["진통이 당신을 움켜쥐는 것이 느껴진다.", "평소보다 강한 진통을 견뎌 낸다.", "잠깐 숨을 고른다."],
+		["진통이 몸을 세게 움켜쥔다.", "통증이 줄어들지만 숨 돌릴 틈은 거의 없다."],
+		["골반을 짓누르는 압박이 엄청나고 멈출 줄 모른다.", "진통이 잠시 약해진다."],
+		["한계에 다다른 것 같지만 진통은 계속된다.", "통증이 잠시 줄어든다."],
+		["지치는데도 진통은 계속된다.", "진통이 물러나지만 완전히는 아니다."],
+		["지치는데도 진통은 계속된다.", "진통이 물러나지만 완전히는 아니다."],
+		["압박이 갑자기 풀린다."],
+		["몸이 숨을 고르는 동안 진통이 잠시 잦아든다."],
+		["진통이 멎는다."],
 	];
 	const RCB_GENERIC_BOUND = [
-		"Your right arm jerks against its bonds as someone releases you from them.",
-		"Your right arm is released from a painful bind.",
-		"Your right arm lies limp as the bonds are removed.",
-		"Your right arm is freed from its bonds.",
+		"누군가 속박을 풀어 주는 동안 오른팔이 묶인 끈에 대고 홱 움찔한다.",
+		"오른팔이 고통스러운 속박에서 풀려난다.",
+		"속박이 풀리자 오른팔이 힘없이 늘어진다.",
+		"오른팔이 속박에서 풀려난다.",
 	];
 
 	/* Backfill any RCB_LOCATIONS x RCB_TYPES combination the authored data doesn't cover */

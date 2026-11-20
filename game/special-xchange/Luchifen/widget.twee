@@ -30,7 +30,7 @@
 
 /* Renders the stranger's hidden name as a glowing silver "???". Used in the social tab and dialogue. */
 <<widget "silverName">>
-	<<if $xchange.silverStranger and $xchange.silverStranger.nameKnown>><span class="luchifen-name" data-text="Luchifen">Luchifen</span><<else>><span class="silverStranger">???</span><</if>>
+	<<if $xchange.silverStranger and $xchange.silverStranger.nameKnown>><span class="luchifen-name" data-text="루치펜">루치펜</span><<else>><span class="silverStranger">???</span><</if>>
 <</widget>>
 
 <<widget "silverStrangerCheck">>
@@ -57,9 +57,9 @@
 <<widget "silverStrangerPark">>
 	<<silverStrangerCheck>>
 	<<if _silverActive and !$xchange.silverStranger.met and Time.dayState isnot "night">>
-		Off the path, near the tulip beds, <span class="purple">someone seems to loiter</span>.
+		길에서 벗어난 튤립 화단 근처에 <span class="purple">누군가 서성이는 것 같다</span>.
 		<br>
-		<<icon "mark.gif">><<link [[Approach the loitering figure (0:05)|Silver Stranger Meet]]>><<set $xchange.silverStranger.met to true>><<pass 5>><</link>>
+		<<icon "mark.gif">><<link [[서성이는 인물에게 다가간다 (0:05)|Silver Stranger Meet]]>><<set $xchange.silverStranger.met to true>><<pass 5>><</link>>
 		<br><br>
 	<</if>>
 <</widget>>
@@ -70,18 +70,18 @@
 	<<arcologyShunCheck>>
 	<<if _silverActive and _arcologyShun>>
 		/* After a failed island invitation Luchifen still comes to the docks, but won't talk until the silence ends. */
-		Near the edge of the water, Luchifen stands with their back to the town. Someone you don't know is holding an umbrella over them.
+		물가 가장자리에서 루치펜이 마을을 등지고 서 있다. 모르는 사람이 루치펜의 머리 위로 우산을 받쳐 들고 있다.
 		<br>
-		<<icon "mark.gif">><<link [[Approach Luchifen (0:05)|Arcology Shun]]>><<pass 5>><</link>>
+		<<icon "mark.gif">><<link [[루치펜에게 다가간다 (0:05)|Arcology Shun]]>><<pass 5>><</link>>
 		<br><br>
 	<<elseif _silverActive and $xchange.silverStranger.met is true>>
-		Near the edge of the water, a <span class="purple">figure of silver</span> watches the tide, in no hurry to be anywhere.
+		물가 가장자리에서 <span class="purple">은빛 인물</span>이 어디에도 서두를 것 없다는 듯 조수를 바라보고 있다.
 		<br>
 		/* If Mickey's earpiece is kept but the confrontation hasn't happened, trigger it before the normal questions. */
 		<<if $xchange.bankHeist and $xchange.bankHeist.keptEarpiece and !$xchange.silverStranger.mickeyConfronted>>
-			<<icon "mark.gif">><<link [[Approach the silver figure (0:05)|Silver Stranger Meet 2]]>><<pass 5>><</link>>
+			<<icon "mark.gif">><<link [[은빛 인물에게 다가간다 (0:05)|Silver Stranger Meet 2]]>><<pass 5>><</link>>
 		<<else>>
-			<<icon "mark.gif">><<link [[Approach the silver figure (0:05)|Silver Stranger]]>><<pass 5>><</link>>
+			<<icon "mark.gif">><<link [[은빛 인물에게 다가간다 (0:05)|Silver Stranger]]>><<pass 5>><</link>>
 		<</if>>
 		<br>
 	<</if>>
@@ -91,11 +91,11 @@
 /* Renders one purchasable line for a pill whose inventory name and pre-markup base price are known directly.
 _args: 0 pill name, 1 base price, 2 pill icon. */
 <<widget "silverStockRaw">>
-	<<set _srName to _args[0]>>
+	<<set _srName to _args[0]>><<set _srShow to _args[3] or ({ "X-Change Premium": "X-체인지 프리미엄", "Suspicious Pink Pill": "수상한 핑크 알약", "Suspicious Blue Pill": "수상한 블루 알약", "Suspicious Purple Pill": "수상한 퍼플 알약" })[_args[0]] or _args[0].replace(/^SWP Anti-(.+) Pill$/, "SWP 안티 알약 ($1)")>>
 	<<set _srBase to Math.round((_args[1] || 0) * 1.6)>>
 	<<set _srCost to -_srBase>>
 	<<set _srIcon to _args[2] or "pill">>
-	<<set _srLabel to "Buy " + _srName + " (" + formatMoney(setup.inflation.spendPrice(_srBase, "blackMarket")) + ")">>
+	<<set _srLabel to "구매: " + _srShow + " (" + formatMoney(setup.inflation.spendPrice(_srBase, "blackMarket")) + ")">>
 	<<pillicon _srIcon>>
 	<<if setup.inflation.canAfford(_srBase, "blackMarket")>>
 		<<capture _srName _srCost _srLabel>><<link _srLabel "Silver Stranger Buy">>
@@ -105,7 +105,7 @@ _args: 0 pill name, 1 base price, 2 pill icon. */
 			<<silverStrangerCharge _srCost>>
 		<</link>><</capture>>
 	<<else>>
-		<span class="grey"><<= _srName>> (<<= formatMoney(setup.inflation.spendPrice(_srBase, "blackMarket"))>>)</span> <span class="purple">You can't afford this.</span>
+		<span class="grey"><<= _srShow>> (<<= formatMoney(setup.inflation.spendPrice(_srBase, "blackMarket"))>>)</span> <span class="purple">돈이 부족하다.</span>
 	<</if>>
 	<br>
 <</widget>>
@@ -119,7 +119,7 @@ _args: 0 pill name, 1 base price, 2 pill icon. */
 			/* portal line hidden unless the portal-panties system is enabled */
 		<<else>>
 			<<set _slPrice to (_args[2] isnot undefined ? _args[2] : _slItem.price)>>
-			<<silverStockRaw _slItem.name _slPrice _args[1]>>
+			<<silverStockRaw _slItem.type _slPrice _args[1] _slItem.name>>
 		<</if>>
 	<</if>>
 <</widget>>

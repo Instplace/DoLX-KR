@@ -49,7 +49,7 @@ const events = [
 		failuretext: "에이버리와의 데이트에 나타나지 않았습니다.",
 	},
 	{
-		name: "에이버리 발렌타인 데이트",
+		name: "에이버리 발렌타인데이트",
 		condition() {
 			return V.avery_valentines?.invite && !V.avery_valentines.done && Time.month === 2 && Time.monthDay === 14;
 		},
@@ -58,11 +58,11 @@ const events = [
 		},
 		endhour: 24,
 		priority: 4,
-		text: "<<if $avery_mansion>>저택 차고에서 <<ampm 21 00>>부터<<elseif Time.hour lt 20>>도무스 가에서 <<ampm 20 00>>부터<</if>> 에이버리와 <span class='pink'>발렌타인 데이트</span> 약속이 있습니다.",
-		failuretext: "에이버리와의 발렌타인 데이트를 놓쳤습니다.",
+		text: "<<if $avery_mansion>>저택 차고에서 <<ampm 21 00>>부터<<elseif Time.hour lt 20>>도무스 가에서 <<ampm 20 00>>부터<</if>> 에이버리와 <span class='pink'>발렌타인데이트</span> 약속이 있습니다.",
+		failuretext: "에이버리와의 발렌타인데이트를 놓쳤습니다.",
 	},
 	{
-		name: "blackmail task",
+		name: "협박 과제",
 		condition() {
 			const blackmail = V.xchange?.blackmail;
 			if (!blackmail?.intro || !blackmail.activeQuest || blackmail.conclusionPending) return false;
@@ -80,7 +80,7 @@ const events = [
 		text: "<<blackmail-marker>>",
 	},
 	{
-		name: "blackmail conclusion",
+		name: "협박 결말",
 		condition() {
 			const blackmail = V.xchange?.blackmail;
 			// The conclusion letter stays in the bedroom until read and blocks future deliveries.
@@ -92,7 +92,7 @@ const events = [
 		starthour: 0,
 		endhour: 23,
 		priority: 6,
-		text: "The Gentleman's Club left a letter <span class='purple'>in your bedroom</span>. You should read it.",
+		text: "신사 클럽이 <span class='purple'>침실에</span> 편지를 남겼습니다. 읽어 보는 편이 좋습니다.",
 	},
 	{
 		name: "poppy valentines date",
@@ -257,7 +257,7 @@ const events = [
 		text: "내일 클리프 가에서 학교 연극제가 열립니다.",
 	},
 	{
-		name: "bailey date",
+		name: "베일리 데이트",
 		condition() {
 			return (V.baileyDateScheduled || V.baileyDateAllNightScheduled) && V.rentTime > 0 && !V.baileyDateAttended;
 		},
@@ -268,7 +268,7 @@ const events = [
 		failuretext: "베일리와의 약속에 나타나지 않았습니다.",
 	},
 	{
-		name: "bailey halloween gala",
+		name: "베일리 할로윈 무도회",
 		condition() {
 			return (
 				V.baileyHalloweenScheduled === Time.year &&

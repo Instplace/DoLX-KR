@@ -34,7 +34,7 @@
 <!--
 -- options
 -- stolen —- i mean, borrowed from clothing store
--- game/overworld-town/loc-shop/clothing-v2.twee 
+-- game/overworld-town/loc-shop/clothing-v2.twee
 -->
 
 <<widget "dhmPmanBox">>
@@ -63,20 +63,20 @@
 				</div>
 				<div class="buttons row">
 					<div @id="'rename' + _id" class="btn-rename">
-						<<button "Rename">>
+						<<button "이름 변경">>
 							<<run dhmShop.pmanBtnRename(T[`presetSelected${T.id}`], T.id)>>
 						<</button>>
 					</div>
 					<div @id="'delete' + _id" class="btn-delete">
-						<<button "Delete">>
-							<<if confirm('Delete preset "' + T[`presetSelected${T.id}`] + '"?')>>
+						<<button "삭제">>
+							<<if confirm('프리셋 "' + T[`presetSelected${T.id}`] + '"을(를) 삭제하시겠습니까?')>>
 								<<run dhmShop.pmanBtnDelete(T[`presetSelected${T.id}`], T.id)>>
 							<</if>>
 						<</button>>
 					</div>
 				</div>
 			<<else>>
-				No presets
+				프리셋 없음
 			<</if>>
 		<</capture>>
 	</div>
@@ -85,7 +85,7 @@
 <<widget "dhmPresetLoader">>
 	<<unset _dhmLoaded>>
 	<label>
-		Import presets file
+		프리셋 파일 가져오기
 		<br>
 		<input type="file" id="dhm-preset-loader" accept=".txt,.json" onchange="dhmShop.presetImport(this.files)" />
 	</label>
@@ -99,14 +99,14 @@
 			<div id="dupe-report"></div>
 			<label id="on-duplicate">
 				<<checkbox "$dhmod.cfg.overwrite" false true autocheck>>
-				Overwrite conflicting names (skip if unchecked)
+				이름이 겹치면 덮어쓰기 (체크하지 않으면 건너뜀)
 			</label>
 		</div>
 		<div class="row buttons">
-			<<button "Confirm Import">>
+			<<button "가져오기 확인">>
 				<<run dhmShop.onImportConfirm()>>
 			<</button>>
-			<<button "Cancel Import">>
+			<<button "가져오기 취소">>
 				<<replace "#presetman-loader">><<dhmPresetLoader>><</replace>>
 			<</button>>
 		</div>
@@ -139,9 +139,9 @@
 		<div class="presetman-container flexitem">
 			<div class="row">
 				<table class="dhm prices">
-					<tr><th>HEX:</th><td><span @id="'presetman-hex' + _id">--</span></td></tr>
-					<tr><th>Brightness:</th><td><span @id="'presetman-brightness' + _id">--</span></td></tr>
-					<tr><th>Approximate Vanilla swatch:</th><td class="swatch"><span @id="'presetman-fallback' + _id">--</span></td></tr>
+					<tr><th>16진수:</th><td><span @id="'presetman-hex' + _id">--</span></td></tr>
+					<tr><th>밝기:</th><td><span @id="'presetman-brightness' + _id">--</span></td></tr>
+					<tr><th>비슷한 바닐라 색상 견본:</th><td class="swatch"><span @id="'presetman-fallback' + _id">--</span></td></tr>
 				</table>
 			</div>
 
@@ -168,11 +168,11 @@
 		<hr>
 		<div class="flexitem">
 			<div class="row buttons">
-				<<button "Export saved presets">>
+				<<button "저장된 프리셋 내보내기">>
 					<<run dhmShop.presetExport()>>
 				<</button>>
 				<div class="background-red">
-					<<button "Delete ALL saved presets">>
+					<<button "저장된 프리셋 모두 삭제">>
 						<<run dhmShop.pmanBtnPurge()>>
 					<</button>>
 				</div>
@@ -184,7 +184,7 @@
 			dhmShop.pmanOnChange(_presetSelectedsaved, "saved");
 		});>>	
 	<<else>>
-		You have no presets to manage.
+		관리할 프리셋이 없다.
 	<</if>>
 <</widget>>
 
@@ -192,32 +192,32 @@
 	<div class="dhm">
 		<div>
 			<div class="settingsGrid">
-				<div class="settingsHeader">Hair dye options</div>
+				<div class="settingsHeader">염색 옵션</div>
 				<div class="settingsToggleItemWide">
 					<label>
 						<<checkbox "$dhmod.cfg.ui" false true autocheck>>
-						Enable custom UI
+						맞춤 UI 사용
 					</label>
 					<br>
 					<label>
 						<<checkbox "$dhmod.cfg.prices" false true autocheck>>
-						Enable custom prices
+						맞춤 가격 사용
 					</label>
 				</div>
 			</div>
 
 			<div id="preset-manager" class="settingsGrid">
-				<div class="settingsHeader">Hair dye presets</div>
+				<div class="settingsHeader">염색 프리셋</div>
 
 				<div class="settingsToggleItem">
-					<span class="gold bold">Saved presets</span><br>
+					<span class="gold bold">저장된 프리셋</span><br>
 					<div id="presetman-saved">
 						<<dhmPresetManager>>
 					</div>
 				</div>
 
 				<div class="settingsToggleItem">
-					<span class="gold bold">Preset importer</span>
+					<span class="gold bold">프리셋 가져오기</span>
 					<div id="presetman-loader">
 						<<dhmPresetLoader>>
 					</div>

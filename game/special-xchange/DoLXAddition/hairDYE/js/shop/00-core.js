@@ -31,17 +31,17 @@ const dhmShop = {
 	 */
 	presetBtnSave(rawFilter) {
 		const filterString = dhmUtils.filterEncode(rawFilter);
-		const presetName = prompt("Name your preset", "Preset");
+		const presetName = prompt("프리셋 이름을 입력하십시오", "프리셋");
 
 		if (presetName) {
 			if (V.dhmod.userPresets[presetName]) {
-				alert(`'${presetName}' was not saved because another preset with the same name already exists.`);
+				alert(`같은 이름의 프리셋이 이미 있어 '${presetName}' 이름으로 저장하지 못했습니다.`);
 				return true;
 			}
 
 			const duplicate = dhmUtils.presetExists(filterString);
 			if (duplicate) {
-				alert(`'${presetName}' was not saved because this color is already saved as '${duplicate}'.`);
+				alert(`이 색상은 이미 '${duplicate}' 이름으로 저장되어 있어 '${presetName}' 이름으로 저장하지 못했습니다.`);
 				return true;
 			}
 
@@ -173,11 +173,11 @@ const dhmShop = {
 	 * @param {number} index
 	 */
 	setColorHex(index = 0) {
-		const hex = prompt("Enter new hex code", "#FFFFFF");
+		const hex = prompt("새 16진수 색상 코드를 입력하십시오", "#FFFFFF");
 		if (!!hex && tinycolor(hex).getFormat() === "hex") {
 			this.syncColorPicker(index, hex);
 		} else if (hex) {
-			alert("Invalid hex code :(");
+			alert("올바르지 않은 16진수 코드입니다 :(");
 		}
 	},
 

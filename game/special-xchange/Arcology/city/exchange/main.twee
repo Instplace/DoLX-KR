@@ -2,109 +2,109 @@
 <<location "arcology_exchange">><<run setup.arcology.visit("exchange")>><<effects>>
 <<arcologyDangerCheck "exchange">><<if _arcologyDangerActive>><<exit>><</if>>
 <<arcologySceneCheck "street">><<if _arcologyScene>><<include "Arcology Scene">><<exit>><</if>>
-You are in Exchange Square, a large open area surrounded by tall buildings with glass windows.
+당신은 유리창이 달린 높은 건물들에 둘러싸인 넓은 공터, 익스체인지 광장에 있다.
 <br><br>
 <<arcologyStreetHazards>>
 <<if !_arcologyHalt>>
 	주요 장소
 	<br>
-	<<arcologyicon "booth">><<link [[Unit Exchange (0:02)|Arcology Unit Exchange]]>><<pass 2>><</link>>
+	<<arcologyicon "booth">><<link [[유닛 환전소 (0:02)|Arcology Unit Exchange]]>><<pass 2>><</link>>
 	<br>
-	<<arcologyicon "bank">><<link [[Halden Trust (0:02)|Arcology Halden Trust]]>><<pass 2>><</link>>
+	<<arcologyicon "bank">><<link [[할든 트러스트 (0:02)|Arcology Halden Trust]]>><<pass 2>><</link>>
 	<br><br>
 	<<arcologyStreets "exchange">>
 <</if>>
 
 :: Arcology Unit Exchange
 <<location "arcology_exchangehall">><<set $outside to 0>><<effects>>
-The Unit Exchange is a large hall with rows of trading terminals along both walls. Each terminal has a scanner for your implant and a slot for mainland money. Above them, a wide screen shows the price of Cipher in pounds, changing every few seconds.
+유닛 환전소는 양쪽 벽을 따라 거래 단말기가 줄지어 놓인 넓은 홀이다. 단말기마다 임플란트용 스캐너와 본토 화폐 투입구가 있다. 그 위의 와이드 화면에 파운드로 환산한 사이퍼 시세가 몇 초마다 바뀌며 표시된다.
 <br><br>
 <div id="fxHost"></div>
 <<run setTimeout(() => setup.arcologyFx.mount(document.getElementById("fxHost")))>>
 <br>
-<<getouticon>><<link [[Leave|Arcology Exchange Square]]>><<pass 2>><</link>>
+<<getouticon>><<link [[나간다|Arcology Exchange Square]]>><<pass 2>><</link>>
 <br>
 
 :: Arcology Halden Trust
 <<location "arcology_bank">><<set $outside to 0>><<effects>>
-Halden Trust is on the ground floor of the tallest building in the square. Inside, there are no reception desks or staff to speak to. Instead, you find a row of small private booths, each with a frosted glass door. You choose an empty one, step inside, and close the door behind you.
+할든 트러스트는 광장에서 가장 높은 건물의 1층에 있다. 안에는 접수 데스크도, 말을 걸 직원도 없다. 대신 불투명 유리문이 달린 작은 개인 부스들이 한 줄로 늘어서 있다. 당신은 빈 부스 하나를 골라 들어가 문을 닫는다.
 <br><br>
-<<holo "HALDEN TRUST / GUEST VAULT">>
-	<<holoRow "WALLET" `setup.arcology.cxU(($xchange.arcology.cipher or 0))`>>
-	<<holoRow "VAULT" `setup.arcology.cxU(setup.arcology.vault())`>>
-	<<holoLine "VAULTS ARE BOUND TO YOUR CIVIC RECORD" "warn">>
+<<holo "할든 트러스트 / 방문객 금고">>
+	<<holoRow "지갑" `setup.arcology.cxU(($xchange.arcology.cipher or 0))`>>
+	<<holoRow "금고" `setup.arcology.cxU(setup.arcology.vault())`>>
+	<<holoLine "금고는 당신의 시민 기록에 묶여 있습니다" "warn">>
 <</holo>>
 <br>
 <<if setup.arcology.vault() gte 1 and setup.arcologyFx.crisis() gte 2>>
 	/* During a currency crisis the Trust limits each account to a small withdrawal per day. */
 	<<set _htLeft to Math.min(setup.arcology.vault(), 50 - ($daily.arcologyVaultOut or 0))>>
-	<<holoLine `"WITHDRAWALS LIMITED TO " + setup.arcology.cxU(50) + " PER DAY"` "warn">>
+	<<holoLine `"출금 한도: 하루 " + setup.arcology.cxU(50)` "warn">>
 	<<if _htLeft lt 1>>
-		<span class="blue">You've reached today's withdrawal limit.</span>
+		<span class="blue">오늘의 출금 한도에 도달했다.</span>
 		<br><br>
 	<</if>>
 <</if>>
 <<if $xchange.arcology.cipher gte 1>>
-	<<arcologyicon "bank">><<link [[Deposit everything|Arcology Halden Trust]]>><<set $xchange.arcology.vault to setup.arcology.vault() + $xchange.arcology.cipher>><<set $xchange.arcology.cipher to 0>><</link>>
+	<<arcologyicon "bank">><<link [[전부 입금한다|Arcology Halden Trust]]>><<set $xchange.arcology.vault to setup.arcology.vault() + $xchange.arcology.cipher>><<set $xchange.arcology.cipher to 0>><</link>>
 	<br>
 <</if>>
 <<if setup.arcology.vault() gte 1 and setup.arcologyFx.crisis() gte 2>>
 	<<if _htLeft gte 1>>
-		<<arcologyicon "bank">><<link `"Withdraw " + setup.arcology.cx(_htLeft)` "Arcology Halden Trust">><<set $xchange.arcology.cipher to ($xchange.arcology.cipher or 0) + _htLeft>><<set $xchange.arcology.vault to setup.arcology.vault() - _htLeft>><<set $daily.arcologyVaultOut to ($daily.arcologyVaultOut or 0) + _htLeft>><</link>>
+		<<arcologyicon "bank">><<link `"출금한다 (" + setup.arcology.cx(_htLeft) + ")"` "Arcology Halden Trust">><<set $xchange.arcology.cipher to ($xchange.arcology.cipher or 0) + _htLeft>><<set $xchange.arcology.vault to setup.arcology.vault() - _htLeft>><<set $daily.arcologyVaultOut to ($daily.arcologyVaultOut or 0) + _htLeft>><</link>>
 		<br>
 	<</if>>
 <<elseif setup.arcology.vault() gte 1>>
-	<<arcologyicon "bank">><<link [[Withdraw everything|Arcology Halden Trust]]>><<set $xchange.arcology.cipher to ($xchange.arcology.cipher or 0) + setup.arcology.vault()>><<set $xchange.arcology.vault to 0>><</link>>
+	<<arcologyicon "bank">><<link [[전부 출금한다|Arcology Halden Trust]]>><<set $xchange.arcology.cipher to ($xchange.arcology.cipher or 0) + setup.arcology.vault()>><<set $xchange.arcology.vault to 0>><</link>>
 	<br>
 <</if>>
-<<getouticon>><<link [[Leave|Arcology Exchange Square]]>><<pass 2>><</link>>
+<<getouticon>><<link [[나간다|Arcology Exchange Square]]>><<pass 2>><</link>>
 <br>
 
 :: Arcology Commerce Walk
 <<location "arcology_commerce">><<run setup.arcology.visit("commerce")>><<effects>>
 <<arcologyDangerCheck "commerce">><<if _arcologyDangerActive>><<exit>><</if>>
 <<arcologySceneCheck "street">><<if _arcologyScene>><<include "Arcology Scene">><<exit>><</if>>
-You arrive at Commerce Walk, a shopping street near Exchange Square. A roof covers the entire street, with shops on both sides of the walkway.
+당신은 익스체인지 광장 근처의 쇼핑 거리, 커머스 워크에 도착한다. 거리 전체가 지붕으로 덮여 있고, 보행로 양쪽에 가게들이 늘어서 있다.
 <br><br>
 <<arcologyStreetHazards>>
 <<if !_arcologyHalt>>
 	주요 장소
 	<br>
-	<<arcologyicon "training">><<link [[Training hall (0:02)|Arcology Training Hall]]>><<pass 2>><</link>>
+	<<arcologyicon "training">><<link [[훈련장 (0:02)|Arcology Training Hall]]>><<pass 2>><</link>>
 	<br>
-	<<arcologyicon "mining">><<link [[Compute floor (0:02)|Arcology Compute Floor]]>><<pass 2>><</link>>
+	<<arcologyicon "mining">><<link [[연산실 (0:02)|Arcology Compute Floor]]>><<pass 2>><</link>>
 	<br>
-	<<arcologyicon "health">><<link [[Health shop (0:01)|Arcology Health Shop]]>><<pass 1>><</link>>
+	<<arcologyicon "health">><<link [[건강용품점 (0:01)|Arcology Health Shop]]>><<pass 1>><</link>>
 	<br>
-	<<arcologyicon "studio">><<link [[Holo studio (0:01)|Arcology Holo Studio]]>><<pass 1>><</link>>
+	<<arcologyicon "studio">><<link [[홀로 스튜디오 (0:01)|Arcology Holo Studio]]>><<pass 1>><</link>>
 	<br><br>
 	<<arcologyStreets "commerce">>
 <</if>>
 
 :: Arcology Training Hall
 <<location "arcology_training">><<set $outside to 0>><<effects>>
-The training hall has rows of chairs that can lean back, allowing people to lie down comfortably. Beside the top of each chair is a cable that connects to the implant behind a person's ear. An attendant walks between the chairs, checking the cables.
+훈련장에는 등받이를 뒤로 젖힐 수 있는 의자들이 줄지어 있어, 편안하게 누울 수 있다. 의자마다 윗부분 옆에 귀 뒤의 임플란트에 연결하는 케이블이 달려 있다. 안내원이 의자 사이를 오가며 케이블을 점검한다.
 <br><br>
 <<set _thP to setup.arcologyPrice.quote("training")>>
 <<if $daily.arcologyTraining>>
-	<span class="blue">You've already had a training session today.</span> You'll have to wait until tomorrow before your implant can receive another lesson.
+	<span class="blue">오늘은 이미 훈련을 받았다.</span> 임플란트가 또 다른 수업을 받으려면 내일까지 기다려야 한다.
 	<br><br>
 <<elseif !setup.arcologyPrice.affordable(_thP)>>
-	<span class="blue">A session costs <<print _thP.label>>.</span><<arcologyPriceNote _thP>>
+	<span class="blue">한 회 요금은 <<print _thP.label>>【이】다.</span><<arcologyPriceNote _thP>>
 	<br>
 <<else>>
-	A session costs <<print _thP.label>>.<<arcologyPriceNote _thP>>
+	한 회 요금은 <<print _thP.label>>【이】다.<<arcologyPriceNote _thP>>
 	<br>
-	<<scienceicon>><<link [[Science (2:00)|Arcology Training Session]]>><<if setup.arcologyPrice.pay("training")>><<set $phase to "science">><<set $daily.arcologyTraining to true>><<pass 120>><<else>><<set $phase to 0>><</if>><</link>><<gscience>>
+	<<scienceicon>><<link [[과학 (2:00)|Arcology Training Session]]>><<if setup.arcologyPrice.pay("training")>><<set $phase to "science">><<set $daily.arcologyTraining to true>><<pass 120>><<else>><<set $phase to 0>><</if>><</link>><<gscience>>
 	<br>
-	<<mathicon>><<link [[Maths (2:00)|Arcology Training Session]]>><<if setup.arcologyPrice.pay("training")>><<set $phase to "maths">><<set $daily.arcologyTraining to true>><<pass 120>><<else>><<set $phase to 0>><</if>><</link>><<gmaths>>
+	<<mathicon>><<link [[수학 (2:00)|Arcology Training Session]]>><<if setup.arcologyPrice.pay("training")>><<set $phase to "maths">><<set $daily.arcologyTraining to true>><<pass 120>><<else>><<set $phase to 0>><</if>><</link>><<gmaths>>
 	<br>
-	<<englishicon>><<link [[English (2:00)|Arcology Training Session]]>><<if setup.arcologyPrice.pay("training")>><<set $phase to "english">><<set $daily.arcologyTraining to true>><<pass 120>><<else>><<set $phase to 0>><</if>><</link>><<genglish>>
+	<<englishicon>><<link [[영어 (2:00)|Arcology Training Session]]>><<if setup.arcologyPrice.pay("training")>><<set $phase to "english">><<set $daily.arcologyTraining to true>><<pass 120>><<else>><<set $phase to 0>><</if>><</link>><<genglish>>
 	<br>
-	<<historyicon>><<link [[History (2:00)|Arcology Training Session]]>><<if setup.arcologyPrice.pay("training")>><<set $phase to "history">><<set $daily.arcologyTraining to true>><<pass 120>><<else>><<set $phase to 0>><</if>><</link>><<ghistory>>
+	<<historyicon>><<link [[역사 (2:00)|Arcology Training Session]]>><<if setup.arcologyPrice.pay("training")>><<set $phase to "history">><<set $daily.arcologyTraining to true>><<pass 120>><<else>><<set $phase to 0>><</if>><</link>><<ghistory>>
 	<br>
 <</if>>
-<<getouticon>><<link [[Leave|Arcology Commerce Walk]]>><<pass 2>><</link>>
+<<getouticon>><<link [[나간다|Arcology Commerce Walk]]>><<pass 2>><</link>>
 <br>
 
 :: Arcology Training Session
@@ -112,43 +112,43 @@ The training hall has rows of chairs that can lean back, allowing people to lie 
 <<if $phase is "science">><<scienceskill 8>><<elseif $phase is "maths">><<mathsskill 8>><<elseif $phase is "english">><<englishskill 8>><<elseif $phase is "history">><<historyskill 8>><</if>>
 <<if ["science", "maths", "english", "history"].includes($phase)>><<stress 2>><</if>>
 <<if !["science", "maths", "english", "history"].includes($phase)>>
-	The attendant checks the payment screen. The session didn't go through, so the chair stays upright.
+	안내원이 결제 화면을 확인한다. 결제가 되지 않아 의자는 세워진 채로 남는다.
 	<br><br>
-	<<link [[Next|Arcology Training Hall]]>><</link>>
+	<<link [[다음|Arcology Training Hall]]>><</link>>
 	<br>
 	<<exit>>
 <</if>>
 <<set $phase to 0>>
-You lie back in the chair as the attendant picks up a cable beside your head and connects it to your implant. The lights in the hall go out, but almost immediately, images begin appearing in front of your eyes. You close your eyes in surprise, only to find that you can still see them.
+당신이 의자에 몸을 뒤로 눕히자 안내원이 머리 옆의 케이블을 집어 당신의 임플란트에 연결한다. 홀의 조명이 꺼지지만, 거의 곧바로 눈앞에 영상이 나타나기 시작한다. 놀라서 눈을 감아 보지만 영상은 여전히 보인다.
 <br><br>
-Diagrams and pages of text appear one after another, while voices speak inside your head, explaining what everything means. The information comes so quickly that you barely have time to understand one thing before something new appears.
+도표와 글 페이지가 차례로 나타나고, 머릿속에서는 목소리들이 모든 것이 무엇을 뜻하는지 설명한다. 정보가 너무 빨리 쏟아져, 하나를 이해하기도 전에 새로운 것이 나타난다.
 <br><br>
-The images suddenly disappear as the lights come back on. The attendant disconnects the cable, and you slowly sit up, rubbing your head as a headache begins to bother you.
+조명이 다시 켜지며 영상이 갑자기 사라진다. 안내원이 케이블을 뽑고, 당신은 두통이 시작되는 머리를 문지르며 천천히 몸을 일으킨다.
 <br><br>
-You soon realise that you can remember everything the voices explained. You even understand things you knew nothing about before sitting in the chair, although you have no clear memory of actually learning them.<<gstress>>
+곧 당신은 목소리들이 설명한 모든 것을 기억하고 있다는 것을 깨닫는다. 의자에 앉기 전에는 전혀 몰랐던 것들까지 이해하게 되었지만, 실제로 배웠다는 분명한 기억은 없다.<<gstress>>
 <br><br>
-<<link [[Next|Arcology Training Hall]]>><</link>>
+<<link [[다음|Arcology Training Hall]]>><</link>>
 <br>
 
 :: Arcology Compute Floor
 <<location "arcology_compute">><<set $outside to 0>><<effects>>
-You enter a warm room where people sit at rows of large computers, solving puzzles on their screens. Each time someone finishes a puzzle, the amount of Cipher shown in the corner of their screen goes up.
+당신은 따뜻한 방에 들어선다. 사람들이 줄지어 놓인 대형 컴퓨터 앞에 앉아 화면 속 퍼즐을 풀고 있다. 누군가 퍼즐을 끝낼 때마다 화면 구석에 표시된 사이퍼의 양이 올라간다.
 <br><br>
-A sign near the door explains how payment works.
+문 근처의 안내문이 보수 지급 방식을 설명한다.
 <br>
-<<holoNotice "YOUR IMPLANT IS YOUR ACCOUNT. ANY CIPHER YOU EARN IS AUTOMATICALLY ADDED TO IT." "warn">>
+<<holoNotice "계정" "당신의 임플란트가 곧 계정입니다. 번 사이퍼는 자동으로 입금됩니다." "warn">>
 <br><br>
 <<if setup.arcologyNews.closed("compute")>>
-	The screens on every desk are dark, and a manager is turning people away at the door. <span class="blue">There's no work here today.</span>
+	모든 책상의 화면이 꺼져 있고, 관리자가 문가에서 사람들을 돌려보내고 있다. <span class="blue">오늘은 이곳에 일이 없다.</span>
 	<br><br>
 <<elseif $daily.arcologyCompute>>
-	<span class="blue">You've already worked here today</span>, and the manager has given your seat to someone else.
+	<span class="blue">오늘은 이미 이곳에서 일했고</span>, 관리자가 당신의 자리를 다른 사람에게 내주었다.
 	<br><br>
 <<else>>
-	<<arcologyicon "compute">><<link [[Take a seat and work (1:00)|Arcology Compute Shift]]>><<set $daily.arcologyCompute to true>><<pass 60>><</link>><<gmaths>>
+	<<arcologyicon "compute">><<link [[자리에 앉아 일한다 (1:00)|Arcology Compute Shift]]>><<set $daily.arcologyCompute to true>><<pass 60>><</link>><<gmaths>>
 	<br>
 <</if>>
-<<getouticon>><<link [[Leave|Arcology Commerce Walk]]>><<pass 2>><</link>>
+<<getouticon>><<link [[나간다|Arcology Commerce Walk]]>><<pass 2>><</link>>
 <br>
 
 :: Arcology Compute Shift
@@ -158,42 +158,42 @@ A sign near the door explains how payment works.
 	<<set $xchange.arcology.cipher to ($xchange.arcology.cipher or 0) + $daily.arcologyComputePaid>>
 	<<mathsskill 2>>
 <</if>>
-You sit at the desk and start solving the number puzzles on the screen. Each time you finish a puzzle, a harder one appears, and the amount of money you've earned increases a little.
+당신은 책상에 앉아 화면의 숫자 퍼즐을 풀기 시작한다. 퍼즐을 끝낼 때마다 더 어려운 퍼즐이 나타나고, 번 돈의 액수가 조금씩 늘어난다.
 <br><br>
-The machine behind the desk makes a louder noise whenever you enter a correct answer. You keep solving puzzles and earning money until your hour of work is over.
+정답을 입력할 때마다 책상 뒤의 기계가 더 큰 소리를 낸다. 당신은 한 시간의 근무가 끝날 때까지 퍼즐을 풀며 돈을 번다.
 <br><br>
-<<set _computeMsg to setup.arcology.cxU($daily.arcologyComputePaid) + " RECEIVED. WORK LOGGED TO YOUR RECORD.">>
-<<holoNotice "WALLET" _computeMsg "ok">>
+<<set _computeMsg to setup.arcology.cxU($daily.arcologyComputePaid) + " 수령. 근무가 기록에 남았습니다.">>
+<<holoNotice "지갑" _computeMsg "ok">>
 <br>
-<<link [[Next|Arcology Compute Floor]]>><</link>>
+<<link [[다음|Arcology Compute Floor]]>><</link>>
 <br>
 
 :: Arcology Health Shop
 <<location "arcology_clinic">><<set $outside to 0>><<effects>>
-The health shop is a clean, brightly lit room with white walls and a counter near the entrance. A pharmacist checks the orders behind it while a robotic arm takes products from the shelves and drops them into a tray. The pharmacist checks each label before sliding the tray across to the waiting customer.
+건강용품점은 흰 벽에 조명이 환한 깨끗한 방으로, 입구 근처에 카운터가 있다. 카운터 뒤에서 약사가 주문을 확인하는 동안 로봇 팔이 선반에서 제품을 꺼내 트레이에 떨어뜨린다. 약사는 라벨을 하나하나 확인한 뒤 기다리는 손님 쪽으로 트레이를 밀어 준다.
 <br><br>
 <<set _hsP to setup.arcologyPrice.quote("painkillers")>>
 <<if _hsP.pounds>>
-	A notice on the counter says the shop is <span class="blue">taking pounds only</span> until the exchange settles.
+	카운터의 공지에는 환율이 안정될 때까지 이 가게가 <span class="blue">파운드만 받는다</span>고 적혀 있다.
 	<br>
 <</if>>
 <<if setup.arcologyPrice.affordable(_hsP) and $pain gt 0>>
-	<span class="arc-priced"><<arcologyicon "health">><<link `"Painkillers (" + _hsP.label + ")"` "Arcology Health Shop">><<if setup.arcologyPrice.pay("painkillers")>><<pain -10>><</if>><</link>></span><<llpain>><<arcologyPriceNote _hsP>>
+	<span class="arc-priced"><<arcologyicon "health">><<link `"진통제 (" + _hsP.label + ")"` "Arcology Health Shop">><<if setup.arcologyPrice.pay("painkillers")>><<pain -10>><</if>><</link>></span><<llpain>><<arcologyPriceNote _hsP>>
 	<br>
 <<elseif $pain gt 0>>
-	<span class="blue">Painkillers cost <<print _hsP.label>>.</span><<arcologyPriceNote _hsP>>
+	<span class="blue">진통제 가격은 <<print _hsP.label>>【이】다.</span><<arcologyPriceNote _hsP>>
 	<br><br>
 <</if>>
-<<getouticon>><<link [[Leave|Arcology Commerce Walk]]>><<pass 1>><</link>>
+<<getouticon>><<link [[나간다|Arcology Commerce Walk]]>><<pass 1>><</link>>
 <br>
 
 :: Arcology Holo Studio
 <<location "arcology_studio">><<set $outside to 0>><<effects>>
-The Holo studio is a large room with several chairs and plenty of empty space between them. You choose a chair and sit down, causing your Holo interface to show a list of designs you can use to change its appearance.
+홀로 스튜디오는 의자 몇 개와 그 사이의 넓은 빈 공간이 있는 큰 방이다. 당신이 의자를 골라 앉자 홀로 인터페이스가 외관을 바꿀 수 있는 디자인 목록을 보여 준다.
 <br><br>
-There are plenty to choose from. Some make your Holo menus look gold or silver, while others have effects that look like broken glass or moving water. Each design has its own price, but when you try to select one, you find that none of them are available to you.
+고를 수 있는 종류가 많다. 홀로 메뉴를 금색이나 은색으로 보이게 하는 것도 있고, 깨진 유리나 흐르는 물처럼 보이는 효과가 있는 것도 있다. 디자인마다 각자 가격이 있지만, 하나를 고르려 하자 어느 것도 당신은 쓸 수 없다는 것을 알게 된다.
 <br><br>
-<<holoNotice "FACET STUDIO" "CUSTOM INTERFACES ARE AVAILABLE TO RESIDENT CLEARANCE AND ABOVE." "denied">>
+<<holoNotice "홀로 스튜디오" "맞춤 인터페이스는 거주자 이상의 권한 등급만 이용할 수 있습니다." "denied">>
 <br>
-<<getouticon>><<link [[Leave|Arcology Commerce Walk]]>><<pass 1>><</link>>
+<<getouticon>><<link [[나간다|Arcology Commerce Walk]]>><<pass 1>><</link>>
 <br>

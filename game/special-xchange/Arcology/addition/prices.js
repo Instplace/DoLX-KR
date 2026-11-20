@@ -131,12 +131,12 @@ setup.arcologyPrice = {
 		const h = a.pq?.[id];
 		if (h) delete a.pq[id];
 		if (!h || Date.now() > h.exp) {
-			this.notice = "That price is no longer valid. You haven't been charged. Check the price again.";
+			this.notice = "이 가격은 더 이상 유효하지 않습니다. 요금은 청구되지 않았습니다. 가격을 다시 확인하십시오.";
 			return false;
 		}
 		if (h.p) {
 			if (h.charge !== (setup.inflation?.price?.(h.p) ?? h.p)) {
-				this.notice = "That price is no longer valid. You haven't been charged. Check the price again.";
+				this.notice = "이 가격은 더 이상 유효하지 않습니다. 요금은 청구되지 않았습니다. 가격을 다시 확인하십시오.";
 				return false;
 			}
 			if (V.money < h.charge) return false;
@@ -193,129 +193,129 @@ setup.arcologyPrice = {
 		weak: {
 			health: [
 				[
-					"looks at the price on the register.",
-					"Cipher is worth less now, but our supplier still wants the same amount in pounds. That's why you have to pay more Cipher.",
+					"계산대에 뜬 가격을 쳐다본다.",
+					"사이퍼 가치는 떨어졌지만, 저희 공급처는 여전히 같은 금액을 파운드로 요구해요. 그래서 사이퍼를 더 내셔야 해요.",
 				],
 			],
 			xstation: [
 				[
-					"turns the counter screen towards you so you can see the price.",
-					"Head office sets the prices in pounds. Cipher is worth less now, so the machine asks for more Cipher. The price can change during the day.",
+					"카운터 화면을 당신 쪽으로 돌려 가격이 보이게 한다.",
+					"가격은 본사가 파운드로 정해요. 사이퍼 가치가 떨어져서 기계가 사이퍼를 더 요구하는 거예요. 가격은 하루 중에도 바뀔 수 있어요.",
 				],
 			],
 			lumen: [
 				[
-					"checks the treatment price on the screen before answering.",
-					"Treatment still costs the same in pounds. Cipher is worth less right now, so you need more of it to pay.",
+					"대답하기 전에 화면에서 치료 가격을 확인한다.",
+					"치료비는 파운드 기준으로 그대로입니다. 지금은 사이퍼 가치가 떨어져서 결제하시려면 더 많은 사이퍼가 필요합니다.",
 				],
 			],
 			training: [
-				["taps the session list with a finger.", "Cipher's worth less now. Training still costs the same in pounds, so you'll need more Cipher. Got it?"],
+				["손가락으로 수업 목록을 톡톡 두드린다.", "사이퍼 가치가 떨어졌어요. 교육비는 파운드 기준으로 그대로라서 사이퍼가 더 필요해요. 알겠죠?"],
 			],
 			hotel: [
 				[
-					"shows you the price on the booking screen.",
-					"We check our prices every morning. Cipher had lost value when we last checked, so a room costs more Cipher now.",
+					"예약 화면에서 가격을 보여 준다.",
+					"저희는 매일 아침 가격을 점검해요. 마지막으로 확인했을 때 사이퍼 가치가 떨어져 있어서, 이제 객실 요금이 사이퍼로 더 나와요.",
 				],
 			],
 			calibration: [
 				[
-					"taps the price list beside the booth.",
-					"We updated that list after Cipher lost value. We still have to pay for parts and electricity, so the price went up.",
+					"부스 옆 가격표를 톡톡 두드린다.",
+					"사이퍼 가치가 떨어진 뒤에 그 목록을 고쳤어요. 부품값이랑 전기세는 여전히 내야 하니까 가격이 올랐어요.",
 				],
 			],
-			ballast: [["keeps drying a glass with a cloth.", "Cipher's worth less, so I've put my prices up. You buying something or not?"]],
-			halcyon: [["points to the drink prices on the screen behind the bar.", "Haven't you seen the news? Cipher's worth less now, so drinks cost more of it."]],
-			dealer: [["leans back in the chair and looks at you.", "Cipher's worth less now. I'm not losing money just so you can pay the old price."]],
-			cafe: [["shows the current price on its screen.", "Cipher has lost value. Prices in Cipher may be higher than before."]],
+			ballast: [["천으로 계속 잔을 닦는다.", "사이퍼 가치가 떨어져서 가격을 올렸어. 살 거야, 말 거야?"]],
+			halcyon: [["바 뒤쪽 화면의 음료 가격을 가리킨다.", "뉴스도 안 봤어? 사이퍼 가치가 떨어져서 음료값이 사이퍼로 더 나가."]],
+			dealer: [["의자에 등을 기대고 당신을 쳐다본다.", "사이퍼 가치가 떨어졌어. 네가 옛날 가격으로 내겠다고 내가 손해 볼 순 없지."]],
+			cafe: [["화면에 현재 가격을 띄운다.", "사이퍼 가치가 하락했습니다. 사이퍼 기준 가격이 이전보다 높을 수 있습니다."]],
 		},
 		news: {
 			health: [
 				[
-					"glances at the Dome Broadcast screen near the door.",
-					"The news says people have been selling a lot of Cipher. It's worth less now, so our deliveries cost more of it.",
+					"문 근처의 돔 방송 화면을 힐끗 본다.",
+					"뉴스에서 사람들이 사이퍼를 많이 팔고 있다던데요. 가치가 떨어져서 저희 납품 단가도 사이퍼로 더 올랐어요.",
 				],
 			],
 			xstation: [
 				[
-					"looks at the queue behind you before answering.",
-					"More people have been selling Cipher, so it's worth less now. That's why our prices in Cipher have gone up. Dome Broadcast has been reporting on it.",
+					"대답하기 전에 당신 뒤의 대기 줄을 본다.",
+					"사이퍼를 파는 사람이 늘어서 가치가 떨어졌어요. 그래서 사이퍼 기준 가격이 올랐어요. 돔 방송에서도 계속 보도하고 있고요.",
 				],
 			],
-			training: [["puts down the session list.", "Read the news. People have been selling Cipher, so training costs more of it now."]],
+			training: [["수업 목록을 내려놓는다.", "뉴스 봐요. 사람들이 사이퍼를 팔아서 이제 교육비가 사이퍼로 더 들어요."]],
 			halcyon: [
-				["sets the glass down on the bar.", "Haven't you seen the news? People are selling Cipher and it's losing value. I'm not charging the old price."],
+				["잔을 바 위에 내려놓는다.", "뉴스도 안 봤어? 사람들이 사이퍼를 팔아서 가치가 떨어지고 있잖아. 옛날 가격으로는 안 받아."],
 			],
-			ballast: [["points at the drink prices.", "Read the news. People keep selling Cipher, so I've had to put the prices up."]],
-			cafe: [["shows the price on its screen.", "More people are selling Cipher, so it is worth less now. Check the price shown before you pay."]],
-			any: [["checks the price shown on the screen.", "People have been selling Cipher and it's worth less now. That's why the price has gone up."]],
+			ballast: [["음료 가격을 가리킨다.", "뉴스 봐. 사람들이 계속 사이퍼를 팔아 대서 가격을 올릴 수밖에 없었어."]],
+			cafe: [["화면에 가격을 띄운다.", "사이퍼를 파는 사람이 늘어 가치가 떨어졌습니다. 결제하기 전에 표시된 가격을 확인하십시오."]],
+			any: [["화면에 표시된 가격을 확인한다.", "사람들이 사이퍼를 팔아서 가치가 떨어졌어요. 그래서 가격이 올랐어요."]],
 		},
 		crisis: {
 			health: [
 				[
-					"checks the register again before answering.",
-					"Since the crash, Cipher's value keeps changing. I can tell you the price now, but I can't promise it'll stay the same.",
+					"대답하기 전에 계산대를 다시 확인한다.",
+					"폭락 이후로 사이퍼 가치가 계속 바뀌어요. 지금 가격은 알려 드릴 수 있지만, 그대로일 거란 보장은 못 해요.",
 				],
 			],
 			xstation: [
 				[
-					"checks the price on the screen.",
-					"Head office changes the prices every hour right now. I can't change them myself. It might be cheaper later, if you want to come back.",
+					"화면에서 가격을 확인한다.",
+					"본사가 지금은 가격을 한 시간마다 바꿔요. 제가 바꿀 수는 없고요. 나중에 다시 오시면 더 쌀 수도 있어요.",
 				],
 			],
 			lumen: [
 				[
-					"reads the notice beside the desk.",
-					"I'm sorry, but the price in Cipher can change during the day. Please check the amount on the screen before you pay.",
+					"책상 옆 안내문을 읽는다.",
+					"죄송하지만 사이퍼 기준 가격은 하루 중에도 바뀔 수 있습니다. 결제하시기 전에 화면의 금액을 확인해 주십시오.",
 				],
 			],
-			training: [["looks up from the session list.", "Cipher's crashed. Check the price before you book a session."]],
-			hotel: [["brings up today's room price on the screen.", "I'm sorry. We check our prices every morning, and this is today's rate. I can't change it."]],
-			dealer: [["looks at the price and gives a short laugh.", "Cipher keeps falling in value. If you're paying with it, you're going to need a lot more."]],
-			cafe: [["shows the current price on its screen.", "Cipher's value keeps changing. Check the price shown before you pay."]],
-			any: [["checks the current price on the screen.", "Cipher's lost a lot of value. That's why the price is higher now."]],
+			training: [["수업 목록에서 고개를 든다.", "사이퍼가 폭락했어요. 수업을 예약하기 전에 가격부터 확인해요."]],
+			hotel: [["오늘의 객실 요금을 화면에 띄운다.", "죄송해요. 저희는 매일 아침 가격을 점검하는데, 이게 오늘 요금이에요. 제가 바꿀 수는 없어요."]],
+			dealer: [["가격을 보고 짧게 웃는다.", "사이퍼 가치는 계속 떨어져. 그걸로 낼 거면 훨씬 더 많이 내야 할걸."]],
+			cafe: [["화면에 현재 가격을 띄운다.", "사이퍼 가치가 계속 변하고 있습니다. 결제하기 전에 표시된 가격을 확인하십시오."]],
+			any: [["화면에서 현재 가격을 확인한다.", "사이퍼 가치가 크게 떨어졌어요. 그래서 지금 가격이 더 높아요."]],
 		},
 		surcharge: {
 			lumen: [
 				[
-					"points to a notice beside the desk.",
-					"There's an extra charge for treatment during the currency crisis. The clinic says it needs to cover payments that might fail.",
+					"책상 옆 안내문을 가리킨다.",
+					"통화 위기 동안에는 치료에 추가 요금이 붙습니다. 결제가 무산될 위험을 클리닉이 감당해야 하기 때문입니다.",
 				],
 			],
 		},
 		pounds: {
 			health: [
 				[
-					"shows you the handwritten sign on the counter.",
-					"Sorry, we're only taking pounds for now. Our supplier won't accept Cipher until its value stops changing so much.",
+					"카운터 위의 손글씨 안내판을 보여 준다.",
+					"죄송해요, 지금은 파운드만 받아요. 공급처가 사이퍼 가치가 안정될 때까지는 사이퍼를 안 받겠대요.",
 				],
 			],
-			dealer: [["puts one hand over the goods on the table.", "Pounds only. And it'll cost you extra. Everyone wants pounds right now."]],
-			any: [["points to a sign beside the register.", "We're taking pounds only until Cipher's value settles down."]],
+			dealer: [["탁자 위의 물건 위에 한 손을 얹는다.", "파운드만 받아. 게다가 웃돈도 얹어야지. 지금은 다들 파운드를 원하거든."]],
+			any: [["계산대 옆 안내판을 가리킨다.", "사이퍼 가치가 진정될 때까지는 파운드만 받아요."]],
 		},
 		risk: {
 			dealer: [
-				["taps the price with a metal finger.", "If Cipher loses more value before I can spend it, I lose money. So I'm charging extra."],
-				["slides the goods a little farther away.", "You want a receipt and a fixed price? Go to a proper shop. See if anyone there will sell you this."],
+				["금속 손가락으로 가격을 톡톡 두드린다.", "내가 쓰기도 전에 사이퍼 가치가 더 떨어지면 난 손해야. 그래서 웃돈을 받는 거지."],
+				["물건을 조금 더 멀리 밀어 놓는다.", "영수증에 가격 고정까지 원해? 그럼 제대로 된 가게로 가. 거기서 이걸 팔아 주는 사람이 있는지 보든가."],
 			],
 		},
 		old: {
 			hotel: [
 				[
-					"checks the desk screen and changes the printed price card.",
-					"Sorry, that card hasn't been updated. The price on the screen is what you'll pay tonight.",
+					"프런트 화면을 확인하고 인쇄된 가격표를 바꿔 끼운다.",
+					"죄송해요, 그 카드는 갱신이 안 됐네요. 오늘 밤에는 화면에 나온 가격으로 내셔야 해요.",
 				],
 			],
-			halcyon: [["taps the amount on the bill screen.", "That's an old price. Cipher's worth less now, so I'm charging the current price."]],
-			calibration: [["points to the price list beside the booth.", "Yeah, Cipher's value has changed. I'm still charging you the price on that list."]],
-			ballast: [["looks at the old price list and shrugs.", "Yeah, it's an old price. I'll still sell it to you for that."]],
-			cafe: [["shows the listed price on the screen.", "The price on the menu is still valid. You can pay that amount."]],
-			dealer: [["moves the goods away from you.", "You think I'm selling at that price? Try asking again."]],
-			any: [["checks the price list.", "That's an old price. Check with the seller before paying."]],
+			halcyon: [["계산서 화면의 금액을 톡 두드린다.", "그건 옛날 가격이야. 사이퍼 가치가 떨어졌으니까 지금 가격으로 받을 거야."]],
+			calibration: [["부스 옆 가격표를 가리킨다.", "네, 사이퍼 가치가 바뀌긴 했어요. 그래도 저 목록에 있는 가격으로 받을게요."]],
+			ballast: [["옛 가격표를 보고 어깨를 으쓱한다.", "그래, 옛날 가격이야. 그래도 그 가격에 팔아 줄게."]],
+			cafe: [["화면에 게시된 가격을 보여 준다.", "메뉴에 적힌 가격은 아직 유효합니다. 그 금액을 내시면 됩니다."]],
+			dealer: [["물건을 당신에게서 멀리 치운다.", "내가 그 가격에 팔 거라고 생각해? 다시 물어봐."]],
+			any: [["가격표를 확인한다.", "그건 옛날 가격이에요. 결제하기 전에 판매자에게 확인해 보세요."]],
 		},
 		list: {
-			cafe: [["shows the price on the screen.", "The price on the menu is what you pay."]],
-			any: [["points at the price list.", "That's the price on the list. Everyone pays the same."]],
+			cafe: [["화면에 가격을 띄운다.", "메뉴에 적힌 가격이 결제 금액입니다."]],
+			any: [["가격표를 가리킨다.", "그게 목록에 적힌 가격이에요. 누구나 똑같이 내요."]],
 		},
 	},
 
@@ -342,8 +342,8 @@ $(document).on(":passagedisplay.arcologyPrice", () => {
 	if (!priced.length) return;
 	P.timer = setTimeout(() => {
 		priced.addClass("expired").find("a").attr({ "aria-disabled": "true", tabindex: "-1" });
-		const box = $("<div class='arc-price-notice' role='status'>That price is no longer valid. </div>");
-		box.wiki('<<link "Check the prices again" `passage()`>><</link>>');
+		const box = $("<div class='arc-price-notice' role='status'>이 가격은 더 이상 유효하지 않습니다. </div>");
+		box.wiki('<<link "가격 다시 확인" `passage()`>><</link>>');
 		box.insertBefore(priced.first());
 	}, P.HOLD);
 });

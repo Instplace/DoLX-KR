@@ -6,17 +6,17 @@
 
 	const challenges = Object.freeze(
 		[
-			{ id: "first-steps", name: "First Steps", diff: "easy", rules: "classic", drops: 40, goal: { type: "score", n: 200 } },
-			{ id: "busy-hands", name: "Busy Hands", diff: "easy", rules: "classic", drops: 30, goal: { type: "merges", n: 15 } },
-			{ id: "apple-picking", name: "Apple Picking", diff: "easy", rules: "classic", drops: 30, goal: { type: "tier", n: 5 } },
-			{ id: "steady-stack", name: "Steady Stack", diff: "medium", rules: "classic", goal: { type: "survive", n: 100 } },
-			{ id: "pear-shaped", name: "Pear Shaped", diff: "medium", rules: "classic", drops: 40, goal: { type: "tier", n: 6 } },
-			{ id: "ripple", name: "Ripple Effect", diff: "medium", rules: "arcade", drops: 70, goal: { type: "chain", n: 4 } },
-			{ id: "bare-hands", name: "Bare Hands", diff: "medium", rules: "arcade", noAbilities: true, drops: 70, goal: { type: "score", n: 550 } },
-			{ id: "pineapple-express", name: "Pineapple Express", diff: "hard", rules: "arcade", drops: 100, goal: { type: "tier", n: 8 } },
-			{ id: "score-rush", name: "Score Rush", diff: "hard", rules: "arcade", drops: 100, goal: { type: "score", n: 950 } },
-			{ id: "cascade", name: "Cascade", diff: "hard", rules: "arcade", goal: { type: "chain", n: 5 } },
-			{ id: "the-big-one", name: "The Big One", diff: "hard", rules: "classic", goal: { type: "tier", n: 10 } },
+			{ id: "first-steps", name: "첫걸음", diff: "easy", rules: "classic", drops: 40, goal: { type: "score", n: 200 } },
+			{ id: "busy-hands", name: "바쁜 손", diff: "easy", rules: "classic", drops: 30, goal: { type: "merges", n: 15 } },
+			{ id: "apple-picking", name: "사과 따기", diff: "easy", rules: "classic", drops: 30, goal: { type: "tier", n: 5 } },
+			{ id: "steady-stack", name: "안정적인 쌓기", diff: "medium", rules: "classic", goal: { type: "survive", n: 100 } },
+			{ id: "pear-shaped", name: "배 모양", diff: "medium", rules: "classic", drops: 40, goal: { type: "tier", n: 6 } },
+			{ id: "ripple", name: "파문 효과", diff: "medium", rules: "arcade", drops: 70, goal: { type: "chain", n: 4 } },
+			{ id: "bare-hands", name: "맨손", diff: "medium", rules: "arcade", noAbilities: true, drops: 70, goal: { type: "score", n: 550 } },
+			{ id: "pineapple-express", name: "파인애플 특급", diff: "hard", rules: "arcade", drops: 100, goal: { type: "tier", n: 8 } },
+			{ id: "score-rush", name: "점수 러시", diff: "hard", rules: "arcade", drops: 100, goal: { type: "score", n: 950 } },
+			{ id: "cascade", name: "폭포 효과", diff: "hard", rules: "arcade", goal: { type: "chain", n: 5 } },
+			{ id: "the-big-one", name: "대물", diff: "hard", rules: "classic", goal: { type: "tier", n: 10 } },
 		].map(c => Object.freeze(c))
 	);
 
@@ -26,19 +26,19 @@
 	function describeParts(c) {
 		const g = c.goal;
 		let goal;
-		if (g.type === "score") goal = `Score ${g.n} points`;
-		else if (g.type === "tier") goal = `Make a${/^[AEIOU]/.test(fruitName(g.n)) ? "n" : ""} ${fruitName(g.n)}`;
-		else if (g.type === "merges") goal = `Make ${g.n} merges`;
-		else if (g.type === "chain") goal = `Make a ${g.n}-merge chain from one drop`;
-		else goal = `Drop ${g.n} fruit without the pile ending the run`;
-		const rules = c.rules === "arcade" ? (c.noAbilities ? "Arcade combo points, no power-ups" : "Arcade rules, power-ups allowed") : "Classic rules";
+		if (g.type === "score") goal = `${g.n}점 얻기`;
+		else if (g.type === "tier") goal = `${/^[AEIOU]/.test(fruitName(g.n)) ? "" : ""}${fruitName(g.n)} 만들기`;
+		else if (g.type === "merges") goal = `${g.n}번 합치기`;
+		else if (g.type === "chain") goal = `한 번 떨어뜨려 ${g.n}번 연쇄 합치기`;
+		else goal = `더미가 넘쳐 끝나지 않고 과일 ${g.n}개 떨어뜨리기`;
+		const rules = c.rules === "arcade" ? (c.noAbilities ? "아케이드 콤보 점수, 파워업 없음" : "아케이드 규칙, 파워업 허용") : "클래식 규칙";
 		return { goal, drops: c.drops && g.type !== "survive" ? c.drops : null, rules };
 	}
 
 	/* One line saying what the goal is, for lists and the in-run goal strip. */
 	function describe(c) {
 		const p = describeParts(c);
-		let text = p.goal + (p.drops ? ` within ${p.drops} drops` : "");
+		let text = p.goal + (p.drops ? `, 낙하 ${p.drops}번 이내` : "");
 		if (c.rules === "arcade") text += ". " + p.rules;
 		return text + ".";
 	}
@@ -58,10 +58,10 @@
 		const done = g.type === "survive" ? settled && !run.over : value >= g.n;
 		const failed = !done && (settled || (run.over && run.endReason !== "won"));
 		let text;
-		if (g.type === "tier") text = value >= 0 ? `Biggest: ${fruitName(value)}` : "Biggest: none yet";
-		else if (g.type === "survive") text = `Dropped ${Math.min(value, g.n)} / ${g.n}`;
-		else text = `${g.type === "score" ? "Score" : g.type === "merges" ? "Merges" : "Best chain"} ${Math.min(value, g.n)} / ${g.n}`;
-		if (c.drops && g.type !== "survive") text += ` · Drops ${run.drops} / ${c.drops}`;
+		if (g.type === "tier") text = value >= 0 ? `가장 큰 과일: ${fruitName(value)}` : "가장 큰 과일: 아직 없음";
+		else if (g.type === "survive") text = `떨어뜨린 과일 ${Math.min(value, g.n)} / ${g.n}`;
+		else text = `${g.type === "score" ? "점수" : g.type === "merges" ? "합치기" : "최고 연쇄"} ${Math.min(value, g.n)} / ${g.n}`;
+		if (c.drops && g.type !== "survive") text += ` · 낙하 ${run.drops} / ${c.drops}`;
 		const fraction = g.type === "tier" ? Math.max(0, value + 1) / (g.n + 1) : Math.min(1, value / g.n);
 		return { done, failed, text, fraction: Math.min(1, fraction) };
 	}
@@ -101,7 +101,7 @@
 		const c = {
 			id: "daily-" + date,
 			date,
-			name: "Daily challenge",
+			name: "오늘의 도전",
 			diff: "daily",
 			level: t.level[i],
 			reward: setup.consoleDaily.dailyMoney.fruit[t.level[i]],
@@ -141,11 +141,11 @@
 	});
 	/* Achievement groups, in the order the Achievements page shows them. */
 	const achievementGroups = Object.freeze([
-		["fruit", "Fruit"],
-		["score", "Scores"],
-		["chain", "Chains and combos"],
-		["power", "Power-ups"],
-		["challenge", "Challenges"],
+		["fruit", "과일"],
+		["score", "점수"],
+		["chain", "연쇄와 콤보"],
+		["power", "파워업"],
+		["challenge", "도전"],
 	]);
 
 	const competitive = game => game.mode !== "tutorial";
@@ -180,109 +180,109 @@
 
 	const achievements = Object.freeze(
 		[
-			{ id: "merge-1", name: "First Merge", desc: "Merge two fruit.", icon: { fruit: 1 }, check: x => x.type === "merge" },
-			{ id: "apple", name: "First Apple", desc: "Make an Apple.", icon: { fruit: 5 }, reward: "pastel", check: x => x.type === "merge" && x.data.tier >= 5 },
+			{ id: "merge-1", name: "첫 합치기", desc: "과일 두 개 합치기.", icon: { fruit: 1 }, check: x => x.type === "merge" },
+			{ id: "apple", name: "첫 사과", desc: "사과 만들기.", icon: { fruit: 5 }, reward: "pastel", check: x => x.type === "merge" && x.data.tier >= 5 },
 			{
 				id: "pineapple",
-				name: "First Pineapple",
-				desc: "Make a Pineapple.",
+				name: "첫 파인애플",
+				desc: "파인애플 만들기.",
 				icon: { fruit: 8 },
 				reward: "wood",
 				check: x => x.type === "merge" && x.data.tier >= 8,
 			},
-			{ id: "melon", name: "First Melon", desc: "Make a Melon.", icon: { fruit: 9 }, check: x => x.type === "merge" && x.data.tier >= 9 },
-			{ id: "watermelon", name: "First Watermelon", desc: "Make a Watermelon.", icon: { fruit: 10 }, check: x => x.type === "merge" && x.data.tier === 10 },
+			{ id: "melon", name: "첫 멜론", desc: "멜론 만들기.", icon: { fruit: 9 }, check: x => x.type === "merge" && x.data.tier >= 9 },
+			{ id: "watermelon", name: "첫 수박", desc: "수박 만들기.", icon: { fruit: 10 }, check: x => x.type === "merge" && x.data.tier === 10 },
 			{
 				id: "watermelon-5",
-				name: "Watermelon Expert",
-				desc: "Make 5 Watermelons, across any runs.",
+				name: "수박 전문가",
+				desc: "여러 판에 걸쳐 수박 5개 만들기.",
 				icon: { fruit: 10 },
 				check: x => x.stats.watermelons >= 5,
 			},
-			{ id: "score-500", name: "Fruit Salad", desc: "Score 500 points in one run.", icon: { glyph: "trophy" }, check: x => x.game.score >= 500 },
-			{ id: "score-1500", name: "Big Harvest", desc: "Score 1,500 points in one run.", icon: { glyph: "trophy" }, check: x => x.game.score >= 1500 },
+			{ id: "score-500", name: "과일 샐러드", desc: "한 판에서 500점 얻기.", icon: { glyph: "trophy" }, check: x => x.game.score >= 500 },
+			{ id: "score-1500", name: "대풍작", desc: "한 판에서 1,500점 얻기.", icon: { glyph: "trophy" }, check: x => x.game.score >= 1500 },
 			{
 				id: "classic-2500",
-				name: "Classic Champion",
-				desc: "Score 2,500 points in Classic.",
+				name: "클래식 챔피언",
+				desc: "클래식에서 2,500점 얻기.",
 				icon: { glyph: "trophy" },
 				check: x => x.game.mode === "classic" && x.game.score >= 2500,
 			},
 			{
 				id: "arcade-3000",
-				name: "Arcade Ace",
-				desc: "Score 3,000 points in Arcade.",
+				name: "아케이드 에이스",
+				desc: "아케이드에서 3,000점 얻기.",
 				icon: { glyph: "trophy" },
 				check: x => x.game.mode === "arcade" && x.game.score >= 3000,
 			},
 			{
 				id: "new-best",
-				name: "Personal Best",
-				desc: "Beat your earlier best score in Classic or Arcade.",
+				name: "개인 최고 기록",
+				desc: "클래식 또는 아케이드에서 이전 최고 점수 넘기기.",
 				icon: { glyph: "trophy" },
 				check: x => x.type === "end" && x.data.beatBest,
 			},
 			{
 				id: "chain-3",
-				name: "Chain Reaction",
-				desc: "Make a 3-merge chain from one drop.",
+				name: "연쇄 반응",
+				desc: "한 번 떨어뜨려 3번 연쇄 합치기.",
 				icon: { glyph: "chain" },
 				check: x => x.type === "merge" && x.data.chain >= 3,
 			},
 			{
 				id: "chain-5",
-				name: "Domino Effect",
-				desc: "Make a 5-merge chain from one drop.",
+				name: "도미노 효과",
+				desc: "한 번 떨어뜨려 5번 연쇄 합치기.",
 				icon: { glyph: "chain" },
 				reward: "neon",
 				check: x => x.type === "merge" && x.data.chain >= 5,
 			},
 			{
 				id: "combo-max",
-				name: "Maximum Combo",
-				desc: "Earn the biggest combo bonus in Arcade.",
+				name: "최대 콤보",
+				desc: "아케이드에서 최대 콤보 보너스 얻기.",
 				icon: { glyph: "chain" },
 				check: x => x.type === "merge" && x.data.bonus >= setup.suika.config.combo.maxBonus,
 			},
-			{ id: "shake-1", name: "Shake It Up", desc: "Use Shake.", icon: { glyph: "jar" }, check: x => x.type === "ability" && x.data.id === "shake" },
+			{ id: "shake-1", name: "흔들어 보자", desc: "흔들기 사용하기.", icon: { glyph: "jar" }, check: x => x.type === "ability" && x.data.id === "shake" },
 			{
 				id: "shake-merge",
-				name: "Good Shake",
-				desc: "Make a merge with a Shake.",
+				name: "좋은 흔들기",
+				desc: "흔들기로 합치기 일으키기.",
 				icon: { glyph: "jar" },
 				check: x => x.type === "merge" && x.data.cause === "shake",
 			},
 			{
 				id: "wand-1",
-				name: "Abracadabra",
-				desc: "Remove a fruit with the Magic Wand.",
+				name: "아브라카다브라",
+				desc: "마법 지팡이로 과일 하나 제거하기.",
 				icon: { glyph: "wand" },
 				check: x => x.type === "ability" && x.data.id === "wand",
 			},
 			{
 				id: "all-four",
-				name: "Full Toolkit",
-				desc: "Use all four power-ups in one Arcade run.",
+				name: "풀 세트",
+				desc: "아케이드 한 판에서 파워업 네 가지 모두 사용하기.",
 				icon: { glyph: "kit" },
 				check: x => x.type === "ability" && Object.keys(x.game.runInfo.used).length >= 4,
 			},
 			{
 				id: "pure-arcade",
-				name: "No Tricks Needed",
-				desc: "Finish an Arcade run with 500 or more points without using a power-up.",
+				name: "속임수는 필요 없다",
+				desc: "파워업을 쓰지 않고 아케이드 한 판을 500점 이상으로 끝내기.",
 				icon: { glyph: "hand" },
 				check: x => x.type === "end" && x.game.mode === "arcade" && x.game.score >= 500 && !Object.keys(x.game.runInfo.used).length,
 			},
-			{ id: "challenge-1", name: "Challenger", desc: "Complete a challenge.", icon: { glyph: "flag" }, check: x => x.stats.challenges >= 1 },
-			{ id: "challenge-5", name: "Seasoned", desc: "Complete 5 challenges.", icon: { glyph: "flag" }, check: x => x.stats.challenges >= 5 },
+			{ id: "challenge-1", name: "도전자", desc: "도전 1개 완료하기.", icon: { glyph: "flag" }, check: x => x.stats.challenges >= 1 },
+			{ id: "challenge-5", name: "노련함", desc: "도전 5개 완료하기.", icon: { glyph: "flag" }, check: x => x.stats.challenges >= 5 },
 			{
 				id: "challenge-all",
-				name: "Every Challenge",
-				desc: `Complete all ${challenges.length} challenges.`,
+				name: "모든 도전",
+				desc: `도전 ${challenges.length}개 모두 완료하기.`,
 				icon: { glyph: "flag" },
 				check: x => x.stats.challenges >= challenges.length,
 			},
-			{ id: "daily-1", name: "Daily Habit", desc: "Complete a daily challenge.", icon: { glyph: "calendar" }, check: x => x.stats.daily >= 1 },
+			{ id: "daily-1", name: "매일의 습관", desc: "오늘의 도전 완료하기.", icon: { glyph: "calendar" }, check: x => x.stats.daily >= 1 },
 		].map(a => Object.freeze({ ...a, ...look[a.id], check: x => competitive(x.game) && a.check(x) }))
 	);
 
@@ -290,7 +290,7 @@
 	 * Board colours only. Every ink/halo pair keeps text readable on its board. */
 	const themes = Object.freeze({
 		dark: {
-			name: "Original dark",
+			name: "오리지널 다크",
 			bg: "#1c1824",
 			inner: "#26202f",
 			line: "#ff7878",
@@ -302,7 +302,7 @@
 			ring: "#444",
 		},
 		light: {
-			name: "Light",
+			name: "라이트",
 			bg: "#e7e2d9",
 			inner: "#f5f1ea",
 			line: "#c0392b",
@@ -314,7 +314,7 @@
 			ring: "#b8b0a2",
 		},
 		pastel: {
-			name: "Pastel",
+			name: "파스텔",
 			bg: "#f2dcef",
 			inner: "#fbeefa",
 			line: "#c2366e",
@@ -327,7 +327,7 @@
 			reward: "apple",
 		},
 		wood: {
-			name: "Wooden",
+			name: "원목",
 			bg: "#5b3a21",
 			inner: "#76502f",
 			line: "#ffb199",
@@ -340,7 +340,7 @@
 			reward: "pineapple",
 		},
 		neon: {
-			name: "Arcade neon",
+			name: "아케이드 네온",
 			bg: "#0b0b1a",
 			inner: "#141032",
 			line: "#ff3fd5",
@@ -354,7 +354,7 @@
 		},
 		/* Used instead of the chosen theme when High contrast is on. */
 		contrast: {
-			name: "High contrast",
+			name: "고대비",
 			bg: "#000",
 			inner: "#000",
 			line: "#ff3030",
@@ -370,74 +370,74 @@
 	/* ---- How to Play ---- */
 	const help = Object.freeze([
 		[
-			"Dropping",
+			"떨어뜨리기",
 			[
-				"Move along the top of the jar to aim. A line shows where the fruit will fall.",
-				"Tap, click, or press Space to drop. There is a short wait before the next drop; the held fruit is faded until then.",
+				"병 위쪽을 따라 움직여 조준하십시오. 과일이 떨어질 위치가 선으로 표시됩니다.",
+				"탭하거나 클릭하거나 스페이스를 눌러 떨어뜨리십시오. 다음 낙하까지 잠깐 기다려야 하며, 그때까지는 들고 있는 과일이 흐리게 표시됩니다.",
 			],
 		],
 		[
-			"Merging",
+			"합치기",
 			[
-				"Two of the same fruit that touch merge into the next fruit up.",
-				"The order runs from Cherry to Watermelon, shown in the strip under the jar. Two Watermelons vanish together for a bonus.",
+				"같은 과일 두 개가 닿으면 합쳐져 한 단계 큰 과일이 됩니다.",
+				"순서는 체리에서 수박까지이며, 병 아래의 띠에 표시됩니다. 수박 두 개가 만나면 보너스와 함께 사라집니다.",
 			],
 		],
-		["Scoring", ["Each merge scores the points of the fruit it makes: 1 for a Strawberry up to 55 for a Watermelon.", "Two Watermelons vanishing score 100."]],
+		["점수", ["합칠 때마다 만들어진 과일의 점수를 얻습니다. 딸기는 1점, 수박은 55점입니다.", "수박 두 개가 사라지면 100점입니다."]],
 		[
-			"The red line",
+			"빨간 선",
 			[
-				"If the pile stays above the red line for 2.5 seconds, the run ends.",
-				"The line turns amber when the pile gets close, and red with a countdown bar while it is over. A fruit just dropped or just made does not count for its first 1.2 seconds.",
-			],
-		],
-		[
-			"Modes",
-			[
-				"Classic: the plain game.",
-				"Arcade: four power-ups with a few uses each, and bonus points for chains.",
-				"Zen: no game over. When the pile stays over the line, the fruit above it are picked off. Session score only.",
-				"Challenges and the Daily challenge: set goals, some with a drop limit. Open them from the Menu.",
+				"더미가 빨간 선 위에 2.5초 동안 머물면 게임이 끝납니다.",
+				"더미가 가까워지면 선이 주황색으로 바뀌고, 선을 넘은 동안에는 카운트다운 막대와 함께 빨간색이 됩니다. 방금 떨어뜨렸거나 방금 만들어진 과일은 처음 1.2초 동안 계산되지 않습니다.",
 			],
 		],
 		[
-			"Power-ups (Arcade)",
+			"모드",
 			[
-				"Shake: jolts the jar so fruit knock together. Fruit can bounce up over the line.",
-				"Shuffle: swaps your held fruit for a different small one.",
-				"Magic Wand: removes one of the five smallest fruit from the jar. Tap a ringed fruit, or press Cancel.",
-				"Swap: trades your held fruit with the Next fruit.",
-				"A use is only spent when the power-up actually does something.",
+				"클래식: 기본 규칙의 게임입니다.",
+				"아케이드: 파워업 네 가지를 각각 몇 번씩 쓸 수 있고, 연쇄에 보너스 점수가 붙습니다.",
+				"젠: 게임 오버가 없습니다. 더미가 선을 넘은 채로 있으면 선 위의 과일이 치워집니다. 이번 접속의 점수만 기록됩니다.",
+				"도전과 오늘의 도전: 목표가 정해져 있으며, 일부는 낙하 횟수 제한이 있습니다. 메뉴에서 여십시오.",
 			],
 		],
 		[
-			"Chains and combos",
+			"파워업(아케이드)",
 			[
-				"A chain is every merge that follows from one drop, Shake, or Wand pick.",
-				"In Arcade, merge 2 of a chain adds +2, merge 3 adds +4, and so on up to +10 per merge.",
+				"흔들기: 병을 흔들어 과일끼리 부딪치게 합니다. 과일이 튀어 올라 선을 넘을 수 있습니다.",
+				"섞기: 들고 있는 과일을 다른 작은 과일로 바꿉니다.",
+				"마법 지팡이: 병 안에서 가장 작은 다섯 종류 가운데 과일 하나를 치웁니다. 고리가 표시된 과일을 탭하거나 취소를 누르십시오.",
+				"교체: 들고 있는 과일과 다음 과일을 맞바꿉니다.",
+				"파워업이 실제로 효과를 낼 때만 사용 횟수가 소모됩니다.",
 			],
 		],
 		[
-			"Challenges",
+			"연쇄와 콤보",
 			[
-				"Each challenge has one goal. Some limit the drops: after the last drop the jar has 3 seconds to finish merging.",
-				"Completed challenges stay ticked. The Daily challenge changes at midnight UTC and keeps your best score for the day.",
+				"연쇄는 한 번의 낙하, 흔들기, 지팡이 선택에서 이어지는 모든 합치기입니다.",
+				"아케이드에서는 연쇄의 2번째 합치기에 +2, 3번째에 +4가 붙고, 이런 식으로 합치기당 최대 +10까지 붙습니다.",
 			],
 		],
 		[
-			"Pause, restart, and save",
+			"도전",
 			[
-				"Pause stops the jar. Restart asks for a second press during a run.",
-				"Choose Back to the console, or choose Save and exit from the Menu, to keep your run for next time. Leaving by any other route ends the run.",
+				"도전마다 목표가 하나씩 있습니다. 일부는 낙하 횟수를 제한하며, 마지막 낙하 뒤에는 병에서 합치기가 끝날 때까지 3초가 주어집니다.",
+				"완료한 도전은 계속 체크된 상태로 남습니다. 오늘의 도전은 UTC 자정에 바뀌며, 그날의 최고 점수를 기록합니다.",
 			],
 		],
 		[
-			"Controls",
+			"일시정지, 다시 시작, 저장",
 			[
-				"Mouse: move to aim, click to drop.",
-				"Touch: drag to aim, lift your finger to drop.",
-				"Keyboard (with the jar focused): arrow keys or A and D to aim, Space or Enter to drop, P to pause. With the Wand: arrows pick a fruit, Enter removes it, Esc cancels.",
-				"Esc also closes menu pages.",
+				"일시정지하면 병이 멈춥니다. 다시 시작은 플레이 중에 한 번 더 눌러야 실행됩니다.",
+				"콘솔로 돌아가기를 선택하거나 메뉴에서 저장 후 나가기를 선택하면 다음에 이어서 할 수 있습니다. 다른 방법으로 나가면 게임이 끝납니다.",
+			],
+		],
+		[
+			"조작",
+			[
+				"마우스: 움직여 조준하고 클릭해 떨어뜨립니다.",
+				"터치: 드래그해 조준하고 손가락을 떼면 떨어뜨립니다.",
+				"키보드(병에 초점이 있을 때): 방향키 또는 A, D로 조준하고, 스페이스 또는 Enter로 떨어뜨리고, P로 일시정지합니다. 지팡이를 쓸 때는 방향키로 과일을 고르고, Enter로 치우고, Esc로 취소합니다.",
+				"Esc 키로 메뉴 화면도 닫을 수 있습니다.",
 			],
 		],
 	]);

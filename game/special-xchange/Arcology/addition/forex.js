@@ -193,9 +193,9 @@ setup.arcologyFx = {
 	rules(fx = this.state()) {
 		const r = this.ratio(fx);
 		const halted = fx.k < fx.halt;
-		if (r < 0.2) return { halted, sellOnly: true, cap: 5000, label: halted ? "TRADING SUSPENDED" : "EMERGENCY ORDER: SELLING ONLY" };
-		if (r < 0.6) return { halted, sellOnly: false, cap: 25000, label: halted ? "TRADING SUSPENDED" : "RESTRICTED: ORDER LIMIT 25 CIPHER" };
-		return { halted, sellOnly: false, cap: this.MAX_ORDER, label: halted ? "TRADING SUSPENDED" : "" };
+		if (r < 0.2) return { halted, sellOnly: true, cap: 5000, label: halted ? "거래 중단" : "긴급 명령: 매도만 가능" };
+		if (r < 0.6) return { halted, sellOnly: false, cap: 25000, label: halted ? "거래 중단" : "제한: 주문 한도 25 사이퍼" };
+		return { halted, sellOnly: false, cap: this.MAX_ORDER, label: halted ? "거래 중단" : "" };
 	},
 
 	spread(fx = this.state()) {
@@ -266,17 +266,17 @@ setup.arcologyFx = {
 	trade(side, q, seen) {
 		const a = V.xchange.arcology;
 		if (!a?.arrived || !setup.arcology.online() || !setup.arcology.hasClearance("guest"))
-			return { error: "Trading requires a valid guest profile and a connection to the city network." };
+			return { error: "거래하려면 유효한 방문객 프로필과 도시 네트워크 연결이 필요합니다." };
 		const fx = this.sync();
 		const rule = this.rules(fx);
-		if (rule.halted) return { error: "Trading is suspended. No orders are being accepted." };
-		if (side === "buy" && rule.sellOnly) return { error: "The Registry's emergency order stops guest accounts buying Cipher. Selling is still possible." };
+		if (rule.halted) return { error: "거래가 중단되었습니다. 주문을 받지 않습니다." };
+		if (side === "buy" && rule.sellOnly) return { error: "등록소의 긴급 명령으로 방문객 계정은 사이퍼를 살 수 없습니다. 매도는 계속 가능합니다." };
 		if (typeof q !== "number" || !Number.isInteger(q) || q < 1 || q > rule.cap)
-			return { error: `Enter an amount from 0.001 to ${setup.arcology.cxN(rule.cap)} Cipher, to three decimal places.` };
+			return { error: `0.001부터 ${setup.arcology.cxN(rule.cap)} 사이퍼까지, 소수점 셋째 자리까지 입력하십시오.` };
 		const x = this.quote(side, q, fx);
-		if (side === "buy" && x.total > V.money) return { error: "You don't have enough money for that order." };
-		if (side === "sell" && q > (a.cipher || 0)) return { error: "Your wallet doesn't hold that much Cipher." };
-		if (x.total < 1) return { error: "That amount is worth less than a penny at the current price." };
+		if (side === "buy" && x.total > V.money) return { error: "이 주문을 하기에는 돈이 부족합니다." };
+		if (side === "sell" && q > (a.cipher || 0)) return { error: "지갑에 그만큼의 사이퍼가 없습니다." };
+		if (x.total < 1) return { error: "현재 가격으로는 그 수량의 가치가 1페니도 되지 않습니다." };
 		if (!Number.isFinite(seen) || (side === "buy" ? x.total > seen * 1.005 : x.total < seen * 0.995)) return { requote: x };
 		if (side === "buy") {
 			Wikifier.wikifyEval(`<<money ${-x.total} "arcologyExchange" { cashOnly: true }>><<updatesidebarmoney>>`);
@@ -345,11 +345,11 @@ setup.arcologyFx = {
 
 	/* Chart ranges: [label, history, seconds per point, points shown, words for the change line]. */
 	ranges: [
-		["5M", "h0", 1, 300, "past 5 minutes"],
-		["30M", "h1", 5, 360, "past 30 minutes"],
-		["1H", "h1", 5, 720, "past hour"],
-		["24H", "h2", 300, 288, "past 24 hours"],
-		["7D", "h3", 3600, 168, "past 7 days"],
+		["5M", "h0", 1, 300, "최근 5분"],
+		["30M", "h1", 5, 360, "최근 30분"],
+		["1H", "h1", 5, 720, "최근 1시간"],
+		["24H", "h2", 300, 288, "최근 24시간"],
+		["7D", "h3", 3600, 168, "최근 7일"],
 	],
 	range: "30M",
 	timer: 0,
@@ -383,12 +383,12 @@ setup.arcologyFx = {
 	/* Market condition as the exchange reports it, from the conditions the model is actually using. */
 	condition(fx) {
 		const r = this.ratio(fx);
-		if (r < 0.2) return ["CRISIS", "hot"];
-		if (r < 0.6) return ["UNDER PRESSURE", "hot"];
+		if (r < 0.2) return ["위기", "hot"];
+		if (r < 0.6) return ["압박 중", "hot"];
 		const b = this.boost(fx);
-		if (b >= 2.5) return ["SHOCK", "hot"];
-		if (b > 1.4 || fx.vr === 2) return ["FAST MOVING", "warn"];
-		return fx.vr === 0 ? ["CALM", ""] : ["ACTIVE", ""];
+		if (b >= 2.5) return ["충격", "hot"];
+		if (b > 1.4 || fx.vr === 2) return ["급변", "warn"];
+		return fx.vr === 0 ? ["차분", ""] : ["활발", ""];
 	},
 
 	/* A tidy price-axis step for a chart spanning `span` pence: 1, 2 or 5 times a power of ten. */
@@ -403,35 +403,35 @@ setup.arcologyFx = {
 		if (!host) return;
 		clearInterval(this.timer);
 		if (!V.xchange?.arcology?.arrived || !setup.arcology.online() || !setup.arcology.hasClearance("guest")) {
-			host.textContent = "Trading requires a valid guest profile and a connection to the city network.";
+			host.textContent = "거래하려면 유효한 방문객 프로필과 도시 네트워크 연결이 필요합니다.";
 			return;
 		}
 		const ui = { side: "buy", seen: NaN, busy: false, k: -1, axis: null, axisRange: null };
-		host.innerHTML = `<section class="fx-term" aria-label="Unit Exchange terminal">
-	<header class="fx-head"><div><span class="fx-kicker">UNIT EXCHANGE</span><b class="fx-pair">POUNDS / CIPHER</b></div><div class="fx-live"><span class="fx-dot" aria-hidden="true"></span><span class="fx-clock"></span></div></header>
+		host.innerHTML = `<section class="fx-term" aria-label="유닛 환전소 단말기">
+	<header class="fx-head"><div><span class="fx-kicker">유닛 환전소</span><b class="fx-pair">파운드 / 사이퍼</b></div><div class="fx-live"><span class="fx-dot" aria-hidden="true"></span><span class="fx-clock"></span></div></header>
 	<p class="fx-halt" role="status" hidden></p>
-	<div class="fx-quote"><div class="fx-price">1 Cipher = <b class="fx-mid"></b></div><div class="fx-chg"></div></div>
-	<dl class="fx-sides"><div><dt>BUY AT</dt><dd class="fx-ask"></dd></div><div><dt>SELL AT</dt><dd class="fx-bid"></dd></div><div><dt>SPREAD</dt><dd class="fx-spr"></dd></div><div><dt>MARKET</dt><dd class="fx-state"></dd></div></dl>
+	<div class="fx-quote"><div class="fx-price">1 사이퍼 = <b class="fx-mid"></b></div><div class="fx-chg"></div></div>
+	<dl class="fx-sides"><div><dt>매수가</dt><dd class="fx-ask"></dd></div><div><dt>매도가</dt><dd class="fx-bid"></dd></div><div><dt>스프레드</dt><dd class="fx-spr"></dd></div><div><dt>시장</dt><dd class="fx-state"></dd></div></dl>
 	<div class="fx-chart">
-		<div class="fx-ranges" role="group" aria-label="Chart range">${this.ranges.map(r => `<button type="button" data-r="${r[0]}">${r[0]}</button>`).join("")}</div>
+		<div class="fx-ranges" role="group" aria-label="차트 기간">${this.ranges.map(r => `<button type="button" data-r="${r[0]}">${r[0]}</button>`).join("")}</div>
 		<div class="fx-plot"><svg class="fx-svg" viewBox="0 0 1000 300" preserveAspectRatio="none" aria-hidden="true"></svg><div class="fx-y"></div><div class="fx-now"></div></div>
 		<div class="fx-x"></div>
 		<div class="fx-span"></div>
 	</div>
 	<div class="fx-grid">
-		<div class="fx-wallet"><h4>YOUR MONEY</h4><dl><div><dt>Cash</dt><dd class="fx-money"></dd></div><div><dt>Wallet Cipher</dt><dd class="fx-cipher"></dd></div><div><dt>Vault Cipher</dt><dd class="fx-vault"></dd></div><div><dt>Wallet sell value</dt><dd class="fx-worth"></dd></div></dl><p class="fx-hint">To sell vault Cipher, withdraw it at Halden Trust first.</p></div>
+		<div class="fx-wallet"><h4>내 자금</h4><dl><div><dt>현금</dt><dd class="fx-money"></dd></div><div><dt>지갑 사이퍼</dt><dd class="fx-cipher"></dd></div><div><dt>금고 사이퍼</dt><dd class="fx-vault"></dd></div><div><dt>지갑 매도 가치</dt><dd class="fx-worth"></dd></div></dl><p class="fx-hint">금고의 사이퍼를 팔려면 먼저 할든 트러스트에서 출금하십시오.</p></div>
 		<form class="fx-order" novalidate>
-			<h4>TRADE CIPHER</h4>
-			<div class="fx-tabs" role="group" aria-label="Order side"><button type="button" data-side="buy">Buy Cipher</button><button type="button" data-side="sell">Sell Cipher</button></div>
-			<label class="fx-amt">Cipher amount (minimum 0.001)<input type="text" inputmode="decimal" autocomplete="off" value="0.010"></label>
-			<div class="fx-quick"><button type="button" data-q="10">0.01</button><button type="button" data-q="100">0.1</button><button type="button" data-q="1000">1</button><button type="button" data-q="max">MAX</button></div>
+			<h4>사이퍼 거래</h4>
+			<div class="fx-tabs" role="group" aria-label="주문 방향"><button type="button" data-side="buy">사이퍼 구매</button><button type="button" data-side="sell">사이퍼 판매</button></div>
+			<label class="fx-amt">사이퍼 수량 (최소 0.001)<input type="text" inputmode="decimal" autocomplete="off" value="0.010"></label>
+			<div class="fx-quick"><button type="button" data-q="10">0.01</button><button type="button" data-q="100">0.1</button><button type="button" data-q="1000">1</button><button type="button" data-q="max">최대</button></div>
 			<p class="fx-preview" aria-live="polite"></p>
 			<button type="submit" class="fx-go"></button>
 			<p class="fx-msg" role="status"></p>
 		</form>
 	</div>
-	<div class="fx-lists"><div><h4>YOUR TRADES</h4><ol class="fx-tx"></ol></div><div><h4>MARKET ACTIVITY</h4><ol class="fx-act"></ol></div></div>
-	<p class="fx-foot">Prices change every second. The price must rise enough to cover the buy/sell gap before you profit. Large trades get a worse price.</p>
+	<div class="fx-lists"><div><h4>내 거래</h4><ol class="fx-tx"></ol></div><div><h4>시장 동향</h4><ol class="fx-act"></ol></div></div>
+	<p class="fx-foot">가격은 매초 바뀝니다. 매수가와 매도가의 차이를 넘길 만큼 가격이 올라야 이익이 납니다. 큰 거래일수록 가격이 불리해집니다.</p>
 </section>`;
 		const $ = sel => host.querySelector(sel);
 		const input = $(".fx-amt input");
@@ -443,27 +443,27 @@ setup.arcologyFx = {
 			const q = this.parse(input.value);
 			const go = $(".fx-go");
 			const blocked = rule.halted
-				? "Trading is suspended. No orders are being accepted."
+				? "거래가 중단되었습니다. 주문을 받지 않습니다."
 				: ui.side === "buy" && rule.sellOnly
-				? "Buying is closed to guest accounts under the Registry's emergency order."
+				? "등록소의 긴급 명령에 따라 방문객 계정은 구매할 수 없습니다."
 				: "";
 			if (blocked || !(q >= 1 && q <= rule.cap)) {
 				ui.seen = NaN;
-				$(".fx-preview").textContent = blocked || `Enter an amount from 0.001 to ${cxs(rule.cap)} Cipher, to three decimal places.`;
-				go.textContent = ui.side === "buy" ? "Buy Cipher" : "Sell Cipher";
+				$(".fx-preview").textContent = blocked || `0.001부터 ${cxs(rule.cap)} 사이퍼까지, 소수점 셋째 자리까지 입력하십시오.`;
+				go.textContent = ui.side === "buy" ? "사이퍼 구매" : "사이퍼 판매";
 				go.disabled = true;
 				return;
 			}
 			const x = this.quote(ui.side, q, fx);
 			ui.seen = x.total;
 			const short = ui.side === "buy" ? x.total > V.money : q > (V.xchange.arcology.cipher || 0);
-			const impact = Math.abs(x.impact) >= 0.1 ? ` Your order moves the price ${x.impact > 0 ? "up" : "down"} ${Math.abs(x.impact).toFixed(1)}%.` : "";
+			const impact = Math.abs(x.impact) >= 0.1 ? ` 이 주문으로 가격이 ${Math.abs(x.impact).toFixed(1)}% ${x.impact > 0 ? "오릅니다" : "내립니다"}.` : "";
 			$(".fx-preview").textContent =
-				(ui.side === "buy" ? `You pay ${this.gbp(x.total, true)}` : `You receive ${this.gbp(x.total, true)}`) +
-				(Math.abs(x.impact) >= 0.1 ? ` (${this.gbp(x.unit)} per Cipher).${impact}` : ".") +
-				(short ? (ui.side === "buy" ? " You don't have enough cash." : " Your wallet doesn't hold that much Cipher.") : "") +
-				(x.total < 1 ? " That amount is worth less than a penny." : "");
-			go.textContent = `${ui.side === "buy" ? "Buy" : "Sell"} ${cxs(q)} Cipher for ${this.gbp(x.total, true)}`;
+				(ui.side === "buy" ? `지불 금액 ${this.gbp(x.total, true)}` : `수령 금액 ${this.gbp(x.total, true)}`) +
+				(Math.abs(x.impact) >= 0.1 ? ` (사이퍼당 ${this.gbp(x.unit)}).${impact}` : ".") +
+				(short ? (ui.side === "buy" ? " 현금이 부족합니다." : " 지갑에 그만큼의 사이퍼가 없습니다.") : "") +
+				(x.total < 1 ? " 그 수량은 가치가 1페니도 되지 않습니다." : "");
+			go.textContent = `${cxs(q)} 사이퍼 ${ui.side === "buy" ? "구매" : "판매"} (${this.gbp(x.total, true)})`;
 			go.disabled = short || ui.busy || x.total < 1;
 		};
 
@@ -473,11 +473,11 @@ setup.arcologyFx = {
 				.reverse()
 				.map(
 					([at, buy, q, total]) =>
-						`<li><span class="fx-t">${this.clock(at)}</span><span class="${buy ? "up" : "down"}">${buy ? "BOUGHT" : "SOLD"}</span> ${cxs(q)} at ${this.gbp(
+						`<li><span class="fx-t">${this.clock(at)}</span><span class="${buy ? "up" : "down"}">${buy ? "구매" : "판매"}</span> ${cxs(q)} 사이퍼 · 단가 ${this.gbp(
 							(total / q) * 1000
 						)} <span class="fx-dim">(${this.gbp(total, true)})</span></li>`
 				);
-			$(".fx-tx").innerHTML = tx.join("") || '<li class="fx-dim">No trades yet.</li>';
+			$(".fx-tx").innerHTML = tx.join("") || '<li class="fx-dim">아직 거래가 없습니다.</li>';
 			const act = fx.mk
 				.filter(m => fx.k - m[0] < 86400)
 				.reverse()
@@ -488,7 +488,7 @@ setup.arcologyFx = {
 							""
 						)}</li>`
 				);
-			$(".fx-act").innerHTML = act.join("") || '<li class="fx-dim">No market reports in the past day.</li>';
+			$(".fx-act").innerHTML = act.join("") || '<li class="fx-dim">지난 하루 동안 시장 보도가 없습니다.</li>';
 		};
 
 		const chart = (fx, pts) => {
@@ -496,7 +496,7 @@ setup.arcologyFx = {
 			if (pts.length < 2) {
 				svg.innerHTML = "";
 				$(".fx-y").innerHTML = "";
-				$(".fx-x").innerHTML = '<span class="fx-dim">Not enough history for this range yet.</span>';
+				$(".fx-x").innerHTML = '<span class="fx-dim">이 기간의 기록이 아직 충분하지 않습니다.</span>';
 				$(".fx-span").textContent = "";
 				return;
 			}
@@ -560,17 +560,17 @@ setup.arcologyFx = {
 			$(".fx-now").textContent = this.gbp(ps[ps.length - 1]);
 			const tick = k => {
 				const t = new Date(this.timeOf(fx, k));
-				return this.range === "7D" ? t.toLocaleDateString("en-GB", { weekday: "short", hour: "2-digit" }) : this.clock(t);
+				return this.range === "7D" ? t.toLocaleDateString("ko-KR", { weekday: "short", hour: "2-digit" }) : this.clock(t);
 			};
 			$(".fx-x").innerHTML = [0, 1, 2, 3].map(i => `<span>${tick(k0 + ((k1 - k0) * i) / 3)}</span>`).join("");
-			$(".fx-span").textContent = `High ${this.gbp(max)} · Low ${this.gbp(min)}${logScale ? " · log scale" : ""}`;
+			$(".fx-span").textContent = `고가 ${this.gbp(max)} · 저가 ${this.gbp(min)}${logScale ? " · 로그 스케일" : ""}`;
 		};
 
 		const paint = (force = false) => {
 			if (!host.isConnected || host.closest(".hidden")) return clearInterval(this.timer);
 			const overlay = document.querySelector("#customOverlay:not(.hidden)");
 			if (overlay && !overlay.contains(host)) return;
-			$(".fx-clock").textContent = "LIVE " + new Date().toLocaleTimeString("en-GB");
+			$(".fx-clock").textContent = "실시간 " + new Date().toLocaleTimeString("en-GB");
 			if (document.hidden && !force) return;
 			if (!force && setup.arcology.online() && setup.arcology.hasClearance("guest")) {
 				const news = setup.arcologyNews;
@@ -593,22 +593,22 @@ setup.arcologyFx = {
 			const pts = this.series(fx, this.range);
 			const ch = pts.length > 1 ? (mid / pts[0][1] - 1) * 100 : null;
 			const full = pts.length && fx.k - pts[0][0] >= r[2] * r[3] - r[2];
-			const since = full ? r[4] : pts.length ? "since " + this.clock(this.timeOf(fx, pts[0][0])) : "";
+			const since = full ? r[4] : pts.length ? this.clock(this.timeOf(fx, pts[0][0])) + "부터" : "";
 			/* Headline, quotes and the chart's last point all come from this one snapshot. */
 			$(".fx-mid").textContent = this.gbp(mid);
 			$(".fx-chg").className = "fx-chg " + (ch === null ? "fx-dim" : ch >= 0 ? "up" : "down");
 			$(".fx-chg").textContent =
 				ch === null
-					? "No history for this range yet"
+					? "이 기간의 기록이 아직 없습니다"
 					: `${ch >= 0 ? "+" : "−"}${this.gbp(Math.abs(mid - pts[0][1]))} (${ch >= 0 ? "+" : "−"}${Math.abs(ch).toFixed(
 							Math.abs(ch) >= 100 ? 0 : 2
 					  )}%) ${since}`;
 			$(".fx-halt").hidden = !rule.label;
 			$(".fx-halt").textContent = rule.halted
-				? `Trading paused for about ${Math.ceil((fx.halt - fx.k) / 60)} min. You cannot trade at the prices shown yet.`
+				? `거래가 약 ${Math.ceil((fx.halt - fx.k) / 60)}분 동안 중단됩니다. 표시된 가격으로는 아직 거래할 수 없습니다.`
 				: rule.label;
-			$(".fx-ask").textContent = rule.halted || rule.sellOnly ? "NO QUOTE" : this.gbp(this.ask(fx));
-			$(".fx-bid").textContent = rule.halted ? "NO QUOTE" : this.gbp(this.bid(fx));
+			$(".fx-ask").textContent = rule.halted || rule.sellOnly ? "호가 없음" : this.gbp(this.ask(fx));
+			$(".fx-bid").textContent = rule.halted ? "호가 없음" : this.gbp(this.bid(fx));
 			$(".fx-spr").textContent = (this.spread(fx) * 200).toFixed(1) + "%";
 			const [label, cls] = this.condition(fx);
 			$(".fx-state").textContent = label;
@@ -657,14 +657,14 @@ setup.arcologyFx = {
 			const msg = $(".fx-msg");
 			if (res.error) msg.textContent = res.error;
 			else if (res.requote)
-				msg.textContent = `The price moved before your order went through. The new total is ${this.gbp(
+				msg.textContent = `주문이 체결되기 전에 가격이 바뀌었습니다. 새 합계는 ${this.gbp(
 					res.requote.total,
 					true
-				)}. Press the button again to confirm.`;
+				)}입니다. 확정하려면 버튼을 다시 누르십시오.`;
 			else
-				msg.textContent = `${res.done.side === "buy" ? "Bought" : "Sold"} ${cxs(res.done.q)} Cipher for ${this.gbp(res.done.total, true)} (average ${this.gbp(
+				msg.textContent = `${res.done.side === "buy" ? "구매" : "판매"} ${cxs(res.done.q)} 사이퍼, ${this.gbp(res.done.total, true)} (평균 ${this.gbp(
 					res.done.unit
-				)} each).`;
+				)} / 사이퍼).`;
 			paint(true);
 			setTimeout(() => {
 				ui.busy = false;

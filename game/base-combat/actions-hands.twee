@@ -182,7 +182,7 @@
 		<<set $_target to $NPCList[$lefttarget]>>
 		<<if $_target.lefthand and ($_target.lefthand is "pen" or $_target.lefthand.startsWith("pen_")) or $_target.righthand and ($_target.righthand is "pen" or $_target.righthand.startsWith("pen_"))>>
 			<<set _penwhackTool to ($_target.lefthand and ($_target.lefthand is "pen" or $_target.lefthand.startsWith("pen_"))) ? $_target.lefttool : $_target.righttool>>
-			<<set _leftaction["Whack the " + (["makeup kit", "makeup remover"].includes(_penwhackTool) ? _penwhackTool : "writing tool") + " away"] to "penwhack">>
+			<<set _leftaction[(["makeup kit", "makeup remover"].includes(_penwhackTool) ? ({"makeup kit": "화장 도구", "makeup remover": "화장 지우개"})[_penwhackTool] : "필기구") + "를 쳐낸다"] to "penwhack">>
 		<</if>>
 	<</if>>
 <</widget>>
@@ -373,10 +373,10 @@
 				<<set $_damagedCondoms to Math.min($damagedCondoms || 0, $condoms || 0)>>
 				<<set $_normalCondoms to Math.max(0, ($condoms || 0) - $_damagedCondoms)>>
 				<<if $_normalCondoms gt 0>>
-					<<set _leftaction["Put on a condom (" + $_normalCondoms + " left)"] to "peniscondom">>
+					<<set _leftaction["콘돔을 낀다 (" + $_normalCondoms + "개 남음)"] to "peniscondom">>
 				<</if>>
 				<<if $_damagedCondoms gt 0>>
-					<<set _leftaction["Put on a worn-looking condom (" + $_damagedCondoms + " left)"] to "peniscondomdamaged">>
+					<<set _leftaction["낡아 보이는 콘돔을 낀다 (" + $_damagedCondoms + "개 남음)"] to "peniscondomdamaged">>
 				<</if>>
 			<</if>>
 			<<if $player.condom>>
@@ -407,7 +407,7 @@
 				<<set _leftaction["Give " + $_target.pronouns.him + " a condom (" + $_normalCondoms + " left)"] to "npcgivecondom">>
 			<</if>>
 			<<if $_damagedCondoms gt 0>>
-				<<set _leftaction["Give " + $_target.pronouns.him + " a worn-looking condom (" + $_damagedCondoms + " left)"] to "npcgivecondomdamaged">>
+				<<set _leftaction["낡아 보이는 콘돔을 건넨다 (" + $_damagedCondoms + "개 남음)"] to "npcgivecondomdamaged">>
 			<</if>>
 		<</if>>
 	<</if>>
@@ -634,7 +634,7 @@
 		<<set $_target to $NPCList[$righttarget]>>
 		<<if $_target.lefthand and ($_target.lefthand is "pen" or $_target.lefthand.startsWith("pen_")) or $_target.righthand and ($_target.righthand is "pen" or $_target.righthand.startsWith("pen_"))>>
 			<<set _penwhackTool to ($_target.lefthand and ($_target.lefthand is "pen" or $_target.lefthand.startsWith("pen_"))) ? $_target.lefttool : $_target.righttool>>
-			<<set _rightaction["Whack the " + (["makeup kit", "makeup remover"].includes(_penwhackTool) ? _penwhackTool : "writing tool") + " away"] to "penwhack">>
+			<<set _rightaction[(["makeup kit", "makeup remover"].includes(_penwhackTool) ? ({"makeup kit": "화장 도구", "makeup remover": "화장 지우개"})[_penwhackTool] : "필기구") + "를 쳐낸다"] to "penwhack">>
 		<</if>>
 	<</if>>
 <</widget>>
@@ -824,10 +824,10 @@
 				<<set $_damagedCondoms to Math.min($damagedCondoms || 0, $condoms || 0)>>
 				<<set $_normalCondoms to Math.max(0, ($condoms || 0) - $_damagedCondoms)>>
 				<<if $_normalCondoms gt 0>>
-					<<set _rightaction["Put on a condom (" + $_normalCondoms + " left)"] to "peniscondom">>
+					<<set _rightaction["콘돔을 낀다 (" + $_normalCondoms + "개 남음)"] to "peniscondom">>
 				<</if>>
 				<<if $_damagedCondoms gt 0>>
-					<<set _rightaction["Put on a worn-looking condom (" + $_damagedCondoms + " left)"] to "peniscondomdamaged">>
+					<<set _rightaction["낡아 보이는 콘돔을 낀다 (" + $_damagedCondoms + "개 남음)"] to "peniscondomdamaged">>
 				<</if>>
 			<</if>>
 			<<if $player.condom>>
@@ -858,7 +858,7 @@
 				<<set _rightaction["Give " + $_target.pronouns.him + " a condom (" + $_normalCondoms + " left)"] to "npcgivecondom">>
 			<</if>>
 			<<if $_damagedCondoms gt 0>>
-				<<set _rightaction["Give " + $_target.pronouns.him + " a worn-looking condom (" + $_damagedCondoms + " left)"] to "npcgivecondomdamaged">>
+				<<set _rightaction["낡아 보이는 콘돔을 건넨다 (" + $_damagedCondoms + "개 남음)"] to "npcgivecondomdamaged">>
 			<</if>>
 		<</if>>
 	<</if>>
@@ -916,7 +916,7 @@
 				<<if _style is "old">>
 					| <label><span class="brat">가슴을 빼낸다</span><<radiobutton _actionVariable "freechest" `_default is "freechest" ? 'checked' : ''`>></label>
 				<<else>>
-					<<set _actions["Free your chest"] to "freechest">>
+					<<set _actions["가슴을 빼낸다"] to "freechest">>
 				<</if>>
 			<</if>>
 		<</if>>
@@ -3031,7 +3031,7 @@
 		) and !["othermouthImminent","othermouth","imminent","doubleimminent","penetrated","doublepenetrated"].includes($vaginastate)>>
 
 		<<if _canReachVibe>>
-			<<set _label to "Remove your " + $worn.vibrator.name>>
+			<<set _label to $worn.vibrator.name + "【을를】 뺀다">>
 			<<if _args[0] is "left">>
 				<<set _leftaction[_label] to "removevibrator">>
 			<<elseif _args[0] is "right">>
@@ -3064,7 +3064,7 @@
 		) and !["othermouthImminent","othermouth","imminent","doubleimminent","penetrated","doublepenetrated"].includes($vaginastate)>>
 
 		<<if _canReachDildo>>
-			<<set _label to "Remove your " + $worn.vaginal_dildo.name>>
+			<<set _label to $worn.vaginal_dildo.name + "【을를】 뺀다">>
 			<<if _args[0] is "left">>
 				<<set _leftaction[_label] to "removevaginaldildo">>
 			<<elseif _args[0] is "right">>

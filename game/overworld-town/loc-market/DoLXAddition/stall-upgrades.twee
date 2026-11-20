@@ -1,19 +1,19 @@
 :: Stall Upgrades
 <<set $outside to 0>><<set $location to "market">><<effects>>
 <<run ensurePcStall()>>
-You enter the small office responsible for the Connudatus market. A clerk behind the desk slides a catalogue of fittings and supplies across to you.
+콘누다투스 시장을 담당하는 작은 사무실로 들어간다. 책상 뒤의 직원이 설비와 비품 카탈로그를 당신 쪽으로 밀어 준다.
 <br><br>
 <<if $phase is "bought">>
-	The clerk notes the order. <span class="green">It will be in place the next time you open your stall</span>.
+	직원이 주문을 기록한다. <span class="green">다음에 가판대를 열 때 설치되어 있을 것이다</span>.
 	<br><br>
 <<elseif $phase is "bags">>
-	<span class="green">The clerk hands you the bags.</span>
+	<span class="green">직원이 봉투를 건네준다.</span>
 	<br><br>
 <</if>>
 <<set $phase to 0>>
 <<set _owned to setup.pcStall.upgrades.filter(u => pcStallHas(u.id))>>
 <<if _owned.length gt 0>>
-	Your stall has: <<print _owned.map(u => u.name).join(", ")>>.
+	당신의 가판대에는 <<print _owned.map(u => u.name).join(", ")>>【이가】 있다.
 	<br><br>
 <</if>>
 <<set _available to pcStallAvailable()>>
@@ -21,36 +21,36 @@ You enter the small office responsible for the Connudatus market. A clerk behind
 	<<for _p range _available>>
 		<<capture _p>>
 			<<if setup.inflation.canAfford(_p.cost, "marketStall")>>
-				<<shopicon "register">><<link `"Buy the " + _p.name + " (" + formatMoney(setup.inflation.price(_p.cost)) + ")"` "Stall Upgrades">>
+				<<shopicon "register">><<link `"구매한다: " + _p.name + " (" + formatMoney(setup.inflation.price(_p.cost)) + ")"` "Stall Upgrades">>
 					<<money `-_p.cost` "marketStall">><<run pcStallBuy(_p.id)>><<set $phase to "bought">><</link>><<note `_p.note` "green">>
 				<br>
 			<<else>>
-				<span class="grey">Buy the <<print _p.name>> (<<printprice _p.cost>>)</span><<note `_p.note` "grey">>
+				<span class="grey">구매한다: <<print _p.name>> (<<printprice _p.cost>>)</span><<note `_p.note` "grey">>
 				<br>
 			<</if>>
 		<</capture>>
 	<</for>>
 <<else>>
-	You own everything in the catalogue.
+	카탈로그에 있는 물건을 모두 가지고 있다.
 <</if>>
 <br>
-Paper bags make customers buy a little more. You give them away, one per sale.
-You have <span class="gold"><<print $pcStall.bagsDisposable>></span>.
+종이봉투는 손님이 조금 더 사게 만든다. 판매 한 건당 하나씩 나눠 준다.
+당신은 <span class="gold"><<print $pcStall.bagsDisposable>></span>개를 가지고 있다.
 <br>
 <<set _pack to setup.pcStall.disposablePack>>
 <<if setup.inflation.canAfford(_pack.cost, "marketStall")>>
-	<<shopicon "register">><<link `"Buy " + _pack.amount + " paper bags (" + formatMoney(setup.inflation.price(_pack.cost)) + ")"` "Stall Upgrades">>
+	<<shopicon "register">><<link `"종이봉투 " + _pack.amount + "개 구매한다 (" + formatMoney(setup.inflation.price(_pack.cost)) + ")"` "Stall Upgrades">>
 		<<money `-_pack.cost` "marketStall">><<set $pcStall.bagsDisposable += _pack.amount>><<set $phase to "bags">><</link>>
 	<br>
 <</if>>
 <<if pcStallHas("toteRack")>>
 	<br>
-	Tote bags make customers buy more than paper bags do. Customers pay you back what a tote costs, and returning customers sometimes bring their own. Totes are used before paper bags.
-	You have <span class="gold"><<print $pcStall.bagsReusable>></span>.
+	토트백은 종이봉투보다 손님이 더 많이 사게 만든다. 손님이 토트백 값을 당신에게 되갚고, 단골은 가끔 자기 가방을 가져오기도 한다. 토트백이 종이봉투보다 먼저 쓰인다.
+	당신은 <span class="gold"><<print $pcStall.bagsReusable>></span>개를 가지고 있다.
 	<br>
 	<<set _toteCost to setup.pcStall.reusableCost * setup.pcStall.reusablePack>>
 	<<if setup.inflation.canAfford(_toteCost, "marketStall")>>
-		<<shopicon "register">><<link `"Buy " + setup.pcStall.reusablePack + " tote bags (" + formatMoney(setup.inflation.price(_toteCost)) + ")"` "Stall Upgrades">>
+		<<shopicon "register">><<link `"토트백 " + setup.pcStall.reusablePack + "개 구매한다 (" + formatMoney(setup.inflation.price(_toteCost)) + ")"` "Stall Upgrades">>
 			<<money `-_toteCost` "marketStall">><<set $pcStall.bagsReusable += setup.pcStall.reusablePack>><<set $phase to "bags">><</link>>
 		<br>
 	<</if>>

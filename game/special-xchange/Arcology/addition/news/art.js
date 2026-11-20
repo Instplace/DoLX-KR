@@ -138,8 +138,8 @@ setup.arcologyNewsArt = {
 			t.minute
 		).padStart(2, "0")}`;
 		const district = setup.arcologyNews.publicSubject(rec).d;
-		const where = district ? setup.arcology.districts[district]?.name ?? "" : "DOME BROADCAST";
-		const tag = style === "map" ? "ROUTE DATA" : rec.k === "break" ? "● DRONE FOOTAGE" : "ILLUSTRATION";
+		const where = district ? setup.arcology.districts[district]?.name ?? "" : "돔 방송";
+		const tag = style === "map" ? "노선 정보" : rec.k === "break" ? "● 드론 영상" : "삽화";
 		let deco = "";
 		if (style === "cam") {
 			const b = 12;
@@ -202,14 +202,14 @@ setup.arcologyNewsArt = {
 					`<path d="M32 148A128 112 0 0 1 288 148Z" fill="${c.ink}" fill-opacity=".08" stroke="${c.ink}"/><path class="na-glow" d="M64 148A96 100 0 0 1 256 148" fill="none" stroke="${c.ink}" opacity=".4"/>`;
 			} else if (rec.f === "transit") {
 				s += this.towers(r, c, 125, { tall: 45 }) + this.rail(c, 130) + this.route(rec, c, false);
-				s += `<rect x="190" y="54" width="110" height="46" fill="#081a26" stroke="${c.dim}"/><text x="245" y="74" text-anchor="middle" fill="${c.ink}" font-size="10">CHECK STOP BOARD</text><rect class="na-seg" x="204" y="84" width="80" height="3" fill="${c.ink}"/>`;
+				s += `<rect x="190" y="54" width="110" height="46" fill="#081a26" stroke="${c.dim}"/><text x="245" y="74" text-anchor="middle" fill="${c.ink}" font-size="10">정류장 안내판 확인</text><rect class="na-seg" x="204" y="84" width="80" height="3" fill="${c.ink}"/>`;
 			} else if (rec.f === "cipher" || rec.f === "hotel") {
 				s += city(55);
 				for (let i = 0; i < 2; i++)
 					s += `<rect x="${28 + i * 150}" y="58" width="114" height="82" rx="4" fill="#081a26" stroke="${c.ink}"/><text x="${
 						85 + i * 150
 					}" y="82" text-anchor="middle" font-size="10" fill="${c.ink}">${
-						rec.f === "cipher" ? ["WALLET", "VAULT"][i] : ["GUEST ROOM", "AUTHORIZATION"][i]
+						rec.f === "cipher" ? ["지갑", "금고"][i] : ["방문객 객실", "이용 권한"][i]
 					}</text><rect class="na-seg" x="${43 + i * 150}" y="99" width="84" height="5" fill="${c.ink}" opacity=".4"/><path d="M${
 						53 + i * 150
 					} 120h64" stroke="${c.dim}"/>`;
@@ -220,7 +220,7 @@ setup.arcologyNewsArt = {
 						i > 2 ? c.warn : c.ink
 					}" opacity=".65"/>`;
 				s += `<text x="160" y="144" text-anchor="middle" fill="${c.ink}" font-size="9">${
-					rec.f === "safety" ? "DISTRICT CONDITIONS" : "PUBLIC THREAT PROFILE"
+					rec.f === "safety" ? "구역 상황" : "공개 위협 평가"
 				}</text>`;
 			} else {
 				s += `<rect x="82" y="44" width="156" height="108" rx="8" fill="#0c2230" stroke="${c.ink}"/><rect x="105" y="65" width="110" height="60" fill="#040b16" stroke="${c.dim}"/>`;
@@ -269,7 +269,7 @@ setup.arcologyNewsArt = {
 				for (let j = 0; j < 6; j++) s += `<path d="M72 ${48 + j * 12}H248" stroke="#193c4c" stroke-width="3"/>`;
 				if (rec.s === "walkout" && rec.ph !== "reopen") {
 					for (let i = 0; i < 6; i++) s += this.person(45 + i * 43, 174, 0.9 + r() * 0.3);
-					s += `<path d="M98 152V112H152V140H98" fill="#a9bcc0" stroke="#162432"/><text x="125" y="130" text-anchor="middle" font-size="9" fill="#142632">OVERTIME</text>`;
+					s += `<path d="M98 152V112H152V140H98" fill="#a9bcc0" stroke="#162432"/><text x="125" y="130" text-anchor="middle" font-size="9" fill="#142632">초과 근무</text>`;
 				} else {
 					for (let i = 0; i < 4; i++)
 						s += `<rect x="${24 + i * 74}" y="${132 + (i % 2) * 12}" width="52" height="28" fill="#173342" stroke="${c.dim}"/><path d="M${
@@ -309,7 +309,7 @@ setup.arcologyNewsArt = {
 				d += `L${x} ${y.toFixed(1)}`;
 			}
 			s += `<path d="${d}" fill="none" stroke="${col}" stroke-width="2"/><circle class="na-blink" cx="284" cy="${y.toFixed(1)}" r="3" fill="${col}"/>`;
-			s += `<text x="34" y="48" font-family="monospace" font-size="9" fill="${c.ink}">GBP/CIPHER</text>`;
+			s += `<text x="34" y="48" font-family="monospace" font-size="9" fill="${c.ink}">파운드/사이퍼</text>`;
 			if (rec.q) s += `<text x="286" y="48" text-anchor="end" font-family="monospace" font-size="9" fill="${col}">${setup.arcologyFx.gbp(rec.q[0])}</text>`;
 			return this.frame(rec, c, id, s, "plan");
 		}
@@ -320,7 +320,7 @@ setup.arcologyNewsArt = {
 				c.faint
 			}"/><rect x="200" y="134" width="80" height="12" fill="#02070c" stroke="${closed ? c.hot : c.ink}" stroke-opacity=".7"/>`;
 			s += `<text x="240" y="143" text-anchor="middle" font-family="monospace" font-size="7" fill="${closed ? c.hot : c.ink}" class="na-blink">${
-				closed ? "NOT IN SERVICE" : "IN SERVICE"
+				closed ? "운행 중단" : "운행 중"
 			}</text>`;
 			s += this.route(rec, c, closed);
 			return this.frame(rec, c, id, s, "map");
@@ -406,9 +406,9 @@ setup.arcologyNewsArt = {
 			s += `<g opacity=".85"><rect x="236" y="40" width="70" height="44" fill="#04101a" stroke="${
 				c.faint
 			}"/><text x="242" y="52" font-family="monospace" font-size="6.5" fill="${c.ink}">${this.esc(
-				(rec.s ?? "").toUpperCase()
+				(({ press: "프레스", power: "전력", shortage: "물자 부족", walkout: "파업" })[rec.s] ?? rec.s ?? "").toUpperCase()
 			)}</text><text x="242" y="64" font-family="monospace" font-size="6.5" fill="${halted ? c.hot : c.dim}">${
-				halted ? "SHIFTS: OFF" : "SHIFTS: ON"
+				halted ? "교대: 중단" : "교대: 가동"
 			}</text><rect class="na-grow" x="242" y="72" width="56" height="4" fill="${c.ink}" opacity=".5"/></g>`;
 			return this.frame(rec, c, id, s, "plan");
 		}
@@ -432,7 +432,7 @@ setup.arcologyNewsArt = {
 		if (f === "implant" && rec.s === "xchange") {
 			s +=
 				city(45) +
-				`<rect x="30" y="44" width="260" height="102" fill="#0c2230" stroke="${c.dim}"/><rect x="64" y="50" width="192" height="20" fill="#071420" stroke="${c.ink}"/><text x="160" y="64" text-anchor="middle" fill="${c.ink}" font-size="10">X-CHANGE / GUEST COUNTER</text>`;
+				`<rect x="30" y="44" width="260" height="102" fill="#0c2230" stroke="${c.dim}"/><rect x="64" y="50" width="192" height="20" fill="#071420" stroke="${c.ink}"/><text x="160" y="64" text-anchor="middle" fill="${c.ink}" font-size="10">X-체인지 / 방문객 창구</text>`;
 			for (let i = 0; i < 3; i++)
 				s += `<rect x="${48 + i * 80}" y="82" width="64" height="44" fill="#040b16" stroke="${c.dim}"/><rect class="na-seg" style="animation-delay:${
 					i * 0.5
@@ -504,7 +504,7 @@ setup.arcologyNewsArt = {
 			const dir = (rec.x?.[1] ?? 0) * 45;
 			s += `<rect x="0" y="120" width="${this.W}" height="60" fill="#03111c"/><path d="M70 120l20-14h140l20 14z" fill="#0c2230"/><path d="M90 120l70 30 70-30z" fill="#081624"/>`;
 			s += `<g transform="rotate(${dir} 160 70)"><path class="na-glow" d="M160 40l9 30h-18z" fill="${c.ink}"/><path d="M160 100l9-30h-18z" fill="${c.faint}"/></g><circle cx="160" cy="70" r="34" fill="none" stroke="${c.dim}"/>`;
-			s += `<text x="270" y="60" text-anchor="middle" font-family="monospace" font-size="12" fill="${c.ink}">${this.esc((rec.x?.[0] ?? 0) + " KM")}</text>`;
+			s += `<text x="270" y="60" text-anchor="middle" font-family="monospace" font-size="12" fill="${c.ink}">${this.esc((rec.x?.[0] ?? 0) + "km")}</text>`;
 			return this.frame(rec, c, id, s, "plan");
 		}
 		if (f === "weekly") {
@@ -513,7 +513,7 @@ setup.arcologyNewsArt = {
 					i < (rec.x?.length ?? 0) ? c.ink : c.faint
 				}"/>`;
 				const article = rec.x?.[i];
-				const label = setup.arcologyNews.families[article?.f]?.cat || "NO REPORT";
+				const label = setup.arcologyNews.catNames?.[setup.arcologyNews.families[article?.f]?.cat] ?? (setup.arcologyNews.families[article?.f]?.cat || "보도 없음");
 				s += `<text x="${48 + (i % 2) * 124}" y="${58 + Math.floor(i / 2) * 60}" font-size="8" fill="${c.ink}">${this.esc(label)}</text>`;
 				if (article)
 					s += `<rect class="na-seg" style="animation-delay:${i * 0.4}s" x="${48 + (i % 2) * 124}" y="${72 + Math.floor(i / 2) * 60}" width="${

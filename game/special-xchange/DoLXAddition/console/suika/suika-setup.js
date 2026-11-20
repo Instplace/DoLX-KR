@@ -21,7 +21,7 @@
 	const progress = () => setup.suikaProgress;
 	const content = () => setup.suikaContent;
 	const capital = s => s[0].toUpperCase() + s.slice(1);
-	const fruitName = tier => (tier >= 0 ? setup.suika.fruits[tier].name : "None yet");
+	const fruitName = tier => (tier >= 0 ? setup.suika.fruits[tier].name : "아직 없음");
 
 	function glyph(name) {
 		const span = h("span", { class: "suika-glyph", "aria-hidden": "true" });
@@ -37,14 +37,14 @@
 	}
 
 	const titles = {
-		menu: "Menu",
-		challenges: "Challenges",
-		daily: "Daily challenge",
-		achievements: "Achievements",
-		stats: "Statistics",
-		appearance: "Appearance",
-		settings: "Settings",
-		help: "How to play",
+		menu: "메뉴",
+		challenges: "도전 과제",
+		daily: "일일 도전 과제",
+		achievements: "업적",
+		stats: "통계",
+		appearance: "외관",
+		settings: "설정",
+		help: "플레이 방법",
 	};
 
 	/* Shows page `name` in place of the jar. */
@@ -54,13 +54,13 @@
 		const panel = game.el.panel;
 		panel.textContent = "";
 		const heading = h("h3", { class: "suika-panel-title", tabindex: "-1", id: "suika-panel-title" }, titles[name]);
-		const back = name === "menu" ? button("Close", () => close(game)) : button("Back", () => open(game, "menu"));
+		const back = name === "menu" ? button("닫기", () => close(game)) : button("뒤로", () => open(game, "menu"));
 		let body;
 		try {
 			body = pages[name](game);
 		} catch (e) {
 			console.error(`Fruit game: the ${name} page failed`, e);
-			body = h("p", null, "This page could not be shown. Close the menu and try again.");
+			body = h("p", null, "이 페이지를 표시할 수 없습니다. 메뉴를 닫고 다시 시도하십시오.");
 		}
 		panel.append(h("div", { class: "suika-panel-head" }, heading, back), body);
 		panel.setAttribute("aria-labelledby", "suika-panel-title");
@@ -107,28 +107,28 @@
 		return h(
 			"div",
 			{ class: "suika-menu-list" },
-			item(game.over || game.idle ? "Back to the jar" : "Resume", null, () => {
+			item(game.over || game.idle ? "병으로 돌아가기" : "이어하기", null, () => {
 				close(game);
 				if (game.paused && !game.idle && !game.over) game.setPaused(false);
 			}),
-			item("Challenges", `${progress().challengeCount()} of ${total} done`, () => open(game, "challenges")),
+			item("도전 과제", `${progress().challengeCount()} / ${total} 완료`, () => open(game, "challenges")),
 			item(
-				"Daily challenge",
+				"일일 도전 과제",
 				day && day.done
 					? day.paid
-						? "Done today, reward claimed"
-						: "Done today"
-					: `${setup.consoleDaily.levelName(today.level)}, ${today.reward ? formatMoney(today.reward) : "no reward"}`,
+						? "오늘 완료, 보상 수령함"
+						: "오늘 완료"
+					: `${setup.consoleDaily.levelName(today.level)}, ${today.reward ? formatMoney(today.reward) : "보상 없음"}`,
 				() => open(game, "daily")
 			),
-			item("Achievements", `${unlocked} of ${content().achievements.length}`, () => open(game, "achievements")),
-			item("Statistics", null, () => open(game, "stats")),
-			item("Appearance", null, () => open(game, "appearance")),
-			item("Settings", null, () => open(game, "settings")),
-			item("How to play", null, () => open(game, "help")),
+			item("업적", `${unlocked} / ${content().achievements.length}`, () => open(game, "achievements")),
+			item("통계", null, () => open(game, "stats")),
+			item("외관", null, () => open(game, "appearance")),
+			item("설정", null, () => open(game, "settings")),
+			item("플레이 방법", null, () => open(game, "help")),
 			/* Only when there is a run to save; plain leaving is the passage's own Back to the console link. */
 			game.canSave()
-				? item("Save and exit", "Resume this run next time", () => {
+				? item("저장하고 나가기", "다음에 이 플레이를 이어서 합니다", () => {
 						setup.suika.leave();
 						Engine.play("Home Console");
 				  })
@@ -143,14 +143,14 @@
 			h(
 				"p",
 				{ class: "suika-panel-note" },
-				`${progress().challengeCount()} of ${content().challenges.length} completed. Each challenge has one goal; completing it once ticks it for good.`
+				`${progress().challengeCount()} / ${content().challenges.length} 완료. 도전 과제마다 목표는 하나이며, 한 번 완료하면 영구히 체크됩니다.`
 			)
 		);
 		for (const diff of ["easy", "medium", "hard"]) {
-			wrap.append(h("h4", { class: "suika-subhead" }, capital(diff)));
+			wrap.append(h("h4", { class: "suika-subhead" }, setup.consoleDaily.levelName(diff)));
 			for (const c of content().challenges.filter(x => x.diff === diff)) {
 				const done = !!d.challenges[c.id];
-				const play = button(done ? "Play again" : "Play", () => game.requestStart(play, "Press again to start", "challenge", c));
+				const play = button(done ? "다시 플레이" : "플레이", () => game.requestStart(play, "다시 누르면 시작합니다", "challenge", c));
 				wrap.append(
 					h(
 						"div",
@@ -160,7 +160,7 @@
 							{ class: "suika-row-main" },
 							h("span", { class: "suika-row-title" }, c.name),
 							h("span", { class: "suika-row-desc" }, content().describe(c)),
-							h("span", { class: "suika-row-status" }, done ? `Completed ${d.challenges[c.id]}` : "Not completed")
+							h("span", { class: "suika-row-status" }, done ? `완료 ${d.challenges[c.id]}` : "미완료")
 						),
 						play
 					)
@@ -178,7 +178,7 @@
 		return h(
 			"div",
 			{ class: "con-progress" },
-			h("div", { class: "con-progress-head" }, h("span", null, label), h("span", { class: "con-progress-count" }, `${n} of ${total}`)),
+			h("div", { class: "con-progress-head" }, h("span", null, label), h("span", { class: "con-progress-count" }, `${n} / ${total}`)),
 			bar
 		);
 	}
@@ -192,11 +192,11 @@
 		const day = progress().dailyDay(c.date);
 		const parts = content().describeParts(c);
 		const tried = !!(day && day.tries);
-		const play = button(tried ? "Retry" : "Play", () => game.requestStart(play, "Press again to start", "daily", c), { class: "suika-btn con-play" });
+		const play = button(tried ? "재도전" : "플레이", () => game.requestStart(play, "다시 누르면 시작합니다", "daily", c), { class: "suika-btn con-play" });
 		let reward;
-		if (!c.reward) reward = "None today";
-		else if (day && day.paid) reward = `${formatMoney(day.paid)}, claimed today`;
-		else reward = `${formatMoney(c.reward)} on completion, not claimed yet`;
+		if (!c.reward) reward = "오늘은 없음";
+		else if (day && day.paid) reward = `${formatMoney(day.paid)}, 오늘 수령함`;
+		else reward = `완료 시 ${formatMoney(c.reward)}, 아직 수령 전`;
 		const history = Object.entries(progress().data().daily)
 			.filter(([date]) => date !== c.date)
 			.sort((x, y) => (x[0] < y[0] ? 1 : -1))
@@ -206,21 +206,21 @@
 			{ class: "suika-list" },
 			h(
 				"section",
-				{ class: `con-daily${day && day.done ? " con-daily--done" : ""}`, "aria-label": "Today's challenge" },
+				{ class: `con-daily${day && day.done ? " con-daily--done" : ""}`, "aria-label": "오늘의 도전 과제" },
 				h("div", { class: "con-daily-head" }, h("span", { class: "con-daily-date" }, `${c.date} (UTC)`), levelChip(c.level)),
 				h("p", { class: "con-daily-goal" }, parts.goal + "."),
 				h(
 					"dl",
 					{ class: "con-facts" },
-					fact("Limits", [parts.drops ? `${parts.drops} drops` : "No drop limit", parts.rules].join(" · ")),
-					fact("Reward", reward),
-					fact("Status", day && day.done ? h("span", { class: "green" }, "Completed") : tried ? "Not completed yet" : "Not tried yet"),
-					fact("Best today", tried ? `${day.best} points, ${day.tries} ${day.tries === 1 ? "try" : "tries"}` : "None yet"),
-					fact("Next challenge", `in ${setup.consoleDaily.untilReset()} (midnight UTC)`)
+					fact("제한", [parts.drops ? `떨어뜨리기 ${parts.drops}번` : "떨어뜨리기 제한 없음", parts.rules].join(" · ")),
+					fact("보상", reward),
+					fact("상태", day && day.done ? h("span", { class: "green" }, "완료") : tried ? "아직 미완료" : "아직 시도 안 함"),
+					fact("오늘의 최고", tried ? `${day.best}점, ${day.tries}번 시도` : "아직 없음"),
+					fact("다음 도전 과제", `${setup.consoleDaily.untilReset()} 후 (UTC 자정)`)
 				),
 				play
 			),
-			history.length ? h("h4", { class: "suika-subhead" }, "Earlier days") : null,
+			history.length ? h("h4", { class: "suika-subhead" }, "이전 날짜") : null,
 			history.length
 				? h(
 						"ul",
@@ -230,8 +230,8 @@
 								"li",
 								null,
 								h("span", null, date),
-								h("span", null, r.done ? "Completed" : "Not completed"),
-								h("span", null, `best ${r.best}`),
+								h("span", null, r.done ? "완료" : "미완료"),
+								h("span", null, `최고 ${r.best}`),
 								h("span", null, r.paid ? formatMoney(r.paid) : "")
 							)
 						)
@@ -248,13 +248,13 @@
 		const featName = content().masterFeat;
 		const featState = progress().masterFeatState();
 		let featLine;
-		if (featState === "earned") featLine = h("span", { class: "green" }, "Earned in this save.");
-		else if (featState === "blocked") featLine = "Feats can't be earned in this save (cheats, debug, or soft mode are on).";
-		else featLine = unlocked === list.length ? "All unlocked: it is earned the next time the game opens." : `${list.length - unlocked} to go.`;
+		if (featState === "earned") featLine = h("span", { class: "green" }, "이 세이브에서 획득했습니다.");
+		else if (featState === "blocked") featLine = "이 세이브에서는 업적을 얻을 수 없습니다 (치트, 디버그, 소프트 모드 중 하나가 켜져 있습니다).";
+		else featLine = unlocked === list.length ? "모두 해금했습니다. 게임을 다음에 열 때 획득합니다." : `${list.length - unlocked}개 남았습니다.`;
 		const wrap = h(
 			"div",
 			{ class: "suika-list" },
-			progressBar("Unlocked", unlocked, list.length),
+			progressBar("해금", unlocked, list.length),
 			h(
 				"div",
 				{ class: `con-feat${featState === "earned" ? " con-feat--earned" : ""}` },
@@ -262,8 +262,8 @@
 				h(
 					"div",
 					{ class: "con-feat-text" },
-					h("span", { class: "con-feat-title" }, `${featName}, a Level 3 feat`),
-					h("span", null, `Unlock all ${list.length} achievements to earn it. `, featLine)
+					h("span", { class: "con-feat-title" }, `${setup.feats?.[featName]?.title || featName}, 레벨 3 업적`),
+					h("span", null, `업적 ${list.length}개를 모두 해금하면 획득합니다. `, featLine)
 				)
 			)
 		);
@@ -271,7 +271,7 @@
 			const members = list.filter(a => a.group === group);
 			const got = members.filter(a => d.achievements[a.id]).length;
 			wrap.append(
-				h("h4", { class: "suika-subhead con-group-head" }, h("span", null, title), h("span", { class: "con-progress-count" }, `${got} of ${members.length}`))
+				h("h4", { class: "suika-subhead con-group-head" }, h("span", null, title), h("span", { class: "con-progress-count" }, `${members.length}개 중 ${got}개`))
 			);
 			for (const a of members) {
 				const when = d.achievements[a.id];
@@ -292,9 +292,9 @@
 							{ class: "con-ach-main" },
 							h("span", { class: "con-ach-name" }, a.name),
 							h("span", { class: "con-ach-desc" }, a.desc),
-							a.reward ? h("span", { class: "con-ach-reward" }, `Reward: the ${themes[a.reward].name} jar theme`) : null
+							a.reward ? h("span", { class: "con-ach-reward" }, `보상: ${themes[a.reward].name} 병 테마`) : null
 						),
-						h("span", { class: "con-ach-state" }, when ? `Unlocked ${when}` : "Locked")
+						h("span", { class: "con-ach-state" }, when ? `${when} 해금` : "잠김")
 					)
 				);
 			}
@@ -310,19 +310,19 @@
 		const runs = Object.values(s.runs).reduce((a, b) => a + b, 0);
 		const minutes = Math.floor((s.playMs + t.playMs) / 60000);
 		const rows = [
-			["Runs played", `${runs} (Classic ${s.runs.classic}, Arcade ${s.runs.arcade}, Zen ${s.runs.zen}, Challenge ${s.runs.challenge}, Daily ${s.runs.daily})`],
-			["Classic best", V.suikaBest || 0],
-			["Arcade best", V.suikaBestArcade || 0],
-			["Fruit dropped", s.drops + t.drops],
-			["Merges", s.merges + t.merges],
-			["Points from finished runs", s.score],
-			["Biggest fruit", fruitName(Math.max(s.largest, t.largest))],
-			["Watermelons made", s.watermelons + t.watermelons],
-			["Longest chain", Math.max(s.bestChain, t.bestChain)],
-			["Power-ups used", s.abilities + t.abilities],
-			["Challenges completed", `${progress().challengeCount()} of ${content().challenges.length}`],
-			["Daily challenges completed", s.daily],
-			["Time in the jar", `${Math.floor(minutes / 60)} h ${minutes % 60} min`],
+			["플레이 횟수", `${runs} (클래식 ${s.runs.classic}, 아케이드 ${s.runs.arcade}, 젠 ${s.runs.zen}, 도전 과제 ${s.runs.challenge}, 일일 ${s.runs.daily})`],
+			["클래식 최고 점수", V.suikaBest || 0],
+			["아케이드 최고 점수", V.suikaBestArcade || 0],
+			["떨어뜨린 과일", s.drops + t.drops],
+			["합치기", s.merges + t.merges],
+			["끝낸 플레이의 점수 합계", s.score],
+			["가장 큰 과일", fruitName(Math.max(s.largest, t.largest))],
+			["만든 수박", s.watermelons + t.watermelons],
+			["최장 연쇄", Math.max(s.bestChain, t.bestChain)],
+			["사용한 파워업", s.abilities + t.abilities],
+			["완료한 도전 과제", `${progress().challengeCount()} / ${content().challenges.length}`],
+			["완료한 일일 도전 과제", s.daily],
+			["병 안에서 보낸 시간", `${Math.floor(minutes / 60)}시간 ${minutes % 60}분`],
 		];
 		const wrap = h(
 			"div",
@@ -335,9 +335,9 @@
 		);
 		for (const mode of ["classic", "arcade"]) {
 			const list = d.records[mode];
-			wrap.append(h("h4", { class: "suika-subhead" }, `${capital(mode)} records`));
+			wrap.append(h("h4", { class: "suika-subhead" }, `${({ classic: "클래식", arcade: "아케이드" })[mode] || capital(mode)} 기록`));
 			if (!list.length) {
-				wrap.append(h("p", { class: "suika-panel-note" }, `No finished ${capital(mode)} runs yet. Your ten best appear here.`));
+				wrap.append(h("p", { class: "suika-panel-note" }, `아직 끝낸 ${({ classic: "클래식", arcade: "아케이드", zen: "젠" })[mode] || capital(mode)} 플레이가 없습니다. 상위 열 개 기록이 여기에 표시됩니다.`));
 				continue;
 			}
 			wrap.append(
@@ -350,7 +350,7 @@
 						h(
 							"tr",
 							null,
-							["#", "Score", "Biggest", "Drops", "Chain", "Date"].map(x => h("th", { scope: "col" }, x))
+							["#", "점수", "가장 큰 과일", "낙하", "연쇄", "날짜"].map(x => h("th", { scope: "col" }, x))
 						)
 					),
 					h(
@@ -396,7 +396,7 @@
 			progress().setSetting(key, value);
 			drawPreview();
 		};
-		const themeField = h("fieldset", { class: "suika-fieldset" }, h("legend", null, "Jar"));
+		const themeField = h("fieldset", { class: "suika-fieldset" }, h("legend", null, "병"));
 		for (const [id, theme] of Object.entries(themes)) {
 			if (id === "contrast") continue;
 			const open = progress().themeUnlocked(id);
@@ -415,7 +415,7 @@
 						disabled: !open,
 						onchange: () => changed("theme", id),
 					}),
-					h("label", { for: inputId }, theme.name, open ? "" : ` (locked: unlock "${lockedBy.name}")`)
+					h("label", { for: inputId }, theme.name, open ? "" : ` (잠김: "${lockedBy.name}" 해금 필요)`)
 				)
 			);
 		}
@@ -432,11 +432,11 @@
 			h(
 				"fieldset",
 				{ class: "suika-fieldset" },
-				h("legend", null, "Fruit"),
-				box("Faces on the fruit", "faces"),
-				box("Simple drawing", "simple", "Flat colours without shading or texture. Lighter on slow phones."),
-				box("Bold outlines", "bold"),
-				box("High contrast", "contrast", "Black jar, bright lines and labels, and bold outlines. Overrides the jar theme.")
+				h("legend", null, "과일"),
+				box("과일에 얼굴 표시", "faces"),
+				box("단순한 그림", "simple", "그림자와 질감 없이 평면 색으로 그립니다. 느린 휴대폰에서 더 가볍습니다."),
+				box("굵은 윤곽선", "bold"),
+				box("고대비", "contrast", "검은 병, 밝은 선과 글씨, 굵은 윤곽선을 씁니다. 병 테마보다 우선합니다.")
 			)
 		);
 		drawPreview();
@@ -458,11 +458,11 @@
 		});
 		const dolAudio = V.options?.audio === 1;
 		const canVibrate = typeof navigator.vibrate === "function";
-		const motion = h("fieldset", { class: "suika-fieldset" }, h("legend", null, "Motion"));
+		const motion = h("fieldset", { class: "suika-fieldset" }, h("legend", null, "움직임"));
 		for (const [value, label] of [
-			["auto", "Follow this device's setting"],
-			["reduced", "Reduced: no particles or jar wobble"],
-			["full", "Full effects"],
+			["auto", "이 기기의 설정을 따름"],
+			["reduced", "줄임: 입자와 병 흔들림 없음"],
+			["full", "모든 효과"],
 		]) {
 			const id = `suika-motion-${value}`;
 			motion.append(
@@ -474,9 +474,9 @@
 				)
 			);
 		}
-		motion.append(h("p", { class: "suika-panel-note" }, "Fruit always move; only decoration is reduced."));
-		const replay = button("Replay the tutorial", () => {
-			game.armOrRun(replay, "Press again to start the tutorial", () => {
+		motion.append(h("p", { class: "suika-panel-note" }, "과일은 항상 움직이며, 장식만 줄어듭니다."));
+		const replay = button("튜토리얼 다시 보기", () => {
+			game.armOrRun(replay, "다시 누르면 튜토리얼을 시작합니다", () => {
 				if (game.idle) progress().clearRun();
 				close(game, false);
 				game.startTutorial();
@@ -488,30 +488,30 @@
 			h(
 				"fieldset",
 				{ class: "suika-fieldset" },
-				h("legend", null, "Sound"),
-				h("div", { class: "suika-field suika-field--range" }, h("label", { for: "suika-set-sfx" }, "Sound effects volume"), slider, percent),
-				checkbox("Mute the fruit game", "mute", "Silences its sound effects and its music."),
+				h("legend", null, "소리"),
+				h("div", { class: "suika-field suika-field--range" }, h("label", { for: "suika-set-sfx" }, "효과음 음량"), slider, percent),
+				checkbox("과일 게임 음소거", "mute", "효과음과 음악을 모두 끕니다."),
 				checkbox(
-					"Arcade music while playing",
+					"플레이 중 아케이드 음악",
 					"music",
 					dolAudio
-						? "Uses DoL's music volume from Options. The room's music comes back when you leave."
-						: "DoL's audio is off in Options, so the game plays no music. Sound effects still work."
+						? "옵션의 DoL 음악 음량을 사용합니다. 방의 음악은 나갈 때 다시 나옵니다."
+						: "옵션에서 DoL 오디오가 꺼져 있어 게임 음악이 나오지 않습니다. 효과음은 그대로 나옵니다."
 				),
-				h("p", { class: "suika-panel-note" }, "Sound starts after your first tap or key press in the game.")
+				h("p", { class: "suika-panel-note" }, "소리는 게임에서 처음 탭하거나 키를 누른 뒤에 시작됩니다.")
 			),
 			h(
 				"fieldset",
 				{ class: "suika-fieldset" },
-				h("legend", null, "Vibration"),
+				h("legend", null, "진동"),
 				checkbox(
-					"Vibrate on big merges, long chains, and game over",
+					"큰 합치기, 긴 연쇄, 게임 오버에서 진동",
 					"haptics",
-					canVibrate ? null : "This device or browser cannot vibrate, so this does nothing here."
+					canVibrate ? null : "이 기기나 브라우저는 진동을 지원하지 않아 여기서는 아무 효과가 없습니다."
 				)
 			),
 			motion,
-			h("fieldset", { class: "suika-fieldset" }, h("legend", null, "Tutorial"), replay)
+			h("fieldset", { class: "suika-fieldset" }, h("legend", null, "튜토리얼"), replay)
 		);
 	}
 
@@ -538,13 +538,13 @@
 		el.textContent = "";
 		const last = index === count - 1;
 		el.append(
-			h("p", { class: "suika-tip-title" }, `Tutorial ${index + 1} of ${count}: ${step.title}`),
+			h("p", { class: "suika-tip-title" }, `튜토리얼 ${index + 1} / ${count}: ${step.title}`),
 			h("p", { class: "suika-tip-text" }, step.text),
 			h(
 				"div",
 				{ class: "suika-tip-buttons" },
-				button(last ? "Start playing" : "Next", () => game.nextTip()),
-				button("Skip tutorial", () => game.finishTutorial())
+				button(last ? "플레이 시작" : "다음", () => game.nextTip()),
+				button("튜토리얼 건너뛰기", () => game.finishTutorial())
 			)
 		);
 		el.hidden = false;

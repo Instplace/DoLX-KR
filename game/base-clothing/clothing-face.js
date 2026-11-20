@@ -1539,7 +1539,7 @@ function initFace() {
 			combat: {
 				reference: "eyepatch",
 			},
-			description: "섬세한 손길.",
+			description: "섬세한 손길입니다.",
 			cost: 7000,
 			shop: ["forest"],
 			type: ["formal", "serving", "costume"],
@@ -1575,7 +1575,7 @@ function initFace() {
 			combat: {
 				reference: "eyepatch",
 			},
-			description: "모든 장미에는 가시가 숨어 있다.",
+			description: "모든 장미에는 가시가 숨어 있습니다.",
 			cost: 9500,
 			shop: ["forest"],
 			type: ["formal", "costume"],
@@ -1653,7 +1653,7 @@ function initFace() {
 			combat: {
 				reference: "glasses",
 			},
-			description: "전혀 수상하지 않다.",
+			description: "전혀 수상하지 않습니다.",
 			cost: 5000,
 			shop: ["clothing"],
 			type: ["glasses", "mask"],
@@ -1675,7 +1675,7 @@ function initFace() {
 			combat: {
 				reference: "glasses",
 			},
-			description: "트렌디한 물방울 모양 안경테다.",
+			description: "트렌디한 물방울 모양 안경테입니다.",
 			cost: 5000,
 			shop: ["clothing"],
 			type: ["glasses"],
@@ -1710,7 +1710,7 @@ function initFace() {
 			warmth: 1,
 			cost: 2000,
 			description:
-				"Ties behind your head. Without practice, covered eyes give skill checks a 30% chance to fail. Adaptability gradually removes this chance; uncovering your eyes gradually undoes that practice.",
+				"머리 뒤로 묶습니다. 익숙해지기 전에는 눈을 가리면 스킬 판정이 30% 확률로 실패합니다. 적응력이 이 확률을 서서히 없애 주며, 눈을 드러내고 있으면 쌓인 적응이 서서히 사라집니다.",
 			shop: ["forest", "adult"],
 			cursed: 0,
 			iconFile: "blindfold.png",
@@ -1736,7 +1736,7 @@ function initFace() {
 			gender: "n",
 			warmth: 1,
 			cost: 30000,
-			description: "A smooth white masquerade half-mask with white ribbons, like the one Luchifen supplies for the Glasshouse ballroom.",
+			description: "매끈한 흰색 가면무도회용 반가면입니다. 흰 리본이 달려 있으며, 루치펜이 글래스하우스 무도회장에 마련해 두는 것과 같은 모양입니다.",
 			shop: ["forest"],
 			accessory: 0,
 			accessory_colour: 0,

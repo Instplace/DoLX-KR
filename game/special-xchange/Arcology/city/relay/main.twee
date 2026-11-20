@@ -4,37 +4,37 @@
 	<<set $daily.arcologyDebtScan to random(1, 100) lte 60 ? "caught" : "passed">>
 <</if>>
 <<if $xchange.arcology.debt and $daily.arcologyDebtScan is "caught">>
-	As you pass beneath the scanner arch, it checks the light behind your ear. A red warning appears over the gate, and both guards turn towards you.
+	당신이 검색 아치 밑을 지나자 아치가 귀 뒤의 불빛을 확인한다. 게이트 위에 빨간 경고가 뜨고, 경비 둘이 동시에 당신 쪽으로 몸을 돌린다.
 	<br><br>
-	<<holo "CIVIC REGISTRY / DEBTOR" "denied">>
-		<<holoRow "HANDLE" `$xchange.arcology.handle`>>
-		<<holoRow "OUTSTANDING" `setup.arcology.cxU($xchange.arcology.debt.amount)`>>
-		<<holoLine "ABSCONDED FROM THE STACK. DETAIN." "denied">>
+	<<holo "시민 등록소 / 채무자" "denied">>
+		<<holoRow "핸들" `$xchange.arcology.handle`>>
+		<<holoRow "미납액" `setup.arcology.cxU($xchange.arcology.debt.amount)`>>
+		<<holoLine "스택에서 도주. 구금하라." "denied">>
 	<</holo>>
 	<br>
-	"You ran," one of them says, taking your arm. "They always add something for that."
+	"도망쳤더군." 둘 중 하나가 당신의 팔을 붙잡고 말한다. "그러면 늘 뭔가 더 붙지."
 	<br><br>
-	<<link [[Next|Arcology Stack Intro]]>><<unset $daily.arcologyDebtScan>><<arcologyStackStart "arcologyDebtCaught">><</link>>
+	<<link [[다음|Arcology Stack Intro]]>><<unset $daily.arcologyDebtScan>><<arcologyStackStart "arcologyDebtCaught">><</link>>
 	<br>
 	<<exit>>
 <</if>>
 <<arcologyDangerCheck "pier">><<if _arcologyDangerActive>><<exit>><</if>>
-You are on the white stone pier at the edge of the city.
+당신은 도시 가장자리의 흰 돌 부두에 서 있다.
 <<if Time.dayState is "night">>
-	The towers are lit from top to bottom, and the water under the pier is black. A few boats come in without lights on.
+	탑들은 위에서 아래까지 불이 켜져 있고, 부두 아래 물은 검다. 불을 끈 배 몇 척이 들어온다.
 <<elseif Time.dayState is "dawn">>
-	Cleaning drones are washing the stone, and the first launches of the day are tying up.
+	청소 드론이 돌바닥을 씻고 있고, 그날 첫 보트들이 줄을 매고 있다.
 <<elseif Time.dayState is "dusk">>
-	The strips of light on the towers are coming on one floor at a time.
+	탑마다 달린 빛의 띠가 한 층씩 켜지고 있다.
 <<else>>
-	Further along the docks, large cranes lift containers from the arriving ships.
+	부두 저쪽에서는 커다란 크레인이 입항한 배에서 컨테이너를 들어 올린다.
 <</if>>
 <br><br>
 <<arcologyDome "pier">>
 <br><br>
 <<arcologyPartyNotice>>
 <<if _arcologyPartyMissed>>
-	<<link [[Wait|Arcology Party Failed]]>><<set $xchange.arcology.party.why to "missed">><</link>>
+	<<link [[기다린다|Arcology Party Failed]]>><<set $xchange.arcology.party.why to "missed">><</link>>
 	<br>
 <<elseif $stress gte $stressmax and !$possessed>>
 	<span class="red">당신은 한계를 넘었다.</span> 당신은 기절한다.
@@ -42,20 +42,20 @@ You are on the white stone pier at the edge of the city.
 	<<passout_arcology>>
 <<else>>
 	<<if $xchange.arcology.debt>>
-		The guards at the gate are looking at the light behind your ear. <span class="red">You still owe <<print setup.arcology.cx($xchange.arcology.debt.amount)>>.</span>
+		부두 입구의 경비들이 귀 뒤의 불빛을 살펴보고 있다. <span class="red">당신은 아직 <<print setup.arcology.cx($xchange.arcology.debt.amount)>>의 빚을 지고 있다.</span>
 		<br>
 		<<if $xchange.arcology.cipher gte 1>>
-			<<arcologyicon "cipher">><<link [[Pay what you can at the booth|Arcology Debt Pay]]>><</link>>
+			<<arcologyicon "cipher">><<link [[부스에서 낼 수 있는 만큼 낸다|Arcology Debt Pay]]>><</link>>
 			<br>
 		<</if>>
 		<br>
 	<</if>>
 	<<arcologyStreets "pier">>
 	<<if setup.arcology.partyPending()>>
-		<<entertownicon>><<link [[Back to town|Arcology Leave Warning]]>><</link>>
+		<<entertownicon>><<link [[마을로 돌아간다|Arcology Leave Warning]]>><</link>>
 	<<else>>
 			<<set _arcologyCrossingHours to setup.arcology.voyageHours()>>
-			<<capture _arcologyCrossingHours>><<entertownicon>><<link [[Back to town|Arcology Voyage Board]]>><<set $xchange.arcology.voyage to { to: "town", escort: "crew", next: "Docks", hours: _arcologyCrossingHours }>><<pass 3>><</link>><</capture>>
+			<<capture _arcologyCrossingHours>><<entertownicon>><<link [[마을로 돌아간다|Arcology Voyage Board]]>><<set $xchange.arcology.voyage to { to: "town", escort: "crew", next: "Docks", hours: _arcologyCrossingHours }>><<pass 3>><</link>><</capture>>
 	<</if>>
 	<br>
 <</if>>
@@ -64,45 +64,45 @@ You are on the white stone pier at the edge of the city.
 <<effects>>
 <<set _paid to Math.min($xchange.arcology.cipher, $xchange.arcology.debt.amount)>>
 <<set $xchange.arcology.cipher -= _paid>><<set $xchange.arcology.debt.amount -= _paid>>
-The clerk in the glass booth checks your balance on the desk screen and confirms the payment without looking up at you.
+유리 부스 안의 직원이 책상 화면에서 당신의 잔액을 확인하고, 고개도 들지 않은 채 결제를 승인한다.
 <br><br>
 <<if $xchange.arcology.debt.amount lte 0>>
 	<<unset $xchange.arcology.debt>>
-	<<holoNotice "CIVIC REGISTRY" "DEBT CLEARED. DEBTOR FLAG REMOVED." "ok">>
+	<<holoNotice "시민 등록소" "채무 정산 완료. 채무자 표시가 해제되었습니다." "ok">>
 <<else>>
-	<<set _holoMsg to setup.arcology.cxU(_paid) + " RECEIVED. " + setup.arcology.cxU($xchange.arcology.debt.amount) + " OUTSTANDING.">>
-	<<holoNotice "CIVIC REGISTRY" _holoMsg "warn">>
+	<<set _holoMsg to setup.arcology.cxU(_paid) + " 수령. " + setup.arcology.cxU($xchange.arcology.debt.amount) + " 남았습니다.">>
+	<<holoNotice "시민 등록소" _holoMsg "warn">>
 <</if>>
 <br>
-<<link [[Next|Arcology Pier]]>><</link>>
+<<link [[다음|Arcology Pier]]>><</link>>
 <br>
 
 :: Arcology Scene
-You pause beside the walkway as people pass around you.
+사람들이 당신 곁을 돌아 지나가는 동안 당신은 통로 옆에 잠시 멈춰 선다.
 <br><br>
 <<arcologyUnderworld _arcologyScene>>
 <<set _scBack to passage()>>
-<<link [[Next|_scBack]]>><<set $eventskip to 1>><<unset $xchange.arcology.scene>><<endevent>><</link>>
+<<link [[다음|_scBack]]>><<set $eventskip to 1>><<unset $xchange.arcology.scene>><<endevent>><</link>>
 <br>
 
 :: Arcology Leave Warning
 <<effects>>
-<<holo "NAVIGATION / DEPARTURE" "denied">>
-	<<holoLine "NEXT LAUNCH ARRIVES ON THE MAINLAND AFTER THE BALLROOM CLOSES" "warn">>
+<<holo "항법 / 출발" "denied">>
+	<<holoLine "다음 연락선은 무도회장이 닫힌 뒤 본토에 도착합니다" "warn">>
 <</holo>>
 <br>
-If you leave now, you'll miss the party Luchifen brought you here for. <span class="red">They told you it mattered to them</span>.
+지금 떠나면 루치펜이 당신을 이곳에 데려온 이유인 파티를 놓치게 된다. <span class="red">루치펜은 이 일이 자신에게 중요하다고 말했다</span>.
 <br><br>
-<<link [[Leave anyway|Arcology Party Failed]]>><<set $xchange.arcology.party.why to "departed">><</link>>
+<<link [[그래도 떠난다|Arcology Party Failed]]>><<set $xchange.arcology.party.why to "departed">><</link>>
 <br>
-<<link [[Stay|Arcology Pier]]>><</link>>
+<<link [[머무른다|Arcology Pier]]>><</link>>
 <br>
 
 :: Arcology Street
 <<location "arcology">><<run setup.arcology.visit("relay")>><<effects>>
 <<arcologyDangerCheck "street">><<if _arcologyDangerActive>><<exit>><</if>>
 <<arcologySceneCheck "street">><<if _arcologyScene>><<include "Arcology Scene">><<exit>><</if>>
-You are on Relay Street, a public area of the city built above the pier. Large advertising screens cover the outside walls of the buildings, reaching up to the walkway overhead.
+당신은 부두 위에 지어진 도시의 공공 구역, 릴레이 가에 있다. 커다란 광고 화면이 건물 외벽을 뒤덮고 머리 위 보행로까지 닿는다.
 <br><br>
 <<arcologyDome "street">>
 <br><br>
@@ -110,16 +110,16 @@ You are on Relay Street, a public area of the city built above the pier. Large a
 <<if !_arcologyHalt>>
 	주요 장소
 	<br>
-	<<arcologyicon "hotel">><<link [[Hotel Meridian (0:02)|Arcology Hotel]]>><<pass 2>><</link>>
+	<<arcologyicon "hotel">><<link [[호텔 메리디안 (0:02)|Arcology Hotel]]>><<pass 2>><</link>>
 	<br>
-	<<arcologyicon "xstation">><<link [[X-Change Station (0:02)|Arcology X-Change Station]]>><<pass 2>><</link>>
+	<<arcologyicon "xstation">><<link [[X-체인지 스테이션 (0:02)|Arcology X-Change Station]]>><<pass 2>><</link>>
 	<br>
-	<<arcologyicon "cafe">><<link [[Afterimage (0:02)|Arcology Cafe]]>><<pass 2>><</link>>
+	<<arcologyicon "cafe">><<link [[애프터이미지 (0:02)|Arcology Cafe]]>><<pass 2>><</link>>
 	<br>
 	<<if setup.arcology.partyOpen()>>
-		<<arcologyicon "glasshouse">><<link [[Go to the Glasshouse lift|Arcology Party Lift]]>><<pass 2>><</link>>
+		<<arcologyicon "glasshouse">><<link [[글래스하우스 엘리베이터로 간다|Arcology Party Lift]]>><<pass 2>><</link>>
 	<<else>>
-		<<arcologyicon "glasshouse">><<link [[The Glasshouse (0:02)|Arcology Glasshouse Door]]>><<pass 2>><</link>>
+		<<arcologyicon "glasshouse">><<link [[글래스하우스 (0:02)|Arcology Glasshouse Door]]>><<pass 2>><</link>>
 	<</if>>
 	<br><br>
 	<<arcologyStreets "relay">>
@@ -129,19 +129,19 @@ You are on Relay Street, a public area of the city built above the pier. Large a
 <<location "arcology_hotel">><<effects>>
 <<arcologyDangerCheck "hotel">><<if _arcologyDangerActive>><<exit>><</if>>
 <<arcologySceneCheck "hotel">><<if _arcologyScene>><<include "Arcology Scene">><<exit>><</if>>
-You are in the lobby of the Hotel Meridian. Water flows down the sides of a low fountain made of dark polished stone.
+당신은 호텔 메리디안의 로비에 있다. 낮은 분수의 검게 윤이 나는 돌 사면을 따라 물이 흘러내린다.
 <br><br>
 <<if $exposed gte 1>>
-	You keep to the side of the lobby, conscious of your <<nudity>>. The desk clerk keeps looking at the desk screen.
+	당신은 <<nudity>>【을를】 의식하며 로비 한쪽에 붙어 선다. 프런트 직원은 계속 책상 화면만 보고 있다.
 <<elseif setup.arcology.hasRoom()>>
-	"Welcome, <<arcologyHandle>>," the clerk at the front desk says without looking up. Your handle appears on the desk screen for a moment, then disappears.
+	"어서 오세요, <<arcologyHandle>>님." 프런트 직원이 고개도 들지 않은 채 말한다. 당신의 핸들이 책상 화면에 잠깐 떠올랐다가 사라진다.
 <<else>>
-	The clerk at the front desk glances at your handle on the desk screen, then at you, and doesn't smile.
+	프런트 직원이 책상 화면에 뜬 당신의 핸들을 흘끗 보고, 이어서 당신을 보더니 웃지 않는다.
 <</if>>
 <br><br>
 <<arcologyPartyNotice>>
 <<if _arcologyPartyMissed>>
-	<<link [[Wait|Arcology Party Failed]]>><<set $xchange.arcology.party.why to "missed">><</link>>
+	<<link [[기다린다|Arcology Party Failed]]>><<set $xchange.arcology.party.why to "missed">><</link>>
 	<br>
 <<elseif $stress gte $stressmax and !$possessed>>
 	<span class="red">당신은 한계를 넘었다.</span> 당신은 기절한다.
@@ -150,30 +150,30 @@ You are in the lobby of the Hotel Meridian. Water flows down the sides of a low 
 <<else>>
 	<<set _uwEvent to $exposed lt 1 ? setup.arcology.rollEvent() : "none">>
 	<<if _uwEvent is "scan">>
-		A guest crossing the lobby looks at the light behind your ear for a second too long. Your implant goes warm, then cool.
+		로비를 가로지르던 한 손님이 귀 뒤의 불빛을 1초쯤 너무 오래 쳐다본다. 당신의 임플란트가 따뜻해졌다가 식는다.
 		<br>
 		<<set $skulduggerydifficulty to 400>>
-		<<investigateicon>><<link [[Follow the guest (0:05)|Arcology Event Scan]]>><<pass 5>><<arcologyNPC 0 "guest" "broker">><<set $xchange.arcology.eventBack to "Arcology Hotel">><<set $skulduggerydifficulty to 400>><<skulduggerycheck "silent">><<set $phase to $skulduggerysuccess is 1 ? "unseen" : "noticed">><<if $phase is "noticed">><<run setup.arcology.expose()>><</if>><</link>><<skulduggerydifficulty>>
+		<<investigateicon>><<link [[손님을 따라간다 (0:05)|Arcology Event Scan]]>><<pass 5>><<arcologyNPC 0 "guest" "broker">><<set $xchange.arcology.eventBack to "Arcology Hotel">><<set $skulduggerydifficulty to 400>><<skulduggerycheck "silent">><<set $phase to $skulduggerysuccess is 1 ? "unseen" : "noticed">><<if $phase is "noticed">><<run setup.arcology.expose()>><</if>><</link>><<skulduggerydifficulty>>
 		<br><br>
 	<<elseif _uwEvent is "case">>
 		<<if !$NPCList[0] or !$NPCList[0].cyber>><<arcologyNPC 0 "under" "courier">><</if>><<person1>>
-		A <<person>> walks towards you from the other side of the lobby, holding a small case close against <<his>> hip. <<He>> looks directly at you and lifts a hand, asking you to wait.
+		<<person>>【이가】 작은 케이스를 엉덩이께에 바짝 붙인 채 로비 맞은편에서 당신 쪽으로 걸어온다. <<He>>【은는】 곧장 당신을 쳐다보며 손을 들어 기다려 달라는 시늉을 한다.
 		<br>
-		<<socialiseicon>><<link [[Stop and listen|Arcology Event Case]]>><<set $xchange.arcology.eventBack to "Arcology Hotel">><</link>>
+		<<socialiseicon>><<link [[멈춰 서서 듣는다|Arcology Event Case]]>><<set $xchange.arcology.eventBack to "Arcology Hotel">><</link>>
 		<br><br>
 	<</if>>
 	<<if $exposed lt 1>>
-		<<arcologyicon "desk">><<link [[Front desk|Arcology Hotel Desk]]>><<arcologyNPC 0 "staff" "clerk">><</link>>
+		<<arcologyicon "desk">><<link [[프런트 데스크|Arcology Hotel Desk]]>><<arcologyNPC 0 "staff" "clerk">><</link>>
 		<br>
 	<</if>>
-	<<couchicon>><<link [[Go to the lounge (0:01)|Arcology Hotel Lounge]]>><<pass 1>><<endevent>><</link>>
+	<<couchicon>><<link [[라운지로 간다 (0:01)|Arcology Hotel Lounge]]>><<pass 1>><<endevent>><</link>>
 	<br>
 	<<if setup.arcology.hasRoom()>>
 		<br>
-		<<arcologyicon "lift">><<link `"Lift to the " + setup.arcology.roomFloor() + " floor (0:01)"` "Arcology Hotel Corridor">><<pass 1>><<endevent>><</link>>
+		<<arcologyicon "lift">><<link `setup.arcology.roomFloor() + "층으로 엘리베이터를 타고 간다 (0:01)"` "Arcology Hotel Corridor">><<pass 1>><<endevent>><</link>>
 	<</if>>
 	<br>
-	<<arcologyicon "street">><<link [[Relay Street (0:02)|Arcology Street]]>><<pass 2>><</link>>
+	<<arcologyicon "street">><<link [[릴레이 가 (0:02)|Arcology Street]]>><<pass 2>><</link>>
 	<br>
 <</if>>
 
@@ -183,162 +183,162 @@ You are in the lobby of the Hotel Meridian. Water flows down the sides of a low 
 <<person1>>
 <<set _hdPay to $xchange.arcology.deskPay>><<run delete $xchange.arcology.deskPay>>
 <<if _hdPay is "paid" and setup.arcology.hasRoom()>>
-	The payment clears. The clerk taps your implant authorization onto a key card and slides it across the desk. "Room <<print setup.arcology.roomNumber()>>, on the <<print setup.arcology.roomFloor()>> floor. The lift is behind you."
+	결제가 승인된다. 직원이 당신의 임플란트 인증을 카드키에 찍어 책상 너머로 밀어 준다. "<<print setup.arcology.roomNumber()>>호, <<print setup.arcology.roomFloor()>>층이에요. 엘리베이터는 뒤쪽에 있어요."
 	<br><br>
 	<<arcologyGuestPanel>>
 	<br>
-	<<arcologyicon "lift">><<link `"Take the lift to the " + setup.arcology.roomFloor() + " floor (0:01)"` "Arcology Hotel Corridor">><<pass 1>><<endevent>><</link>>
+	<<arcologyicon "lift">><<link `setup.arcology.roomFloor() + "층으로 엘리베이터를 타고 간다 (0:01)"` "Arcology Hotel Corridor">><<pass 1>><<endevent>><</link>>
 	<br>
 <<elseif setup.arcology.hasRoom()>>
-	The <<person>> behind the desk wears the hotel's grey uniform. <<arcologyCyberLook 0>>
+	책상 뒤의 <<person>>【은는】 호텔의 회색 제복을 입고 있다. <<arcologyCyberLook 0>>
 	<br><br>
-	"<<arcologyHandle>>," <<he>> says. "Room <<print setup.arcology.roomNumber()>>. Is there something you need?" Behind <<him>>, a screen lists the floors. The tenth isn't on it.
+	"<<arcologyHandle>>님." <<he>>【이가】 말한다. "<<print setup.arcology.roomNumber()>>호실이죠. 필요한 게 있으세요?" <<his>> 뒤쪽 화면에 층 목록이 떠 있다. 열 번째 층은 거기에 없다.
 	<br><br>
 	<<arcologyGuestPanel>>
 	<br>
-	<<link [[Ask about the tenth floor|Arcology Hotel Tenth Floor]]>><</link>>
+	<<link [[열 번째 층에 대해 묻는다|Arcology Hotel Tenth Floor]]>><</link>>
 	<br>
 <<else>>
-	The <<person>> behind the desk wears the hotel's grey uniform. <<arcologyCyberLook 0>>
+	책상 뒤의 <<person>>【은는】 호텔의 회색 제복을 입고 있다. <<arcologyCyberLook 0>>
 	<br><br>
-	<<if _hdPay is "unpaid">>The clerk frowns at the desk screen. "The payment didn't go through. Nothing has been taken from your wallet." <<He>> turns the screen so you can see the rate.<<elseif $xchange.arcology.guest>>"Your room authorization has lapsed, <<arcologyHandle>>," the clerk says.<<else>>"You don't have a room with us, <<arcologyHandle>>," the clerk says.<</if>>
+	<<if _hdPay is "unpaid">>직원이 책상 화면을 보며 얼굴을 찌푸린다. "결제가 되지 않았어요. 지갑에서 빠져나간 건 없고요." <<He>>【은는】 당신이 요금을 볼 수 있도록 화면을 돌려 준다.<<elseif $xchange.arcology.guest>>"객실 승인이 만료됐어요, <<arcologyHandle>>님." 직원이 말한다.<<else>>"<<arcologyHandle>>님 앞으로 등록된 객실이 없어요." 직원이 말한다.<</if>>
 	<br><br>
 	<<arcologyGuestPanel>>
 	<br>
 	<<set _hdP to setup.arcologyPrice.quote("night")>>
 	<<if setup.arcologyPrice.affordable(_hdP)>>
-		<span class="arc-priced"><<bedicon>><<link `"Pay for one night (" + _hdP.label + ")"` "Arcology Hotel Desk">><<if setup.arcologyPrice.pay("night")>><<set $xchange.arcology.guest to { status: "paid", sponsor: "", until: setup.arcology.now() + 86400, room: setup.arcology.newRoom() }>><<set $xchange.arcology.deskPay to "paid">><<else>><<set $xchange.arcology.deskPay to "unpaid">><</if>><</link>></span><<arcologyPriceNote _hdP>>
+		<span class="arc-priced"><<bedicon>><<link `"하룻밤 요금을 낸다 (" + _hdP.label + ")"` "Arcology Hotel Desk">><<if setup.arcologyPrice.pay("night")>><<set $xchange.arcology.guest to { status: "paid", sponsor: "", until: setup.arcology.now() + 86400, room: setup.arcology.newRoom() }>><<set $xchange.arcology.deskPay to "paid">><<else>><<set $xchange.arcology.deskPay to "unpaid">><</if>><</link>></span><<arcologyPriceNote _hdP>>
 		<br>
 	<<else>>
-		"One night is <<print _hdP.label>>," the clerk says. "Your balance is <<arcologyCipher>>."<<arcologyPriceNote _hdP>>
+		"하룻밤 요금은 <<print _hdP.label>>." 직원이 말한다. "지금 잔액은 <<arcologyCipher>> 남아 있어요."<<arcologyPriceNote _hdP>>
 		<br>
 	<</if>>
 <</if>>
 <br>
-<<getouticon>><<link [[Back to the lobby|Arcology Hotel]]>><<endevent>><</link>>
+<<getouticon>><<link [[로비로 돌아간다|Arcology Hotel]]>><<endevent>><</link>>
 <br>
 
 :: Arcology Hotel Tenth Floor
 <<effects>><<person1>><<pass 1>>
-You ask why the screen does not list a tenth floor. The clerk looks at you.
+당신은 화면에 열 번째 층이 없는 이유를 묻는다. 직원이 당신을 바라본다.
 <br><br>
-"There is no tenth floor," <<he>> says, smiling.
+"열 번째 층은 없어요." <<he>>【이가】 미소를 지으며 말한다.
 <br><br>
-<<link [[Next|Arcology Hotel]]>><<endevent>><</link>>
+<<link [[다음|Arcology Hotel]]>><<endevent>><</link>>
 
 :: Arcology Hotel Lounge
 <<location "arcology_hotel">><<effects>>
-You are in the lounge off the lobby.
+당신은 로비 옆 라운지에 있다.
 <<if Time.hour gte 20 or Time.hour lt 2>>
-	Most of the tables are taken. At one of them, somebody is counting out black cards in front of a guest who doesn't touch them.
+	테이블 대부분이 차 있다. 한 테이블에서는 누군가 검은 카드를 세어 늘어놓는데, 맞은편 손님은 그 카드에 손도 대지 않는다.
 <<elseif Time.hour lt 7>>
-	The lounge is nearly empty. A cleaning drone moves between the tables, wiping each one twice.
+	라운지는 거의 비어 있다. 청소 드론이 테이블 사이를 오가며 테이블마다 두 번씩 닦는다.
 <<else>>
-	A few guests sit reading, or pretending to read while they watch the door.
+	손님 몇몇이 앉아 책을 읽고 있다. 아니면 읽는 척하면서 문을 지켜보고 있다.
 <</if>>
 <br><br>
 <<if Time.hour gte 7 or Time.hour lt 2>>
 	<<if !$daily.arcologyCitizens or !$daily.arcologyCitizens["Arcology Hotel Lounge"]>>
-		<<socialiseicon>><<link [[Talk to another guest (0:10)|Arcology Citizen]]>><<pass 10>><<generate1>><<person1>><<run setup.arcology.newCitizen(either("vip", "guest", "guest", "under"), "Arcology Hotel Lounge", "hotel")>><</link>>
+		<<socialiseicon>><<link [[다른 손님에게 말을 건다 (0:10)|Arcology Citizen]]>><<pass 10>><<generate1>><<person1>><<run setup.arcology.newCitizen(either("vip", "guest", "guest", "under"), "Arcology Hotel Lounge", "hotel")>><</link>>
 	<</if>>
 	<br>
 	<<set $skulduggerydifficulty to 300>>
 	<<if $daily.arcologyOverhear is undefined>>
-		<<investigateicon>><<link [[Listen to the next table (0:10)|Arcology Hotel Overhear]]>><<pass 10>><<set $skulduggerydifficulty to 300>><<skulduggerycheck "silent">><<set $daily.arcologyOverhear to $skulduggerysuccess>><</link>><<skulduggerydifficulty>>
+		<<investigateicon>><<link [[옆 테이블의 대화를 엿듣는다 (0:10)|Arcology Hotel Overhear]]>><<pass 10>><<set $skulduggerydifficulty to 300>><<skulduggerycheck "silent">><<set $daily.arcologyOverhear to $skulduggerysuccess>><</link>><<skulduggerydifficulty>>
 	<</if>>
 	<br>
 <</if>>
-<<if setup.arcology.reliefLeft("lounge")>><<poppyicon "living_room">><<link [[Sit for an hour (1:00)|Arcology Hotel Lounge]]>><<pass 60>><<run setup.arcology.relief("lounge")>><<stress -4>><</link>><<lstress>><br><</if>><br>
-<<getouticon>><<link [[Back to the lobby (0:01)|Arcology Hotel]]>><<pass 1>><</link>>
+<<if setup.arcology.reliefLeft("lounge")>><<poppyicon "living_room">><<link [[한 시간 앉아 쉰다 (1:00)|Arcology Hotel Lounge]]>><<pass 60>><<run setup.arcology.relief("lounge")>><<stress -4>><</link>><<lstress>><br><</if>><br>
+<<getouticon>><<link [[로비로 돌아간다 (0:01)|Arcology Hotel]]>><<pass 1>><</link>>
 <br>
 
 :: Arcology Hotel Overhear
 <<effects>>
 <<set $skulduggerysuccess to $daily.arcologyOverhear>>
 <<if $skulduggerysuccess isnot 1>>
-	You turn in your chair and lean towards the next table, trying to hear the conversation.
+	당신은 의자에서 몸을 돌려 옆 테이블 쪽으로 기울이고 대화를 들으려 한다.
 	<br><br>
-	One of the guests <span class="red">notices you listening</span>, and the others fall silent when they follow the guest's look. They wait until you move away before talking again.
+	손님 한 명이 <span class="red">당신이 엿듣고 있다는 것을 알아채고</span>, 그 시선을 따라간 나머지도 입을 다문다. 그들은 당신이 자리를 뜰 때까지 기다렸다가 다시 이야기를 이어 간다.
 	<<stress 2>><<gstress>>
 <<else>>
-	You turn in your chair and lean towards the next table, trying to hear the conversation.
+	당신은 의자에서 몸을 돌려 옆 테이블 쪽으로 기울이고 대화를 들으려 한다.
 	<br><br>
 	<<switch (Time.days + Time.hour) % 4>>
 	<<case 0>>
-		"My client wants the old face back," one guest says. "I said the old face has a warrant on it."
+		"의뢰인이 예전 얼굴을 돌려받고 싶어 해." 손님 한 명이 말한다. "예전 얼굴에는 영장이 붙어 있다고 말해 줬지."
 		<br><br>
-		The other one laughs. "Then charge double. The warrant is extra work."
+		다른 손님이 웃는다. "그럼 두 배로 불러. 영장 건은 추가 작업이니까."
 	<<case 1>>
-		Two guests are discussing a shipment.
+		두 손님이 화물 이야기를 하고 있다.
 		<br><br>
-		They call it "the flowers" every time, and every time one of them says it, the other looks at the ceiling cameras.
+		그들은 매번 그것을 "꽃"이라고 부르는데, 한 사람이 그 말을 할 때마다 다른 사람은 천장의 카메라를 올려다본다.
 	<<case 2>>
-		A guest is telling a story about someone who tried to leave the island owing money.
+		한 손님이 돈을 빚진 채 섬을 떠나려던 사람의 이야기를 하고 있다.
 		<br><br>
-		"They found the boat," the guest says. "Very clean boat."
+		"배는 찾았대." 손님이 말한다. "아주 깨끗한 배였지."
 	<<default>>
-		A guest asks the waiter whether the room on the ninth floor has been cleaned yet. The waiter says it has been cleaned twice, and that the carpet is new.
+		한 손님이 웨이터에게 9층 방은 청소가 끝났느냐고 묻는다. 웨이터는 두 번 청소했고 카펫도 새것이라고 대답한다.
 	<</switch>>
 <</if>>
 <br><br>
-<<link [[Next|Arcology Hotel Lounge]]>><</link>>
+<<link [[다음|Arcology Hotel Lounge]]>><</link>>
 <br>
 
 :: Arcology Hotel Corridor
 <<location "arcology_hotel">><<effects>>
-You are in the corridor on the <<print setup.arcology.roomFloor()>> floor. A small security drone hovers near the ceiling at the far end of the corridor. As you approach, it turns towards you.
+당신은 <<print setup.arcology.roomFloor()>>층 복도에 있다. 복도 끝 천장 근처에 작은 경비 드론이 떠 있다. 당신이 다가가자 드론이 당신 쪽으로 몸을 돌린다.
 <br><br>
 <<if setup.arcology.hasRoom()>>
-	<<arcologyicon "room">><<link `"Room " + setup.arcology.roomNumber()` "Arcology Hotel Room">><</link>>
+	<<arcologyicon "room">><<link `setup.arcology.roomNumber() + "호실"` "Arcology Hotel Room">><</link>>
 	<br>
 <<else>>
 	/* Print nothing because own nothing */
 <</if>>
-<<arcologyicon "lift">><<link [[Lift to the lobby (0:01)|Arcology Hotel]]>><<pass 1>><</link>>
+<<arcologyicon "lift">><<link [[엘리베이터로 로비에 간다 (0:01)|Arcology Hotel]]>><<pass 1>><</link>>
 <br>
 
 :: Arcology Hotel Room
 <<location "arcology_hotel">><<effects>>
 <<if !setup.arcology.hasRoom()>>
-	The door of room <<print setup.arcology.roomNumber()>> stays shut. A line of red text appears in front of it.
+	<<print setup.arcology.roomNumber()>>호실의 문은 닫힌 채 열리지 않는다. 문 앞에 붉은 글자 한 줄이 떠오른다.
 	<br><br>
-	<<holo `"MERIDIAN / ROOM " + setup.arcology.roomNumber()` "denied">>
-		<<holoLine "GUEST KEY NOT VALID FOR THIS ROOM" "denied">>
+	<<holo `"메리디안 / 객실 " + setup.arcology.roomNumber()` "denied">>
+		<<holoLine "이 객실에는 게스트 키가 유효하지 않습니다" "denied">>
 	<</holo>>
 	<br>
-	<<getouticon>><<link [[Go back down to the lobby|Arcology Hotel]]>><<endevent>><</link>>
+	<<getouticon>><<link [[로비로 다시 내려간다|Arcology Hotel]]>><<endevent>><</link>>
 	<br>
 <<else>>
 	<<set $storeLocation to "Arcology Hotel Bed">>
-	<<holo `"MERIDIAN / ROOM " + setup.arcology.roomNumber()`>>
-		<<holoRow "GUEST" `$xchange.arcology.handle`>>
-		<<holoRow "PRIVACY" "DO NOT DISTURB">>
-		<<holoRow "CLIMATE" "21 DEGREES">>
-		<<holoLine "HOUSEKEEPING COMPLETE" "ok">>
+	<<holo `"메리디안 / 객실 " + setup.arcology.roomNumber()`>>
+		<<holoRow "방문객" `$xchange.arcology.handle`>>
+		<<holoRow "프라이버시" "방해 금지">>
+		<<holoRow "실내 온도" "21도">>
+		<<holoLine "객실 정비 완료" "ok">>
 	<</holo>>
-	You are in your guest room on the <<print setup.arcology.roomFloor()>> floor of the Hotel Meridian.
+	당신은 호텔 메리디안 <<print setup.arcology.roomFloor()>>층의 객실에 있다.
 	<<if Time.dayState is "night">>
-		Outside, the towers are lit, and drones pass the window in straight lines.
+		밖에서는 탑들이 불을 밝히고 있고, 드론들이 창밖을 일직선으로 지나간다.
 	<<else>>
-		Outside, you can see the towers, and past the curve of the dome, the sea.
+		밖으로는 탑들이 보이고, 돔의 곡선 너머로 바다가 보인다.
 	<</if>>
 	<br><br>
 	<<arcologyDome "room">>
 	<br><br>
 	<<arcologyPartyNotice>>
 	<<if _arcologyPartyMissed>>
-		<<link [[Wait|Arcology Party Failed]]>><<set $xchange.arcology.party.why to "missed">><</link>>
+		<<link [[기다린다|Arcology Party Failed]]>><<set $xchange.arcology.party.why to "missed">><</link>>
 		<br>
 	<<else>>
-		<<bedicon>><<link [[Strip and get in bed|Arcology Hotel Bed]]>><<undressSleep "Arcology Hotel Bed">><</link>>
+		<<bedicon>><<link [[옷을 벗고 침대에 눕는다|Arcology Hotel Bed]]>><<undressSleep "Arcology Hotel Bed">><</link>>
 		<br>
-		<<skinicon "masturbate">><<link [[Masturbate|Arcology Masturbation]]>><<set $masturbationstart to 1>><</link>>
+		<<skinicon "masturbate">><<link [[자위한다|Arcology Masturbation]]>><<set $masturbationstart to 1>><</link>>
 		<br>
-		<<bathroomicon "shower">><<link [[Bathroom (0:01)|Arcology Hotel Bathroom]]>><<pass 1>><</link>>
+		<<bathroomicon "shower">><<link [[욕실 (0:01)|Arcology Hotel Bathroom]]>><<pass 1>><</link>>
 		<br>
-		<<wardrobeicon>><<link [[Open the wardrobe|Arcology Hotel Wardrobe]]>><</link>>
+		<<wardrobeicon>><<link [[옷장을 연다|Arcology Hotel Wardrobe]]>><</link>>
 		<br><br>
-		<<getouticon>><<link [[Leave|Arcology Hotel Corridor]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<<getouticon>><<link [[나간다|Arcology Hotel Corridor]]>><<endevent>><<set $eventskip to 1>><</link>>
 		<br><br>
 	<</if>>
 	<<arcologyRoomSettings>>
@@ -350,18 +350,18 @@ You are in the corridor on the <<print setup.arcology.roomFloor()>> floor. A sma
 	<<nightmareCheck "Arcology Hotel Bed Sleep">>
 	<<generateSleepLinks "Arcology Hotel Bed Sleep">>
 <<elseif _arcologySleepCap gte 1>>
-	<<holo "INTERFACE / ALARM" "pending">>
-		<<holoLine `"WAKE IN " + _arcologySleepCap + (_arcologySleepCap is 1 ? " HOUR" : " HOURS") + ". ONE HOUR BEFORE THE BALLROOM OPENS"` "warn">>
+	<<holo "인터페이스 / 알람" "pending">>
+		<<holoLine `_arcologySleepCap + "시간 뒤에 기상합니다. 무도회장이 열리기 한 시간 전입니다"` "warn">>
 	<</holo>>
 	<br>
 	<<nightmareCheck "Arcology Hotel Bed Sleep">>
-	<<capture _arcologySleepCap>><<link [["Sleep until the interface wakes you (" + _arcologySleepCap + (_arcologySleepCap is 1 ? " hour)" : " hours)")|Arcology Hotel Bed Sleep]]>><<set $sleephour to _arcologySleepCap>><</link>><</capture>>
+	<<capture _arcologySleepCap>><<link [["인터페이스가 깨울 때까지 잔다 (" + _arcologySleepCap + (_arcologySleepCap is 1 ? "시간)" : "시간)")|Arcology Hotel Bed Sleep]]>><<set $sleephour to _arcologySleepCap>><</link>><</capture>>
 	<br><br>
 <<else>>
-	There isn't time for a proper sleep before the party. You can lie on top of the covers for a while, but you will have to get up soon.
+	파티 전에 제대로 잘 시간이 없다. 이불 위에 잠시 누워 있을 수는 있지만, 곧 일어나야 한다.
 	<br><br>
 <</if>>
-<<link [[Climb out of bed|Arcology Hotel Room]]>><<storeon "Arcology Hotel Bed">><<loadTempHairStyle>><<endevent>><</link>>
+<<link [[침대에서 일어난다|Arcology Hotel Room]]>><<storeon "Arcology Hotel Bed">><<loadTempHairStyle>><<endevent>><</link>>
 
 :: Arcology Hotel Bed Sleep
 <<set _autosavehere to true>>
@@ -377,18 +377,18 @@ You are in the corridor on the <<print setup.arcology.roomFloor()>> floor. A sma
 		<<if ($specialClothesEffects.bimbo.total gte random(100,1000) || $specialClothesEffects.pimp.total gte random(100,1000)) or $arousal gte ($arousalmax / 10) * 9>>
 			<<wetDream>>
 		<<elseif !_wakingEffect>>
-			You sleep soundly. The spot behind your ear is warm when you wake.
+			당신은 깊이 잠든다. 깨어나 보니 귀 뒤 자리가 따뜻하다.
 			<br><br>
 		<</if>>
 	<</if>>
 	<<sleepeffects>>
 	<br><br>
-	<<link [[Get up|Arcology Hotel Room]]>><<storeon "Arcology Hotel Bed">><</link>>
+	<<link [[일어난다|Arcology Hotel Room]]>><<storeon "Arcology Hotel Bed">><</link>>
 	<br>
 <</if>>
 
 :: Arcology Hotel Wardrobe [exitCheckBypass]
-You slide open the wardrobe.
+당신은 옷장을 밀어 연다.
 <br><br>
 <<set $wardrobe_location to "wardrobe">>
 <<set _earSlimeEnableSwimwear to true>>
@@ -399,68 +399,68 @@ You slide open the wardrobe.
 
 :: Arcology Hotel Bathroom
 <<location "arcology_hotel">>
-You enter a bathroom with white stone walls and floor. The shower turns on automatically when you step beneath it, while the mirror shows the time and your handle in one corner of the glass.
+당신은 흰 돌로 된 벽과 바닥의 욕실로 들어선다. 샤워기 아래로 들어서면 샤워기가 저절로 켜지고, 거울 한구석에는 시간과 당신의 핸들이 표시된다.
 <br><br>
 <<arcologyBathroomOptions "Arcology Hotel Shower">>
-<<mirroricon>><<link [[Mirror|Arcology Hotel Mirror]]>><<preMirror>><<endevent>><</link>>
+<<mirroricon>><<link [[거울|Arcology Hotel Mirror]]>><<preMirror>><<endevent>><</link>>
 <br><br>
-<<getouticon>><<link [[Leave|Arcology Hotel Room]]>><</link>>
+<<getouticon>><<link [[나간다|Arcology Hotel Room]]>><</link>>
 <br>
 
 :: Arcology Hotel Shower
-Water runs over you as you wash in the hotel shower.
+당신은 호텔 샤워실에서 물을 맞으며 몸을 씻는다.
 <br><br>
 <<location "arcology_hotel">><<wearProp "soap">><<wash>>
 <<arcologyAfterShower "Arcology Hotel Bathroom">>
 
 :: Arcology Hotel Mirror
-You look at your reflection in the bathroom mirror.
+당신은 욕실 거울에 비친 자신의 모습을 바라본다.
 <br><br>
-<<link [[Step away|Arcology Hotel Bathroom]]>><<unset $mirrorMenu>><<unset $bodywritingSet>><</link>>
+<<link [[물러선다|Arcology Hotel Bathroom]]>><<unset $mirrorMenu>><<unset $bodywritingSet>><</link>>
 <br>
 <<mirror "reflection">>
 
 :: Arcology Passout
 <<set _ap to $xchange.arcology.recovery>>
 <<if !_ap>>
-	You wake up near the pier's public waiting area.
+	당신은 부두 공공 대기 구역 근처에서 깨어난다.
 	<br><br>
-	<<link [[Next|Arcology Pier]]>><</link>><<exit>>
+	<<link [[다음|Arcology Pier]]>><</link>><<exit>>
 <</if>>
 <<set _apHotel to (!_ap.ship and setup.arcology.hasRoom() and ["safe", "guarded"].includes(_ap.outcome))>>
 <<location `_ap.ship ? "arcology_launch" : "arcology_pier"`>><<effects>>
 <<if _ap.outcome is "guarded">>
 	<<arcologyVictorPronouns>>
 	<<if _apHotel>>
-		You wake in a bed with a clean blanket covering you. A tall <<print _vman>> in a dark coat stands near the door, talking quietly to a member of staff.
+		당신은 깨끗한 담요가 덮인 침대에서 깨어난다. 어두운 코트를 입은 키 큰 <<print (_vman is "woman" ? "여자" : "남자")>>【이가】 문 가까이에 서서 직원 한 명과 낮은 목소리로 이야기하고 있다.
 	<<else>>
-		You wake on a padded bench with a clean blanket covering you. A tall <<print _vman>> in a dark coat stands nearby, talking quietly to a member of staff.
+		당신은 깨끗한 담요가 덮인 푹신한 벤치에서 깨어난다. 어두운 코트를 입은 키 큰 <<print (_vman is "woman" ? "여자" : "남자")>>【이가】 가까이에 서서 직원 한 명과 낮은 목소리로 이야기하고 있다.
 	<</if>>
 	<br><br>
-	When you begin to sit up, <<print _vhe>> notices that you're awake and stops talking. <<print _vHe>> comes over to check whether you're hurt and asks how you're feeling. You are still a little weak, so <<print _vhe>> gives you time to sit up properly.
+	당신이 몸을 일으키려 하자 <<print (_vhe is "she" ? "그녀" : "그")>>【이가】 당신이 깨어난 것을 알아채고 말을 멈춘다. <<print (_vHe is "She" ? "그녀" : "그")>>【은는】 다가와 다친 데는 없는지 살피고 기분이 어떤지 묻는다. 당신은 아직 조금 힘이 없어서, <<print (_vhe is "she" ? "그녀" : "그")>>【은는】 당신이 제대로 일어나 앉을 때까지 시간을 준다.
 <<elseif _ap.outcome is "robbed">>
 	<<if !_ap.resolved>>
 		<<set _ap.resolved to true>><<set _ap.loss to Math.min($xchange.arcology.cipher, random(1000, 2500))>>
 		<<set $xchange.arcology.cipher -= _ap.loss>>
 	<</if>>
-	You wake lying on your side on a cold bench. The skin around your implant is sore. Suspicious, you check your wallet record and find a transfer of <<print setup.arcology.cx(_ap.loss)>> that happened while you were unconscious.
+	당신은 차가운 벤치에 옆으로 누운 채 깨어난다. 임플란트 주변 피부가 쓰라리다. 의심이 든 당신이 지갑 기록을 확인하자, 의식을 잃은 사이에 일어난 <<print setup.arcology.cx(_ap.loss)>> 이체가 눈에 들어온다.
 	<br><br>
-	You don't remember who might have taken your money.
+	누가 돈을 가져갔는지는 기억나지 않는다.
 <<elseif _ap.outcome is "transport">>
 	<<if !_ap.resolved>>
 		<<set _ap.resolved to true>>
 		<<set $xchange.arcology.danger to { kind: "transport", where: "street", back: "Arcology Pier", stage: "approach", isolated: true }>>
 		<<arcologyCriminalInit>>
 	<</if>>
-	You wake sitting on a bench inside a freight shuttle. The vehicle is moving, and as it turns a corner, a medical case on the floor slides towards your feet.
+	당신은 화물 셔틀 안의 벤치에 앉은 채 깨어난다. 차량은 움직이고 있고, 모퉁이를 돌자 바닥에 놓인 의료용 케이스가 당신의 발치로 미끄러져 온다.
 	<br><br>
-	Someone has attached an inventory badge to your sleeve. You look around the small space and notice a card reader built into the wall beside your seat, although you have no idea why you're here.
+	누군가 당신의 소매에 재고 배지를 달아 놓았다. 좁은 공간을 둘러보니 좌석 옆 벽에 카드 리더기가 달려 있지만, 당신이 왜 여기 있는지는 도무지 알 수 없다.
 	<br><br>
-	You hear voices coming from the front of the shuttle. The driver asks where you were found, and someone near the rear door answers. "Unconscious. No escort. The receiver can check the rest."
+	셔틀 앞쪽에서 목소리가 들린다. 운전사가 어디서 발견했느냐고 묻자 뒷문 근처의 누군가가 대답한다. "의식 없음. 보호자 없음. 나머지는 인수자가 확인하겠지."
 	<br><br>
-	Wherever the shuttle is going, nobody on board seems concerned about whether you agreed to come. You look towards the doors, trying to work out how you might escape before the shuttle reaches its destination.
+	셔틀이 어디로 가든, 탑승자 중 당신이 동의하고 왔는지를 신경 쓰는 사람은 없는 듯하다. 당신은 문 쪽을 바라보며 셔틀이 목적지에 닿기 전에 어떻게 탈출할지 궁리한다.
 	<br><br>
-	<<link [[Next|Arcology Transport Moving]]>><<unset $xchange.arcology.recovery>><</link>>
+	<<link [[다음|Arcology Transport Moving]]>><<unset $xchange.arcology.recovery>><</link>>
 	<<exit>>
 <<elseif ["captive", "attacker"].includes(_ap.outcome)>>
 	<<if !_ap.resolved>>
@@ -469,50 +469,50 @@ You look at your reflection in the bathroom mirror.
 	<</if>>
 	<<person1>>
 	<<if _ap.outcome is "captive">>
-		You wake lying on a trolley beside an open service lift. A <<personssimple>> standing next to you, trying to fasten a strap over your knees. <<arcologyCyberLook 0>>
+		당신은 열린 서비스 엘리베이터 옆 이동 침대에 누운 채 깨어난다. 옆에 선 <<personssimple>> 손이 당신의 무릎 위로 끈을 채우려 애쓰고 있다. <<arcologyCyberLook 0>>
 		<br><br>
-		As you look around, you notice a screen near your head displaying prices for implants and donor tissue. The stranger is still busy with the strap, giving you a chance to bend your knees and pull your legs away before <<he>> can fasten it.
+		주위를 둘러보니 머리맡 화면에 임플란트와 기증 조직의 가격표가 떠 있다. 낯선 사람은 아직 끈을 채우느라 바빠서, <<he>>【이가】 끈을 채우기 전에 당신은 무릎을 굽혀 다리를 빼낼 기회를 얻는다.
 		<br><br>
-		<<He>> notices you moving and reaches across the trolley, grabbing your wrist before you can push yourself away.
+		<<He>>【은는】 당신이 움직이는 것을 알아채고 이동 침대 너머로 손을 뻗어, 당신이 몸을 밀어 빠져나가기 전에 손목을 붙잡는다.
 	<<else>>
-		You wake when someone lifts your hand and presses it against a wrist reader. A <<personssimple>> kneeling beside you, watching the device. <<arcologyCyberLook 0>>
+		누군가 당신의 손을 들어 손목 리더기에 눌러 대는 바람에 당신은 깨어난다. 옆에 무릎을 꿇은 <<personssimple>> 시선은 기기에 고정돼 있다. <<arcologyCyberLook 0>>
 		<br><br>
-		You quickly pull your hand away, but the stranger grabs your wrist again before you can move any further. <<He>> leans over you, blocking your view of the corridor behind <<him>>.
-		"You should have stayed asleep."
+		당신은 재빨리 손을 빼지만, 낯선 사람은 당신이 더 움직이기도 전에 다시 손목을 붙잡는다. <<He>>【은는】 당신 위로 몸을 숙여 뒤쪽 복도가 보이지 않게 가로막는다.
+		"그냥 자고 있었어야지."
 	<</if>>
 	<br><br>
-	<<link [[Fight free|Arcology Danger Fight]]>><<unset $xchange.arcology.recovery>><<set $fightstart to 1>><</link>>
+	<<link [[맞서 싸운다|Arcology Danger Fight]]>><<unset $xchange.arcology.recovery>><<set $fightstart to 1>><</link>>
 	<br>
 	<<if !_ap.ship>>
-		<<link [[Stop resisting|Arcology Danger Captive]]>><<unset $xchange.arcology.recovery>><</link>>
+		<<link [[저항을 멈춘다|Arcology Danger Captive]]>><<unset $xchange.arcology.recovery>><</link>>
 	<<else>>
-		<<link [[Call for the crew|Arcology Danger Result]]>><<unset $xchange.arcology.recovery>><<set $xchange.arcology.danger.stage to "escaped">><</link>>
+		<<link [[승무원을 부른다|Arcology Danger Result]]>><<unset $xchange.arcology.recovery>><<set $xchange.arcology.danger.stage to "escaped">><</link>>
 	<</if>>
 	<<exit>>
 <<else>>
 	<<if !_ap.resolved>><<set _ap.resolved to true>><<arcologyNPC 0 "staff" "medic">><</if>>
 	<<person1>>
 	<<if _apHotel>>
-		You wake in a comfortable bed with a <<person>> from the hotel staff sitting beside you, checking your pulse. <<arcologyCyberLook 0>>
+		당신은 편안한 침대에서 깨어난다. 호텔 직원인 <<person>>【이가】 곁에 앉아 맥박을 재고 있다. <<arcologyCyberLook 0>>
 	<<else>>
-		You wake on a padded bench while a <<person>> in a staff uniform checks your pulse. <<arcologyCyberLook 0>>
+		당신은 푹신한 벤치에서 깨어난다. 직원 제복을 입은 <<person>>【이가】 맥박을 재고 있다. <<arcologyCyberLook 0>>
 	<</if>>
 	<br><br>
-	When <<he>> notices you're awake, <<he>> asks how you're feeling and helps you sit up. <<He>> gives you some water while <<he>> explains where you are and how you were brought here.
-	<<He>> also tells you that you won't be charged for the help.
+	<<He>>【은는】 당신이 깨어난 것을 알고 기분이 어떤지 묻더니 일어나 앉도록 돕는다. <<He>>【은는】 당신에게 물을 건네며 여기가 어디이고 어떻게 이곳에 오게 됐는지 설명한다.
+	<<He>>【은는】 도움을 받은 값은 청구되지 않는다고도 알려 준다.
 <</if>>
 <br><br>
 <<if _ap.ship>>
-	You are still aboard the ship. A steward is waiting nearby and offers to show you back to the passenger lounge when you're ready to leave.
+	당신은 아직 배 안에 있다. 승무원【이가】 근처에서 기다리고 있다가, 당신이 나갈 준비가 되면 승객 라운지까지 안내해 주겠다고 한다.
 	<br><br>
-	<<link [[Next|Arcology Voyage]]>><<unset $xchange.arcology.recovery>><<set $eventskip to 1>><<endevent>><</link>>
+	<<link [[다음|Arcology Voyage]]>><<unset $xchange.arcology.recovery>><<set $eventskip to 1>><<endevent>><</link>>
 <<elseif _apHotel>>
-	You are in room <<print setup.arcology.roomNumber()>> at Hotel Meridian. The staff checked your guest key before bringing you here, allowing you to recover in your own room.
+	당신은 호텔 메리디안의 <<print setup.arcology.roomNumber()>>호실에 있다. 직원들이 당신의 투숙 키를 확인한 뒤 이곳으로 데려와서, 당신은 자기 방에서 몸을 추스를 수 있다.
 	<br><br>
-	<<link [[Next|Arcology Hotel Room]]>><<unset $xchange.arcology.recovery>><<set $eventskip to 1>><<endevent>><</link>>
+	<<link [[다음|Arcology Hotel Room]]>><<unset $xchange.arcology.recovery>><<set $eventskip to 1>><<endevent>><</link>>
 <<else>>
-	You are in the public waiting area near the pier. Once you feel well enough to leave, you can make your way back outside.
+	당신은 부두 근처 공공 대기 구역에 있다. 몸이 괜찮아지면 밖으로 나가 돌아갈 수 있다.
 	<br><br>
-	<<link [[Next|Arcology Pier]]>><<unset $xchange.arcology.recovery>><<set $eventskip to 1>><<endevent>><</link>>
+	<<link [[다음|Arcology Pier]]>><<unset $xchange.arcology.recovery>><<set $eventskip to 1>><<endevent>><</link>>
 <</if>>
 <br>

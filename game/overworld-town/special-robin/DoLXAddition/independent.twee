@@ -2,26 +2,26 @@
 <<set $outside to 0>><<set $location to "home">><<effects>>
 <div id="giveArea">
 <<if $money lt 100>>
-	You don't have any money to give right now.
+	지금은 줄 돈이 하나도 없다.
 	<br><br>
-	<<link "Back">><<replace "#giveArea">><<robinoptions>><</replace>><</link>>
+	<<link "뒤로">><<replace "#giveArea">><<robinoptions>><</replace>><</link>>
 <<else>>
-	Robin has <span class="gold">£<<print Math.max($robinmoney, 0)>></span> saved. Bailey takes <span class="gold">£<<print robinStandRent()>></span> from <<nnpc_him "Robin">> every week.
-	<<if $robindebt gt 0>><span class="red"><<nnpc_Hes "Robin">> already <<print $robindebt>> week<<if $robindebt gt 1>>s<</if>> behind.</span><</if>>
+	로빈은 <span class="gold">£<<print Math.max($robinmoney, 0)>></span>만큼 모아 두었다. 베일리는 매주 <<nnpc_him "Robin">>에게서 <span class="gold">£<<print robinStandRent()>></span>씩 가져간다.
+	<<if $robindebt gt 0>><span class="red"><<nnpc_Hes "Robin">> 이미 <<print $robindebt>>주<<if $robindebt gt 1>>나<</if>> 밀렸다.</span><</if>>
 	<br><br>
-	You have <span class="gold"><<printmoney $money>></span>. How much would you like to give Robin to help pay Bailey?
+	당신의 소지금은 <span class="gold"><<printmoney $money>></span>이다. 로빈이 베일리에게 낼 돈을 보태도록 얼마를 주겠는가?
 	<br><br>
 	<div id="giveInput">
 		<<numberbox "_giveAmount" 1>>
 		<br>
 	</div>
 	<div id="giveExit">
-		<<link "Give">>
+		<<link "준다">>
 			<<set _giveAmount to Math.clamp(Math.trunc(_giveAmount), 1, Math.floor($money / 100))>>
 			<<replace "#giveExit">><<robinGiveMoneyConfirm>><</replace>><<replace "#giveInput">><</replace>>
 		<</link>>
 		<br>
-		<<link "Cancel">><<replace "#giveArea">><<robinoptions>><</replace>><</link>>
+		<<link "취소">><<replace "#giveArea">><<robinoptions>><</replace>><</link>>
 	</div>
 <</if>>
 </div>
@@ -30,15 +30,15 @@
 :: Robin Give Money Done
 <<set $outside to 0>><<set $location to "home">><<effects>>
 <<set _robin to statusCheck("Robin")>>
-Robin looks at the money you have given <<him>>, then looks up at you as though <<hes>> still trying to understand why you gave it to <<him>>.
+로빈은 당신이 <<him>>에게 준 돈을 바라보다가, 당신이 왜 그 돈을 <<him>>에게 줬는지 아직도 이해하려 애쓰는 듯한 표정으로 당신을 올려다본다. <<hes>> 여전히 영문을 모르는 듯하다.
 <<if $daily.robin.giveMoney isnot 1>>
 	<<set $daily.robin.giveMoney to 1>>
-	"I-I don't know what to say," <<he>> says, <<his>> voice unsteady. "This really helps. It means Bailey won't... thank you. Truly." <<He>> pulls you into a tight hug.
+	"나, 나 뭐라고 해야 할지 모르겠어." <<he>>【이가】 떨리는 목소리로 말한다. "이게 정말 도움이 돼. 이러면 베일리가 더는... 고마워. 정말로." <<He>>【은는】 당신을 꼭 껴안는다.
 	<br><br>
-	When <<he>> lets go, <<he>> looks down at the money instead of meeting your eyes. "I just wish I didn't <i>need</i> it," <<he>> says quietly. "I should be able to manage on my own. Everyone else does." <<He>> holds the money close, but <<his>> excitement has faded.
+	<<he>>【이가】 팔을 풀자 <<he>>【은는】 당신의 눈을 보는 대신 돈을 내려다본다. "이게 <i>필요하지</i> 않았으면 좋겠어." <<he>>【이가】 조용히 말한다. "나 혼자서도 해낼 수 있어야 하는데. 다들 그렇게 하잖아." <<He>>【은는】 돈을 품에 꼭 쥐지만 <<his>> 들뜬 기색은 가라앉았다.
 	<<npcincr Robin love 1>><<npcincr Robin dom -2>><<npcincr Robin trauma -1>><<glove>><<lldom>><<lrtrauma>>
 <<else>>
-	"Thank you, again," <<he>> says quietly, tucking it safely away. <<He>> stares at the floor. "I'll make it count, I promise."
+	"다시 한번 고마워." <<he>>【이가】 조용히 말하며 돈을 안전하게 챙겨 넣는다. <<He>>【은는】 바닥을 쳐다본다. "헛되이 쓰지 않을게, 약속해."
 	<<npcincr Robin dom -1>><<ldom>>
 <</if>>
 <br><br>
@@ -53,81 +53,81 @@ Robin looks at the money you have given <<him>>, then looks up at you as though 
 <<set _tier to setup.robinStand.tiers[$robinStand.tier]>>
 <<set _drinkKey to $robinStandVenue is "park" ? "cocoa" : "lemonade">>
 <<if $robinStand.named>>
-	You notice <span class="gold"><<print $robinStand.named>></span>, the name Robin has painted on the front of <<his>> <<print _tier.name>>. <<Hes>> busy serving a customer.
+	당신은 로빈이 <<his>> <<print _tier.name>> 앞면에 칠해 둔 이름, <span class="gold"><<print $robinStand.named>></span>【을를】 알아본다. <<Hes>> 손님을 받느라 바쁘다.
 <<else>>
-	You stop to look at Robin's <<print _tier.name>> while <<he>> serves a customer.
+	<<he>>【이가】 손님을 응대하는 동안 당신은 걸음을 멈추고 로빈의 <<print _tier.name>>【을를】 바라본다.
 <</if>>
 <<if $robinStand.skill gte 800>>
-	Robin pours the drinks and counts the customer's change quickly, without having to stop and check what <<hes>> doing.
+	로빈은 <<hes>> 뭘 하고 있는지 멈춰 서서 확인할 필요도 없이, 음료를 따르고 손님의 거스름돈을 빠르게 센다.
 <<elseif $robinStand.skill gte 500>>
-	<<He>> takes orders and prepares drinks quickly, only stopping now and then to check what comes next.
+	<<He>>【은는】 주문을 받고 음료를 빠르게 만들며, 이따금 다음 순서를 확인하려고 잠깐 멈출 뿐이다.
 <<elseif $robinStand.skill gte 200>>
-	<<Hes>> getting better at serving customers, although <<he>> still gets nervous when several people are waiting at once.
+	<<Hes>> 손님 응대가 점점 나아지고 있지만, 여러 사람이 한꺼번에 기다리면 <<he>>【은는】 여전히 긴장한다.
 <<else>>
-	<<He>> has trouble counting the customer's change and checks the coins again before handing them over. "Sorry," <<he>> says.
+	<<He>>【은는】 손님의 거스름돈을 세는 데 애를 먹고, 건네기 전에 동전을 한 번 더 확인한다. "죄송해요." <<he>>【이가】 말한다.
 <</if>>
 <<robinStandBusinessBeat>>
-"I made about <span class="gold">£<<print $robinStand.lastIncome>></span> last weekend,"
-<<he>> says<<if $robinStand.lastIncome gte 1000>>, smiling proudly as <<he>> tells you<<elseif $robinStand.lastIncome lte 200>>, looking down at the counter as <<he>> tells you<</if>>.
-"And I've got <span class="gold">£<<print Math.max($robinmoney, 0)>></span> saved under the counter."
+"지난 주말에 <span class="gold">£<<print $robinStand.lastIncome>></span> 정도 벌었어."
+<<he>>【이가】 <<if $robinStand.lastIncome gte 1000>>자랑스러운 미소를 지으며 <<elseif $robinStand.lastIncome lte 200>>계산대를 내려다보며 <</if>>말한다.
+"그리고 계산대 밑에 모아 둔 게 <span class="gold">£<<print Math.max($robinmoney, 0)>></span> 있어."
 <<if $robinStand.selfSufficient is 1>>
 	<br><br>
-	"I pay Bailey myself now, using what I earn here." Robin smiles as <<he>> says it, clearly pleased that <<he>> can pay <<his>> own rent.
+	"이제 베일리한테 내는 건 여기서 번 돈으로 직접 해." 로빈은 그렇게 말하며 미소 짓는데, <<he>>【은는】 <<his>> 집세를 스스로 낼 수 있게 된 것이 분명 기쁜 듯하다.
 <</if>>
 <<robinCafeNotice>>
 <<if robinOutfitWorn()>>
 	<br><br>
-	Robin is working at the stall in the <<= $robinCafe.outfit.name>> you gave <<him>>.
+	당신이 <<him>>에게 준 <<= $robinCafe.outfit.name>>【을를】 입고 로빈이 가판대에서 일하고 있다.
 	<<if $robinCafe.outfit.sexy>>
-		Several customers keep looking at <<him>> while they wait to order. Some of them seem more interested in Robin than the drinks.
+		손님 몇 명이 주문을 기다리는 동안 계속 <<him>>【을를】 힐끔거린다. 몇몇은 음료보다 로빈에게 더 관심이 있는 듯하다.
 	<<elseif $robinCafe.outfit.crossdress>>
-		<<He>> wears it openly while serving customers, even with people from town passing by.
+		<<He>>【은는】 마을 사람들이 지나다니는 가운데에서도 손님을 응대하는 내내 그 옷을 당당히 입고 있다.
 	<<else>>
-		The outfit suits the stall, making <<him>> look ready for work.
+		그 옷은 가판대와 잘 어울려서, <<him>>【이가】 일할 준비가 된 것처럼 보이게 한다.
 	<</if>>
 <</if>>
 <br><br>
 <<if $robinStand.upgrades.length gt 0>>
-	You can see the extra things Robin has bought for the stand:
+	로빈이 가판대를 위해 사들인 추가 물품들이 보인다.
 	<<for _i to 0; _i lt $robinStand.upgrades.length; _i++>>
 		<<set _owned to robinStandUpgrade($robinStand.upgrades[_i])>>
-		<<if _owned>><<print _owned[_drinkKey]>><<if _i lt $robinStand.upgrades.length - 2>>,<<elseif _i lt $robinStand.upgrades.length - 1>><<if $robinStand.upgrades.length gt 2>>,<</if>> and<<else>>.<</if>><</if>>
+		<<if _owned>><<print _owned[_drinkKey]>><<if _i lt $robinStand.upgrades.length - 2>>,<<elseif _i lt $robinStand.upgrades.length - 1>><<if $robinStand.upgrades.length gt 2>>,<</if>> 그리고<<else>>.<</if>><</if>>
 	<</for>>
 	<br><br>
 <</if>>
 <<set _purchases to robinStandAvailablePurchases()>>
 <<if _purchases.length gt 0>>
-	"There's so much I'd love to do with this stand," Robin says. <<He>> points out the things <<he>> wants to buy and explains how they would help.
+	"이 가판대로 하고 싶은 게 정말 많아." 로빈이 말한다. <<He>>【은는】 사고 싶은 것들을 가리키며 그것들이 어떻게 도움이 될지 설명한다.
 	<<if !robinStandAutoUpgradeEligible()>>
-		"But I can't afford them yet. Bailey takes so much of what I earn that I barely have any money left to save."
+		"하지만 아직은 살 돈이 없어. 베일리가 내가 번 돈을 너무 많이 가져가서 저금할 돈이 거의 안 남거든."
 	<<else>>
-		"I've managed to save some money for these lately, thanks to you."
+		"요즘은 네 덕분에 이것들을 살 돈을 조금 모을 수 있었어."
 	<</if>>
 	<br><br>
 	<<for _p range _purchases>>
 		<<capture _p>>
 			<<if setup.inflation.canAfford(_p.cost * 100, "robin")>>
-				<<shopicon "register">><<link `"Fund the " + _p.name + " (" + formatMoney(setup.inflation.price(_p.cost * 100)) + ")"` "Robin Stand Buy">>
-					<<endevent>><<set $phase to _p.id>><<money `-(_p.cost * 100)` "robin">><</link>><<note `"+£" + _p.income + " base income a week"` "green">>
+				<<shopicon "register">><<link `_p.name + "【을를】 사 준다 (" + formatMoney(setup.inflation.price(_p.cost * 100)) + ")"` "Robin Stand Buy">>
+					<<endevent>><<set $phase to _p.id>><<money `-(_p.cost * 100)` "robin">><</link>><<note `"주당 기본 수입 +£" + _p.income` "green">>
 				<br>
 			<<else>>
-				<span class="grey">Fund the <<print _p.name>> (<<printprice `_p.cost * 100`>>)</span><<note `"+£" + _p.income + " base income a week"` "grey">>
+				<span class="grey"><<print _p.name>>【을를】 사 준다 (<<printprice `_p.cost * 100`>>)</span><<note `"주당 기본 수입 +£" + _p.income` "grey">>
 				<br>
 			<</if>>
 		<</capture>>
 	<</for>>
 	<br>
 <<else>>
-	"I don't think there's anything left to improve," Robin says, looking over the stall in disbelief. "It's perfect."
+	"더 개선할 만한 게 남아 있지 않은 것 같아." 로빈이 믿기지 않는다는 듯 가판대를 둘러보며 말한다. "완벽해."
 	<br><br>
 <</if>>
 <<robinOutfitOptions>>
 <<if robinStandNamingReady()>>
-	<<assignmenticon>><<link [[Help Robin name the stand (0:20)|Robin Stand Naming]]>><<pass 20>><<endevent>><</link>><<note "+5% base income a week" "green">>
+	<<assignmenticon>><<link [[로빈이 가판대 이름 짓는 것을 돕는다 (0:20)|Robin Stand Naming]]>><<pass 20>><<endevent>><</link>><<note "주당 기본 수입 +5%" "green">>
 	<br>
 <</if>>
 <<if !$daily.robin.standTrain and $robinStand.skill lt 1000>>
-	<<icon "kitchen-messy.png">><<link [[Give Robin pointers (0:30)|Robin Stand Train]]>><<pass 30>><<endevent>><</link>><<note "Trains Robin's serving skill" "green">>
+	<<icon "kitchen-messy.png">><<link [[로빈에게 요령을 알려 준다 (0:30)|Robin Stand Train]]>><<pass 30>><<endevent>><</link>><<note "로빈의 응대 실력이 늘어납니다" "green">>
 	<br>
 <</if>>
 <<robinStandOptions $robinStandVenue>>
@@ -142,23 +142,23 @@ Robin looks at the money you have given <<him>>, then looks up at you as though 
 	<<set _name to setup.robinStand.tiers[Math.min($robinStand.tier + 1, 4)].name>>
 <<else>>
 	<<set _bought to robinStandUpgrade($phase)>>
-	<<set _name to _bought ? _bought[$robinStandVenue is "park" ? "cocoa" : "lemonade"] : "upgrade">>
+	<<set _name to _bought ? _bought[$robinStandVenue is "park" ? "cocoa" : "lemonade"] : "물품">>
 <</if>>
 <<run robinStandBuy(V.phase)>>
 <<if _boughtTier>>
-	You tell Robin you're paying for the <<print _name>> <<hes>> been dreaming about. <<He>> stares at you, mouth open.
+	당신은 로빈에게, <<hes>> 줄곧 꿈꿔 온 <<print _name>>【을를】 사 주겠다고 말한다. <<He>>【은는】 입을 떡 벌리고 당신을 쳐다본다.
 	<br><br>
-	"You can't— that's so much money!" <<He>> looks at you, then back at the stand <<he>> has been using.
-	"I'll pay you back. In drinks. It might take a hundred years."
+	"안 돼— 그건 너무 큰돈이야!" <<He>>【은는】 당신을 바라보다가 <<he>>【이가】 써 온 가판대를 돌아본다.
+	"갚을게. 음료로. 백 년은 걸릴지도 모르지만."
 	<br><br>
-	<<He>> laughs and throws <<his>> arms around you. When <<he>> lets go, though, <<he>> looks back at the stand and grows quiet.
-	"One day I'll buy something like this myself," <<he>> says. "You'll see."
+	<<He>>【은는】 웃으며 <<his>> 두 팔로 당신을 껴안는다. 하지만 <<he>>【이가】 팔을 풀고 나서는 가판대를 돌아보며 말이 없어진다.
+	"언젠가 이런 걸 내 힘으로 살 거야." <<he>>【이가】 말한다. "두고 봐."
 	<<npcincr Robin love 1>><<npcincr Robin dom -1>><<npcincr Robin trauma -3>><<glove>><<ldom>><<llrtrauma>>
 <<else>>
-	You hand Robin the money for the <<print _name>>. <<He>> tries to refuse at first, but you press it into <<his>> hands.
+	당신은 로빈에게 <<print _name>>【을를】 살 돈을 건넨다. <<He>>【은는】 처음엔 사양하려 하지만, 당신은 <<his>> 손에 돈을 쥐여 준다.
 	<br><br>
-	"Thank you," <<he>> says. "This should help me sell more drinks."
-	<<He>> looks at the money for another moment before tucking it away carefully. <<Hes>> grateful for your help, but wishes <<he>> could have paid for the equipment with money from <<his>> own sales.
+	"고마워." <<he>>【이가】 말한다. "이걸로 음료를 더 팔 수 있을 거야."
+	<<He>>【은는】 잠시 더 돈을 바라보다가 조심스럽게 챙겨 넣는다. <<Hes>> 당신의 도움이 고맙지만, 장비 값을 <<his>> 매출로 직접 치를 수 있었으면 좋았겠다고 생각한다.
 	<<npcincr Robin love 1>><<npcincr Robin dom -1>><<glove>><<ldom>>
 <</if>>
 <br><br>
@@ -174,22 +174,22 @@ Robin looks at the money you have given <<him>>, then looks up at you as though 
 <<set _gain to 5 + Math.floor(_housekeeping / 100)>>
 <<run V.robinStand.skill = Math.min(V.robinStand.skill + T.gain, 1000)>>
 <<if _housekeeping gte 700>>
-	You spend some time helping Robin behind the counter. You show <<him>> how to prepare drinks in the order customers need them, count change quickly, and speak to people who have been waiting a long time.
+	당신은 한동안 계산대 뒤에서 로빈을 돕는다. 손님이 원하는 순서대로 음료를 준비하는 법, 거스름돈을 빠르게 세는 법, 오래 기다린 사람들에게 말을 건네는 법을 <<him>>에게 알려 준다.
 	<br><br>
-	"How do you make it look so easy?" Robin asks. <<He>> follows your example, trying each task several times until <<he>> can do it without stopping to think.
+	"어떻게 그렇게 쉬워 보이게 하는 거야?" 로빈이 묻는다. <<He>>【은는】 당신을 따라 하며, 멈춰서 생각하지 않고도 해낼 수 있을 때까지 각 일을 여러 번 해 본다.
 <<elseif _housekeeping gte 300>>
-	You join Robin behind the counter and show <<him>> how you keep the cups and supplies in order. With everything easier to reach, you and Robin serve the waiting customers more quickly.
+	당신은 계산대 뒤로 가서 컵과 물품을 정돈하는 방법을 <<him>>에게 보여 준다. 모든 것이 손닿기 쉬워지자, 당신과 로빈은 기다리는 손님들을 더 빠르게 응대한다.
 	<br><br>
-	"That's clever!" Robin says, rearranging the cups the way you showed <<him>>.
+	"정말 영리하다!" 로빈이 당신이 보여 준 대로 컵을 다시 배치하며 말한다.
 <<else>>
-	You join Robin behind the counter. You're not much more experienced than <<hes>>,
-	but working through the mistakes together still teaches you both something.
+	당신은 계산대 뒤로 간다. 당신도 <<him>>보다 딱히 경험이 많은 건 아니지만,
+	함께 실수를 헤쳐 나가다 보면 둘 다 뭔가를 배우게 된다.
 	<br><br>
-	"We'll figure it out," Robin says with a laugh as <<he>> wipes up a drink that was spilled on the counter.
+	"어떻게든 해 보자." 로빈이 웃으며 말한다. <<he>>【은는】 계산대에 엎질러진 음료를 닦아 낸다.
 <</if>>
 <<npcincr Robin love 1>><<glove>><<lstress>><<stress -3>>
 <br><br>
-<span class="gold"><i>Robin seems more capable behind the stand.</i></span>
+<span class="gold"><i>가판대 뒤에서 로빈이 한결 능숙해진 것 같다.</i></span>
 <br>
 <<robinStandOptions $robinStandVenue>>
 <br>
@@ -197,45 +197,45 @@ Robin looks at the money you have given <<him>>, then looks up at you as though 
 :: Robin Cafe Renovation
 <<endevent>><<effects>><<npc Robin>><<person1>>
 <<set $robinCafe.seen.renovation to true>>
-You tell Robin you heard that the Ocean Breeze is closed while Sam makes the cafe bigger. Since Robin can't work there until it reopens, you ask what <<he>> thinks about having some time away from the job.
+당신은 로빈에게 샘이 카페를 넓히는 동안 오션 브리즈가 문을 닫는다는 이야기를 들었다고 말한다. 다시 문을 열 때까지 로빈이 거기서 일할 수 없으니, 잠시 일에서 떨어져 있는 것에 대해 <<he>>【이가】 어떻게 생각하는지 묻는다.
 <br><br>
 <<if C.npc.Robin.dom gte 60>>
-	"Have you seen how much bigger it's going to be?" Robin asks, leaning forward. "Sam will need people who know what they're doing. I could ask for more hours."
-	<<He>> grins. "Maybe I'll finally earn enough to put some aside after paying Bailey."
+	"얼마나 더 커질지 봤어?" 로빈이 몸을 앞으로 기울이며 묻는다. "샘은 일을 아는 사람이 필요할 거야. 나도 근무 시간을 더 달라고 해 볼 수 있어."
+	<<He>>【은는】 씩 웃는다. "베일리에게 내고도 조금은 모아 둘 만큼 벌 수 있을지도 몰라."
 <<elseif C.npc.Robin.dom gte 30>>
-	"I'll miss getting paid while the cafe is closed," Robin says. "But there'll be more tables when it opens again. More customers, too."
-	<<He>> smiles at you. "Do you think Sam would let me work more hours? I think I could manage it."
+	"카페가 닫혀 있는 동안은 돈을 못 번다는 게 아쉬워." 로빈이 말한다. "하지만 다시 열면 테이블도 더 많아질 거야. 손님도 더 많을 거고."
+	<<He>>【은는】 당신에게 미소 짓는다. "샘이 나한테 시간을 더 줄까? 나라면 할 수 있을 것 같아."
 <<else>>
-	"Sam said it's only until the work's finished," Robin says, pulling at the edge of <<his>> sleeve. "I know that. I just liked knowing I'd get paid."
-	<<He>> looks up. "It's going to be bigger, isn't it? Maybe there'll be more work for me. As long as I can keep up."
+	"샘이 그랬어, 공사가 끝날 때까지만이라고." 로빈이 <<his>> 소매 끝을 만지작거리며 말한다. "나도 알아. 그냥 돈이 나온다는 게 안심이 됐거든."
+	<<He>>【은는】 고개를 든다. "더 커지는 거지? 어쩌면 나한테 맡길 일도 더 생길지 몰라. 내가 따라갈 수만 있다면."
 <</if>>
 <br><br>
-"I've still got the stand at weekends. <<if Time.schoolTerm>>During the week I'll be here after school.<<else>>I'll be here in the afternoons during the week.<</if>> You can come round, if you want."
+"주말엔 가판대가 있어. <<if Time.schoolTerm>>평일엔 방과 후에 여기 있을 거야.<<else>>평일엔 오후에 여기 있을 거야.<</if>> 원하면 들러도 돼."
 <br><br>
-<<link [[Encourage Robin to ask for more hours|Robin Cafe Renovation Response]]>><<set $phase to "encourage">><</link>><br>
-<<link [[Tell Robin you're glad to have more time together|Robin Cafe Renovation Response]]>><<set $phase to "company">><</link>><br>
-<<link [[Suggest waiting to see how the new cafe goes|Robin Cafe Renovation Response]]>><<set $phase to "wait">><</link>><br>
+<<link [[로빈에게 근무 시간을 더 달라고 해 보라고 격려한다|Robin Cafe Renovation Response]]>><<set $phase to "encourage">><</link>><br>
+<<link [[로빈에게 함께 보낼 시간이 늘어서 기쁘다고 말한다|Robin Cafe Renovation Response]]>><<set $phase to "company">><</link>><br>
+<<link [[새 카페가 어떻게 되는지 지켜보자고 제안한다|Robin Cafe Renovation Response]]>><<set $phase to "wait">><</link>><br>
 
 :: Robin Cafe Renovation Response
 <<effects>>
 <<if $phase is "encourage">>
-	"You've already learnt the job," you say. "Ask Sam when it opens."
+	"넌 이미 일을 다 익혔잖아." 당신이 말한다. "문 열면 샘에게 물어봐."
 	<br><br>
 	<<if C.npc.Robin.dom gte 30>>
-		Robin nods. "I will. I'll ask what hours are available before the new people take them all."
+		로빈이 고개를 끄덕인다. "그럴게. 새로 온 사람들이 자리를 다 차지하기 전에 가능한 시간을 물어볼게."
 	<<else>>
-		"I suppose asking can't hurt," Robin says. <<He>> stops pulling at <<his>> sleeve and looks at you. "I'll try."
+		"물어본다고 해서 손해 볼 건 없겠지." 로빈이 말한다. <<He>>【은는】 <<his>> 소매를 만지작거리던 손을 멈추고 당신을 쳐다본다. "해 볼게."
 	<</if>>
 	<<npcincr Robin dom 1>><<gdom>>
 <<elseif $phase is "company">>
-	You tell Robin you'll enjoy having more afternoons together.
+	당신은 로빈에게 오후를 더 함께 보내게 되어 좋을 것 같다고 말한다.
 	<br><br>
-	"You will?" <<He>> smiles<<if C.npc.Robin.dom lt 30>>, glancing down at <<his>> hands<<else>> and makes room beside <<him>><</if>>. "I'd like that too."
+	"그래?" <<He>>【은는】 <<if C.npc.Robin.dom lt 30>><<his>> 손을 힐끗 내려다보며 미소 짓는다<<else>>미소 지으며 <<him>> 옆에 자리를 내어 준다<</if>>. "나도 그러면 좋겠어."
 	<<npcincr Robin love 1>><<glove>>
 <<else>>
-	"Try the new cafe before you ask for extra shifts," you suggest. "You'll have more tables to look after."
+	"추가 근무를 부탁하기 전에 새 카페부터 겪어 봐." 당신이 제안한다. "돌봐야 할 테이블이 더 많아질 테니까."
 	<br><br>
-	Robin nods. "That's true. I don't want to promise Sam hours I can't manage. I'll see how it goes."
+	로빈이 고개를 끄덕인다. "맞아. 소화하지 못할 시간을 샘에게 약속하고 싶진 않아. 어떻게 되는지 볼게."
 <</if>>
 <br><br>
 <<robinoptions>>
@@ -244,54 +244,54 @@ You tell Robin you heard that the Ocean Breeze is closed while Sam makes the caf
 :: Robin Cafe Ask Sam
 <<endevent>><<set $outside to 0>><<set $location to "cafe">><<effects>>
 <<npc Sam>><<person1>><<run ensureRobinCafe()>>
-You wait until there are no customers at the counter, then ask Sam if there's any work for a friend of yours.
-"A friend?" Sam asks. "How old?"
+당신은 카운터에 손님이 없어질 때까지 기다렸다가, 샘에게 친구가 일할 만한 자리가 있는지 묻는다.
+"친구?" 샘이 묻는다. "몇 살인데?"
 <br><br>
-You tell <<him>> Robin's age. Sam thinks for a few seconds before answering.
-"Same age as you, then. Can <<nnpc_he "Robin">> work weekday afternoons?"
+당신은 <<him>>에게 로빈의 나이를 알려 준다. 샘은 대답하기 전에 몇 초 동안 생각한다.
+"그럼 너랑 동갑이네. <<nnpc_he "Robin">>【이가】 평일 오후에 일할 수 있니?"
 <br><br>
-You say yes.
+당신은 그렇다고 대답한다.
 <br><br>
-Sam turns towards the sheet of paper beside Old Betsy that lists everyone's working hours. There are still several afternoons with no one assigned to work.
-"I could use the help. But <<nnpc_he "Robin">> needs to handle customers. Some of them get rude when they're angry or impatient."
+샘이 올드 베시 옆에 붙은, 모두의 근무 시간이 적힌 종이 쪽으로 몸을 돌린다. 아직 아무도 배정되지 않은 오후가 여럿 남아 있다.
+"일손이 좀 필요하긴 해. 하지만 <<nnpc_he "Robin">>【이가】 손님을 상대해야 하잖아. 화나거나 조급해지면 무례해지는 손님들도 있거든."
  <br><br>
 <<speechresolve>>
 <<switch _speechAttitudeResolved>>
 	<<case "meek">>
-		"<<nnpc_He "Robin">> works really hard," you say quietly. "<<nnpc_Hes "Robin">> been serving customers at <<nnpc_his "Robin">> own drinks stand since <<nnpc_he "Robin">> was small."
+		"<<nnpc_He "Robin">>【은는】 정말 열심히 해요." 당신이 조용히 말한다. "<<nnpc_Hes "Robin">> 어렸을 때부터 <<nnpc_his "Robin">> 음료 가판대에서 손님을 응대해 왔어요."
 	<<case "shy">>
-		You speak softly, but make sure Sam hears you. "<<nnpc_He "Robin">> runs a drinks stand without anyone helping. <<nnpc_He "Robin">> already knows how to serve customers."
+		당신은 조용히 말하지만 샘에게 확실히 들리도록 한다. "<<nnpc_He "Robin">>【은는】 아무 도움 없이 음료 가판대를 운영해요. <<nnpc_He "Robin">>【은는】 이미 손님 응대하는 법을 알아요."
 	<<case "polite">>
-		"<<nnpc_He "Robin">> has experience serving customers," you explain. "<<nnpc_He "Robin">> sells lemonade in warm weather and cocoa in winter, and makes the signs for <<nnpc_his "Robin">> stand too."
+		"<<nnpc_He "Robin">>【은는】 손님 응대 경험이 있어요." 당신이 설명한다. "<<nnpc_He "Robin">>【은는】 날씨가 따뜻할 때는 레모네이드를, 겨울에는 코코아를 팔고, <<nnpc_his "Robin">> 가판대 간판도 직접 만들어요."
 	<<case "neutral">>
-		You explain that Robin runs a drinks stand, selling lemonade when it's warm and cocoa when it's cold. <<nnpc_He "Robin">> makes the signs and serves customers without anyone helping.
+		당신은 로빈이 따뜻할 때는 레모네이드를, 추울 때는 코코아를 파는 음료 가판대를 운영한다고 설명한다. <<nnpc_He "Robin">>【은는】 간판도 직접 만들고 아무 도움 없이 손님을 응대한다.
 	<<case "confident">>
-		"<<nnpc_He "Robin">> can handle customers," you tell Sam. "<<nnpc_He "Robin">> already runs a drinks stand alone, takes orders and makes <<nnpc_his "Robin">> own signs."
+		"<<nnpc_He "Robin">>【은는】 손님 상대쯤 문제없어요." 당신이 샘에게 말한다. "<<nnpc_He "Robin">>【은는】 이미 혼자 음료 가판대를 운영하고, 주문도 받고 <<nnpc_his "Robin">> 간판도 직접 만들어요."
 	<<case "bratty">>
-		"<<nnpc_He "Robin">>'ll be fine," you say. "<<nnpc_He "Robin">> already runs <<nnpc_his "Robin">> own drinks stand. <<nnpc_He "Robin">> isn't going to fall apart because someone's rude."
+		"<<nnpc_He "Robin">>【은는】 괜찮을 거예요." 당신이 말한다. "<<nnpc_He "Robin">>【은는】 이미 <<nnpc_his "Robin">> 음료 가판대를 직접 운영해요. 누가 무례하게 굴었다고 무너질 애가 아니에요."
 	<<case "docile">>
-		"<<nnpc_He "Robin">> knows how to work with customers," you say gently. "<<nnpc_He "Robin">> has a drinks stand and takes care of the orders and signs without anyone helping."
+		"<<nnpc_He "Robin">>【은는】 손님과 일하는 법을 알아요." 당신이 부드럽게 말한다. "<<nnpc_He "Robin">>【은는】 음료 가판대가 있어서 주문이랑 간판도 아무 도움 없이 알아서 챙겨요."
 	<<case "flamboyant">>
-		"<<nnpc_He "Robin">> has experience serving customers," you explain. "<<nnpc_He "Robin">> sells lemonade in warm weather and cocoa in winter, and makes the signs for <<nnpc_his "Robin">> stand too."
+		"<<nnpc_He "Robin">>【은는】 손님 응대 경험이 있어요." 당신이 설명한다. "<<nnpc_He "Robin">>【은는】 날씨가 따뜻할 때는 레모네이드를, 겨울에는 코코아를 팔고, <<nnpc_his "Robin">> 가판대 간판도 직접 만들어요."
 	<<case "cruel">>
-		"<<nnpc_He "Robin">> can deal with a few rude customers," you say. "<<nnpc_He "Robin">> runs a drinks stand alone. <<nnpc_He "Robin">> knows how to take orders without needing someone to do it for <<nnpc_him "Robin">>."
+		"무례한 손님 몇 명쯤은 <<nnpc_He "Robin">>【이가】 상대할 수 있어요." 당신이 말한다. "<<nnpc_He "Robin">>【은는】 혼자 음료 가판대를 운영해요. <<nnpc_him "Robin">>【을를】 대신해 줄 사람이 없어도 주문 받는 법을 알아요."
 <</switch>>
 <br><br>
-<<link [[Next|Robin Cafe Ask Sam 2]]>><</link>>
+<<link [[다음|Robin Cafe Ask Sam 2]]>><</link>>
 <br>
 
 :: Robin Cafe Ask Sam 2
 <<effects>>
-Sam listens with <<his>> arms folded. By the time you finish, <<hes>> smiling.
-"<<nnpc_He "Robin">> runs <<nnpc_his "Robin">> own stall already?"
+샘은 <<his>> 팔짱을 낀 채 듣는다. 당신이 이야기를 마칠 즈음 <<hes>> 미소를 짓고 있다.
+"<<nnpc_He "Robin">>【이가】 벌써 <<nnpc_his "Robin">> 가판대를 직접 운영한다고?"
 <br><br>
-Sam thinks about it, then nods. "Bring <<nnpc_him "Robin">> in. I'll give <<nnpc_him "Robin">> two weeks to try the job.
-If <<nnpc_he "Robin">> does well, <<nnpc_he "Robin">> can stay."
+샘이 생각해 보다가 고개를 끄덕인다. "<<nnpc_him "Robin">>【을를】 데려와. 일해 볼 수 있게 2주를 줄게.
+<<nnpc_he "Robin">>【이가】 잘하면, <<nnpc_he "Robin">>【이가】 계속 일할 수 있어."
 <br><br>
-<<He>> points towards the tables. "And tell <<nnpc_him "Robin">> that any tips customers give <<nnpc_him "Robin">>
-are <<nnpc_his "Robin">> to keep. We don't share tips between the staff here."
+<<He>>【은는】 테이블 쪽을 가리킨다. "그리고 손님들이 <<nnpc_him "Robin">>에게 주는 팁은
+전부 <<nnpc_his "Robin">> 몫이라고 전해 줘. 여기선 직원끼리 팁을 나누지 않거든."
 <br><br>
-<span class="gold"><i>Sam has a place for Robin. You need to tell Robin about it.</i></span>
+<span class="gold"><i>샘에게 로빈이 일할 자리가 있다. 로빈에게 이 사실을 알려 줘야 한다.</i></span>
 <<set $robinCafe.stage to 1>>
 <br><br>
 <<link [[다음|Ocean Breeze]]>><<endevent>><</link>>
@@ -300,65 +300,65 @@ are <<nnpc_his "Robin">> to keep. We don't share tips between the staff here."
 :: Robin Cafe Tell
 <<endevent>><<set $outside to 0>><<set $location to "home">><<effects>>
 <<npc Robin>><<person1>><<run ensureRobinCafe()>>
-You tell Robin about the job Sam has offered <<him>> at the Ocean Breeze. Robin sits with you and listens without interrupting, even when you explain that Sam wants <<him>> to try the job for two weeks first.
+당신은 로빈에게 샘이 오션 브리즈에서 <<him>>에게 제안한 일자리에 대해 말해 준다. 로빈은 당신 곁에 앉아 끼어들지 않고 듣는다. 샘이 먼저 2주 동안 해 보길 원한다고 설명할 때도 마찬가지다.
 <br><br>
-"A real job," <<he>> says when you finish. "I'd get paid every week, and I'd know which days I'm working."
+"진짜 일자리네." 당신이 말을 마치자 <<he>>【이가】 말한다. "매주 돈을 받고, 어느 요일에 일하는지도 알 수 있고."
 <br><br>
-<<He>> looks down at <<his>> hands.
-"I've been thinking about how much I'd earn while you were talking. We'd still be okay. I know that."
-<<He>> rubs <<his>> palms against <<his>> knees. "But what if I'm bad at it?"
+<<He>>【은는】 <<his>> 손을 내려다본다.
+"네가 말하는 동안 얼마나 벌 수 있을지 계속 생각해 봤어. 우린 그래도 괜찮을 거야. 알아."
+<<He>>【은는】 손바닥으로 <<his>> 무릎을 문지른다. "하지만 내가 못하면 어떡해?"
 <br><br>
 <<speechresolve>>
 <<switch _speechAttitudeResolved>>
 	<<case "meek">>
-		"You've been running your own stand since you were nine," you say softly. "I think you can learn this too."
+		"넌 아홉 살 때부터 네 가판대를 해 왔잖아." 당신이 부드럽게 말한다. "이것도 배울 수 있을 거야."
 	<<case "shy">>
-		You give Robin a small smile. "You've worked at your stand for years. You'll have two weeks to learn the cafe job."
+		당신은 로빈에게 작게 미소 짓는다. "넌 몇 년 동안 가판대 일을 해 왔잖아. 카페 일을 배울 시간도 2주나 있고."
 	<<case "polite">>
-		"You're allowed to make mistakes while you're learning," you tell <<him>>. "Sam has given you two weeks to try the job."
+		"배우는 동안엔 실수해도 돼." 당신이 <<him>>에게 말한다. "샘이 일해 볼 시간을 2주나 줬잖아."
 	<<case "neutral">>
-		"Then you'll learn," you say. "That's what the two-week trial is for."
+		"그럼 배우면 되지." 당신이 말한다. "2주 수습이 그러려고 있는 거잖아."
 	<<case "confident">>
-		"You can do this," you tell <<him>>. "You've handled your own stand for years, and Sam's giving you time to learn."
+		"넌 할 수 있어." 당신이 <<him>>에게 말한다. "몇 년 동안 네 가판대를 해 왔고, 샘도 배울 시간을 주잖아."
 	<<case "bratty">>
-		"Then you'll be bad at it for two weeks and Sam'll tell you," you say. "That's why <<nnpc_he "Sam">> gave you a trial."
+		"그럼 2주 동안 못하겠지, 샘이 알려 줄 거고." 당신이 말한다. "그러라고 <<nnpc_he "Sam">>【이가】 수습 기간을 준 거야."
 	<<case "docile">>
-		"That's okay," you say. "You can take your time learning. Sam knows you're new."
+		"괜찮아." 당신이 말한다. "천천히 배우면 돼. 샘도 네가 처음인 거 알아."
 	<<case "flamboyant">>
-		"You're allowed to make mistakes while you're learning," you tell <<him>>. "Sam has given you two weeks to try the job."
+		"배우는 동안엔 실수해도 돼." 당신이 <<him>>에게 말한다. "샘이 일해 볼 시간을 2주나 줬잖아."
 	<<case "cruel">>
-		"Nobody starts out knowing everything," you say. "If you mess up, you fix it and try again. That's what the trial is for."
+		"처음부터 다 아는 사람은 없어." 당신이 말한다. "망치면 고치고 다시 해 보면 돼. 수습은 그러라고 있는 거야."
 <</switch>>
 <br><br>
-<<link [[Next|Robin Cafe Tell 2]]>><</link>>
+<<link [[다음|Robin Cafe Tell 2]]>><</link>>
 <br>
 
 :: Robin Cafe Tell 2
 <<effects>>
-Robin stays quiet for a few seconds, then starts counting the days on <<his>> fingers.
-"Only weekdays... So I can still run the stand at weekends."
-<<He>> looks up at you.
-"I wouldn't have to give it up."
+로빈은 몇 초 동안 말이 없다가 <<his>> 손가락으로 날짜를 세기 시작한다.
+"평일뿐이네... 그럼 주말엔 가판대를 계속 할 수 있어."
+<<He>>【은는】 당신을 올려다본다.
+"그만두지 않아도 되는 거야."
 <br><br>
-Robin stands up from the bed so quickly that <<he>> nearly falls over. <<He>> grabs the side of the bed with one hand to keep <<himself>> upright.
+로빈이 침대에서 너무 급히 일어나다가 넘어질 뻔한다. <<He>>【은는】 한 손으로 침대 가장자리를 짚어 <<himself>>【을를】 바로 세운다.
 <br><br>
-"Okay," <<he>> says. "Tell Sam yes."
-<<He>> pauses, then shakes <<his>> head.
-"No. I'll tell <<nnpc_him "Sam">> myself. I should do that."
+"좋아." <<he>>【이가】 말한다. "샘한테 하겠다고 전해 줘."
+<<He>>【은는】 잠시 멈췄다가 <<his>> 고개를 젓는다.
+"아니야. <<nnpc_him "Sam">>에게는 내가 직접 말할게. 그래야 해."
 <<npcincr Robin love 2>><<npcincr Robin dom 2>><<glove>><<ggdom>>
 <br><br>
-<<link [[Next|Robin Cafe Tell 3]]>><</link>>
+<<link [[다음|Robin Cafe Tell 3]]>><</link>>
 <br>
 
 :: Robin Cafe Tell 3
 <<effects>>
 <<if robinCafeClosed()>>
-	Robin's job at the Ocean Breeze will wait <span class="gold">until the cafe reopens</span>. After that, <<he>> will work on school days, from five until seven.
+	로빈의 오션 브리즈 일은 <span class="gold">카페가 다시 열 때까지</span> 기다려야 한다. 그 후에는 <<he>>【이가】 등교일에 다섯 시부터 일곱 시까지 일하게 된다.
 <<else>>
-	Robin starts work at the Ocean Breeze <span class="gold">on the next school day</span>, from five until seven.
+	로빈은 <span class="gold">다음 등교일</span>부터 다섯 시에서 일곱 시까지 오션 브리즈에서 일을 시작한다.
 <</if>>
 <br><br>
-Once Robin starts working shifts, <<he>> will spend less time preparing for the stand, <span class="purple">so the stand will earn less money.</span>
+로빈이 교대 근무를 시작하면 <<he>>【은는】 가판대를 준비하는 시간이 줄어들어, <span class="purple">가판대 수입이 줄어든다.</span>
 <<set $robinCafe.stage to 2>><<set $robinCafe.startTime to Time.date.timeStamp>>
 <br><br>
 <<robinoptions>>
@@ -372,157 +372,157 @@ Once Robin starts working shifts, <<he>> will spend less time preparing for the 
 <<set _due to robinCafeSceneDue()>>
 <<set _outfitDue to robinOutfitSceneDue()>>
 <<if _due or _outfitDue>>
-	The cafe is busy. You make your way through it towards the counter.
+	카페는 붐빈다. 당신은 사람들 사이를 헤치고 카운터 쪽으로 간다.
 	<br><br>
 	<<if _due is "first">>
-		<<link [[Next|Robin Cafe First Shift]]>><</link>>
+		<<link [[다음|Robin Cafe First Shift]]>><</link>>
 	<<elseif _due is "difficult">>
-		<<link [[Next|Robin Cafe Difficult]]>><</link>>
+		<<link [[다음|Robin Cafe Difficult]]>><</link>>
 	<<elseif _outfitDue is "debut">>
-		<<link [[Next|Robin Outfit Debut]]>><</link>>
+		<<link [[다음|Robin Outfit Debut]]>><</link>>
 	<<else>>
-		<<link [[Next|Robin Outfit Regulars]]>><</link>>
+		<<link [[다음|Robin Outfit Regulars]]>><</link>>
 	<</if>>
 	<br>
 <<else>>
 	<<if robinOutfitWorn()>>
 		<<robinOutfitLook>>
 	<<else>>
-		Robin stands behind the counter wearing an apron that is too long for <<him>>.
-		Sam has folded it over twice at the waist to make it fit.
+		로빈은 <<him>>에게 너무 긴 앞치마를 두른 채 카운터 뒤에 서 있다.
+		샘이 맞도록 허리께에서 두 번 접어 주었다.
 	<</if>>
 	<br><br>
 	<<if $robinCafe.stage gte 5 and $robinCafe.ended is "kept">>
-		Robin takes a customer's order and passes it to the kitchen. On <<his>> way back to the counter, <<he>> collects two empty plates from a table before going to serve the next customer.
+		로빈은 손님의 주문을 받아 주방에 전달한다. 카운터로 돌아오는 길에 <<he>>【은는】 <<his>> 테이블에서 빈 접시 두 개를 치우고 나서 다음 손님을 응대하러 간다.
 		<br><br>
-		<<He>> spots you while carrying the plates and gives you a quick grin before continuing back to the counter.
+		<<He>>【은는】 접시를 나르다가 당신을 발견하고, 씩 웃어 보이고는 카운터로 돌아간다.
 	<<elseif $robinCafe.stage gte 3>>
-		Robin serves the last few people waiting at the counter, entering each order into the machine that records sales before speaking to the next customer.
+		로빈은 카운터에서 기다리던 마지막 몇 사람을 응대하며, 다음 손님에게 말을 걸기 전에 주문을 하나하나 매출 기록기에 입력한다.
 		<br><br>
-		When there are no more customers waiting, <<he>> comes over to you. The coffee machine is still making a drink behind <<him>>.
-		"Eleven tables since five! I counted."
+		기다리는 손님이 더 없자 <<he>>【은는】 당신에게 다가온다. <<him>>의 뒤에서는 커피 머신이 아직 음료를 내리고 있다.
+		"다섯 시부터 열한 테이블이야! 내가 세어 봤어."
 	<<else>>
-		Robin is working at the machine that records orders, reading each button carefully before pressing it. <<Hes>> so busy checking the screen that <<he>> does not notice you until you reach the counter.
+		로빈은 주문 기록기 앞에서 일하며 버튼 하나하나를 꼼꼼히 읽고 나서 누른다. <<Hes>> 화면 확인에 너무 정신이 팔려 당신이 카운터에 다다를 때까지 알아채지 못한다.
 		<br><br>
-		When <<he>> looks up and sees you, <<he>> forgets which part of the order <<he>> was entering.
-		<<He>> looks back at the screen and starts it again from the beginning with flushed cheeks.
+		<<he>>【이가】 고개를 들어 당신을 보자, <<he>>【은는】 주문의 어느 부분을 입력하던 중이었는지 잊어버린다.
+		<<He>>【은는】 다시 화면을 보고 뺨을 붉힌 채 처음부터 다시 시작한다.
 	<</if>>
 	<br><br>
 	<<if !$daily.robin.cafeVisit>>
 		<<set $daily.robin.cafeVisit to 1>>
-		Robin places a drink in front of you even though you did not order anything.
-		"Staff discount! On me. I get one every shift and I never use it."
+		로빈이 당신이 아무것도 주문하지 않았는데도 앞에 음료를 놓아 준다.
+		"직원 할인이야! 내가 쏠게. 근무마다 하나씩 받는데 한 번도 안 썼거든."
 		<<stress -6>><<lstress>><<npcincr Robin love 1>><<glove>>
 		<br><br>
 	<<else>>
-		Robin keeps moving between the machine that records orders and the drinks waiting to be served.
-		You decide not to distract <<him>> while <<hes>> working.
+		로빈은 주문 기록기와 서빙을 기다리는 음료들 사이를 계속 오간다.
+		당신은 <<hes>> 일하는 동안에는 <<him>>【을를】 방해하지 않기로 한다.
 		<br><br>
 	<</if>>
 	<<robinOutfitOptions>>
-	<<link [[Leave <<him>> to it|Ocean Breeze]]>><<endevent>><</link>>
+	<<link [[<<him>>【을를】 일하게 둔다|Ocean Breeze]]>><<endevent>><</link>>
 	<br>
 <</if>>
 
 :: Robin Cafe First Shift
 <<set $outside to 0>><<set $location to "cafe">><<effects>>
 <<run ensureRobinCafe()>><<set $robinCafe.seen.first to true>>
-You find Robin carrying two plates while four customers wait near the counter.
-A third plate is ready beside Sam, but Robin keeps looking between the food in <<his>> hands and the table numbers.
+당신은 접시 두 개를 든 로빈을 발견한다. 카운터 근처에서는 손님 네 명이 기다리고 있다.
+샘 옆에 세 번째 접시가 준비되어 있지만, 로빈은 <<his>> 손에 든 음식과 테이블 번호를 번갈아 쳐다보기만 한다.
 <br><br>
-Sam prepares another order behind the counter. "Table six!" Sam calls.
+샘이 카운터 뒤에서 또 다른 주문을 준비한다. "여섯 번 테이블!" 샘이 외친다.
 <br><br>
-Robin starts walking towards the tables, repeating "six" quietly to <<himself>> so <<he>> will remember where to take the food.
+로빈은 음식을 어디로 가져가야 하는지 <<he>>【이가】 기억하도록 <<himself>>에게 "여섯"이라고 조용히 되뇌며 테이블 쪽으로 걸어간다.
 <br><br>
-"Two coffees for table three!" Sam calls after <<him>>.
+"세 번 테이블에 커피 두 잔!" 샘이 <<him>>의 등 뒤로 외친다.
 <br><br>
-Robin looks back at Sam, and the new order makes <<him>> forget which table <<he>> was looking for. <<He>> hesitates, then walks to the nearest table with customers and puts both plates down.
+로빈은 샘을 돌아보고, 새 주문 때문에 <<he>>【이가】 찾던 테이블이 어디였는지 잊어버린다. <<He>>【은는】 머뭇거리다가, 가장 가까운 손님 테이블로 가서 접시 두 개를 모두 내려놓는다.
 <br><br>
-<<link [[Next|Robin Cafe First Shift 2]]>><</link>>
+<<link [[다음|Robin Cafe First Shift 2]]>><</link>>
 <br>
 
 :: Robin Cafe First Shift 2
 <<effects>>
-One of the customers looks at the food. "We didn't order these."
+손님 중 한 명이 음식을 본다. "이거 안 시켰는데요."
 <br><br>
-Robin freezes, then quickly picks the plates back up.
-"Sorry. Sorry..."
+로빈이 얼어붙었다가 재빨리 접시를 다시 집어 든다.
+"죄송해요. 죄송해요..."
 <br><br>
-<<He>> turns towards the other tables with a plate in each hand, but stops after a few steps. <<He>> looks from one plate to the other, trying to remember which food belongs at which table.
+<<He>>【은는】 두 손에 접시를 하나씩 든 채 다른 테이블들 쪽으로 돌아서지만 몇 걸음 못 가 멈춘다. <<He>>【은는】 이 접시에서 저 접시로 시선을 옮기며 어느 음식이 어느 테이블 것이었는지 기억해 내려 한다.
 <br><br>
 <<if C.npc.Robin.dom gte 40>>
-	Robin carries both plates back to the counter and puts them down.
-	<<He>> takes a slow breath, then returns to the customers.
-	"Sorry. Do you know which table ordered these?"
+	로빈은 접시 두 개를 카운터로 도로 가져와 내려놓는다.
+	<<He>>【은는】 천천히 숨을 들이쉰 뒤 손님들에게 돌아간다.
+	"죄송해요. 이거 어느 테이블에서 시키셨는지 아세요?"
 	<br><br>
-	One of the customers points towards another table. Robin checks the table number with Sam, then carries the plates to the people who ordered them.
+	손님 중 한 명이 다른 테이블을 가리킨다. 로빈은 샘에게 테이블 번호를 확인한 뒤, 접시를 주문한 사람들에게 가져다준다.
 	<br><br>
-	When <<he>> returns, <<he>> looks at the now-empty space where the plates were, surprised that asking for help solved the problem.
+	<<he>>【이가】 돌아와, 접시가 있던 지금은 빈 자리를 바라보며 <<he>>【은는】 도움을 청한 것만으로 문제가 풀렸다는 사실에 놀란다.
 <<else>>
-	Robin's ears turn red. <<He>> carries both plates back to the counter and places them beside Sam, avoiding the customers' eyes as <<he>> walks away.
-	"Sorry," <<he>> says again, though nobody has spoken to <<him>>.
+	로빈의 귀가 빨개진다. <<He>>【은는】 접시 두 개를 카운터로 도로 가져와 샘 옆에 내려놓고, 손님들과 눈을 마주치지 않으려 하며 자리를 뜬다.
+	"죄송해요." <<he>>【이가】 또 말한다. 아무도 <<him>>에게 말을 건네지 않았는데도.
 	<br><br>
-	Sam checks the plates, points towards the correct tables, and sends <<him>> back out.
+	샘이 접시를 확인하고 올바른 테이블들을 가리키며 <<him>>【을를】 다시 내보낸다.
 <</if>>
 <br><br>
-<<link [[Next|Robin Cafe First Shift 3]]>><</link>>
+<<link [[다음|Robin Cafe First Shift 3]]>><</link>>
 <br>
 
 :: Robin Cafe First Shift 3
 <<effects>>
-The cafe is still open, but there are fewer people waiting to order now. Robin finishes clearing a table and finally has time to stop working for a moment.
+카페는 아직 열려 있지만 이제 주문을 기다리는 사람은 줄었다. 로빈은 테이블 하나를 마저 치우고 마침내 잠시 손을 멈출 틈이 생긴다.
 <br><br>
-<<He>> comes over to you after clearing another table. There is an empty chair beside you, but <<he>> remains standing.
-"That was awful," <<he>> says. "...I was awful."
+<<He>>【은는】 또 한 테이블을 치운 뒤 당신에게 다가온다. 옆에 빈 의자가 있지만 <<he>>【은는】 선 채로 있다.
+"끔찍했어." <<he>>【이가】 말한다. "...내가 끔찍했어."
 <br><br>
 <<speechresolve>>
 <<switch _speechAttitudeResolved>>
 	<<case "meek">>
-		"You stayed until the end," you say softly. "I think that's enough for your first day."
+		"끝까지 있었잖아." 당신이 부드럽게 말한다. "첫날이니까 그 정도면 충분하다고 생각해."
 		<br><br>
-		Robin looks back towards the counter before giving a small nod.
+		로빈은 카운터 쪽을 돌아보고는 작게 고개를 끄덕인다.
 	<<case "shy">>
-		"You made it through the whole shift," you say, giving <<him>> a small smile. "You'll get better with practice."
+		"근무를 끝까지 해냈잖아." 당신이 <<him>>에게 작게 미소 지으며 말한다. "연습하면 나아질 거야."
 		<br><br>
-		Robin looks back towards the counter before giving a small nod.
+		로빈은 카운터 쪽을 돌아보고는 작게 고개를 끄덕인다.
 	<<case "polite">>
-		"It was your first day," you remind <<him>>. "You had a lot to learn, but you stayed and finished your work."
+		"첫날이었잖아." 당신이 <<him>>에게 일깨운다. "배울 게 많았지만 끝까지 남아서 일을 마쳤잖아."
 		<br><br>
-		Robin smiles a little, though <<he>> still looks embarrassed.
+		로빈은 살짝 미소 짓지만 <<he>>【은는】 여전히 창피해 보인다.
 	<<case "neutral">>
-		"You were new," you say. "Tomorrow you'll know more than you did today."
+		"처음이었잖아." 당신이 말한다. "내일은 오늘보다 더 잘 알게 될 거야."
 		<br><br>
-		Robin pulls a face, but <<he>> does not argue.
+		로빈은 인상을 찡그리지만 <<he>>【은는】 반박하지 않는다.
 	<<case "confident">>
-		"You made mistakes, but you sorted them out," you say. "Tomorrow will be easier because you've done it once already."
+		"실수는 했지만 다 바로잡았잖아." 당신이 말한다. "한 번 해 봤으니까 내일은 더 쉬울 거야."
 		<br><br>
-		Robin nods, looking a little more willing to believe you.
+		로빈이 고개를 끄덕이고, 당신의 말을 조금 더 믿어 보려는 듯한 표정이다.
 	<<case "bratty">>
-		"You were," you say. "Really bad. And you're doing it again tomorrow."
+		"그랬지." 당신이 말한다. "진짜 엉망이었어. 그리고 내일도 또 해야 해."
 		<br><br>
-		Robin stares at you, then laughs when <<he>> realises you're teasing <<him>>.
+		로빈은 당신을 빤히 쳐다보다가, <<he>>【이가】 당신이 <<him>>【을를】 놀리고 있다는 걸 깨닫고 웃음을 터뜨린다.
 	<<case "docile">>
-		"It was a difficult day," you say gently. "You can rest now, and try again tomorrow."
+		"힘든 하루였어." 당신이 부드럽게 말한다. "이제 쉬어. 내일 다시 해 보면 돼."
 		<br><br>
-		Robin looks over towards the counter, then nods.
+		로빈이 카운터 쪽을 보다가 고개를 끄덕인다.
 	<<case "flamboyant">>
-		"It was your first day," you remind <<him>>. "You had a lot to learn, but you stayed and finished your work."
+		"첫날이었잖아." 당신이 <<him>>에게 일깨운다. "배울 게 많았지만 끝까지 남아서 일을 마쳤잖아."
 		<br><br>
-		Robin smiles a little, though <<he>> still looks embarrassed.
+		로빈은 살짝 미소 짓지만 <<he>>【은는】 여전히 창피해 보인다.
 	<<case "cruel">>
-		"You messed up some orders," you say. "But you fixed them and finished the shift, so stop acting like the whole day was a failure."
+		"주문 몇 개 망쳤지." 당신이 말한다. "하지만 고치고 근무를 끝냈잖아. 하루 전체가 실패였던 것처럼 굴지 마."
 		<br><br>
-		Robin looks at you in surprise, then gives a reluctant nod.
+		로빈이 놀란 얼굴로 당신을 보다가 마지못해 고개를 끄덕인다.
 <</switch>>
 <br><br>
-<<link [[Next|Robin Cafe First Shift 4]]>><</link>>
+<<link [[다음|Robin Cafe First Shift 4]]>><</link>>
 <br>
 
 :: Robin Cafe First Shift 4
 <<effects>>
-Sam looks over from behind the counter while Robin is busy elsewhere. Sam gives you a small shrug, points towards Robin, and smiles as though to say that it's normal to make mistakes on the first day.
+로빈이 다른 곳에서 바쁜 동안 샘이 카운터 뒤에서 이쪽을 본다. 샘은 어깨를 살짝 으쓱하고 로빈을 가리키며, 첫날엔 실수하는 게 당연하다는 듯 미소 짓는다.
 <br><br>
-Robin got through the first shift.
+로빈은 첫 근무를 해냈다.
 <<npcincr Robin love 1>><<npcincr Robin trauma 2>><<glove>><<grtrauma>>
 <br><br>
 <<link [[다음|Ocean Breeze]]>><<endevent>><</link>>
@@ -531,17 +531,17 @@ Robin got through the first shift.
 :: Robin Cafe Difficult
 <<set $outside to 0>><<set $location to "cafe">><<effects>>
 <<person1>><<generates2>><<run ensureRobinCafe()>>
-You have only just entered the cafe when you hear someone shouting near the counter. A <<person2>><<persons>> standing in front of Robin, with a cup on the counter between them.
+당신이 카페에 막 들어서자마자 카운터 근처에서 누군가 소리치는 것이 들린다. 카운터 앞, 로빈 맞은편에 <<person2>><<persons>> 모습이 보이고, 둘 사이의 카운터에는 컵이 놓여 있다.
 <br><br>
-<<He>> points at the drink as <<he>> speaks.
-"I asked for no milk. Twice! Did you enter the order wrong, or did the machine make a mistake?"
+<<He>>【은는】 말하며 음료를 가리킨다.
+"우유 빼 달라고 했잖아. 두 번이나! 주문을 잘못 넣은 거야, 아니면 기계가 실수한 거야?"
 <br><br>
-<<person1>>Robin stands behind the counter, pressing both hands against it. <<He>> looks at the customer without answering. Sam is in the kitchen with the door shut, and people at two nearby tables have stopped talking so they can watch what happens.
-Robin still hasn't apologised. Usually, <<he>> would have done that already.
+<<person1>>로빈은 카운터 뒤에 서서 두 손으로 카운터를 짚고 있다. <<He>>【은는】 대답 없이 손님을 쳐다본다. 샘은 문을 닫은 채 주방에 있고, 근처 두 테이블의 사람들은 무슨 일이 벌어지는지 보려고 대화를 멈췄다.
+로빈은 아직도 사과하지 않았다. 평소라면 <<he>>【은는】 벌써 사과했을 것이다.
 <br><br>
-<<link [[Step in|Robin Cafe Difficult Step]]>><<pass 10>><</link>>
+<<link [[끼어든다|Robin Cafe Difficult Step]]>><<pass 10>><</link>>
 <br>
-<<link [[Stay where you are|Robin Cafe Difficult Wait]]>><<pass 10>><</link>>
+<<link [[가만히 있는다|Robin Cafe Difficult Wait]]>><<pass 10>><</link>>
 <br>
 
 :: Robin Cafe Difficult Step
@@ -549,49 +549,49 @@ Robin still hasn't apologised. Usually, <<he>> would have done that already.
 <<run ensureRobinCafe()>>
 <<set $robinCafe.handled to "player">>
 <<set $robinCafe.stage to 4>>
-Before Robin can answer, you walk over and stand beside <<him>> behind the counter. You take the customer's cup from the counter.
+로빈이 대답하기도 전에 당신은 걸어가 카운터 뒤 <<him>>의 옆에 선다. 당신은 카운터에서 손님의 컵을 집어 든다.
 <br><br>
-"Sorry about that," you say. You pour away the drink, then make a new one without adding milk. The customer watches while you work.
+"죄송해요." 당신이 말한다. 당신은 음료를 버리고 우유를 넣지 않은 새 음료를 만든다. 손님은 당신이 일하는 것을 지켜본다.
 <br><br>
-The <<person2>><<person>> waits until you have finished making the new drink before taking it. <<He>> complains that the cafe should be more careful with orders, then carries the cup over to a table.
-<<person1>>Robin stays beside you the whole time. <<He>> does not interrupt or try to take over.
+<<person2>><<person>>【은는】 당신이 새 음료를 다 만들 때까지 기다렸다가 받아 간다. <<He>>【은는】 카페가 주문을 더 신경 써야 한다고 불평하고는 컵을 들고 테이블로 간다.
+<<person1>>로빈은 내내 당신 곁에 서 있다. <<He>>【은는】 끼어들거나 일을 가로채려 하지 않는다.
 <br><br>
-Once the customer has walked away, Robin looks down at <<his>> apron. <<He>> reaches behind <<his>> back, unties the apron strings, then ties them again more slowly.
+손님이 걸어가 버리자 로빈은 <<his>> 앞치마를 내려다본다. <<He>>【은는】 <<his>> 등 뒤로 손을 뻗어 앞치마 끈을 풀었다가 더 천천히 다시 묶는다.
 "고마워." <<he>>【이가】 말한다.
 <br><br>
-<<He>> keeps <<his>> attention on the apron for another second before looking up.
-"I think I could've handled that. I was trying to work out what to say."
+<<He>>【은는】 앞치마에 시선을 둔 채 잠시 더 있다가 고개를 든다.
+"나 그 정도는 처리할 수 있었을 거야. 뭐라고 말할지 생각하던 중이었어."
 <br><br>
-<<link [[Next|Robin Cafe Difficult Step 2]]>><</link>>
+<<link [[다음|Robin Cafe Difficult Step 2]]>><</link>>
 <br>
 
 :: Robin Cafe Difficult Step 2
 <<effects>><<speechresolve>>
 <<switch _speechAttitudeResolved>>
 	<<case "meek">>
-		"I'm sorry," you say quietly. "I didn't think before stepping in."
+		"미안해." 당신이 조용히 말한다. "생각 없이 끼어들었어."
 	<<case "shy">>
-		You look down at the counter. "Sorry. I should've asked if you wanted help."
+		당신은 카운터를 내려다본다. "미안. 도움이 필요한지 물어봤어야 했는데."
 	<<case "polite">>
-		"You're right, and I'm sorry," you say. "I thought I was helping, but I should have let you answer the customer."
+		"네 말이 맞아, 미안해." 당신이 말한다. "도와주는 줄 알았는데, 손님한테 대답할 기회를 네게 줬어야 했어."
 	<<case "neutral">>
-		"I know," you say. "I just didn't want you to have to deal with <<him>>."
+		"알아." 당신이 말한다. "그냥 네가 <<him>>【을를】 상대하게 하고 싶지 않았어."
 	<<case "confident">>
-		"I know you could have handled it," you say. "I stepped in because the customer was being rude, but I should have let you try."
+		"네가 해낼 수 있었다는 거 알아." 당신이 말한다. "손님이 무례해서 끼어들었지만, 네가 해 보게 뒀어야 했어."
 	<<case "bratty">>
-		"You were taking your time about it," you say. Robin looks hurt, and you realise the joke didn't come out the way you meant it.
+		"좀 오래 끌고 있었잖아." 당신이 말한다. 로빈이 상처받은 표정을 짓고, 당신은 농담이 의도와 다르게 나갔다는 걸 깨닫는다.
 	<<case "docile">>
-		"I'm sorry," you say. "You should have had the chance to answer. I won't jump in so quickly next time."
+		"미안해." 당신이 말한다. "네가 대답할 기회를 가졌어야 했어. 다음엔 그렇게 서둘러 끼어들지 않을게."
 	<<case "flamboyant">>
-		"You're right, and I'm sorry," you say. "I thought I was helping, but I should have let you answer the customer."
+		"네 말이 맞아, 미안해." 당신이 말한다. "도와주는 줄 알았는데, 손님한테 대답할 기회를 네게 줬어야 했어."
 	<<case "cruel">>
-		"You were taking a while," you say. "But I should've let you deal with <<him>> yourself. You need the practice."
+		"시간이 좀 걸렸잖아." 당신이 말한다. "그래도 네가 직접 <<him>>【을를】 상대하게 뒀어야 했어. 연습이 필요하니까."
 <</switch>>
 <br><br>
-Robin lets go of <<his>> apron. "That's the problem. People always try to handle difficult customers for me because they don't think I can do it. I need to learn how to deal with them myself."
+로빈이 <<his>> 앞치마를 놓는다. "그게 문제야. 다들 내가 못할 거라고 생각해서 까다로운 손님은 항상 대신 상대해 주려고 하잖아. 난 직접 상대하는 법을 배워야 해."
 <br><br>
-<<He>> picks up a cloth and walks over to an empty table. There are only a few crumbs on it,
-but <<he>> wipes them away anyway.<<npcincr Robin dom -2>><<lldom>>
+<<He>>【은는】 행주를 집어 들고 빈 테이블로 걸어간다. 테이블 위에는 부스러기 몇 개뿐인데,
+<<he>>【은는】 그래도 그것들을 닦아 낸다.<<npcincr Robin dom -2>><<lldom>>
 <br><br>
 <<link [[다음|Ocean Breeze]]>><<endevent>><</link>>
 <br>
@@ -601,70 +601,70 @@ but <<he>> wipes them away anyway.<<npcincr Robin dom -2>><<lldom>>
 <<run ensureRobinCafe()>>
 <<set $robinCafe.handled to "robin">>
 <<set $robinCafe.stage to 4>>
-You stay near the cafe entrance instead of going up to the counter. You want to help Robin, especially with the other customers watching, but you give <<him>> a chance to answer for <<himself>>.
+당신은 카운터로 가지 않고 카페 입구 근처에 머문다. 특히 다른 손님들이 지켜보는 가운데 로빈을 돕고 싶지만, <<him>>에게 <<himself>>의 입으로 대답할 기회를 준다.
 <br><br>
-Robin takes the cup from <<person2>>the <<person>> without arguing.
-"I'll make you another one. It'll take about a minute. You can sit down while you wait, or stay here.
-Which do you want?"
+로빈은 다투지 않고 <<person2>>그 <<person>>에게서 컵을 받아 든다.
+"다시 만들어 드릴게요. 1분쯤 걸려요. 기다리는 동안 앉아 계셔도 되고, 여기 서 계셔도 돼요.
+어느 쪽이 좋으세요?"
 <br><br>
-<<person2>>The <<person>> starts to answer, then stops. <<He>> looks at the nearby chair, then back at Robin.
-After a few seconds, <<he>> pulls the chair out and sits down.
+<<person2>>그 <<person>>【이가】 대답하려다 멈춘다. <<He>>【은는】 근처 의자를 보고 다시 로빈을 본다.
+몇 초 뒤 <<he>>【은는】 의자를 빼서 앉는다.
 <br><br>
-Robin turns back to the counter and makes the drink again. When it's ready, <<person1>><<he>>
-carries it over and places it in front of <<person2>>the <<person>>. "Here you go."
+로빈은 카운터로 돌아서서 음료를 다시 만든다. 음료가 나오자 <<person1>><<he>>【이가】
+그것을 가져가 <<person2>>그 <<person>> 앞에 내려놓는다. "여기 있어요."
 <br><br>
-<<person1>><<He>> walks back to the counter before <<person2>>the <<person>> can start complaining again.
+<<person1>><<He>>【은는】 <<person2>>그 <<person>>【이가】 또 불평을 시작하기 전에 카운터로 돌아간다.
 <br><br>
-<<link [[Next|Robin Cafe Difficult Wait 2]]>><</link>>
+<<link [[다음|Robin Cafe Difficult Wait 2]]>><</link>>
 <br>
 
 :: Robin Cafe Difficult Wait 2
 <<effects>>
-The people at the two nearby tables watch for another few seconds. When nothing else happens,
-they turn back to their drinks and conversations.
+근처 두 테이블의 사람들은 몇 초 더 지켜본다. 더 아무 일도 일어나지 않자,
+그들은 다시 음료와 대화로 돌아간다.
 <br><br>
-<<person1>>You walk over to Robin. <<His>> hands shake slightly as <<he>> puts the used cup aside.
-When <<he>> notices you looking, <<he>> lowers them behind the counter.
-"I've watched Sam do that about ten times. If you give an angry customer two choices, they have to stop shouting long enough to decide what they want."
+<<person1>>당신은 로빈에게 걸어간다. 사용한 컵을 한쪽으로 치우는 <<his>> 손이 살짝 떨린다.
+당신이 보고 있다는 걸 알아채자 <<he>>【은는】 손을 카운터 뒤로 내린다.
+"샘이 저렇게 하는 걸 열 번쯤 봤어. 화난 손님한테 선택지를 두 개 주면, 뭘 원하는지 고르는 동안은 소리치길 멈춰야 하거든."
 <br><br>
 <<speechresolve>>
 <<switch _speechAttitudeResolved>>
 	<<case "meek">>
-		"That was really good," you say softly.
+		"정말 잘했어." 당신이 부드럽게 말한다.
 		<br><br>
-		Robin looks down for a second, but this time <<he>> doesn't argue with the praise.
+		로빈은 잠시 고개를 숙이지만, 이번에는 <<he>>【이가】 칭찬에 반박하지 않는다.
 	<<case "shy">>
-		"You did really well," you say, smiling at <<him>>.
+		"정말 잘했어." 당신이 <<him>>에게 미소 지으며 말한다.
 		<br><br>
-		Robin looks down for a second, but this time <<he>> doesn't argue with the praise.
+		로빈은 잠시 고개를 숙이지만, 이번에는 <<he>>【이가】 칭찬에 반박하지 않는다.
 	<<case "polite">>
-		"You handled that well," you tell <<him>>. "You stayed calm even when the customer was shouting."
+		"잘 대처했어." 당신이 <<him>>에게 말한다. "손님이 소리쳐도 침착했잖아."
 		<br><br>
-		Robin nods, still looking surprised that it worked.
+		로빈이 고개를 끄덕이지만, 그게 통했다는 사실에 여전히 놀란 표정이다.
 	<<case "neutral">>
-		"You didn't need me," you say.
+		"내가 필요 없었네." 당신이 말한다.
 		<br><br>
-		Robin pauses before answering. "No," <<he>> says, sounding a little surprised by it too.
+		로빈은 잠시 멈췄다가 대답한다. "응." <<he>>【이가】 말한다. 스스로도 조금 놀란 목소리다.
 	<<case "confident">>
-		"See? You handled it yourself," you say. "You knew what to say."
+		"봤지? 네가 직접 해냈잖아." 당신이 말한다. "뭐라고 해야 할지 알고 있었어."
 		<br><br>
-		Robin smiles, still looking surprised that it worked.
+		로빈이 미소 짓지만, 그게 통했다는 사실에 여전히 놀란 표정이다.
 	<<case "bratty">>
-		"Look at you," you say. "Terrifying."
+		"와, 대단하네." 당신이 말한다. "무서워 죽겠다."
 		<br><br>
-		"Shut up," <<he>> says, smiling.
+		"그만 놀려." <<he>>【이가】 웃으며 말한다.
 	<<case "docile">>
-		"You did well," you say gently. "I knew you could manage."
+		"잘했어." 당신이 부드럽게 말한다. "네가 해낼 수 있을 줄 알았어."
 		<br><br>
-		Robin looks at <<his>> hands, then gives you a small smile.
+		로빈은 <<his>> 손을 내려다보다가 당신에게 작게 미소 짓는다.
 	<<case "flamboyant">>
-		"You handled that well," you tell <<him>>. "You stayed calm even when the customer was shouting."
+		"잘 대처했어." 당신이 <<him>>에게 말한다. "손님이 소리쳐도 침착했잖아."
 		<br><br>
-		Robin nods, still looking surprised that it worked.
+		로빈이 고개를 끄덕이지만, 그게 통했다는 사실에 여전히 놀란 표정이다.
 	<<case "cruel">>
-		"That customer wanted an argument, and you didn't give <<him>> one," you say. "You handled it better than <<he>> deserved."
+		"그 손님은 말다툼을 하고 싶어 했는데, 넌 그럴 틈을 주지 않았어." 당신이 말한다. "<<he>>【이가】 받을 만한 것보다 훨씬 잘 대해 줬네."
 		<br><br>
-		Robin smiles a little, pleased that you noticed.
+		로빈은 당신이 알아봐 준 것이 기뻐 살짝 미소 짓는다.
 <</switch>>
 <<npcincr Robin dom 6>><<gggdom>>
 <br><br>
@@ -675,61 +675,61 @@ When <<he>> notices you looking, <<he>> lowers them behind the counter.
 <<endevent>>
 <<set $outside to 0>><<set $location to "home">><<effects>>
 <<npc Robin>><<person1>><<run ensureRobinCafe()>>
-Robin takes a folded piece of paper from <<his>> pocket. It lists the days and hours <<he>> could work at the cafe. <<He>> turns it over in <<his>> hands for a few seconds without opening it.
-"Sam asked if I want to keep working at the cafe... Properly this time. Not as a trial."
+로빈이 <<his>> 주머니에서 접힌 종이를 꺼낸다. 카페에서 일할 수 있는 요일과 시간이 적혀 있다. <<He>>【은는】 종이를 펼치지 않은 채 몇 초 동안 <<his>> 손안에서 돌려 본다.
+"샘이 카페에서 계속 일할 생각이 있냐고 물었어... 이번엔 정식으로. 수습이 아니라."
 <br><br>
 <<if $robinCafe.handled is "robin">>
-	<<He>> rubs <<his>> thumb along the edge of the paper. "I keep thinking about that customer with the milk.
-	I actually dealt with it myself."
+	<<He>>【은는】 <<his>> 엄지로 종이 가장자리를 문지른다. "우유 빼 달라던 그 손님이 자꾸 생각나.
+	내가 그걸 정말 직접 해결했잖아."
 	<br><br>
-	<<He>> looks down at the schedule again.
-	"I'm not used to that. Usually, when something goes wrong, I'm the one who needs help."
+	<<He>>【은는】 다시 일정표를 내려다본다.
+	"난 그런 거 익숙하지 않아. 보통은 뭔가 잘못되면 도움이 필요한 쪽이 나였으니까."
 <<else>>
-	<<He>> rubs <<his>> thumb along the edge of the paper. "I keep thinking about that customer with the milk.
-	You handled it for me. That was kind of you. But afterwards,
-	I kept thinking that I should've been able to deal with it myself."
+	<<He>>【은는】 <<his>> 엄지로 종이 가장자리를 문지른다. "우유 빼 달라던 그 손님이 자꾸 생각나.
+	네가 대신 해결해 줬지. 고마운 일이었어. 근데 그러고 나서도,
+	내가 직접 해결할 수 있어야 했다는 생각이 계속 들었어."
 <</if>>
 <br><br>
-Robin folds the paper again and presses along the folded edge with <<his>> thumb while <<he>> thinks.
+로빈은 종이를 다시 접고, <<he>>【이가】 생각하는 동안 접힌 가장자리를 <<his>> 엄지로 꾹 누른다.
 <br><br>
-<<link [[Next|Robin Cafe Decision 2]]>><</link>>
+<<link [[다음|Robin Cafe Decision 2]]>><</link>>
 <br>
 
 :: Robin Cafe Decision 2
 <<effects>>
-"The cafe is different from my stand," <<he>> says. "Sam gave me the chance to work there. But the stand is something I started on my own."
+"카페는 내 가판대랑 달라." <<he>>【이가】 말한다. "샘이 나한테 거기서 일할 기회를 줬어. 하지만 가판대는 내가 혼자 시작한 거야."
 <br><br>
-<<He>> holds the folded paper against <<his>> knee.
-"I don't know if I should keep the job, or just go back to the stand."
+<<He>>【은는】 접힌 종이를 <<his>> 무릎에 대고 있다.
+"일을 계속해야 할지, 그냥 가판대로 돌아가야 할지 모르겠어."
 <br><br>
-<<link [[Tell <<him>> to keep the job|Robin Cafe Decision Keep]]>><<pass 10>><</link>>
+<<link [[<<him>>에게 일을 계속하라고 말한다|Robin Cafe Decision Keep]]>><<pass 10>><</link>>
 <br>
-<<link [[Tell <<him>> the stand is enough|Robin Cafe Decision Quit]]>><<pass 10>><</link>>
+<<link [[<<him>>에게 가판대로 충분하다고 말한다|Robin Cafe Decision Quit]]>><<pass 10>><</link>>
 <br>
-<<link [[Tell <<him>> it's <<his>> call|Robin Cafe Decision Own]]>><<pass 10>><</link>>
+<<link [[<<him>>에게 <<his>> 선택이라고 말한다|Robin Cafe Decision Own]]>><<pass 10>><</link>>
 <br>
 
 :: Robin Cafe Decision Keep
 <<set $outside to 0>><<set $location to "home">><<effects>>
 <<run ensureRobinCafe()>>
 <<set $robinCafe.stage to 5>><<set $robinCafe.ended to "kept">>
-"I think you should keep the cafe job," you say. "You can still run the stand at weekends, so you don't have to give it up."
+"카페 일은 계속하는 게 좋을 것 같아." 당신이 말한다. "주말엔 가판대를 계속할 수 있으니까 그만둘 필요 없잖아."
 <br><br>
-Robin looks at the work schedule again. <<He>> checks which days still need someone to work, then picks up a pen.
+로빈이 근무 일정표를 다시 본다. <<He>>【은는】 아직 일할 사람이 필요한 요일을 확인한 뒤 펜을 집어 든다.
 <br><br>
-"I can work from five to seven, Monday to Friday," <<he>> says as <<he>> writes <<his>> name beside each shift.
-"I'll keep Saturday and Sunday for the stand."
+"월요일부터 금요일까지 다섯 시부터 일곱 시까지 일할 수 있어." <<he>>【이가】 말하며 각 근무 옆에 <<his>> 이름을 적는다.
+"토요일이랑 일요일은 가판대를 위해 남겨 둘래."
 <br><br>
-<<He>> finishes writing and puts the pen down. <<He>> reads the schedule one more time before folding it.
-"I didn't think I could manage both," <<he>> says. "But I want to try."
+<<He>>【은는】 다 적고 펜을 내려놓는다. 접기 전에 일정표를 한 번 더 읽는다.
+"둘 다 해낼 수 있을 거라고는 생각 못 했어." <<he>>【이가】 말한다. "그래도 해 보고 싶어."
 <<npcincr Robin love 2>><<npcincr Robin trauma -3>><<glove>><<llrtrauma>>
 <br><br>
-<<link [[Next|Robin Cafe Decision Keep 2]]>><</link>>
+<<link [[다음|Robin Cafe Decision Keep 2]]>><</link>>
 <br>
 
 :: Robin Cafe Decision Keep 2
 <<effects>>
-Robin has decided to <span class="green">keep working at Ocean Breeze</span>.
+로빈은 <span class="green">오션 브리즈에서 계속 일하기로</span> 했다.
  <br><br>
 <<robinoptions>>
 
@@ -737,24 +737,24 @@ Robin has decided to <span class="green">keep working at Ocean Breeze</span>.
 <<set $outside to 0>><<set $location to "home">><<effects>>
 <<run ensureRobinCafe()>>
 <<set $robinCafe.stage to 5>><<set $robinCafe.ended to "quit">>
-"You don't need to keep working at the cafe," you say. "You can spend that time on the stand instead."
+"카페에서 계속 일하지 않아도 돼." 당신이 말한다. "그 시간을 가판대에 쓰면 되잖아."
 <br><br>
-Robin looks down at the folded work schedule in <<his>> hands. After a few seconds,
-<<he>> places it on the desk without opening it. "I'll tell <<nnpc_him "Sam">> tomorrow.
-<<nnpc_He "Sam">>'ll probably understand... <<nnpc_He "Sam">> usually does."
+로빈은 <<his>> 손에 든 접힌 근무 일정표를 내려다본다. 몇 초 뒤,
+<<he>>【은는】 펼쳐 보지도 않은 채 그것을 책상에 내려놓는다. "내일 <<nnpc_him "Sam">>에게 말할게.
+<<nnpc_He "Sam">>【은는】 아마 이해해 줄 거야... 보통 그러니까."
 <br><br>
-Robin turns towards the window and stays quiet for a few seconds before speaking again.
+로빈은 창문 쪽으로 돌아서서 몇 초 동안 말이 없다가 다시 입을 연다.
 <br><br>
-"I'm still glad I worked there. I learned how to use the machine that records orders and payments, and I got better at dealing with angry customers.
-I'll still know how to do those things even after I leave."<<npcincr Robin trauma -2>><<lrtrauma>>
+"그래도 거기서 일해서 좋았어. 주문이랑 결제를 기록하는 기계 쓰는 법도 배웠고, 화난 손님을 상대하는 것도 나아졌거든.
+그만둔 뒤에도 그런 건 계속 할 줄 알 거야."<<npcincr Robin trauma -2>><<lrtrauma>>
 <br><br>
-<<link [[Next|Robin Cafe Decision Quit 2]]>><</link>>
+<<link [[다음|Robin Cafe Decision Quit 2]]>><</link>>
 <br>
 
 :: Robin Cafe Decision Quit 2
 <<effects>>
-<span class="gold">Robin has left the cafe</span>, but keeps the skills <<he>> learned there.
-Robin now has <span class="blue">more time to run the stand</span>, and <<hes>> better prepared to manage it.
+<span class="gold">로빈은 카페를 떠났지만</span> 거기서 배운 기술은 그대로 가지고 있다.
+이제 로빈에게는 <span class="blue">가판대를 운영할 시간이 더 생겼고</span>, <<hes>> 가판대를 꾸려 갈 준비도 더 잘 되어 있다.
 <br><br>
 <<robinoptions>>
 <br>
@@ -763,40 +763,40 @@ Robin now has <span class="blue">more time to run the stand</span>, and <<hes>> 
 <<set $outside to 0>><<set $location to "home">><<effects>>
 <<run ensureRobinCafe()>>
 <<set $robinCafe.stage to 5>>
-"It's your job, not mine," you say. "You get to decide whether you want to keep it."
+"네 일이지 내 일이 아니잖아." 당신이 말한다. "계속할지 말지는 네가 정하면 돼."
 <br><br>
-Robin watches you, waiting for you to tell <<him>> what to do. When you say nothing else,
-<<he>> looks back down at the paper.
+로빈은 당신이 <<him>>에게 뭘 하라고 말해 주길 기다리며 당신을 바라본다. 당신이 더 아무 말도 하지 않자,
+<<he>>【은는】 다시 종이를 내려다본다.
 <br><br>
 <<if C.npc.Robin.dom gte 55 or $robinCafe.handled is "robin">>
 	<<set $robinCafe.ended to "kept">>
-	<<He>> opens the folded work schedule and reads it again.
-	"I'm keeping the job. The money helps, obviously. But I want to stay too."
+	<<He>>【은는】 접힌 근무 일정표를 펼쳐 다시 읽는다.
+	"계속 할래. 돈이 되는 것도 분명하지만, 나도 남고 싶어."
 	<br><br>
-	<<He>> picks up a pen and writes <<his>> name beside the hours <<he>> wants to work. This time, <<he>> makes the decision without waiting for you to tell <<him>> what to do.
+	<<He>>【은는】 펜을 집어 들고 일하고 싶은 시간 옆에 <<his>> 이름을 적는다. 이번에는 <<he>>【이가】 당신이 <<him>>에게 뭘 하라고 말해 주기를 기다리지 않고 스스로 결정한다.
 	<<npcincr Robin dom 5>><<npcincr Robin trauma -4>><<ggdom>><<llrtrauma>>
 	<br><br>
 <<else>>
 	<<set $robinCafe.ended to "quit">>
-	Robin turns the folded work schedule over in <<his>> hands, then puts it down without opening it.
-	"I don't want the job. I know I could keep doing it. But I've been spending more time there and less time at my stand."
+	로빈은 접힌 근무 일정표를 <<his>> 손안에서 뒤집어 보다가 펼치지 않은 채 내려놓는다.
+	"이 일은 안 하고 싶어. 계속할 수 있다는 건 알아. 그런데 거기서 보내는 시간이 늘수록 가판대에 쓰는 시간은 줄어들었어."
 	<br><br>
-	<<He>> puts a hand on the paper. "The stand is mine. I don't want to keep spending so little time on it."
+	<<He>>【은는】 종이 위에 손을 얹는다. "가판대는 내 거야. 거기에 이렇게 적은 시간만 쓰고 싶지 않아."
 	<br><br>
-	<<He>> moves the paper aside. "I'll tell <<nnpc_him "Sam">> myself. I want to do that part."
+	<<He>>【은는】 종이를 한쪽으로 치운다. "<<nnpc_him "Sam">>에게는 내가 직접 말할게. 그 부분은 내가 하고 싶어."
 	<<npcincr Robin dom 3>><<npcincr Robin trauma -2>><<gdom>><<lrtrauma>>
 	<br><br>
 <</if>>
 <br><br>
-<<link [[Next|Robin Cafe Decision Own 2]]>><</link>>
+<<link [[다음|Robin Cafe Decision Own 2]]>><</link>>
 <br>
 
 :: Robin Cafe Decision Own 2
 <<effects>>
 <<if $robinCafe.ended is "kept">>
-	<span class="green">Robin decided to stay at the cafe.</span>
+	<span class="green">로빈은 카페에 남기로 했다.</span>
 <<else>>
-	<span class="green">Robin chose to focus on the stand.</span>
+	<span class="green">로빈은 가판대에 집중하기로 했다.</span>
 <</if>>
 <<robinoptions>>
 <br>
@@ -805,27 +805,27 @@ Robin watches you, waiting for you to tell <<him>> what to do. When you say noth
 <<endevent>>
 <<set $outside to 0>><<set $location to "cafe">><<effects>>
 <<npc Robin>><<person1>>
-You step behind the cafe counter and see Robin squeezing an empty carton in <<his>> hands. You take it from <<him>> before <<he>> crushes it.
-"Come with me," you say. "Just for a minute."
+당신이 카페 카운터 뒤로 들어가자 로빈이 <<his>> 손으로 빈 팩을 꽉 쥐고 있다. 당신은 <<he>>【이가】 그것을 구기기 전에 <<him>>에게서 팩을 받아 든다.
+"나 좀 따라와." 당신이 말한다. "잠깐이면 돼."
 <br><br>
-You lead <<him>> into the staff room and shut the door. Robin turns to you as soon as you are alone.
-"We've run out of $phase," <<he>> says. "I checked the fridge and the shelf beside the machine, but I couldn't find any more."
+당신은 <<him>>【을를】 직원 휴게실로 데려가 문을 닫는다. 단둘이 되자마자 로빈이 당신을 돌아본다.
+"<<= ({milk:"우유",cream:"크림"})[$phase] || $phase>>【이가】 떨어졌어." <<he>>【이가】 말한다. "냉장고랑 기계 옆 선반을 봤는데 더 안 보여."
 <br><br>
-<<He>> rubs <<his>> hands against <<his>> apron.
+<<He>>【은는】 <<his>> 앞치마에 손을 문지른다.
 <br><br>
-"I was supposed to tell Sam when we opened the last one. I didn't realise it was the last carton until just now."
-<<He>> looks back towards the door. "People have already ordered drinks that need it. I don't know what to tell them."
+"마지막 팩을 땄을 때 샘한테 말했어야 했는데. 방금까지 그게 마지막 팩인 줄 몰랐어."
+<<He>>【은는】 문 쪽을 돌아본다. "벌써 그게 필요한 음료를 주문한 사람들이 있어. 뭐라고 말해야 할지 모르겠어."
 <br><br>
-<<link [[Help Robin calm down and work out what to do|Robin Cafe Shortage Reassure]]>><</link>>
+<<link [[로빈이 진정하고 어떻게 할지 정리하도록 돕는다|Robin Cafe Shortage Reassure]]>><</link>>
 <br>
-<<link [[Cover the counter while Robin buys more|Robin Cafe Shortage Cover]]>><</link>>
+<<link [[로빈이 더 사 오는 동안 카운터를 맡는다|Robin Cafe Shortage Cover]]>><</link>>
 <br>
 <<if setup.inflation.canAfford(1000, "cafe")>>
-	<<link [[Go and buy more yourself|Robin Cafe Shortage Fetch]]>><<money -1000 "cafe">><</link>>
+	<<link [[직접 가서 더 사 온다|Robin Cafe Shortage Fetch]]>><<money -1000 "cafe">><</link>>
 	<br>
 <</if>>
 <<if $chef_state gte 1>>
-	<<link [[Use something else from the kitchen|Robin Cafe Shortage Substitute]]>><</link>>
+	<<link [[주방에 있는 다른 것으로 대신한다|Robin Cafe Shortage Substitute]]>><</link>>
 	<br>
 <</if>>
 
@@ -833,397 +833,397 @@ You lead <<him>> into the staff room and shut the door. Robin turns to you as so
 <<endevent>>
 <<set $outside to 0>><<set $location to "cafe">><<effects>>
 <<npc Robin>><<person1>>
-You return to your tables. Several customers are still waiting for their orders,
-so you keep working instead of stopping to help Robin.
+당신은 담당 테이블로 돌아온다. 아직 주문을 기다리는 손님이 여럿이라,
+로빈을 도우러 멈추는 대신 계속 일한다.
 <br><br>
-Later, you pass the counter again and see Sam standing beside Robin.
-Robin's face turns red while Sam writes <i>CHECK THE LAST CARTON</i> on the sheet used to record the cafe's supplies. Sam draws two lines under the words to make sure Robin notices them.
+나중에 카운터를 다시 지나가다 샘이 로빈 옆에 서 있는 것을 본다.
+샘이 카페 물품 기록지에 <i>마지막 팩 확인하기</i>라고 적는 동안 로빈의 얼굴이 빨개진다. 샘은 로빈이 꼭 알아차리도록 글자 밑에 줄을 두 번 긋는다.
 <br><br>
-"Running out of something isn't the end of the world," Sam says. "But you need to tell me when we're almost out, so I can buy more before we need it."
+"뭔가 떨어지는 게 세상이 끝나는 일은 아니야." 샘이 말한다. "하지만 거의 다 떨어져 갈 때 나한테 말해 줘야 해. 필요하기 전에 사 올 수 있게."
 <br><br>
-Robin looks at you for a second before lowering <<his>> eyes.
-<<He>> turns back to the counter and continues working.<<npcincr Robin trauma 2>><<grtrauma>>
+로빈은 잠깐 당신을 쳐다보다가 <<his>> 시선을 내린다.
+<<He>>【은는】 다시 카운터로 돌아서서 일을 계속한다.<<npcincr Robin trauma 2>><<grtrauma>>
 <br><br>
 <<waiter_default>><<pass 1 hour>>
 <br><br>
-<<link [[Next|Ocean Breeze]]>><<unset $phase>><<endevent>><</link>>
+<<link [[다음|Ocean Breeze]]>><<unset $phase>><<endevent>><</link>>
 <br>
 
 :: Robin Cafe Shortage Reassure
 <<set $outside to 0>><<set $location to "cafe">><<effects>>
-"Robin, look at me," you say.
+"로빈, 나 봐." 당신이 말한다.
 <br><br>
-<<He>> keeps looking towards the cafe for a few seconds before turning back to you.
+<<He>>【은는】 몇 초 동안 카페 쪽을 바라보다가 당신에게로 고개를 돌린다.
 <br><br>
-"We've run out of $phase," you say. "It's a problem, but we can fix it. What should you do first?"
+"<<= ({milk:"우유",cream:"크림"})[$phase] || $phase>>【이가】 떨어졌어." 당신이 말한다. "문제이긴 하지만 해결할 수 있어. 제일 먼저 뭘 해야 할까?"
 <br><br>
-Robin opens <<his>> mouth, but no words come out. <<He>> takes a slow breath and tries again.
-"Tell Sam we've run out. Then explain to the customers that they can order their drinks without $phase or choose something else. After that, I need to buy more."
+로빈이 <<his>> 입을 열지만 말이 나오지 않는다. <<He>>【은는】 천천히 숨을 들이쉬고 다시 시도한다.
+"샘한테 떨어졌다고 말하고. 그다음 손님들한테 <<= ({milk:"우유",cream:"크림"})[$phase] || $phase>>【을를】 빼고 음료를 주문하거나 다른 걸 고르실 수 있다고 설명해야 해. 그러고 나서 내가 더 사 와야 해."
 <br><br>
-You nod. "That's right," you say. "Talk to Sam first."
+당신은 고개를 끄덕인다. "맞아." 당신이 말한다. "샘한테 먼저 얘기해."
 <br><br>
-<<link [[Next|Robin Cafe Shortage Reassure 2]]>><</link>>
+<<link [[다음|Robin Cafe Shortage Reassure 2]]>><</link>>
 <br>
 
 :: Robin Cafe Shortage Reassure 2
 <<effects>>
-Robin follows you out of the staff room and back into the cafe. When you reach Sam, Robin slows down and looks at you, but you stay beside <<him>> and give <<him>> time to speak.
+로빈은 당신을 따라 휴게실을 나와 카페로 돌아온다. 샘에게 다다르자 로빈은 걸음이 느려지며 당신을 쳐다보지만, 당신은 <<him>> 곁에 서서 <<him>>에게 말할 시간을 준다.
 <br><br>
-"We ran out of $phase," Robin says. <<His>> voice shakes, but <<he>> manages to finish.
-"I didn't notice until we needed another carton."
+"<<= ({milk:"우유",cream:"크림"})[$phase] || $phase>>【이가】 떨어졌어요." 로빈이 말한다. <<His>> 목소리가 떨리지만 <<he>>【은는】 끝까지 해낸다.
+"새 팩이 필요해질 때까지 몰랐어요."
 <br><br>
-Sam looks at Robin, then points towards the highest shelf in the cupboard where the cafe keeps its spare supplies. Robin looks where Sam is pointing and sees another carton of $phase there.
+샘은 로빈을 보다가 카페가 여분 물품을 두는 찬장의 가장 높은 선반을 가리킨다. 로빈이 샘이 가리키는 곳을 보니 거기에 <<= ({milk:"우유",cream:"크림"})[$phase] || $phase>> 한 팩이 더 있다.
 <br><br>
-Robin stares at the carton for a few seconds, then covers <<his>> face with one hand and starts laughing. <<He>> leans against you, laughing even harder when <<he>> realises how much time <<he>> spent looking everywhere else.<<npcincr Robin love 1>><<glove>>
+로빈은 몇 초 동안 팩을 쳐다보다가 한 손으로 <<his>> 얼굴을 가리고 웃기 시작한다. <<He>>【은는】 당신에게 기대어, 얼마나 오랫동안 다른 곳만 찾아다녔는지 깨닫고 더 크게 웃는다.<<npcincr Robin love 1>><<glove>>
 <br><br>
-"I looked everywhere," <<he>> says. "I didn't look up."
+"사방을 다 찾아봤는데." <<he>>【이가】 말한다. "위는 안 봤어."
 <br><br>
 <<waiter_default>><<pass 1 hour>>
 <br><br>
-<<link [[Next|Ocean Breeze]]>><<unset $phase>><<endevent>><</link>>
+<<link [[다음|Ocean Breeze]]>><<unset $phase>><<endevent>><</link>>
 <br>
 
 :: Robin Cafe Shortage Cover
 <<set $outside to 0>><<set $location to "cafe">><<effects>>
-You tell Robin to take some money from the cafe's cash register and go to the corner shop to buy more supplies. You offer to take care of <<his>> customers until <<he>> gets back.
+당신은 로빈에게 카페 금전 등록기에서 돈을 꺼내 모퉁이 가게에 가서 물품을 더 사 오라고 말한다. <<he>>【이가】 돌아올 때까지 <<his>> 손님들을 맡겠다고 한다.
 <br><br>
-"You'd do that?" <<he>> asks.
+"그렇게 해 줄 거야?" <<he>>【이가】 묻는다.
 <br><br>
-Before you can answer, a customer calls for help at the counter. You turn to serve the customer, while Robin takes the money <<he>> needs from the register and hurries out to the shop.
+당신이 대답하기도 전에 손님 한 명이 카운터에서 도움을 청한다. 당신이 손님을 응대하러 돌아서는 사이, 로빈은 필요한 돈을 등록기에서 꺼내 가게로 서둘러 나간다.
 <br><br>
-While Robin is gone, you have to serve both your usual tables and the people waiting at <<his>> counter. Every time you finish one drink, another customer seems to be waiting to order, and several unfinished drinks are still waiting to be collected.
+로빈이 없는 동안 당신은 평소 맡던 테이블과 <<his>> 카운터에서 기다리는 사람들을 모두 응대해야 한다. 음료 하나를 끝낼 때마다 또 다른 손님이 주문을 기다리고 있는 것 같고, 만들다 만 음료도 여러 개 가져가기를 기다린다.
 <br><br>
-<<link [[Next|Robin Cafe Shortage Cover 2]]>><</link>>
+<<link [[다음|Robin Cafe Shortage Cover 2]]>><</link>>
 <br>
 
 :: Robin Cafe Shortage Cover 2
 <<effects>>
-Robin returns from the shop carrying two cartons of $phase against <<his>> chest. <<Hes>> holding the receipt between <<his>> teeth because both hands are full. Robin puts the cartons down, takes the receipt from <<his>> mouth, and sees how many drinks still need to be made. <<He>> joins you behind the counter and starts preparing them.
+로빈이 <<= ({milk:"우유",cream:"크림"})[$phase] || $phase>> 두 팩을 <<his>> 가슴에 안고 가게에서 돌아온다. 양손이 가득 차서 <<hes>> 영수증을 이로 물고 있다. 로빈은 팩을 내려놓고 입에서 영수증을 빼낸 뒤, 아직 만들어야 할 음료가 얼마나 되는지 본다. <<He>>【은는】 당신과 함께 카운터 뒤에 서서 음료를 만들기 시작한다.
 <br><br>
-You and Robin work together until the last people waiting for their drinks have been served.
+당신과 로빈은 음료를 기다리던 마지막 사람들까지 응대할 때까지 함께 일한다.
 <br><br>
-By the time you finish, both of you are tired. The customers have their orders, and there is enough $phase in the cafe for the next drinks.
+일이 끝날 즈음 둘 다 지쳐 있다. 손님들은 주문한 것을 받았고, 카페에는 다음 음료를 만들 만큼 <<= ({milk:"우유",cream:"크림"})[$phase] || $phase>>【이가】 충분히 있다.
 <<tiredness 4>><<npcincr Robin love 2>><<ggtiredness>><<gglove>>
 <br><br>
 <<waiter_default>><<pass 1 hour>>
 <br><br>
-<<link [[Next|Ocean Breeze]]>><<unset $phase>><<endevent>><</link>>
+<<link [[다음|Ocean Breeze]]>><<unset $phase>><<endevent>><</link>>
 <br>
 
 :: Robin Cafe Shortage Fetch
 <<set $outside to 1>><<set $location to "town">><<effects>>
-"Keep serving the customers," you tell Robin. "I'll go get more."
+"계속 손님 받아." 당신이 로빈에게 말한다. "내가 더 사 올게."
 <br><br>
-You take money from your own pocket and hurry to the corner shop. After buying two cartons of $phase, you carry them back to the cafe. Your arms begin to ache from carrying both at once, so you hold them against your chest to make them easier to carry.
+당신은 자기 주머니에서 돈을 꺼내 모퉁이 가게로 서둘러 간다. <<= ({milk:"우유",cream:"크림"})[$phase] || $phase>> 두 팩을 사서 카페로 들고 돌아온다. 한꺼번에 들고 오느라 팔이 아파 오기 시작해서, 들기 쉽도록 가슴에 안는다.
 <br><br>
-<<link [[Next|Robin Cafe Shortage Fetch 2]]>><</link>>
+<<link [[다음|Robin Cafe Shortage Fetch 2]]>><</link>>
 <br>
 
 :: Robin Cafe Shortage Fetch 2
 <<set $outside to 0>><<set $location to "cafe">><<effects>>
-When you return, Robin is still serving the queue.
-<<He>> has crossed out the drinks that need $phase on the cafe's menu board, so customers know they cannot order them. <<Hes>> also helping people choose other drinks.
+돌아와 보니 로빈은 아직도 줄 선 손님들을 응대하고 있다.
+<<He>>【은는】 카페 메뉴판에서 <<= ({milk:"우유",cream:"크림"})[$phase] || $phase>>【이가】 들어가는 음료에 줄을 그어, 손님들이 주문할 수 없다는 걸 알 수 있게 해 두었다. <<Hes>> 사람들이 다른 음료를 고르는 것도 돕고 있다.
 <br><br>
-You put the fresh $phase into the fridge. As soon as you close the door, Robin steps over and hugs you tightly.
+당신은 새 <<= ({milk:"우유",cream:"크림"})[$phase] || $phase>>【을를】 냉장고에 넣는다. 당신이 문을 닫자마자 로빈이 다가와 당신을 꼭 껴안는다.
 <br><br>
-"I didn't freeze up," <<he>> says. <<He>> lets go of the hug but keeps holding your arms. "I nearly stopped working because I was scared, but I kept going."
+"나 얼어붙지 않았어." <<he>>【이가】 말한다. <<He>>【은는】 포옹을 풀지만 당신의 팔은 계속 잡고 있다. "무서워서 일을 멈출 뻔했는데, 계속했어."
 <<tiredness 2>><<npcincr Robin love 2>><<gtiredness>><<gglove>>
 <br><br>
 <<waiter_default>><<pass 1 hour>>
 <br><br>
-<<link [[Next|Ocean Breeze]]>><<unset $phase>><<endevent>><</link>>
+<<link [[다음|Ocean Breeze]]>><<unset $phase>><<endevent>><</link>>
 <br>
 
 :: Robin Cafe Shortage Substitute
 <<set $outside to 0>><<set $location to "cafe">><<effects>>
-You take Robin into the cafe kitchen and start checking the cupboards and shelves to see if there's anything you can use instead of $phase.
+당신은 로빈을 카페 주방으로 데려가 <<= ({milk:"우유",cream:"크림"})[$phase] || $phase>> 대신 쓸 수 있는 게 있는지 찬장과 선반을 살피기 시작한다.
 <br><br>
 <<if $phase is "milk">>
-	There is no fresh milk left. At the back of one shelf, you find a packet of powdered milk from an old delivery mistake.
-	You pour some of the powdered milk into a jug and add warm water. You mix it until the powder has completely dissolved, then put the jug in a bowl filled with ice and water so the milk cools down more quickly.
+	신선한 우유는 남아 있지 않다. 선반 구석에서 예전에 배달이 잘못 와서 남은 분유 한 봉지를 찾는다.
+	당신은 분유를 주전자에 조금 붓고 따뜻한 물을 더한다. 가루가 완전히 녹을 때까지 섞은 다음, 우유가 더 빨리 식도록 주전자를 얼음물이 담긴 그릇에 넣는다.
 	<br><br>
-	When the milk is cold enough to use, you hand the jug to Robin and show <<him>> how much powder and water you used.
+	우유가 쓸 만큼 차가워지자 당신은 주전자를 로빈에게 건네며 가루와 물을 얼마나 썼는지 <<him>>에게 알려 준다.
 <<else>>
-	There is no cream left, but you find milk and butter in the fridge.
-	You pour the milk into a cold bowl, then add small amounts of soft butter while mixing everything together. Robin watches you continue mixing until the butter and milk have combined and the liquid has become thicker.
+	크림은 남아 있지 않지만 냉장고에서 우유와 버터를 찾는다.
+	당신은 우유를 차가운 그릇에 붓고 부드러운 버터를 조금씩 넣으며 전부 섞는다. 로빈은 버터와 우유가 합쳐져 액체가 걸쭉해질 때까지 당신이 계속 섞는 것을 지켜본다.
 	<br><br>
-	Once it is thick enough for the drinks waiting outside, you show Robin how much milk and butter you used.
+	밖에서 기다리는 음료에 쓸 만큼 걸쭉해지자 당신은 우유와 버터를 얼마나 썼는지 로빈에게 알려 준다.
 <</if>>
 <br><br>
-<<link [[Next|Robin Cafe Shortage Substitute 2]]>><</link>>
+<<link [[다음|Robin Cafe Shortage Substitute 2]]>><</link>>
 <br>
 
 :: Robin Cafe Shortage Substitute 2
 <<effects>>
-Robin tries making the replacement ingredient <<himself>> while you watch. <<He>> measures how much of each ingredient to use and follows the steps you showed <<him>>, without needing you to step in.
+당신이 지켜보는 가운데 로빈이 <<himself>>의 손으로 대용 재료를 만들어 본다. <<He>>【은는】 각 재료를 얼마나 쓸지 재고, 당신이 <<him>>에게 보여 준 순서를 따라 당신이 나서지 않아도 해낸다.
 <br><br>
-"We should write those instructions down with the cafe's supply list," <<he>> says. "Not just that we ran out. I mean how to make a replacement when it happens."
+"이 방법은 카페 물품 목록에 같이 적어 둬야 해." <<he>>【이가】 말한다. "단순히 떨어졌다는 것만이 아니라, 그럴 때 대용품을 어떻게 만드는지도."
 <br><br>
-Sam tastes a little from the second batch. <<nnpc_He "Sam">> gives Robin a nod,
-then takes it out to finish the waiting orders.<<housekeeping 2>><<ghousekeeping>>
+샘이 두 번째로 만든 것을 조금 맛본다. <<nnpc_He "Sam">>【은는】 로빈에게 고개를 끄덕여 보이고,
+그것을 들고 나가 기다리던 주문들을 마무리한다.<<housekeeping 2>><<ghousekeeping>>
 <br><br>
 <<waiter_default>><<pass 1 hour>>
 <br><br>
-<<link [[Next|Ocean Breeze]]>><<unset $phase>><<endevent>><</link>>
+<<link [[다음|Ocean Breeze]]>><<unset $phase>><<endevent>><</link>>
 <br>
 
 :: Robin Cafe Shortage Milk
 <<endevent>>
 <<set $outside to 0>><<set $location to "cafe">><<effects>>
 <<npc Robin>><<person1>>
-You find Robin behind the counter with an empty carton in <<his>> hands. <<He>> turns it upside down over the machine,
-but nothing comes out. Robin checks inside the carton again before reaching towards the shelves behind <<him>>.
+당신은 카운터 뒤에서 빈 팩을 <<his>> 손에 든 로빈을 발견한다. <<He>>【은는】 기계 위에서 팩을 뒤집어 보지만
+아무것도 나오지 않는다. 로빈은 팩 속을 다시 확인한 뒤 <<him>> 뒤쪽 선반으로 손을 뻗는다.
 <br><br>
-You take the carton from <<his>> hands. "Staff room," you say. "Come on, before Sam sees you panicking."
+당신은 <<his>> 손에서 팩을 받아 든다. "휴게실로 가자." 당신이 말한다. "샘이 네가 당황하는 걸 보기 전에."
 <br><br>
-Robin follows you into the staff room. You close the door behind you, leaving the customers and cafe equipment outside.
-<<He>> rests both hands on the table and takes a slow breath.
+로빈은 당신을 따라 휴게실로 들어간다. 당신이 문을 닫아 손님들과 카페 장비를 밖에 남겨 둔다.
+<<He>>【은는】 두 손을 테이블에 얹고 천천히 숨을 들이쉰다.
 <br><br>
-"We've run out of $phase," <<he>> says. "I checked the fridge, the storage shelves, everything.
-The next delivery isn't here yet, and we've still got customers waiting."
+"<<= ({milk:"우유",cream:"크림"})[$phase] || $phase>>【이가】 떨어졌어." <<he>>【이가】 말한다. "냉장고도, 창고 선반도, 전부 확인했어.
+다음 배달은 아직 안 왔고, 기다리는 손님들은 아직 있는데."
 <br><br>
 <<if $lactating is 1 and $milk_amount gte 1 and $settings.breastFeedingEnabled and hasSexStat("promiscuity", 2)>>
-	<<link [[Offer your own <<breasts>>|Robin Cafe Shortage Milk Breast]]>><</link>>
+	<<link [[당신의 <<breasts>>【을를】 내어 준다|Robin Cafe Shortage Milk Breast]]>><</link>>
 	<br>
 <</if>>
 <<if $player.penisExist and $player.penissize gte 3 and hasSexStat("promiscuity", 2)>>
-	<<link [[Offer to be milked yourself|Robin Cafe Shortage Milk Penis]]>><</link>>
+	<<link [[스스로 짜내 달라고 제안한다|Robin Cafe Shortage Milk Penis]]>><</link>>
 	<br>
 <</if>>
-<<link [[Help Robin slow down and think|Robin Cafe Shortage Reassure]]>><</link>>
+<<link [[로빈이 천천히 생각하도록 돕는다|Robin Cafe Shortage Reassure]]>><</link>>
 <br>
 
 :: Robin Cafe Shortage Milk Breast
 <<set $outside to 0>><<set $location to "cafe">><<effects>>
 <<set $robinCafe.milkPath to "breast">>
-"There's one thing we haven't tried," you say.
+"아직 안 해 본 게 하나 있어." 당신이 말한다.
 <br><br>
-Robin looks at you as you start pulling your clothes away from your chest. <<He>> starts to speak, but stops when <<he>> realises what you mean.
-<<His>> face turns red. <<He>> looks towards the staff-room door, walks over to check the lock, then returns to you.
+당신이 가슴께의 옷을 걷어 내기 시작하자 로빈이 당신을 바라본다. <<He>>【은는】 뭐라고 말하려다 당신이 무슨 뜻인지 깨닫고 멈춘다.
+<<His>> 얼굴이 빨개진다. <<He>>【은는】 휴게실 문 쪽을 보고, 걸어가 잠금장치를 확인한 뒤 당신에게 돌아온다.
 <br><br>
 <<overupperstrip>><<upperstrip>><<underupperstrip>>
-You remove the last of your clothing from your chest and <span class="pink">expose your <<breasts>></span>.
+당신은 가슴에 남은 옷을 마저 벗어 <span class="pink">당신의 <<breasts>>【을를】 드러낸다</span>.
 <br><br>
-Robin's eyes drop to them before <<he>> quickly looks back at your face.
-"Are... are you sure?" <<he>> asks. <<He>> raises one hand towards you, but stops before touching you. "Can I...?"
+로빈의 시선이 그곳으로 떨어졌다가 재빨리 당신의 얼굴로 돌아온다.
+"저, 정말 괜찮아?" <<he>>【이가】 묻는다. <<He>>【은는】 당신 쪽으로 한 손을 뻗다가 닿기 전에 멈춘다. "만져도...?"
 <br><br>
-You nod. "I want you to."
+당신은 고개를 끄덕인다. "네가 해 줬으면 해."
 <br><br>
-Robin steps closer and places <<his>> hands against the sides of your <<breasts>>.
-<<He>> pauses there, watching your face, before slowly closing <<his>> fingers around them.
+로빈이 가까이 다가와 <<his>> 손을 당신의 <<breasts>> 양옆에 댄다.
+<<He>>【은는】 당신의 얼굴을 바라보며 거기서 멈췄다가, 천천히 <<his>> 손가락으로 감싸 쥔다.
 <br><br>
-<<link [[Next|Robin Cafe Shortage Milk Breast 2]]>><</link>>
+<<link [[다음|Robin Cafe Shortage Milk Breast 2]]>><</link>>
 <br>
 
 :: Robin Cafe Shortage Milk Breast 2
 <<effects>>
-You lean slightly into <<his>> hands. Robin notices and tries again with a little more pressure,
-moving <<his>> palms over your <<breasts>> while <<his>> thumbs pass across your nipples.
+당신이 <<his>> 손에 몸을 살짝 기댄다. 로빈이 알아차리고 조금 더 힘을 주어 다시 해 본다,
+<<his>> 손바닥으로 당신의 <<breasts>>【을를】 쓸어 올리며 <<his>> 엄지가 젖꼭지 위를 스친다.
 <br><br>
-<<arousal 500 "breasts">> A quiet moan leaves you when one thumb rubs directly over a nipple.<<garousal>>
+<<arousal 500 "breasts">> 한쪽 엄지가 젖꼭지 바로 위를 문지르자 낮은 신음이 새어 나온다.<<garousal>>
 <br><br>
-Robin stops and looks at you. "That felt good?"
+로빈이 멈추고 당신을 본다. "기분 좋았어?"
 <br><br>
-You nod again.
+당신은 다시 고개를 끄덕인다.
 <br><br>
-Robin rubs the same spot once more. This time <<he>> watches what <<hes>> doing,
-moving <<his>> thumb slowly over your nipple before pressing around your <<breasts>> with <<his>> other hand.
-You feel pressure build inside them. Robin squeezes from the base towards the nipple,
-and a small drop of milk appears at the tip.
+로빈이 같은 곳을 한 번 더 문지른다. 이번에는 <<hes>> 자기 손이 하는 일을 지켜보며,
+<<his>> 엄지를 젖꼭지 위로 천천히 움직인 뒤 다른 손으로 당신의 <<breasts>> 둘레를 누른다.
+당신은 그 안에서 압력이 차오르는 것을 느낀다. 로빈이 뿌리에서 젖꼭지 쪽으로 짜 올리자,
+끝에 작은 젖 한 방울이 맺힌다.
 <br><br>
-<<He>> immediately stops.
+<<He>>【은는】 곧바로 멈춘다.
 <br><br>
-"Oh," <<he>> says, staring at the drop. "It actually worked."<<npcincr Robin lust 7>><<glust>>
+"아." <<he>>【이가】 그 한 방울을 빤히 바라보며 말한다. "진짜로 됐어."<<npcincr Robin lust 7>><<glust>>
 <br><br>
-<<link [[Next|Robin Cafe Shortage Milk Breast 3]]>><</link>>
+<<link [[다음|Robin Cafe Shortage Milk Breast 3]]>><</link>>
 <br>
 
 :: Robin Cafe Shortage Milk Breast 3
 <<effects>>
-Robin brings <<his>> fingers closer and gently presses around your nipple. Another drop follows.
-<<He>> tries again, changing where <<he>> places <<his>> hand until more milk comes out.
+로빈이 <<his>> 손가락을 가까이 가져와 당신의 젖꼭지 둘레를 살며시 누른다. 또 한 방울이 맺힌다.
+<<He>>【은는】 다시 시도하며 젖이 더 나올 때까지 <<his>> 손의 위치를 바꾼다.
 <br><br>
 <<arousal 1000 "breasts">><<ggarousal>>
 <br><br>
-Each time you tense or make a sound, <<he>> slows down and checks your face before continuing.
+당신이 몸을 긴장시키거나 소리를 낼 때마다 <<he>>【은는】 속도를 늦추고 당신의 얼굴을 살핀 뒤에 계속한다.
 <br><br>
-Once <<he>> understands what works, <<his>> movements become more certain. <<He>> supports one <<breasts>>
-with <<his>> palm, presses it towards the nipple, then repeats the motion when another small stream of milk comes out.
+무엇이 통하는지 알게 되자 <<his>> 손놀림이 더 확실해진다. <<He>>【은는】 한쪽 <<breasts>>【을를】
+<<his>> 손바닥으로 받쳐 젖꼭지 쪽으로 눌러 주고, 작은 줄기가 또 나오면 같은 동작을 되풀이한다.
 <br><br>
-Robin looks from the milk to you.
+로빈이 젖에서 당신에게로 시선을 옮긴다.
 <br><br>
-"We might actually have enough. Sam's never going to believe this is what fixed it," Robin says,
-and leans in to take a nipple into <<his>> mouth before you can answer.
+"어쩌면 정말 충분할지도 몰라. 샘은 이게 해결책이었다는 걸 절대 안 믿을 거야." 로빈이 말하고는
+당신이 대답하기도 전에 몸을 숙여 젖꼭지를 <<his>> 입에 문다.
 <<arousal 1500>><<gggarousal>><<npcincr Robin lust 10>><<gglust>>
 <br><br>
-<<He>> sucks gently, pulling milk into <<his>> mouth a little at a time while <<his>> tongue moves over the nipple
-between each pull. The repeated pressure makes your <<breasts>> ache pleasantly as more milk begins to flow,
-and <<he>> swallows it without pulling back.
+<<He>>【은는】 부드럽게 빨며 젖을 한 번에 조금씩 <<his>> 입안으로 끌어당기고, 한 모금과 한 모금 사이마다 <<his>> 혀가 젖꼭지 위를 훑는다.
+그렇게 반복되는 압력에 당신의 <<breasts>>【이가】 기분 좋게 욱신거리며 젖이 더 흐르기 시작하고,
+<<he>>【은는】 입을 떼지 않고 그것을 삼킨다.
 <<set $milk_produced_stat += Math.min($milk_amount, 200)>><<milk_amount -200>>
 <br><br>
-<<link [[Next|Robin Cafe Shortage Milk Breast 4]]>><</link>>
+<<link [[다음|Robin Cafe Shortage Milk Breast 4]]>><</link>>
 <br>
 
 :: Robin Cafe Shortage Milk Breast 4
 <<effects>>
-While <<he>> drinks, Robin brings <<his>> free hand to your other <<breasts>>. <<He>> cups it from underneath,
-then slowly squeezes it with <<his>> fingers. <<He>> changes the position of <<his>> hand and presses again,
-working from the fuller part of your <<breasts>> towards the nipple.
+마시는 동안 로빈은 <<his>> 빈손을 당신의 다른 쪽 <<breasts>>【으로로】 가져간다. <<He>>【은는】 아래에서 받쳐 쥐고,
+<<his>> 손가락으로 천천히 쥐어짠다. <<He>>【은는】 <<his>> 손의 위치를 바꿔 다시 누르며,
+당신의 <<breasts>> 더 불룩한 부분에서 젖꼭지 쪽으로 짜 올린다.
 <br><br>
-After several squeezes, a small drop of milk forms at the tip.
+몇 번 쥐어짜자 끝에 작은 젖 한 방울이 맺힌다.
 <br><br>
-Robin releases the first <<breasts>>, leaving the nipple wet with <<his>> saliva.
-A little milk remains at the corner of <<his>> mouth as <<he>> turns towards your other side.
+로빈은 첫 번째 <<breasts>>【을를】 놓는다. 젖꼭지는 <<his>> 침으로 젖어 있다.
+<<he>>【이가】 당신의 반대쪽으로 몸을 돌리는 동안 <<his>> 입가에 젖이 조금 남아 있다.
 <br><br>
-<<He>> takes the second nipple into <<his>> mouth and starts sucking again.
-This time, <<he>> spends more time using <<his>> tongue between each pull,
-rubbing it over the tip before closing <<his>> lips around it again.
+<<He>>【은는】 두 번째 젖꼭지를 <<his>> 입에 물고 다시 빨기 시작한다.
+이번에는 <<he>>【은는】 한 모금과 한 모금 사이에 <<his>> 혀를 더 오래 쓰며,
+입술로 다시 감싸기 전에 끝을 혀로 문지른다.
 <br><br>
-<<He>> circles the nipple with <<his>> tongue, then gives it a small bite.
+<<He>>【은는】 <<his>> 혀로 젖꼭지를 한 바퀴 돌린 뒤 살짝 깨문다.
 <br><br>
-<<arousal 1500 "breasts">><<gggarousal>> Your shoulders pull back slightly as
-Robin keeps <<his>> mouth against your <<breasts>>.
+<<arousal 1500 "breasts">><<gggarousal>> 당신의 어깨가 살짝 뒤로 젖혀진다.
+로빈은 <<his>> 입을 당신의 <<breasts>>에서 떼지 않는다.
 <br><br>
-<<link [[Next|Robin Cafe Shortage Milk Breast 5]]>><</link>>
+<<link [[다음|Robin Cafe Shortage Milk Breast 5]]>><</link>>
 <br>
 
 :: Robin Cafe Shortage Milk Breast 5
 <<effects>>
-At the same time, <<his>> hand returns to the first <<breasts>>. <<He>> squeezes it with more confidence now,
-pressing from the sides before moving <<his>> fingers closer to the nipple.
-Milk runs over <<his>> fingers and down the front of your <<breasts>>.
+동시에 <<his>> 손이 첫 번째 <<breasts>>【으로로】 돌아온다. <<He>>【은는】 이제 더 자신 있게 쥐어짜며,
+옆에서 눌러 준 뒤 <<his>> 손가락을 젖꼭지 쪽으로 옮긴다.
+젖이 <<his>> 손가락 위로 흘러 당신의 <<breasts>> 앞쪽을 타고 내려간다.
 <br><br>
-Robin makes a quiet sound against your nipple when <<he>> sees it.
-<<He>> leans across your chest and catches some of the milk with <<his>> tongue,
-following the wet line over your skin before returning to the nipple.
+로빈은 그것을 보고 젖꼭지에 입을 댄 채 작은 소리를 낸다.
+<<He>>【은는】 당신의 가슴팍 위로 몸을 기울여 <<his>> 혀로 젖 일부를 받아 낸다,
+살갗 위로 번진 젖줄기를 따라 핥은 뒤 다시 젖꼭지로 돌아온다.
 <br><br>
-More escapes while <<he>> drinks, leaving thin trails across your chest whenever <<he>> cannot catch it quickly enough.
+<<he>>【이가】 마시는 동안에도 더 흘러나와, <<he>>【이가】 재빨리 받아 내지 못할 때마다 가슴팍에 가느다란 자국이 남는다.
 <<set $milk_produced_stat += Math.min($milk_amount, 400)>><<milk_amount -400>>
 <br><br>
-Robin finally pulls <<his>> mouth away. <<His>> lips are wet with milk.
-<<He>> wipes at it with the back of <<his>> hand, then looks at your <<breasts>> again.
-"I don't think... I should drink it, right? But—"
+로빈이 마침내 <<his>> 입을 뗀다. <<His>> 입술이 젖으로 젖어 있다.
+<<He>>【은는】 <<his>> 손등으로 그것을 닦은 뒤 다시 당신의 <<breasts>>【을를】 바라본다.
+"내가... 이걸 마시면 안 되는 거지? 하지만—"
 <br><br>
-<<link [[Next|Robin Cafe Shortage Milk Sex]]>><<set $sexstart to 1>><</link>>
+<<link [[다음|Robin Cafe Shortage Milk Sex]]>><<set $sexstart to 1>><</link>>
 <br>
 
 :: Robin Cafe Shortage Milk Penis
 <<set $outside to 0>><<set $location to "cafe">><<effects>>
 <<set $robinCafe.milkPath to "penis">>
-"There's one thing we haven't tried," you say, your fingers moving to your clothes.
-You start to undo it while Robin watches your hands, slowly realising what you're suggesting.
+"아직 안 해 본 게 하나 있어." 당신이 말하며 손가락을 옷으로 가져간다.
+당신이 옷을 풀기 시작하자 로빈이 당신의 손을 지켜보며 당신이 무엇을 제안하는지 천천히 깨닫는다.
 <br><br>
-Robin starts to protest, but the words stop when <<he>> sees what you're doing.
-<<He>> quickly looks towards the door, walks over to check that it's locked, then turns back to you.
-A nervous blush spreads across <<his>> cheeks as <<he>> watches you continue.
+로빈이 반대하려 하지만 <<he>>【이가】 당신이 하는 일을 보자 말이 멈춘다.
+<<He>>【은는】 재빨리 문 쪽을 본 뒤 걸어가 잠겨 있는지 확인하고 다시 당신을 돌아본다.
+당신이 계속하는 것을 지켜보는 <<his>> 뺨에 긴장 섞인 홍조가 번진다.
 <br><br>
 <<overlowerstrip>><<lowerstrip>><<underlowerstrip>>
-<span class="pink">You free your <<penis>> in front of <<him>></span>, letting it spring into view.
-Robin stares at it with <<his>> eyes wide and <<his>> lips slightly parted.
+<span class="pink">당신은 <<him>> 앞에서 당신의 <<penis>>【을를】 꺼낸다</span>, 그것이 튕기듯 모습을 드러낸다.
+로빈이 <<his>> 눈을 크게 뜨고 <<his>> 입술을 살짝 벌린 채 그것을 빤히 본다.
 <br><br>
-<<His>> eyes move down to your <<penis>> before <<he>> looks back at your face, then down again.
+<<His>> 시선이 당신의 <<penis>>【으로로】 내려갔다가 당신의 얼굴로 돌아오고, 다시 아래로 내려간다.
 <br><br>
-Robin swallows before <<he>> manages to speak. "It's really nice... I-I mean, nice shape!"
+로빈이 <<he>>【이가】 말을 꺼낼 수 있을 때까지 침을 삼킨다. "진짜 멋져... 아, 아니, 모양이 예쁘다고!"
 <br><br>
-<<link [[Next|Robin Cafe Shortage Milk Penis 2]]>><</link>>
+<<link [[다음|Robin Cafe Shortage Milk Penis 2]]>><</link>>
 <br>
 
 :: Robin Cafe Shortage Milk Penis 2
 <<effects>>
-Robin slowly reaches towards you. <<His>> fingertips touch your <<penis>> first,
-caressing along the side as <<he>> watches your reaction. When you stay still and let <<him>> continue,
-<<he>> wraps <<his>> hand around the shaft.
+로빈이 천천히 당신에게 손을 뻗는다. <<His>> 손끝이 먼저 당신의 <<penis>>에 닿고,
+옆면을 따라 쓸어내리며 <<he>>【은는】 당신의 반응을 살핀다. 당신이 가만히 있으며 <<him>>【이가】 계속하도록 두자,
+<<he>>【은는】 손으로 기둥을 감싸 쥔다.
 <br><br>
-The warmth of Robin's palm makes your dick twitch in <<his>> grip.
-<<He>> immediately looks down at it and lets out a small sound of surprise,
-then smiles when <<he>> realises <<his>> touch caused it.
+로빈의 손바닥이 따뜻해서, <<his>> 손안에서 당신의 자지가 움찔거린다.
+<<He>>【은는】 곧바로 그곳을 내려다보고 작게 놀란 소리를 내더니,
+<<his>> 손길 때문이라는 걸 <<he>>【이가】 깨닫고는 미소 짓는다.
 <br><br>
-Robin moves <<his>> hand experimentally, sliding it down your shaft before bringing it back up.
-Your breathing hitches when <<he>> squeezes a little more firmly.
-Robin notices, and <<he>> adjusts <<his>> fingers around you.
+로빈이 <<his>> 손을 시험 삼아 움직여 기둥을 따라 내렸다가 다시 끌어올린다.
+<<he>>【이가】 조금 더 단단히 쥐자 당신은 숨이 턱 막힌다.
+로빈은 그걸 알아채고 손가락의 위치를 고쳐 잡는다.
 <br><br>
-After a few strokes, you start moving your hips with <<his>> hand. Each time Robin pulls <<his>> hand back,
-you push forwards into <<his>> grip, making the movement stronger.<<arousal 500 "penis">><<garousal>>
+몇 번 훑고 나자, 당신은 <<his>> 손에 맞춰 허리를 움직이기 시작한다. 로빈이 손을 뒤로 뺄 때마다
+당신은 <<his>> 손안으로 밀고 들어가 움직임을 더 강하게 만든다.<<arousal 500 "penis">><<garousal>>
 <br><br>
-Robin notices immediately. <<His>> eyes widen, then <<he>> grins as you do it again.
-"Oh," <<he>> says, clearly delighted. "You like that."<<npcincr Robin lust 7>><<glust>>
+로빈은 곧바로 알아챈다. <<His>> 눈이 커졌다가, 당신이 다시 그러자 <<he>>【은는】 씩 웃는다.
+"오." <<he>>【이가】 말한다. 눈에 띄게 신이 난 얼굴이다. "이게 마음에 드는구나."<<npcincr Robin lust 7>><<glust>>
 <br><br>
-<<link [[Next|Robin Cafe Shortage Milk Penis 3]]>><</link>>
+<<link [[다음|Robin Cafe Shortage Milk Penis 3]]>><</link>>
 <br>
 
 :: Robin Cafe Shortage Milk Penis 3
 <<effects>>
-Robin keeps stroking for another few seconds, watching your face whenever your breathing changes.
-Then <<he>> leans closer and presses a kiss against the side of your <<penis>>.<<arousal 1500>><<gggarousal>>
+로빈은 몇 초 더 계속 쓰다듬으며, 당신의 숨결이 달라질 때마다 얼굴을 살핀다.
+그러더니 <<he>>【은는】 더 가까이 몸을 숙여 당신의 <<penis>> 옆면에 입을 맞춘다.<<arousal 1500>><<gggarousal>>
 <br><br>
-<<He>> gives you another kiss slightly higher, then another, slowly working <<his>> way towards the tip.
-When <<he>> reaches it, <<he>> presses <<his>> tongue against the underside and slowly drags it upwards before
-circling around the head.
+<<He>>【은는】 조금 더 위에 다시 입을 맞추고, 또 한 번 맞추며 천천히 끝을 향해 올라간다.
+끝에 닿자 <<he>>【은는】 혀를 아랫면에 대고 천천히 끌어올린 다음,
+귀두 둘레를 빙 돌린다.
 <br><br>
-Your hips shift towards <<him>> again, pushing your dick to <<his>> lips.
-Robin glances up at you, then opens <<his>> mouth and closes <<his>> lips around the tip.
+당신의 허리가 다시 <<him>> 쪽으로 움직이며, 자지를 <<his>> 입술에 밀어붙인다.
+로빈이 당신을 올려다보더니 입을 벌려 입술로 끝을 감싼다.
 <br><br>
-The warmth of <<his>> mouth makes you gasp.<<arousal 1000 "penis">><<ggarousal>>
+<<his>> 입안의 온기에 당신은 헉 숨을 들이켠다.<<arousal 1000 "penis">><<ggarousal>>
 <br><br>
-<<His>> tongue moves around the head while <<he>> keeps one hand around the lower part of your shaft,
-stroking what <<he>> has not taken into <<his>> mouth.
+<<His>> 혀가 귀두 둘레를 맴도는 동안 <<he>>【은는】 한 손으로 기둥 아랫부분을 감싸 쥐고,
+입에 넣지 않은 부분을 훑는다.
 <br><br>
-Robin closes <<his>> lips a little more firmly around you, then gives the tip a light bite before rubbing <<his>>
-tongue over the same spot. Your hips jerk forwards at the sudden feeling, pushing more of your <<penis>> into <<his>> mouth.
+로빈은 입술을 조금 더 단단히 오므려 당신을 감싸더니, 끝을 가볍게 깨문 뒤
+혀로 그 자리를 문지른다. 갑작스러운 감각에 당신의 허리가 앞으로 튕겨, <<penis>>【이가】 <<his>> 입안으로 더 깊이 들어간다.
 <br><br>
-<<He>> makes a surprised sound but does not pull away. Instead, <<he>> opens <<his>> mouth wider and takes you deeper,
-adjusting <<his>> position as your hips move towards <<him>> again.
+<<He>>【은는】 놀란 소리를 내지만 물러나지 않는다. 오히려 입을 더 크게 벌려 당신을 더 깊이 받아들이고,
+당신의 허리가 다시 <<him>> 쪽으로 움직이자 자세를 고쳐 잡는다.
 <br><br>
-<<link [[Next|Robin Cafe Shortage Milk Penis 4]]>><</link>>
+<<link [[다음|Robin Cafe Shortage Milk Penis 4]]>><</link>>
 <br>
 
 :: Robin Cafe Shortage Milk Penis 4
 <<effects>>
-Robin's free hand moves between your legs and cups your balls. <<He>> rolls them gently in
-<<his>> palm while continuing to suck you, tightening <<his>> fingers slightly whenever your hips push
-harder towards <<his>> mouth.
+로빈의 자유로운 손이 당신의 다리 사이로 내려가 고환을 감싼다. <<He>>【은는】 당신을 계속 빨면서 그것을
+<<his>> 손바닥 위에서 부드럽게 굴리고, 당신의 허리가 <<his>> 입을 향해 더 세게 밀고 들어올 때마다
+손가락을 살짝 조인다.
 <br><br>
-<<arousal 1500 "penis">> You moan again and press forwards.<<gggarousal>>
+<<arousal 1500 "penis">> 당신은 다시 신음하며 앞으로 밀어붙인다.<<gggarousal>>
 <br><br>
-Robin takes the movement more easily this time, opening <<his>> mouth wider before lowering
-<<his>> head along your <<penis>>, bobbing <<his>> head.
+로빈은 이번에는 그 움직임을 더 수월하게 받아들이며, 입을 더 크게 벌린 뒤
+<<his>> 머리를 당신의 <<penis>> 쪽으로 내리고, 머리를 위아래로 움직인다.
 <br><br>
-After another slow pass of <<his>> tongue over the tip, Robin pulls back just to speak,
-"Sam's never going to believe this is what fixed it," <<he>> says, breathing a little faster.<<npcincr Robin lust 10>><<gglust>>
+<<his>> 혀로 끝을 한 번 더 느리게 훑은 뒤, 로빈이 말하려고 잠시 입을 뗀다.
+"이게 해결책이었다니, 샘은 절대 안 믿을 거야." <<he>>【이가】 조금 더 빠르게 숨을 쉬며 말한다.<<npcincr Robin lust 10>><<gglust>>
 <br><br>
-Robin gradually takes you deeper with each movement. When <<he>> reaches the back of <<his>> throat,
-<<he>> holds you there briefly before pulling back enough to breathe, then lowers <<his>> head again.
+로빈은 움직일 때마다 조금씩 더 깊이 당신을 받아들인다. <<his>> 목구멍 안쪽에 닿으면,
+<<he>>【은는】 잠시 그 자리에 머물렀다가 숨을 쉴 만큼만 물러나고, 다시 머리를 내린다.
 <br><br>
-Your legs begin to shake as your hips move forwards on their own.
-Robin braces one hand against your thigh when you push harder, keeping close instead of pulling away.
+허리가 저절로 앞으로 움직이면서 당신의 다리가 떨리기 시작한다.
+당신이 더 세게 밀어붙이자 로빈은 한 손으로 당신의 허벅지를 받치고, 물러서지 않고 바싹 붙어 있다.
 <br><br>
-<<link [[Next|Robin Cafe Shortage Milk Penis 5]]>><</link>>
+<<link [[다음|Robin Cafe Shortage Milk Penis 5]]>><</link>>
 <br>
 
 :: Robin Cafe Shortage Milk Penis 5
 <<effects>>
-Robin's other hand moves beneath your cock and cups your balls again.
-<<He>> rolls them carefully between <<his>> fingers while continuing to suck you,
-occasionally squeezing them when your hips press further into <<his>> mouth.
+로빈의 다른 손이 당신의 자지 아래로 움직여 다시 고환을 감싸 쥔다.
+<<He>>【은는】 당신을 계속 빨면서 손가락 사이로 그것들을 조심스럽게 굴리고,
+당신의 허리가 <<his>> 입안으로 더 깊이 밀려들 때면 이따금 꽉 쥔다.
 <br><br>
-Whenever Robin pulls back towards the tip, <<his>> tongue moves around the head before <<he>> takes you deeper again.
-<<He>> alternates between sucking and pressing <<his>> tongue against the underside,
-keeping <<his>> mouth around you as your thrusts become less controlled.
+로빈이 끝 쪽으로 물러날 때마다 <<his>> 혀가 귀두 둘레를 맴돌고, 이어 <<he>>【은는】 다시 당신을 더 깊이 받아들인다.
+<<He>>【은는】 빨기와 혀를 아랫면에 눌러 대기를 번갈아 하며,
+당신의 움직임이 점점 통제를 잃어 가는 와중에도 입으로 당신을 감싼 채 놓지 않는다.
 <br><br>
-A quiet moan comes from Robin while your dick is still in <<his>> mouth.
-You feel the sound through <<his>> lips and throat, making your hips jerk forwards again.
-And another pass of Robin's tongue over the head makes your cock twitch inside <<his>> mouth.
+당신의 자지가 아직 <<his>> 입안에 있는 채로 로빈에게서 낮은 신음이 새어 나온다.
+당신은 그 소리를 <<his>> 입술과 목구멍으로 느끼고, 허리가 다시 앞으로 튕긴다.
+거기에 로빈의 혀가 귀두를 한 번 더 훑자 당신의 자지가 <<his>> 입안에서 움찔거린다.
 <br><br>
 <<orgasm>>
-You gasp as you finally come. Your hips push forwards while your dick jerks against Robin's tongue,
-spilling into <<his>> mouth and throat. Robin freezes for a second at the first taste, then swallows
-each time your cock twitches.
+당신은 마침내 사정하며 헉 숨을 토한다. 허리가 앞으로 밀려 나가고 자지가 로빈의 혀에 닿은 채 꿈틀거리며,
+<<his>> 입안과 목구멍으로 쏟아져 들어간다. 로빈은 첫맛에 잠깐 굳어 버리지만, 이내
+당신의 자지가 움찔할 때마다 삼킨다.
 <br><br>
-Only after you stop does <<he>> slowly pull back. Your <<penis>> slips from <<his>> mouth, leaving <<his>> lips wet.
+당신이 멈추고 나서야 <<he>>【은는】 천천히 물러난다. 당신의 <<penis>>【이가】 <<his>> 입에서 빠져나오고, <<his>> 입술이 젖어 있다.
 <br><br>
-Robin wipes the corner of <<his>> mouth with the back of <<his>> hand. "I don't think... I should drink it, right? But—"
+로빈이 손등으로 입가를 닦는다. "마시면... 안 되는 거였지? 근데—"
 <br><br>
-<<link [[Next|Robin Cafe Shortage Milk Sex]]>><<set $sexstart to 1>><</link>>
+<<link [[다음|Robin Cafe Shortage Milk Sex]]>><<set $sexstart to 1>><</link>>
 <br>
 
 :: Robin Cafe Shortage Milk Sex
@@ -1245,71 +1245,71 @@ Robin wipes the corner of <<his>> mouth with the back of <<his>> hand. "I don't 
 <br><br>
 <<actionsman>>
 <<if _combatend>>
-	<span id="next"><<link [[Next|Robin Cafe Shortage Milk Sex Finish]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Robin Cafe Shortage Milk Sex Finish]]>><</link>></span><<nexttext>>
 <<else>>
-	<span id="next"><<link [[Next|Robin Cafe Shortage Milk Sex]]>><</link>></span><<nexttext>>
+	<span id="next"><<link [[다음|Robin Cafe Shortage Milk Sex]]>><</link>></span><<nexttext>>
 <</if>>
 
 :: Robin Cafe Shortage Milk Sex Finish
 <<set $outside to 0>><<set $location to "cafe">><<effects>>
 <<if $enemypleasure gte $enemypleasuremax>>
 	<<ejaculation>><<npcincr Robin lust -20>>
-	Robin keeps <<his>> arms around you for a few seconds, grinning as <<he>> takes <<his>> breath.
+	로빈은 몇 초 동안 당신을 안은 팔을 풀지 않고, 숨을 고르며 씩 웃는다.
 	<br><br>
 <<elseif $enemyhealth lte 0>>
-	"Ow!" Robin says as <<he>> pulls back from you. Despite the complaint, <<hes>> still smiling.
+	"아야!" 로빈이 당신에게서 물러나며 말한다. 투덜대면서도 <<hes>> 여전히 웃고 있다.
 	<br><br>
 <<else>>
 	<<if $finish is 1>><<encounterEndViolence>><</if>>
-	Robin stays close for a few seconds before finally letting you go. <<He>> gives you a tired smile.
+	로빈은 몇 초 동안 바싹 붙어 있다가 마침내 당신을 놓아준다. <<He>>【은는】 지친 미소를 지어 보인다.
 	<br><br>
 <</if>>
-You both look towards the door and remember that you are still in the cafe's staff room.
+두 사람은 문 쪽을 바라보다가 아직 카페 직원 휴게실에 있다는 사실을 떠올린다.
 <<endcombat>>
 <<npc Robin>><<person1>>
-<<link [[Next|Robin Cafe Shortage Milk Sex Finish 2]]>><</link>>
+<<link [[다음|Robin Cafe Shortage Milk Sex Finish 2]]>><</link>>
 <br>
 
 :: Robin Cafe Shortage Milk Sex Finish 2
 <<effects>>
-Robin quickly reaches for <<his>> clothes. You do the same,
-pulling everything back into place before someone comes looking for you.<<silently>><<clotheson>><</silently>>
+로빈이 서둘러 옷을 집어 든다. 당신도 똑같이 하며,
+누가 찾으러 오기 전에 모든 것을 제자리로 되돌려 놓는다.<<silently>><<clotheson>><</silently>>
 <br><br>
-Once <<hes>> dressed, Robin strokes <<his>> own hair and looks at <<his>> reflection in the fridge door.
-<<He>> tries to fix it, stops after a few seconds, then turns back to you.
+옷을 다 입자 로빈은 자기 머리를 쓰다듬고 냉장고 문에 비친 모습을 들여다본다.
+<<He>>【은는】 머리를 매만져 보다가 몇 초 뒤에 그만두고 다시 당신 쪽으로 돌아선다.
 <br><br>
 <<switch $robinCafe.milkPath>>
 <<case "breast">>
-	"That's probably the least useful way we could have dealt with running out of milk,"
-	<<he>> says. <<He>> wipes <<his>> mouth with the back of <<his>> hand.
-	"I wasn't actually going to put any of it in someone's coffee. I just wanted an excuse to do that with you."
+	"우유가 떨어진 걸 해결하는 방법 중에 아마 제일 쓸모없는 방법이었을 거야."
+	<<he>>【이가】 말한다. <<He>>【은는】 손등으로 입을 닦는다.
+	"사실 그걸 누구 커피에 넣을 생각은 없었어. 그냥 너랑 그런 걸 할 핑계가 필요했을 뿐이야."
 <<case "penis">>
-	"Well, that didn't help with the milk," <<he>> says. <<He>> takes another breath before giving you a small smile. "I knew it wouldn't. I just wanted an excuse."
+	"음, 우유 문제엔 도움이 안 됐네." <<he>>【이가】 말한다. <<He>>【은는】 숨을 한 번 더 고른 뒤 당신에게 작은 미소를 짓는다. "그럴 줄 알았어. 그냥 핑계가 필요했어."
 <<default>>
-	"That didn't solve the milk problem at all," you say.
+	"우유 문제는 하나도 해결 안 됐네." 당신이 말한다.
 	<br><br>
-	Robin laughs. "No. I know! Still worth it, though."
+	로빈이 웃는다. "그러게. 알아! 그래도 할 만했어."
 <</switch>>
 <<unset $robinCafe.milkPath>>
 <br><br>
-<<link [[Next|Robin Cafe Shortage Milk Sex Finish 3]]>><</link>>
+<<link [[다음|Robin Cafe Shortage Milk Sex Finish 3]]>><</link>>
 <br>
 
 :: Robin Cafe Shortage Milk Sex Finish 3
 <<effects>>
-You leave the staff room together and return to the counter.
-Sam is already standing beside the coffee machine. A fresh carton of milk sits next to <<nnpc_him "Sam">>.
+당신들은 함께 직원 휴게실을 나와 카운터로 돌아온다.
+샘이 벌써 커피 머신 옆에 서 있다. 새 우유 팩 하나가 <<nnpc_him "Sam">> 옆에 놓여 있다.
 <br><br>
-"Found another one behind the flour," <<nnpc_he "Sam">> says while opening it. "We keep some spare stock back there."
+"밀가루 뒤에서 하나 더 찾았어." <<nnpc_he "Sam">>【이가】 우유 팩을 열며 말한다. "예비 재고를 거기 좀 둬."
 <br><br>
-Robin stops beside you.
+로빈이 당신 옆에 멈춰 선다.
 <br><br>
-Sam glances between the two of you. "Found it while you were busy in the back."
+샘이 두 사람을 번갈아 본다. "너희가 안쪽에서 바쁜 사이에 찾았어."
 <br><br>
-Robin's face turns red. <<He>> quickly walks back to <<his>> place behind the counter and starts
-working again without replying to Sam.<<npcincr Robin love 3>><<gglove>>
+로빈의 얼굴이 새빨개진다. <<He>>【은는】 서둘러 카운터 뒤 자기 자리로 돌아가
+샘에게 대꾸도 하지 않고 다시 일하기 시작한다.<<npcincr Robin love 3>><<gglove>>
 <br><br>
 <<waiter_default>><<pass 1 hour>>
 <br><br>
-<<link [[Next|Ocean Breeze]]>><<unset $phase>><<endevent>><</link>>
+<<link [[다음|Ocean Breeze]]>><<unset $phase>><<endevent>><</link>>
 <br>

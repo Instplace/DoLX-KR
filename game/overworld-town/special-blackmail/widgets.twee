@@ -225,9 +225,9 @@
 <<widget "blackmail-marker">>
 	<<set _markerSummary to getStaticQuestData($xchange.blackmail.activeQuest)?.summary>>
 	<<if _markerSummary>>
-		The Gentleman's Club expects you to <span class="teal"><<print _markerSummary.charAt(0).toLowerCase() + _markerSummary.slice(1)>></span>
+		신사 클럽의 요구: <span class="teal"><<print _markerSummary.charAt(0).toLowerCase() + _markerSummary.slice(1)>></span>
 	<<else>>
-		The Gentleman's Club expects you to complete their task before midnight.
+		신사 클럽은 당신이 자정 전에 그들의 과제를 완수하기를 기대한다.
 	<</if>>
 <</widget>>
 
@@ -247,9 +247,9 @@
 
 <<widget "blackmail-exportprompt">>
 	<<if !tags().includes("nosave") and !$ironmanmode and $replayScene is undefined>>
-		<span class="gold">This task can't be retried once the day is over. Consider backing up your save.</span><br>
+		<span class="gold">이 과제는 하루가 지나면 다시 시도할 수 없습니다. 저장 파일을 백업해 두십시오.</span><br>
 		<<if !Browser.isMobile.any()>>
-			<<link "Export save">>
+			<<link "저장 파일 내보내기">>
 				<<run Save.export("degrees-of-lewdity" + ($saveName ? '-' + $saveName : ''))>>
 			<</link>> |
 		<</if>>
@@ -264,21 +264,21 @@
 	<<run restoreActiveBlackmailQuest()>>
 	<<set _activeQuest to $xchange.blackmail.activeQuest>>
 	<<if !$xchange.blackmail.conclusionPending && $xchange.blackmail.hasReadLetter && _activeQuest?.failCondition() && !_activeQuest?.failed>>
-		<span class="gold"><b>Warning:</b></span> <span class="red"><<print _activeQuest.alertMessage>></span><br><br>
+		<span class="gold"><b>경고:</b></span> <span class="red"><<print _activeQuest.alertMessage>></span><br><br>
 	<</if>>
 	<<if $xchange.blackmail.effectmessage is 1>>
-		<span class="purple">Compromising material displaying your lewdness is now circulating around town.</span><br>
-		<span class="red">Your reputation has worsened.</span><br><br>
+		<span class="purple">당신의 음란함을 드러낸 외설 자료가 마을 곳곳에 돌고 있다.</span><br>
+		<span class="red">당신의 평판이 나빠졌다.</span><br><br>
 	<<elseif $xchange.blackmail.effectmessage is 2>>
-		<span class="green"><b>You are compliant with your clear conditions.</b> Keep it up until midnight and you'll succeed your task.</span><br><br>
+		<span class="green"><b>당신은 과제 조건을 충족하고 있다.</b> 자정까지 유지하면 과제에 성공한다.</span><br><br>
 	<<elseif $xchange.blackmail.effectmessage is 3>>
-		<span class="red"><b>You have failed your task.</b> Your blackmailer won't be happy.</span><br><br>
+		<span class="red"><b>당신은 과제에 실패했다.</b> 협박범이 달가워하지 않을 것이다.</span><br><br>
 	<<elseif $xchange.blackmail.effectmessage is 4>>
-		<span class="purple">You never collected the Gentleman's Club's last letter. Your payment arrives folded into a new envelope instead, with a note reminding you they know where you sleep.</span><br><br>
+		<span class="purple">당신은 신사 클럽의 지난 편지를 받지 않았다. 대신 보수가 새 봉투에 접힌 채 도착한다. 그들이 당신이 어디서 자는지 안다고 상기시키는 쪽지가 함께 들어 있다.</span><br><br>
 	<<elseif $xchange.blackmail.effectmessage is 5>>
-		<span class="purple">You never collected the Gentleman's Club's last letter. They've stopped waiting on your answer, and consider the matter closed.</span><br><br>
+		<span class="purple">당신은 신사 클럽의 지난 편지를 받지 않았다. 그들은 당신의 답을 기다리기를 그만두고, 이 일을 끝난 것으로 본다.</span><br><br>
 	<<elseif $xchange.blackmail.effectmessage is 6>>
-		<span class="purple">You were in no position to carry out the Gentleman's Club's task, and they know it. The matter is dropped for now.</span><br><br>
+		<span class="purple">당신은 신사 클럽의 과제를 수행할 처지가 아니었고, 그들도 그것을 안다. 이 일은 당분간 접어 둔다.</span><br><br>
 	<</if>>
 	<<unset $xchange.blackmail.effectmessage>>
 <</widget>>

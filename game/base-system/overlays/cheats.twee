@@ -189,7 +189,7 @@
 				<<cheatsSex>>
 			</span>
 			<br>
-			<<set _gender_body_words to {"m": "남성적", "f": "여성적", "a": "어느쪽도 아님"}>>
+			<<set _gender_body_words to {"m": "남성적", "f": "여성적", "a": "중성적"}>>
 			체형: <mouse class="tooltip linkBlue">(?)<span>얼마나 여성적이거나 남성적으로 보이는지에 기여합니다. 일반적인 게임 플레이에서, 특수 의류를 통해 여성화되거나 남성화되지 않는 한, 플레이어의 체형은 성별 외형에 기여하지 않습니다.</span></mouse>:
 			<span id="statsBodyType">
 				<<cheatsBody>>
@@ -1318,7 +1318,7 @@
 		<<replace "#xchange-hyperfertility">><<= $xchange.pill.hyperFertilityEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>>
 	<</link>>
 	<br>
-	X-텐드: <span id="xchange-xtend"><<= $xchange.pill.xtendEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> | <<link "변경">><<set $xchange.pill.xtendEffect to $xchange.pill.xtendEffect? false : true>><<set $xchange.pill.xtendTracker to {orgasmed: 0, penisSizeGains: 0}>><<replace "#xchange-xtend">><<= $xchange.pill.xtendEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>><</link>>
+	엑스텐드: <span id="xchange-xtend"><<= $xchange.pill.xtendEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> | <<link "변경">><<set $xchange.pill.xtendEffect to $xchange.pill.xtendEffect? false : true>><<set $xchange.pill.xtendTracker to {orgasmed: 0, penisSizeGains: 0}>><<replace "#xchange-xtend">><<= $xchange.pill.xtendEffect? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>><</link>>
 	<br><br>
 
 	효과 알려짐: <span id="xchange-spike"><<= $xchange.pill.effectsKnown? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">></span> | <<link "변경">><<set $xchange.pill.effectsKnown to $xchange.pill.effectsKnown? false : true>><<replace "#xchange-spike">><<= $xchange.pill.effectsKnown? "<span class=\"green\">켜짐</span>" : "<span class=\"red\">꺼짐</span>">><</replace>><</link>>
@@ -1454,10 +1454,10 @@
 					<label>비활성화 <<radiovar "$hairFringeColourStyle" "simple">> <<updatesidebarimg>><</radiovar>></label>
 					<br>
 					투톤 스타일: <<listbox "$hairFringeColourGradient.style" autoselect>>
-								<<option "낮은 옴브레" "low-ombre">>
-								<<option "높은 옴브레" "high-ombre">>
-								<<option "반반 염색" "split">>
-								<<option "얼굴 주변 하이라이트" "face-frame">>
+								<<option "연한 투톤" "low-ombre">>
+								<<option "진한 투톤" "high-ombre">>
+								<<option "반반 투톤" "split">>
+								<<option "앞머리 브릿지" "face-frame">>
 							<</listbox>>
 					<br><br>
 				<</foldout>>
@@ -1666,7 +1666,7 @@
 				<<for _virginType, _virginList range $virginTaken>>
 					<<run _virginList.delete(_npcId)>>
 				<</for>>
-				<<replace "#npcvirgin">><br><<= _npcId>>의 첫 경험 상태가 복구되었습니다.<</replace>>
+				<<replace "#npcvirgin">><br><<= window.KR?.personNameDict?.[_npcId] || _npcId>>의 첫 경험 상태가 복구되었습니다.<</replace>>
 			<</link>>
 			<span id="npcvirgin"></span>
 		</div>
@@ -2022,7 +2022,7 @@
 		<div class="settingsToggleItem">
 			<<schoolicon "building">><span class="gold">학교</span>
 			<<numberStepper "지위" $cool "cool" {max: V.coolmax}>>
-			<<numberStepper "비행도" $delinquency "delinquency" {max: 1000, reverse: true}>>
+			<<numberStepper "불량도" $delinquency "delinquency" {max: 1000, reverse: true}>>
 			<hr>
 			<<if $player.penisExist and $player.vaginaExist>>
 				<<numberStepper "성기 소문" $schoolrep.herm { callback: value => {V.schoolrep.herm = value; Wikifier.wikifyEval("<<replace '#repherm'>><<cheatsRep herm>><</replace>>")}, max: 5, step: 1, percentage: false, reverse: true, activeButtons: ["single", "minMax"] }>>
@@ -2079,7 +2079,7 @@
 
 <<widget "sydneyPurity">>
 	<<if C.npc.Sydney.purity gt 0>>
-		<<numberStepper "<<symbol purity>> 순결도" `C.npc.Sydney.purity` {
+		<<numberStepper "<<symbol purity>> 순결함" `C.npc.Sydney.purity` {
 			callback: value => {
 				C.npc.Sydney.purity = value;
 				if (value < 0) {
@@ -2221,7 +2221,7 @@
 				<<case 5>><span class="red">당신의 <<= _crossdressing>>【은는】 학교에 공공연하게 알려졌습니다. 선생님을 포함해 모든 사람이 당신의 비밀을 <<= _knows>>.</span>
 				<<case 4>><span class="pink">당신의 <<= _crossdressing>>에 대한 소문이 학교 전체에 퍼지고 있습니다.</span>
 				<<case 3>><span class="purple">당신의 <<= _crossdressing>>에 대한 소문이 퍼지면서 학교에서 인기 있는 화젯거리가 되었습니다.</span>
-				<<case 2>><span class="blue">당신의 _crossdressing 에 대한 이야기가 학교에 은밀하게 떠돌고 있습니다.</span>
+				<<case 2>><span class="blue">당신의 <<= _crossdressing>>에 대한 이야기가 학교에 은밀하게 떠돌고 있습니다.</span>
 				<<case 1>><span class="lblue">학교의 몇몇 무리에서 당신의 <<= _crossdressing>>에 대해 수군대기 시작했습니다.</span>
 				<<default>><span class="green">학교에서 당신에 대한 소문은 전혀 없습니다.</span>
 			<</switch>>
@@ -2344,7 +2344,7 @@
 				<br>
 				<<cafeicon>><<link [[오션 브리즈|Ocean Breeze]]>><<cheats-teleport-function>><</link>>
 				<hr>
-				<span class="gold">도시 가</span>
+				<span class="gold">도시 외곽</span>
 				<br>
 				<u>숲</u><br>
 				<<foresticon>><<link [[숲 외곽|Forest]]>><<set $forest = 0>><<cheats-teleport-function>><</link>><br>
@@ -2885,7 +2885,7 @@
 			<<set _activePregnancies to getActivePregnancies("pc")>>
 			<<for _pregnancy range _activePregnancies>>
 				<<capture _pregnancy>>
-					<<set _pregLabel to _activePregnancies.length gt 1 ? (_pregnancy.orifice is "anus" ? "Anal pregnancy" : wombLabel(_pregnancy)) + " progress" : "Pregnancy progress">>
+					<<set _pregLabel to _activePregnancies.length gt 1 ? (_pregnancy.orifice is "anus" ? "항문 임신" : wombLabel(_pregnancy)) + " 진행도" : "임신 진행도">>
 					<<set _pregId to _pregnancy.pregnancyId>>
 					<<numberStepper _pregLabel pregnancyProgress(_pregnancy) {
 						callback: value => {
@@ -3107,12 +3107,12 @@
 					<<link "가장 최근 저장된 정액으로 강제 수정">>
 						<<if $cumLoads[_womb].length and availablePlayerPregnancySlot(_womb) isnot null>>
 							<<run recordPendingPregnancy(_womb, $cumLoads[_womb].last())>>
-							<<replace "#cheatForcePick">><span class="green">수정 대기 상태가 기록되었습니다</span> (<<= _implantDays>>일 뒤에 착상되니, 시간을 넘겨 확인하세요)<</replace>>
+							<<replace "#cheatForcePick">><span class="green">수정 대기 상태가 기록되었습니다</span> (<<= _implantDays>>일 뒤에 착상되니, 시간을 넘겨 확인하십시오)<</replace>>
 						<<else>>
 							<<replace "#cheatForcePick">><span class="red">저장된 정액이 필요하며, 이미 진행 중인 임신이나 대기 중인 수정이 없어야 합니다</span><</replace>>
 						<</if>>
 					<</link>>
-					<span id="cheatForcePick" class="description">(<<= _implantDays>>일 뒤에 착상되니, 시간을 넘겨 확인하세요)</span>
+					<span id="cheatForcePick" class="description">(<<= _implantDays>>일 뒤에 착상되니, 시간을 넘겨 확인하십시오)</span>
 				<</if>>
 			<</if>>
 		<</if>>
@@ -3243,7 +3243,7 @@
 	<<if $backgroundTraits.includes("autism")>>
 		<<set _state to ensureAutismSpectrumState()>>
 		부하: <span @class="_state.phase is 'burnout' ? 'red' : _state.phase is 'settled' ? 'green' : 'gold'"><<= autismLoadPercent()>>% (<<= ({burnout: "번아웃", strained: "버거움", settled: "안정"})[_state.phase] || _state.phase.toUpperFirst()>>)</span>
-		<<numberStepper "부담 설정" _state.load {step: 5, min: 0, max: 100, percentage: false, callback: value => {
+		<<numberStepper "부하 설정" _state.load {step: 5, min: 0, max: 100, percentage: false, callback: value => {
 			autismSetLoad(value);
 			Wikifier.wikifyEval("<<replace '#statsautismload'>><<autismLoadCheat>><</replace>>");
 		}}>>
@@ -3594,11 +3594,11 @@
 				max: amcDisplayCap($history, 1000, $AMCTraits.history), percentage: false
 			}>>
 		<<case "characteristics">>
-			<<numberStepper "<<tficon angel>> 순결도" $purity "purity" {max: 1000}>>
+			<<numberStepper "<<tficon angel>> 순결함" $purity "purity" {max: 1000}>>
 			<<numberStepper "<<symbol beauty>> 미모" $beauty "beauty" {max: amcDisplayCap($beauty, 10000, $AMCTraits.beauty), percentage: false}>>
 			<<numberStepper "<<symbol physique>> 체격" $physique "physique" { max: amcDisplayCap($physique, $physiquesize, $AMCTraits.physique), percentage: false, callback: (value) => { State.variables.xchange = State.variables.xchange || {}; State.variables.xchange.physiqueCheatTarget = value; if (typeof window.updatePhysique === "function") { try { window.updatePhysique(); } catch (e) {} } } }>>
 			<<numberStepper "<<symbol willpower>> 의지력" $willpower "willpower" {max: amcDisplayCap($willpower, 1000, $AMCTraits.willpower), percentage: false}>>
-			<<numberStepper "<<symbol awareness>> 인식" $awareness "awareness" {min: -200, max: 1000, reverse: true}>>
+			<<numberStepper "<<symbol awareness>> 성지식" $awareness "awareness" {min: -200, max: 1000, reverse: true}>>
 			<<numberStepper "<<symbol promiscuity>> 음란도" $promiscuity "promiscuity" {reverse: true}>>
 			<<numberStepper "<<symbol exhibitionism>> 노출증" $exhibitionism "exhibitionism" {reverse: true}>>
 			<<numberStepper "<<symbol deviancy>> 이상성욕" $deviancy "deviancy" {reverse: true}>>

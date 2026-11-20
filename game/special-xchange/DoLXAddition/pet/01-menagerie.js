@@ -69,7 +69,7 @@ const Menagerie = (() => {
 			name: "snake",
 			colours: ["blue", "red", "brown", "green", "pink", "purple", "teal", "yellow"],
 			housing: "terrarium",
-			carriedOn: "around your neck",
+			carriedOn: "당신의 목을 감은 채",
 			diet: "feed",
 			eats: { categories: ["meat", "seafood"], tags: ["carnivore", "seafood"] },
 			sickens: { categories: [], tags: ["alcohol", "tainted", "spicy", "sweet"] },
@@ -84,7 +84,7 @@ const Menagerie = (() => {
 			name: "slime",
 			colours: ["blue", "red", "green", "orange", "pink", "purple", "teal", "yellow", "gray"],
 			housing: "jar",
-			carriedOn: "against your feet",
+			carriedOn: "당신의 발에 기댄 채",
 			diet: "fluids",
 			eats: { categories: ["fruit", "produce", "vegetable", "mushroom"], tags: ["drink", "sweet", "vegan", "vegetarian"] },
 			sickens: { categories: [], tags: ["alcohol", "tainted", "spicy"] },
@@ -625,24 +625,24 @@ const Menagerie = (() => {
 	/* --- Status and combat support --- */
 
 	function hungerWord(p) {
-		if (p.hunger >= Tuning.starvingThreshold) return "Starving";
-		if (p.hunger >= Tuning.hungryThreshold) return "Hungry";
-		if (p.hunger >= 30) return "Peckish";
-		return "Full";
+		if (p.hunger >= Tuning.starvingThreshold) return "굶주림";
+		if (p.hunger >= Tuning.hungryThreshold) return "배고픔";
+		if (p.hunger >= 30) return "출출함";
+		return "배부름";
 	}
 	function happinessWord(p) {
-		if (p.happiness >= 80) return "Delighted";
-		if (p.happiness >= 55) return "Content";
-		if (p.happiness >= 30) return "Restless";
-		if (p.happiness > 0) return "Miserable";
-		return "Despairing";
+		if (p.happiness >= 80) return "기쁨";
+		if (p.happiness >= 55) return "만족";
+		if (p.happiness >= 30) return "불안";
+		if (p.happiness > 0) return "비참";
+		return "절망";
 	}
 	function bondWord(p) {
-		if (p.bond >= 90) return "Inseparable";
-		if (p.bond >= 70) return "Devoted";
-		if (p.bond >= 45) return "Attached";
-		if (p.bond >= 20) return "Warming";
-		return "Wary";
+		if (p.bond >= 90) return "떼려야 뗄 수 없음";
+		if (p.bond >= 70) return "헌신";
+		if (p.bond >= 45) return "정듦";
+		if (p.bond >= 20) return "마음을 엶";
+		return "경계";
 	}
 
 	function status(species) {
@@ -790,17 +790,17 @@ const Menagerie = (() => {
 		const p = getPet(species);
 		let h = `<div class="mg-card">`;
 		h += `<div class="mg-head"><span class="mg-name">${esc(s.label)}</span>`;
-		if (s.where === "carried") h += ` <span class="mg-sub">with you</span>`;
-		else if (s.where === "lost") h += ` <span class="mg-sub bad">lost</span>`;
-		if (s.sick) h += ` <span class="mg-sub bad">unwell</span>`;
+		if (s.where === "carried") h += ` <span class="mg-sub">함께 있음</span>`;
+		else if (s.where === "lost") h += ` <span class="mg-sub bad">잃어버림</span>`;
+		if (s.sick) h += ` <span class="mg-sub bad">아픔</span>`;
 		h += `</div>`;
 		if (s.where === "lost") {
-			h += `<div class="mg-meta">It still remembers you.</div>`;
-			h += meter("Bond", s.bond, s.bondWord, "bond");
+			h += `<div class="mg-meta">아직 당신을 기억한다.</div>`;
+			h += meter("유대", s.bond, s.bondWord, "bond");
 		} else {
-			h += meter("Fed", 100 - s.hunger, s.hungerWord, hungerClass(p));
-			h += meter("Mood", s.happiness, s.happinessWord, happinessClass(p));
-			h += meter("Bond", s.bond, s.bondWord, "bond");
+			h += meter("포만감", 100 - s.hunger, s.hungerWord, hungerClass(p));
+			h += meter("기분", s.happiness, s.happinessWord, happinessClass(p));
+			h += meter("유대", s.bond, s.bondWord, "bond");
 		}
 		h += `</div>`;
 		return h;

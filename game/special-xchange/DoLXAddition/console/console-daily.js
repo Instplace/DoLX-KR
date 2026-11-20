@@ -27,7 +27,7 @@
 	function untilReset(now = new Date()) {
 		const next = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1);
 		const mins = Math.max(1, Math.ceil((next - now.getTime()) / 60000));
-		return mins >= 60 ? `${Math.floor(mins / 60)} h ${mins % 60} min` : `${mins} min`;
+		return mins >= 60 ? `${Math.floor(mins / 60)}시간 ${mins % 60}분` : `${mins}분`;
 	}
 
 	/* 32-bit FNV-1a: a stable seed from a string. */
@@ -63,7 +63,7 @@
 		for (const old of dates.slice(0, Math.max(0, dates.length - keepDays))) delete records[old];
 	}
 
-	const levelName = level => (level ? level[0].toUpperCase() + level.slice(1) : "");
+	const levelName = level => ({ easy: "쉬움", medium: "보통", normal: "보통", hard: "어려움" })[level] || (level ? level[0].toUpperCase() + level.slice(1) : "");
 
 	/* The difficulty label: the word itself, with DoL's own green / gold / red on top. */
 	const levelClass = { easy: "green", medium: "gold", hard: "red" };
@@ -90,12 +90,12 @@
 	function featCard(name, done, total) {
 		const state = featState(name);
 		let line;
-		if (state === "earned") line = '<span class="green">Earned in this save.</span>';
-		else if (state === "blocked") line = "Feats can't be earned in this save (cheats, debug, or soft mode are on).";
-		else line = done >= total ? "All done." : `${total - done} to go.`;
+		if (state === "earned") line = '<span class="green">이 세이브에서 획득했습니다.</span>';
+		else if (state === "blocked") line = "이 세이브에서는 업적을 얻을 수 없습니다 (치트, 디버그 또는 소프트 모드가 켜져 있습니다).";
+		else line = done >= total ? "모두 완료했습니다." : `${total - done}개 남음.`;
 		return (
 			`<div class="con-feat${state === "earned" ? " con-feat--earned" : ""}"><img class="con-feat-coin" src="img/ui/coin-gold.gif" alt="" aria-hidden="true">` +
-			`<div class="con-feat-text"><span class="con-feat-title">${name}, a Level 3 feat</span><span>Complete all ${total} challenges to earn it. ${line}</span></div></div>`
+			`<div class="con-feat-text"><span class="con-feat-title">${setup.feats?.[name]?.title || name}, 레벨 3 업적</span><span>도전 과제 ${total}개를 모두 완료하면 획득합니다. ${line}</span></div></div>`
 		);
 	}
 
@@ -113,11 +113,11 @@
 		const li = rows.map(date => {
 			const r = records[date];
 			return (
-				`<li><span>${date}</span><span>${r.done ? "Completed" : "Not completed"}</span>` +
-				`<span>${r.best !== null && r.best !== undefined ? best(r) : "no win"}</span><span>${r.paid ? formatMoney(r.paid) : ""}</span></li>`
+				`<li><span>${date}</span><span>${r.done ? "완료" : "미완료"}</span>` +
+				`<span>${r.best !== null && r.best !== undefined ? best(r) : "승리 없음"}</span><span>${r.paid ? formatMoney(r.paid) : ""}</span></li>`
 			);
 		});
-		return `<h4 class="con-subhead">Earlier days</h4><ul class="con-history">${li.join("")}</ul>`;
+		return `<h4 class="con-subhead">이전 날짜</h4><ul class="con-history">${li.join("")}</ul>`;
 	}
 
 	setup.consoleDaily = Object.freeze({

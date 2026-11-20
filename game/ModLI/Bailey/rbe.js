@@ -69,69 +69,69 @@ window.baileySafeWordIsName = function (word) {
 
 /* Each key -> img/clothes/neck/baileys_collar_<key>/full.png */
 window.baileyCollarRegistry = [
-	{ key: "reiyu_goose", pack: "Goose", label: "Goose by Reiyu" },
-	{ key: "en_goose_colored", pack: "Goose", label: "Goose - Colored Lotus by En" },
-	{ key: "en_goose_fullcolor", pack: "Goose", label: "Goose - Full Color Lotus by En" },
-	{ key: "en_goose_gold", pack: "Goose", label: "Goose - Gold Lotus by En" },
-	{ key: "en_goose_steel", pack: "Goose", label: "Goose - Steel Lotus by En" },
-	{ key: "mj_goose", pack: "Goose", label: "Goose by MJ" },
-	{ key: "snowy_vanilla", pack: "Vanilla", label: "Vanilla by Snowy" },
-	{ key: "mj_vanilla", pack: "Vanilla", label: "Vanilla by MJ" },
-	{ key: "rasu_mikili", pack: "Mikili", label: "Mikili by Rasu" },
-	{ key: "weremane_mikili", pack: "Mikili", label: "Mikili by Weremane" },
-	{ key: "anamink_au_masc", pack: "AU", label: "AU Masc by Anamink" },
-	{ key: "anamink_au_fem", pack: "AU", label: "AU Fem by Anamink" },
-	{ key: "anamink_au_andro", pack: "AU", label: "AU Andro by Anamink" },
-	{ key: "mj_au_masc", pack: "AU", label: "AU Masc by MJ" },
-	{ key: "mj_au_fem", pack: "AU", label: "AU Fem by MJ" },
-	{ key: "mj_au_andro", pack: "AU", label: "AU Andro by MJ" },
-	{ key: "reiyu_dmmm", pack: "DMMM", label: "DMMM by Reiyu" },
-	{ key: "mj_dmmm", pack: "DMMM", label: "DMMM by MJ" },
-	{ key: "mj_hikari", pack: "Hikari", label: "Hikari by MJ" },
-	{ key: "mj_rayne", pack: "Rayne", label: "Rayne by MJ" },
-	{ key: "dove_rayne", pack: "Rayne", label: "Rayne by Dove" },
-	{ key: "mj_beeesss", pack: "Beeesss", label: "Beeesss by MJ" },
-	{ key: "mj_rgraphics", pack: "R-Graphics", label: "R-Graphics by MJ" },
-	{ key: "mj_goose_fem_pink", pack: "Goose", label: "Goose Fem Pink by MJ" },
-	{ key: "mj_goose_fem_pink_alt", pack: "Goose", label: "Goose Fem Pink Alt by MJ" },
-	{ key: "mj_goose_fem_pink_lite", pack: "Goose", label: "Goose Fem Pink Lite by MJ" },
-	{ key: "mj_goose_fem_silver", pack: "Goose", label: "Goose Fem Silver by MJ" },
-	{ key: "mj_goose_masc_pink", pack: "Goose", label: "Goose Masc Pink by MJ" },
-	{ key: "mj_goose_masc_pink_alt", pack: "Goose", label: "Goose Masc Pink Alt by MJ" },
-	{ key: "mj_goose_masc_pink_lite", pack: "Goose", label: "Goose Masc Pink Lite by MJ" },
-	{ key: "mj_goose_masc_silver", pack: "Goose", label: "Goose Masc Silver by MJ" },
-	{ key: "mj_vanilla_pink", pack: "Vanilla", label: "Vanilla Pink by MJ" },
-	{ key: "mj_vanilla_silver", pack: "Vanilla", label: "Vanilla Silver by MJ" },
-	{ key: "mj_mikili_pink", pack: "Mikili", label: "Mikili Pink by MJ" },
-	{ key: "mj_mikili_pink_alt", pack: "Mikili", label: "Mikili Pink Alt by MJ" },
-	{ key: "mj_mikili_pink_lite", pack: "Mikili", label: "Mikili Pink Lite by MJ" },
-	{ key: "mj_mikili_silver", pack: "Mikili", label: "Mikili Silver by MJ" },
-	{ key: "mj_au_andro_pink", pack: "AU", label: "AU Andro Pink by MJ" },
-	{ key: "mj_au_andro_pink_alt", pack: "AU", label: "AU Andro Pink Alt by MJ" },
-	{ key: "mj_au_andro_pink_lite", pack: "AU", label: "AU Andro Pink Lite by MJ" },
-	{ key: "mj_au_andro_silver", pack: "AU", label: "AU Andro Silver by MJ" },
-	{ key: "mj_au_fem_pink", pack: "AU", label: "AU Fem Pink by MJ" },
-	{ key: "mj_au_fem_pink_alt", pack: "AU", label: "AU Fem Pink Alt by MJ" },
-	{ key: "mj_au_fem_pink_lite", pack: "AU", label: "AU Fem Pink Lite by MJ" },
-	{ key: "mj_au_fem_silver", pack: "AU", label: "AU Fem Silver by MJ" },
-	{ key: "mj_au_masc_pink", pack: "AU", label: "AU Masc Pink by MJ" },
-	{ key: "mj_au_masc_pink_alt", pack: "AU", label: "AU Masc Pink Alt by MJ" },
-	{ key: "mj_au_masc_pink_lite", pack: "AU", label: "AU Masc Pink Lite by MJ" },
-	{ key: "mj_au_masc_silver", pack: "AU", label: "AU Masc Silver by MJ" },
-	{ key: "mj_dmmm_pink", pack: "DMMM", label: "DMMM Pink by MJ" },
-	{ key: "mj_dmmm_pink_alt", pack: "DMMM", label: "DMMM Pink Alt by MJ" },
-	{ key: "mj_dmmm_pink_lite", pack: "DMMM", label: "DMMM Pink Lite by MJ" },
-	{ key: "mj_dmmm_silver", pack: "DMMM", label: "DMMM Silver by MJ" },
-	{ key: "mj_rgraphics_pink", pack: "R-Graphics", label: "R-Graphics Pink by MJ" },
-	{ key: "mj_rgraphics_pink_alt", pack: "R-Graphics", label: "R-Graphics Pink Alt by MJ" },
-	{ key: "mj_rgraphics_pink_lite", pack: "R-Graphics", label: "R-Graphics Pink Lite by MJ" },
-	{ key: "mj_rgraphics_silver", pack: "R-Graphics", label: "R-Graphics Silver by MJ" },
-	{ key: "mj_rayne_pink", pack: "Rayne", label: "Rayne Pink by MJ" },
-	{ key: "mj_rayne_pink_alt", pack: "Rayne", label: "Rayne Pink Alt by MJ" },
-	{ key: "mj_rayne_pink_lite", pack: "Rayne", label: "Rayne Pink Lite by MJ" },
-	{ key: "mj_rayne_silver", pack: "Rayne", label: "Rayne Silver by MJ" },
-	{ key: "mj_beeesss_pink", pack: "Beeesss", label: "Beeesss Pink by MJ" },
-	{ key: "mj_beeesss_silver", pack: "Beeesss", label: "Beeesss Silver by MJ" },
+	{ key: "reiyu_goose", pack: "Goose", label: "Goose (Reiyu 제작)" },
+	{ key: "en_goose_colored", pack: "Goose", label: "Goose - 컬러 연꽃 (En 제작)" },
+	{ key: "en_goose_fullcolor", pack: "Goose", label: "Goose - 풀컬러 연꽃 (En 제작)" },
+	{ key: "en_goose_gold", pack: "Goose", label: "Goose - 금빛 연꽃 (En 제작)" },
+	{ key: "en_goose_steel", pack: "Goose", label: "Goose - 강철빛 연꽃 (En 제작)" },
+	{ key: "mj_goose", pack: "Goose", label: "Goose (MJ 제작)" },
+	{ key: "snowy_vanilla", pack: "Vanilla", label: "Vanilla (Snowy 제작)" },
+	{ key: "mj_vanilla", pack: "Vanilla", label: "Vanilla (MJ 제작)" },
+	{ key: "rasu_mikili", pack: "Mikili", label: "Mikili (Rasu 제작)" },
+	{ key: "weremane_mikili", pack: "Mikili", label: "Mikili (Weremane 제작)" },
+	{ key: "anamink_au_masc", pack: "AU", label: "AU 남성형 (Anamink 제작)" },
+	{ key: "anamink_au_fem", pack: "AU", label: "AU 여성형 (Anamink 제작)" },
+	{ key: "anamink_au_andro", pack: "AU", label: "AU 중성형 (Anamink 제작)" },
+	{ key: "mj_au_masc", pack: "AU", label: "AU 남성형 (MJ 제작)" },
+	{ key: "mj_au_fem", pack: "AU", label: "AU 여성형 (MJ 제작)" },
+	{ key: "mj_au_andro", pack: "AU", label: "AU 중성형 (MJ 제작)" },
+	{ key: "reiyu_dmmm", pack: "DMMM", label: "DMMM (Reiyu 제작)" },
+	{ key: "mj_dmmm", pack: "DMMM", label: "DMMM (MJ 제작)" },
+	{ key: "mj_hikari", pack: "Hikari", label: "Hikari (MJ 제작)" },
+	{ key: "mj_rayne", pack: "Rayne", label: "Rayne (MJ 제작)" },
+	{ key: "dove_rayne", pack: "Rayne", label: "Rayne (Dove 제작)" },
+	{ key: "mj_beeesss", pack: "Beeesss", label: "Beeesss (MJ 제작)" },
+	{ key: "mj_rgraphics", pack: "R-Graphics", label: "R-Graphics (MJ 제작)" },
+	{ key: "mj_goose_fem_pink", pack: "Goose", label: "Goose 여성형 핑크 (MJ 제작)" },
+	{ key: "mj_goose_fem_pink_alt", pack: "Goose", label: "Goose 여성형 핑크 대체판 (MJ 제작)" },
+	{ key: "mj_goose_fem_pink_lite", pack: "Goose", label: "Goose 여성형 핑크 라이트 (MJ 제작)" },
+	{ key: "mj_goose_fem_silver", pack: "Goose", label: "Goose 여성형 실버 (MJ 제작)" },
+	{ key: "mj_goose_masc_pink", pack: "Goose", label: "Goose 남성형 핑크 (MJ 제작)" },
+	{ key: "mj_goose_masc_pink_alt", pack: "Goose", label: "Goose 남성형 핑크 대체판 (MJ 제작)" },
+	{ key: "mj_goose_masc_pink_lite", pack: "Goose", label: "Goose 남성형 핑크 라이트 (MJ 제작)" },
+	{ key: "mj_goose_masc_silver", pack: "Goose", label: "Goose 남성형 실버 (MJ 제작)" },
+	{ key: "mj_vanilla_pink", pack: "Vanilla", label: "Vanilla 핑크 (MJ 제작)" },
+	{ key: "mj_vanilla_silver", pack: "Vanilla", label: "Vanilla 실버 (MJ 제작)" },
+	{ key: "mj_mikili_pink", pack: "Mikili", label: "Mikili 핑크 (MJ 제작)" },
+	{ key: "mj_mikili_pink_alt", pack: "Mikili", label: "Mikili 핑크 대체판 (MJ 제작)" },
+	{ key: "mj_mikili_pink_lite", pack: "Mikili", label: "Mikili 핑크 라이트 (MJ 제작)" },
+	{ key: "mj_mikili_silver", pack: "Mikili", label: "Mikili 실버 (MJ 제작)" },
+	{ key: "mj_au_andro_pink", pack: "AU", label: "AU 중성형 핑크 (MJ 제작)" },
+	{ key: "mj_au_andro_pink_alt", pack: "AU", label: "AU 중성형 핑크 대체판 (MJ 제작)" },
+	{ key: "mj_au_andro_pink_lite", pack: "AU", label: "AU 중성형 핑크 라이트 (MJ 제작)" },
+	{ key: "mj_au_andro_silver", pack: "AU", label: "AU 중성형 실버 (MJ 제작)" },
+	{ key: "mj_au_fem_pink", pack: "AU", label: "AU 여성형 핑크 (MJ 제작)" },
+	{ key: "mj_au_fem_pink_alt", pack: "AU", label: "AU 여성형 핑크 대체판 (MJ 제작)" },
+	{ key: "mj_au_fem_pink_lite", pack: "AU", label: "AU 여성형 핑크 라이트 (MJ 제작)" },
+	{ key: "mj_au_fem_silver", pack: "AU", label: "AU 여성형 실버 (MJ 제작)" },
+	{ key: "mj_au_masc_pink", pack: "AU", label: "AU 남성형 핑크 (MJ 제작)" },
+	{ key: "mj_au_masc_pink_alt", pack: "AU", label: "AU 남성형 핑크 대체판 (MJ 제작)" },
+	{ key: "mj_au_masc_pink_lite", pack: "AU", label: "AU 남성형 핑크 라이트 (MJ 제작)" },
+	{ key: "mj_au_masc_silver", pack: "AU", label: "AU 남성형 실버 (MJ 제작)" },
+	{ key: "mj_dmmm_pink", pack: "DMMM", label: "DMMM 핑크 (MJ 제작)" },
+	{ key: "mj_dmmm_pink_alt", pack: "DMMM", label: "DMMM 핑크 대체판 (MJ 제작)" },
+	{ key: "mj_dmmm_pink_lite", pack: "DMMM", label: "DMMM 핑크 라이트 (MJ 제작)" },
+	{ key: "mj_dmmm_silver", pack: "DMMM", label: "DMMM 실버 (MJ 제작)" },
+	{ key: "mj_rgraphics_pink", pack: "R-Graphics", label: "R-Graphics 핑크 (MJ 제작)" },
+	{ key: "mj_rgraphics_pink_alt", pack: "R-Graphics", label: "R-Graphics 핑크 대체판 (MJ 제작)" },
+	{ key: "mj_rgraphics_pink_lite", pack: "R-Graphics", label: "R-Graphics 핑크 라이트 (MJ 제작)" },
+	{ key: "mj_rgraphics_silver", pack: "R-Graphics", label: "R-Graphics 실버 (MJ 제작)" },
+	{ key: "mj_rayne_pink", pack: "Rayne", label: "Rayne 핑크 (MJ 제작)" },
+	{ key: "mj_rayne_pink_alt", pack: "Rayne", label: "Rayne 핑크 대체판 (MJ 제작)" },
+	{ key: "mj_rayne_pink_lite", pack: "Rayne", label: "Rayne 핑크 라이트 (MJ 제작)" },
+	{ key: "mj_rayne_silver", pack: "Rayne", label: "Rayne 실버 (MJ 제작)" },
+	{ key: "mj_beeesss_pink", pack: "Beeesss", label: "Beeesss 핑크 (MJ 제작)" },
+	{ key: "mj_beeesss_silver", pack: "Beeesss", label: "Beeesss 실버 (MJ 제작)" },
 ];
 
 /* Once per loaded state: one-off repairs. */
@@ -376,7 +376,7 @@ window.baileyCollarUpload = function () {
 		const file = ev.target.files[0];
 		if (!file) return;
 		if (file.size > 2 * 1024 * 1024) {
-			alert("Image too large (max 2MB). Please pick a smaller file.");
+			alert("이미지가 너무 큽니다(최대 2MB). 더 작은 파일을 골라 주십시오.");
 			return;
 		}
 		const reader = new FileReader();
@@ -385,7 +385,7 @@ window.baileyCollarUpload = function () {
 			try {
 				localStorage.setItem("baileyCollarCustom", dataUri);
 			} catch (err) {
-				alert("Couldn't save custom collar - localStorage is full or disabled.");
+				alert("사용자 지정 목줄을 저장하지 못했습니다. localStorage가 가득 찼거나 꺼져 있습니다.");
 				return;
 			}
 			window.baileyCollarImages.custom = dataUri;
@@ -395,7 +395,7 @@ window.baileyCollarUpload = function () {
 			});
 		};
 		reader.onerror = function () {
-			alert("Couldn't read that file. Try a different image.");
+			alert("파일을 읽지 못했습니다. 다른 이미지를 시도해 주십시오.");
 		};
 		reader.readAsDataURL(file);
 	});
@@ -475,9 +475,9 @@ $(document).on(":passageend", function () {
 
 $(document).one(":storyready", function () {
 	/* text.js loads after this file, so these can't be registered at script load. */
-	statDisplay.create("gbaileystock", () => statDisplay.statChange(baileyRevealed() ? "Stockholm Syndrome" : "???", 1, "bailey-stockholm"));
-	statDisplay.create("gbrattax", pennies => (pennies > 0 ? statDisplay.statChange(window.formatMoney(pennies) + " Brat Tax", 1, "pink") : ""));
-	statDisplay.create("gbaileyMood", amount => statDisplay.statChange("Mood", amount, amount > 0 ? "green" : "red"));
+	statDisplay.create("gbaileystock", () => statDisplay.statChange(baileyRevealed() ? "스톡홀름 증후군" : "???", 1, "bailey-stockholm"));
+	statDisplay.create("gbrattax", pennies => (pennies > 0 ? statDisplay.statChange(window.formatMoney(pennies) + " 말썽 세금", 1, "pink") : ""));
+	statDisplay.create("gbaileyMood", amount => statDisplay.statChange("기분", amount, amount > 0 ? "green" : "red"));
 
 	/* Start screen stamp. Start has already rendered by the time this runs. */
 	const passage = document.querySelector(".passage");
@@ -488,7 +488,7 @@ $(document).one(":storyready", function () {
 		el.style.textAlign = "center";
 		el.style.marginTop = "1em";
 		el.style.marginBottom = "1em";
-		el.textContent = "Reiyu's Bailey Expansion v" + BAILEY_EXPANSION_VERSION + " for X-Change — Active";
+		el.textContent = "Reiyu의 베일리 확장 모드 v" + BAILEY_EXPANSION_VERSION + " (X-체인지용) — 적용 중";
 		passage.insertBefore(el, passage.firstChild);
 	}
 

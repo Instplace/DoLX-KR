@@ -242,7 +242,7 @@ window.playerHasBetaWombs = playerHasBetaWombs;
  * @returns {string} "Left womb" or "Right womb"
  */
 function wombLabel(pregnancy) {
-	return (pregnancy?.womb ?? 1) === 2 ? "Right womb" : "Left womb";
+	return (pregnancy?.womb ?? 1) === 2 ? "오른쪽 자궁" : "왼쪽 자궁";
 }
 window.wombLabel = wombLabel;
 

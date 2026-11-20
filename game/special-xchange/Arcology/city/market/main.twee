@@ -2,66 +2,66 @@
 <<location "arcology_market">><<run setup.arcology.visit("market")>><<effects>>
 <<arcologyDangerCheck "market">><<if _arcologyDangerActive>><<exit>><</if>>
 <<arcologySceneCheck "street">><<if _arcologyScene>><<include "Arcology Scene">><<exit>><</if>>
-You arrive at Market Street, where small shops fill both sides of the road. Most of them are made from old shipping boxes, with plastic sheets used for roofs and walls. At one stall selling second-hand implant parts, a curtain hangs across the gap behind the counter.
+당신은 작은 가게들이 길 양쪽을 가득 메운 마켓 가에 도착한다. 대부분 낡은 운송 상자로 지었고, 지붕과 벽에는 비닐 시트를 썼다. 중고 임플란트 부품을 파는 한 가판대에는 카운터 뒤 틈새를 가로질러 커튼이 걸려 있다.
 <br><br>
 <<arcologyStreetHazards>>
 <<if !_arcologyHalt>>
 	주요 장소
 	<br>
-	<<arcologyicon "market">><<link [[Trading post (0:02)|Arcology Trading Post]]>><<pass 2>><</link>>
+	<<arcologyicon "market">><<link [[교역소 (0:02)|Arcology Trading Post]]>><<pass 2>><</link>>
 	<br>
-	<<arcologyicon "blackmarket">><<link [[Back of the parts stall (0:02)|Arcology Black Market]]>><<pass 2>><</link>>
+	<<arcologyicon "blackmarket">><<link [[부품 가판대 뒤편 (0:02)|Arcology Black Market]]>><<pass 2>><</link>>
 	<br><br>
 	<<arcologyStreets "market">>
 <</if>>
 
 :: Arcology Trading Post
 <<location "arcology_tradingpost">><<set $outside to 0>><<effects>>
-You enter the trading post, a large building where people can buy, sell, or exchange almost anything. At the far end of the room, a huge screen covers most of the wall. It shows messages from people looking to make trades.
+당신은 거의 모든 것을 사고, 팔고, 맞바꿀 수 있는 큰 건물, 교역소에 들어선다. 방 맨 안쪽 벽 대부분을 거대한 화면이 덮고 있다. 거래를 원하는 사람들의 메시지가 올라와 있다.
 <br><br>
 <<if !$daily.arcologyTradeRead>>
-	<<investigateicon>><<link [[Read the offers (0:10)|Arcology Trading Post Read]]>><<set $daily.arcologyTradeRead to true>><<pass 10>><</link>>
+	<<investigateicon>><<link [[제안글을 읽는다 (0:10)|Arcology Trading Post Read]]>><<set $daily.arcologyTradeRead to true>><<pass 10>><</link>>
 	<br>
 <</if>>
-<<getouticon>><<link [[Leave|Arcology Market Street]]>><<pass 2>><</link>>
+<<getouticon>><<link [[나간다|Arcology Market Street]]>><<pass 2>><</link>>
 <br>
 
 :: Arcology Trading Post Read
 <<location "arcology_tradingpost">><<set $outside to 0>><<effects>>
-You look through the advertisements. Most people are buying or selling electronic parts, but a few messages catch your attention.
+당신은 광고들을 훑어본다. 대부분 전자 부품을 사거나 파는 글이지만, 몇몇 메시지가 눈길을 끈다.
 <br><br>
-<<holo "TRADING POST / OPEN OFFERS">>
-	<<holoLine "I'll pay someone to keep a computer chip for me for one week. Don't ask why.">>
-	<<holoLine "Selling a complete copy of someone's personal information from the city's records. The person it belongs to doesn't need it anymore.">>
+<<holo "교역소 / 공개 의뢰">>
+	<<holoLine "일주일 동안 컴퓨터 칩을 대신 맡아 줄 사람에게 돈을 드립니다. 이유는 묻지 마십시오.">>
+	<<holoLine "도시 기록에서 뽑은 누군가의 개인 정보 전체 사본을 팝니다. 원래 주인에게는 이제 필요 없습니다.">>
 	<<generate1>><<set _tpP to $NPCList[0].pronouns>><<set _tpKin to $NPCList[0].pronoun is "f" ? "sister" : $NPCList[0].pronoun is "m" ? "brother" : "sibling">><<endevent>>
-	<<set _tpLine to "I'm looking for my " + _tpKin + ". " + _tpP.he.toUpperFirst() + " changed " + _tpP.his + " face last spring, and I don't know the new one. If you knew " + _tpP.him + " before the change, please contact me.">>
+	<<set _tpLine to "제 " + (({sister: "자매", brother: "형제", sibling: "형제자매"})[_tpKin] || _tpKin) + "를 찾고 있어요. 작년 봄에 얼굴을 바꿨는데, 새 얼굴을 몰라요. 바꾸기 전의 모습을 아는 분은 연락해 주세요.">>
 	<<holoLine _tpLine>>
 <</holo>>
 <br>
-You find an advertisement that interests you and try to reply using your implant. However, before you can type your message, a warning appears in front of your eyes.
+관심이 가는 광고를 하나 발견해 임플란트로 답장하려 한다. 그러나 메시지를 입력하기도 전에 눈앞에 경고가 나타난다.
 <br><br>
-<<holoNotice "TRADING POST" "ONLY REGISTERED RESIDENTS CAN TRADE." "denied">>
+<<holoNotice "교역소" "등록된 거주자만 거래할 수 있습니다." "denied">>
 <br>
-<<link [[Next|Arcology Trading Post]]>><</link>>
+<<link [[다음|Arcology Trading Post]]>><</link>>
 <br>
 
 :: Arcology Black Market
 <<location "arcology_blackmarket">><<set $outside to 0>><<effects>>
-Behind the parts stall, you notice a curtain blocking a narrow path between two warehouses. You pull the curtain aside and step inside.
+부품 가판대 뒤에서 두 창고 사이의 좁은 길을 가로막은 커튼이 눈에 띈다. 당신은 커튼을 젖히고 안으로 들어선다.
 <br><br>
-There are small tables on both sides of the path, with a seller sitting behind each one. Each seller has several closed boxes on the table. None of the boxes have labels, so you can't tell what's inside them.
+길 양쪽에 작은 탁자들이 놓여 있고, 탁자마다 판매상이 한 명씩 뒤에 앉아 있다. 판매상마다 탁자 위에 닫힌 상자 여러 개를 두었다. 상자에는 라벨이 없어서 무엇이 들었는지 알 수 없다.
 <br><br>
 <<if $daily.arcologyBlackMarketBanned>>
-	The seller with the stim patches <span class="blue">turns away</span> when you come through the curtain.
+	각성 패치를 파는 판매상은 당신이 커튼을 지나 들어오자 <span class="blue">등을 돌린다.</span>
 	<br><br>
 <<else>>
 	<<set _bmP to setup.arcologyPrice.quote("stim")>>
-	One seller has a tray of stim patches with no brand on them. A small screen beside the tray shows the price.
+	한 판매상의 쟁반에 브랜드 표시가 없는 각성 패치가 놓여 있다. 쟁반 옆 작은 화면에 가격이 표시되어 있다.
 	<br>
 	<<if setup.arcologyPrice.stockLeft("dealer") lte 0>>
-		<span class="blue">The tray is empty. "Come back tomorrow."</span>
+		<span class="blue">쟁반이 비어 있다. "내일 다시 와."</span>
 	<<elseif setup.arcologyPrice.affordable(_bmP)>>
-		<<capture _bmP>><span class="arc-priced"><<arcologyicon "health">><<link `"Buy a stim patch (" + _bmP.label + ")"` "Arcology Black Market Deal">><<arcologyNPC 0 "under" "dealer">>
+		<<capture _bmP>><span class="arc-priced"><<arcologyicon "health">><<link `"각성 패치를 산다 (" + _bmP.label + ")"` "Arcology Black Market Deal">><<arcologyNPC 0 "under" "dealer">>
 			<<if _bmP.cheap is "hostile">>
 				<<set $xchange.arcology.deal to { stage: "dispute", old: _bmP.q, fair: setup.arcologyPrice.fair("stim") }>><<run delete $xchange.arcology.pq.stim>>
 			<<elseif setup.arcologyPrice.pay("stim")>>
@@ -71,71 +71,71 @@ There are small tables on both sides of the path, with a seller sitting behind e
 			<</if>>
 		<</link>></span><</capture>><<lpain>><<arcologyPriceNote _bmP>>
 	<<else>>
-		<span class="blue">A stim patch costs <<print _bmP.label>>.</span><<arcologyPriceNote _bmP>>
+		<span class="blue">각성 패치 가격은 <<print _bmP.label>>【이】다.</span><<arcologyPriceNote _bmP>>
 	<</if>>
 	<br><br>
 <</if>>
 <<if !$daily.arcologyBlackMarket>>
 	<<set $skulduggerydifficulty to 600>>
-	<<investigateicon>><<link [[Listen to the sellers (0:10)|Arcology Black Market Listen]]>><<set $daily.arcologyBlackMarket to true>><<pass 10>><<skulduggerycheck "silent">><<set $phase to $skulduggerysuccess>><</link>><<skulduggerydifficulty>>
+	<<investigateicon>><<link [[판매상들의 말을 엿듣는다 (0:10)|Arcology Black Market Listen]]>><<set $daily.arcologyBlackMarket to true>><<pass 10>><<skulduggerycheck "silent">><<set $phase to $skulduggerysuccess>><</link>><<skulduggerydifficulty>>
 	<br>
 <</if>>
-<<getouticon>><<link [[Leave|Arcology Market Street]]>><<pass 2>><</link>>
+<<getouticon>><<link [[나간다|Arcology Market Street]]>><<pass 2>><</link>>
 <br>
 
 :: Arcology Black Market Listen
 <<location "arcology_blackmarket">><<set $outside to 0>><<effects>>
 <<if $phase is 1>>
-	You stop beside one of the tables and pretend to look at the closed boxes. A customer is talking to the seller about the price of something, so you stay nearby and listen.
+	당신은 탁자 하나 옆에 멈춰 서서 닫힌 상자들을 구경하는 척한다. 손님이 판매상과 무언가의 가격을 두고 이야기하고 있어서, 당신은 가까이 머무르며 귀를 기울인다.
 	<br><br>
-	"It's a complete copy of the original chip," the seller explains. "It has all the same permissions, so it can open every door the original can open. Even if the original chip is destroyed, this copy will still work. It will even work if the owner dies."
+	"원본 칩의 완전한 사본이야." 판매상이 설명한다. "권한이 전부 똑같아서 원본이 여는 문은 전부 열 수 있어. 원본 칩이 부서져도 이 사본은 계속 작동하고, 주인이 죽어도 작동해."
 	<br><br>
-	"What if the owner is still alive?" the customer asks.
+	"주인이 아직 살아 있으면?" 손님이 묻는다.
 	<br><br>
-	"Then both chips can open the same doors," the seller answers. "At least for a while."
+	"그럼 두 칩이 같은 문을 열 수 있지." 판매상이 대답한다. "적어도 한동안은."
 	<br><br>
-	The seller closes the box and continues talking to the customer. <span class="green">Neither of them realises you've been listening.</span>
+	판매상은 상자를 닫고 손님과 이야기를 이어 간다. <span class="green">둘 다 당신이 엿듣고 있었다는 것을 알아차리지 못한다.</span>
 <<elseif $phase is 0>>
-	You walk closer to one of the tables, hoping to hear what the seller is telling a customer. However, the seller notices the small light behind your ear and immediately stops talking.
+	당신은 판매상이 손님에게 무슨 말을 하는지 들으려고 탁자 하나에 가까이 다가간다. 그러나 판매상이 당신의 귀 뒤의 작은 불빛을 알아차리고 곧바로 말을 멈춘다.
 	<br><br>
-	"You've got a guest chip," the seller says loudly enough for people at the next table to hear. "Go look somewhere else."
+	"방문객 칩이네." 판매상이 옆 탁자 사람들이 들을 만큼 큰 소리로 말한다. "딴 데 가서 알아봐."
 	<br><br>
-	You turn around and head back towards the curtain. <span class="red">Several people look at you as you leave.</span><<run setup.arcology.expose()>>
+	당신은 돌아서서 커튼 쪽으로 향한다. <span class="red">당신이 나갈 때 여러 사람이 쳐다본다.</span><<run setup.arcology.expose()>>
 <<else>>
-	You've already listened to the sellers.
+	판매상들의 말은 이미 엿들었다.
 <</if>>
 <<set $phase to -1>>
 <br><br>
-<<link [[Next|Arcology Black Market]]>><<set $phase to 0>><</link>>
+<<link [[다음|Arcology Black Market]]>><<set $phase to 0>><</link>>
 <br>
 
 :: Arcology Neon Strip
 <<location "arcology_neon">><<run setup.arcology.visit("neon")>><<effects>>
 <<arcologyDangerCheck "neon">><<if _arcologyDangerActive>><<exit>><</if>>
 <<arcologySceneCheck "street">><<if _arcologyScene>><<include "Arcology Scene">><<exit>><</if>>
-You are on the Neon Strip, a street full of nightclubs and bars. Bright signs cover the front of almost every building, from the ground floor to the roof. The signs flash in pink, gold, and green.
+당신은 나이트클럽과 술집으로 가득한 거리, 네온 스트립에 있다. 거의 모든 건물 정면이 1층부터 옥상까지 밝은 간판으로 덮여 있다. 간판은 분홍, 금색, 초록으로 깜빡인다.
 <br><br>
 <<if Time.dayState is "night">>
-	The street is crowded with people visiting the clubs. Loud music comes from several clubs at once, making it difficult to hear any one song clearly.
-	Security guards stand outside the club entrances, checking the information stored in each visitor's implant. Anyone who doesn't meet the club's requirements is turned away at the door.
+	거리는 클럽을 찾은 사람들로 붐빈다. 여러 클럽에서 동시에 시끄러운 음악이 흘러나와, 어느 한 곡도 또렷이 듣기 어렵다.
+	클럽 입구마다 경비들이 서서 방문객의 임플란트에 저장된 정보를 확인한다. 클럽의 조건을 충족하지 못하는 사람은 문 앞에서 돌려보내진다.
 <<elseif Time.dayState is "dawn">>
-	People are leaving the clubs as the sun comes up. Some cover their eyes because of the bright morning light, while others walk slowly along the street.
-	A worker is cleaning the road, using water to move pieces of broken glass towards the drains.
+	해가 뜨자 사람들이 클럽에서 나온다. 밝은 아침 햇빛에 눈을 가리는 사람도 있고, 거리를 따라 느릿느릿 걷는 사람도 있다.
+	인부 한 명이 물을 뿌려 깨진 유리 조각을 배수구 쪽으로 쓸어 내며 도로를 청소하고 있다.
 <<else>>
-	Most of the clubs are closed, and there are very few people on the street. Delivery drones arrive at the back entrances of the buildings, bringing boxes filled with bottles.
-	The bright signs are still flashing, even though almost nobody is around to see them.
+	클럽 대부분이 문을 닫았고 거리에는 사람이 거의 없다. 배달 드론들이 건물 뒷문에 도착해 병이 가득 든 상자를 내려놓는다.
+	구경할 사람이 거의 없는데도 밝은 간판들은 여전히 깜빡이고 있다.
 <</if>>
 <br><br>
 <<arcologyStreetHazards>>
 <<if !_arcologyHalt>>
 	주요 장소
 	<br>
-	<<arcologyicon "halcyon">><<link [[Halcyon (0:01)|Arcology Halcyon]]>><<pass 1>><</link>>
+	<<arcologyicon "halcyon">><<link [[헐시언 (0:01)|Arcology Halcyon]]>><<pass 1>><</link>>
 	<br>
-	<<arcologyicon "gambling">><<link [[The Static Room (0:01)|Arcology Static Room]]>><<pass 1>><</link>>
+	<<arcologyicon "gambling">><<link [[스태틱 룸 (0:01)|Arcology Static Room]]>><<pass 1>><</link>>
 	<br>
 	<<if Time.dayState is "night" or Time.hour lt 4>>
-		<<arcologyicon "club">><<link [[Pulse (0:02)|Arcology Pulse]]>><<pass 2>><</link>>
+		<<arcologyicon "club">><<link [[펄스 (0:02)|Arcology Pulse]]>><<pass 2>><</link>>
 		<br>
 	<</if>>
 	<br>
@@ -144,88 +144,88 @@ You are on the Neon Strip, a street full of nightclubs and bars. Bright signs co
 
 :: Arcology Halcyon
 <<location "arcology_halcyon">><<set $outside to 0>><<effects>>
-You enter Halcyon, a bar with a long glass counter. There are lights underneath the glass, making the drinks placed on the counter look brighter.
+당신은 긴 유리 카운터가 있는 술집 헐시언에 들어선다. 유리 아래에 조명이 있어 카운터 위에 놓인 술이 더 밝게 보인다.
 <br><br>
-Behind the counter, a large screen shows the usernames of customers and how much they still need to pay for their drinks. Some customers have paid extra to keep their names and bills hidden from other people.
+카운터 뒤의 큰 화면에 손님들의 핸들과 술값 미납액이 표시된다. 일부 손님은 추가 요금을 내고 자기 이름과 청구액이 다른 사람에게 보이지 않게 숨겨 두었다.
 <br><br>
 <<set _hcP to setup.arcologyPrice.quote("drinkHalcyon")>>
 <<if setup.arcologyFx.crisis() gte 2>>
-	A sign behind the counter says <span class="blue">Cipher payments are suspended</span> until the exchange settles.
+	카운터 뒤의 안내판에 환율이 안정될 때까지 <span class="blue">사이퍼 결제가 중단되었다</span>고 적혀 있다.
 	<br>
 <<elseif $drunk lt 500 and setup.arcologyPrice.affordable(_hcP)>>
-	<span class="arc-priced"><<foodicon "cider">><<link `"Buy a drink (" + _hcP.label + ", 0:10)"` "Arcology Halcyon">><<if setup.arcologyPrice.pay("drinkHalcyon")>><<pass 10>><<drunk 120>><<stress -2>><</if>><</link>></span><<ggdrunk>><<lstress>><<arcologyPriceNote _hcP>>
+	<span class="arc-priced"><<foodicon "cider">><<link `"술을 한 잔 산다 (" + _hcP.label + ", 0:10)"` "Arcology Halcyon">><<if setup.arcologyPrice.pay("drinkHalcyon")>><<pass 10>><<drunk 120>><<stress -2>><</if>><</link>></span><<ggdrunk>><<lstress>><<arcologyPriceNote _hcP>>
 	<br>
 <<elseif $drunk gte 500>>
-	<span class="blue">The bartender refuses to sell you another drink.</span>
+	<span class="blue">바텐더가 더는 술을 팔지 않으려 한다.</span>
 	<br>
 <</if>>
 <<if !$daily.arcologyCitizens or !$daily.arcologyCitizens["Arcology Halcyon"]>>
-	<<socialiseicon>><<link [[Talk to someone at the bar (0:10)|Arcology Citizen]]>><<pass 10>><<generate1>><<person1>><<run setup.arcology.newCitizen(either("guest", "guest", "under"), "Arcology Halcyon", "city")>><</link>>
+	<<socialiseicon>><<link [[술집에 있는 누군가와 이야기한다 (0:10)|Arcology Citizen]]>><<pass 10>><<generate1>><<person1>><<run setup.arcology.newCitizen(either("guest", "guest", "under"), "Arcology Halcyon", "city")>><</link>>
 	<br>
 <</if>>
-<<getouticon>><<link [[Leave|Arcology Neon Strip]]>><<pass 1>><</link>>
+<<getouticon>><<link [[나간다|Arcology Neon Strip]]>><<pass 1>><</link>>
 <br>
 
 :: Arcology Static Room
 <<location "arcology_gambling">><<set $outside to 0>><<effects>>
-You enter the Static Room, a place where people gamble. There are no windows, and you can't see any clocks.
+당신은 사람들이 도박을 하는 곳, 스태틱 룸에 들어선다. 창문이 없고 시계도 보이지 않는다.
 <br><br>
-Near the entrance, a sign appears in the air.
+입구 근처 허공에 안내문이 나타난다.
 <br>
-<<holoNotice "STATIC ROOM" "YOU CAN ALSO USE RECORDS INSTEAD OF MONEY TO PLACE BETS. ASK AT THE DESK." "warn">>
+<<holoNotice "스태틱 룸" "돈 대신 기록으로도 돈을 걸 수 있습니다. 데스크에 문의하십시오." "warn">>
 <br>
 <<if $xchange.arcology.cipher gte 1000>>
-	<<arcologyicon "gambling">><<link [[Bet 1.000 Cipher (0:05)|Arcology Static Bet]]>><<pass 5>><<set $xchange.arcology.cipher -= 1000>><<set $phase to random(1, 100) lte 45 ? "win" : "lose">><</link>>
+	<<arcologyicon "gambling">><<link [[1.000 사이퍼를 건다 (0:05)|Arcology Static Bet]]>><<pass 5>><<set $xchange.arcology.cipher -= 1000>><<set $phase to random(1, 100) lte 45 ? "win" : "lose">><</link>>
 	<br>
 <<else>>
-	<span class="blue">You need at least 1.000 Cipher to place a bet.</span>
+	<span class="blue">내기를 걸려면 최소 1.000 사이퍼가 필요하다.</span>
 	<br>
 <</if>>
-<<getouticon>><<link [[Leave|Arcology Neon Strip]]>><<pass 1>><</link>>
+<<getouticon>><<link [[나간다|Arcology Neon Strip]]>><<pass 1>><</link>>
 <br>
 
 :: Arcology Static Bet
 <<location "arcology_gambling">><<set $outside to 0>><<effects>>
-You touch a number on the glass table, then place your hand flat beside it. The numbers shown on its surface begin changing quickly. After a few seconds, they change more slowly until the final result appears.
+당신은 유리 탁자 위의 숫자 하나를 짚고 그 옆에 손을 평평하게 올려놓는다. 표면에 표시된 숫자들이 빠르게 바뀌기 시작한다. 몇 초 뒤에는 변하는 속도가 느려지다가 마침내 최종 결과가 나타난다.
 <br><br>
 <<if $phase is "win">>
 	<<set $phase to 0>><<set $xchange.arcology.cipher += 2000>>
-	<span class="green">You win!</span> The result matches the number you chose. The table makes a short sound, and 2.000 Cipher is added to your digital wallet.<<stress -2>><<lstress>>
+	<span class="green">이겼다!</span> 결과가 당신이 고른 숫자와 일치한다. 탁자가 짧은 소리를 내고, 2.000 사이퍼가 디지털 지갑에 더해진다.<<stress -2>><<lstress>>
 <<elseif $phase is "lose">>
 	<<set $phase to 0>>
-	<span class="red">You lose</span>. The result doesn't match the number you chose. The person playing beside you keeps looking at the glass without reacting.<<stress 2>><<gstress>>
+	<span class="red">졌다</span>. 결과가 당신이 고른 숫자와 맞지 않는다. 옆에서 도박하는 사람은 아무 반응 없이 유리만 계속 들여다본다.<<stress 2>><<gstress>>
 <<else>>
-	<span class="blue">Your bet is no longer shown on the table</span>.
+	<span class="blue">당신의 내기는 더 이상 탁자에 표시되지 않는다</span>.
 <</if>>
 <br><br>
-<<link [[Next|Arcology Static Room]]>><</link>>
+<<link [[다음|Arcology Static Room]]>><</link>>
 <br>
 
 :: Arcology Pulse
 <<location "arcology_club">><<set $outside to 0>><<effects>>
-You are in Pulse, the biggest nightclub on the Strip.
+당신은 스트립에서 가장 큰 나이트클럽, 펄스에 있다.
 <br><br>
-Inside, the dance floor is crowded with people. You notice coloured lights changing as people dance. The lights are connected to the dancers' implants, so their movements control the colours. Some dancers have paid extra to make their lights brighter, making them easier to notice in the crowd.
+안에서는 댄스 플로어가 사람들로 북적인다. 사람들이 춤을 출 때마다 색색의 조명이 바뀌는 것이 눈에 띈다. 조명은 춤추는 사람들의 임플란트와 연결되어 있어 움직임이 색을 조종한다. 일부 댄서는 추가 요금을 내 조명을 더 밝게 해 두어 인파 속에서도 눈에 잘 띈다.
 <br><br>
 <<if setup.arcology.reliefLeft("club")>>
-	<<arcologyicon "dancers">><<link [[Dance (0:30)|Arcology Pulse]]>><<pass 30>><<run setup.arcology.relief("club")>><<stress -6>><<tiredness 4>><<danceskilluse>><</link>><<lstress>><<gtiredness>>
+	<<arcologyicon "dancers">><<link [[춤춘다 (0:30)|Arcology Pulse]]>><<pass 30>><<run setup.arcology.relief("club")>><<stress -6>><<tiredness 4>><<danceskilluse>><</link>><<lstress>><<gtiredness>>
 	<br>
 <</if>>
-<<getouticon>><<link [[Leave|Arcology Neon Strip]]>><<pass 2>><</link>>
+<<getouticon>><<link [[나간다|Arcology Neon Strip]]>><<pass 2>><</link>>
 <br>
 
 :: Arcology Underpass
 <<location "arcology_underpass">><<run setup.arcology.visit("underpass")>><<effects>>
 <<arcologyDangerCheck "underpass">><<if _arcologyDangerActive>><<exit>><</if>>
-You enter the Underpass, a road tunnel beneath the city's main platform. The ceiling is low and dirty. Advertising screens cover parts of the walls, but many of them are broken. The screens that still work provide enough light to see the road ahead.
+당신은 도시 주 플랫폼 아래를 지나는 도로 터널, 언더패스에 들어선다. 천장은 낮고 더럽다. 벽 곳곳을 광고 화면이 덮고 있지만 상당수가 고장 났다. 아직 작동하는 화면이 앞길을 볼 만큼의 빛을 준다.
 <br><br>
 <<arcologyStreetHazards>>
 <<if !_arcologyHalt>>
 	주요 장소
 	<br>
-	<<arcologyicon "cutter">><<link [[Chip cutter (0:02)|Arcology Chip Cutter]]>><<pass 2>><</link>>
+	<<arcologyicon "cutter">><<link [[칩 커터 (0:02)|Arcology Chip Cutter]]>><<pass 2>><</link>>
 	<br>
-	<<arcologyicon "camp">><<link [[The camp (0:02)|Arcology Underpass Camp]]>><<pass 2>><</link>>
+	<<arcologyicon "camp">><<link [[야영지 (0:02)|Arcology Underpass Camp]]>><<pass 2>><</link>>
 	<br><br>
 	<<arcologyStreets "underpass">>
 <</if>>
@@ -233,50 +233,50 @@ You enter the Underpass, a road tunnel beneath the city's main platform. The cei
 :: Arcology Chip Cutter
 <<location "arcology_cutter">><<set $outside to 0>><<effects>>
 <<arcologyDangerCheck "underpass">><<if _arcologyDangerActive>><<exit>><</if>>
-You open a door in the tunnel wall and enter a small room. On one side is a chair like the kind used by dentists. Next to it is a table with several magnifying glasses and tools for working on small electronic parts.
+당신은 터널 벽의 문을 열고 작은 방에 들어선다. 한쪽에는 치과에서 쓰는 것 같은 의자가 있다. 그 옆 탁자에는 돋보기 여러 개와 작은 전자 부품을 다루는 도구가 놓여 있다.
 <br><br>
-You notice several electronic chips placed in rows on a soft pad. Each chip has a small paper label beside it, with something written on it.
+부드러운 패드 위에 전자 칩 여러 개가 줄지어 놓여 있는 것이 보인다. 칩마다 옆에 작은 종이 라벨이 있고, 무언가가 적혀 있다.
 <br><br>
-A sign glows on the wall above the table, listing the services offered here.
+탁자 위 벽에서 간판이 빛나며 이곳에서 제공하는 서비스를 나열하고 있다.
 <br><br>
-<<holo "SERVICES">>
-	<<holoLine "CHIP BACKUPS.">>
-	<<holoLine "SPLITS.">>
-	<<holoLine "COPIES.">>
-	<<holoLine "NO QUESTIONS ASKED." "warn">>
+<<holo "서비스">>
+	<<holoLine "칩 백업.">>
+	<<holoLine "칩 분할.">>
+	<<holoLine "칩 복사.">>
+	<<holoLine "묻지 않습니다." "warn">>
 <</holo>>
 <br>
 <<if !$daily.arcologyCutterAsk>>
-	<<socialiseicon "ask">><<link [[Ask about a backup (0:05)|Arcology Chip Cutter Ask]]>><<set $daily.arcologyCutterAsk to true>><<pass 5>><<arcologyNPC 0 "under" "cutter">><</link>>
+	<<socialiseicon "ask">><<link [[백업에 대해 묻는다 (0:05)|Arcology Chip Cutter Ask]]>><<set $daily.arcologyCutterAsk to true>><<pass 5>><<arcologyNPC 0 "under" "cutter">><</link>>
 	<br>
 <</if>>
-<<getouticon>><<link [[Leave|Arcology Underpass]]>><<pass 2>><</link>>
+<<getouticon>><<link [[나간다|Arcology Underpass]]>><<pass 2>><</link>>
 <br>
 
 :: Arcology Chip Cutter Ask
 <<location "arcology_cutter">><<set $outside to 0>><<effects>><<person1>>
-The cutter is a <<person>> whose eyes have been replaced with special lenses that help <<him>> see very small objects. <<arcologyCyberLook 0>>
+칩 커터는 눈을 아주 작은 물체를 볼 수 있게 해 주는 특수 렌즈로 교체한 <<person>>【이】다. <<arcologyCyberLook 0>>
 <br><br>
-<<Hes>> working on a small electronic chip at <<his>> table.
+<<Hes>> <<his>> 탁자에서 작은 전자 칩 하나를 손보고 있다.
 <br><br>
-When you ask about making a copy of your own chip, <<he>> continues working while answering you.
-"A backup? Good idea. Your chip stores your identity and all your records on this island. If someone destroys it, you lose everything stored on it."
+당신이 자신의 칩을 복사하는 것에 대해 묻자 <<he>>【은는】 일을 계속하며 대답한다.
+"백업? 좋은 생각이야. 네 칩에는 이 섬에서의 신분과 기록이 전부 들어 있어. 누가 그걸 부수면 거기 저장된 건 전부 잃는 거지."
 <br><br>
-<<link [[Leave|Arcology Chip Cutter]]>><<endevent>><</link>>
+<<link [[나간다|Arcology Chip Cutter]]>><<endevent>><</link>>
 <br>
 
 :: Arcology Underpass Camp
 <<location "arcology_underpass">><<set $outside to 0>><<effects>>
 <<arcologyDangerCheck "underpass">><<if _arcologyDangerActive>><<exit>><</if>>
-As you walk further into the tunnel, you find a group of people living there. They have used shopping trolleys to hold up large sheets of plastic, making small shelters where they can sleep and keep their belongings.
+터널 안쪽으로 더 걸어 들어가자 그곳에서 살아가는 사람들이 보인다. 이들은 쇼핑 카트로 커다란 비닐 천막을 받쳐 올려, 잠을 자고 소지품을 보관할 작은 거처를 만들었다.
 <br><br>
-You notice several electrical wires coming from the shelters. They are connected to a nearby electrical box, which has been broken open. It looks like someone has connected the wires to take electricity from the city above without paying for it.
+거처에서 전선 몇 가닥이 뻗어 나와 있다. 전선은 뚜껑이 부서진 근처 전기함에 연결돼 있다. 누군가 위쪽 도시의 전기를 돈 한 푼 내지 않고 끌어다 쓰려고 선을 이은 모양이다.
 <br><br>
-Nobody here seems to have a working implant. Some people have scars where their implants used to be. A child runs past you, playing with an old electronic chip tied to a piece of string. The chip no longer works, but the child happily swings it back and forth.
+여기 있는 사람 중 제대로 작동하는 임플란트를 가진 이는 없어 보인다. 몇몇은 임플란트가 있던 자리에 흉터가 남아 있다. 한 아이가 끈에 묶은 낡은 전자 칩을 가지고 놀며 당신 곁을 뛰어간다. 칩은 더는 작동하지 않지만, 아이는 신이 나서 앞뒤로 흔든다.
 <br><br>
-Near the entrance to the camp, you see an old screen. Someone has written a message on it with a marker:
+야영지 입구 근처에 낡은 화면이 하나 있다. 누군가 매직펜으로 거기에 글을 적어 놓았다.
 <br>
-<i>Here you are no one. Here no one is looking for you.</i>
+<i>여기서 당신은 아무도 아니다. 여기서는 아무도 당신을 찾지 않는다.</i>
 <br><br>
-<<getouticon>><<link [[Leave|Arcology Underpass]]>><<pass 2>><</link>>
+<<getouticon>><<link [[떠난다|Arcology Underpass]]>><<pass 2>><</link>>
 <br>

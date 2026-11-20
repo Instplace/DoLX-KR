@@ -198,7 +198,7 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 			) {
 				result.options.push({
 					action: "mswelltitfuck",
-					text: "Press your swollen penis between your breasts",
+					text: "부풀어 오른 자지를 가슴 사이에 눌러 끼운다",
 					colour: "purple",
 					otherElements: "<<combataware 3>>",
 				});
@@ -372,7 +372,7 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 				} else if (V.parasite.clit.name !== "parasite") {
 					result.options.push({
 						action: "mvaginaclitparasite",
-						text: `클리토리스 ${V.parasite.clit.name}【을를】 가지고 논다`,
+						text: `클리토리스 ${window.KR.getCreatureTypeKr(V.parasite.clit.name)}【을를】 가지고 논다`,
 						colour: "sub",
 					});
 				}
@@ -516,12 +516,12 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 			if (arm !== "left") return result;
 			result.text =
 				swellBodyEligible && V.penisuse === "breasts" && [0, "disabled"].includes(V.mouth) && genitalsExposed() && breastsExposed()
-					? "You press your breasts around the huge length of your swollen penis."
-					: "Your body can no longer maintain the position.";
+					? "당신은 가슴으로 부풀어 오른 자지의 거대한 길이를 감싸 누른다."
+					: "당신의 몸이 더는 그 자세를 유지하지 못한다.";
 			if (swellBodyEligible && V.penisuse === "breasts" && [0, "disabled"].includes(V.mouth) && genitalsExposed() && breastsExposed()) {
 				result.options.push({
 					action: "mswelltitfuck",
-					text: "Rock your hips between your breasts",
+					text: "가슴 사이에서 허리를 흔든다",
 					colour: "purple",
 					otherElements: "<<combataware 3>>",
 				});
@@ -725,7 +725,7 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 							} else if (V.parasite.clit.name !== "parasite") {
 								result.options.push({
 									action: "mvaginaclitvibrateparasite",
-									text: `클리토리스 ${V.parasite.clit.name}에 가져다 댄다`,
+									text: `클리토리스 ${window.KR.getCreatureTypeKr(V.parasite.clit.name)}에 가져다 댄다`,
 									colour: "sub",
 								});
 							}
@@ -786,7 +786,7 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 			} else if (V.player.penisExist && (arm === "left" || !V.player.vaginaExist)) {
 				if (V.worn.genitals.name === "chastity parasite") {
 					result.text =
-						actiondefault === "mpenisW" ? `You tease your chastity with your ${arm} hand, unbidden.` : `Your ${arm} hand hovers over your chastity parasite.`;
+						actiondefault === "mpenisW" ? `당신은 저도 모르게 ${armk}손으로 정조대 기생충을 문지른다.` : `당신의 ${armk}손이 정조대 기생충 위를 맴돈다.`;
 					result.options.push({
 						action: "mpenisW",
 						text: "기생충을 문지른다",
@@ -799,7 +799,7 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 					});
 				} else {
 					result.text =
-						actiondefault === "mpenisW" ? `You stroke your <<penis>> with your ${arm} hand, unbidden.` : `Your ${arm} hand hovers over your <<penis>>.`;
+						actiondefault === "mpenisW" ? `당신은 저도 모르게 ${armk}손으로 <<penis>>【을를】 문지른다.` : `당신의 ${armk}손이 <<penis>> 위를 맴돈다.`;
 					result.options.push({
 						action: "mpenisW",
 						text: "기둥을 문지른다",
@@ -813,7 +813,7 @@ function masturbationActionsHands(arm, { playerToys, selectedToy, toyDisplay, ge
 				}
 			} else {
 				result.text =
-					actiondefault === "mvaginaW" ? `You stroke your <<pussy>> with your ${arm} hand, unbidden.` : `Your ${arm} hand hovers over your <<pussy>>.`;
+					actiondefault === "mvaginaW" ? `당신은 저도 모르게 ${armk}손으로 <<pussy>>【을를】 문지른다.` : `당신의 ${armk}손이 <<pussy>> 위를 맴돈다.`;
 				result.options.push({
 					action: "mvaginaW",
 					text: "보지를 애무한다",
@@ -921,7 +921,7 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 					if (swellBodyEligible && V.penisuse === 0) {
 						result.options.push({
 							action: "mswellautofellatio",
-							text: "Take your swollen penis into your mouth",
+							text: "부풀어 오른 자지를 입에 넣는다",
 							colour: "purple",
 							otherElements: "<<combataware 3>>",
 						});
@@ -964,13 +964,13 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 			break;
 		case "mpenisentrance":
 			result.text = corruptionCheck
-				? `<span class="red">The ${earSlimeNoun()} in your ear is forcing your mouth to be in front of your penis.</span>`
+				? `<span class="red">귀 속 ${earSlimeNoun()}【이가】 당신의 입을 자지 앞으로 가져가게 한다.</span>`
 				: "입이 자지 앞에 있다.";
 			if (awarenessCheck) {
 				if (swellBodyEligible && genitalsExposed()) {
 					result.options.push({
 						action: "mswellautofellatio",
-						text: "Fuck your mouth with your swollen penis",
+						text: "부풀어 오른 자지로 입을 쑤신다",
 						colour: "purple",
 						otherElements: !corruptionCheck ? "<<combataware 3>>" : undefined,
 					});
@@ -993,7 +993,7 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 			break;
 		case "mchastityparasiteentrance":
 			result.text = corruptionCheck
-				? `<span class="red">The ${earSlimeNoun()} in your ear is forcing your mouth to be in front of your chastity parasite.</span>`
+				? `<span class="red">귀 속 ${earSlimeNoun()}【이가】 당신의 입을 정조대 기생충 앞으로 가져가게 한다.</span>`
 				: "입이 정조대 기생충 앞에 있다.";
 			if (awarenessCheck) {
 				result.options.push({
@@ -1008,7 +1008,7 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 			break;
 		case "mvaginaentrance":
 			result.text = corruptionCheck
-				? `<span class="red">The ${earSlimeNoun()} in your ear is forcing you to lick your pussy.</span>`
+				? `<span class="red">귀 속 ${earSlimeNoun()}【이가】 당신이 보지를 핥게 한다.</span>`
 				: "입이 보지 앞에 있다.";
 			if (awarenessCheck) {
 				result.options.push({
@@ -1028,7 +1028,7 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 					} else if (V.parasite.clit.name !== "parasite") {
 						result.options.push({
 							action: "mvaginaclitparasite",
-							text: `클리토리스 ${V.parasite.clit.name}에 집중한다`,
+							text: `클리토리스 ${window.KR.getCreatureTypeKr(V.parasite.clit.name)}에 집중한다`,
 							colour: "sub",
 							otherElements: !corruptionCheck ? "<<combataware 3>>" : undefined,
 						});
@@ -1039,10 +1039,10 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 			break;
 		case "mpenis":
 			result.text = corruptionCheck
-				? `<span class="red">The ${earSlimeNoun()} in your ear is forcing you to suck on your penis.</span>`
+				? `<span class="red">귀 속 ${earSlimeNoun()}【이가】 당신이 자지를 빨게 한다.</span>`
 				: "당신은 자지를 빨고 있다.";
 			if (inSwellAutofellatio && !(swellBodyEligible && genitalsExposed())) {
-				result.text = "Your body can no longer maintain the position.";
+				result.text = "당신의 몸이 더는 그 자세를 유지하지 못한다.";
 				result.options.push(stop("mpenisstop"));
 				break;
 			}
@@ -1050,8 +1050,8 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 				result.text += ` 전체가 입${V.selfsuckDepth >= 2 ? "과 목구멍" : ""} 안에 들어와 있다.`;
 			} else if (inSwellAutofellatio && V.selfsuckDepth === 0) {
 				result.text = corruptionCheck
-					? `<span class="red">The ${earSlimeNoun()} in your ear is forcing your mouth around your swollen <<penis>>.</span>`
-					: "You're stuffing your mouth full with your huge, swollen <<penis>>.";
+					? `<span class="red">귀 속 ${earSlimeNoun()}【이가】 당신의 입이 부풀어 오른 <<penis>>【을를】 감싸게 만든다.</span>`
+					: "당신은 거대하게 부풀어 오른 <<penis>>【으로로】 입안을 가득 채우고 있다.";
 			} else {
 				switch (V.selfsuckDepth) {
 					case 0:
@@ -1073,7 +1073,7 @@ function masturbationActionsMouth({ selectedToy, toyDisplay, genitalsExposed, br
 				if (swellBodyEligible && genitalsExposed()) {
 					result.options.push({
 						action: "mswellautofellatio",
-						text: "Fuck your mouth with your swollen penis",
+						text: "부풀어 오른 자지로 입을 쑤신다",
 						colour: "purple",
 						otherElements: !corruptionCheck ? "<<combataware 3>>" : undefined,
 					});

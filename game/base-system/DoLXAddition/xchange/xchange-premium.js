@@ -256,7 +256,7 @@
 
 	function premiumPassageMarkup(name) {
 		if (typeof Story === "undefined" || !Story.has(name)) {
-			return "''Missing premium menu passage:'' " + name;
+			return "''프리미엄 메뉴 패시지를 찾을 수 없습니다:'' " + name;
 		}
 		return Story.get(name).processText();
 	}
@@ -282,9 +282,9 @@
 			if (typeof Dialog.isOpen === "function" && Dialog.isOpen("xchange-premium")) {
 				Dialog.empty();
 			} else if (typeof Dialog.create === "function") {
-				Dialog.create("Premium Pill", "xchange-premium");
+				Dialog.create("프리미엄 알약", "xchange-premium");
 			} else if (typeof Dialog.setup === "function") {
-				Dialog.setup("Premium Pill", "xchange-premium");
+				Dialog.setup("프리미엄 알약", "xchange-premium");
 			} else {
 				console.error("[X-Change Premium] No compatible Dialog API found.");
 				return false;
