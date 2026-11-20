@@ -122,7 +122,16 @@ window.arcologyDistrictFacts = function (id) {
 	const block = from < 0 ? "" : text.slice(from, to < 0 ? undefined : to);
 	const places = [...block.matchAll(/\[\[([^|\]]+?)(?: \(\d+:\d+\))?\||<<link\s+"([^"]+?)(?: \(\d+:\d+\))?"/g)].map(m => m[1] || m[2]);
 	const clean = places.map(p => p.replace(/^Go to (the )?/i, "")).map(p => p.charAt(0).toUpperCase() + p.slice(1));
-	return { desc: desc.replace(/<[^>]+>/g, ""), places: [...new Set(clean)] };
+	/* The description without its tags. Read character by character rather than with one pass of a tag pattern,
+	   which leaves a tag behind when tags are nested ("<<b>b>"). */
+	let plain = "";
+	let depth = 0;
+	for (const ch of desc) {
+		if (ch === "<") depth++;
+		else if (ch === ">") depth = Math.max(0, depth - 1);
+		else if (!depth) plain += ch;
+	}
+	return { desc: plain, places: [...new Set(clean)] };
 };
 
 /* Fixed positions for the City Map, laid out as the planned route hierarchy from Arcology Pier downwards. [x, y] in map units.
