@@ -57,7 +57,8 @@ function resolveFoodstuffKey(rawKey) {
 		console.warn(`[wearProp] "${rawKey}"는 setup.foodstuff의 표시용 이름이라 "${resolved}" 키로 대신 변환해 사용합니다. 호출부를 확인해 원래 영문 키를 쓰도록 고치는 것이 좋습니다.`);
 		return resolved;
 	}
-	return rawKey;
+	/* 이름 뒤에 " gift"처럼 다른 낱말이 붙었거나 음식이 아닌 이름(가구 등)일 때: kr_keys.js */
+	return window.KR && typeof window.KR.keysIn === "function" ? window.KR.keysIn(rawKey) : rawKey;
 }
 window.resolveFoodstuffKey = resolveFoodstuffKey;
 

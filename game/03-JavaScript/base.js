@@ -746,7 +746,8 @@ Macro.add("icon", {
 		]
 			.filter(Boolean)
 			.join(" ");
-		iconImg.src = basePath + name;
+		// 한국어 이름이 섞여 들어온 경로는 내부 키로 바꾼다 (kr_keys.js)
+		iconImg.src = window.KR && typeof window.KR.imagePath === "function" ? window.KR.imagePath(basePath + name) : basePath + name;
 		this.output.append(iconImg);
 		// append a whitespace for compatibility with old icon behaviour
 		if (!this.args.includes("nowhitespace")) this.output.append(" ");
