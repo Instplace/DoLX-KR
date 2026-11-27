@@ -1212,7 +1212,7 @@ function masturbationEffectsArms(
 						span(
 							`당신은 기생충이 허락하는 한 거칠게 희롱하며, 당신의 ${
 								V.player.virginity.penile === true ? "동정 자지" : "자지"
-							}.`
+							}에 곧장 전해지는 감각을 즐긴다.`
 						)
 					);
 				} else if (V.arousal >= (V.arousalmax / 5) * 3) {
@@ -1220,7 +1220,7 @@ function masturbationEffectsArms(
 						span(
 							`당신은 기생충을 여러 방식으로 문지르며, 당신의 ${
 								V.player.virginity.penile === true ? "동정 자지" : "자지"
-							}.`
+							}에 곧장 전해지는 갖가지 감각을 즐긴다.`
 						)
 					);
 				} else {
@@ -1259,7 +1259,7 @@ function masturbationEffectsArms(
 						span(
 							`당신은 기생충과 당신의 ${
 								V.player.virginity.penile === true ? "동정 자지" : "자지"
-							}, enjoying the limited attention you can give it.`
+							}를 거듭 꽉 쥐며, 줄 수 있는 얼마 안 되는 자극을 즐긴다.`
 						)
 					);
 				} else if (V.arousal >= (V.arousalmax / 5) * 3) {
@@ -1475,7 +1475,7 @@ function masturbationEffectsArms(
 						span(
 							`당신은 기생충이 허락하는 한 거칠게 희롱하며, 당신의 ${
 								V.player.virginity.penile === true ? "동정 자지" : "자지"
-							}.`
+							}에 곧장 전해지는 감각을 즐긴다.`
 						)
 					);
 				} else if (V.arousal >= (V.arousalmax / 5) * 3) {
@@ -1483,7 +1483,7 @@ function masturbationEffectsArms(
 						span(
 							`당신은 기생충을 여러 방식으로 문지르며, 당신의 ${
 								V.player.virginity.penile === true ? "동정 자지" : "자지"
-							}.`
+							}에 곧장 전해지는 갖가지 감각을 즐긴다.`
 						)
 					);
 				} else {
@@ -2962,7 +2962,7 @@ function masturbationEffectsMouth({
 				fragment.append(
 					Wikifier.wikifyEval(
 						`당신은 드러난 ${
-							breastsHeld > 1 ? "유륜 주위를 혀끝으로 둥글게 훑는다. <<nipples>>【이가】 단단해진다" : "유륜 주위를 혀끝으로 둥글게 훑는다. <<nipple>>【이가】 단단해진다"
+							breastsHeld > 1 ? "유륜 주위를 혀끝으로 둥글게 훑는다. <<nipples>>【이가】 단단해지며" : "유륜 주위를 혀끝으로 둥글게 훑는다. <<nipple>>【이가】 단단해지며"
 						} 반응한다.`
 					)
 				);

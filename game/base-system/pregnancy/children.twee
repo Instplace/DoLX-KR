@@ -706,9 +706,11 @@ Groups littermates by pregnancyId.*/
 					/* .name(영문, 불변)을 카탈로그에서 조회해 name_lower(한글)를 가져옴 */
 					<<set $_text_output to getToyNameKr(_toySelection, _toy.name)>>
 					<<set _toyName to getToyNameKr(_toySelection, _toy.name)>>
+					<<set _toyKey to String(_toy.name).toLowerCase()>>
 				<<default>>
 					<<set $_text_output to getToyNameKr(_toySelection, _toy.name)>>
 					<<set _toyName to getToyNameKr(_toySelection, _toy.name)>>
+					<<set _toyKey to String(_toy.name).toLowerCase()>>
 			<</switch>>
 		<</if>>
 	<</if>>
@@ -1236,12 +1238,12 @@ Groups littermates by pregnancyId.*/
 				<</if>>
 			<<case "squeakyToy">>
 				<<silently>><<childtoy $location "chew toys" "lowercase">><</silently>>
-				<<if _toyName?.includes("squeaky")>>
+				<<if _toyKey?.includes("squeaky")>>
 					<<childHe>>【은는】 호기심 어린 눈빛으로 _toyName【을를】 쳐다보고 있다.
 
 					<<if $childRecords[_args[0]].development.event>>
 						<br>
-						<<capture _toyName>><<link [[삑삑이 장난감을 건넨다 (0:05)|Children Activity Events]]>><<pass 5>><<set $childActivityEvent to {event:"squeakyToy", childid:_args[0]}>><<set $phase to _toyName>><</link>><</capture>>
+						<<capture _toyName _toyKey>><<link [[삑삑이 장난감을 건넨다 (0:05)|Children Activity Events]]>><<pass 5>><<set $childActivityEvent to {event:"squeakyToy", childid:_args[0], toyName:_toyName}>><<set $phase to _toyKey>><</link>><</capture>>
 					<</if>>
 				<<else>>
 					<<set $childRecords[_args[0]].development.activity to "sleeping">>
@@ -1249,12 +1251,12 @@ Groups littermates by pregnancyId.*/
 				<</if>>
 			<<case "squeakyToy2">>
 				<<silently>><<childtoy $location "chew toys" "lowercase">><</silently>>
-				<<if _toyName?.includes("squeaky")>>
+				<<if _toyKey?.includes("squeaky")>>
 					<<childHe>>【이가】 _toyName【을를】 킁킁거리며 냄새를 맡더니, 조심스레 앞발로 툭툭 친다.
 
 					<<if $childRecords[_args[0]].development.event>>
 						<br>
-						<<capture _toyName>><<link [[_toyName 삑삑 소리를 낸다 (0:05)|Children Activity Events]]>><<pass 5>><<set $childActivityEvent to {event:"squeakyToy2", childid:_args[0]}>><<set $phase to _toyName>><</link>><</capture>>
+						<<capture _toyName _toyKey>><<link [[_toyName 삑삑 소리를 낸다 (0:05)|Children Activity Events]]>><<pass 5>><<set $childActivityEvent to {event:"squeakyToy2", childid:_args[0], toyName:_toyName}>><<set $phase to _toyKey>><</link>><</capture>>
 					<</if>>
 				<<else>>
 					<<set $childRecords[_args[0]].development.activity to "sleeping">>
@@ -1262,7 +1264,7 @@ Groups littermates by pregnancyId.*/
 				<</if>>
 			<<case "chewRope">>
 				<<silently>><<childtoy $location "chew toys" "lowercase">><</silently>>
-				<<if _toyName?.includes("rope")>>
+				<<if _toyKey?.includes("rope")>>
 					<<childHe>>【은는】 알록달록한 밧줄 장난감을 씹고 있다.
 
 					<<if $childRecords[_args[0]].development.event>>
@@ -1275,7 +1277,7 @@ Groups littermates by pregnancyId.*/
 				<</if>>
 			<<case "chewRope2">>
 				<<silently>><<childtoy $location "chew toys" "lowercase">><</silently>>
-				<<if _toyName?.includes("rope")>>
+				<<if _toyKey?.includes("rope")>>
 					<<childHe>>【이가】 밧줄 냄새를 맡고는 시험 삼아 한번 살짝 깨물어본다.
 
 					<<if $childRecords[_args[0]].development.event>>
@@ -1288,7 +1290,7 @@ Groups littermates by pregnancyId.*/
 				<</if>>
 			<<case "chewBone">>
 				<<silently>><<childtoy $location "chew toys" "lowercase">><</silently>>
-				<<if _toyName?.includes("bone")>>
+				<<if _toyKey?.includes("bone")>>
 					<<if $childRecords[_args[0]].development.event>>
 						<<childHe>>【은는】 구멍을 파려고 한다.
 						<br>
@@ -1302,7 +1304,7 @@ Groups littermates by pregnancyId.*/
 				<</if>>
 			<<case "chewBone2">>
 				<<silently>><<childtoy $location "chew toys" "lowercase">><</silently>>
-				<<if _toyName?.includes("bone")>>
+				<<if _toyKey?.includes("bone")>>
 					<<childHe>>【이가】 뼈의 냄새를 맡더니 핥기 시작한다.
 
 					<<if $childRecords[_args[0]].development.event>>
@@ -1315,7 +1317,7 @@ Groups littermates by pregnancyId.*/
 				<</if>>
 			<<case "rollBall">>
 				<<silently>><<childtoy $location "chew toys" "lowercase">><</silently>>
-				<<if _toyName?.includes("ball")>>
+				<<if _toyKey?.includes("ball")>>
 					<<childHe>>【이가】 코로 공을 밀어 당신 곁으로 가져온다.
 
 					<<if $childRecords[_args[0]].development.event>>
@@ -1328,7 +1330,7 @@ Groups littermates by pregnancyId.*/
 				<</if>>
 			<<case "rollBall2">>
 				<<silently>><<childtoy $location "chew toys" "lowercase">><</silently>>
-				<<if _toyName?.includes("ball")>>
+				<<if _toyKey?.includes("ball")>>
 					<<childHe>>【이가】 공을 코로 비비며 땅에 굴린다.
 
 					<<if $childRecords[_args[0]].development.event>>
@@ -1438,7 +1440,7 @@ Groups littermates by pregnancyId.*/
 			<<case "swingToy">>
 				/* currently unreachable. credit writer as Anonymous when properly added */
 				<<silently>><<childtoy $location "hawk toys" "lowercase">><</silently>>
-				<<if _toyName?.includes("swing")>>
+				<<if _toyKey?.includes("swing")>>
 					<<childHe>>【은는】 그네 위로 기어오르려 하고 있다.
 
 					<<if $childRecords[_args[0]].development.event>>
@@ -1452,7 +1454,7 @@ Groups littermates by pregnancyId.*/
 			<<case "preeningToy">>
 				/* currently unreachable. credit writer as mochamante when properly added */
 				<<silently>><<childtoy $location "hawk toys" "lowercase">><</silently>>
-				<<if _toyName?.includes("preening")>>
+				<<if _toyKey?.includes("preening")>>
 					<<if _childTotalDays lte 40>>
 						<<childHe>>【은는】 어설프게 <<childhimself>>의 깃털을 다듬으려 하고 있다.
 					<<else>>

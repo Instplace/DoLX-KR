@@ -624,7 +624,9 @@ const Furniture = (() => {
 			return null;
 		}
 		if (onlySetup) {
-			return setup.furniture.get(category);
+			// 기본 가구 항목에는 id가 없으므로(키가 곧 id) 함께 돌려준다. 가구는 이름이 아니라 id로 비교한다.
+			const entry = setup.furniture.get(category);
+			return entry ? Object.assign({ id: category }, entry) : entry;
 		}
 		if (!V) {
 			print("Furniture.Get called before SugarCube is ready, postpone execution next time.", category);

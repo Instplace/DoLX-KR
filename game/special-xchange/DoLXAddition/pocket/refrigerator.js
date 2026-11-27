@@ -76,7 +76,7 @@ function refrigeratorFoodRows(key) {
 	if (!foodIsDish(key)) return [];
 	const rows = [];
 	[
-		["bedroom", "Orphanage"],
+		["bedroom", "고아원"],
 		["cottage", "농장 오두막"],
 		["avery_mansion", "에이버리의 저택"],
 	].forEach(([location, label]) => {
